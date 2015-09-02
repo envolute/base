@@ -1,0 +1,14 @@
+// @CORE
+// Esse arquivo gerencia o carregamento dos arquivos de customização do editor de texto
+
+@import "variables";
+@import "mixins";
+
+// Baseicons
+@import "baseicons/baseicons";
+
+// Bootstrap
+@import "bootstrap/bootstrap.editor";
+
+// Core
+@import "core.base";

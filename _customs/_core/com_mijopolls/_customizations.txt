@@ -1,0 +1,23 @@
+/* DETALHAMENTO DE ALTERAÇÕES
+ * Tipo:	CUSTOMIZAÇÃO
+ * Objeto:	COM_MIJOPOLLS
+ * data:	19/09/2014
+ * autor:	Ivo Junior
+*/
+
+RECURSOS ADICIONADOS:
+Nenhum
+
+OBJETIVO:
+Traduzir o nome da view no menu
+
+
+CORREÇÕES:
+
+Arquivo 'components/com_mijopolls/views/poll/tmpl/default.xml'
+Arquivo 'components/com_mijopolls/views/polls/tmpl/default.xml'
+O arquivo default.xml define o nome da view na listagem de tipos de menu. Nesse caso, o nome é definido diretamente em inglês, sem utilizar um parâmetro de tradução.
+Dessa forma, o nome foi traduzido diretamente.
+
+OBS:
+Nenhuma

@@ -1,0 +1,19 @@
+/* DETALHAMENTO DE ALTERAÇÕES
+ * Tipo:	CORREÇÃO
+ * Objeto:	FIELDSATTACH
+ * data:	02/09/2013
+ * autor:	Ivo Junior
+*/
+
+RECURSOS ADICIONADOS:
+Nenhum
+
+OBJETIVO:
+Corrigir formatação do html dos campos na edição do conteúdo
+
+CUSTOMIZAÇÕES:
+Arquivo 'plugins/system/fieldsattachment/fieldsattachment.php'
+Uma tag colocada no local errado gera uma quebra no layout dos campos na edição do conteúdo.
+A partir da linha: #876. 
+
+OBS:

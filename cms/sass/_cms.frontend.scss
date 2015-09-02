@@ -1,0 +1,758 @@
+// @CMS FRONTEND -> JOOMLA
+// Classes do joomla! necessárias no frontend
+
+// GRID
+// modelo do bootstrap 2 que ainda é utilizado pelo Joomla
+
+.row-fluid [class*="span"] { margin-left: $base-space; }
+.row-fluid [class*="span"]:first-child { margin-left: 0; }
+
+.span1,.span2,.span3,.span4,.span5,.span6,
+.span7,.span8,.span9,.span10,.span11,.span12 {
+	float: left;
+}
+.span12{width:100%}
+.span11{width:91.66666667%}
+.span10{width:83.33333333%}
+.span9{width:75%}
+.span8{width:66.66666667%}
+.span7{width:58.33333333%}
+.span6{width:50%}
+.span5{width:41.66666667%}
+.span4{width:33.33333333%}
+.span3{width:25%}
+.span2{width:16.66666667%}
+.span1{width:8.33333333%}
+
+// WIDTH
+.width-10 { width: 10px!important; }
+.width-20 { width: 20px!important; }
+.width-30 { width: 30px!important; }
+.width-40 { width: 40px!important; }
+.width-50 { width: 50px!important; }
+.width-60 { width: 60px!important; }
+.width-70 { width: 70px!important; }
+.width-80 { width: 80px!important; }
+.width-90 { width: 90px!important; }
+.width-100 { width: 100px!important; }
+.height-10 { height: 10px!important; }
+.height-20 { height: 20px!important; }
+.height-30 { height: 30px!important; }
+.height-40 { height: 40px!important; }
+.height-50 { height: 50px!important; }
+.height-60 { height: 60px!important; }
+.height-70 { height: 70px!important; }
+.height-80 { height: 80px!important; }
+.height-90 { height: 90px!important; }
+.height-100 { height: 100px!important; }
+
+// TIPOGRAPHY
+.center { text-align: center; }
+
+// MESSAGE
+// mensagens de alerta default
+// mesmo estilo da classe 'alert-info' do bootstrap
+
+.alert.alert-message {
+	color: #3a87ad;
+	background-color: #d9edf7;
+	border-color: #bce8f1;
+}
+.alert.alert-error {
+	color: #a94442;
+	background-color: #f2dede;
+	border-color: #ebccd1;
+}
+
+// FORMS
+
+	// buttons
+	.btn:not([class*="btn-"]) {
+		padding: 6px 12px;
+		line-height: 1.428571429;
+		color: #333333;
+		cursor: pointer;
+		border: 1px solid #c8c8c8;
+		border-radius: 4px;
+		text-shadow:1px 1px 0 #fff;
+		background-color: #f5f5f5;
+		*background-color: #e6e6e6;
+
+	}
+	.btn:not([class*="btn-"]):hover {
+		background-color: #e6e6e6;
+	}
+	.btn:not([class*="btn-"]):focus {
+		background-color: #e6e6e6;
+		outline: thin dotted #333;
+		outline: 5px auto -webkit-focus-ring-color;
+		outline-offset: -2px;
+	}
+	.btn:not([class*="btn-"]):active {
+		outline: 0;
+		@include build-prefix-values('box-shadow', 'inset 0 3px 5px rgba(0, 0, 0, 0.125)');
+	}
+	.btn:not([class*="btn-"])[disabled] {
+		pointer-events: none;
+		cursor: default;
+		opacity: 0.65;
+		filter: alpha(opacity=65);
+		@include build-prefix-values('box-shadow', 'none');
+	}
+	.btn.btn-micro {
+		padding: 1px 4px!important;
+		font-size: 10px!important;
+		line-height: 8px!important;
+	}
+	.radio.btn-group {
+		padding: 0;
+		margin-top: 0;
+		margin-bottom: 0;
+		border: none;
+	}
+	.radio.btn-group label { padding: 6px 12px; }
+	.control-group { margin-bottom: 10px; }
+	.control-label label { display: inline-block; }
+	.input-prepend .add-on,
+	.input-append input {
+		@include build-prefix-values('border-radius', $border-radius-base 0 0 $border-radius-base+'!important');
+	}
+	.input-prepend input,
+	.input-append .btn {
+		margin-left: -4px;
+		@include build-prefix-values('border-radius', 0 $border-radius-base $border-radius-base 0+'!important');
+	}
+	.input-prepend.input-append input {
+		@include build-prefix-values('border-radius', '0!important');
+	}
+	.media-preview.add-on {
+		display: inline-block;
+		width: auto;
+		height: 34px;
+		min-width: 16px;
+		padding: 8px;
+		font-size: 13px;
+		font-weight: normal;
+		line-height: 16px;
+		text-align: center;
+		text-shadow: 0 1px 0 #fff;
+		border: 1px solid #ccc;
+		background-color: #eee;
+	}
+
+	.form-horizontal .control-group:before,
+	.form-horizontal .control-group:after {
+		display: table;
+		line-height: 0;
+		content: "";
+	}
+	.form-horizontal .control-group:after { clear: both; }
+	.form-horizontal .control-label { text-align: left; }
+	.form-horizontal fieldset.radio.btn-group { padding: 0; }
+
+// #LIBS: CHOSEN
+// IMPORTANTE: o Joomla usa a class 'chzn' em vez do padrão 'chosen'
+@include base-chosen('chzn');
+
+// EDIT
+// Edição de item no frontend
+
+
+	.edit .btn-toolbar {
+		margin: 0 0 10px;
+		padding-bottom: 10px;
+		padding: 5px 0px;
+		border: 1px solid #ddd;
+		@include build-prefix-values('border-radius', $border-radius-base);
+		background: #f4f4f4;
+		@include build-prefix-values('box-shadow', 'inset 0px 20px 20px rgba(255,255,255,0.6)');
+	}
+	// dentro do formulário
+	#editor-xtd-buttons,
+	#editor-xtd-buttons .btn-toolbar {
+		padding:0;
+		border: none;
+		background: none;
+	}
+	// Link para editar módulo
+	.btn.jmodedit { padding: 0!important; margin: -15px 0 0 0; border: none!important; background: none!important; }
+
+	.edit #editor input#jform_title { width: 100%; }
+
+// EDITOR
+// melhora o espaçamento dos botões na parte infoerior do editor de texto
+
+
+	#editor-xtd-buttons.btn-toolbar .btn { margin: 8px 2px 0 0; padding: 4px 8px; font-size: 13px; }
+	.toggle-editor .btn { margin-top: 5px; }
+
+// MODAL
+// seta altura default
+
+
+	.sbox-content-iframe iframe { height: 100%!important; }
+
+	// IMPORTANTE: reseta a classe 'modal' em links '<a>' para evitar conflito com outros plugins
+	a.modal {
+		display: inline-block;
+		position: static;
+		top: auto;
+		left: auto;
+		z-index: auto;
+		width: auto;
+		margin: 0;
+		background-color: transparent;
+		border: none;
+		@include build-prefix-values('box-shadow', 'none!important');
+		overflow:hidden;
+	}
+
+// FORM VALIDATION
+// estilo dos campos com erro
+
+
+	.invalid { color: #9d261d!important; font-weight: bold; }
+	input.invalid, textarea.invalid { border: 1px solid #9d261d!important; }
+
+// RADIO BUTTONS
+
+	.radio.btn-group input[type="radio"] { display: none; }
+	fieldset.radio.btn-group { margin: 0; }
+	fieldset.radio.btn-group > label.btn:first-of-type:not(:last-child) {
+		padding-left: 12px;
+		@include build-prefix-values('border-radius', $border-radius-base 0 0 $border-radius-base);
+	}
+
+// TOOLTIP -> mooltools
+
+	div.tooltip {
+		background: transparent;
+		border: none;
+	}
+	.tip-wrap {
+		max-width: 200px!important;
+		padding: 3px 8px 5px;
+		color: #fff;
+		font-size:12px;
+		text-align: center;
+		text-decoration: none;
+		background-color: #000;
+		border-radius: 4px;
+		opacity:0.9;
+		box-shadow:1px 1px 4px rgba(0,0,0,0.3);
+		z-index: 100;
+	}
+	.tip-title {
+		margin: 2px -8px 2px;
+		font-size: 13px;
+		font-weight: bold;
+		padding: 0 8px 2px;
+	}
+
+// TABS
+// 'control-group' só existe na versão 2 do bootstrap que é utilizada pelo Joomla
+
+
+	.tab-content .tab-pane > .control-group:last-child { margin-bottom: 0!important; }
+
+// THUMBNAILS
+// modelo do bootstrap 2 que ainda é utilizado pelo Joomla
+
+
+	.thumbnails {
+		padding: 0;
+		margin-left: -$base-space;
+		list-style: none;
+	}
+	.thumbnails > li {
+		float: left;
+		margin-bottom: 18px;
+		margin-left: $base-space;
+	}
+
+// ACCORDION
+.accordion { margin-bottom: $base-space; }
+.accordion-group {
+	margin-bottom: 2px;
+	border: 1px solid #e5e5e5;
+	@include build-prefix-values('border-radius', $border-radius-base);
+	background: #f8f8f8;
+}
+.accordion-heading { border-bottom: 0; }
+.accordion-heading .accordion-toggle {
+	display: block;
+	padding: 8px 15px;
+}
+.accordion-toggle { cursor: pointer; }
+.accordion-inner {
+	padding: 9px 15px;
+	border-top: 1px solid #e5e5e5;
+	@include build-prefix-values('border-radius', 0 0 $border-radius-base $border-radius-base);
+	background: #fff;
+}
+
+// ICONS - ICOMOON
+@font-face {
+	font-family: 'IcoMoon';
+	src: url('../../../media/jui/fonts/IcoMoon.eot');
+
+	// formato corrigido -> CHROME
+	src: url('../../../media/jui/fonts/IcoMoon.eot?#iefix') format('embedded-opentype');
+	src: url('../../../media/jui/fonts/IcoMoon.svg#IcoMoon') format('svg');
+	src: url('../../../media/jui/fonts/IcoMoon.woff') format('woff');
+	src: url('../../../media/jui/fonts/IcoMoon.ttf') format('truetype');
+	// formato original -> IE
+	src: url('../../../media/jui/fonts/IcoMoon.eot?#iefix') format('embedded-opentype'), url('../../../media/jui/fonts/IcoMoon.svg#IcoMoon') format('svg'), url('../../../media/jui/fonts/IcoMoon.woff') format('woff'), url('../../../media/jui/fonts/IcoMoon.ttf') format('truetype');
+
+	font-weight: normal;
+	font-style: normal;
+}
+[data-icon]:before {
+	font-family: 'IcoMoon';
+	content: attr(data-icon);
+	speak: none;
+}
+[class^="icon-"],
+[class*=" icon-"] {
+	display: inline-block;
+	width: 14px;
+	height: 14px;
+	*margin-right: .3em;
+	line-height: 14px;
+}
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+	font-family: 'IcoMoon';
+	font-style: normal;
+	speak: none;
+}
+.icon-home:before {
+	content: "\21";
+}
+.icon-user:before {
+	content: "\22";
+}
+.icon-checkedout:before,
+.icon-lock:before,
+.icon-locked:before {
+	content: "\23";
+}
+.icon-comment:before,
+.icon-comments:before {
+	content: "\24";
+}
+.icon-comments-2:before {
+	content: "\25";
+}
+.icon-share-alt:before,
+.icon-out:before {
+	content: "\26";
+}
+.icon-share:before,
+.icon-redo:before {
+	content: "\27";
+}
+.icon-undo:before {
+	content: "\28";
+}
+.icon-file-add:before {
+	content: "\29";
+}
+.icon-new:before,
+.icon-plus:before {
+	content: "\2a";
+}
+.icon-apply:before,
+.icon-edit:before,
+.icon-pencil:before {
+	content: "\2b";
+}
+.icon-pencil-2:before {
+	content: "\2c";
+}
+.icon-folder:before {
+	content: "\2d";
+}
+.icon-folder-2:before {
+	content: "\2e";
+}
+.icon-picture:before {
+	content: "\2f";
+}
+.icon-pictures:before {
+	content: "\30";
+}
+.icon-list:before,
+.icon-list-view:before {
+	content: "\31";
+}
+.icon-power-cord:before {
+	content: "\32";
+}
+.icon-cube:before {
+	content: "\33";
+}
+.icon-puzzle:before {
+	content: "\34";
+}
+.icon-flag:before {
+	content: "\35";
+}
+.icon-tools:before {
+	content: "\36";
+}
+.icon-cogs:before {
+	content: "\37";
+}
+.icon-options:before,
+.icon-cog:before {
+	content: "\38";
+}
+.icon-equalizer:before {
+	content: "\39";
+}
+.icon-wrench:before {
+	content: "\3a";
+}
+.icon-brush:before {
+	content: "\3b";
+}
+.icon-eye-open:before,
+.icon-eye:before {
+	content: "\3c";
+}
+.icon-checkbox-unchecked:before {
+	content: "\3d";
+}
+.icon-checkin:before,
+.icon-checkbox:before {
+	content: "\3e";
+}
+.icon-checkbox-partial:before {
+	content: "\3f";
+}
+.icon-asterisk:before,
+.icon-star-empty:before {
+	content: "\40";
+}
+.icon-star-2:before {
+	content: "\41";
+}
+.icon-featured:before,
+.icon-star:before {
+	content: "\42";
+}
+.icon-calendar:before {
+	content: "\43";
+}
+.icon-calendar-2:before {
+	content: "\44";
+}
+.icon-question-sign:before,
+.icon-help:before {
+	content: "\45";
+}
+.icon-support:before {
+	content: "\46";
+}
+.icon-warning:before {
+	content: "\48";
+}
+.icon-publish:before,
+.icon-save:before,
+.icon-ok:before,
+.icon-checkmark:before {
+	content: "\47";
+}
+.icon-unpublish:before,
+.icon-trash:before,
+.icon-cancel:before {
+	content: "\4a";
+}
+.icon-eye-close:before,
+.icon-minus:before {
+	content: "\4b";
+}
+.icon-purge:before,
+.icon-trash:before {
+	content: "\4c";
+}
+.icon-envelope:before,
+.icon-mail:before {
+	content: "\4d";
+}
+.icon-mail-2:before {
+	content: "\4e";
+}
+.icon-unarchive:before,
+.icon-drawer:before {
+	content: "\4f";
+}
+.icon-archive:before,
+.icon-drawer-2:before {
+	content: "\50";
+}
+.icon-box-add:before {
+	content: "\51";
+}
+.icon-box-remove:before {
+	content: "\52";
+}
+.icon-search:before {
+	content: "\53";
+}
+.icon-filter:before {
+	content: "\54";
+}
+.icon-camera:before {
+	content: "\55";
+}
+.icon-play:before {
+	content: "\56";
+}
+.icon-music:before {
+	content: "\57";
+}
+.icon-grid-view:before {
+	content: "\58";
+}
+.icon-grid-view-2:before {
+	content: "\59";
+}
+.icon-menu:before {
+	content: "\5a";
+}
+.icon-thumbs-up:before {
+	content: "\5b";
+}
+.icon-thumbs-down:before {
+	content: "\5c";
+}
+.icon-delete:before,
+.icon-remove:before,
+.icon-cancel-2:before {
+	content: "\49";
+}
+.icon-save-new:before,
+.icon-plus-2:before {
+	content: "\5d";
+}
+.icon-ban-circle:before,
+.icon-minus-sign:before,
+.icon-minus-2:before {
+	content: "\5e";
+}
+.icon-key:before {
+	content: "\5f";
+}
+.icon-quote:before {
+	content: "\60";
+}
+.icon-quote-2:before {
+	content: "\61";
+}
+.icon-database:before {
+	content: "\62";
+}
+.icon-location:before {
+	content: "\63";
+}
+.icon-zoom-in:before {
+	content: "\64";
+}
+.icon-zoom-out:before {
+	content: "\65";
+}
+.icon-expand:before {
+	content: "\66";
+}
+.icon-contract:before {
+	content: "\67";
+}
+.icon-expand-2:before {
+	content: "\68";
+}
+.icon-contract-2:before {
+	content: "\69";
+}
+.icon-health:before {
+	content: "\6a";
+}
+.icon-wand:before {
+	content: "\6b";
+}
+.icon-unblock:before,
+.icon-refresh:before {
+	content: "\6c";
+}
+.icon-vcard:before {
+	content: "\6d";
+}
+.icon-clock:before {
+	content: "\6e";
+}
+.icon-compass:before {
+	content: "\6f";
+}
+.icon-address:before {
+	content: "\70";
+}
+.icon-feed:before {
+	content: "\71";
+}
+.icon-flag-2:before {
+	content: "\72";
+}
+.icon-pin:before {
+	content: "\73";
+}
+.icon-lamp:before {
+	content: "\74";
+}
+.icon-chart:before {
+	content: "\75";
+}
+.icon-bars:before {
+	content: "\76";
+}
+.icon-pie:before {
+	content: "\77";
+}
+.icon-dashboard:before {
+	content: "\78";
+}
+.icon-lightning:before {
+	content: "\79";
+}
+.icon-move:before {
+	content: "\7a";
+}
+.icon-next:before {
+	content: "\7b";
+}
+.icon-previous:before {
+	content: "\7c";
+}
+.icon-first:before {
+	content: "\7d";
+}
+.icon-last:before {
+	content: "\e000";
+}
+.icon-loop:before {
+	content: "\e001";
+}
+.icon-shuffle:before {
+	content: "\e002";
+}
+.icon-arrow-first:before {
+	content: "\e003";
+}
+.icon-arrow-last:before {
+	content: "\e004";
+}
+.icon-chevron-up:before,
+.icon-uparrow:before,
+.icon-arrow-up:before {
+	content: "\e005";
+}
+.icon-chevron-right:before,
+.icon-arrow-right:before {
+	content: "\e006";
+}
+.icon-chevron-down:before,
+.icon-downarrow:before,
+.icon-arrow-down:before {
+	content: "\e007";
+}
+.icon-chevron-left:before,
+.icon-arrow-left:before {
+	content: "\e008";
+}
+.icon-arrow-up-2:before {
+	content: "\e009";
+}
+.icon-arrow-right-2:before {
+	content: "\e00a";
+}
+.icon-download:before,
+.icon-arrow-down-2:before {
+	content: "\e00b";
+}
+.icon-arrow-left-2:before {
+	content: "\e00c";
+}
+.icon-play-2:before {
+	content: "\e00d";
+}
+.icon-menu-2:before {
+	content: "\e00e";
+}
+.icon-arrow-up-3:before {
+	content: "\e00f";
+}
+.icon-arrow-right-3:before {
+	content: "\e010";
+}
+.icon-arrow-down-3:before {
+	content: "\e011";
+}
+.icon-arrow-left-3:before {
+	content: "\e012";
+}
+.icon-print:before,
+.icon-printer:before {
+	content: "\e013";
+}
+.icon-color-palette:before {
+	content: "\e014";
+}
+.icon-camera-2:before {
+	content: "\e015";
+}
+.icon-file:before {
+	content: "\e016";
+}
+.icon-file-remove:before {
+	content: "\e017";
+}
+.icon-save-copy:before,
+.icon-copy:before {
+	content: "\e018";
+}
+.icon-cart:before {
+	content: "\e019";
+}
+.icon-basket:before {
+	content: "\e01a";
+}
+.icon-broadcast:before {
+	content: "\e01b";
+}
+.icon-screen:before {
+	content: "\e01c";
+}
+.icon-tablet:before {
+	content: "\e01d";
+}
+.icon-mobile:before {
+	content: "\e01e";
+}
+.icon-users:before {
+	content: "\e01f";
+}
+.icon-briefcase:before {
+	content: "\e020";
+}
+.icon-download:before {
+	content: "\e021";
+}
+.icon-upload:before {
+	content: "\e022";
+}
+.icon-bookmark:before {
+	content: "\e023";
+}
+.icon-out-2:before {
+	content: "\e024";
+}

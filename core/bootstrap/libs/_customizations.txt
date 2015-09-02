@@ -1,0 +1,18 @@
+/* DETALHAMENTO DE ALTERAÇÕES
+ * Tipo:	CORREÇÃO
+ * Objeto:	BOOTSTRAP
+ * data:	26/08/2015
+ * autor:	Ivo Junior
+*/
+
+RECURSOS ADICIONADOS:
+Nenhum
+
+OBJETIVO:
+Correção, no arquivo "bootstrap-hover-dropdown.min.js", do erro causado pelo conflito (bootstrap x mootools.more) quando ocorre a chamada do evento 'hide'. Nesse caso, o objeto que contém a chamada é escondido.
+
+CORREÇÃO:
+Alteras todas as chamadas "hide.bs" por "hideme.bs".
+
+OBS:
+Essa mesma correção é feita no arquivo 'core/bootstrap/js/bootstrap.min.js'. Ela foi feita por 'Peter van Westen' do noNumber...

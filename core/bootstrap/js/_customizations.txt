@@ -1,0 +1,18 @@
+/* DETALHAMENTO DE ALTERAÇÕES
+ * Tipo:	CORREÇÃO
+ * Objeto:	BOOTSTRAP
+ * data:	27/07/2015
+ * autor:	Ivo Junior
+*/
+
+RECURSOS ADICIONADOS: 
+Nenhum
+
+OBJETIVO:
+Correção do erro causado pelo conflito (bootstrap x mootools.more) quando ocorre a chamada do evento 'hide'. Nesse caso, o objeto que contém a chamada é escondido.
+
+CORREÇÃO:
+Alteras todas as chamadas "hide.bs" por "hideme.bs".
+
+OBS:
+Essa mesma correção existe no arquivo 'jui/js/bootstrap.min.js' carregado por default no joomla. Ela foi feita por 'Peter van Westen' do noNumber...

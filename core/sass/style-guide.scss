@@ -1,0 +1,11 @@
+// out: ../../css/style-guide.css, outputStyle: compressed
+// @STYLE GUIDE
+// Classes de customização do guia de estilo
+
+@import "variables";
+@import "mixins";
+
+#guide-menu { overflow-y: auto; }
+#guide-menu.affix { top: 70px; }
+#guide-menu li.parent.active > a { background-color: $base-color-live-text; }
+#guide-menu li.active > a { color: $base-color-live; }

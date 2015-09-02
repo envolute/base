@@ -1,0 +1,19 @@
+/* DETALHAMENTO DE ALTERAÇÕES
+ * Tipo:	CUSTOMIZAÇÃO
+ * Objeto:	COM_ATTACHMENTS
+ * data:	18/09/2014
+ * autor:	Ivo Junior
+*/
+
+RECURSOS ADICIONADOS:
+Nenhum
+
+OBJETIVO:
+Retirada da string 'onContentSearch' no início do código.
+
+CUSTOMIZAÇÕES:
+1. Arquivo 'plugins/search/fieldsattachmentadvanced/fieldsattachmentadvanced.php'
+Retirar a string antes da inicialização do php 'onContentSearch<?php', pois ela aparece na página de busca. 
+
+OBS:
+Nenhuma

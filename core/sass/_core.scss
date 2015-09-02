@@ -1,0 +1,18 @@
+// @CORE
+// Esse arquivo gerencia o carregamento dos arquivos de customização do CORE
+
+@import "variables";
+@import "mixins";
+
+// Baseicons
+@import "baseicons/baseicons";
+@import "baseicons/animation";
+
+// Bootstrap
+@import "bootstrap/bootstrap.base";     // load base elements -> customization from '_bootstrap.scss'
+@import "bootstrap/bootstrap.helper";   // helper classes
+@import "bootstrap/bootstrap-tabdrop";  // libs
+
+// Core
+@import "core.base";
+@import "core.template";

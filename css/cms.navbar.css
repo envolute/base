@@ -1,0 +1,62 @@
+#cmstools.navbar-fixed-top + *,
+#cmstools.navbar-fixed-top + #navside + * {
+  margin-top: 50px; }
+
+#cmstools.navbar {
+  margin-bottom: 0; }
+
+#cmstools .navbar-inner {
+  min-height: 36px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0; }
+
+#cmstools #toggleBtnEdit {
+  display: inline-block;
+  margin: 15px 10px 0; }
+
+#cmstools.navbar-inverse #toggleBtnEdit {
+  color: #999; }
+
+.media-only-sm #cmstools #toggleBtnEdit {
+  display: none; }
+
+#cmstools #toggleBtnEdit input[type=checkbox] {
+  margin: 3px 2px; }
+
+#cmstools.navbar-default {
+  border-color: #ccc; }
+
+#cmstools.navbar-fixed-top {
+  opacity: 0.95;
+  -webkit-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1); }
+
+.media-only-xs #cmstools.navbar-fixed-top {
+  padding-left: 50px; }
+
+#cmstools.navbar img.pull-left,
+#cmstools.navbar .nav > li > a > img {
+  float: left;
+  margin: 2px 3px 0 2px; }
+
+#cmstools a:before,
+#cmstools a:after {
+  font-family: 'baseicons'; }
+
+#cmstools a:before {
+  margin-right: 5px; }
+
+#cmstools a:after {
+  margin-left: 5px; }
+
+#cmstools .add-item:before {
+  content: '\e9cb';
+  color: #080; }
+
+#cmstools .manager:before {
+  content: '\e926'; }
+
+#cmstools .component:before {
+  content: '\e93b';
+  color: #6B89E0; }

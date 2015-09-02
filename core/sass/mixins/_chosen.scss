@@ -1,0 +1,101 @@
+// @CHOSEN
+// chosen é uma biblioteca js que formata os 'selects', deixando com um visual de menu dropdown
+// o Joomla, como usa mootools, define a class 'chzn' ao invés do padrão 'chosen'
+// IMPORTANTE: Por causa dessa nomenclatura utilizada pelo Joomla esse arquivo foi definido como um mixin
+// assim, ele é chamado em 'base.scss' como chosen e em 'cms.scss' como 'chzn'. Dessa forma, caso o 'cms.scss'
+// não seja utilizado, não ficará nenhuma chamada obsoleta...
+
+@mixin base-chosen($class) {
+
+	// largura
+	// '.#{$class}-sm' -> <span class=".#{$class}-sm"><select... ><span>
+	// '.#{$class}-lg' -> <span class=".#{$class}-lg"><select... ><span>
+
+	// Override width
+	.#{$class}-container {
+		min-width:50px;
+		max-width:100% !important;
+		text-align: left;
+	}
+	// '.chzn' -> nomenclatura do joomla
+	select.form-control[class*="chosen"],
+	.form-control + .#{$class}-container {
+		min-width:50px;
+		width: 100%;
+	}
+
+	// altura single and multiple
+	.#{$class}-container-single .#{$class}-single,
+	.#{$class}-container-multi .#{$class}-choices {
+		min-height: $input-height-base;
+		border-color: $input-border;
+		@include build-prefix-values('border-radius', $border-radius-base);
+	}
+	.#{$class}-sm .#{$class}-container-single .#{$class}-single,
+	.#{$class}-sm .#{$class}-container-multi .#{$class}-choices {
+		min-height: $input-height-small;
+		@include build-prefix-values('border-radius', $border-radius-small);
+	}
+	.#{$class}-lg .#{$class}-container-single .#{$class}-single,
+	.#{$class}-lg .#{$class}-container-multi .#{$class}-choices {
+		min-height: $input-height-large;
+		@include build-prefix-values('border-radius', $border-radius-large);
+	}
+	// Fix 100% width
+	.#{$class}-drop,
+	.#{$class}-drop .#{$class}-search
+	.#{$class}-drop .#{$class}-search input {
+		width: 100% !important;
+		@include build-prefix-values('box-sizing', 'border-box');
+	}
+
+	// container do select simples
+	.#{$class}-container-single .#{$class}-single {
+		height: $input-height-base;
+		line-height: $input-height-base;
+	}
+	.#{$class}-sm .#{$class}-container-single .#{$class}-single {
+		height: $input-height-small;
+		line-height: $input-height-small;
+	}
+	.#{$class}-lg .#{$class}-container-single .#{$class}-single {
+		height: $input-height-large;
+		line-height: $input-height-large;
+	}
+	// seta
+	.#{$class}-container-single .#{$class}-single div b {
+		margin-top: 15px!important;
+		background-position: 0 -7px!important;
+	}
+	.#{$class}-sm .#{$class}-container-single .#{$class}-single div b { margin-top: 13px!important; }
+	.#{$class}-lg .#{$class}-container-single .#{$class}-single div b { margin-top: 20px!important; }
+
+	.#{$class}-container-single .#{$class}-single abbr { top: 11px; }
+	.#{$class}-sm .#{$class}-container-single .#{$class}-single abbr { top: 9px; }
+	.#{$class}-lg .#{$class}-container-single .#{$class}-single abbr { top: 16px; }
+
+	// search & choices
+	.#{$class}-container-multi .#{$class}-choices li.search-field { padding: 7px 0 0; }
+	.#{$class}-sm .#{$class}-container-multi .#{$class}-choices li.search-field { padding: 2px 0 0; }
+
+	.#{$class}-container .search-field input { width: 100%!important; }
+	.#{$class}-container-single .#{$class}-search input[type="text"],
+	.#{$class}-container-multi .#{$class}-choices li.search-field input[type="text"] {
+		min-height: 1em;
+		margin: 0;
+	}
+	.#{$class}-container-multi .#{$class}-choices li.search-field input[type="text"] { padding: 0 5px; }
+	.#{$class}-container-multi .#{$class}-choices li.search-choice { margin: 5px 2px 0px; }
+	.#{$class}-sm .#{$class}-container-multi .#{$class}-choices li.search-choice { margin: 3px 1px 0px; }
+
+	// menu popup com os resultados
+	.#{$class}-container .#{$class}-drop {
+		top: 90%;
+		border-color: $base-border-color-strong;
+		border-top-width: 1px!important;
+		@include build-prefix-values('border-radius', 0 0 $border-radius-base $border-radius-base);
+		overflow: hidden;
+	}
+	.#{$class}-sm .#{$class}-container .#{$class}-drop { top: 97%; }
+
+}

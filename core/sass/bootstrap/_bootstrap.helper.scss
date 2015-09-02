@@ -1,0 +1,177 @@
+// @BOOTSTRAP BASE
+// As classes a seguir são adaptações e recursos adicionais ao bootstrap
+
+// OPCIONAIS
+
+	// CORREÇÃO PARA WINDOWS PHONE 8 E INTERNET EXPLORER 10
+	// ambos não diferenciam largura de acordo com o dispositivo, portanto,
+	// não se aplica corretamente as @media queries no CSS do Bootstrap.
+	// Para resolver isso, você pode, opcionalmente, incluir o seguinte CSS e JavaScript para contornar este problema,
+	// até as questões da Microsoft uma correção.
+
+	@-webkit-viewport   { width: device-width; }
+	@-moz-viewport      { width: device-width; }
+	@-ms-viewport       { width: device-width; }
+	@-o-viewport        { width: device-width; }
+	@viewport           { width: device-width; }
+
+	// CORRIGE PROBLEMAS COM GOOGLE MAPS (CANVAS)
+	// Wrap your Google Maps embed in a `.google-map-canvas` to reset Bootstrap's
+	// global `box-sizing` changes. You may optionally need to reset the `max-width`
+	// on images in case you've applied that anywhere else. (That shouldnt be as
+	// necessary with Bootstrap 3 though as that behavior is relegated to the
+	// `.img-responsive` class.)
+
+	.google-map-canvas,
+	.google-map-canvas * {
+	  @include build-prefix-values('box-sizing', 'content-box');
+	}
+
+	// Optional responsive image override
+	img { max-width: none; }
+
+// COLORS
+
+	.body-bg { background-color: $body-bg; }
+	.text-color { color: $text-color; }
+	.link-color { color: $link-color; }
+	.link-hover-color { color: $link-hover-color; }
+
+	.gray-base { background-color: $gray-base; }
+	.gray-darker { background-color: $gray-darker; }
+	.gray-dark { background-color: $gray-dark; }
+	.gray { background-color: $gray; }
+	.gray-light { background-color: $gray-light; }
+	.gray-lighter { background-color: $gray-lighter; }
+
+// TYPOGRAPHY
+
+	.small .small { font-size: 1em; }
+
+// TABLE
+
+	// evita a borda da tabela quando a propriedade "border" é inserida diretamente na tabela
+	// Ex: <table border="1">
+
+	.table:not(.table-bordered) { border: 0; }
+	.table:not(.table-bordered) tr > * {
+		border-left: 0;
+		border-right: 0;
+	}
+
+// BUTTONS
+
+	.btn-primary a { color: $btn-primary-color!important; }
+	.btn-info a { color: $btn-info-color!important; }
+	.btn-warning a { color: $btn-warning-color!important; }
+	.btn-danger a { color: $btn-danger-color!important; }
+	.btn-success a { color: $btn-success-color!important; }
+
+	// CHECKBOX/RADIO
+	// necessário para posicionamento da label de validação
+	.btn-group label.btn { position: relative; }
+	 // btn-success
+	.btn-group label.btn.active {
+		color: $btn-success-color;
+		background-color: $btn-success-bg;
+		border-color: $btn-success-border;
+	}
+	// btn-primary
+	.btn-group label.btn.active.active-primary {
+		color: $btn-primary-color;
+		background-color: $btn-primary-bg;
+		border-color: $btn-primary-border;
+	}
+	// btn-info
+	.btn-group label.btn.active.active-info {
+		color: $btn-info-color;
+		background-color: $btn-info-bg;
+		border-color: $btn-info-border;
+	}
+	// btn-warning
+	.btn-group label.btn.active.active-warning {
+		color: $btn-warning-color;
+		background-color: $btn-warning-bg;
+		border-color: $btn-warning-border;
+	}
+	// btn-danger
+	.btn-group label.btn.active.active-danger {
+		color: $btn-danger-color;
+		background-color: $btn-danger-bg;
+		border-color: $btn-danger-border;
+	}
+
+// FORMS
+
+	// opção para classe .checkbox com um input após a tag label
+	.checkbox > label + input { margin: 5px 0 15px; }
+
+// ALERTS
+
+	// opção de mensagem de alerta com ícone
+	.alert.alert-icon {
+		position: relative;
+		padding-left: 2.7em;
+	}
+	.alert.alert-icon::before {
+		position: absolute;
+    left: 0.5em;
+		font-family: 'baseicons';
+		font-size: 1.5em;
+    line-height: 1em;
+    opacity: 0.8;
+	}
+	.alert-info.alert-icon::before { content: '\e9d4'; }
+	.alert-warning.alert-icon::before { content: '\e839'; }
+	.alert-danger.alert-icon::before { content: '\e9c8'; }
+	.alert-success.alert-icon::before { content: '\e83a'; }
+	.alert-icon.help::before { content: '\e9d3'!important; }
+	.alert-icon.note::before { content: '\ea0f'!important; }
+
+// WELL / THUMBNAIL
+
+	.well > *:last-child,
+	.thumbnail > *:last-child { margin-bottom: 0!important; }
+
+// NAVS
+
+	// NAVBAR
+	// customização
+
+	.navbar-brand img {
+		display: inline;
+	}
+
+	// NAV-TABS
+	// formata quando tiver uma tag '<span>' ao invés de '<a>'
+
+
+		.nav-tabs > li > span {
+			display: block;
+			padding: $nav-link-padding;
+			color: $nav-disabled-link-color;
+		}
+
+	// COLLAPSE
+	// adicionado '!important' para evitar erro na funcionalidade devido a possíveis conflidos
+
+	.collapse { display: none!important; }
+	.collapse.in { display: block!important; }
+
+// DROPDOWN
+
+	.dropdown-menu > li > a > img {
+	    margin-right: 3px;
+	    vertical-align: text-bottom;
+	}
+
+// MODAL
+
+	.modal.no-header .modal-header {
+		position: absolute;
+		right: 0;
+		padding: 10px 10px 0 0;
+		border: none;
+		z-index: 1;
+	}
+	.modal.no-header .modal-header > *:not(.close) { display: none; }

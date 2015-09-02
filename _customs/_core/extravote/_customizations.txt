@@ -1,0 +1,21 @@
+/* DETALHAMENTO DE ALTERAÇÕES
+ * Tipo:	CUSTOMIZAÇÃO
+ * Objeto:	EXTRAVOTE
+ * data:	15/07/2013
+ * autor:	Ivo Junior
+*/
+
+RECURSOS ADICIONADOS:
+Nenhum
+
+OBJETIVO:
+Sincronizar com plugin de votação 'default' do Joomla
+
+CUSTOMIZAÇÕES:
+Arquivo 'plugins/content/extravote/assets/ajax.php'
+Como o Extravote é um sistema a parte, quando o usuário vota, o sistema default de votação do Joomla não é alterado. dessa forma, se um módulo ou componente utilizar apenas o sistema default, a informação não estará atualizada/correta. Para resolver isso, foi adicionada uma nova query SQL (semelhante a que já existe, apenas com a alteração do nome da tabela) para adicionar/atualizar o voto também na tabela "#__content_rating", que é a tabela do sistema de votação default do Joomla.
+A partir da linha: #58. 
+
+OBS:
+Esse caso foi identificado apenas no módulo 'JUNewsUltra'. Porém, como ele é uma 'Extensão Base' do sistema, e pode ser necessária a visualização dessa informação (rating), decidimos implementar a customização, até como forma de se previnir para futuros casos semelhantes.
+Essa não é uma correção, já que o extravote funciona bem. É apenas uma adaptação/prevenção a casos que possam acontecer.

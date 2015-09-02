@@ -1,0 +1,640 @@
+/** 
+ * Droppics
+ * 
+ * We developed this code with our hearts and passion.
+ * We hope you found it useful, easy to understand and to customize.
+ * Otherwise, please feel free to contact us at contact@joomunited.com *
+ * @package Droppics
+ * @copyright Copyright (C) 2013 JoomUnited (http://www.joomunited.com). All rights reserved.
+ * @copyright Copyright (C) 2013 Damien Barrère (http://www.crac-design.com). All rights reserved.
+ * @license GNU General Public License version 2 or later; http://www.gnu.org/licenses/gpl-2.0.html
+ */
+ 
+.icon-32-alert {
+  background: url('../images/icon-32-alert.png') 0 0 no-repeat;
+}
+
+.icon-48-droppics {
+background-image: url(../images/icon-48-droppics.png);
+}
+
+.dploading {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: url(../images/ajax-loader.gif) center center transparent no-repeat;
+    z-index: 1000;
+}
+
+.dploadingcontainer {
+    position: relative;
+    z-index: 999;
+}
+
+#mygalleries {
+    float: left;
+    width: 300px;
+    vertical-align: top;
+    padding-right: 20px;
+}
+
+#gallerieslist {
+    margin-top: 20px !important;
+    padding-left: 0px !important;
+    	/*CUSTOM*/
+	max-height: 352px;
+	overflow: auto;
+	padding-right: 5px;
+	border-style: solid;
+	border-color: #ddd;
+	border-width: 2px 0;
+}
+
+#rightcol {
+    float: right;
+    width: 210px;
+    vertical-align: top;
+}
+
+#rightcol input {
+    width: auto;
+}
+
+#rightcol label {
+    width: 100%;
+}
+
+#mybootstrap  #rightcol h4 {
+    margin-top: -10px;
+}
+
+
+#pwrapper {
+    margin-left: 320px;
+    margin-right: 220px;
+}
+
+#wpreview {
+    width: 100%;
+}
+
+#preview {
+    margin-top: 20px;
+    margin: 0 auto;
+    background: #FFF;
+    border: 3px dashed #BBB;
+    min-height: 200px;
+    position: relative;
+    padding-bottom: 130px;
+    padding-top: 10px;
+    overflow: hidden;
+}
+
+#preview .wimg {
+    float: left;
+    text-align: center;
+}
+
+#preview .selimg {
+    position: relative;
+}
+
+#preview .wimg .wbtn {
+    position: absolute;
+    text-align: left;
+    top: 2px;
+    left: 2px;    
+}
+
+#preview .wimg .wbtn .btn {
+    margin-right: 2px;
+    opacity: 0;
+}
+
+#preview .wimg:hover .wbtn .btn{
+    opacity: 1;
+}
+
+.progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+/*#preview .selimg .selected {
+    position : absolute;
+    top : -20px;
+    right: -20px;
+    background: url(../images/tick48.png) center center no-repeat transparent;
+    width: 50px;
+    height: 50px;
+}*/
+
+#preview.somethingselected .selimg.selected {
+    opacity: 1;
+}
+
+#preview.somethingselected .selimg {
+    opacity: 0.4;
+}
+
+#preview .img {
+    /*background: #FFF;*/
+    text-align: center;
+    /*border: 1px solid #DDD;*/
+    /*margin: 10px;*/
+    cursor:move;
+/*    -moz-box-shadow:2px 2px 5px #ccc;
+    -webkit-box-shadow:2px 2px 5px #ccc;
+    box-shadow:2px 2px 5px #ccc;*/
+}
+
+#preview .highlight {
+    background: #f2f2f2;
+    border:1px solid #212326;
+    
+    float: left;
+    text-align: center;
+    border: 1px solid #DDD;
+    margin: 0;
+    padding: 0;
+}
+
+#preview .selimg {
+    margin: 10px;
+}
+
+#preview .clr {
+    clear: both;
+}
+
+#preview .placeholder img, .uploadplaceholder img {
+    max-width : 100%;
+    max-height : 100%;
+}
+
+span.editable {
+    background: #FFF;
+    border: 1px solid #AAA;
+    color: #000;
+    padding: 1px 3px;
+    width: 130px;
+    display: inline-block;
+}
+
+
+#mybootstrap #upload_button {
+    height: auto;
+    width: auto;
+}
+
+#mybootstrap #insertgallery, #mybootstrap #insertimage {
+    margin-bottom: 10px;
+}
+
+#mybootstrap .themesblock .well {
+    padding-left: 8px;
+    padding-right: 8px;
+    
+}
+
+#mybootstrap .themesblock a.themebtn {
+    display: inline-block;
+    width:89px;
+    line-height:86px;
+    text-align:center;
+    vertical-align:middle;
+    background-position: 0 0;
+    color:transparent;
+    text-decoration:none;
+    margin-left: 4px;
+    margin-bottom: 8px;
+}
+.themesblock a.themebtn.selected {
+    border-color: rgba(82, 168, 236, 0.8);
+    outline: 0;
+    outline: thin dotted 9;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(82, 168, 236, .6);
+    -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(82, 168, 236, .6);
+}
+
+.themesblock:nth-child(even) a.themebtn {
+    margin-left: 12px;
+}
+
+.themesblock  a.themebtn:hover {
+    background-position: 0 172px;
+}
+
+.themesblock a.themebtn:active {
+    background-position: 0 86px;
+}
+
+#mybootstrap .themesblock a.carousel {
+    line-height: 86px;
+} 
+
+#mybootstrap #imageblock .btn-group-vertical, #mybootstrap #imageblock .btn-group-vertical .btn {
+    width: 100%;
+}
+
+#singleimage {
+    margin-bottom: 10px;
+    max-width: 100%;
+}
+
+#mybootstrap #imageblock h5 {
+    clear: left;
+    margin-bottom: 2px;
+    text-align: left;
+}
+
+#mybootstrap #imageblock .floating {
+    float: left;
+    text-align: center;
+    width: 22%;
+    margin-left: 10px;
+}
+
+#mybootstrap #imageblock .floating.nomargin {
+    margin-left: 0px;
+}
+
+#mybootstrap #imageblock #imgp_click {
+    width: 50%;
+}
+
+#mybootstrap #imageblock #imgp_click_target-lbl, #mybootstrap #imageblock #click_content_custom_title-lbl {
+    display: inline;
+    margin-right: 20px;
+    line-height: 30px;
+}
+
+#mybootstrap #imageblock #jform_request_id_name {
+    width: 20%;
+}
+
+#mybootstrap #imageblock .wauto {
+    width: auto;
+}
+
+#click_content_menuitem_id {
+    width: 200px;
+}
+
+#click_content_article_id_name {
+    width: 150px !important;
+}
+
+#mybootstrap #deleteImage {
+    margin-bottom: 10px;
+}
+
+#mybootstrap #imgp_source label {
+    height: 12px;
+}
+
+#mybootstrap #imgp_source label button.editImage {
+    margin-left: 20px;
+}
+
+#mybootstrap #imgp_source label:hover button {
+    display: inline;
+    visibility: visible;
+}
+
+#mybootstrap .w100 {
+    width: 100% !important;
+}
+
+#mybootstrap #imageparameters .controls {
+    margin-left: 10px;
+}
+
+#mybootstrap fieldset img {
+    float: none;
+}
+
+/* For Joomla 2.5 */
+#mybootstrap.joomla25 fieldset input {
+    float: none;
+    margin: 0;
+}
+
+#mybootstrap.joomla25 fieldset button,#mybootstrap.joomla25 fieldset label {
+    float : none;
+}
+
+#mybootstrap.ownbootstrap .imageblock .input-colorpicker {
+    padding-left: 30px;
+}
+
+#mybootstrap #droppicsparams select {
+    width: 180px;
+}
+
+#mybootstrap #picture_wrapper #picture_params {
+    float: right;
+    width: 350px;
+}
+
+#mybootstrap #picture_wrapper #picture_edit {
+    margin-right: 370px;
+    overflow-x: auto;
+}
+
+#mybootstrap #picture_wrapper #picture_params .form-horizontal .controls {
+    margin-left: 80px;
+}
+
+#mybootstrap.ownbootstrap .center {
+    text-align: center;
+}
+
+#mybootstrap.ownbootstrap .btn-group button {
+    margin: 0;
+}
+
+/* for Joomla 3.1 */
+#mybootstrap #droppicsparams .minicolors-input,#mybootstrap #imageblock .minicolors-input, #mybootstrap #imageparameters .minicolors-input{
+    padding-left: 30px!important;
+}
+
+#mybootstrap .minicolors {
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.modal-body iframe {
+    border: none;
+}
+
+#mybootstrap .btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active, .btn-success.disabled, .btn-success[disabled] {
+    color: #fff;
+    background-color: #51a351;
+}
+
+#mybootstrap #updateGroup {
+    width: 250px;
+}
+
+#mybootstrap #updateBtn {
+    width: 60%;
+}
+
+#mybootstrap #hideUpdateBtn {
+    width : 40%;
+}
+/**
+ * Nestable
+ */
+
+.dd { position: relative; display: block; margin: 0; padding: 0; max-width: 600px; list-style: none; font-size: 13px; line-height: 20px; }
+
+.dd-list { display: block; position: relative; margin: 0; padding: 0; list-style: none; }
+.dd-list .dd-list { padding-left: 30px; }
+.dd-collapsed .dd-list { display: none; }
+
+
+.dd-item,
+.dd-empty,
+.dd-placeholder { display: block; position: relative; margin: 0; padding: 0; min-height: 22px; font-size: 12px; line-height: 16px!important; }
+
+.dd-handle { display: block; height: 24px; margin: 5px 0; padding: 5px 10px; color: #333; text-decoration: none; font-weight: bold; border: 1px solid #ccc;
+    background: #fafafa;
+    background: -webkit-linear-gradient(top, #fafafa 0%, #eee 100%);
+    background:    -moz-linear-gradient(top, #fafafa 0%, #eee 100%);
+    background:         linear-gradient(top, #fafafa 0%, #eee 100%);
+    -webkit-border-radius: 3px;
+            border-radius: 3px;
+    box-sizing: border-box; -moz-box-sizing: border-box;
+}
+.dd-handle:hover { color: #2ea8e5; background: #fff; }
+
+.dd-item > button { display: block; position: relative; cursor: pointer; float: left; width: 16px; height: 16px; margin: 4px 5px; padding: 0; text-indent: 100%; white-space: nowrap; overflow: hidden; border: 0; background: transparent; font-size: 14px!important; line-height: 1!important; text-align: center; font-weight: bold!important;}
+.dd-item > button:before { content: '+'; display: block; position: absolute; width: 100%; text-align: center; text-indent: 0; }
+.dd-item > button[data-action="collapse"]:before { content: '-'; top: 0; }
+.dd-item > button:hover { color: #f80; }
+
+.dd-placeholder,
+.dd-empty { margin: 5px 0; padding: 0; min-height: 30px; background: #f2fbff; border: 1px dashed #b6bcbf; box-sizing: border-box; -moz-box-sizing: border-box; }
+.dd-empty { border: 1px dashed #bbb; min-height: 100px; background-color: #e5e5e5;
+    background-image: -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff), 
+                      -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+    background-image:    -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff), 
+                         -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+    background-image:         linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff), 
+                              linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+    background-size: 60px 60px;
+    background-position: 0 0, 30px 30px;
+}
+
+.dd-dragel { position: absolute; pointer-events: none; z-index: 9999; }
+.dd-dragel > .dd-item .dd-handle { margin-top: 0; }
+.dd-dragel .dd-handle {
+    -webkit-box-shadow: 2px 4px 6px 0 rgba(0,0,0,.1);
+            box-shadow: 2px 4px 6px 0 rgba(0,0,0,.1);
+}
+
+.dd-content .t {
+    text-decoration: none;
+}
+
+/**
+ * Nestable Extras
+ */
+
+.nestable-lists { display: block; clear: both; padding: 30px 0; width: 100%; border: 0; border-top: 2px solid #ddd; border-bottom: 2px solid #ddd; }
+
+#nestable-menu { padding: 0; margin: 20px 0; }
+
+#nestable-output,
+#nestable2-output { width: 100%; height: 7em; font-size: 0.75em; line-height: 1.333333em; font-family: Consolas, monospace; padding: 5px; box-sizing: border-box; -moz-box-sizing: border-box; }
+
+
+/*@media only screen and (min-width: 700px) { 
+
+    .dd { float: left; width: 48%; }
+    .dd + .dd { margin-left: 2%; }
+
+}*/
+
+.dd-hover > .dd-handle { background: #2ea8e5 !important; }
+
+/**
+ * Nestable Draggable Handles
+ */
+#mybootstrap .bs-docs-sidenav2 > li a.edit,
+#mybootstrap .bs-docs-sidenav2 > li a.trash {
+    float: right;
+    display: none;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+#mybootstrap .bs-docs-sidenav2 > li .dd-content:hover a.edit,
+#mybootstrap .bs-docs-sidenav2 > li .dd-content:hover a.trash {
+    display: inherit;
+}
+
+#mybootstrap .bs-docs-sidenav2 > li .dd-content a.edit:hover,
+#mybootstrap .bs-docs-sidenav2 > li .dd-content a.trash:hover {
+    opacity: 1;
+}
+
+#mybootstrap .bs-docs-sidenav2 > li:hover .dd-content .icon-chevron-right {
+    display: none;
+}
+
+#mybootstrap .bs-docs-sidenav2 .active .icon-chevron-right {
+  background-image: url(../images/glyphicons-halflings-white.png);
+  opacity: 1;
+}
+
+#mybootstrap.joomla30 .bs-docs-sidenav2 .active .icon-chevron-right {
+  background-image: none;
+  color: white;
+}
+
+
+
+.dd3-content { display: block; margin: 5px 0; padding: 3px 5px 3px 27px; color: #333; text-decoration: none; text-shadow: 1px 1px 0 #fff; font-weight: bold; 
+    border: 1px solid #ccc;
+    background: #fafafa;
+    background: -webkit-linear-gradient(top, #fafafa 0%, #eee 100%);
+    background:    -moz-linear-gradient(top, #fafafa 0%, #eee 100%);
+    background:         linear-gradient(top, #fafafa 0%, #eee 100%);
+    -webkit-border-radius: 3px;
+            border-radius: 3px;
+    box-sizing: border-box; -moz-box-sizing: border-box;
+}
+.dd3-content:hover { color: #2ea8e5; background: #fff; }
+
+li.dd-new-item:last-child .dd3-content { border-color: #f80; }
+li.dd-new-item:last-child .dd3-content a { color: #f80; }
+
+.dd3-content a.t { 
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dd-item.active > .dd-content {
+    color: #fff;
+    text-shadow:none;
+    border: 1px solid #f70;
+    background: #f80;
+    background: -webkit-linear-gradient(top, #fc0 0%, #f90 100%);
+    background:    -moz-linear-gradient(top, #fc0 0%, #f90 100%);
+    background:         linear-gradient(top, #fc0 0%, #f90 100%);
+}
+.dd-item.active > .dd-content:hover { background: #f80; }
+.dd-item.active > .dd-content a,
+.dd-item.active > .dd-content:hover a { color: #fff!important; text-shadow:none; }
+
+
+.dd-dragel > .dd3-item > .dd3-content { margin: 0; }
+
+.dd3-item > button {
+	margin-left: 28px;
+	border:none !important;
+	-webkit-border-radius: 1px;
+		border-radius: 1px;
+	background-color: #fff !important;
+	-webkit-box-shadow: 0 0 2px rgba(0,0,0,0.6);
+		box-shadow: 0 0 2px rgba(0,0,0,0.6);
+}
+
+.dd3-handle { position: absolute; margin: 0; left: 0; top: 0; cursor: pointer; cursor: all-scroll; width: 20px; text-indent: 100%; white-space: nowrap; overflow: hidden;
+    border: 1px solid #aaa;
+    background: #ddd;
+    background: -webkit-linear-gradient(top, #ddd 0%, #bbb 100%);
+    background:    -moz-linear-gradient(top, #ddd 0%, #bbb 100%);
+    background:         linear-gradient(top, #ddd 0%, #bbb 100%);
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.dd3-handle:before { content: '≡'; display: block; position: absolute; left: 0; top: 3px; width: 100%; text-align: center; text-indent: 0; color: #fff; font-size: 20px; font-weight: normal; }
+.dd3-handle:hover { background: #ddd; }
+
+.dd-content [class^="icon-"]:before ,.dd-content  [class*=" icon-"]:before {
+    display: none;
+}
+
+/** For fxsliser **/
+#picture-form.form-horizontal .controls {
+    margin-left: 0;
+}
+
+.droppics-textarea {
+    width: 100%;
+}
+
+#bxsliderimagewrapper {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+#bxsliderimagehtmlwrapper {
+    position: absolute;
+    outline: 1px dashed #FFF;
+}
+
+#bxsliderimagehtmldad {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    border: 1px solid #333;
+    -webkit-border-radius: 2px;
+       -moz-border-radius: 2px;
+            border-radius: 2px;
+    text-align: center;
+    background-color: #FFF;
+}
+
+#bxsliderimagehtmldad .icon-move {
+    vertical-align: middle;
+}
+
+#bxsliderimagehtml {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.bxslider_image_transparency_wrapper {
+    float: right;
+    width: 230px;
+}
+
+/** icon fix for joomla 3.X  */
+#mybootstrap .icon-remove:before {
+    content: none;
+}
+
+
+/* @media Rule */
+@media all and (max-width: 1000px) {
+    #mycategories, #pwrapper, #rightcol, #updateGroup {
+        width: 100% !important;
+        display: block !important;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    
+    #newcategory {
+        text-align: center;
+        width: 100%;
+    }
+}
+
+/*CUSTOM*/
+
+#rightcol h4 { font-size: 16px!important; }

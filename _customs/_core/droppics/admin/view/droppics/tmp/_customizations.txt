@@ -1,0 +1,21 @@
+/* DETALHAMENTO DE ALTERAÇÕES
+ * Tipo:	CUSTOMIZAÇÃO
+ * Objeto:	COM_DROPPICS
+ * data:	02/11/2014
+ * autor:	Ivo Junior
+*/
+
+RECURSOS ADICIONADOS:
+Nenhum
+
+OBJETIVO:
+Melhorar recursos na listagem de categorias "galerias"
+
+
+CORREÇÕES:
+
+- Arquivo 'administrator/components/com_droppics/views/droppics/tmpl/default_cats.php'
+Foi adicionada na linha #48 a chamada para a tolltip com a visualização do ID da categoria "galeria".
+
+OBS:
+Nenhuma

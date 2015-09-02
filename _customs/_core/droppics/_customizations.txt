@@ -1,0 +1,21 @@
+/* DETALHAMENTO DE ALTERAÇÕES
+ * Tipo:	CUSTOMIZAÇÃO
+ * Objeto:	COM_DROPPICS
+ * data:	05/03/2014
+ * autor:	Ivo Junior
+*/
+
+RECURSOS ADICIONADOS:
+Nenhum
+
+OBJETIVO:
+Corrigir conflito entre o modal default (NoNumber) e o colorbox utilizado pelo droppics
+
+
+CORREÇÕES:
+
+- Arquivo 'administrator/components/com_droppics/assets/css/colorbox.css'
+O arquivo 'colorbox.css' causa alguns conflitos com o css da extensão 'Modals - NoNumber', já que ela também utiliza a biblioteca colorbox. Para resolver os conflitos foram desabilitadas todas as classes.
+
+OBS:
+Caso não exista nenhum link no template que utilize o recurso "Modals", o css "default" não será carregado, apenas o do Droppics (colorbox.css) que está limpo, ou seja, não tem conteúdo. Assim, a modal abrirá sem estilo definido. Se essa situação ocorrer, ou seja, não haver nenhum link com o recurso "modals" fixo no template. Basta copiar o estilo default do "modals" em "media/modals/css" e colar no arquivo acima (droppics -> colorbox.css). Lembrando que o estilo default do sistema BASE é o "media/modals/css/bootstrap.min.css". Mas é bom verificar se não foi alterado nas configuração do plugin!!

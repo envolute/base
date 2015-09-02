@@ -1,0 +1,25 @@
+/* DETALHAMENTO DE ALTERAÇÕES
+ * Tipo:	CUSTOMIZAÇÃO
+ * Objeto:	COM_DROPPICS
+ * data:	02/11/2014
+ * autor:	Ivo Junior
+*/
+
+RECURSOS ADICIONADOS:
+Nenhum
+
+OBJETIVO:
+1. Corrigir conflito entre o modal default (NoNumber) e o colorbox utilizado pelo droppics
+2. Customizar layout do componente
+
+
+CORREÇÕES:
+
+- Arquivo 'components/com_droppics/assets/css/colorbox.css'
+O arquivo 'colorbox.css' causa alguns conflitos com o css da extensão 'Modals - NoNumber', já que ela também utiliza a biblioteca colorbox. Para resolver os conflitos foram desabilitadas todas as classes.
+
+- Arquivo 'components/com_droppics/assets/css/style.css'
+Melhoria do layout de administração da Galeria
+
+OBS:
+Nenhuma

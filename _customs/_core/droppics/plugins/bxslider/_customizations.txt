@@ -1,0 +1,26 @@
+/* DETALHAMENTO DE ALTERAÇÕES
+ * Tipo:	CUSTOMIZAÇÃO
+ * Objeto:	COM_DROPPICS
+ * data:	11/02/2014
+ * autor:	Ivo Junior
+*/
+
+RECURSOS ADICIONADOS:
+Nenhum
+
+OBJETIVO:
+Personalizar o plugin de acordo com o funcionamento no sistema BASE...
+
+
+CORREÇÕES:
+
+- Arquivo 'plugins/droppics/bxslider/bxslider.php'
+1. As subcategorias ficam desabilitadas por default.
+2. Adicionado link para visualização da imagem grande utilizando o recurso/plugin "Modal - NoNumber" através da classe "set-modal".
+3. Os thumbnails ficam habilitados por default.
+
+- Arquivo 'plugins/droppics/bxslider/form.xml'
+Alteração dos valores default para adaptação ao sistema BASE
+
+OBS:
+Nenhuma

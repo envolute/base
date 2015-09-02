@@ -1,0 +1,20 @@
+/* DETALHAMENTO DE ALTERAÇÕES
+ * Tipo:	CORREÇÃO
+ * Objeto:	JCE EDITOR
+ * data:	15/07/2013
+ * autor:	Ivo Junior
+*/
+
+RECURSOS ADICIONADOS:
+Nenhum
+
+OBJETIVO:
+Correção de um erro no arquivo de tradução para o português. 
+
+CORREÇÕES:
+Arquivo 'language/pt-BR/pt-BR.com_jce.ini'
+Correção do valor da variável "BLOCKQUOTE_DESC". A tradução estava gerando uma tag e não uma string, isso estava quebrando o layout os botões do editor. A correção foi alterar de '<blockquote>' para '&lt;blockquote&gt;'
+linha: #332 
+
+OBS:
+A substituição deve ser feita após a instalação da tradução que, por sua vez, é feita diretamente pelo componente JCE. 

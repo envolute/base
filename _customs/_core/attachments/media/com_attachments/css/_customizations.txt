@@ -1,0 +1,22 @@
+/* DETALHAMENTO DE ALTERAÇÕES
+ * Tipo:	CUSTOMIZAÇÃO
+ * Objeto:	COM_ATTACHMENTS
+ * data:	03/09/2014
+ * autor:	Ivo Junior
+*/
+
+RECURSOS ADICIONADOS:
+Nenhum
+
+OBJETIVO:
+Customização de estilo do componente e dos módulos.
+
+CUSTOMIZAÇÕES:
+1. Arquivo 'media/com_attachments/css/attachments_frontend_form.css'
+Estilo default do formulário no frontend
+
+2. Arquivo 'media/com_attachments/css/attachments_list.csss'
+Estilo da tabela da lista de arquivos anexados.
+
+OBS:
+Nenhuma

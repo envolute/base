@@ -1,0 +1,21 @@
+/* DETALHAMENTO DE ALTERAÇÕES
+ * Tipo:	CUSTOMIZAÇÃO
+ * Objeto:	COM_DROPPICS
+ * data:	02/11/2014
+ * autor:	Ivo Junior
+*/
+
+RECURSOS ADICIONADOS:
+Nenhum
+
+OBJETIVO:
+Melhoria das funcionalidades
+
+
+CORREÇÕES:
+
+- Arquivo 'components/com_droppics/assets/js/droppics.js'
+Melhoria na criação de novas categorias "galerias"... adicionando uma rolagem até a nova galeria quando ela é criada...
+
+OBS:
+Nenhuma

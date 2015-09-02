@@ -1,0 +1,60 @@
+html, body {
+	height: 100%;
+}
+body {
+	border-style: solid;
+	border-color: #0f1833;
+	border-width: 3px 0;
+	background-color: #ddd;
+	color:#0f1833;
+	text-shadow:1px 1px 1px #fff;
+}
+a:hover {
+	text-decoration:none;
+}
+form {
+	margin-bottom:0;	
+}
+h1, h2, h3, h4, h5, h6 { margin-top:5px; }
+.outline {
+	padding:20px 0 0;
+	border-top:1px solid #fff;
+}
+.logo-off {
+	display: block;
+	margin: 0 auto 10px;
+}
+.contact-info-off {
+	padding: 5px;
+	color: #fff;
+	text-shadow: none;
+	border-style: solid;
+	border-color: #eee;
+	border-width: 1px 0;
+	background: #0f1833;
+	-webkit-box-shadow: 0 0 0 1px #ccc;
+		box-shadow: 0 0 0 1px #ccc;
+}
+.login {
+	margin:60px auto 20px;
+	width:290px;
+	padding:19px;
+	background-color: #e8e8e8;
+	border: 1px solid #ddd;
+	border-radius: 6px;
+	-webkit-box-shadow: 0 0px 0px 2px #eee;
+		box-shadow: 0 0px 0px 2px #eee;
+}
+.element-invisible {
+	position: absolute;
+	padding: 0;
+	margin: 0;
+	border: 0;
+	height: 1px;
+	width: 1px;
+	overflow: hidden;
+}
+label.checkbox {
+	font-size: 0.9em;
+	font-weight: normal;
+}
