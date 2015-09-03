@@ -1,0 +1,8 @@
+// @CMS
+// Esse arquivo gerencia o carregamento dos arquivos de customização do CMS
+
+// Imports
+@import "mixins/editor";
+
+@import "cms";
+@import "cms.extensions";
