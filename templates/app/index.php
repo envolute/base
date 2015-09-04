@@ -18,7 +18,7 @@
 	<link rel="stylesheet" href="core/js/jquery/ui/jquery-ui.min.css" type="text/css" />
 
 	<!-- css print -->
-	<link rel="stylesheet" href="templates/base/css/print.css" type="text/css" media="print" />
+	<link rel="stylesheet" href="templates/base/css/style.print.css" type="text/css" media="print" />
 
 	<!-- For IE support -->
 	<!--[if IE]>
