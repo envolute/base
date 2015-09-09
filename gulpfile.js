@@ -35,12 +35,12 @@ var cssApp  = tmpl + 'app/css/';
   var formsJs = [core+'js/core.forms.js', core+'js/forms/jquery.autotab-1.1b.js', core+'js/forms/jquery.maskedinput.min.js', core+'js/forms/jquery.price_format.min.js'];
   var validateJs = [core+'js/forms/jquery-validation/jquery.validate.min.js', core+'js/forms/jquery-validation/additional-methods.min.js', core+'js/core.validation.js'];
   // Default JS -> Javascript libraries loaded by default
-  var _defaultJs = [core+'bootstrap/js/bootstrap.min.js', core+'js/bootstrap/bootstrap-tabdrop.js', core+'js/bootstrap/bootstrap-hover-dropdown.min.js', core+'js/browser/respond.min.js', core+'js/template/isInViewport.min.js', core+'js/content/fontsize.js', core+'js/ie.core.js'];
+  var _defaultJs = [core+'bootstrap/js/bootstrap.min.js', core+'js/bootstrap/bootstrap-tabdrop.js', core+'js/bootstrap/bootstrap-hover-dropdown.min.js', core+'js/browser/respond.min.js', core+'js/content/fontsize.js', core+'js/ie.core.js'];
 
 // APP -----------------------------
   // JS files
-  var appJs = [coreJs, common+'libs/js/browser/css_browser_selector.js'];
-  var defaultAppJs = appJs.concat(_defaultJs, customAppJs);
+  var appJs = [common+'libs/js/browser/css_browser_selector.js', common+'libs/chosen/chosen.jquery.min.js', coreJs];
+  var defaultAppJs = _defaultJs.concat(appJs, formsJs, customAppJs);
   // CSS files
   var appCss = custom+'app/style.scss';
   var appPrintCss = custom+'app/style.print.scss';
@@ -123,21 +123,21 @@ gulp.task('browserSync', function() {
     // style.editor.css
     gulp.task('style.editor.css', function() {
         gulp.src(editorCss)
-          .pipe(sass({outputStyle: 'compressed'}))
+          .pipe(sass({outputStyle: 'compressed', precision: 10}))
           .pipe(gulp.dest(cssApp)) // app
           .pipe(gulp.dest(cssCms)) // cms
     });
     // style.guide.css
     gulp.task('style.guide.css', function() {
         gulp.src(guideCss)
-          .pipe(sass({outputStyle: 'compressed'}))
+          .pipe(sass({outputStyle: 'compressed', precision: 10}))
           .pipe(gulp.dest(cssApp)) // app
           .pipe(gulp.dest(cssCms)) // cms
     });
     // style.ie.css
     gulp.task('style.ie.css', function() {
         gulp.src(ieCss)
-          .pipe(sass({outputStyle: 'compressed'}))
+          .pipe(sass({outputStyle: 'compressed', precision: 10}))
           .pipe(gulp.dest(cssApp)) // app
           .pipe(gulp.dest(cssCms)) // cms
     });
@@ -145,39 +145,39 @@ gulp.task('browserSync', function() {
       // APP: APP + custom
       gulp.task('app-style.css', function() {
           gulp.src(appCss)
-            .pipe(sass({outputStyle: 'compressed'}))
+            .pipe(sass({outputStyle: 'compressed', precision: 10}))
             .pipe(gulp.dest(cssApp)) // app
       });
       // CMS: CMS + custom
       gulp.task('cms-style.css', function() {
           gulp.src(cmsCss)
-            .pipe(sass({outputStyle: 'compressed'}))
+            .pipe(sass({outputStyle: 'compressed', precision: 10}))
             .pipe(gulp.dest(cssCms)) // cms
       });
     // style.print.css
       // APP: APP + custom
       gulp.task('app-style.print.css', function() {
           gulp.src(appPrintCss)
-            .pipe(sass({outputStyle: 'compressed'}))
+            .pipe(sass({outputStyle: 'compressed', precision: 10}))
             .pipe(gulp.dest(cssApp)) // app
       });
       // CMS: CMS + custom
       gulp.task('cms-style.print.css', function() {
           gulp.src(cmsPrintCss)
-            .pipe(sass({outputStyle: 'compressed'}))
+            .pipe(sass({outputStyle: 'compressed', precision: 10}))
             .pipe(gulp.dest(cssCms)) // cms
       });
     // CMS's
       // cms.frontend.navbar.css
       gulp.task('cms.frontend.navbar.css', function() {
           gulp.src(cmsNavbarCss)
-            .pipe(sass({outputStyle: 'compressed'}))
+            .pipe(sass({outputStyle: 'compressed', precision: 10}))
             .pipe(gulp.dest(cssCms)) // cms
       });
       // cms.admin.css
       gulp.task('cms.admin.css', function() {
           gulp.src(cmsAdminCss)
-            .pipe(sass({outputStyle: 'compressed'}))
+            .pipe(sass({outputStyle: 'compressed', precision: 10}))
             .pipe(gulp.dest(cssCms)) // cms
       });
 

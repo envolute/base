@@ -1870,6 +1870,22 @@
 								</div>
 							</div>
 						</div>
+						<div class="row">
+							<div class="col-sm-6">
+								<h5 class="page-header">SET CLICK TO BUTTON</h5>
+								<div class="form-inline">
+									<input class="set-btn-action" target="btn-click" />
+									<button id="btn-click" onclick="alert('You clicked in the button!')">Click</button>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<h5 class="page-header">SET FOCUS TO BUTTON</h5>
+								<div class="form-inline">
+									<input class="set-btn-action" target="btn-focus" action="focus" />
+									<button id="btn-focus">Focus</button>
+								</div>
+							</div>
+						</div>
 						<hr />
 						<h4>The general rule is:</h4>
 						<ol>
@@ -1879,7 +1895,7 @@
 							</li>
 						</ol>
 						Ex: <code>&lt;input type="checkbox" class="auto-tab" <strong>data-target="my-target"</strong> /&gt;</code>
-						<h4>To enable or disable the target object do:</h4>
+						<h4>To set disabled to target object do:</h4>
 						<p>
 							Add the <strong>data-target-disabled</strong> attribute on the element (checkbox, radio or select -> option).
 							<br /><strong>The options value are:</strong>

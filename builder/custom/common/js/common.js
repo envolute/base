@@ -15,7 +15,8 @@ jQuery(function() {
 			disable_search_threshold: 10,
 			no_results_text: "Sem resultados para",
 			placeholder_text_single: " ",
-			placeholder_text_multiple: " "
+			placeholder_text_multiple: " ",
+			width: "auto"
 		});
 
 	// SHOW/HIDE SCROLL-TO-TOP BUTTON

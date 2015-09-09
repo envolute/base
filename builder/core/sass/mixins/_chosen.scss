@@ -17,12 +17,7 @@
 		max-width:100% !important;
 		text-align: left;
 	}
-	// '.chzn' -> nomenclatura do joomla
-	select.form-control[class*="chosen"],
-	.form-control + .#{$class}-container {
-		min-width:50px;
-		width: 100%;
-	}
+	select.form-control + .#{$class}-container { width: 100%!important; }
 
 	// altura single and multiple
 	.#{$class}-container-single .#{$class}-single,

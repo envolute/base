@@ -1,7 +1,7 @@
 // initialization of the javascript files for template BASE
 
 //JQUERY
-jQuery(document).ready(function() { 
+jQuery(document).ready(function() {
 
 	// GET URL BASE FROM INPUT FIELD INTO TEMPLATE BASE
 	var URLBase = jQuery('#baseurl').val();
@@ -42,6 +42,42 @@ jQuery(document).ready(function() {
 		}
 	};
 
+	//SHOW/HIDE ALERT MESSAGE OF RETURN
+	var field_setAlertBalloon = '.set-alert-balloon'
+	window.setAlertBalloon = function(elem, seconds, offsetTop, offsetRight, show) {
+		var e = setElement(elem, field_setAlertBalloon);
+		if(e.length) {
+			e.each(function() {
+				var obj = jQuery(this);
+				var sec = (seconds != null) ? seconds : (obj.data('seconds') != null ? obj.data('seconds') : 0);
+				var offTop = (offsetTop != null) ? offsetTop : (obj.data('offsetTop') != null ? obj.data('offsetTop') : 15);
+				var offRight = (offsetRight != null) ? offsetRight : (obj.data('offsetRight') != null ? obj.data('offsetRight') : 15);
+				var showOn = (show != null) ? show : (obj.data('show') != null ? obj.data('show') : true);
+				obj.css({'top' : offTop, 'right' : offRight});
+				// show object
+				if(showOn) setTimeout(function() { obj.fadeIn() }, 500);
+				if(sec > 0) setTimeout(function() { obj.fadeOut() }, (sec * 1000));
+				jQuery(document).on('keydown', function (e) {
+				    if (e.keyCode === 27) obj.fadeOut();
+				});
+				obj.find('.close').click(function() { obj.fadeOut() });
+			});
+		}
+	};
+	window.showAlertBalloon = function(elem, seconds) {
+		var e = setElement(elem, field_setAlertBalloon);
+		if(e.length) {
+			e.each(function() {
+				var obj = jQuery(this);
+				var sec = (seconds != null) ? seconds : (obj.data('seconds') != null ? obj.data('seconds') : 0);
+				obj.fadeIn();
+				if(sec > 0) setTimeout(function() { obj.fadeOut() }, (sec * 1000));
+			});
+		}
+	};
+
+	window.toggleLoader = function() { jQuery('#loader').toggleClass('active') };
+
 	// SMOOTH SCROLL
 	window.scrollTo = function(obj, offSet){
 		var e;
@@ -78,6 +114,62 @@ jQuery(document).ready(function() {
 			});
 		}
 	};
+
+	// IS ON SCREEN
+	// Verifica se o elemento está na tela
+	jQuery.fn.isOnScreen = function(x, y){
+
+	    if(x == null || typeof x == 'undefined') x = 0.1;
+	    if(y == null || typeof y == 'undefined') y = 0.1;
+
+	    var win = jQuery(window);
+
+	    var viewport = {
+	        top : win.scrollTop(),
+	        left : win.scrollLeft()
+	    };
+	    viewport.right = viewport.left + win.width();
+	    viewport.bottom = viewport.top + win.height();
+
+	    var height = this.outerHeight();
+	    var width = this.outerWidth();
+
+	    if(!width || !height){
+	        return false;
+	    }
+
+	    var bounds = this.offset();
+	    bounds.right = bounds.left + width;
+	    bounds.bottom = bounds.top + height;
+
+	    var visible = (!(viewport.right < bounds.left || viewport.left > bounds.right || viewport.bottom < bounds.top || viewport.top > bounds.bottom));
+
+	    if(!visible){
+	        return false;
+	    }
+
+	    var deltas = {
+	        top : Math.min( 1, ( bounds.bottom - viewport.top ) / height),
+	        bottom : Math.min(1, ( viewport.bottom - bounds.top ) / height),
+	        left : Math.min(1, ( bounds.right - viewport.left ) / width),
+	        right : Math.min(1, ( viewport.right - bounds.left ) / width)
+	    };
+
+	    return (deltas.left * deltas.right) >= x && (deltas.top * deltas.bottom) >= y;
+
+	};
+
+	// ELEMENTS ON SCREEN
+	// seta a classe 'viewed' quando elemento já foi visualizado e 'on-screen' quando está visível na tela
+	window.elementView = function(view) {
+			if(view.isOnScreen()) view.addClass('viewed on-screen');
+			else view.removeClass('on-screen');
+	};
+	var view = jQuery('.element-view'); // when element yet was visibled
+	if(view.length) {
+		elementView(view);
+		jQuery(window).scroll(function() { elementView(view) });
+	}
 
 	// EVENTOS RESPONSIVOS
 
@@ -166,13 +258,6 @@ jQuery(document).ready(function() {
 				});
 			});
 		}
-
-	// ANIMATION LOAD
-
-		jQuery('.load-on-view:in-viewport').addClass('viewed');
-		jQuery(window).scroll(function() {
-			jQuery('.load-on-view:in-viewport').addClass('viewed');
-		});
 
 	// TOOLTIP / POPOVER -> Bootstrap
 
@@ -276,6 +361,9 @@ jQuery(document).ready(function() {
 
 			// #GOTO -> SMOOTH ANCHOR
 			gotoElement();
+
+			//SHOW/HIDE ALERT MESSAGE OF RETURN
+			setAlertBalloon();
 
 			// -------------------------------------------------------------------------------
 

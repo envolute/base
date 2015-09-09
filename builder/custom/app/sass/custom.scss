@@ -213,6 +213,8 @@
 
 // BASE 'ELEMENTS'
 
+	
+
 // BOOTSTRAP 'ELEMENTS'
 
 	// tabs
@@ -252,7 +254,7 @@
 
 			// layer
 			.item-image a .item-image-layer {
-				@include transition('all', '.4s', 'ease-in-out');
+				@include build-prefix-values('transition', 'all .4s ease-in-out');
 			}
 			.item-image a:hover .item-image-layer { background-color: rgba(0,0,0,0.25); }
 
@@ -365,7 +367,7 @@
 				// título
 				body.base-media-gallery .item.thumbnail h3 a,
 				body.base-media-gallery .item.thumbnail h3 a .item-intro {
-					@include transition('all', '.15s', 'ease-in-out');
+					@include build-prefix-values('transition', 'all .15s ease-in-out');
 				}
 				body.base-media-gallery .item.thumbnail h3 a {
 					display: block;
@@ -452,7 +454,7 @@
 				border-width: 0;
 				background: url(../core/images/arrows.png) no-repeat 1px -170px;
 				opacity: 0.2;
-				@include transition('opacity', '.15s', 'ease-in-out');
+				@include build-prefix-values('transition', 'opacity .15s ease-in-out');
 				z-index:999;
 			}
 			.item-page .pagenav li.next a { background-position: -170px -170px; }

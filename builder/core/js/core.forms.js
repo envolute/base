@@ -16,6 +16,22 @@ jQuery(function() {
 		jQuery(this).addClass('required');
 	});
 
+	// TOGGLE FIELDSET FILTER
+	window.toggleFieldsetFilter = function(offset) {
+		var elem = '.fieldset-filter';
+		var obj = jQuery(elem);
+		var hide = (obj.css('display') == 'none') ? true : false;
+
+		if(typeof offset === "null" || typeof offset === "undefined") offset = 0;
+		if(!obj.isOnScreen()) {
+			scrollTo(elem, offset);
+			if(!hide) return;
+		}
+		obj.slideToggle();
+		if(!obj.isOnScreen() && hide) scrollTo(elem, offset);
+	};
+
+
 	// FIELDS -> classes dos campos customizados
 	var field_noDrop	= ".no-drop input, input.no-drop";
 	var field_noPaste	= ".no-paste input, input.no-paste";
@@ -26,6 +42,7 @@ jQuery(function() {
 	var field_cnpj 		= ".field-cnpj input, input.field-cnpj";
 	var field_selectAutoTab	= ".auto-tab select, select.auto-tab";
 	var field_checkAutoTab 	= ".auto-tab input:checkbox, input:checkbox.auto-tab, .auto-tab input:radio, input:radio.auto-tab";
+	var field_setBtnAction = ".set-btn-action input, input.set-btn-action";
 	var field_setPhone 	= ".field-phone input, input.field-phone,.field-mobile input, input.field-mobile";
 	var field_cep 		= ".field-cep input, input.field-cep";
 	var field_fixPaste	= ".field-cpf input, input.field-cpf, .field-cnpj input, input.field-cnpj, .field-cep input, input.field-cep";
@@ -58,7 +75,7 @@ jQuery(function() {
 	// NO DROP -> desabilita a funcionalidade de arrastar um valor para o campo
 	window.noDrop = function (input) {
 		input = validaField(input, field_noDrop);
-		input.live('drop', function (e) {
+		input.on('drop', function (e) {
 			e.preventDefault();
 		});
 	};
@@ -66,7 +83,7 @@ jQuery(function() {
 	// NO PASTE -> desabilita a funcionalidade de colar um valor para o campo
 	window.noPaste = function (input) {
 		input = validaField(input, field_noPaste);
-		input.live('paste', function (e) {
+		input.on('paste', function (e) {
 	    		e.preventDefault();
     		});
 	};
@@ -252,6 +269,36 @@ jQuery(function() {
 			if(status == null || status == "undefined" || status == false || status == 'false') status = false;
 			else status = true;
 			input.prop('disabled', status);
+		};
+
+		// SET BUTTON ACTION
+		// seta a ação de click(default) ou focus no botão (btn) através da tecla 'enter' quando o foco estiver no campo (input)
+		window.setBtnAction = function (input, target, action) {
+			input = validaField(input, field_setBtnAction);
+			input.each(function() {
+
+				if(typeof target === "null" || typeof target === "undefined")
+					this.target = jQuery('#'+jQuery(this).data('target'));
+				else this.target = target;
+
+				if(typeof action === "null" || typeof action === "undefined")
+					this.action = jQuery(this).data('action');
+				else this.action = action;
+
+				if(this.target.length) {
+					var obj = jQuery(this);
+					input.keyup(function (e) {
+						if (e.keyCode==13) {
+							if(this.action == 'focus') this.target.focus();
+							else {
+								obj.blur(); // avoid click again
+								this.target.focus().click();
+							}
+						}
+					});
+				}
+
+			});
 		};
 
 
@@ -737,6 +784,9 @@ jQuery(function() {
 
 		//CHECK AUTO-TAB
 		checkAutoTab();
+
+		// SET BUTTON ACTION
+		setBtnAction();
 
 		//TELEFONES
 		setPhone();

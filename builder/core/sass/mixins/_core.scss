@@ -9,13 +9,6 @@ $default-prefixes: webkit moz ms o;
 	#{$property}: #{$value};
 }
 
-// transition
-@mixin transition($property: all, $duration: 1s, $timing: linear, $delay: 0s) {
-	$value: $property $duration $timing $delay;
-	// use default prefixes
-	@include build-prefix-values('transition', $value);
-}
-
 // fonts
 @mixin set-font-family($font-class, $font) {
 	@font-face {

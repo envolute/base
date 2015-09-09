@@ -29,10 +29,10 @@ $base-color-live: #f80;
 $base-color-live-text: #fff;
 
 // fonts
-$base-font-primary: '../fonts/roboto';
-$base-font-condensed: '../fonts/robotocondensed';
-$base-font-serif: '../fonts/droidserif';
-$base-font-featured: '../fonts/droidserif-italic';
+$base-font-primary: '../core/fonts/roboto';
+$base-font-condensed: '../core/fonts/robotocondensed';
+$base-font-serif: '../core/fonts/droidserif';
+$base-font-featured: '../core/fonts/droidserif-italic';
 
 // space
 $base-space: 15px; // IMPORTANT: define bootstrap '$grid-gutter-width' variable
@@ -61,6 +61,14 @@ $base-shadow-to-right: 1px 1px 3px rgba(0,0,0,0.1);
 
 // list-menu
 $base-list-menu-sublevel-top: -30px !default;
+
+// Fieldset filter
+$fieldset-filter-padding: 15px 30px 30px 120px;
+$fieldset-filter-bg: #fff;
+$fieldset-filter-shadow: inset 1px 1px 5px rgba(0,0,0,0.06);
+$fieldset-filter-legend-width: 80px;
+$fieldset-filter-legend-radius: 0 0 4px 4px;
+$fieldset-filter-legend-shadow: 1px 1px 2px rgba(0,0,0,0.06);
 
 // icons
 $baseicon-field-required: '\e87a ';				//base-icon-right-dir

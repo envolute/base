@@ -1,8 +1,8 @@
 // CUSTOM VALIDATION
 jQuery(function() {
-		
+
 	// SET DEFAULT VALIDATION CONFIGURATIONS
-		
+
 	if(jQuery.validator) {
 		jQuery.validator.setDefaults({
 			debug: true,
@@ -32,20 +32,20 @@ jQuery(function() {
 			min: jQuery.validator.format("Informe um valor maior igual &agrave; {0}.")
 		});
 	}
-	
+
 	// DEFAULT SCRIPTS FOR ALL FORMS
 	window.baseValidation = function(form) {
 		// setTimeout ensures that the function will run only after the validation occurs
 		setTimeout(function() {
-			
+
 			// btn-group->radio fix validation message
 			var rr = form.find('.btn-group label input:radio');
 			if(rr.length && rr.hasClass('required error')) rr.parents('.btn-group').addClass('has-error');
-			
+
 			// checkbox fix validation message
 			var rr = form.find('label input:checkbox + .error');
 			if(rr.length) rr.addClass('pull-right left-expand');
-			
+
 			// chosen fix validation message
 			var rr = form.find('.error + .chosen-container, .error + .chzn-container');
 			if(rr.length) {
@@ -53,7 +53,7 @@ jQuery(function() {
 					jQuery(this).prev('.error').insertAfter(jQuery(this));
 				});
 			}
-			
+
 		}, 100);
 	};
 });

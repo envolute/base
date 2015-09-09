@@ -275,7 +275,6 @@
 	// FIELDSET
 	// fieldset com bordas
 
-
 		.fieldset-bordered fieldset, fieldset.fieldset-bordered {
 			padding: 30px 20px 20px;
 			margin-bottom: 20px;
@@ -292,7 +291,6 @@
 
 	// FORM ACTIONS
 	// container para botões
-
 
 		.form-actions { margin-top: 10px; }
 		.form-actions .btn { margin: 1px 5px 1px 0; }
@@ -314,10 +312,35 @@
 			background: $base-color-muted-lighter;
 		}
 
+	// FORM-FILTER
+
+	/*FILTER*/
+		.fieldset-filter {
+			position: relative;
+			padding: $fieldset-filter-padding;
+			border: 1px solid $base-border-color-light;
+			background-color: $fieldset-filter-bg;
+			@include build-prefix-values('box-shadow', $fieldset-filter-shadow);
+		}
+		.fieldset-filter.filter-hidden { display: none; }
+		.fieldset-filter > legend {
+			position: absolute;
+			top: -3px;
+			left: 10px;
+			width:  $fieldset-filter-legend-width;
+			padding: 8px!important;
+			font-size: 1em!important;
+			text-align: center;
+			border: 1px solid $base-border-color-light;
+			border-top: 0;
+			background-color: $body-bg;
+			@include build-prefix-values('border-radius', $fieldset-filter-legend-radius);
+			@include build-prefix-values('box-shadow', $fieldset-filter-legend-shadow);
+		}
+
 	// FIELDS
 	// Formato default para: inputs, textarea e selects
 	// not(.form-control) evita conflito com a classe 'form-control' do bootstrap
-
 
 		body.site input[type="text"]:not(.form-control),
 		body.site input[type="password"]:not(.form-control),
@@ -346,7 +369,7 @@
 			@include build-prefix-values('border-radius', $border-radius-base);
 			background-color: $input-bg;
 			@include build-prefix-values('box-shadow', 'inset 0 1px 1px rgba(0, 0, 0, 0.075)');
-			@include transition('all', '.15s', 'ease-in-out');
+			@include build-prefix-values('transition', 'all .15s ease-in-out');
 		}
 		body.site textarea:not(.form-control) { width:100%; }
 
@@ -354,7 +377,6 @@
 	// formato default dos botões
 	// segue o estilo da class '.btn' do bootstrap
 	// 'not()' evita conflito com as classes do bootstrap
-
 
 		input[type="submit"]:not([class*="btn-"]) {
 			padding: $padding-base-vertical $padding-base-horizontal;
@@ -391,7 +413,6 @@
 	// REQUIRED
 	// marcação dos campos obrigatórios
 
-
 		.alert-required {
 			padding: 10px 0 10px 1px;
 			margin-bottom: 10px;
@@ -411,7 +432,6 @@
 
 	// JQUERY VALIDATION
 	// marcação dos campos validados pelo plugin "Jquery Validation"
-
 
 		input.error,
 		textarea.error,
@@ -453,7 +473,6 @@ l		label.error + .input-group-addon {
 	// CUSTOM FIELDS
 	// Campos personalizados
 
-
 		.upper input, input.upper{ text-transform: uppercase!important; }
 		.lower input, input.lower{ text-transform: lowercase!important; }
 
@@ -471,7 +490,6 @@ l		label.error + .input-group-addon {
 
 	// FIELD TIPS
 	// Informações nos campos formulários
-
 
 		.iconTip.hasTooltip:after,
 		.iconTip.hasPopover:after {
@@ -526,6 +544,7 @@ l		label.error + .input-group-addon {
 		// LOADER
 		// gifs simuladores de carregamento
 
+		.ajax-loader
 		.ajax-load,
 		.autocomplete-load,
 		.field-search.autocomplete-load input,
@@ -544,7 +563,6 @@ l		label.error + .input-group-addon {
 
 // NAV-PILLS > MENU (RECURSO)
 // 'nav-child' gera um menu popup 'sub-níveis' com os subtópicos do menu 'nav nav-pills'
-
 
 	// posicionamento correto do 'nav-child'
 	.nav.menu li { position: relative; }
@@ -681,7 +699,6 @@ l		label.error + .input-group-addon {
 
 // UTILITIES
 // classes auxiliares
-
 
 	// DISPLAY
 	.display-block { display: block!important; }
