@@ -76,7 +76,17 @@ jQuery(document).ready(function() {
 		}
 	};
 
-	window.toggleLoader = function() { jQuery('#loader').toggleClass('active') };
+	// SHOW/HIDE LOADER
+	window.toggleLoader = function(fullScreen) {
+		if(typeof fullScreen === "null" || typeof fullScreen === "undefined") {
+			jQuery('#loader').toggleClass('active');
+		} else {
+			if(fullScreen == false) jQuery('#loader').removeClass('fullScreen');
+		 	else jQuery('#loader').addClass('fullScreen');
+			// mudança de classes
+			setTimeout(function() { jQuery('#loader').toggleClass('active') }, 300);
+		}
+	};
 
 	// SMOOTH SCROLL
 	window.scrollTo = function(obj, offSet){

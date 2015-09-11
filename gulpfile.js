@@ -32,7 +32,7 @@ var cssApp  = tmpl + 'app/css/';
 // CORE -----------------------------
   // JS files
   var coreJs = core+'js/core.js';
-  var formsJs = [core+'js/core.forms.js', core+'js/forms/jquery.autotab-1.1b.js', core+'js/forms/jquery.maskedinput.min.js', core+'js/forms/jquery.price_format.min.js'];
+  var formsJs = [core+'js/core.forms.js', core+'js/forms/jquery.autotab-1.1b.js', core+'js/forms/jquery.maskedinput.min.js', core+'js/forms/jquery.price_format.min.js', core+'js/bootstrap/bootstrap-field-context.js'];
   var validateJs = [core+'js/forms/jquery-validation/jquery.validate.min.js', core+'js/forms/jquery-validation/additional-methods.min.js', core+'js/core.validation.js'];
   // Default JS -> Javascript libraries loaded by default
   var _defaultJs = [core+'bootstrap/js/bootstrap.min.js', core+'js/bootstrap/bootstrap-tabdrop.js', core+'js/bootstrap/bootstrap-hover-dropdown.min.js', core+'js/browser/respond.min.js', core+'js/content/fontsize.js', core+'js/ie.core.js'];

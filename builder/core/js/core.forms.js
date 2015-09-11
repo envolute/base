@@ -17,8 +17,8 @@ jQuery(function() {
 	});
 
 	// TOGGLE FIELDSET FILTER
-	window.toggleFieldsetFilter = function(offset) {
-		var elem = '.fieldset-filter';
+	window.toggleFieldsetEmbed = function(offset, target) {
+		var elem = (typeof target === "null" || typeof target === "undefined") ? '.fieldset-embed' : target;
 		var obj = jQuery(elem);
 		var hide = (obj.css('display') == 'none') ? true : false;
 
@@ -330,10 +330,10 @@ jQuery(function() {
 						jQuery('.cpf-error').remove();
 						jQuery(this).addClass('error').after('<span class="cpf-error error">'+error+'</span>');
 						jQuery(this).val('');
-						setCPF(jQuery(this));
 					}
 					jQuery(this).removeClass('error');
 					jQuery(this).next('.error').hide();
+					setCPF(jQuery(this));
 				});
 			});
 		};
@@ -359,10 +359,10 @@ jQuery(function() {
 						jQuery('.cnpj-error').remove();
 						jQuery(this).addClass('error').after('<span class="cnpj-error error">'+error+'</span>');
 						jQuery(this).val('');
-						setCNPJ(jQuery(this));
 					}
 					jQuery(this).removeClass('error');
 					jQuery(this).next('.error').hide();
+					setCNPJ(jQuery(this));
 				});
 			});
 		};

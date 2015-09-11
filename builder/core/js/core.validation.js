@@ -8,10 +8,9 @@ jQuery(function() {
 			debug: true,
 			errorElement: "span",
 			success: "valid",
-			ignore: ":hidden:not(select)",
-			ignore: ".chosen-choices input, .chosen-search input",
-			ignore: ".chzn-choices input, .chzn-search input" // Joomla Chosen
+			ignore: ":hidden:not(select), .chosen-choices input, .chosen-search input, .chzn-choices input, .chzn-search input" // Joomla Chosen
 		});
+
 		jQuery.extend(jQuery.validator.messages, {
 			required: "Campo Obrigat&oacute;rio",
 			remote: "Por favor, verifique esse campo",

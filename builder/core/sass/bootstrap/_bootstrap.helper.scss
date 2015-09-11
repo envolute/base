@@ -146,27 +146,41 @@
 	#loader {
 		position: fixed;
 		left: 0;
-		bottom: -55px; // height + 3 -> hidden loader
+		bottom: -60px; // height + 5 -> hidden loader
+		opacity: 0;
 		width: 100%;
-		height: 52px;
+		height: 55px;
 		margin: 0;
 		padding: 0;
 		text-align: center;
-		background: none;
+		background-color: $loader-bg;
 		@include build-prefix-values('box-shadow', 'none');
-		@include build-prefix-values('transition', 'all .5s ease-in-out');
+		@include build-prefix-values('transition', 'all .3s ease-in-out');
+		z-index: -1;
+	}
+	#loader.active {
+		bottom: 0;
+		opacity: 1;
 		z-index: 99999;
 	}
-	#loader.active { bottom: 0; }
+	#loader.fullScreen {
+		top: 0;
+		bottom: auto;
+		height: 100%;
+    background-color: $loader-full-bg;
+	}
 	#loader .progress-bar {
+		position: absolute;
+		bottom: -2px;
 		width: 100%;
 		height: 15px;
 	}
 	#loader img {
 		width: 32px;
 		height: 32px;
-		margin-bottom: 5px;
+		margin: 5px 0;
 	}
+	#loader.fullScreen img { margin-top: 200px; }
 
 // WELL / THUMBNAIL
 

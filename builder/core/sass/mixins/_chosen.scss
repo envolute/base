@@ -70,7 +70,7 @@
 	.#{$class}-lg .#{$class}-container-single .#{$class}-single abbr { top: 16px; }
 
 	// search & choices
-	.#{$class}-container-multi .#{$class}-choices li.search-field { padding: 7px 0 0; }
+	.#{$class}-container-multi .#{$class}-choices li.search-field { padding: 4px 0 0; }
 	.#{$class}-sm .#{$class}-container-multi .#{$class}-choices li.search-field { padding: 2px 0 0; }
 
 	.#{$class}-container .search-field input { width: 100%!important; }
@@ -85,7 +85,7 @@
 
 	// menu popup com os resultados
 	.#{$class}-container .#{$class}-drop {
-		top: 90%;
+		top: 99%;
 		border-color: $base-border-color-strong;
 		border-top-width: 1px!important;
 		@include build-prefix-values('border-radius', 0 0 $border-radius-base $border-radius-base);

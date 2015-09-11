@@ -315,27 +315,32 @@
 	// FORM-FILTER
 
 	/*FILTER*/
-		.fieldset-filter {
+		.fieldset-embed {
 			position: relative;
-			padding: $fieldset-filter-padding;
+			padding: $fieldset-embed-padding;
 			border: 1px solid $base-border-color-light;
-			background-color: $fieldset-filter-bg;
-			@include build-prefix-values('box-shadow', $fieldset-filter-shadow);
+			background-color: $fieldset-embed-bg;
+			@include build-prefix-values('box-shadow', $fieldset-embed-shadow);
 		}
-		.fieldset-filter.filter-hidden { display: none; }
-		.fieldset-filter > legend {
+		.fieldset-embed.filter-hidden { display: none; }
+		.fieldset-embed > legend {
 			position: absolute;
 			top: -3px;
-			left: 10px;
-			width:  $fieldset-filter-legend-width;
-			padding: 8px!important;
-			font-size: 1em!important;
+			width:  auto;
+			padding: 6px 10px!important;
+			font-size: 16px!important;
 			text-align: center;
 			border: 1px solid $base-border-color-light;
 			border-top: 0;
 			background-color: $body-bg;
-			@include build-prefix-values('border-radius', $fieldset-filter-legend-radius);
-			@include build-prefix-values('box-shadow', $fieldset-filter-legend-shadow);
+			@include build-prefix-values('border-radius', $fieldset-embed-legend-radius);
+			@include build-prefix-values('box-shadow', $fieldset-embed-legend-shadow);
+			z-index: 1;
+		}
+		.fieldset-embed > legend.pull-right { right: $fieldset-embed-legend-right; }
+		.fieldset-embed > .form-actions {
+			padding-top: 10px;
+			border-top: 1px solid $base-border-color;
 		}
 
 	// FIELDS
