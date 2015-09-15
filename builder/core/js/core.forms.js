@@ -68,8 +68,16 @@ jQuery(function() {
 	var field_address_number = ".field-address-number input, input.field-address-number";
 	var field_district	= ".field-district input, input.field-district";
 
-	window.validaField = function (field, def) {
-		return setElement(field, def);
+	// Essa função é identica a 'setElement' em core.js
+	// isso é para não haver dependência do core.js
+	window.validaField = function (e, def) {
+		var obj = e;
+		if(typeof e === "null" || typeof e === "undefined") {
+			obj = jQuery(def);
+		} else if(typeof e === 'string') {
+			obj = jQuery(e);
+		}
+		return obj;
 	};
 
 	// NO DROP -> desabilita a funcionalidade de arrastar um valor para o campo

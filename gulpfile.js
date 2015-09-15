@@ -2,58 +2,53 @@
 var gulp = require('gulp');
 
  // Define base folders
-var builder = 'builder/';
-var core    = builder + 'core/';
-var app     = core + '_app/';
-var cms     = core + '_cms/';
-var common  = core + '_common/';
-var custom  = builder + 'custom/';
-var tmpl    = 'templates/';
-var jsCms   = tmpl + 'cms/js/';
-var cssCms  = tmpl + 'cms/css/';
-var jsApp   = tmpl + 'app/js/';
-var cssApp  = tmpl + 'app/css/';
-
-// CUSTOM -----------------------------
-  // COMMON
-    // JS files
-    var commonJs = custom+'common/js/common.js';
-    var guideJs = custom+'common/js/guide.js';
-      // APP
-      var customAppJs = [commonJs, custom+'app/js/custom.js'];
-      // CMS
-      var customCmsJs = [commonJs, custom+'cms/js/custom.js'];
-
-    // CSS files
-    var guideCss = custom+'common/sass/style.guide.scss';
-    var editorCss = custom+'common/sass/style.editor.scss';
-    var ieCss = custom+'common/sass/style.ie.scss';
+var builder   = 'builder';
+var core      = builder + '/core';
+var app       = builder + '/app';
+var cms       = builder + '/cms';
+var common    = core + '/common';
+var commonApp = app + '/common';
+var commonCms = cms + '/common';
+var tmpl      = 'template';
+var tmplJS    = tmpl + '/js';
+var tmplCSS   = tmpl + '/css';
 
 // CORE -----------------------------
   // JS files
-  var coreJs = core+'js/core.js';
-  var formsJs = [core+'js/core.forms.js', core+'js/forms/jquery.autotab-1.1b.js', core+'js/forms/jquery.maskedinput.min.js', core+'js/forms/jquery.price_format.min.js', core+'js/bootstrap/bootstrap-field-context.js'];
-  var validateJs = [core+'js/forms/jquery-validation/jquery.validate.min.js', core+'js/forms/jquery-validation/additional-methods.min.js', core+'js/core.validation.js'];
+  var coreJs = core+'/js/core.js';
+  var formsJs = [core+'/js/core.forms.js', core+'/js/forms/jquery.autotab-1.1b.js', core+'/js/forms/jquery.maskedinput.min.js', core+'/js/forms/jquery.price_format.min.js', core+'/js/bootstrap/bootstrap-field-context.js'];
+  var validateJs = [core+'/js/forms/jquery-validation/jquery.validate.min.js', core+'/js/forms/jquery-validation/additional-methods.min.js', core+'/js/core.validation.js'];
   // Default JS -> Javascript libraries loaded by default
-  var _defaultJs = [core+'bootstrap/js/bootstrap.min.js', core+'js/bootstrap/bootstrap-tabdrop.js', core+'js/bootstrap/bootstrap-hover-dropdown.min.js', core+'js/browser/respond.min.js', core+'js/content/fontsize.js', core+'js/ie.core.js'];
+  var _defaultJs = [core+'/bootstrap/js/bootstrap.min.js', core+'/js/bootstrap/bootstrap-tabdrop.js', core+'/js/bootstrap/bootstrap-hover-dropdown.min.js', core+'/js/browser/respond.min.js', core+'/js/content/fontsize.js', core+'/js/ie.core.js'];
 
 // APP -----------------------------
   // JS files
-  var appJs = [common+'libs/js/browser/css_browser_selector.js', common+'libs/chosen/chosen.jquery.min.js', coreJs];
+  var customAppJs = [app+'/js/custom.js'];
+  var appJs = [core+'/common/libs/js/browser/css_browser_selector.js', core+'/common/libs/chosen/chosen.jquery.min.js', coreJs];
   var defaultAppJs = _defaultJs.concat(appJs, formsJs, customAppJs);
+  var guideAppJs = app+'/js/guide.js';
   // CSS files
-  var appCss = custom+'app/style.scss';
-  var appPrintCss = custom+'app/style.print.scss';
+  var appCss = app+'/sass/style.scss';
+  var appPrintCss = app+'/sass/style.print.scss';
+  var appIeCss = app+'/sass/style.ie.scss';
+  var appEditorCss = app+'/sass/style.editor.scss';
+  var appGuideCss = app+'/sass/style.guide.scss';
 
 // CMS -----------------------------
   // JS files
-  var cmsJs = [cms+'js/cms.frontend.js'];
-  var defaultCmsJs = cmsJs.concat(_defaultJs, customCmsJs);
+  var customCmsJs = [app+'/js/custom.js'];
+  var cmsJs = [cms+'/core/js/cms.frontend.js'];
+  var defaultCmsJs = _defaultJs.concat(cmsJs, customCmsJs);
+  var guideCmsJs = cms+'/js/guide.js';
   // CSS files
-  var cmsCss = custom+'cms/style.scss';
-  var cmsPrintCss = custom+'cms/style.print.scss';
-  var cmsNavbarCss = cms+'sass/cms.frontend.navbar.scss';
-  var cmsAdminCss = cms+'sass/cms.admin.scss';
+  var cmsCss = cms+'/sass/style.scss';
+  var cmsPrintCss = cms+'/sass/style.print.scss';
+  var cmsIeCss = cms+'/sass/style.ie.scss';
+  var cmsEditorCss = cms+'/sass/style.editor.scss';
+  var cmsGuideCss = cms+'/sass/style.guide.scss';
+
+  var cmsNavbarCss = cms+'/core/sass/cms.frontend.navbar.scss';
+  var cmsAdminCss = cms+'/core/sass/cms.admin.scss';
 
  // Include plugins
 var concat = require('gulp-concat');
@@ -61,181 +56,188 @@ var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var sass = require('gulp-sass');
 var del = require('del');
-// updating browser
-var browserSync = require('browser-sync');
-gulp.task('browserSync', function() {
-  browserSync({
-    server: {
-      baseDir: 'builder'
-    },
-  })
-})
 
 // TASKS
   // JS -----------------------------
     // core.js
-    gulp.task('core.js', function() {
-        return gulp.src(coreJs)
-          .pipe(uglify())
-          .pipe(gulp.dest(jsApp)) // app
-          .pipe(gulp.dest(jsCms)) // cms
-    });
+      // APP
+      gulp.task('app-core.js', function() {
+          return gulp.src(coreJs)
+            .pipe(uglify())
+            .pipe(gulp.dest(tmplJS))
+      });
+      // CMS
+      gulp.task('cms-core.js', function() {
+          return gulp.src(coreJs)
+            .pipe(uglify())
+            .pipe(gulp.dest(tmplJS))
+      });
     // forms.js
-    gulp.task('forms.js', function() {
-        return gulp.src(formsJs)
-          .pipe(concat('forms.js'))
-          .pipe(uglify())
-          .pipe(gulp.dest(jsApp)) // app
-          .pipe(gulp.dest(jsCms)) // cms
-    });
+      // APP
+      gulp.task('app-forms.js', function() {
+          return gulp.src(formsJs)
+            .pipe(concat('forms.js'))
+            .pipe(uglify())
+            .pipe(gulp.dest(tmplJS))
+      });
+      // CMS
+      gulp.task('cms-forms.js', function() {
+          return gulp.src(formsJs)
+            .pipe(concat('forms.js'))
+            .pipe(uglify())
+            .pipe(gulp.dest(tmplJS))
+      });
     // validate.js
-    gulp.task('validate.js', function() {
-        return gulp.src(validateJs)
-          .pipe(concat('validate.js'))
-          .pipe(uglify())
-          .pipe(gulp.dest(jsApp)) // app
-          .pipe(gulp.dest(jsCms)) // cms
-    });
+      // APP
+      gulp.task('app-validate.js', function() {
+          return gulp.src(validateJs)
+            .pipe(concat('validate.js'))
+            .pipe(uglify())
+            .pipe(gulp.dest(tmplJS))
+      });
+      // CMS
+      gulp.task('cms-validate.js', function() {
+          return gulp.src(validateJs)
+            .pipe(concat('validate.js'))
+            .pipe(uglify())
+            .pipe(gulp.dest(tmplJS))
+      });
     // style.guide.js
-    gulp.task('style.guide.js', function() {
-        return gulp.src(guideJs)
-          .pipe(uglify())
-          .pipe(gulp.dest(jsApp)) // app
-          .pipe(gulp.dest(jsCms)) // cms
-    });
+      // APP
+      gulp.task('app-style.guide.js', function() {
+          return gulp.src(guideAppJs)
+            .pipe(uglify())
+            .pipe(gulp.dest(tmplJS))
+      });
+      // CMS
+      gulp.task('cms-style.guide.js', function() {
+          return gulp.src(guideCmsJs)
+            .pipe(uglify())
+            .pipe(gulp.dest(tmplJS))
+      });
     // default.js
-      // APP: default + APP + custom
+      // APP
       gulp.task('app-default.js', function() {
           return gulp.src(defaultAppJs)
             .pipe(concat('default.js'))
             .pipe(uglify())
-            .pipe(gulp.dest(jsApp)) // app
+            .pipe(gulp.dest(tmplJS))
       });
-      // CMS: default + CMS + custom
+      // CMS
       gulp.task('cms-default.js', function() {
           return gulp.src(defaultCmsJs)
             .pipe(concat('default.js'))
             .pipe(uglify())
-            .pipe(gulp.dest(jsCms)) // cms
+            .pipe(gulp.dest(tmplJS))
       });
 
   // CSS -----------------------------
     // style.editor.css
-    gulp.task('style.editor.css', function() {
-        gulp.src(editorCss)
-          .pipe(sass({outputStyle: 'compressed', precision: 10}))
-          .pipe(gulp.dest(cssApp)) // app
-          .pipe(gulp.dest(cssCms)) // cms
-    });
+      // APP
+      gulp.task('app-style.editor.css', function() {
+          gulp.src(appEditorCss)
+            .pipe(sass({outputStyle: 'compressed', precision: 10}))
+            .pipe(gulp.dest(tmplCSS))
+      });
+      // CMS
+      gulp.task('cms-style.editor.css', function() {
+          gulp.src(cmsEditorCss)
+            .pipe(sass({outputStyle: 'compressed', precision: 10}))
+            .pipe(gulp.dest(tmplCSS))
+      });
     // style.guide.css
-    gulp.task('style.guide.css', function() {
-        gulp.src(guideCss)
-          .pipe(sass({outputStyle: 'compressed', precision: 10}))
-          .pipe(gulp.dest(cssApp)) // app
-          .pipe(gulp.dest(cssCms)) // cms
-    });
+      // APP
+      gulp.task('app-style.guide.css', function() {
+          gulp.src(appGuideCss)
+            .pipe(sass({outputStyle: 'compressed', precision: 10}))
+            .pipe(gulp.dest(tmplCSS))
+      });
+      // CMS
+      gulp.task('cms-style.guide.css', function() {
+          gulp.src(cmsGuideCss)
+            .pipe(sass({outputStyle: 'compressed', precision: 10}))
+            .pipe(gulp.dest(tmplCSS))
+      });
     // style.ie.css
-    gulp.task('style.ie.css', function() {
-        gulp.src(ieCss)
-          .pipe(sass({outputStyle: 'compressed', precision: 10}))
-          .pipe(gulp.dest(cssApp)) // app
-          .pipe(gulp.dest(cssCms)) // cms
-    });
+      // APP
+      gulp.task('app-style.ie.css', function() {
+          gulp.src(appIeCss)
+            .pipe(sass({outputStyle: 'compressed', precision: 10}))
+            .pipe(gulp.dest(tmplCSS))
+      });
+      // CMS
+      gulp.task('cms-style.ie.css', function() {
+          gulp.src(cmsIeCss)
+            .pipe(sass({outputStyle: 'compressed', precision: 10}))
+            .pipe(gulp.dest(tmplCSS))
+      });
     // style.css
-      // APP: APP + custom
+      // APP
       gulp.task('app-style.css', function() {
           gulp.src(appCss)
             .pipe(sass({outputStyle: 'compressed', precision: 10}))
-            .pipe(gulp.dest(cssApp)) // app
+            .pipe(gulp.dest(tmplCSS))
       });
-      // CMS: CMS + custom
+      // CMS
       gulp.task('cms-style.css', function() {
           gulp.src(cmsCss)
             .pipe(sass({outputStyle: 'compressed', precision: 10}))
-            .pipe(gulp.dest(cssCms)) // cms
+            .pipe(gulp.dest(tmplCSS))
       });
     // style.print.css
-      // APP: APP + custom
+      // APP
       gulp.task('app-style.print.css', function() {
           gulp.src(appPrintCss)
             .pipe(sass({outputStyle: 'compressed', precision: 10}))
-            .pipe(gulp.dest(cssApp)) // app
+            .pipe(gulp.dest(tmplCSS))
       });
-      // CMS: CMS + custom
+      // CMS
       gulp.task('cms-style.print.css', function() {
           gulp.src(cmsPrintCss)
             .pipe(sass({outputStyle: 'compressed', precision: 10}))
-            .pipe(gulp.dest(cssCms)) // cms
+            .pipe(gulp.dest(tmplCSS))
       });
     // CMS's
       // cms.frontend.navbar.css
       gulp.task('cms.frontend.navbar.css', function() {
           gulp.src(cmsNavbarCss)
             .pipe(sass({outputStyle: 'compressed', precision: 10}))
-            .pipe(gulp.dest(cssCms)) // cms
+            .pipe(gulp.dest(tmplCSS))
       });
       // cms.admin.css
       gulp.task('cms.admin.css', function() {
           gulp.src(cmsAdminCss)
             .pipe(sass({outputStyle: 'compressed', precision: 10}))
-            .pipe(gulp.dest(cssCms)) // cms
+            .pipe(gulp.dest(tmplCSS))
       });
 
-  // COPY COMMON DIRECTORIES
-  var source = common;
-  var appDest = tmpl+'app/core';
-  var cmsDest = tmpl+'cms/core';
-  var tmplCleanApp = [tmpl+'app/css/**', tmpl+'app/js/**', tmpl+'app/core/**']
-  var tmplCleanCms = [tmpl+'cms/css/**', tmpl+'cms/js/**', tmpl+'cms/core/**']
-  var tmplClean = tmplCleanApp.concat(tmplCleanCms);
-  gulp.task('_reset', function() {
-    del(tmplClean)
-  });
-  gulp.task('build-common', function() {
-    gulp.src(source + '/**/*', {base: source})
-    .pipe(gulp.dest(appDest)) // app
-    .pipe(gulp.dest(cmsDest)) // cms
-  });
+  // CLEAN PROJECT
+  var tmplClean = [tmpl+'/**', '!'+tmpl, '!'+tmpl+'/_dev', '!'+tmpl+'/_dev/**']; //['template/**', '!template', '!template/_dev', '!template/_dev/**']; //[tmpl+'/**', '!'+tmpl, '!'+tmpl+'/_dev'];
+  gulp.task('_reset', function() { del(tmplClean) });
+
   // COPY TEMPLATE LIBS
+    // CORE
+    gulp.task('build-common', function() {
+      gulp.src(common+'/**/*', {base: common})
+      .pipe(gulp.dest(tmpl+'/core'))
+    });
     // APP
-    var srcApp = app+'libs';
-    var appLibs = tmpl+'app/libs';
-    gulp.task('build-libs-app', function() {
-      gulp.src(srcApp+'/**/*', {base: srcApp})
-      .pipe(gulp.dest(appLibs))
+    gulp.task('app-build-common', function() {
+      gulp.src(commonApp+'/**/*', {base: commonApp})
+      .pipe(gulp.dest(tmpl))
     });
     // CMS
-    var srcCms = cms+'libs';
-    var cmsLibs = tmpl+'cms/libs';
-    gulp.task('build-libs-cms', function() {
-      gulp.src(srcCms+'/**/*', {base: srcCms})
-      .pipe(gulp.dest(cmsLibs))
+    gulp.task('cms-build-common', function() {
+      gulp.src(commonCms+'/**/*', {base: commonCms})
+      .pipe(gulp.dest(tmpl))
     });
 
-// WATCH
-  // Watch .js files
-  // gulp.task('watch-js', function() {
-  //   gulp.watch(coreJs, ['core.js']);
-  //   gulp.watch(formsJs, ['forms.js']);
-  //   gulp.watch(validateJs, ['validate.js']);
-  //   gulp.watch(guideJs, ['style.guide.js']);
-  //   gulp.watch(defaultJs, ['app-default.js']);
-  //   gulp.watch(defaultJs, ['cms-default.js']);
-  // });
-  // // Watch .scss files
-  // gulp.task('watch-css', function() {
-  //   gulp.watch(editorCss, ['style.editor.css']);
-  //   gulp.watch(guideCss, ['style.guide.css']);
-  //   gulp.watch(ieCss, ['style.ie.css']);
-  //   gulp.watch(appCss, ['app-style.css']);
-  //   gulp.watch(cmsCss, ['cms-style.css']);
-  //   gulp.watch(appPrintCss, ['app-style.print.css']);
-  //   gulp.watch(cmsPrintCss, ['cms-style.print.css']);
-  //   gulp.watch(cmsNavbarCss, ['cms.frontend.navbar.css']);
-  //   gulp.watch(cmsAdminCss, ['cms.admin.css']);
-  // });
-
-// Default Task
-gulp.task('builder-js', ['core.js', 'forms.js', 'validate.js', 'style.guide.js', 'app-default.js', 'cms-default.js']);
-gulp.task('builder-css', ['style.editor.css', 'style.guide.css', 'style.ie.css', 'app-style.css', 'cms-style.css', 'app-style.print.css', 'cms-style.print.css', 'cms.frontend.navbar.css', 'cms.admin.css']);
-gulp.task('builder', ['_reset', 'build-common', 'build-libs-app', 'build-libs-cms', 'builder-js', 'builder-css']);
+// Builder JS
+gulp.task('app-builder-js', ['app-core.js', 'app-forms.js', 'app-validate.js', 'app-style.guide.js', 'app-default.js']);
+gulp.task('cms-builder-js', ['cms-core.js', 'cms-forms.js', 'cms-validate.js', 'cms-style.guide.js', 'cms-default.js']);
+// Builder CSS
+gulp.task('app-builder-css', ['app-style.editor.css', 'app-style.guide.css', 'app-style.ie.css', 'app-style.css', 'app-style.print.css']);
+gulp.task('cms-builder-css', ['cms-style.editor.css', 'cms-style.guide.css', 'cms-style.ie.css', 'cms-style.css', 'cms-style.print.css', 'cms.frontend.navbar.css', 'cms.admin.css']);
+// Builder Template
+gulp.task('_builder-app', ['_reset', 'build-common', 'app-build-common', 'app-builder-js', 'app-builder-css']);
+gulp.task('_builder-cms', ['_reset', 'build-common', 'cms-build-common', 'cms-builder-js', 'cms-builder-css']);
