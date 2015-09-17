@@ -55,7 +55,7 @@
 								<span class="base-icon-menu"></span>
 							</button>
 							<a id="brand" class="brand" href="index.php"><img class="img-responsive" src="images/logo-site.png" /></a>
-							<a id="brand-client" class="brand pull-right" href="index.php"><img class="img-responsive" src="images/logo-site.png" /></a>
+							<a id="brand-client" class="brand pull-right" href="index.php"><img class="img-responsive" src="images/logo-client.png" /></a>
 							<div id="header-options" class="btn-group">
 								<a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									<span class="base-icon-user"></span>
@@ -1733,12 +1733,13 @@
 </pre>
 															</div>
 														</div>
+														<p class="alert alert-info alert-icon">To load the fieldset closed-embed, add the "closed" class. Eg. <code>&lt;fieldset class="fieldset-embed closed"&gt;</code>
 														<h4>Button to toggle the fieldset</h4>
 														<p>
 															To switch the fieldset just call the function <strong class="text-danger">toggleFieldsetEmbed()</strong><br />
-															<code>&lt;button ... <strong>onclick="toggleFieldsetFilter()</strong>"&gt;</code>
+															<code>&lt;button ... <strong>onclick="toggleFieldsetEmbed()</strong>"&gt;</code>
 														</p>
-														<p class="strong">toggleFieldsetFilter (offset, target)</p>
+														<p class="strong">toggleFieldsetEmbed(offset, target)</p>
 														<p>
 															<strong>offset:</strong> When the fieldset is outside the visible area, the function scrolls the page to the fieldset. However, it may need to scroll to position the fieldset below. So the offset defines the distance between the fieldset and the top of the visible area.
 															<br />

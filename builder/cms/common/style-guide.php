@@ -395,21 +395,33 @@ $base = "templates/base/";
 
 				</div>
 			</div>
+
 			<div id="dropdown-hover" class="well top-space">
 				<div class="row">
+					<div class="col-lg-6">
+						<h4 class="page-header"><span class="base-icon-star text-live"></span> Toggle Status</h4>
+						<p>With the use of ".toggle-status" class on the button, we can change the "active / inactive" status when it receives the event 'click'.<br />The class can be attributed directly to the button or the container (group) buttons as a 'btn-group'. In this case, the function will be assigned to all group buttons.<p>
+						<p><code>&lt;button class="btn btn-default toggle-status"&gt;Text&lt;/button&gt;</code></p>
+						<p><button class="btn btn-default toggle-status">Click</button></p>
+						<p><code>&lt;span class="btn-group toggle-status"&gt;... buttons ... &lt;/span&gt;</code></p>
+						<p>
+							<span class="btn-group">
+								<button class="btn btn-primary toggle-status"> 1 </button>
+								<button class="btn btn-warning toggle-status"> 2 </button>
+								<button class="btn btn-danger toggle-status"> 3 </button>
+							</span>
+						</p>
+					</div>
 					<div class="col-lg-6">
 						<h4 class="page-header"><span class="base-icon-star text-live"></span> Dropdown On Hover</h4>
 						<p>An unofficial Bootstrap plugin to enable Bootstrap dropdowns to activate on hover and provide a nice user experience.<p>
 						<h4>how to use:</h4>
 						<p>Just add <code>data-hover="dropdown"</code> where you'd put <code>data-toggle="dropdown"</code></p>
-					</div>
-					<div class="col-lg-6">
 						<p class="alert alert-info"><span class="base-icon-info-circled"></span> It also works with buttons and tabs</p>
 						Developer's site: <a href="https://cameronspear.com/blog/bootstrap-dropdown-on-hover-plugin/" target="_blank">https://cameronspear.com/blog/bootstrap-dropdown-on-hover-plugin/</a><br />
 						Demo site: <a href="https://cameronspear.com/demos/bootstrap-hover-dropdown/" target="_blank">https://cameronspear.com/demos/bootstrap-hover-dropdown/</a><br />
-						Git: <a href="https://github.com/CWSpear/bootstrap-hover-dropdown" target="_blank">https://github.com/CWSpear/bootstrap-hover-dropdown</a><br />
+						Git: <a href="https://github.com/CWSpear/bootstrap-hover-dropdown" target="_blank">https://github.com/CWSpear/bootstrap-hover-dropdown</a>
 					</div>
-				</div>
 			</div>
 
 		</section>
@@ -1453,7 +1465,7 @@ $base = "templates/base/";
 				</div>
 				<h4 class="page-header top-space">Fieldset Embed <small>(It is a fieldset option to toggle button)</small></h4>
 				<p>
-					<button name="name" class="btn btn-primary" onclick="toggleFieldsetEmbed(100, '#fe-1')">Show/Hide Fieldset</button>
+					<button name="name" class="btn btn-primary" onclick="toggleFieldsetEmbed(this, '#fe-1', 100)">Show/Hide Fieldset</button>
 					<span class="label label-primary text-md pull-right">Legend right option</span>
 				</p>
 				<div class="row">
@@ -1590,18 +1602,44 @@ $base = "templates/base/";
 </pre>
 					</div>
 				</div>
-				<h4>Button to toggle the fieldset</h4>
-				<p>
-					To switch the fieldset just call the function <strong class="text-danger">toggleFieldsetEmbed()</strong><br />
-					<code>&lt;button ... <strong>onclick="toggleFieldsetFilter()</strong>"&gt;</code>
-				</p>
-				<p class="strong">toggleFieldsetFilter (offset, target)</p>
-				<p>
-					<strong>offset:</strong> When the fieldset is outside the visible area, the function scrolls the page to the fieldset. However, it may need to scroll to position the fieldset below. So the offset defines the distance between the fieldset and the top of the visible area.
-					<br />
-					<strong>target:</strong> if other "fieldset-embed", this parameter allows defining a "fieldset-embed" specific.
-				</p>
-				<p class="alert alert-info alert-icon">The value must be referring to a jquery selector. Eg '# my-fieldset'</p>
+				<p class="alert alert-info alert-icon">To load the fieldset closed-embed, add the "closed" class. Eg. <code>&lt;fieldset class="fieldset-embed closed"&gt;</code>
+				<div class="row">
+					<div class="col-md-6">
+						<h4>Button to toggle the fieldset</h4>
+						<p>
+							To switch the fieldset just call the function <strong class="text-danger">toggleFieldsetEmbed()</strong><br />
+							<code>&lt;button ... <strong>onclick="toggleFieldsetEmbed(this, '#fieldset')</strong>"&gt;</code>
+						</p>
+						<p class="strong">toggleFieldsetEmbed(button, target, offset)</p>
+						<p>
+							<strong>button:</strong> when the function is called directly on the button, the value should be <em class="strong text-danger">this</em>. If the function is called without the click event of the button we have two alternatives.<br />
+							1 - If exists a button must pass the ID button;<br />
+							2 - If not exists a button we set value to 'null'
+							<br />
+							<strong>target:</strong> the ID of "fieldset-embed" target.
+							<br />
+							<strong>offset:</strong> When the fieldset is outside the visible area, the function scrolls the page to the fieldset. However, it may need to scroll to position the fieldset below. So the offset defines the distance between the fieldset and the top of the visible area.
+						</p>
+					</div>
+					<div class="col-md-6">
+						<h4>Fieldset Embed Group</h4>
+						<p>If there is the need to switch between several fieldsets just keeping the current open, just add the 'date-group' attribute with the same value to all fieldset that must be changed.</p>
+						<p><strong>Example</strong>: Click switched on the buttons below</p>
+						<p>
+							<a role="button" href="#" class="btn btn-default" onclick="toggleFieldsetEmbed(this, '#flt-1', 300)">Fieldset 1</a>
+							<a role="button" href="#" class="btn btn-default" onclick="toggleFieldsetEmbed(this, '#flt-2', 300)">Fieldset 2</a>
+						</p>
+						<fieldset id="flt-1" class="fieldset-embed closed" data-group="fe-sample">
+							<legend>Fieldset 1</legend>
+							<code>&lt;fieldset <em class="strong text-danger">data-group="fe-sample"</em> class="fieldset-embed closed" id="flt-1"&gt;</code>
+						</fieldset>
+						<fieldset id="flt-2" class="fieldset-embed closed" data-group="fe-sample">
+							<legend>Fieldset 2</legend>
+							<code>&lt;fieldset <em class="strong text-danger">data-group="fe-sample"</em> class="fieldset-embed closed" id="flt-2"&gt;</code>
+						</fieldset>
+					</div>
+				</div>
+				<hr />
 				<h4 class="page-header top-space">Form Indicators</h4>
 				<div class="row">
 					<div class="col-lg-6">

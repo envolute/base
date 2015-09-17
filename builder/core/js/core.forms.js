@@ -16,23 +16,22 @@ jQuery(function() {
 		jQuery(this).addClass('required');
 	});
 
-	// TOGGLE FIELDSET FILTER
-	window.toggleFieldsetEmbed = function(offset, target) {
-		var elem = (typeof target === "null" || typeof target === "undefined") ? '.fieldset-embed' : target;
-		var obj = jQuery(elem);
-		var hide = (obj.css('display') == 'none') ? true : false;
-
-		if(typeof offset === "null" || typeof offset === "undefined") offset = 0;
-		if(!obj.isOnScreen()) {
-			scrollTo(elem, offset);
-			if(!hide) return;
+	// Essa função é identica a 'setElement' em core.js
+	// isso é para não haver dependência do core.js
+	window.validaField = function (e, def) {
+		var obj = e;
+		if(typeof e === "null" || typeof e === "undefined") {
+			obj = jQuery(def);
+		} else if(typeof e === 'string') {
+			obj = jQuery(e);
 		}
-		obj.slideToggle();
-		if(!obj.isOnScreen() && hide) scrollTo(elem, offset);
+		return obj;
 	};
 
 
 	// FIELDS -> classes dos campos customizados
+	var fieldsetEmbed	= ".fieldset-embed";
+	var btnToggleStatus	= ".toggle-status .btn, .btn.toggle-status";
 	var field_noDrop	= ".no-drop input, input.no-drop";
 	var field_noPaste	= ".no-paste input, input.no-paste";
 	var field_setFocus 	= ".set-focus input, input.set-focus";
@@ -68,16 +67,61 @@ jQuery(function() {
 	var field_address_number = ".field-address-number input, input.field-address-number";
 	var field_district	= ".field-district input, input.field-district";
 
-	// Essa função é identica a 'setElement' em core.js
-	// isso é para não haver dependência do core.js
-	window.validaField = function (e, def) {
-		var obj = e;
-		if(typeof e === "null" || typeof e === "undefined") {
-			obj = jQuery(def);
-		} else if(typeof e === 'string') {
-			obj = jQuery(e);
+	// TOGGLE FIELDSET FILTER
+	window.toggleFieldsetEmbed = function(button, target, offset) {
+		var btn = jQuery(button);
+		var obj = validaField(target);
+		var tag = obj.attr('id');
+		var grp = obj.data('group');
+		var hide = (obj.css('display') == 'none') ? true : false;
+		var elem;
+
+		// se o fieldset 'target' fizer parte de um grupo
+		if(!(typeof grp === "null" || typeof grp === "undefined") && hide) {
+			// identifica os outros elementos do grupos e fecha todos
+			jQuery(fieldsetEmbed).filter(function() {
+				elem = jQuery(this);
+				if(elem.data('group') == grp && elem.css('display') != 'none') {
+					elem.slideToggle();
+					// remove a classe 'active' dos botões relacionados aos outros elementos
+					jQuery('[data-target="'+elem.attr('id')+'"]').removeClass('active');
+				}
+			});
 		}
-		return obj;
+		// se o elemento não estiver na área visível 'viewport'
+		if(typeof offset === "null" || typeof offset === "undefined") offset = 0;
+		if(!obj.isOnScreen()) {
+			// rola a página até o elemento
+			scrollTo(tag, offset);
+			// se ele estiver aberto, mantém e não executa mais nenhuma ação
+			// assim o botão também funciona como um âncora para o elemento
+			// fazendo com que ele só seja fechado se estiver visível
+			if(!hide) return;
+		}
+		// atribui a propriedade 'data-target' ao botão
+		// o valor é o ID do fieldset 'target'
+		// assim definimos uma relação entre o botão e o alvo
+		btn.attr('data-target', tag);
+
+		// mostra/esconde o fieldset
+		obj.slideToggle(function() {
+			// se o fieldset for aberto, atribui a classe 'active' ao botão
+			if(jQuery(this).css('display') != 'none') btn.addClass('active');
+			// senão, remove a classe 'active'
+			else btn.removeClass('active');
+		});
+		// rola a página até o elemento caso ele não esteja na área visível 'viewport'
+		if(!obj.isOnScreen() && hide) scrollTo(tag, offset);
+	};
+
+	// TOGGLE BTN STATUS
+	window.toggleBtnStatus = function(button) {
+		var btn = validaField(button, btnToggleStatus);
+		btn.each(function() {
+			jQuery(this).click(function() {
+				jQuery(this).not(':disabled').not('.disabled').toggleClass('active');
+			});
+		});
 	};
 
 	// NO DROP -> desabilita a funcionalidade de arrastar um valor para o campo
@@ -765,6 +809,9 @@ jQuery(function() {
 	// -------------------------------------------------------------------------------
 
 	window.setFormDefinitions = function () {
+
+		// TOGGLE BTN STATUS
+		toggleBtnStatus();
 
 		// NO DROP
 		noDrop();
