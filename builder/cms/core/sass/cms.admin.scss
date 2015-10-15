@@ -11,13 +11,3 @@
 // JCE EDITOR
 // Editor de texto
 @include base-editor();
-
-// FORM
-input,
-select,
-textarea{
-	min-height: 18px!important;
-	padding: 4px 6px;
-	margin-bottom: 0!important;
-}
-.form-vertical label { display: inline-block!important; }

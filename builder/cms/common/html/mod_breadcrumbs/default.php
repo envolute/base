@@ -3,48 +3,66 @@
  * @package     Joomla.Site
  * @subpackage  mod_breadcrumbs
  *
- * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
 ?>
 
-<ul class="breadcrumb">
-<?php if ($params->get('showHere', 1))
+<ul itemscope itemtype="http://schema.org/BreadcrumbList" class="breadcrumb">
+	<?php if ($params->get('showHere', 1)) : ?>
+		<li class="active">
+			<span class="divider base-icon-location hasTooltip" title="<?php echo JText::_('MOD_BREADCRUMBS_HERE'); ?>"></span>
+		</li>
+	<?php endif; ?>
+
+	<?php
+	// Get rid of duplicated entries on trail including home page when using multilanguage
+	for ($i = 0; $i < $count; $i++)
 	{
-		echo '<li class="active"><span class="base-icon-location hasTooltip" title="' .JText::_('MOD_BREADCRUMBS_HERE').'"></span></li>';
-	}
-?>
-<?php for ($i = 0; $i < $count; $i ++) :
-
-	// desabilita visualização do link para 'publicações'
-	$posts = JURI::base(true).'/posts';
-	if($list[$i]->link != JURI::base(true).'/posts') :
-
-		// Workaround for duplicate Home when using multilanguage
 		if ($i == 1 && !empty($list[$i]->link) && !empty($list[$i - 1]->link) && $list[$i]->link == $list[$i - 1]->link)
 		{
-			continue;
+			unset($list[$i]);
 		}
-		// If not the last item in the breadcrumbs add the separator
-		echo '<li>';
-		if ($i < $count - 1)
-		{
-			if (!empty($list[$i]->link)) {
-				echo '<a href="'.$list[$i]->link.'" class="pathway">'.$list[$i]->name.'</a>';
-			} else {
-				echo '<span>'.$list[$i]->name,$limit.'</span>';
-			}
-			//if ($i < $count - 2) { echo '<span class="divider">/</span>'; }
+	}
 
-		}  elseif ($params->get('showLast', 1)) { // when $i == $count -1 and 'showLast' is true
-			//if($i > 0){ echo '<span class="divider">/</span>'; }
-			echo '<span>'.$list[$i]->name,$limit.'</span>';
-		}
-		echo '</li>';
+	// Find last and penultimate items in breadcrumbs list
+	end($list);
+	$last_item_key = key($list);
+	prev($list);
+	$penult_item_key = key($list);
 
-	endif;
+	// Make a link if not the last item in the breadcrumbs
+	$show_last = $params->get('showLast', 1);
 
-endfor; ?>
+	// Generate the trail
+	foreach ($list as $key => $item) :
+		if ($key != $last_item_key) :
+			// Render all but last item - along with separator ?>
+			<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+				<?php if (!empty($item->link)) : ?>
+					<a itemprop="item" href="<?php echo $item->link; ?>" class="pathway">
+						<span itemprop="name">
+							<?php echo $item->name; ?>
+						</span>
+					</a>
+				<?php else : ?>
+					<span itemprop="name">
+						<?php $item->name; ?>
+					</span>
+				<?php endif; ?>
+
+				<meta itemprop="position" content="<?php echo $key + 1; ?>">
+			</li>
+		<?php elseif ($show_last) :
+			// Render last item if reqd. ?>
+			<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="active">
+				<span itemprop="name">
+					<?php echo $item->name; ?>
+				</span>
+				<meta itemprop="position" content="<?php echo $key + 1; ?>">
+			</li>
+		<?php endif;
+	endforeach; ?>
 </ul>

@@ -30,13 +30,13 @@ require_once('_init.tpl.php');
 
 		<?php
 		// NAVBAR
-		if($this->countModules('admin-add') || $this->countModules('admin-report') || $this->countModules('admin-menu') || $this->countModules('admin-helper') || $groups[8]) :
+		if($this->countModules('admin-add') || $this->countModules('admin-report') || $this->countModules('admin-menu') || $this->countModules('admin-helper') || isset($groups[8])) :
 
 			// PERMITIR ACESSO AO BACKEND
 			// Gera o cookie para permitir o acesso ao diretório administrator
 			// Esse código é definido no arquivo .htaccess
 			$admin_cookie_code="425636524";
-			if(!$_COOKIE['BaseAdminSession']) setcookie("BaseAdminSession",$admin_cookie_code,0,"/");
+			if(!isset($_COOKIE['BaseAdminSession'])) setcookie("BaseAdminSession",$admin_cookie_code,0,"/");
 
 		?>
 		<nav id="cmstools" class="navbar <?php echo $navbarStyle.' '.$navbarFixed; ?>" role="navigation">

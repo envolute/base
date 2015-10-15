@@ -15,40 +15,65 @@ var tmplCSS   = tmpl + '/css';
 
 // CORE -----------------------------
   // JS files
-  var coreJs = core+'/js/core.js';
-  var formsJs = [core+'/js/core.forms.js', core+'/js/forms/jquery.autotab-1.1b.js', core+'/js/forms/jquery.maskedinput.min.js', core+'/js/forms/jquery.price_format.min.js', core+'/js/bootstrap/bootstrap-field-context.js'];
-  var validateJs = [core+'/js/forms/jquery-validation/jquery.validate.min.js', core+'/js/forms/jquery-validation/additional-methods.min.js', core+'/js/core.validation.js'];
+  var coreJs = core+'/js/core.js'; // General implementations of CORE
+  var menuJs = core+'/common/libs/jquery-mmenu/jquery.mmenu.min.all.js'; // jQuery menu mobile 'mmenu' plugin
+  var formsJs = [
+    core+'/js/core.forms.js', // Implementations of CORE for forms
+    core+'/js/forms/jquery.autotab-1.1b.js', // Auto tab functionality
+    core+'/js/forms/jquery.maskedinput.min.js', // Plugin for masks in text fields
+    core+'/js/forms/jquery.price_format.min.js', // Formats the price in text fields
+    core+'/js/bootstrap/bootstrap-field-context.js' // Method for assigning the field validation classes of bootstrap
+  ];
+  var validateJs = [
+    core+'/js/forms/jquery-validation/jquery.validate.min.js', // jQuery validation plugin
+    core+'/js/forms/jquery-validation/additional-methods.min.js', // jQuery validation plugin addon
+    core+'/js/core.validation.js' // Customizations for validation
+  ];
   // Default JS -> Javascript libraries loaded by default
-  var _defaultJs = [core+'/bootstrap/js/bootstrap.min.js', core+'/js/bootstrap/bootstrap-tabdrop.js', core+'/js/bootstrap/bootstrap-hover-dropdown.min.js', core+'/js/browser/respond.min.js', core+'/js/content/fontsize.js', core+'/js/ie.core.js'];
+  var _defaultJs = [
+    core+'/bootstrap/js/bootstrap.min.js', // Bootstrap functionalities
+    core+'/js/bootstrap/bootstrap-tabdrop.js', // Plugin to compress the tabs or pills when it exceeds the maximum width
+    core+'/js/bootstrap/bootstrap-hover-dropdown.min.js', // Plugin to display/hide the dropdown in Hover event
+    core+'/js/bootstrap/bootstrap-table.js', // Option for dynamic table with order, pagination, etc...
+    core+'/js/content/jquery.actual.js', // Get dimensions of the hidden elements
+    core+'/common/libs/chosen/chosen.jquery.min.js', // Formats the fields of type 'select'
+    core+'/js/content/fontsize.js', // Own method to increase/decrease the font size on the page body
+    core+'/js/browser/respond.min.js', // script to enable responsive web designs in browsers that don't support CSS3 Media Queries - in particular, Internet Explorer 8 and under
+    core+'/js/ie.core.js' // General implementations of CORE
+  ];
 
 // APP -----------------------------
   // JS files
   var customAppJs = [app+'/js/custom.js'];
-  var appJs = [core+'/common/libs/js/browser/css_browser_selector.js', core+'/common/libs/chosen/chosen.jquery.min.js', coreJs];
+  var appJs = [
+    core+'/common/libs/js/browser/css_browser_selector.js', // Plugin to set the user browser used
+    menuJs,
+    coreJs
+  ];
   var defaultAppJs = _defaultJs.concat(appJs, formsJs, customAppJs);
-  var guideAppJs = app+'/js/guide.js';
+  var guideAppJs = app+'/js/guide.js'; // Methods and specific style guide features
   // CSS files
-  var appCss = app+'/sass/style.scss';
-  var appPrintCss = app+'/sass/style.print.scss';
-  var appIeCss = app+'/sass/style.ie.scss';
-  var appEditorCss = app+'/sass/style.editor.scss';
-  var appGuideCss = app+'/sass/style.guide.scss';
+  var appCss = app+'/sass/style.scss'; // General css stylesheet
+  var appPrintCss = app+'/sass/style.print.scss'; // Stylesheet for printing
+  var appIeCss = app+'/sass/style.ie.scss'; // Specific style sheet for IE
+  var appEditorCss = app+'/sass/style.editor.scss'; // Stylesheet to be used in text editors
+  var appGuideCss = app+'/sass/style.guide.scss'; // Specific style sheet for style guide
 
 // CMS -----------------------------
   // JS files
-  var customCmsJs = [app+'/js/custom.js'];
-  var cmsJs = [cms+'/core/js/cms.frontend.js'];
+  var customCmsJs = [cms+'/js/custom.js']; // Specific customizations from froject
+  var cmsJs = [cms+'/core/js/cms.frontend.js']; // Specific customizations from CMS
   var defaultCmsJs = _defaultJs.concat(cmsJs, customCmsJs);
-  var guideCmsJs = cms+'/js/guide.js';
+  var guideCmsJs = cms+'/js/guide.js'; // Methods and specific style guide features
   // CSS files
-  var cmsCss = cms+'/sass/style.scss';
-  var cmsPrintCss = cms+'/sass/style.print.scss';
-  var cmsIeCss = cms+'/sass/style.ie.scss';
-  var cmsEditorCss = cms+'/sass/style.editor.scss';
-  var cmsGuideCss = cms+'/sass/style.guide.scss';
+  var cmsCss = cms+'/sass/style.scss'; // General css stylesheet
+  var cmsPrintCss = cms+'/sass/style.print.scss'; // Stylesheet for printing
+  var cmsIeCss = cms+'/sass/style.ie.scss'; // Specific style sheet for IE
+  var cmsEditorCss = cms+'/sass/style.editor.scss'; // Stylesheet to be used in text editors
+  var cmsGuideCss = cms+'/sass/style.guide.scss'; // Specific style sheet for style guide
 
-  var cmsNavbarCss = cms+'/core/sass/cms.frontend.navbar.scss';
-  var cmsAdminCss = cms+'/core/sass/cms.admin.scss';
+  var cmsNavbarCss = cms+'/core/sass/cms.frontend.navbar.scss'; // Stylesheet for administrator navbar in frontend
+  var cmsAdminCss = cms+'/core/sass/cms.admin.scss'; // Specific customizations from CMS Administration area
 
  // Include plugins
 var concat = require('gulp-concat');

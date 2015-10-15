@@ -68,23 +68,22 @@
 
 	// buttons
 	.btn:not([class*="btn-"]) {
-		padding: 6px 12px;
-		line-height: 1.428571429;
-		color: #333333;
+		padding: $padding-base-vertical $padding-base-horizontal;
+		line-height: $line-height-base;
+		color: $text-color;
 		cursor: pointer;
-		border: 1px solid #c8c8c8;
-		border-radius: 4px;
+		border: 1px solid $base-border-color;
+		@include build-prefix-values('border-radius', $border-radius-base);
 		text-shadow:1px 1px 0 #fff;
-		background-color: #f5f5f5;
-		*background-color: #e6e6e6;
+		background-color: $gray-lighter;
 
 	}
 	.btn:not([class*="btn-"]):hover {
-		background-color: #e6e6e6;
+		background-color: darken($gray-lighter, 30%);
 	}
 	.btn:not([class*="btn-"]):focus {
-		background-color: #e6e6e6;
-		outline: thin dotted #333;
+		background-color: darken($gray-lighter, 30%);
+		outline: thin dotted $text-color;
 		outline: 5px auto -webkit-focus-ring-color;
 		outline-offset: -2px;
 	}
@@ -110,7 +109,7 @@
 		margin-bottom: 0;
 		border: none;
 	}
-	.radio.btn-group label { padding: 6px 12px; }
+	.radio.btn-group label { padding: $padding-base-vertical $padding-base-horizontal; }
 	.control-group { margin-bottom: 10px; }
 	.control-label label { display: inline-block; }
 	.input-prepend .add-on,
@@ -127,17 +126,15 @@
 	}
 	.media-preview.add-on {
 		display: inline-block;
-		width: auto;
-		height: 34px;
-		min-width: 16px;
-		padding: 8px;
-		font-size: 13px;
-		font-weight: normal;
-		line-height: 16px;
-		text-align: center;
-		text-shadow: 0 1px 0 #fff;
-		border: 1px solid #ccc;
-		background-color: #eee;
+		padding: $padding-base-vertical $padding-base-horizontal;
+	  font-size: $font-size-base;
+	  font-weight: normal;
+	  line-height: 1;
+	  color: $input-color;
+	  text-align: center;
+	  background-color: $input-group-addon-bg;
+	  border: 1px solid $input-group-addon-border-color;
+	  border-radius: $border-radius-base;
 	}
 
 	.form-horizontal .control-group:before,

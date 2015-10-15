@@ -523,3 +523,22 @@
 			display: inline-block;
 			margin-right: 10px;
 		}
+
+	// DROPPICS - GALERIA DE IMAGENS
+
+		// DEFAULT
+		.droppicspictures {
+			margin-left: -10px;
+			margin-right: -10px;
+		}
+		.droppicsgallerydefault .wimg a { display: block; }
+		.droppicsgallerydefault .img {
+			margin: 5px;
+			border: 5px solid #fff;
+			-webkit-box-shadow: 0 0 5px rgba(0,0,0,0.1);
+				box-shadow: 0 0 5px rgba(0,0,0,0.1);
+		}
+		.droppicsgallerydefault .wimg a:hover .img {
+			-webkit-box-shadow: 0 0 5px rgba(0,0,0,0.3);
+				box-shadow: 0 0 5px rgba(0,0,0,0.3);
+		}

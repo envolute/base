@@ -23,12 +23,27 @@ jQuery(function() {
 	// como é utilizada a biblioteca do próprio joomla, a tradução é feita no arquivo de tradução "pt-BR.ini" (site & admin)
 	// Obs: A tradução não vem implementa por padrão no "pt-BR", dessa forma foi necessário colocar manualmente, a partir do "en-GB.ini"
 
-		jQuery('select').chosen({
-			disable_search_threshold: 10,
-			no_results_text: "Sem resultados para",
-			placeholder_text_single: " ",
-			placeholder_text_multiple: " ",
-			width: "auto"
+		var chzSearch = 10;
+		var chzNoResults = 'Sem resultados para';
+		// atribui o chosen default para todos os selects visíveis
+		jQuery('select:visible').not('no-chosen').chosen({
+				disable_search_threshold: chzSearch,
+				no_results_text: chzNoResults,
+				placeholder_text_single: " ",
+				placeholder_text_multiple: " "
+		});
+		// para resolver o problema da largura = 0 para selects 'hidden'
+		// o chosen é atribuído a cada um 'select:hidden' separadamente
+		// assim é possível setar a largura através do plugin 'jquery.actual.js'
+		// pois ele consegue 'trazer' as dimensões dos elementos 'hidden'
+		jQuery('select:hidden').not('no-chosen').each(function() {
+			jQuery(this).chosen({
+				disable_search_threshold: chzSearch,
+				no_results_text: chzNoResults,
+				placeholder_text_single: " ",
+				placeholder_text_multiple: " ",
+				width: jQuery(this).actual('outerWidth') + 'px'
+			});
 		});
 
 	// SHOW/HIDE SCROLL-TO-TOP BUTTON

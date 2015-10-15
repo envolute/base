@@ -51,8 +51,8 @@ JLoader::register('baseHelper', JPATH_BASE.'/templates/base/core/libs/php/helper
 	if($this->params->get('enable_slide') && count($this->lead_items) > 1) :
 
 		// Importa biblioteca bxslider
-		$doc->addStyleSheet(JURI::root().'templates/base/core/js/content/bxslider/jquery.bxslider.min.css');
-		$doc->addScript(JURI::root().'templates/base/core/js/content/bxslider/jquery.bxslider.min.js');
+		$doc->addStyleSheet(JURI::root().'templates/base/core/libs/bxslider/jquery.bxslider.min.css');
+		$doc->addScript(JURI::root().'templates/base/core/libs/bxslider/jquery.bxslider.min.js');
 
 		// Opções do slide
 		$mode = $this->params->get('slide_mode', 'fade');

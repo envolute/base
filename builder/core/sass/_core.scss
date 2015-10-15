@@ -342,6 +342,10 @@
 			padding-top: 10px;
 			border-top: 1px solid $base-border-color;
 		}
+		.fieldset-embed > .form-actions {
+			padding-top: 10px;
+			border-top: 1px solid $base-border-color;
+		}
 		// custom bootstrap default
 		.fieldset-embed .table-striped > tbody> tr:nth-of-type(odd) {
     	background-color: $fieldset-embed-striped-color;
@@ -603,22 +607,6 @@ l		label.error + .input-group-addon {
 	.nav.list-menu li.parent > a .child-reveal:before { content: $baseicon-menulist-child-reveal; }
 	.nav.list-menu li.parent.active > a .child-reveal:before { content: $baseicon-menulist-child-reveal-open; }
 
-	// retira a borda superior do primeiro item
-	.nav.menu .nav-child li:first-child,
-	.nav.menu .nav-child li:first-child > a { border-top: none!important; }
-	// retira a borda inferior do último item
-	.nav.menu .nav-child li:last-child,
-	.nav.menu .nav-child li:last-child > a { border-bottom: none!important; }
-
-	// mouseover
-	.nav.menu .nav-child li > a:hover,
-	.nav.menu .nav-child li > a:focus,
-	.nav.menu .nav-child:hover > a { text-decoration: none; }
-
-	// mostra o 'nav-child' no 'mouse-over'
-	.nav.menu:not(.list-menu) > li.parent:hover > a + .nav-child,
-	.nav.menu:not(.list-menu) .nav-child > li.parent:hover > a + .nav-child { display: block; }
-
 	// SUB-LEVELS
 
 		.nav.menu .nav-child {
@@ -634,6 +622,22 @@ l		label.error + .input-group-addon {
 		.nav.list-menu .nav-child { display: none; }
 		.active > .nav-child { display: block!important; }
 
+		// retira a borda superior do primeiro item
+		.nav.menu .nav-child li:first-child,
+		.nav.menu .nav-child li:first-child > a { border-top: none!important; }
+		// retira a borda inferior do último item
+		.nav.menu .nav-child li:last-child,
+		.nav.menu .nav-child li:last-child > a { border-bottom: none!important; }
+
+		// mouseover
+		.nav.menu .nav-child li > a:hover,
+		.nav.menu .nav-child li > a:focus,
+		.nav.menu .nav-child:hover > a { text-decoration: none; }
+
+		// mostra o 'nav-child' no 'mouse-over'
+		.nav.menu:not(.list-menu) > li.parent:hover > a + .nav-child,
+		.nav.menu:not(.list-menu) .nav-child > li.parent:hover > a + .nav-child { display: block; }
+
 		// child parent
 		.nav[class*="menu"] .nav-child > li.parent > a { padding-right: 20px; }
 		// child reveal
@@ -642,6 +646,9 @@ l		label.error + .input-group-addon {
 			right: 8px;
 			margin: 0;
 		}
+
+		// clear link color from 'dropdown-menu'
+		.nav[class*="menu"] .nav-child.dropdown-menu a { color: inherit; }
 
 		// Nav child inverted
 		// submenus para o lado esquerdo.
@@ -663,7 +670,7 @@ l		label.error + .input-group-addon {
 			.nav.menu .nav-child > li > .nav-child {
 				left: 100%;
 				// IMPORTANTE: define a posição do sub-nível 2
-				margin-top: $base-list-menu-sublevel-top;
+				margin-top: $base-list-menu-sublevel-top!important;
 			}
 			// abrindo a direita
 			.nav.menu .nav-child.pull-right {

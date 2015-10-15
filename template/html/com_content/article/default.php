@@ -19,7 +19,7 @@ $canEdit = $params->get('access-edit');
 $user    = JFactory::getUser();
 $info    = $params->get('info_block_position', 0);
 JHtml::_('behavior.caption');
-$doc	 =& JFactory::getDocument();
+$doc	 = JFactory::getDocument();
 
 // IMPORTANTE: Carrega o arquivo 'helper' do template
 JLoader::register('baseHelper', JPATH_BASE.'/templates/base/core/libs/php/helper.php');
@@ -267,7 +267,7 @@ echo '<script>jQuery("body").addClass("base-media-gallery")</script>';
 	<?php
 
 	// NAVEGAÇÃO ENTRE ARTIGOS -> ANTES DO CONTEÚDO COMPLETO
-	if ($this->item->paginationrelative) echo $navBefore;
+	if (isset($this->item->paginationrelative)) echo $navBefore;
 
 	// PAGE HEADING
 	echo $pagehead;
@@ -281,7 +281,7 @@ echo '<script>jQuery("body").addClass("base-media-gallery")</script>';
 	if ($params->get('access-view')):
 
 		// NAVEGAÇÃO ENTRE ARTIGOS -> ANTES DO TEXTO
-		if (!$this->item->paginationrelative) echo $navBefore;
+		if (!isset($this->item->paginationrelative)) echo $navBefore;
 
 		// LINKS NO INÍCIO
 		echo $linksBefore;
@@ -293,7 +293,7 @@ echo '<script>jQuery("body").addClass("base-media-gallery")</script>';
 
 			// IMAGEM PRINCIPAL
 			// '$start = 1,2,3...' indica que é uma quebra de página
-			echo (!$_REQUEST['start']) ? $image : '';
+			echo (!isset($_REQUEST['start'])) ? $image : '';
 
 			// CONTEÚDO
 
@@ -307,10 +307,10 @@ echo '<script>jQuery("body").addClass("base-media-gallery")</script>';
 		echo '<div class="clearfix"></div>';
 
 		// LINKS NO FIM
-		echo $linksAfter;
+		echo isset($pagerAfter) ? $linksAfter : '';
 
 		// PAGINAÇÃO NO FIM
-		echo $pagerAfter;
+		echo isset($pagerAfter) ? $pagerAfter : '';
 
 	// introdução opcional para visitantes 'guests'
 	elseif ($params->get('show_noauth') == true && $user->get('guest')) :
