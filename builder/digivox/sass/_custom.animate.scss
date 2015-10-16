@@ -1,0 +1,42 @@
+// @BASE ANIMATE
+// Classes com efeitos para o template 'BASE'
+
+// elemento oculto
+.load-on-view.element-view {
+	display: block;
+	position: relative;
+	opacity: 0;
+	@include build-prefix-values('transition-property', 'all');
+	@include build-prefix-values('transition-duration', '1s');
+	@include build-prefix-values('transition-timing-function', 'ease');
+	@include build-prefix-values('transition-delay', '.5s');
+}
+// atraso na animação
+// Utilizar em caso de elementos carregados em sequencia
+
+.reveal-delay-1 {
+	@include build-prefix-values('transition-delay', '1s');
+}
+.reveal-delay-2 {
+	@include build-prefix-values('transition-delay', '1.5s');
+}
+.reveal-delay-3 {
+	@include build-prefix-values('transition-delay', '2s');
+}
+.reveal-delay-4 {
+	@include build-prefix-values('transition-delay', '2.5s');
+}
+// efeito de movimento
+.reveal-to-top { top: 50px; }
+.reveal-to-right { right: 50px; }
+.reveal-to-bottom { bottom: 50px; }
+.reveal-to-left { left: 50px; }
+
+// reseta o elemento para seu status default
+.load-on-view.element-view.viewed {
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	opacity: 1;
+}

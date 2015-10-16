@@ -1,0 +1,11 @@
+// @CORE VARS
+@import "variables/core";
+@import "variables/bootstrap";
+
+// @CUSTOM VARS
+
+  // z-index elements
+
+  $zindex-toolbar-btns:      998 !default;
+  $zindex-header:            999 !default;
+  $zindex-scroll-to-top:     999 !default;

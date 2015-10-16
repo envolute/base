@@ -2,16 +2,21 @@
 var gulp = require('gulp');
 
  // Define base folders
-var builder   = 'builder';
-var core      = builder + '/core';
-var app       = builder + '/app';
-var cms       = builder + '/cms';
-var common    = core + '/common';
-var commonApp = app + '/common';
-var commonCms = cms + '/common';
-var tmpl      = 'template';
-var tmplJS    = tmpl + '/js';
-var tmplCSS   = tmpl + '/css';
+var builder     = 'builder';
+var core        = builder + '/_core';
+var base        = builder + '/_baseCore';
+// DEFINE PROJECT APP: enter project folder
+var app         = builder + '/digivox';
+// DEFINE PROJECT SITE: enter project folder
+var cms         = builder + '/_base';
+// ------------------------------------
+var common      = core + '/common';
+var commonApp   = app + '/common';
+var commonBase  = base + '/common';
+var commonCms   = cms + '/common';
+var tmpl        = 'template';
+var tmplJS      = tmpl + '/js';
+var tmplCSS     = tmpl + '/css';
 
 // CORE -----------------------------
   // JS files
@@ -62,7 +67,7 @@ var tmplCSS   = tmpl + '/css';
 // CMS -----------------------------
   // JS files
   var customCmsJs = [cms+'/js/custom.js']; // Specific customizations from froject
-  var cmsJs = [cms+'/core/js/cms.frontend.js']; // Specific customizations from CMS
+  var cmsJs = [base+'/core/js/cms.frontend.js']; // Specific customizations from CMS
   var defaultCmsJs = _defaultJs.concat(cmsJs, customCmsJs);
   var guideCmsJs = cms+'/js/guide.js'; // Methods and specific style guide features
   // CSS files
@@ -72,8 +77,8 @@ var tmplCSS   = tmpl + '/css';
   var cmsEditorCss = cms+'/sass/style.editor.scss'; // Stylesheet to be used in text editors
   var cmsGuideCss = cms+'/sass/style.guide.scss'; // Specific style sheet for style guide
 
-  var cmsNavbarCss = cms+'/core/sass/cms.frontend.navbar.scss'; // Stylesheet for administrator navbar in frontend
-  var cmsAdminCss = cms+'/core/sass/cms.admin.scss'; // Specific customizations from CMS Administration area
+  var cmsNavbarCss = base+'/core/sass/cms.frontend.navbar.scss'; // Stylesheet for administrator navbar in frontend
+  var cmsAdminCss = base+'/core/sass/cms.admin.scss'; // Specific customizations from CMS Administration area
 
  // Include plugins
 var concat = require('gulp-concat');
@@ -251,6 +256,11 @@ var del = require('del');
       gulp.src(commonApp+'/**/*', {base: commonApp})
       .pipe(gulp.dest(tmpl))
     });
+    // BASE
+    gulp.task('base-build-common', function() {
+      gulp.src(commonBase+'/**/*', {base: commonBase})
+      .pipe(gulp.dest(tmpl))
+    });
     // CMS
     gulp.task('cms-build-common', function() {
       gulp.src(commonCms+'/**/*', {base: commonCms})
@@ -265,4 +275,4 @@ gulp.task('app-builder-css', ['app-style.editor.css', 'app-style.guide.css', 'ap
 gulp.task('cms-builder-css', ['cms-style.editor.css', 'cms-style.guide.css', 'cms-style.ie.css', 'cms-style.css', 'cms-style.print.css', 'cms.frontend.navbar.css', 'cms.admin.css']);
 // Builder Template
 gulp.task('_builder-app', ['_reset', 'build-common', 'app-build-common', 'app-builder-js', 'app-builder-css']);
-gulp.task('_builder-cms', ['_reset', 'build-common', 'cms-build-common', 'cms-builder-js', 'cms-builder-css']);
+gulp.task('_builder-cms', ['_reset', 'build-common', 'base-build-common', 'cms-build-common', 'cms-builder-js', 'cms-builder-css']);
