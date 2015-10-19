@@ -16,18 +16,22 @@ jQuery(function() {
 		jQuery(this).addClass('required');
 	});
 
+	// Essa função verifica se o parâmetro foi passado
+	window.isset = function (e) {
+		return (typeof e === "null" || typeof e === "undefined") ? false : true;
+	};
+
 	// Essa função é identica a 'setElement' em core.js
 	// isso é para não haver dependência do core.js
 	window.validaField = function (e, def) {
 		var obj = e;
-		if(typeof e === "null" || typeof e === "undefined") {
+		if(!isset(e)) {
 			obj = jQuery(def);
 		} else if(typeof e === 'string') {
 			obj = jQuery(e);
 		}
 		return obj;
 	};
-
 
 	// FIELDS -> classes dos campos customizados
 	var fieldsetEmbed	= ".fieldset-embed";
@@ -77,7 +81,7 @@ jQuery(function() {
 		var elem;
 
 		// se o fieldset 'target' fizer parte de um grupo
-		if(!(typeof grp === "null" || typeof grp === "undefined") && hide) {
+		if(isset(grp) && hide) {
 			// identifica os outros elementos do grupos e fecha todos
 			jQuery(fieldsetEmbed).filter(function() {
 				elem = jQuery(this);
@@ -89,7 +93,7 @@ jQuery(function() {
 			});
 		}
 		// se o elemento não estiver na área visível 'viewport'
-		if(typeof offset === "null" || typeof offset === "undefined") offset = 0;
+		if(!isset(offset)) offset = 0;
 		if(!obj.isOnScreen()) {
 			// rola a página até o elemento
 			scrollTo(tag, offset);
@@ -192,25 +196,27 @@ jQuery(function() {
 		});
 	};
 
-	// AUTO TAB + MASKEDINPUT -> seta o focus no proximo campo após finalizar a mascara
-	// ex: jQuery("#data").mask("99/99/9999",{completed:function(){jQuery(this).autoTab();}});
-	jQuery.fn.autoTab = function() {
-		return this.each(function() {
-			var fields = jQuery(this).parents("form:eq(0),body").find("button,input,textarea,select");
-			var index = fields.index( this );
-			if ( index > -1 && ( index + 1 ) < fields.length ) {
-				fields.eq( index + 1 ).focus();
-			}
-			return false;
-		});
-	};
+	// AUTO TAB + INPUTMASK -> seta o focus no proximo campo após finalizar a mascara
+	// ex: jQuery("#data").inputmask("dd/mm/yyyy",{oncomplete: function(){obj.autoTab();}});
+
+		// SET AUTO-TAB
+		jQuery.fn.autoTab = function() {
+			return this.each(function() {
+				var fields = jQuery(this).parents("form:eq(0),body").find("button,input,textarea,select");
+				var index = fields.index( this );
+				if ( index > -1 && ( index + 1 ) < fields.length ) {
+					fields.eq( index + 1 ).focus();
+				}
+				return false;
+			});
+		};
 
 		//SELECT AUTO-TAB
 		window.selectAutoTab = function (input, target) {
 			input = validaField(input, field_selectAutoTab);
 			input.each(function() {
 
-				if(typeof target === "null" || typeof target === "undefined")
+				if(!isset(target))
 					this.target = jQuery('#'+jQuery(this).data('target'));
 
 				if(this.target.length) {
@@ -243,7 +249,7 @@ jQuery(function() {
 							}
 						} else {
 							// auto tab
-							jQuery(this).autoTab();
+							obj.autoTab();
 						}
 					});
 				}
@@ -255,7 +261,7 @@ jQuery(function() {
 			input = validaField(input, field_checkAutoTab);
 			input.each(function() {
 
-				if(typeof target === "null" || typeof target === "undefined")
+				if(!isset(target))
 					this.target = jQuery('#'+jQuery(this).data('target'));
 
 				if(this.target.length) {
@@ -284,7 +290,7 @@ jQuery(function() {
 								}
 							} else {
 								// auto tab
-								jQuery(this).autoTab();
+								obj.autoTab();
 							}
 						} else {
 							if(this.target.length) {
@@ -329,11 +335,11 @@ jQuery(function() {
 			input = validaField(input, field_setBtnAction);
 			input.each(function() {
 
-				if(typeof target === "null" || typeof target === "undefined")
+				if(!isset(target))
 					this.target = jQuery('#'+jQuery(this).data('target'));
 				else this.target = target;
 
-				if(typeof action === "null" || typeof action === "undefined")
+				if(!isset(action))
 					this.action = jQuery(this).data('action');
 				else this.action = action;
 
@@ -355,138 +361,185 @@ jQuery(function() {
 
 
 	// MASKEDINPUT
-	// mascaras pré-definidas
+	// mascaras pré-definidas. jQuery Input Mask plugin -> http://robinherbots.github.io/jquery.inputmask
 
-		// seta 'x' com os seguintes valores:
-		//obs: não permitir '(' pois isso identifica quando há mascara
-		jQuery.mask.definitions['x']='[A-Za-z0-9 +#\/\@\-]';
+		// set defaults
+		Inputmask.extendDefaults({
+	    showMaskOnHover: false
+		});
 
 		//CPF
-		window.setCPF = function (input) {
+		window.setCPF = function (input, autotab) {
 			input = validaField(input, field_cpf);
 			var error = 'CPF INVÁLIDO';
 			input.each(function() {
 				var obj = jQuery(this);
-				var width = obj.data('width');
-				if(width != null) obj.css('width', width);
+				var width = isset(obj.data('width')) ? obj.data('width') : false;
+				if(width) obj.css('width', width);
 				obj.css({'min-width':'9.5em', 'max-width':'100%'});
-				obj.mask("?999.999.999-99",{completed:function(){
-					if(this.val().replace(/\D/g, "").length > 0 && !isCpfCnpj(this.val())) {
-						jQuery('.cpf-error').remove();
-						jQuery(this).addClass('error').after('<span class="cpf-error error">'+error+'</span>');
-					} else {
-						jQuery(this).autoTab();
+		    // autotab param
+				var tab = isset(autotab) ? autotab : true;
+				tab = isset(obj.data('autotab')) ? obj.data('autotab') : tab;
+
+				obj.inputmask("999.999.999-99", {
+					oncomplete: function(){
+						if(obj.val().replace(/\D/g, "").length > 0 && !isCpfCnpj(obj.val())) {
+							jQuery('.cpf-error').remove();
+							obj.addClass('error').after('<span class="cpf-error error">'+error+'</span>');
+						} else {
+							if(tab) obj.autoTab();
+						}
+					},
+					onKeyDown: function(event, buffer, caretPos, opt){
+						if(obj.val().replace(/[^0-9]/g, '').length < 11) {
+							obj.removeClass('error');
+							obj.next('.error').hide();
+						}
 					}
-				}}).on('blur', function(event) {
-					if(jQuery(this).val().replace(/\D/g, "").length > 0 && !isCpfCnpj(jQuery(this).val())) {
+				}).on('blur', function(event) {
+					if(obj.val().replace(/\D/g, "").length > 0 && !isCpfCnpj(obj.val())) {
 						jQuery('.cpf-error').remove();
-						jQuery(this).addClass('error').after('<span class="cpf-error error">'+error+'</span>');
-						jQuery(this).val('');
+						obj.addClass('error').after('<span class="cpf-error error">'+error+'</span>');
+						obj.val('');
 					}
-					jQuery(this).removeClass('error');
-					jQuery(this).next('.error').hide();
-					setCPF(jQuery(this));
+					obj.removeClass('error');
+					obj.next('.error').hide();
 				});
 			});
 		};
 
 		//CNPJ
-		window.setCNPJ = function (input) {
+		window.setCNPJ = function (input, autotab) {
 			input = validaField(input, field_cnpj);
 			var error = 'CNPJ INVÁLIDO!<br />Informe o CNPJ com apenas 14 dígitos.<br />Ignore, se houver, o dígito 0 (zero) inicial';
 			input.each(function() {
 				var obj = jQuery(this);
-				var width = obj.data('width');
-				if(width != null) obj.css('width', width);
+				var width = isset(obj.data('width')) ? obj.data('width') : false;
+				if(width) obj.css('width', width);
 				obj.css({'min-width':'12em', 'max-width':'100%'});
-				obj.mask("?99.999.999/9999-99",{completed:function(){
-					if(jQuery(this).val().replace(/\D/g, "").length > 0 && !isCpfCnpj(jQuery(this).val())) {
-						jQuery('.cnpj-error').remove();
-						jQuery(this).addClass('error').after('<span class="cnpj-error error">'+error+'</span>');
-					} else {
-						jQuery(this).autoTab();
+		    // autotab param
+				var tab = isset(autotab) ? autotab : true;
+				tab = isset(obj.data('autotab')) ? obj.data('autotab') : tab;
+
+				obj.inputmask("99.999.999/9999-99", {
+					oncomplete: function(){
+						if(obj.val().replace(/\D/g, "").length > 0 && !isCpfCnpj(obj.val())) {
+							jQuery('.cnpj-error').remove();
+							obj.addClass('error').after('<span class="cnpj-error error">'+error+'</span>');
+						} else {
+							if(tab) obj.autoTab();
+						}
+					},
+					onKeyDown: function(event, buffer, caretPos, opt) {
+						if(obj.val().replace(/[^0-9]/g, '').length < 14) {
+							obj.removeClass('error');
+							obj.next('.error').hide();
+						}
 					}
-				}}).on('blur', function(event) {
-					if(jQuery(this).val().replace(/\D/g, "").length > 0 && !isCpfCnpj(jQuery(this).val())) {
+				}).on('blur', function(event) {
+					if(obj.val().replace(/\D/g, "").length > 0 && !isCpfCnpj(obj.val())) {
 						jQuery('.cnpj-error').remove();
-						jQuery(this).addClass('error').after('<span class="cnpj-error error">'+error+'</span>');
-						jQuery(this).val('');
+						obj.addClass('error').after('<span class="cnpj-error error">'+error+'</span>');
+						obj.val('');
 					}
-					jQuery(this).removeClass('error');
-					jQuery(this).next('.error').hide();
-					setCNPJ(jQuery(this));
+					obj.removeClass('error');
+					obj.next('.error').hide();
 				});
 			});
 		};
 
 		//TELEFONES
-		window.setPhone = function (input) {
-			input = validaField(input, field_setPhone);
-			var mask = "(99) 99999999?9";
-			var unmask = "?xxxxxxxxxxxxxxxxxx";
-			var msg1 = 'Clique para remover a máscara<br />(99) 999999999<br />Isso permitirá inserir números<br />formatos diferentes';
-			var msg2 = 'Clique para adicionar a máscara<br />(99) 999999999';
-			var msg3 = "A máscara poderá alterar o formato atual. Isso pode ocasionar perda de informação.\nTem certeza que deseja utilizar a máscara?";
-			var width_noMask = '15em';
-			var minWidth = '12em';
-			// verifica se existe um campo do tipo 'phone'
-			if(input.length){
-				//se existir, verifico o valor em cada um
-				input.each(function() {
-					var obj = jQuery(this);
-					var nomask = 0;
-					var width = obj.data('width');
-					if(width != null) input.css('width', width);
-					obj.wrap('<div class="input-group" style="width:'+width+'; min-width:'+minWidth+'; max-width:100%;"></div>');
-					obj.css({'width':'100%'});
-					//se o campo não estiver preenchido
-					if(obj.val() == "" || obj.val().indexOf("(") >= 0) {
-						//carrega a máscara
-						obj.mask(mask,{completed:function(){obj.autoTab();}});
-					} else {
-						//senão, fica 'sem máscara'
-						obj.unmask(mask);
-						obj.mask(unmask,{placeholder:" "});
-						nomask = 1;
-					}
-					// se a mascara for carregada
-					if(!nomask){
-						obj.removeClass('no-masked');
-						if(!obj.hasClass('form-control')) obj.addClass('form-control');
-						obj.parents('div.input-group').css({'width':width, 'min-width':minWidth, 'max-width':'100%'});
-						obj.after('<span class="input-group-btn"><a class="toggle-mask btn btn-info strong" title="'+msg1+'">#</a></span></div>');
-					} else {
-						obj.addClass('no-masked');
-						obj.parents('div.input-group').css({'width':width_noMask, 'max-width':'100%'});
-						obj.after('<span class="input-group-btn"><a class="toggle-mask btn btn-danger strong" title="'+msg2+'">#</a></span></div>');
-					}
-					jQuery('.toggle-mask').tooltip({container: 'body', html: true});
+		window.setPhone = function (input, toggleMask) {
+		  input = validaField(input, field_setPhone);
+		  var ed = '(99) 9999-9999[9]'; // eight digits
+		  var nd = '(99) 9999[9]-9999'; // nine digits
+		  var ph = ' '; // placeholder
+		  var lg = ed.replace('[','').replace(']','').length;
+		  var msg1 = '<del>(99) 9999-9999</del>';
+		  var msg2 = '(99) 9999-9999';
+		  var btnMask = '<span class="input-group-btn"><a class="toggle-mask btn btn-info strong" title="'+msg1+'">#</a></span></div>';
+		  var btnUnmask = '<span class="input-group-btn"><a class="toggle-mask btn btn-danger strong" title="'+msg2+'">#</a></span></div>'
+		  //var width_noMask = '15em';
+		  var minWidth = '9.5em';
+		  // verifica se existe um campo do tipo 'phone'
+		  if(input.length){
+		    //se existir, verifico o valor em cada um
+		    input.each(function() {
+		      var obj = jQuery(this);
+		      // resolve mask nine digits
+		      var options = {
+		        greedy: false,
+		        placeholder: ph,
+		        onKeyValidation: function (result) {
+		          if(result.pos == (lg-1)) obj.inputmask(nd, options);
+		        },
+		        onKeyDown: function(event, buffer, caretPos, opt){
+		          if(buffer[lg-5] == '-' && buffer[lg-1] == ph) obj.inputmask(ed, options);
+		        }
+		      }
+		      var mask = (obj.val().replace(/[^0-9]/g, '').length > 10) ? nd : ed;
+		      // -------------------------
+		      var nomask = 0;
+		      var width = obj.data('width');
+		      if(width != null) input.css('width', width);
+					// setTime param
+					var tm = isset(toggleMask) ? toggleMask : false;
+					tm = isset(obj.data('toggleMask')) ? obj.data('toggleMask') : tm;
+		      // if togglemask option is true
+		      if(tm == true) {
+		        obj.wrap('<div class="input-group" style="width:'+width+'; min-width:'+minWidth+'; max-width:100%;"></div>');
+		        obj.css({'width':'100%'});
+		        //se o campo não estiver preenchido
+		        if(obj.val() == "" || obj.val().indexOf("(") >= 0) {
+		          //carrega a máscara
+		          obj.inputmask(mask, options);
+		        } else {
+		          //senão, fica 'sem máscara'
+		          obj.inputmask('remove');
+		          nomask = 1;
+		        }
+		        // se a mascara for carregada
+		        if(!nomask){
+		          obj.removeClass('no-masked');
+		          if(!obj.hasClass('form-control')) obj.addClass('form-control');
+		          obj.after(btnMask);
+		        } else {
+		          obj.addClass('no-masked');
+		          obj.after(btnUnmask);
+		        }
+		        jQuery('.toggle-mask').tooltip({container: 'body', html: true});
 
-					obj.next('span').find('.btn').click(function(){
-						if(jQuery(this).hasClass('btn-info')) {
-							jQuery(this).parents('div.input-group').css({'width':width_noMask, 'max-width':'100%'}).find('input').addClass('no-masked').mask(unmask,{placeholder:""}).focus();
-							jQuery(this).removeClass('btn-info').addClass('btn-danger').attr('data-original-title', msg2).tooltip('fixTitle');
-						} else {
-							if(confirm(msg3)){
-								jQuery(this).parents('div.input-group').css({'width':width, 'min-width':minWidth, 'max-width':'100%'}).find('input').removeClass('no-masked').mask(mask,{completed:function(){jQuery(this).autoTab();}}).focus();
-								jQuery(this).removeClass('btn-danger').addClass('btn-info').attr('data-original-title', msg1).tooltip('fixTitle');
-							}
-						}
+		        obj.next('span').find('.btn').click(function(){
+		          if(jQuery(this).hasClass('btn-info')) {
+		            obj.addClass('no-masked').inputmask('remove').focus();
+		            jQuery(this).removeClass('btn-info').addClass('btn-danger').attr('data-original-title', msg2).tooltip('fixTitle');
+		          } else {
+	              var nMask = (obj.val().replace(/[^0-9]/g, '').length > 10) ? nd : ed; // pega o valor atualizado do campo
+	              obj.removeClass('no-masked').inputmask(nMask, options).focus();
+	              jQuery(this).removeClass('btn-danger').addClass('btn-info').attr('data-original-title', msg1).tooltip('fixTitle');
+		          }
 
-					});
-				});
-			}
+		        });
+		      } else {
+		        obj.inputmask(mask, options);
+		      }
+		    });
+		  }
 		};
 
 		//CEP
-		window.setCEP = function (input) {
+		window.setCEP = function (input, autotab) {
 			input = validaField(input, field_cep);
 			input.each(function() {
 				var obj = jQuery(this);
-				var width = obj.data('width');
-				if(width != null) obj.css('width', width);
+				var width = isset(obj.data('width')) ? obj.data('width') : false;
+		    // autotab param
+				var tab = isset(autotab) ? autotab : true;
+				tab = isset(obj.data('autotab')) ? obj.data('autotab') : tab;
+
+				if(width) obj.css('width', width);
 				obj.css({'min-width':'7.2em', 'max-width':'100%'});
-				obj.mask("?99999-999",{completed:function(){jQuery(this).autoTab();}});
+				obj.inputmask("99999-999", { oncomplete: function(){ if(tab) obj.autoTab(); } });
 			});
 		};
 
@@ -500,105 +553,154 @@ jQuery(function() {
 		});
 
 		// DATA
-		window.setDate = function (input) {
-			input = validaField(input, field_date);
-			input.each(function() {
-				var obj = jQuery(this);
-				if(obj.val() != '') obj.val(dateFormat(obj.val()));
-				var mindate = obj.data('mindate');
-				var maxdate = obj.data('maxdate');
-				var yrange  = obj.data('yearRange');
-				var width = obj.data('width');
-				if(width != null) obj.css('width', width);
-				input.css({'min-width':'8.5em', 'max-width':'100%'});
-				obj.mask("?99/99/9999",{completed:function(){obj.datepicker("hide");obj.autoTab();}});
-				var _dateFormat = "dd/mm/yy";
-				var _dayNames = ["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado","Domingo"];
-				var _dayNamesMin = ["D","S","T","Q","Q","S","S","D"];
-				var _dayNamesShort = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb","Dom"];
-				var _monthNames = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
-				var _monthNamesShort = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
-				var _nextText = "Próximo";
-				var _prevText = "Anterior";
-				obj.datepicker({
-					dateFormat: _dateFormat,
-					dayNames: _dayNames,
-					dayNamesMin: _dayNamesMin,
-					dayNamesShort: _dayNamesShort,
-					monthNames: _monthNames,
-					monthNamesShort: _monthNamesShort,
-					nextText: _nextText,
-					prevText: _prevText,
-					changeMonth: true,
-					changeYear: true,
-					onSelect: function(dateText, inst){ setTimeout(function(){ obj.autoTab(); },100); }
-				});
-				// tipos de calendário
-				if(mindate != null) obj.datepicker("option", "minDate", mindate );
-				if(maxdate != null) obj.datepicker("option", "maxDate", maxdate);
-				if(yrange  != null) obj.datepicker("option", "yearRange", yrange );
+		window.setDate = function (input, setTime, seconds, autotab) {
+		  input = validaField(input, field_date);
+		  input.each(function() {
+		    var obj = jQuery(this);
+		    if(obj.val() != '') obj.val(dateFormat(obj.val()));
 
-				// formata data para armazenar no DB
-				if(obj.data('convert')) dateConvert(obj.parents('form'), obj);
+		    // setTime param
+		    var time = isset(setTime) ? setTime : false;
+		    time = isset(obj.data('time')) ? obj.data('time') : time;
+		    // seconds param
+		    var sec = isset(seconds) ? seconds : true;
+		    sec = isset(obj.data('seconds')) ? obj.data('seconds') : sec;
+		    // autotab param
+		    var tab = isset(autotab) ? autotab : true;
+		    tab = isset(obj.data('autotab')) ? obj.data('autotab') : tab;
 
-			});
+		    var mask = 'd/m/y';
+		    var hold = '__/__/____';
+		    var minW = '9em';
+		    if(time == true) {
+		      if(sec == true){
+		        mask = mask+' h:s:s';
+		        hold = hold+' __:__:__';
+		        minW = '13em';
+
+		      } else {
+		        mask = mask+' h:s';
+		        hold = hold+' __:__';
+		        minW = '11.5em';
+		      }
+		    }
+		    var mindate = obj.data('mindate');
+		    var maxdate = obj.data('maxdate');
+		    var yrange  = obj.data('yearRange');
+		    var width = (!isset(obj.data('width')) ? obj.css('width', minW) : obj.css('width', obj.data('width')));
+		    obj.css({'min-width': minW, 'max-width':'100%'});
+
+		    // mask date
+		    obj.inputmask(mask, {
+		      placeholder: hold,
+					showMaskOnHover: true,
+		      oncomplete: function(){
+		        obj.datepicker("hide");
+		        if(tab) obj.autoTab();
+		      },
+		      onKeyDown: function(){
+		        obj.datepicker("hide");
+		      }
+		    });
+		    // open datepicker on click
+		    obj.click(function() { obj.focus(); })
+		    // define datapicker format
+		    var _dateFormat = "dd/mm/yy";
+		    var _dayNames = ["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado","Domingo"];
+		    var _dayNamesMin = ["D","S","T","Q","Q","S","S","D"];
+		    var _dayNamesShort = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb","Dom"];
+		    var _monthNames = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+		    var _monthNamesShort = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+		    var _nextText = "Próximo";
+		    var _prevText = "Anterior";
+		    var _currDate;
+		    obj.datepicker({
+		      dateFormat: _dateFormat,
+		      dayNames: _dayNames,
+		      dayNamesMin: _dayNamesMin,
+		      dayNamesShort: _dayNamesShort,
+		      monthNames: _monthNames,
+		      monthNamesShort: _monthNamesShort,
+		      nextText: _nextText,
+		      prevText: _prevText,
+		      changeMonth: true,
+		      changeYear: true,
+		      beforeShow: function(dateText, inst){
+		        if(time) {
+		          _currDate = obj.val().split(' ');
+		        }
+		      },
+		      onSelect: function(dateText, inst){
+		        if(time) {
+		          dateText = dateText + " " + _currDate[1];
+		          obj.val(dateText);
+		          if(dateText.replace(/[^0-9]/g, '').length == 14) {
+		            if(tab) setTimeout(function(){ obj.autoTab(); }, 100);
+		          } else {
+		            obj.focus();
+		          }
+		        } else {
+		          if(tab) setTimeout(function(){ obj.autoTab(); }, 100);
+		        }
+		      }
+		    });
+		    // tipos de calendário
+		    if(mindate != null) obj.datepicker("option", "minDate", mindate );
+		    if(maxdate != null) obj.datepicker("option", "maxDate", maxdate);
+		    if(yrange  != null) obj.datepicker("option", "yearRange", yrange );
+
+		    // formata data para armazenar no DB
+		    if(obj.data('convert')) dateConvert(obj.parents('form'), obj);
+
+		  });
 		};
 		// converte do formato de banco (0000-00-00) para o formato padrão do 'field-date' (00-00-0000)
 		window.dateFormat = function (val) {
-			if(val.indexOf('-') == 4) {
-				var dt = val.split('-');
-				return dt[2]+'/'+dt[1]+'/'+dt[0];
-			} else {
-				return val;
-			}
+		  if(val.indexOf('-') == 4) {
+		    var dh = val.split(' ');
+		    var dt = dh[0].split('-');
+		    return dt[2]+'/'+dt[1]+'/'+dt[0]+' '+dh[1];
+		  } else {
+		    return val;
+		  }
 		};
 		// formata o 'field-date' para o formato de banco (0000-00-00)
 		window.dateConvert = function (form, field) {
-			form.on('submit', function(e) {
-				var dt = field.val().split('/');
-				field.val(dt[2]+'-'+dt[1]+'-'+dt[0]);
-			});
+		  form.on('submit', function(e) {
+		    var dh = field.val().split(' ');
+		    var dt = dh[0].split('/');
+		    var t = (isset(dh[1]) && dh[1].length > 0) ? ' '+dh[1] : '';
+		    field.val(dt[2]+'-'+dt[1]+'-'+dt[0]+t);
+		  });
 		};
 
 		//HORA
-		window.setTime = function (input) {
+		window.setTime = function (input, seconds, autotab) {
 			input = validaField(input, field_time);
 			input.each(function() {
-				var width = jQuery(this).data('width');
-				var sec = jQuery(this).data('seconds');
+				var obj = jQuery(this);
+				var width = isset(obj.data('width')) ? obj.data('width') : false;
+		    // seconds param
+				var sec = isset(seconds) ? seconds : false;
+				sec = isset(obj.data('seconds')) ? obj.data('seconds') : sec;
+		    // autotab param
+				var tab = isset(autotab) ? autotab : true;
+				tab = isset(obj.data('autotab')) ? obj.data('autotab') : tab;
 				if(sec) {
-					jQuery(this).mask("?99:99:99",{completed:function(){jQuery(this).autoTab();}});
+					obj.inputmask("h:s:s",{ oncomplete: function(){ if(tab) obj.autoTab(); } });
 					w = '6em';
 				} else {
-					jQuery(this).mask("?99:99",{completed:function(){jQuery(this).autoTab();}});
+					obj.inputmask("h:s",{ oncomplete: function(){ if(tab) obj.autoTab(); } });
 					w = '4.5em';
 				}
-				if(width != null) jQuery(this).css('width', width);
-				jQuery(this).css({'min-width':w, 'max-width':'100%'});
-			});
-		};
-
-		//DATA & HORA
-		window.setDateTime = function (input) {
-			input = validaField(input, field_date_time);
-			input.each(function() {
-				var width = jQuery(this).data('width');
-				var sec = jQuery(this).data('seconds');
-				if(sec) {
-					jQuery(this).mask("?99/99/9999 99:99:99",{completed:function(){jQuery(this).autoTab();}});
-					w = '12em';
-				} else {
-					jQuery(this).mask("?99/99/9999 99:99",{completed:function(){jQuery(this).autoTab();}});
-					w = '10em';
-				}
-				if(width != null) jQuery(this).css('width', width);
-				jQuery(this).css({'min-width':w, 'max-width':'100%'});
+				if(width) obj.css('width', width);
+				obj.css({'min-width':w, 'max-width':'100%'});
 			});
 		};
 
 
 	// FORMATA PREÇO
-	window.setPrice = function (input) {
+	window.setPrice = function (input, cents, usFormat, convert) {
 
 		// o formato ideal para a moeda brasileira (R$) seria "9.999,00".
 		// Mas esse formato não funciona para campos do tipo decimal(10,2)
@@ -611,33 +713,46 @@ jQuery(function() {
 		if(input.length){
 			input.each(function() {
 				obj = jQuery(this);
-				var width = obj.data('width');
-				if(width != null) obj.css('width', width);
+				var width = isset(obj.data('width')) ? obj.data('width') : false;
+
+				// cents param
+				var c = isset(cents) ? cents : true;
+				c = isset(obj.data('cents')) ? obj.data('cents') : c;
+				// usFormat param
+				var f = isset(usFormat) ? usFormat : false;
+				f = isset(obj.data('usFormat')) ? obj.data('usFormat') : f;
+				// convert param
+				var cv = isset(convert) ? convert : false;
+				cv = isset(obj.data('convert')) ? obj.data('convert') : cv;
+
+				if(width) obj.css('width', width);
 				obj.css({'min-width':'8.5em', 'max-width':'100%'});
 
-				// define as casas decimais.
-				var decimal = 2;
-				if(obj.data('decimal')) {
-					decimal = obj.data('decimal');
-				} else if(obj.hasClass('no-cents') || obj.data('decimal') == '0') {
-					decimal = 0;
-				} else {
-					obj.attr("placeholder","0,00");
-				}
+				// define se vai usar centavos.
+				var decimal = (c == true) ? 2 : 0;
+				var limite = (c == true) ? 12 : 10;
+
 				// define o formato (default é 1.000,00)
-				var sep1 = (obj.data('format') == 'us') ? ',' : '.';
-				var sep2 = (obj.data('format') == 'us') ? '.' : ',';
+				if(f == true) {
+					sep1 = ',';
+					sep2 = '.';
+					if(c) obj.attr("placeholder","0.00");
+				} else {
+					sep1 = '.';
+					sep2 = ',';
+					if(c) obj.attr("placeholder","0,00");
+				}
 
 				obj.priceFormat({
 					prefix: '',
 					centsLimit: decimal,
 					thousandsSeparator: sep1,
 					centsSeparator: sep2,
-					limit: 12
+					limit: limite
 				});
 
 				// formata para armazenar no DB como decimal(10,2)
-				if(obj.data('convert')) priceNormalize(obj.parents('form'), obj, true);
+				if(cv == true) priceNormalize(obj.parents('form'), obj, c, f);
 
 				// evita que o usuário arraste um valor para o campo e quebre a máscara
 				noDrop(obj);
@@ -645,10 +760,15 @@ jQuery(function() {
 		}
 	};
 	// formata o 'field-price' para o formato de banco (decimal, float)
-	window.priceNormalize = function (form, field, decimal) {
+	window.priceNormalize = function (form, field, cents, usFormat) {
 		form.on('submit', function(e) {
-			field.val(field.val().replace(/\./g,''));
-			if(decimal) field.val(field.val().replace(',','.'));
+			if(usFormat == true) {
+				field.val(field.val().replace(/\,/g,''));
+				if(cents == false) field.val(field.val()+'.00');
+			} else {
+				field.val(field.val().replace(/\./g,''));
+				field.val((cents == true ? field.val().replace(',','.') : field.val()+'.00'));
+			}
 		});
 	};
 
@@ -846,20 +966,17 @@ jQuery(function() {
 		//TELEFONES
 		setPhone();
 
+		//DATA
+		setDate();
+
 		//HORA
 		setTime();
-
-		//DATA & HORA
-		setDateTime();
 
 		//CEP
 		setCEP();
 
 		//FORMATA PREÇO
 		setPrice();
-
-		//DATA
-		setDate();
 
 		//APENAS LETRAS
 		setNoNumber();

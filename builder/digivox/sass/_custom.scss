@@ -509,18 +509,24 @@
 // BOOTSTRAP 'ELEMENTS'
 
 	// tabs
+	.nav-tabs { border-bottom: 3px solid $brand-primary; }
+	.nav-tabs > li { margin-bottom: 0; }
+	// margem inicial (esquerda) na primeira aba
+	.nav-tabs > li:first-child:not(.dropdown), .nav-tabs > li.dropdown + li { margin-left: 10px; }
 	.nav-tabs > li > a {
 		font-size: 0.9em!important;
 		border-width: 0px!important;
 	}
 
 	.tab-content {
-		padding: $base-space;
-		background: #fff;
-		border: 1px solid $base-border-color;
+		margin-bottom: 0;
+		// padding: $base-space;
+		// background: #fff;
+		// border: 1px solid $base-border-color;
 		border-top: 0;
 		@include build-prefix-values('border-radius', 0 0 $border-radius-base $border-radius-base);
 	}
+	.tab-content:not(.well) { padding: $base-space-sm 0; }
 
 		// clearfix
 		.tab-content:before,.tab-content:after{display:table;content:"";line-height:0;}

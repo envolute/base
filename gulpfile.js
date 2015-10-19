@@ -25,7 +25,7 @@ var tmplCSS     = tmpl + '/css';
   var formsJs = [
     core+'/js/core.forms.js', // Implementations of CORE for forms
     core+'/js/forms/jquery.autotab-1.1b.js', // Auto tab functionality
-    core+'/js/forms/jquery.maskedinput.min.js', // Plugin for masks in text fields
+    core+'/js/forms/jquery.inputmask.bundle.js', // Plugin for masks in text fields
     core+'/js/forms/jquery.price_format.min.js', // Formats the price in text fields
     core+'/js/bootstrap/bootstrap-field-context.js' // Method for assigning the field validation classes of bootstrap
   ];

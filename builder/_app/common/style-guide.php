@@ -402,13 +402,13 @@ $base = "templates/base/";
 						<h4 class="page-header"><span class="base-icon-star text-live"></span> Toggle Status</h4>
 						<p>With the use of ".toggle-status" class on the button, we can change the "active / inactive" status when it receives the event 'click'.<br />The class can be attributed directly to the button or the container (group) buttons as a 'btn-group'. In this case, the function will be assigned to all group buttons.<p>
 						<p><code>&lt;button class="btn btn-default toggle-status"&gt;Text&lt;/button&gt;</code></p>
-						<p><button class="btn btn-default toggle-status">Click</button></p>
+						<p><button name="qwe" class="btn btn-default toggle-status">Click</button></p>
 						<p><code>&lt;span class="btn-group toggle-status"&gt;... buttons ... &lt;/span&gt;</code></p>
 						<p>
 							<span class="btn-group">
-								<button class="btn btn-primary toggle-status"> 1 </button>
-								<button class="btn btn-warning toggle-status"> 2 </button>
-								<button class="btn btn-danger toggle-status"> 3 </button>
+								<button name="qwe" class="btn btn-primary toggle-status"> 1 </button>
+								<button name="qwe" class="btn btn-warning toggle-status"> 2 </button>
+								<button name="qwe" class="btn btn-danger toggle-status"> 3 </button>
 							</span>
 						</p>
 					</div>
@@ -1752,14 +1752,20 @@ $base = "templates/base/";
 								<label>Phone Number<br /><code>&lt;input class="field-phone" data-width="12em" /&gt;</code></label><br />
 								<p><input type="text" name="name" class="form-control field-phone" data-width="12em" /></p>
 
-								<label>Date<br /><code>&lt;input class="field-date" data-width="8.5em" /&gt;</code></label><br />
-								<p><input type="text" name="name" class="form-control field-date" data-width="8.5em" /></p>
+								<label>Phone Number toggle mask<br /><code>&lt;input class="field-phone" data-toggle-mask="true" /&gt;</code></label><br />
+								<p><input type="text" name="name" class="form-control field-phone" data-toggle-mask="true" data-width="12em" /></p>
+
+								<label>Date<br /><code>&lt;input class="field-date" /&gt;</code></label><br />
+								<p><input type="text" name="name" class="form-control field-date" data-autotab="false" data-convert="true" /></p>
+
+								<label>Date & Time<br /><code>&lt;input class="field-date" data-time="true" /&gt;</code></label><br />
+								<p><input type="text" name="name" class="form-control field-date" data-time="true" data-convert="true" /></p>
 
 								<label>Time<br /><code>&lt;input class="field-time" data-width="4.5em" /&gt;</code></label><br />
 								<p><input type="text" name="name" class="form-control field-time" data-width="4.5em" /></p>
 
 								<label>Price Format<br /><code>&lt;input class="field-price" data-width="12em" /&gt;</code></label><br />
-								<p><input type="text" name="name" class="form-control field-price" data-width="12em" /></p>
+								<p><input type="text" name="name" class="form-control field-price" data-convert="true" data-width="12em" /></p>
 
 								<p><span class="label label-default">Special Masks</span></p>
 
@@ -1790,6 +1796,9 @@ $base = "templates/base/";
 									<span class="base-icon-info-circled"></span> The date fields using the plugin <a href="https://jqueryui.com/datepicker/" target="_blank">jquery Datepicker</a><br />To learn more about the possible values for "<a href="http://api.jqueryui.com/datepicker/#option-minDate" target="_blank">minDate</a>", "<a href="http://api.jqueryui.com/datepicker/#option-maxDate" target="_blank">maxDate</a>" and "<a href="http://api.jqueryui.com/datepicker/#option-yearRange" target="_blank">yearRange</a>" see the <a href="http://api.jqueryui.com/datepicker/" target="_blank">API documentation for that plugin</a>.
 								</p>
 
+								<label>Date & Time no Seconds<br /><code class="strong">&lt;input ... <em>data-seconds="false"</em> /&gt;</code></label><br />
+								<p><input type="text" name="name" class="form-control field-date" data-time="true" data-seconds="false" /></p>
+
 								<h5 class="page-header"><span class="base-icon-clock"></span> Time Options</h5>
 
 								<label>Time with seconds<br /><code>&lt;input class="field-time" data-seconds="true" data-width="6em" /&gt;</code></label><br />
@@ -1797,14 +1806,13 @@ $base = "templates/base/";
 
 								<h5 class="page-header"><strong>$</strong> Price Options</h5>
 
-								<label>Price decimal (,00...)<br /><code>&lt;input class="field-price" data-decimal="3" /&gt;</code></label><br />
+								<label>Price no Cents<br /><code>&lt;input class="field-price" data-cents="false" /&gt;</code></label><br />
 								<p>
-									<input type="text" name="name" class="field-price" data-decimal="3" data-width="12em" placeholder="data-decimal=&quot;3&quot;" />&nbsp;
-									<input type="text" name="name" class="field-price" data-decimal="0" data-width="12em" placeholder="data-decimal=&quot;0&quot;" />
-									<br /><span class="text-info"><strong>Tip:</strong> To disable cents use <strong>data-decimal="0"</strong>.</span>
+									<input type="text" name="name" class="field-price" data-cents="false" data-width="12em" />
+									<br /><span class="text-info"><strong>Tip:</strong> To disable cents use <strong>data-cents="false"</strong>.</span>
 								</p>
-								<label>American(US) Format (1,000.00)<br /><code>&lt;input class="field-price" data-format="us" /&gt;</code></label><br />
-								<p><input type="text" name="name" class="field-price" data-format="us" data-width="12em" placeholder="data-decimal=&quot;0&quot;" /></p>
+								<label>American(US) Format (1,000.00)<br /><code>&lt;input class="field-price" data-us-format="true" /&gt;</code></label><br />
+								<p><input type="text" name="name" class="field-price" data-us-format="true" data-width="12em" /></p>
 								<p class="alert alert-info">
 									<span class="base-icon-info-circled"></span> The price fields using the plugin <a href="https://plugins.jquery.com/priceformat/" target="_blank">jquery Price Format</a>.
 								</p>
