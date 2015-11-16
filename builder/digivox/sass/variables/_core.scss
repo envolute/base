@@ -60,12 +60,13 @@ $base-shadow-to-left: -1px 1px 3px rgba(0,0,0,0.1);
 $base-shadow-to-right: 1px 1px 3px rgba(0,0,0,0.1);
 
 // list-menu
-$base-list-menu-sublevel-top: -37px !default;
+$base-list-menu-sublevel-top: -30px !default;
 
 // fieldset embed
-$fieldset-embed-padding: 40px 15px 15px;
+$fieldset-embed-padding: 35px 15px 15px;
 $fieldset-embed-bg: #fff;
 $fieldset-embed-shadow: inset 1px 1px 5px rgba(0,0,0,0.06);
+$fieldset-embed-legend-font-size: 14px;
 $fieldset-embed-legend-right: 15px;
 $fieldset-embed-legend-radius: 0 0 4px 4px;
 $fieldset-embed-legend-shadow: 1px 1px 2px rgba(0,0,0,0.06);
@@ -83,3 +84,10 @@ $baseicon-menu-child-reveal-sublevel: '\e877';	//base-icon-right-dir
 $baseicon-menu-child-reveal-sublevel-reverse: '\e879';	//base-icon-right-dir
 $baseicon-menulist-child-reveal: '\e9cc';		//base-icon-plus-squared
 $baseicon-menulist-child-reveal-open: '\e9d0';	//base-icon-minus-squared
+
+// text
+$text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+$text-embed: 1px 1px 0 #fff;
+
+// btn-icon
+$checkbox-icon-active: '\e9c3'; // base-icon-ok

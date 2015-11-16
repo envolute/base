@@ -25,7 +25,7 @@ jQuery(function() {
 		var chzSearch = 10;
 		var chzNoResults = 'Sem resultados para';
 		// atribui o chosen default para todos os selects visíveis
-		jQuery('select:visible').not('no-chosen').chosen({
+		jQuery('select').not('no-chosen').chosen({
 				disable_search_threshold: chzSearch,
 				no_results_text: chzNoResults,
 				placeholder_text_single: " ",
@@ -36,13 +36,7 @@ jQuery(function() {
 		// assim é possível setar a largura através do plugin 'jquery.actual.js'
 		// pois ele consegue 'trazer' as dimensões dos elementos 'hidden'
 		jQuery('select:hidden').not('no-chosen').each(function() {
-			jQuery(this).chosen({
-				disable_search_threshold: chzSearch,
-				no_results_text: chzNoResults,
-				placeholder_text_single: " ",
-				placeholder_text_multiple: " ",
-				width: jQuery(this).actual('outerWidth') + 'px'
-			});
+			jQuery(this).next('.chosen-container').width(jQuery(this).actual('outerWidth') + 'px');
 		});
 
 	// SHOW/HIDE SCROLL-TO-TOP BUTTON

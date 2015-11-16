@@ -61,8 +61,6 @@
 
 // BUTTONS
 
-	.btn-xs, .btn-group-xs > .btn { line-height: inherit!important; }
-
 	.btn-primary a { color: $btn-primary-color!important; }
 	.btn-info a { color: $btn-info-color!important; }
 	.btn-warning a { color: $btn-warning-color!important; }
@@ -103,6 +101,20 @@
 		border-color: $btn-danger-border;
 	}
 
+	// btn-icon
+	// opção para botão com ícone
+	.btn-icon {
+		margin: 0 7px 0 -3px;
+		padding-right: 6px;
+		border-right: 1px solid rgba(255, 255, 255, 0.7);
+	  @include build-prefix-values('box-shadow', 'inset -1px 0 0 rgba(0,0,0,0.1)');
+	}
+
+	// btn icon for checkbox & radio
+	.btn-group .btn.active [class*="base-icon"]::before {
+		content: $checkbox-icon-active;
+	}
+
 // FORMS
 
 	// opção para classe .checkbox com um input após a tag label
@@ -123,6 +135,14 @@
     line-height: 1em;
     opacity: 0.8;
 	}
+	h1.alert.alert-icon { padding-left: 1.7em; }
+	h2.alert.alert-icon,
+	h3.alert.alert-icon { padding-left: 2em; }
+	h1.alert.alert-icon::before,
+	h2.alert.alert-icon::before,
+	h3.alert.alert-icon::before { font-size: 1.1em; }
+	h4.alert.alert-icon { padding-left: 2.25em; }
+	h4.alert.alert-icon::before { font-size: 1.3em; }
 	.alert-info.alert-icon::before { content: '\e9d4'; }
 	.alert-warning.alert-icon::before { content: '\e839'; }
 	.alert-danger.alert-icon::before { content: '\e9c8'; }

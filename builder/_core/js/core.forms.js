@@ -17,20 +17,31 @@ jQuery(function() {
 	});
 
 	// Essa função verifica se o parâmetro foi passado
-	window.isset = function (e) {
+	window.isSet = function (e) {
 		return (typeof e === "null" || typeof e === "undefined") ? false : true;
+	};
+
+	// Essa função verifica se o parâmetro foi passado
+	window.isEmpty = function (e) {
+	  return (e == "") ? true : false;
 	};
 
 	// Essa função é identica a 'setElement' em core.js
 	// isso é para não haver dependência do core.js
-	window.validaField = function (e, def) {
+	window.setElement = function (e, def) {
 		var obj = e;
-		if(!isset(e)) {
+		if(!isSet(e)) {
 			obj = jQuery(def);
 		} else if(typeof e === 'string') {
 			obj = jQuery(e);
 		}
 		return obj;
+	};
+
+	// Essa função verifica se o parâmetro foi passado
+	window.elementExist = function (e) {
+		var obj = setElement(e);
+		return (obj.length) ? true : false;
 	};
 
 	// FIELDS -> classes dos campos customizados
@@ -74,14 +85,14 @@ jQuery(function() {
 	// TOGGLE FIELDSET FILTER
 	window.toggleFieldsetEmbed = function(button, target, offset) {
 		var btn = jQuery(button);
-		var obj = validaField(target);
+		var obj = setElement(target);
 		var tag = obj.attr('id');
 		var grp = obj.data('group');
 		var hide = (obj.css('display') == 'none') ? true : false;
 		var elem;
 
 		// se o fieldset 'target' fizer parte de um grupo
-		if(isset(grp) && hide) {
+		if(isSet(grp) && hide) {
 			// identifica os outros elementos do grupos e fecha todos
 			jQuery(fieldsetEmbed).filter(function() {
 				elem = jQuery(this);
@@ -93,7 +104,7 @@ jQuery(function() {
 			});
 		}
 		// se o elemento não estiver na área visível 'viewport'
-		if(!isset(offset)) offset = 0;
+		if(!isSet(offset)) offset = 0;
 		if(!obj.isOnScreen()) {
 			// rola a página até o elemento
 			scrollTo(tag, offset);
@@ -120,7 +131,7 @@ jQuery(function() {
 
 	// TOGGLE BTN STATUS
 	window.toggleBtnStatus = function(button) {
-		var btn = validaField(button, btnToggleStatus);
+		var btn = setElement(button, btnToggleStatus);
 		btn.each(function() {
 			jQuery(this).click(function() {
 				jQuery(this).not(':disabled').not('.disabled').toggleClass('active');
@@ -130,7 +141,7 @@ jQuery(function() {
 
 	// NO DROP -> desabilita a funcionalidade de arrastar um valor para o campo
 	window.noDrop = function (input) {
-		input = validaField(input, field_noDrop);
+		input = setElement(input, field_noDrop);
 		input.on('drop', function (e) {
 			e.preventDefault();
 		});
@@ -138,7 +149,7 @@ jQuery(function() {
 
 	// NO PASTE -> desabilita a funcionalidade de colar um valor para o campo
 	window.noPaste = function (input) {
-		input = validaField(input, field_noPaste);
+		input = setElement(input, field_noPaste);
 		input.on('paste', function (e) {
 	    		e.preventDefault();
     		});
@@ -146,13 +157,13 @@ jQuery(function() {
 
 	// SET FOCUS -> Seta o foco no campo selecionado
 	window.setFocus = function (input) {
-		input = validaField(input, field_setFocus);
+		input = setElement(input, field_setFocus);
 		input.focus();
 	};
 
 	// UPPER CASE
 	window.setUppercase = function(input) {
-		input = validaField(input, field_upper);
+		input = setElement(input, field_upper);
 		// quando vier preenchido
 		input.each(function(){
 			var obj = jQuery(this);
@@ -175,7 +186,7 @@ jQuery(function() {
 
 	// LOWER CASE
 	window.setLowercase = function(input) {
-		input = validaField(input, field_upper);
+		input = setElement(input, field_upper);
 		// quando vier preenchido
 		input.each(function(){
 			var obj = jQuery(this);
@@ -213,13 +224,13 @@ jQuery(function() {
 
 		//SELECT AUTO-TAB
 		window.selectAutoTab = function (input, target) {
-			input = validaField(input, field_selectAutoTab);
+			input = setElement(input, field_selectAutoTab);
 			input.each(function() {
 
-				if(!isset(target))
+				if(!isSet(target))
 					this.target = jQuery('#'+jQuery(this).data('target'));
 
-				if(this.target.length) {
+				if(elementExist(this.target)) {
 					var obj = jQuery(this);
 					var isChosen = (obj.hasClass('.no-chosen')) ? false : true;
 
@@ -232,7 +243,7 @@ jQuery(function() {
 						var objFocus = this.target; //fix autotab on chosen
 
 						// IMPORTANT: this must go before autoTab
-						if(this.target.length) {
+						if(elementExist(this.target)) {
 							// set target disable status
 							if(disable != null) toggleDisabled(this.target, disable);
 							// set target status display
@@ -258,13 +269,13 @@ jQuery(function() {
 
 		//CHECK AUTO-TAB
 		window.checkAutoTab = function (input, target) {
-			input = validaField(input, field_checkAutoTab);
+			input = setElement(input, field_checkAutoTab);
 			input.each(function() {
 
-				if(!isset(target))
+				if(!isSet(target))
 					this.target = jQuery('#'+jQuery(this).data('target'));
 
-				if(this.target.length) {
+				if(elementExist(this.target)) {
 					var obj = jQuery(this);
 					var disable = jQuery(this).data('targetDisabled');
 					var display = jQuery(this).data('targetDisplay');
@@ -273,7 +284,7 @@ jQuery(function() {
 					obj.change(function() {
 						if(jQuery(this).is(':checked')) {
 							// IMPORTANT: this must go before autoTab
-							if(this.target.length) {
+							if(elementExist(this.target)) {
 								// set target disable status
 								if(disable != null) toggleDisabled(this.target, disable);
 								// set target status display
@@ -293,7 +304,7 @@ jQuery(function() {
 								obj.autoTab();
 							}
 						} else {
-							if(this.target.length) {
+							if(elementExist(this.target)) {
 								// set target status disable
 								if(disable != null) toggleDisabled(this.target, (disable ? false : true));
 								// set target status display
@@ -332,18 +343,18 @@ jQuery(function() {
 		// SET BUTTON ACTION
 		// seta a ação de click(default) ou focus no botão (btn) através da tecla 'enter' quando o foco estiver no campo (input)
 		window.setBtnAction = function (input, target, action) {
-			input = validaField(input, field_setBtnAction);
+			input = setElement(input, field_setBtnAction);
 			input.each(function() {
 
-				if(!isset(target))
+				if(!isSet(target))
 					this.target = jQuery('#'+jQuery(this).data('target'));
 				else this.target = target;
 
-				if(!isset(action))
+				if(!isSet(action))
 					this.action = jQuery(this).data('action');
 				else this.action = action;
 
-				if(this.target.length) {
+				if(elementExist(this.target)) {
 					var obj = jQuery(this);
 					input.keyup(function (e) {
 						if (e.keyCode==13) {
@@ -370,16 +381,16 @@ jQuery(function() {
 
 		//CPF
 		window.setCPF = function (input, autotab) {
-			input = validaField(input, field_cpf);
+			input = setElement(input, field_cpf);
 			var error = 'CPF INVÁLIDO';
 			input.each(function() {
 				var obj = jQuery(this);
-				var width = isset(obj.data('width')) ? obj.data('width') : false;
+				var width = isSet(obj.data('width')) ? obj.data('width') : false;
 				if(width) obj.css('width', width);
 				obj.css({'min-width':'9.5em', 'max-width':'100%'});
 		    // autotab param
-				var tab = isset(autotab) ? autotab : true;
-				tab = isset(obj.data('autotab')) ? obj.data('autotab') : tab;
+				var tab = isSet(autotab) ? autotab : true;
+				tab = isSet(obj.data('autotab')) ? obj.data('autotab') : tab;
 
 				obj.inputmask("999.999.999-99", {
 					oncomplete: function(){
@@ -410,16 +421,16 @@ jQuery(function() {
 
 		//CNPJ
 		window.setCNPJ = function (input, autotab) {
-			input = validaField(input, field_cnpj);
+			input = setElement(input, field_cnpj);
 			var error = 'CNPJ INVÁLIDO!<br />Informe o CNPJ com apenas 14 dígitos.<br />Ignore, se houver, o dígito 0 (zero) inicial';
 			input.each(function() {
 				var obj = jQuery(this);
-				var width = isset(obj.data('width')) ? obj.data('width') : false;
+				var width = isSet(obj.data('width')) ? obj.data('width') : false;
 				if(width) obj.css('width', width);
 				obj.css({'min-width':'12em', 'max-width':'100%'});
 		    // autotab param
-				var tab = isset(autotab) ? autotab : true;
-				tab = isset(obj.data('autotab')) ? obj.data('autotab') : tab;
+				var tab = isSet(autotab) ? autotab : true;
+				tab = isSet(obj.data('autotab')) ? obj.data('autotab') : tab;
 
 				obj.inputmask("99.999.999/9999-99", {
 					oncomplete: function(){
@@ -450,7 +461,7 @@ jQuery(function() {
 
 		//TELEFONES
 		window.setPhone = function (input, toggleMask) {
-		  input = validaField(input, field_setPhone);
+		  input = setElement(input, field_setPhone);
 		  var ed = '(99) 9999-9999[9]'; // eight digits
 		  var nd = '(99) 9999[9]-9999'; // nine digits
 		  var ph = ' '; // placeholder
@@ -462,7 +473,7 @@ jQuery(function() {
 		  //var width_noMask = '15em';
 		  var minWidth = '9.5em';
 		  // verifica se existe um campo do tipo 'phone'
-		  if(input.length){
+		  if(elementExist(input)){
 		    //se existir, verifico o valor em cada um
 		    input.each(function() {
 		      var obj = jQuery(this);
@@ -482,15 +493,15 @@ jQuery(function() {
 		      var nomask = 0;
 		      var width = obj.data('width');
 		      if(width != null) input.css('width', width);
-					// setTime param
-					var tm = isset(toggleMask) ? toggleMask : false;
-					tm = isset(obj.data('toggleMask')) ? obj.data('toggleMask') : tm;
+					// togglemask param
+					var tm = isSet(toggleMask) ? toggleMask : false;
+					tm = isSet(obj.data('toggleMask')) ? obj.data('toggleMask') : tm;
 		      // if togglemask option is true
 		      if(tm == true) {
 		        obj.wrap('<div class="input-group" style="width:'+width+'; min-width:'+minWidth+'; max-width:100%;"></div>');
 		        obj.css({'width':'100%'});
 		        //se o campo não estiver preenchido
-		        if(obj.val() == "" || obj.val().indexOf("(") >= 0) {
+		        if(isEmpty(obj.val()) || obj.val().indexOf("(") >= 0) {
 		          //carrega a máscara
 		          obj.inputmask(mask, options);
 		        } else {
@@ -529,13 +540,13 @@ jQuery(function() {
 
 		//CEP
 		window.setCEP = function (input, autotab) {
-			input = validaField(input, field_cep);
+			input = setElement(input, field_cep);
 			input.each(function() {
 				var obj = jQuery(this);
-				var width = isset(obj.data('width')) ? obj.data('width') : false;
+				var width = isSet(obj.data('width')) ? obj.data('width') : false;
 		    // autotab param
-				var tab = isset(autotab) ? autotab : true;
-				tab = isset(obj.data('autotab')) ? obj.data('autotab') : tab;
+				var tab = isSet(autotab) ? autotab : true;
+				tab = isSet(obj.data('autotab')) ? obj.data('autotab') : tab;
 
 				if(width) obj.css('width', width);
 				obj.css({'min-width':'7.2em', 'max-width':'100%'});
@@ -554,20 +565,20 @@ jQuery(function() {
 
 		// DATA
 		window.setDate = function (input, setTime, seconds, autotab) {
-		  input = validaField(input, field_date);
+		  input = setElement(input, field_date);
 		  input.each(function() {
 		    var obj = jQuery(this);
 		    if(obj.val() != '') obj.val(dateFormat(obj.val()));
 
 		    // setTime param
-		    var time = isset(setTime) ? setTime : false;
-		    time = isset(obj.data('time')) ? obj.data('time') : time;
+		    var time = isSet(setTime) ? setTime : false;
+		    time = isSet(obj.data('time')) ? obj.data('time') : time;
 		    // seconds param
-		    var sec = isset(seconds) ? seconds : true;
-		    sec = isset(obj.data('seconds')) ? obj.data('seconds') : sec;
+		    var sec = isSet(seconds) ? seconds : true;
+		    sec = isSet(obj.data('seconds')) ? obj.data('seconds') : sec;
 		    // autotab param
-		    var tab = isset(autotab) ? autotab : true;
-		    tab = isset(obj.data('autotab')) ? obj.data('autotab') : tab;
+		    var tab = isSet(autotab) ? autotab : true;
+		    tab = isSet(obj.data('autotab')) ? obj.data('autotab') : tab;
 
 		    var mask = 'd/m/y';
 		    var hold = '__/__/____';
@@ -587,13 +598,13 @@ jQuery(function() {
 		    var mindate = obj.data('mindate');
 		    var maxdate = obj.data('maxdate');
 		    var yrange  = obj.data('yearRange');
-		    var width = (!isset(obj.data('width')) ? obj.css('width', minW) : obj.css('width', obj.data('width')));
+		    var width = (!isSet(obj.data('width')) ? obj.css('width', minW) : obj.css('width', obj.data('width')));
 		    obj.css({'min-width': minW, 'max-width':'100%'});
 
 		    // mask date
 		    obj.inputmask(mask, {
 		      placeholder: hold,
-					showMaskOnHover: true,
+		      showMaskOnHover: true,
 		      oncomplete: function(){
 		        obj.datepicker("hide");
 		        if(tab) obj.autoTab();
@@ -649,9 +660,6 @@ jQuery(function() {
 		    if(maxdate != null) obj.datepicker("option", "maxDate", maxdate);
 		    if(yrange  != null) obj.datepicker("option", "yearRange", yrange );
 
-		    // formata data para armazenar no DB
-		    if(obj.data('convert')) dateConvert(obj.parents('form'), obj);
-
 		  });
 		};
 		// converte do formato de banco (0000-00-00) para o formato padrão do 'field-date' (00-00-0000)
@@ -665,27 +673,45 @@ jQuery(function() {
 		  }
 		};
 		// formata o 'field-date' para o formato de banco (0000-00-00)
-		window.dateConvert = function (form, field) {
-		  form.on('submit', function(e) {
-		    var dh = field.val().split(' ');
-		    var dt = dh[0].split('/');
-		    var t = (isset(dh[1]) && dh[1].length > 0) ? ' '+dh[1] : '';
-		    field.val(dt[2]+'-'+dt[1]+'-'+dt[0]+t);
+		window.dateConvert = function () {
+		  jQuery('.field-date').each(function() {
+				var obj, dh, dt, d, m, y, t, setTime, seconds;
+		    obj = jQuery(this);
+		    if(isSet(obj.data('convert')) && obj.data('convert')) {
+		      dh = obj.val().split(' ');
+		      dt = dh[0].split('/');
+		      d = (isSet(dt[0]) && dt[0].length == 2) ? dt[0] : '';
+		      m = (isSet(dt[1]) && dt[1].length == 2) ? dt[1] : '';
+		      y = (isSet(dt[2]) && dt[2].length == 4) ? dt[2] : '';
+		      if(!isEmpty(d) && !isEmpty(m) && !isEmpty(y)) {
+		        t = (isSet(dh[1]) && dh[1].length > 0) ? ' '+dh[1] : '';
+		        // remove mask to enable converted value
+		        if(obj.inputmask) obj.inputmask('remove');
+		        // set converted value
+		        obj.val(y+'-'+m+'-'+d+t);
+		        // reset mask after 3 seconds
+		        setTime = (isSet(obj.data('time')) && obj.data('time')) ? true : false;
+		        seconds = (isSet(obj.data('seconds')) && !obj.data('seconds')) ? false : true;
+		        setTimeout(function() {
+		          setDate(obj, setTime, seconds);
+		        } , 3000 );
+		      }
+		    }
 		  });
 		};
 
 		//HORA
 		window.setTime = function (input, seconds, autotab) {
-			input = validaField(input, field_time);
+			input = setElement(input, field_time);
 			input.each(function() {
 				var obj = jQuery(this);
-				var width = isset(obj.data('width')) ? obj.data('width') : false;
+				var width = isSet(obj.data('width')) ? obj.data('width') : false;
 		    // seconds param
-				var sec = isset(seconds) ? seconds : false;
-				sec = isset(obj.data('seconds')) ? obj.data('seconds') : sec;
+				var sec = isSet(seconds) ? seconds : false;
+				sec = isSet(obj.data('seconds')) ? obj.data('seconds') : sec;
 		    // autotab param
-				var tab = isset(autotab) ? autotab : true;
-				tab = isset(obj.data('autotab')) ? obj.data('autotab') : tab;
+				var tab = isSet(autotab) ? autotab : true;
+				tab = isSet(obj.data('autotab')) ? obj.data('autotab') : tab;
 				if(sec) {
 					obj.inputmask("h:s:s",{ oncomplete: function(){ if(tab) obj.autoTab(); } });
 					w = '6em';
@@ -700,81 +726,81 @@ jQuery(function() {
 
 
 	// FORMATA PREÇO
-	window.setPrice = function (input, cents, usFormat, convert) {
+	window.setPrice = function (input, cents, usFormat) {
 
-		// o formato ideal para a moeda brasileira (R$) seria "9.999,00".
-		// Mas esse formato não funciona para campos do tipo decimal(10,2)
-		// que é o default para campos relativo a valores financeiros.
-		// Dessa forma, o formato configurado foi "9999.00"
-		// IMPORTANTE: Para que funcione corretamente, o campo da tabela deve ser "decimal(10,2)".
+	  // o formato ideal para a moeda brasileira (R$) seria "9.999,00".
+	  // Mas esse formato não funciona para campos do tipo decimal(10,2)
+	  // que é o default para campos relativo a valores financeiros.
+	  // Dessa forma, o formato configurado foi "9999.00"
+	  // IMPORTANTE: Para que funcione corretamente, o campo da tabela deve ser "decimal(10,2)".
 
-		input = validaField(input, field_price);
+	  input = setElement(input, field_price);
 
-		if(input.length){
-			input.each(function() {
-				obj = jQuery(this);
-				var width = isset(obj.data('width')) ? obj.data('width') : false;
+	  if(elementExist(input)){
+	    input.each(function() {
+	      obj = jQuery(this);
+	      var width = isSet(obj.data('width')) ? obj.data('width') : false;
 
-				// cents param
-				var c = isset(cents) ? cents : true;
-				c = isset(obj.data('cents')) ? obj.data('cents') : c;
-				// usFormat param
-				var f = isset(usFormat) ? usFormat : false;
-				f = isset(obj.data('usFormat')) ? obj.data('usFormat') : f;
-				// convert param
-				var cv = isset(convert) ? convert : false;
-				cv = isset(obj.data('convert')) ? obj.data('convert') : cv;
+	      // cents param
+	      var c = isSet(cents) ? cents : true;
+	      c = isSet(obj.data('cents')) ? obj.data('cents') : c;
+	      // usFormat param
+	      var f = isSet(usFormat) ? usFormat : false;
+	      f = isSet(obj.data('usFormat')) ? obj.data('usFormat') : f;
 
-				if(width) obj.css('width', width);
-				obj.css({'min-width':'8.5em', 'max-width':'100%'});
+	      if(width) obj.css('width', width);
+	      obj.css({'min-width':'8.5em', 'max-width':'100%'});
 
-				// define se vai usar centavos.
-				var decimal = (c == true) ? 2 : 0;
-				var limite = (c == true) ? 12 : 10;
+	      // define se vai usar centavos.
+	      var decimal = (c == true) ? 2 : 0;
+	      var limite = (c == true) ? 12 : 10;
 
-				// define o formato (default é 1.000,00)
-				if(f == true) {
-					sep1 = ',';
-					sep2 = '.';
-					if(c) obj.attr("placeholder","0.00");
-				} else {
-					sep1 = '.';
-					sep2 = ',';
-					if(c) obj.attr("placeholder","0,00");
-				}
+	      // define o formato (default é 1.000,00)
+	      if(f == true) {
+	        sep1 = ',';
+	        sep2 = '.';
+	        if(c) obj.attr("placeholder","0.00");
+	      } else {
+	        sep1 = '.';
+	        sep2 = ',';
+	        if(c) obj.attr("placeholder","0,00");
+	      }
 
-				obj.priceFormat({
-					prefix: '',
-					centsLimit: decimal,
-					thousandsSeparator: sep1,
-					centsSeparator: sep2,
-					limit: limite
-				});
+	      obj.priceFormat({
+	        prefix: '',
+	        centsLimit: decimal,
+	        thousandsSeparator: sep1,
+	        centsSeparator: sep2,
+	        limit: limite
+	      });
 
-				// formata para armazenar no DB como decimal(10,2)
-				if(cv == true) priceNormalize(obj.parents('form'), obj, c, f);
-
-				// evita que o usuário arraste um valor para o campo e quebre a máscara
-				noDrop(obj);
-			});
-		}
+	      // evita que o usuário arraste um valor para o campo e quebre a máscara
+	      noDrop(obj);
+	    });
+	  }
 	};
 	// formata o 'field-price' para o formato de banco (decimal, float)
-	window.priceNormalize = function (form, field, cents, usFormat) {
-		form.on('submit', function(e) {
-			if(usFormat == true) {
-				field.val(field.val().replace(/\,/g,''));
-				if(cents == false) field.val(field.val()+'.00');
-			} else {
-				field.val(field.val().replace(/\./g,''));
-				field.val((cents == true ? field.val().replace(',','.') : field.val()+'.00'));
-			}
-		});
+	window.priceDecimal = function () {
+	  jQuery('.field-price').each(function() {
+		  var obj, value, number, decimal;
+	    obj = jQuery(this);
+	    val = obj.val();
+	    if(isSet(obj.data('convert')) && obj.data('convert')) {
+	      // replace comma ',' for dot '.'
+	      val = val.replace(/\,/g,'.');
+	      number = val.substring(0, val.lastIndexOf("."));
+	      decimal = val.substring(val.lastIndexOf("."));
+	      // remove separator '.'
+	      number = number.replace(/\./g,'');
+	      // set price format
+	      obj.val(number + decimal);
+	    }
+	  });
 	};
 
 	// APENAS CARACTERES 'letras' COM OU EM ACENTO
 	window.setNoNumber = function (input) {
-		input = validaField(input, field_noNumber);
+		input = setElement(input, field_noNumber);
 		input.on("keypress keyup blur",function (e) {
 			jQuery(this).val(jQuery(this).val().replace(/[0-9]/g, ""));
 		});
@@ -782,7 +808,7 @@ jQuery(function() {
 
 	// APENAS NÚMEROS E CARACTERES
 	window.setNoSpecialCharacter = function (input) {
-		input = validaField(input, field_noSpecialCharacter);
+		input = setElement(input, field_noSpecialCharacter);
 		input.on("keypress keyup blur",function (e) {
 			jQuery(this).val(jQuery(this).val().replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚâêîôûÂÊÎÔÛãõÃÕàÀçÇ ]/g, ""));
 		});
@@ -790,7 +816,7 @@ jQuery(function() {
 
 	// SEM ESPAÇO EM BRANCO
 	window.setNoBlankSpace = function (input) {
-		input = validaField(input, field_noBlankSpace);
+		input = setElement(input, field_noBlankSpace);
 		input.on("keypress keyup blur",function (e) {
 			if(e.which == 32) e.preventDefault();
 		});
@@ -798,7 +824,7 @@ jQuery(function() {
 
 	// SEM ACENTUAÇÃO
 	window.setNoAccents = function (input) {
-		input = validaField(input, field_noAccents);
+		input = setElement(input, field_noAccents);
 		input.on("keypress keyup blur",function (e) {
 			jQuery(this).val(jQuery(this).val().replace(/[áéíóúÁÉÍÓÚâêîôûÂÊÎÔÛãõÃÕàÀçÇ´`~^]/g, ""));
 		});
@@ -806,7 +832,7 @@ jQuery(function() {
 
 	// INTEGER - APENAS NÚMEROS INTEIROS
 	window.setInteger = function (input) {
-		input = validaField(input, field_integer);
+		input = setElement(input, field_integer);
 		input.on("keypress keyup blur",function (e) {
 			jQuery(this).val(jQuery(this).val().replace(/[^\d]/g, ""));
 			if(e.which > 65) e.preventDefault();
@@ -815,7 +841,7 @@ jQuery(function() {
 
 	// FLOAT - APENAS NÚMEROS COM PONTO FLUTUANTE
 	window.setFloat = function (input) {
-		input = validaField(input, field_float);
+		input = setElement(input, field_float);
 		input.on("keypress keyup blur",function (event) {
 			jQuery(this).val(jQuery(this).val().replace(/[^0-9\.]/g,''));
 			if(e.which > 65) e.preventDefault();
@@ -829,7 +855,7 @@ jQuery(function() {
 		setInteger();
 		setFloat();
 
-		input = validaField(input, field_number);
+		input = setElement(input, field_number);
 		switch (type) {
 			case 'float':
 				setFloat(input);
@@ -875,7 +901,7 @@ jQuery(function() {
 		});
 
 	// CONSULTA CEP -> republicavirtual.com.br
-	if(jQuery(field_searchCep).length){
+	if(elementExist(jQuery(field_searchCep))){
 		jQuery.getScript("https://envolute.com/cdn/sources/consulta_cep.js", function(){
 			jQuery(field_searchCep).blur(function(){
 				if(jQuery(this).val().replace(/\_/g, "").length == 9){
@@ -893,7 +919,7 @@ jQuery(function() {
 					//seta o evento change para avisar que os campos foram alterados
 					setTimeout(function(){
 						jQuery(field_address,field_address_number,field_district,field_cidade,field_city,field_uf,field_state,field_country).trigger("change");
-						if(campo_uf.next('.chzn-container, .chosen-container').length) {
+						if(elementExist(campo_uf.next('.chzn-container, .chosen-container'))) {
 							campo_uf.trigger("liszt:updated"); // versão antiga -> que funciona - OLD
 							campo_uf.trigger("chosen:updated"); // nova versão -> em caso de atualização
 						}
@@ -912,14 +938,14 @@ jQuery(function() {
 	}
 
 	// TROCA A SIGLA PELO NOME DO ESTADO
-	if(jQuery(field_state).length) {
+	if(elementExist(jQuery(field_state))) {
 		jQuery(field_state).on('change', function() {
 			jQuery(this).val(ufToState(jQuery(this).val()));
 		});
 	}
 
 	// FORMATA O NOME DO BRASIL
-	if(jQuery(field_country).length) {
+	if(elementExist(jQuery(field_country))) {
 		jQuery(field_country).on('change', function() {
 			if(jQuery(this).val() == 'BRAZIL') { jQuery(this).val('BRASIL'); }
 		});
@@ -1088,8 +1114,8 @@ function isCpfCnpj(valor) {
 	var retorno = false;
 	var numero  = valor;
 	numero = String(numero).replace(/\D/g, "");
-	if (numero.length > 11){
-		//numero = numero.replace(/^0+/, ""); /*retira o zero inicial, se houver*/
+	if (numero.length > 11) {
+		//numero = numero.replace(/^0+/, ""); // retira o zero inicial, se houver
 		if (isCnpj(numero)) retorno = true;
 	} else {
 		if (isCpf(numero)) retorno = true;

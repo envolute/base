@@ -6,9 +6,21 @@ jQuery(document).ready(function() {
 	// GET URL BASE FROM INPUT FIELD INTO TEMPLATE BASE
 	var URLBase = jQuery('#baseurl').val();
 
+	// Essa função verifica se o parâmetro foi passado
+	window.isSet = function (e) {
+		return (typeof e === "null" || typeof e === "undefined") ? false : true;
+	};
+
+	// Essa função verifica se o parâmetro foi passado
+	window.isEmpty = function (e) {
+	  return (e == "") ? true : false;
+	};
+
+	// Essa função é identica a 'setElement' em core.js
+	// isso é para não haver dependência do core.js
 	window.setElement = function (e, def) {
 		var obj = e;
-		if(typeof e === "null" || typeof e === "undefined") {
+		if(!isSet(e)) {
 			obj = jQuery(def);
 		} else if(typeof e === 'string') {
 			obj = jQuery(e);
@@ -16,10 +28,16 @@ jQuery(document).ready(function() {
 		return obj;
 	};
 
+	// Essa função verifica se o parâmetro foi passado
+	window.elementExist = function (e) {
+		var obj = setElement(e);
+		return (obj.length) ? true : false;
+	};
+
 	// seta a largura do elemento pai
 	window.setParentWidth = function(elem, offsetLeft, offsetRight) {
 		var e = setElement(elem, '.set-parent-width');
-		if(e.length) {
+		if(elementExist(e)) {
 			e.each(function() {
 				var obj = jQuery(this);
 				var offLeft = (offsetLeft != null) ? offsetLeft : (obj.data('offsetLeft') != null ? obj.data('offsetLeft') : 0);
@@ -32,7 +50,7 @@ jQuery(document).ready(function() {
 	// seta a altura do elemento
 	window.visibleHeight = function(elem, offsetTop, offsetBottom) {
 		var e = setElement(elem, '.set-visible-height');
-		if(e.length) {
+		if(elementExist(e)) {
 			e.each(function() {
 				var obj = jQuery(this);
 				var offTop = (offsetTop != null) ? offsetTop : (obj.data('offsetTop') != null ? obj.data('offsetTop') : 0);
@@ -46,7 +64,7 @@ jQuery(document).ready(function() {
 	var field_setAlertBalloon = '.set-alert-balloon'
 	window.setAlertBalloon = function(elem, seconds, offsetTop, offsetRight, show) {
 		var e = setElement(elem, field_setAlertBalloon);
-		if(e.length) {
+		if(elementExist(e)) {
 			e.each(function() {
 				var obj = jQuery(this);
 				var sec = (seconds != null) ? seconds : (obj.data('seconds') != null ? obj.data('seconds') : 0);
@@ -66,7 +84,7 @@ jQuery(document).ready(function() {
 	};
 	window.showAlertBalloon = function(elem, seconds) {
 		var e = setElement(elem, field_setAlertBalloon);
-		if(e.length) {
+		if(elementExist(e)) {
 			e.each(function() {
 				var obj = jQuery(this);
 				var sec = (seconds != null) ? seconds : (obj.data('seconds') != null ? obj.data('seconds') : 0);
@@ -96,7 +114,7 @@ jQuery(document).ready(function() {
 			e = jQuery('body');
 		} else {
 			var object = (jQuery.type(obj) === "string") ? jQuery(obj) : obj;
-			e = (object.length) ? jQuery(obj) : jQuery('body');
+			e = (elementExist(object)) ? jQuery(obj) : jQuery('body');
 		}
 		jQuery('html,body').animate({scrollTop: e.offset().top - topSpace},'slow');
 	};
@@ -105,7 +123,7 @@ jQuery(document).ready(function() {
 	window.gotoElement = function(elem, offset) {
 		// Basta utilizar o termo "goto-" após o hash "#". Ex: #component -> #goto-component
 		var e = setElement(elem, 'a[href*="#goto-"], a.-goto-');
-		if(e.length) {
+		if(elementExist(e)) {
 			e.each(function() {
 				jQuery(this).click(function(e) {
 					var obj = jQuery(this);
@@ -113,8 +131,8 @@ jQuery(document).ready(function() {
 						var offSet = (offset != null) ? offset : (obj.data('offset') != null ? obj.data('offset') : 0);
 						var filter = this.hash.replace("#goto-", "#");
 						var target = jQuery(filter);
-						target = target.length ? target : jQuery('[name=' + filter.slice(1) +']');
-						if (target.length) {
+						target = elementExist(target) ? target : jQuery('[name=' + filter.slice(1) +']');
+						if (elementExist(target)) {
 							scrollTo(target, offSet);
 							return false;
 						}
@@ -176,7 +194,7 @@ jQuery(document).ready(function() {
 			else view.removeClass('on-screen');
 	};
 	var view = jQuery('.element-view'); // when element yet was visibled
-	if(view.length) {
+	if(elementExist(view)) {
 		elementView(view);
 		jQuery(window).scroll(function() { elementView(view) });
 	}
@@ -213,8 +231,8 @@ jQuery(document).ready(function() {
 			if (width < md) jQuery('html').addClass('media-to-sm').removeClass('media-to-md');
 
 			// hlist responsivo
-			if (jQuery('.hlist').not('.no-responsive').length && width < sm) jQuery('.hlist').removeClass('hlist').addClass('list responsive-hlist');
-			if (jQuery('.responsive-hlist').length && width >= sm) jQuery('.responsive-hlist').removeClass('list responsive-hlist').addClass('hlist');
+			if (elementExist(jQuery('.hlist').not('.no-responsive')) && width < sm) jQuery('.hlist').removeClass('hlist').addClass('list responsive-hlist');
+			if (elementExist(jQuery('.responsive-hlist')) && width >= sm) jQuery('.responsive-hlist').removeClass('list responsive-hlist').addClass('hlist');
 
 			return width;
 		};
@@ -231,7 +249,7 @@ jQuery(document).ready(function() {
 	// CONTEÚDO
 
 		// por default, esconde botao para editar conteudo
-		if(jQuery('.edit-icon').length) {
+		if(elementExist(jQuery('.edit-icon'))) {
 			// só mostra a opção de esconder quando existe o botão de edição
 			jQuery('#toggleBtnEdit').show();
 		} else {
@@ -239,11 +257,11 @@ jQuery(document).ready(function() {
 		}
 		// mostra/esconde botao para editar conteudo
 		jQuery('#toggleBtnEdit input[type=checkbox]').click(function(){
-			if(jQuery('.edit-icon').length) jQuery('.edit-icon').toggle();
+			if(elementExist(jQuery('.edit-icon'))) jQuery('.edit-icon').toggle();
 		});
 
 		// FONTSIZER -> Redimensionamento da Fonte no conteúdo
-		if(jQuery('#fontsize').length) {
+		if(elementExist(jQuery('#fontsize'))) {
 			jQuery('#fontsize').fontSize({alvo:'#content', setCookie:false, opResetar:false});
 		}
 
@@ -253,7 +271,7 @@ jQuery(document).ready(function() {
 		});
 
 		// ZOOM NA IMAGEM PRINCIPAL
-		if(jQuery('.scroll-image-zoom').length){
+		if(elementExist(jQuery('.scroll-image-zoom'))){
 			var obj = '.scroll-image-zoom';
 			jQuery.getScript(URLBase+'/templates/base/core/js/content/wheelzoom.js', function(){
 				jQuery(obj).each(function() {
@@ -300,7 +318,7 @@ jQuery(document).ready(function() {
 		function toggleChevron(e) {
 			jQuery(e.target).prev('.panel-heading').find(".indicator").toggleClass('base-icon-up-open');
 		}
-		if(cps.length) {
+		if(elementExist(cps)) {
 			cps.find('.panel-heading').each(function() {
 				if(jQuery(this).next('.collapse').hasClass('in')) {
 					jQuery(this).find('.panel-title').append('<span class="indicator base-icon-down-open base-icon-up-open pull-right"></span>');
@@ -315,7 +333,7 @@ jQuery(document).ready(function() {
 		// VERTICAL MENU -> NAVIGATION
 
 		// abre o(s) nível(is) do item ativo marcando como ativo também o(s) item(ns) pai
-		if(jQuery('.sm-menu').length) jQuery('.sm-menu dt.active').addClass('current').parents('dd').show().prev('dt').addClass('active opened');
+		if(elementExist(jQuery('.sm-menu'))) jQuery('.sm-menu dt.active').addClass('current').parents('dd').show().prev('dt').addClass('active opened');
 
 		// NAVBAR -> menu de administração
 
@@ -326,9 +344,9 @@ jQuery(document).ready(function() {
 
 			// seta a altura da barra fixa de navegação lateral
 			var navside		= jQuery('#navside');
-			if(navside.length) {
-				var nbHeight	= (jQuery("#navbar").length) ? jQuery("#navbar").outerHeight(true) : 0;
-				var ntHeight	= (jQuery("#navtop").length) ? jQuery("#navtop").outerHeight(true) : 0;
+			if(elementExist(navside)) {
+				var nbHeight	= (elementExist(jQuery("#navbar"))) ? jQuery("#navbar").outerHeight(true) : 0;
+				var ntHeight	= (elementExist(jQuery("#navtop"))) ? jQuery("#navtop").outerHeight(true) : 0;
 				var navOffset	= nbHeight + ntHeight;
 				visibleHeight(navside, navOffset);
 				jQuery(window).resize(function() { visibleHeight(navside, navOffset); }); // ON RESIZE
@@ -338,7 +356,7 @@ jQuery(document).ready(function() {
 
 			// Atribui a class parent se não houver
 			var navChild = jQuery('.nav[class*="menu"] .nav-child');
-			if(navChild.length) {
+			if(elementExist(navChild)) {
 					navChild.each(function() {
 						if(!jQuery(this).parent('li').hasClass('parent')) jQuery(this).parent('li').addClass('parent');
 					});

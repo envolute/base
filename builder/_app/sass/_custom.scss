@@ -40,14 +40,14 @@
 		.module .page-header,
 		h4.page-header,
 		h5.page-header,
-		fieldset:not(.fieldset-bordered) legend {
+		fieldset:not(.fieldset-bordered):not(.fieldset-embed) legend {
 			margin: 2px 0px 10px 0px;
 			padding-bottom: 9px;
 		}
 		.componentheading,
 		.contentheading,
 		.page-header,
-		fieldset:not(.fieldset-bordered) legend{
+		fieldset:not(.fieldset-bordered):not(.fieldset-embed) legend{
 			border-bottom:1px solid $base-border-color;
 			@include build-prefix-values('box-shadow', '0 1px 0 '$base-border-color-inverted);
 		}
@@ -55,14 +55,14 @@
 		.componentheading,
 		.contentheading,
 		.module .page-header,
-		fieldset:not(.fieldset-bordered) legend
+		fieldset:not(.fieldset-bordered):not(.fieldset-embed) legend
 		{
 			font-size:1.3em;
 			line-height: 1.3em;
 		}
-		fieldset:not(.fieldset-bordered) legend { margin-bottom: $base-space-lg; }
+		fieldset:not(.fieldset-bordered):not(.fieldset-embed) legend { margin-bottom: $base-space-lg; }
 		// CHROME ONLY
-		.chrome fieldset:not(.fieldset-bordered) legend { padding-top: 2px; }
+		.chrome fieldset:not(.fieldset-bordered):not(.fieldset-embed) legend { padding-top: 2px; }
 
 // MODULE
 

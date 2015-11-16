@@ -31,6 +31,11 @@
 	#cmstools.navbar img.pull-left,
 	#cmstools.navbar .nav > li > a > img { float: left; margin: 2px 3px 0 2px; }
 
+	#cmstools.navbar .dropdown-toggle > [class*="base-icon"],
+	#cmstools.navbar .navbar-brand > [class*="base-icon"] {
+		color: #f80;
+	}
+
 	// itens do menu
 	#cmstools a:before,
 	#cmstools a:after { font-family: 'baseicons'; }

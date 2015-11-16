@@ -422,6 +422,63 @@ $base = "templates/base/";
 						Demo site: <a href="https://cameronspear.com/demos/bootstrap-hover-dropdown/" target="_blank">https://cameronspear.com/demos/bootstrap-hover-dropdown/</a><br />
 						Git: <a href="https://github.com/CWSpear/bootstrap-hover-dropdown" target="_blank">https://github.com/CWSpear/bootstrap-hover-dropdown</a>
 					</div>
+					<div class="col-lg-6">
+						<h4 class="page-header"><span class="base-icon-star text-live"></span> Btn Icon</h4>
+						<p>Option to button with icon.</p>
+						<p><code>&lt;button class="btn btn-success"&gt;&lt;span class="base-icon-plus btn-icon"&gt; Text&lt;/button&gt;</code></p>
+						<p><button name="qwe" class="btn btn-success toggle-status"><span class="base-icon-plus btn-icon"></span> New Option</button></p>
+					</div>
+				</div>
+				<h4 class="page-header"><span class="base-icon-star text-live"></span> Btn Icon</h4>
+				<p><code>&lt;button class="btn btn-success"&gt;&lt;span class="base-icon-plus btn-icon"&gt; Text&lt;/button&gt;</code></p>
+				<p><button name="qwe" class="btn btn-success toggle-status"><span class="base-icon-plus btn-icon"></span> New Option</button> Option to button with icon.</p>
+				<h4 class="page-header"><span class="base-icon-star text-live"></span> Btn Icon for checkbox & Radio</h4>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Checkbox</label><br />
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-warning active-success">
+									<span class="base-icon-cancel btn-icon"></span>
+									<input type="checkbox" name="field" class="auto-tab" data-target="check1" data-target-display="true"> Check 1
+								</label>
+							</div>
+						</div>
+<pre>&lt;div class="btn-group" data-toggle="buttons"&gt;
+ &lt;label class="btn btn-warning active-success"&gt;
+  &lt;span class="base-icon-cancel btn-icon">&lt;/span&gt;
+  &lt;input type="checkbox" name="field" class="auto-tab" data-target="check1" data-target-display="true"&gt; Check
+ &lt;/label&gt;
+&lt;/div&gt;
+</pre>
+					</div>
+					<div class="col-md-6 width-auto">
+						<div class="form-group">
+							<label>Radio Group</label><br />
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-default active-danger">
+									<span class="base-icon-cancel"></span>
+									<input type="radio" name="options1" id="option1" class="auto-tab" data-target="radio-target-1" value="0" /> No
+								</label>
+								<label class="btn btn-default">
+									<span class="base-icon-cancel"></span>
+									<input type="radio" name="options1" id="option2" class="auto-tab" data-target="radio-target-1" value="1" /> Yes
+								</label>
+							</div>
+						</div>
+<pre>&lt;div class="btn-group" data-toggle="buttons"&gt;
+ &lt;label class="btn btn-default active-danger"&gt;
+  &lt;span class="base-icon-cancel btn-icon"&gt;&lt;/span&gt;
+  &lt;input type="radio" name="options1" id="option1" class="auto-tab" data-target="radio-target-1" value="0" /&gt; No
+ &lt;/label&gt;
+ &lt;label class="btn btn-default"&gt;
+  &lt;span class="base-icon-cancel btn-icon"&gt;&lt;/span&gt;
+  &lt;input type="radio" name="options1" id="option2" class="auto-tab" data-target="radio-target-1" value="1" /&gt; Yes
+ &lt;/label&gt;
+&lt;/div&gt;
+</pre>
+					</div>
+				</div>
 			</div>
 
 		</section>
@@ -454,6 +511,8 @@ $base = "templates/base/";
 				<p>The following snippet of text is <strong>rendered as bold text</strong>.</p>
 				<p>The following snippet of text is <em>rendered as italicized text</em>.</p>
 				<p>An abbreviation of the word attribute is <abbr title="attribute">attr</abbr>.</p>
+				<code>&lt;p class="text-upper" /&gt;</code>
+				<p class="text-upper">This text uppercase.</p>
 				</div>
 				<div class="col-lg-4">
 				<h2>Emphasis classes</h2>
@@ -501,8 +560,22 @@ $base = "templates/base/";
 					</div>
 					</div>
 				</div>
-
-				<hr>
+				<div class="row">
+					<div class="col-lg-6">
+						<div class="bs-component">
+							<code>&lt;h4 class="text-shadow" /&gt;</code>
+							<h4 class="text-shadow">This is a text with a default shadow</h4>
+							<p>This is a default option of text-shadow pattern. It is not recommended to use in backgrounds with very dark colors.</p>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="bs-component all-expand bg-gray">
+							<code>&lt;h4 class="text-embed" /&gt;</code>
+							<h4 class="text-embed">This is a embedded text</h4>
+							<p>This is a default option of text-shadow to give the impression of an embedded text. It is recommended for headings, bold in background with shades of gray. It is not recommended to use in backgrounds with very dark or white colors..</p>
+						</div>
+					</div>
+				</div>
 
 				<h4 class="page-header">Additional Options for Font Size</h4>
 				<div class="row">
@@ -1760,6 +1833,9 @@ $base = "templates/base/";
 
 								<label>Date & Time<br /><code>&lt;input class="field-date" data-time="true" /&gt;</code></label><br />
 								<p><input type="text" name="name" class="form-control field-date" data-time="true" data-convert="true" /></p>
+								<p class="alert alert-warning alert-icon">
+									When the Date & Time field has focus after a auto-tab event, it performs unexpected behavior causing the cursor go to the end of the field and not for the first amount on the hour. Thus, it is recommended the auto-tab feature is disabled in the previous field through the property<br /><strong class="text-danger">data-autotab ="false "</strong>.
+								</p>
 
 								<label>Time<br /><code>&lt;input class="field-time" data-width="4.5em" /&gt;</code></label><br />
 								<p><input type="text" name="name" class="form-control field-time" data-width="4.5em" /></p>
@@ -1827,30 +1903,24 @@ $base = "templates/base/";
 							<hr class="hr-sm" />
 							<div class="row">
 								<div class="col-md-7">
-									<form class="form-inline" action="<?php echo JURI::current().'#data-convert'?>" method="get">
+									<form onsubmit="dateConvert(); priceDecimal(); return false;">
 										<div class="bottom-expand"><span class="label label-primary">TEST DATA-CONVERT</span></div>
 										  <div class="form-group">
-											<label for="test-date">Date</label>
-											<input type="text" id="test-date" name="date_converted" class="form-control field-date" data-width="8.5em" data-convert="true" value="<?php echo $_GET['date_converted']; ?>" />
+											<label for="test-date" class="clear">Date</label>
+											<input type="text" id="test-date" name="date_converted" class="form-control field-date pull-left right-space-sm" data-autotab="false" data-width="8.5em" data-convert="true" />
+											<input type="text" id="test-datetime" name="datetime_converted" class="form-control field-date" data-time="true" data-width="8.5em" data-convert="true" />
 										  </div>
 										  <div class="form-group">
 											<label for="test-price">Price</label>
-											<input type="text" id="teste-price" name="price_converted" class="form-control field-price" data-width="10em" data-convert="true" value="<?php echo $_GET['price_converted']; ?>" />
+											<input type="text" id="teste-price" name="price_converted" class="form-control field-price" data-width="10em" data-convert="true" />
 										  </div>
-										  <button type="submit" class="btn btn-default">Convert</button>
+										  <button type="submit" class="btn btn-primary">Test Convert</button>
 									</form>
-									<?php
-									if($_GET['date_converted'] || $_GET['price_converted'])
-									echo '<span class="help-block"><span class="base-icon-flag text-live"></span> The received parameter is converted back to the default mask</span>';
-									?>
 								</div>
 								<div class="col-md-5">
-									<?php
-									if($_GET['date_converted'])
-									echo '<h4 class="bottom-space-xs"><span class="base-icon-flag text-live"></span> the converted data is <em class="text-live">'.$_GET['date_converted'].'</em></h4>';
-									if($_GET['price_converted'])
-									echo '<h4 class="no-margin"><span class="base-icon-flag text-live"></span> the converted price is <em class="text-live">'.$_GET['price_converted'].'</em></h4>';
-									?>
+									<p>To convert the value of the date field. Just call <em class="strong text-danger">dateConvert()</em> function</p>
+									<p>To convert the value of the price field. Just call <em class="strong text-danger">priceDecimal()</em> function</p>
+									<p class="alert alert-info"><strong>Tip:</strong>To send the values, functions can be called in the event or function responsible for the submit form</p>
 								</div>
 							</div>
 						</div>
@@ -3548,6 +3618,49 @@ Content...
 						<td>Element is present in the visible area of the screen (viewport). When the element is outside the visible area, class "on-screen" is removed</td>
 					</tr>
 					<tr>
+						<th colspan="2" class="active">OPACITY</th>
+					</tr>
+					<tr>
+						<td>.opacity_1</td>
+						<td>Set opacity 100% to element. fully visible</td>
+					</tr>
+					<tr>
+						<td>.opacity_90</td>
+						<td>Set opacity 90% to element</td>
+					</tr>
+					<tr>
+						<td>.opacity_80</td>
+						<td>Set opacity 80% to element</td>
+					</tr>
+					<tr>
+						<td>.opacity_70</td>
+						<td>Set opacity 70% to element</td>
+					</tr>
+					<tr>
+						<td>.opacity_60</td>
+						<td>Set opacity 60% to element</td>
+					</tr>
+					<tr>
+						<td>.opacity_50</td>
+						<td>Set opacity 50% to element</td>
+					</tr>
+					<tr>
+						<td>.opacity_40</td>
+						<td>Set opacity 40% to element</td>
+					</tr>
+					<tr>
+						<td>.opacity_30</td>
+						<td>Set opacity 30% to element</td>
+					</tr>
+					<tr>
+						<td>.opacity_20</td>
+						<td>Set opacity 20% to element</td>
+					</tr>
+					<tr>
+						<td>.opacity_10</td>
+						<td>Set opacity 0% to element. fully transparent</td>
+					</tr>
+					<tr>
 						<th colspan="2" class="active">WIDTH</th>
 					</tr>
 					<tr>
@@ -3742,6 +3855,26 @@ Content...
 					<tr>
 						<td>border-default</td>
 						<td>assigns the "default" color to the element. Eg: <code>&lt;div class="set-border <em class="strong text-danger">border-default</em>" ...&gt;</code></td>
+					</tr>
+					<tr>
+						<td>border-primary</td>
+						<td>assigns the "primary" color to the element. Eg: <code>&lt;div class="set-border <em class="strong text-danger">border-primary</em>" ...&gt;</code></td>
+					</tr>
+					<tr>
+						<td>border-success</td>
+						<td>assigns the "success" color to the element. Eg: <code>&lt;div class="set-border <em class="strong text-danger">border-success</em>" ...&gt;</code></td>
+					</tr>
+					<tr>
+						<td>border-info</td>
+						<td>assigns the "info" color to the element. Eg: <code>&lt;div class="set-border <em class="strong text-danger">border-info</em>" ...&gt;</code></td>
+					</tr>
+					<tr>
+						<td>border-warning</td>
+						<td>assigns the "warning" color to the element. Eg: <code>&lt;div class="set-border <em class="strong text-danger">border-warning</em>" ...&gt;</code></td>
+					</tr>
+					<tr>
+						<td>border-danger</td>
+						<td>assigns the "danger" color to the element. Eg: <code>&lt;div class="set-border <em class="strong text-danger">border-danger</em>" ...&gt;</code></td>
 					</tr>
 					<tr>
 						<td>border-white</td>

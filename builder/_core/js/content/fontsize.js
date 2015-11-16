@@ -2,7 +2,7 @@
 	FontSize for jQuery (version 1.1)
 	Copyright (c) 2009 Ramon Victor
 	http://www.ramonvictor.com/plugin-font-size-jquery
-	
+
 	Licensed under the MIT license:
 		http://www.opensource.org/licenses/mit-license.php
 
@@ -18,43 +18,43 @@
 			opResetar: false
 		};
 	var d = $.extend(defaults, options);
-	
+
   	return this.each(function() {
-		
-		//Acrescentando os links para aumentar e diminuir tamanho da fonte	
+
+		//Acrescentando os links para aumentar e diminuir tamanho da fonte
 		reset = d.opResetar;
 		if (reset) {
-			$(this).html('<a href="javascript:;" class="a-min btn btn-xs  btn-default">A</a> <a href="javascript:;" class="a-reset btn btn-xs btn-default">A</a> <a href="javascript:;" class="a-max btn btn-xs  btn-default">A</a>');
+			$(this).html('<a href="javascript:;" class="a-min btn btn-xs  btn-default"><span>A</span></a> <a href="javascript:;" class="a-reset btn btn-xs btn-default"><span>A</span></a> <a href="javascript:;" class="a-max btn btn-xs  btn-default"><span>A</span></a>');
 		} else {
-			$(this).html('<a href="javascript:;" class="a-min btn btn-xs  btn-default">A</a> <a href="javascript:;" class="a-max btn btn-xs btn-default">A</a>');
+			$(this).html('<a href="javascript:;" class="a-min btn btn-xs  btn-default"><span>A</span></a> <a href="javascript:;" class="a-max btn btn-xs btn-default"><span>A</span></a>');
 		}
-		
+
 		alvo = d.alvo;
 		cook = d.setCookie;
 		nvariacoes = d.variacoes;
-		
+
 		//Verificando número de variações
 		if(nvariacoes % 2 == 0){
 			padrao = (nvariacoes/2) + 1;
 		} else {
 			padrao = parseInt((nvariacoes/2) + 1);
 		}
-		
+
 		//Verificando se há cookie
 		if($.cookie("fontSize") != null){
 			$(alvo).addClass($.cookie("fontSize"));
 		} else {
-		   $(alvo).addClass("tam"+padrao);				
+		   $(alvo).addClass("tam"+padrao);
 		}
-     	
+
 		// Recuperando o número da classe atual
 		$.natual = function() {
-			atual = $(alvo).attr("class");		
+			atual = $(alvo).attr("class");
 			t = atual.indexOf("tam");
 			num = atual.substring((t+3),(t+5));
 			return parseInt(num);
 		}
-		
+
 		//Gravando valor da classe no cookie
 		$.verifyCookie = function(nclass) {
 			if(cook) {
@@ -62,51 +62,51 @@
 			}
 		}
 
-			
+
 		//Diminuindo número da classe até chegar a "1"
 		$('.a-min').click(function () {
-		    n = $.natual();												
-			if(n>1){						
+		    n = $.natual();
+			if(n>1){
 	    	    nAtual = "tam" + n;
-		    	n -= 1;			
-				nc = "tam" + n;
-    			$(alvo).removeAttr("class");
-				$(alvo).addClass(atual.replace(nAtual, nc));
-				$(this).parent().parent().find('a').removeClass('disabled');		
-				return $.verifyCookie(nc);				
-			} else {
-				$(this).addClass('disabled');
-			}
-		});
-		
-		//Aumentando o número da classe até chegar ao número total de variações
-		$('.a-max').click(function () { 
-   		    n = $.natual();
-			if(n < nvariacoes){						
-	    	    nAtual = "tam" + n;
-		    	n = n + 1;	
+		    	n -= 1;
 				nc = "tam" + n;
     			$(alvo).removeAttr("class");
 				$(alvo).addClass(atual.replace(nAtual, nc));
 				$(this).parent().parent().find('a').removeClass('disabled');
-				return $.verifyCookie(nc);	
+				return $.verifyCookie(nc);
 			} else {
 				$(this).addClass('disabled');
 			}
-		});	
-		
+		});
+
+		//Aumentando o número da classe até chegar ao número total de variações
+		$('.a-max').click(function () {
+   		    n = $.natual();
+			if(n < nvariacoes){
+	    	    nAtual = "tam" + n;
+		    	n = n + 1;
+				nc = "tam" + n;
+    			$(alvo).removeAttr("class");
+				$(alvo).addClass(atual.replace(nAtual, nc));
+				$(this).parent().parent().find('a').removeClass('disabled');
+				return $.verifyCookie(nc);
+			} else {
+				$(this).addClass('disabled');
+			}
+		});
+
 		//função de reset
 		$(".a-reset").click(function(){
 			nAtual = "tam" + $.natual();
 			$(alvo).removeAttr("class");
 			nc = "tam"+padrao;
-			$(alvo).addClass(atual.replace(nAtual, nc));	
+			$(alvo).addClass(atual.replace(nAtual, nc));
 			$(this).parent().parent().find('a').removeClass('disabled');
 			return $.verifyCookie(nc);
-						
+
 		});
-		
-		
+
+
     });
   };
 })(jQuery);

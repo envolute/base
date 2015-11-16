@@ -2,9 +2,9 @@
 // customização de estilo da administração
 
 // Core import's
-@import "../../sass/variables";
-@import "../../sass/mixins";
-@import "../../../core/sass/core";
+@import "../../../_base/sass/variables";
+@import "../../../_base/sass/mixins";
+@import "../../../_core/sass/core";
 // Imports
 @import "mixins/editor";
 

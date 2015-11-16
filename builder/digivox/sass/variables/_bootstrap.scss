@@ -105,7 +105,7 @@ $padding-xs-vertical:       1px !default;
 $padding-xs-horizontal:     5px !default;
 
 $line-height-large:         1.3333333 !default; // extra decimals for Win 8.1 Chrome
-$line-height-small:         1.5 !default;
+$line-height-small:         $line-height-base !default; // -> {CUSTOM: 1.5px}
 
 $border-radius-base:        2px !default; // -> {CUSTOM: 4px}
 $border-radius-large:       2px !default; // -> {CUSTOM: 6px}
@@ -218,7 +218,7 @@ $input-height-large:             (ceil($font-size-large * $line-height-large) + 
 $input-height-small:             (floor($font-size-small * $line-height-small) + ($padding-small-vertical * 2) + 2) !default;
 
 //** `.form-group` margin
-$form-group-margin-bottom:       15px !default;
+$form-group-margin-bottom:       10px !default;
 
 $legend-color:                   $gray-dark !default;
 $legend-border-color:            #e5e5e5 !default;

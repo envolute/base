@@ -299,10 +299,10 @@
 				margin-right:6px;
 			}
 			// FEATURE: botões para aumentar e diminuir o tamanho da fonte
-			.item-page #fontsize .btn { line-height:18px; }
-			.item-page #fontsize .btn.a-min { font-size:8px; }
-			.item-page #fontsize .btn.a-reset { font-size:10px; }
-			.item-page #fontsize .btn.a-max { font-size:12px; }
+			.item-page #fontsize .btn span { margin: 0; }
+			.item-page #fontsize .btn.a-min span { font-size:8px; }
+			.item-page #fontsize .btn.a-reset span { font-size:10px; }
+			.item-page #fontsize .btn.a-max span { font-size:12px; }
 
 			// TAGS -> lista de tags do conteúdo
 			.item-page .tags {

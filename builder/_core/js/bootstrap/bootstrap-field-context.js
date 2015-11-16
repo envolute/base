@@ -4,7 +4,7 @@
 jQuery(function() {
 
 	window.setFieldSuccess = function(input) {
-		input = validaField(input);
+		input = setElement(input);
 		var parent = input.parents('.form-group');
 		if(parent.length) {
 			parent.removeClass('has-warning has-error').addClass('has-feedback has-success');
@@ -14,7 +14,7 @@ jQuery(function() {
 		}
 	};
 	window.setFieldWarning = function(input) {
-		input = validaField(input);
+		input = setElement(input);
 		var parent = input.parents('.form-group');
 		if(parent.length) {
 			parent.removeClass('has-success has-error').addClass('has-feedback has-warning');
@@ -24,7 +24,7 @@ jQuery(function() {
 		}
 	};
 	window.setFieldError = function(input) {
-		input = validaField(input);
+		input = setElement(input);
 		var parent = input.parents('.form-group');
 		if(parent.length) {
 			parent.removeClass('has-success has-warning').addClass('has-feedback has-error');
@@ -46,7 +46,7 @@ jQuery(function() {
     });
   };
   window.unsetFieldContext = function(input) {
-    input = validaField(input);
+    input = setElement(input);
     var parent = input.parent('.form-group');
     if(parent.length) {
       parent.removeClass('has-success has-warning has-error');

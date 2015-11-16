@@ -8,8 +8,8 @@
 @mixin base-chosen($class) {
 
 	// largura
-	// '.#{$class}-sm' -> <span class=".#{$class}-sm"><select... ><span>
-	// '.#{$class}-lg' -> <span class=".#{$class}-lg"><select... ><span>
+	// '.input-sm +' -> <span class=".input-sm +"><select... ><span>
+	// '.input-lg +' -> <span class=".input-lg +"><select... ><span>
 
 	// Override width
 	.#{$class}-container {
@@ -26,13 +26,13 @@
 		border-color: $input-border;
 		@include build-prefix-values('border-radius', $border-radius-base);
 	}
-	.#{$class}-sm .#{$class}-container-single .#{$class}-single,
-	.#{$class}-sm .#{$class}-container-multi .#{$class}-choices {
+	.input-sm + .#{$class}-container-single .#{$class}-single,
+	.input-sm + .#{$class}-container-multi .#{$class}-choices {
 		min-height: $input-height-small;
 		@include build-prefix-values('border-radius', $border-radius-small);
 	}
-	.#{$class}-lg .#{$class}-container-single .#{$class}-single,
-	.#{$class}-lg .#{$class}-container-multi .#{$class}-choices {
+	.input-lg + .#{$class}-container-single .#{$class}-single,
+	.input-lg + .#{$class}-container-multi .#{$class}-choices {
 		min-height: $input-height-large;
 		@include build-prefix-values('border-radius', $border-radius-large);
 	}
@@ -49,39 +49,40 @@
 		height: $input-height-base;
 		line-height: $input-height-base;
 	}
-	.#{$class}-sm .#{$class}-container-single .#{$class}-single {
+	.input-sm + .#{$class}-container-single .#{$class}-single {
 		height: $input-height-small;
 		line-height: $input-height-small;
 	}
-	.#{$class}-lg .#{$class}-container-single .#{$class}-single {
+	.input-lg + .#{$class}-container-single .#{$class}-single {
 		height: $input-height-large;
 		line-height: $input-height-large;
 	}
 	// seta
 	.#{$class}-container-single .#{$class}-single div b {
-		margin-top: 15px!important;
+		margin-top: ($input-height-base/2) - 2!important;
 		background-position: 0 -7px!important;
 	}
-	.#{$class}-sm .#{$class}-container-single .#{$class}-single div b { margin-top: 13px!important; }
-	.#{$class}-lg .#{$class}-container-single .#{$class}-single div b { margin-top: 20px!important; }
+	.input-sm + .#{$class}-container-single .#{$class}-single div b { margin-top: ($input-height-small/2) - 2!important; }
+	.input-lg + .#{$class}-container-single .#{$class}-single div b { margin-top: ($input-height-large/2) - 2!important; }
 
-	.#{$class}-container-single .#{$class}-single abbr { top: 11px; }
-	.#{$class}-sm .#{$class}-container-single .#{$class}-single abbr { top: 9px; }
-	.#{$class}-lg .#{$class}-container-single .#{$class}-single abbr { top: 16px; }
+	.#{$class}-container-single .#{$class}-single abbr { top: ($input-height-base/2) - 6; }
+	.input-sm + .#{$class}-container-single .#{$class}-single abbr { top: ($input-height-small/2) - 6; }
+	.input-lg + .#{$class}-container-single .#{$class}-single abbr { top: ($input-height-large/2) - 6; }
 
 	// search & choices
 	.#{$class}-container-multi .#{$class}-choices li.search-field { padding: 4px 0 0; }
-	.#{$class}-sm .#{$class}-container-multi .#{$class}-choices li.search-field { padding: 2px 0 0; }
+	.input-sm + .#{$class}-container-multi .#{$class}-choices li.search-field { padding: 2px 0 0; }
 
 	.#{$class}-container .search-field input { width: 100%!important; }
 	.#{$class}-container-single .#{$class}-search input[type="text"],
 	.#{$class}-container-multi .#{$class}-choices li.search-field input[type="text"] {
 		min-height: 1em;
+		height: auto;
 		margin: 0;
 	}
 	.#{$class}-container-multi .#{$class}-choices li.search-field input[type="text"] { padding: 0 5px; }
 	.#{$class}-container-multi .#{$class}-choices li.search-choice { margin: 5px 2px 0px; }
-	.#{$class}-sm .#{$class}-container-multi .#{$class}-choices li.search-choice { margin: 3px 1px 0px; }
+	.input-sm + .#{$class}-container-multi .#{$class}-choices li.search-choice { margin: 3px 1px 0px; }
 
 	// menu popup com os resultados
 	.#{$class}-container .#{$class}-drop {
@@ -91,6 +92,6 @@
 		@include build-prefix-values('border-radius', 0 0 $border-radius-base $border-radius-base);
 		overflow: hidden;
 	}
-	.#{$class}-sm .#{$class}-container .#{$class}-drop { top: 97%; }
+	.input-sm + .#{$class}-container .#{$class}-drop { top: 97%; }
 
 }

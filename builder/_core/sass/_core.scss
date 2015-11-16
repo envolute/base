@@ -16,6 +16,8 @@
 		border: none;
 	}
 
+	[class*="base-icon-"]:not(.btn) { line-height: 1em; }
+
 	// Chrome -> campos auto preenchidos
 	input:-webkit-autofill { text-indent:0!important; }
 
@@ -66,21 +68,23 @@
 	.text-md { font-size: $font-size-base; }
 	.text-lg { font-size: 18px; }
 	// variable size
-	.tam1{ font-size: 70% !important}
-	.tam2{ font-size: 80% !important}
-	.tam3{ font-size: 90% !important}
-	.tam4{ font-size: 100% !important}
-	.tam5{ font-size: 120% !important}
-	.tam6{ font-size: 150% !important}
-	.tam7{ font-size: 180% !important}
+	.tam1 { font-size: 70% !important}
+	.tam2 { font-size: 80% !important}
+	.tam3 { font-size: 90% !important}
+	.tam4 { font-size: 100% !important}
+	.tam5 { font-size: 120% !important}
+	.tam6 { font-size: 150% !important}
+	.tam7 { font-size: 180% !important}
 
 	// Formatação de texto
-	.text-white{ color: #fff; }
-	.text-live{ color: $base-color-live; }
-	.strong{ font-weight: bold!important; }
+	.text-white { color: #fff; }
+	.text-live { color: $base-color-live; }
+	.strong { font-weight: bold!important; }
+	.text-upper { text-transform: uppercase; }
+	.text-shadow { text-shadow: $text-shadow; }
+	.text-embed { text-shadow: $text-embed; }
 	// Limita o texto de acordo com o a largura do container
 	// adiciona ellipses '...'
-
 	.text-overflow {
 		display: inline-block;
 		max-width: 100%;
@@ -289,9 +293,49 @@
 			border: none;
 		}
 
+	// FIELDSET-EMBED
+
+		.fieldset-embed {
+			position: relative;
+			padding: $fieldset-embed-padding;
+			margin-bottom: $base-space;
+			border: 1px solid $base-border-color-light;
+			background-color: $fieldset-embed-bg;
+			@include build-prefix-values('box-shadow', $fieldset-embed-shadow);
+		}
+		.fieldset-embed.closed { display: none; }
+		.fieldset-embed > legend {
+			position: absolute;
+			top: -1px;
+			width:  auto;
+			padding: 2px 10px 3px;
+			font-size: $fieldset-embed-legend-font-size;
+			text-align: center;
+			border: 1px solid $base-border-color-light;
+			border-top: 0;
+			background-color: $body-bg;
+			@include build-prefix-values('border-radius', $fieldset-embed-legend-radius);
+			@include build-prefix-values('box-shadow', $fieldset-embed-legend-shadow);
+			z-index: 1;
+		}
+		.well .fieldset-embed > legend { background-color: $well-bg; }
+		.fieldset-embed > legend.pull-right { right: $fieldset-embed-legend-right; }
+		.fieldset-embed > .form-actions {
+			padding-top: 10px;
+			border-top: 1px solid $base-border-color;
+		}
+		.fieldset-embed > .form-actions {
+			padding-top: 10px;
+			border-top: 1px solid $base-border-color;
+		}
+		// custom bootstrap default
+		.fieldset-embed .table-striped > tbody> tr:nth-of-type(odd) {
+    	background-color: $fieldset-embed-striped-color;
+		}
+
 		// fieldset-sm
-		.fieldset-bordered .fieldset-sm { padding: 20px 10px 10px; }
-		.fieldset-bordered .fieldset-sm {
+		.fieldset-bordered.fieldset-sm { padding: 20px 10px 10px; }
+		.fieldset-bordered.fieldset-sm legend {
 			padding: 0 5px;
 			font-size: 1em;
 		}
@@ -317,45 +361,6 @@
 			border: 1px solid $base-border-color;
 			@include build-prefix-values('border-radius', 0 0 $border-radius-base $border-radius-base);
 			background: $base-color-muted-lighter;
-		}
-
-	// FIELDSET-EMBED
-
-		.fieldset-embed {
-			position: relative;
-			padding: $fieldset-embed-padding;
-			margin-bottom: $base-space;
-			border: 1px solid $base-border-color-light;
-			background-color: $fieldset-embed-bg;
-			@include build-prefix-values('box-shadow', $fieldset-embed-shadow);
-		}
-		.fieldset-embed.closed { display: none; }
-		.fieldset-embed > legend {
-			position: absolute;
-			top: -3px;
-			width:  auto;
-			padding: 6px 10px!important;
-			font-size: 16px!important;
-			text-align: center;
-			border: 1px solid $base-border-color-light;
-			border-top: 0;
-			background-color: $body-bg;
-			@include build-prefix-values('border-radius', $fieldset-embed-legend-radius);
-			@include build-prefix-values('box-shadow', $fieldset-embed-legend-shadow);
-			z-index: 1;
-		}
-		.fieldset-embed > legend.pull-right { right: $fieldset-embed-legend-right; }
-		.fieldset-embed > .form-actions {
-			padding-top: 10px;
-			border-top: 1px solid $base-border-color;
-		}
-		.fieldset-embed > .form-actions {
-			padding-top: 10px;
-			border-top: 1px solid $base-border-color;
-		}
-		// custom bootstrap default
-		.fieldset-embed .table-striped > tbody> tr:nth-of-type(odd) {
-    	background-color: $fieldset-embed-striped-color;
 		}
 
 	// FIELDS
@@ -448,6 +453,7 @@
 			padding-right: 3px;
 			color: $brand-danger;
 			font-weight: normal;
+			line-height: 1em;
 		}
 
 	// JQUERY VALIDATION
@@ -604,7 +610,11 @@ l		label.error + .input-group-addon {
 		}
 	}
 
+	// mantém alinhado com os sub-itens
+	.nav.menu > li > a { border: 1px solid transparent; }
+
 	// parent
+	.nav.menu li.parent > a { padding-right: 20px; }
 	.nav.list-menu li.parent > a { padding-right: 15px; }
 
 	// child-reveal
@@ -627,7 +637,7 @@ l		label.error + .input-group-addon {
 		}
 		// List Menu
 		.nav.list-menu .nav-child { display: none; }
-		.active > .nav-child { display: block!important; }
+		.nav.list-menu .active > .nav-child { display: block!important; }
 
 		// retira a borda superior do primeiro item
 		.nav.menu .nav-child li:first-child,
@@ -635,6 +645,8 @@ l		label.error + .input-group-addon {
 		// retira a borda inferior do último item
 		.nav.menu .nav-child li:last-child,
 		.nav.menu .nav-child li:last-child > a { border-bottom: none!important; }
+
+		.nav.menu .nav-child li > a { padding: $nav-link-padding; }
 
 		// mouseover
 		.nav.menu .nav-child li > a:hover,
@@ -653,9 +665,6 @@ l		label.error + .input-group-addon {
 			right: 8px;
 			margin: 0;
 		}
-
-		// clear link color from 'dropdown-menu'
-		.nav[class*="menu"] .nav-child.dropdown-menu a { color: inherit; }
 
 		// Nav child inverted
 		// submenus para o lado esquerdo.
@@ -810,6 +819,7 @@ l		label.error + .input-group-addon {
 	.opacity_30 { opacity:0.3; }
 	.opacity_20 { opacity:0.2; }
 	.opacity_10 { opacity:0.1; }
+	.opacity_0 { opacity:0; }
 
 	// BORDERS
 	[class*="set-border"]{
@@ -822,6 +832,11 @@ l		label.error + .input-group-addon {
 	.set-border-left{ border-left-width:1px; }
 	.set-border-right{ border-right-width:1px; }
 	.border-default { border-color: $base-border-color; }
+	.border-primary { border-color: $brand-primary; }
+	.border-success { border-color: $brand-success; }
+	.border-info { border-color: $brand-info; }
+	.border-warning { border-color: $brand-warning; }
+	.border-danger { border-color: $brand-danger; }
 	.border-white { border-color: #fff; }
 	.border-live { border-color: $base-color-live; }
 	.border-dotted { border-style:dotted!important; }

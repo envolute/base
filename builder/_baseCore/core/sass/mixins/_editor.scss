@@ -3,9 +3,12 @@
 @mixin base-editor() {
 
 	// Toolbar
+	.mobileSkin table { background: #f8f8f8; }
+	.mobileSkin table.mceLayout,
+	.mobileSkin table.mceLayout tr.mceFirst td { border-color: #ddd!important; }
 	.mobileSkin .mceToolbar { height: auto!important; }
-	.mobileSkin table.mceToolbar { margin: 2px 0 0px 1px!important; }
-	.mobileSkin td.mceToolbar { padding-bottom: 2px!important; }
+	.mobileSkin table.mceToolbar { margin: 2px 0 4px 1px!important; }
+	.mobileSkin td.mceToolbar { padding: 4px 4px 2px!important; }
 	.mobileSkin .mceListBox .mceText { margin-left: 2px!important; }
 
 	// botões
@@ -19,6 +22,16 @@
 		padding: 3px!important;
 		border-color: #ccc #ccc #bbb!important;
 		@include build-prefix-values('border-radius', '0!important');
+	}
+	// botões
+	.site .mobileSkin .mceButton, .site .mobileSkin .mceSplitButton a, .site .mobileSkin .mceListBox a, // botão default
+	.site .mobileSkin .mceListBox .mceText, // select
+	.site .mobileSkin .mceListBox .mceOpen, // seta do select
+	.site .mobileSkin .mceSplitButton a.mceAction, // botão dropdown
+	.site .mobileSkin .mceSplitButton a.mceOpen // seta do botão
+	{
+		// height: 28px!important;
+		overflow: hidden!important;
 	}
 	.mobileSkin .mceButton {
 		position: relative;
@@ -36,7 +49,7 @@
 	// separador
 	.mobileSkin .mceSeparator {
 		margin: 0 4px 0 5px!important;
-		border-color: #aaa!important;
+		border-right: 1px solid #ffffff!important;
 	}
 
 }
