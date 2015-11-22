@@ -1,27 +1,29 @@
 {
-  "name": "template-base",
+  "name": "templates",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/envolute/template-base.git"
+    "url": "git+https://github.com/envolute/templates.git"
   },
-  "author": "",
+  "author": "Ivo Junior",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/envolute/template-base/issues"
+    "url": "https://github.com/envolute/templates/issues"
   },
-  "homepage": "https://github.com/envolute/template-base#readme",
+  "homepage": "https://github.com/envolute/templates#readme",
   "devDependencies": {
-    "browser-sync": "^2.8.2",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
     "gulp-rename": "^1.2.2",
-    "gulp-sass": "^2.0.4",
-    "gulp-uglify": "^1.4.0"
+    "gulp-sass": "^2.1.0",
+    "gulp-uglify": "^1.5.1"
+  },
+  "description": "",
+  "dependencies": {
+    "del": "^2.1.0"
   }
 }
