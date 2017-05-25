@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_BLANKCOMPONENT" option="default">
+		<message>
+			<![CDATA[COM_BLANKCOMPONENT_DESC]]>
+		</message>
+	</layout>
+
+	<!-- Add fields to the parameters object for the layout. -->
+	<fields name="params">
+		<fieldset name="basic" label="COM_BLANKCOMPONENT_FILE_PATH">
+
+			<field name="include" type="text" class="input-xxlarge" label="COM_BLANKCOMPONENT_FILE_PATH" description="COM_BLANKCOMPONENT_FILE_ALERT" />
+
+			<field name="urlParams" type="text" class="input-xxlarge" label="COM_BLANKCOMPONENT_URL_PARAMS_LABEL" description="COM_BLANKCOMPONENT_URL_PARAMS_DESC" />
+
+		</fieldset>
+	</fields>
+</metadata>

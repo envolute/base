@@ -1,0 +1,22 @@
+// PAGGINGS
+// Opções para as classes de 'padding' do bootstrap
+
+  // Padding '0' responsiva
+  @include media-breakpoint-only(xs) {
+    .p-0-xs { padding: 0!important; }
+    .py-0-xs { padding-top: 0!important; padding-bottom: 0!important; }
+    .px-0-xs { padding-left: 0!important; padding-right: 0!important; }
+    .pt-0-xs { padding-top: 0!important; }
+    .pb-0-xs { padding-bottom: 0!important; }
+    .pr-0-xs { padding-right: 0!important; }
+    .pl-0-xs { padding-left: 0!important; }
+  }
+  @include media-breakpoint-down(sm) {
+    .p-0-sm { padding: 0!important; }
+    .py-0-sm { padding-top: 0!important; padding-bottom: 0!important; }
+    .px-0-sm { padding-left: 0!important; padding-right: 0!important; }
+    .pt-0-sm { padding-top: 0!important; }
+    .pb-0-sm { padding-bottom: 0!important; }
+    .pr-0-sm { padding-right: 0!important; }
+    .pl-0-sm { padding-left: 0!important; }
+  }

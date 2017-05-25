@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html class="isMM media-md" xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt-BR" lang="pt-BR">
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="rights" content="@envolute.com" />
+
+	<title>Envolute App</title>
+
+	<link href="favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+
+	<!-- jQuery -->
+	<script src="core/libs/jquery/jquery-1.12.4.min.js" type="text/javascript"></script>
+	<script>jQuery.noConflict();</script>
+	<!--script src="core/libs/jquery/jquery-migrate-1.2.1.min.js" type="text/javascript"></script-->
+
+	<!-- css template -->
+	<link rel="stylesheet" href="css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_dev/custom.css" type="text/css" />
+
+	<!-- load guide's default css -->
+	<link rel="stylesheet" href="css/style.guide.css" type="text/css" />
+
+	<!-- css jQuery UI -->
+	<link rel="stylesheet" href="core/libs/jquery/jquery-ui.min.css" type="text/css" />
+
+	<!-- css print -->
+	<link rel="stylesheet" href="css/style.print.css" type="text/css" media="print" />
+
+	<!-- For IE support -->
+	<!--[if IE]>
+		<link href="templates/base/css/style.ie.css" rel="stylesheet">
+	<![endif]-->
+
+
+</head>
+<body class="site fullScreen">
+
+	<a href="#main-content" class="sr-only">Skip to content</a>
+
+	<!-- Screen -->
+	<div id="screen" class="clearfix">
+
+			<!-- Full Content -->
+			<div id="full-content" class="mob-noNav">
+				<div class="container bs-container">
+					<div class="row">
+						<div class="row-wrapper">
+							<div class="row">
+
+								<!-- Main Content -->
+								<div id="main-content" class="col-xs-12">
+
+									<ul class="nav nav-tabs nav-justified nav-dashboard" role="tablist">
+								    <li>
+											<h4 class="no-margin">
+													<span class="base-icon-sitemap text-live"></span> Grupo de Monitoramento 1
+												</h4>
+										</li>
+								    <li role="dashboard" class="active">
+											<a href="#resume" aria-controls="resume" role="tab" data-toggle="tab">
+												<span class="base-icon-chart-bar"></span> Resumo
+											</a>
+											<div class="base-icon-down-dir"></div>
+										</li>
+								    <li role="dashboard">
+											<a href="#details" aria-controls="details" role="tab" data-toggle="tab">
+												<span class="base-icon-menu"></span> Detalhes
+											</a>
+											<div class="base-icon-down-dir"></div>
+										</li>
+										<li>
+											<h4 class="text-right no-margin">
+													Site: <span class="text-live">Primário</span>
+												</h4>
+										</li>
+								  </ul>
+
+									<div class="tab-content">
+										<div role="tabpanel" class="tab-pane active" id="resume">
+
+											<div class="row">
+												<div class="col-sm-7">
+													<div class="panel panel-default">
+														<div class="panel-heading"><span class="base-icon-server"></span> Filas</div>
+														<div class="panel-body">
+															<div class="row">
+																<div class="col-sm-7 text-center">
+																	<img src="chart-filas.png" style="width:100%; height:156px;" />
+																	<div class="row">
+																		<div class="col-sm-6 text-center">
+																			<h4 class="text-primary strong no-margin-bottom">10</h4>
+																			<small>ESPERA</small>
+																		</div>
+																		<div class="col-sm-6 text-center">
+																			<h4 class="text-success strong no-margin-bottom">8</h4>
+																			<small>ATENDIMENTO</small>
+																		</div>
+																	</div>
+																</div>
+																<div class="col-sm-5 text-center" style="padding-top:20px;">
+																	<div class="row">
+																		<div class="col-sm-4">
+																			<img src="chart-circle-80.png" class="img-responsive obj-to-center" />
+																			<h4 class="text-primary strong no-margin-bottom">60</h4>
+																			<small>ATENDIDAS</small>
+																		</div>
+																		<div class="col-sm-4">
+																			<img src="chart-circle-20.png" class="img-responsive obj-to-center" />
+																			<h4 class="text-primary strong no-margin-bottom">15</h4>
+																			<small>PERDIDAS</small>
+																		</div>
+																		<div class="col-sm-4">
+																			<img src="chart-circle-20.png" class="img-responsive obj-to-center" />
+																			<h4 class="text-primary strong no-margin-bottom">15</h4>
+																			<small>RECUSADAS</small>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<h6 class="page-header strong"><span class="base-icon-spread right-space-xs"></span>DISTRIBUIÇÃO DAS CHAMADAS</h6>
+															<img src="chart-flow.png" class="img-responsive obj-to-center no-margin-bottom" />
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-5">
+													<div class="panel panel-default">
+														<div class="panel-heading"><span class="base-icon-users"></span> Agentes</div>
+														<div class="panel-body">
+															<div class="row">
+																<div class="col-sm-9">
+																	<img src="chart-filas.png" class="img-responsive" />
+																</div>
+																<div class="col-sm-3 text-center">
+																	<img src="chart-circle-20.png" class="img-responsive obj-to-center" style="padding-top:35px;" />
+																</div>
+																<div class="col-sm-9">
+																	<div class="row">
+																		<div class="col-sm-4 text-center">
+																			<h4 class="text-primary strong no-margin-bottom">10</h4>
+																			<small>LOGADOS</small>
+																		</div>
+																		<div class="col-sm-4 text-center">
+																			<h4 class="text-success strong no-margin-bottom">8</h4>
+																			<small>ATENDIMENTO</small>
+																		</div>
+																		<div class="col-sm-4 text-center">
+																			<h4 class="text-warning strong no-margin-bottom">10</h4>
+																			<small>DISPONÍVEIS</small>
+																		</div>
+																	</div>
+																</div>
+																<div class="col-sm-3 text-center">
+																	<h4 class="text-live strong no-margin-bottom">15</h4>
+																	<small>PAUSA</small>
+																</div>
+															</div>
+															<h6 class="page-header strong"><span class="base-icon-chart-area right-space-xs"></span>NIVEL DE SERVIÇO</h6>
+															<img src="chart-agents.png" class="img-responsive obj-to-center no-margin-bottom" />
+														</div>
+													</div>
+												</div>
+											</div>
+
+										</div>
+										<div role="tabpanel" class="tab-pane" id="details">
+
+											<input type="hidden" id="grupoMonitoramentoId" value="c073db09-0480-3be7-41ea-7bfb5e05d8b5">
+											<input type="hidden" id="siteId" value="86b2d1e2-4168-1bf7-6a46-a4c06280b6fc">
+
+
+											<input type="hidden" id="nome_agente_albertosoares_primarylabdigivoxcombr" value="Alberto Local">
+											<input type="hidden" id="filas_agente_albertosoares_primarylabdigivoxcombr" value="">
+
+											<input type="hidden" id="nome_agente_paulo_primarylabdigivoxcombr" value="Digivox Unity">
+											<input type="hidden" id="filas_agente_paulo_primarylabdigivoxcombr" value="">
+
+											<input type="hidden" id="nome_agente_felipe_primarylabdigivoxcombr" value="Felipe Alves">
+											<input type="hidden" id="filas_agente_felipe_primarylabdigivoxcombr" value="">
+
+											<input type="hidden" id="nome_agente_iwson_primarylabdigivoxcombr" value="Iwson Paulo">
+											<input type="hidden" id="filas_agente_iwson_primarylabdigivoxcombr" value="">
+
+											<input type="hidden" id="nome_agente_joseantonio_primarylabdigivoxcombr" value="Jose Antonio">
+											<input type="hidden" id="filas_agente_joseantonio_primarylabdigivoxcombr" value="">
+
+											<input type="hidden" id="nome_agente_kleber_primarylabdigivoxcombr" value="Kleber Santos">
+											<input type="hidden" id="filas_agente_kleber_primarylabdigivoxcombr" value="">
+
+											<input type="hidden" id="nome_agente_mariafernanda_primarylabdigivoxcombr" value="Maria Fernanda">
+											<input type="hidden" id="filas_agente_mariafernanda_primarylabdigivoxcombr" value="">
+
+											<input type="hidden" id="nome_agente_nivaldo_primarylabdigivoxcombr" value="Nivaldo Montenegro">
+											<input type="hidden" id="filas_agente_nivaldo_primarylabdigivoxcombr" value="">
+
+											<input type="hidden" id="nome_agente_paulodutra_primarylabdigivoxcombr" value="Paulo Dutra">
+											<input type="hidden" id="filas_agente_paulodutra_primarylabdigivoxcombr" value="">
+
+											<input type="hidden" id="nome_agente_rafaelcorrea_primarylabdigivoxcombr" value="Rafael Correa">
+											<input type="hidden" id="filas_agente_rafaelcorrea_primarylabdigivoxcombr" value="">
+
+											<input type="hidden" id="nome_agente_rafael_primarylabdigivoxcombr" value="Rafael Felipe t">
+											<input type="hidden" id="filas_agente_rafael_primarylabdigivoxcombr" value="">
+
+											<input type="hidden" id="nome_agente_romaryo_primarylabdigivoxcombr" value="Romaryo Ricardo">
+											<input type="hidden" id="filas_agente_romaryo_primarylabdigivoxcombr" value="">
+
+											<input type="hidden" id="nome_agente_teste_primarylabdigivoxcombr" value="teste">
+											<input type="hidden" id="filas_agente_teste_primarylabdigivoxcombr" value="">
+
+											<input type="hidden" id="nome_agente_teste2_primarylabdigivoxcombr" value="Wagner">
+											<input type="hidden" id="filas_agente_teste2_primarylabdigivoxcombr" value="">
+
+
+											<input type="hidden" id="descricao_status_agente_Available" value="Disponível">
+											<input type="hidden" id="descricao_status_agente_AvailableOnDemand" value="Espera">
+											<input type="hidden" id="descricao_status_agente_LoggedOut" value="Deslogado">
+											<input type="hidden" id="descricao_status_agente_OnBreak" value="Pausa">
+
+											<input type="hidden" id="descricao_state_agente_Receiving" value="Tocando">
+											<input type="hidden" id="descricao_state_agente_Inaqueuecall" value="Atendimento">
+											<input type="hidden" id="descricao_state_agente_Waiting" value="Disponível">
+											<input type="hidden" id="descricao_state_agente_Idle" value="Disponível">
+
+											<input type="hidden" id="descricao_status_chamada_espera" value="Espera">
+											<input type="hidden" id="descricao_status_chamada_tocando" value="Tocando">
+
+											<input type="hidden" id="msg_erro_conexao" value="A conexão com o servidor foi perdida. Por favor, tente recarregar a página">
+											<input type="hidden" id="msg_erro_deslogar_agente" value="Não foi possível deslogar o agente da(s) fila(s)">
+											<input type="hidden" id="msg_operacao_nao_realizada" value="Desculpe, ocorreu um erro e a operação não pode ser realizada. Por favor, tente novamente">
+											<input type="hidden" id="msg_selecione_uma_fila" value="Selecione ao menos uma fila">
+											<input type="hidden" id="msg_usuario_sem_ramal" value="Não é possível ouvir a chamada, pois não há nenhum ramal associado à sua conta de usuário">
+											<input type="hidden" id="msg_ouvir_chamada_ramal" value="Você pode ouvir a chamada através do ramal">
+											<input type="hidden" id="msg_informe_ramal" value="Informe o ramal">
+											<input type="hidden" id="msg_ramal_nao_encontrado" value="O ramal não foi encontrado">
+											<input type="hidden" id="msg_chamada_transferida_ramal" value="A chamada foi transferida para o ramal">
+
+									        <table class="table table-striped table-hover table-bordered table-condensed small" style="0 0 4px rgba(0,0,0,0.1)">
+									        	<thead>
+									        		<tr>
+									        			<th class="text-center" rowspan="2" style="vertical-align: middle; box-shadow:none;"><span class="base-icon-users"></span><br>Filas</th>
+									        			<th colspan="3" class="text-center">
+									        				<span class="base-icon-user"></span> Agentes
+									        			</th>
+									        			<th colspan="2" class="text-center">
+									        				<span class="base-icon-phone-squared"></span> Chamadas
+									        			</th>
+									        			<th colspan="3" class="text-center">
+									        				<span class="base-icon-phone-squared"></span> Status das chamadas
+									        			</th>
+									        			<th colspan="2" class="text-center">
+									        				<span class="base-icon-clock"></span> Tempo médio
+									        			</th>
+									        			<th rowspan="2" class="text-center">
+									        				<div title="(Chamadas atendidas dentro do nível) / (Total de chamadas atendidas + Total de chamadas não atendidas (abandonadas) após nível)">
+									        					<span class="base-icon-chat-pie"></span> Nível de serviço
+									        				</div>
+									        			</th>
+									        		</tr>
+									        		<tr class="small text-center">
+									        			<th class="text-center"><span class="text-success base-icon-toggle-on right-space-xs"> Logados</span></th>
+									        			<th class="text-center"><span class="text-success base-icon-play"> Atendendo</span></th>
+									        			<th class="text-center"><span class="text-live base-icon-pause"> Pausa</span></th>
+									        			<th class="text-center"><span class="text-live base-icon-clock"> Espera</span></th>
+									        			<th class="text-center"><span class="text-success base-icon-play"> Atendimento</span></th>
+									        			<th class="text-center"><span class="text-success base-icon-ok"> Atendidas</span></th>
+									        			<th class="text-center"><span class="text-danger base-icon-unlink"> Perdidas</span></th>
+									        			<th class="text-center"><span class="text-danger base-icon-exchange"> Recusadas</span></th>
+									        			<th class="text-center"><span class="text-live"> Espera</span></th>
+									        			<th class="text-center">Duração</th>
+									        		</tr>
+									        		</thead><tbody>
+
+															<tr class="text-center">
+																<th class="text-center">Suporte</th>
+										        				<td><span id="fila_Suporte_primarylabdigivoxcombr_total-agentes-logados">0</span></td>
+										        				<td><span id="fila_Suporte_primarylabdigivoxcombr_total-agentes-atendimento">0</span></td>
+										        				<td class="warning"><span id="fila_Suporte_primarylabdigivoxcombr_total-agentes-pausa">0</span></td>
+										        				<td class="warning"><span id="fila_Suporte_primarylabdigivoxcombr_total-chamadas-espera">0</span></td>
+										        				<td><span id="fila_Suporte_primarylabdigivoxcombr_total-chamadas-atendimento">0</span></td>
+										        				<td class="text-success"><span id="fila_Suporte_primarylabdigivoxcombr_total-chamadas-atendidas">0</span></td>
+										        				<td class="text-danger"><span id="fila_Suporte_primarylabdigivoxcombr_total-chamadas-perdidas">0</span></td>
+										        				<td class="text-danger"><span id="fila_Suporte_primarylabdigivoxcombr_total-chamadas-recusadas">0</span></td>
+										        				<td class="warning"><span id="fila_Suporte_primarylabdigivoxcombr_tempo-medio-espera-chamadas">00:00:00</span></td>
+										        				<td><span id="fila_Suporte_primarylabdigivoxcombr_duracao-media-chamadas">00:00:00</span></td>
+										        				<td><span id="fila_Suporte_primarylabdigivoxcombr_nivel-servico">0</span>%</td>
+															</tr>
+
+									        		</tbody>
+
+
+									        </table>
+
+									        <table id="table_agentes" class="table table-striped table-hover table-bordered table-condensed small" style="0 0 4px rgba(0,0,0,0.1)">
+									        	<thead>
+									        		<tr>
+									        			<th class="text-center"><span class="base-icon-users-alt right-space-xs"></span>Agente</th>
+									        			<th class="text-center"><span class="base-icon-users"></span> Filas</th>
+									        			<th class="text-center">Status</th>
+									        			<th class="text-center">Ramal</th>
+									        			<th class="text-center">Level</th>
+									        			<th class="text-center">Position</th>
+									        			<th class="text-center">Último logon</th>
+
+									        			<th class="text-center">Última chamada</th>
+									        			<th class="text-center">Número</th>
+									        			<th class="text-center">Tempo de espera</th>
+									        			<th class="text-center">Tempo de atendimento</th>
+									        			<th class="text-center"></th>
+									        		</tr>
+									        	</thead>
+								        		<tbody>
+
+														<tr id="tr_agente_albertosoares_primarylabdigivoxcombr" class="text-center" style="display: none">
+
+															<th class="text-center text-success">Alberto Local</th>
+									        				<td><span id="agente_albertosoares_primarylabdigivoxcombr_filas"></span></td>
+
+
+									        				<td><span id="agente_albertosoares_primarylabdigivoxcombr_status">Deslogado</span></td>
+
+									        				<td><span id="agente_albertosoares_primarylabdigivoxcombr_ramal">{call_timeout=0}</span></td>
+									        				<td><span id="agente_albertosoares_primarylabdigivoxcombr_level">0</span></td>
+															<td><span id="agente_albertosoares_primarylabdigivoxcombr_position">0</span></td>
+									        				<td><span id="agente_albertosoares_primarylabdigivoxcombr_hora-ultimo-logon"></span></td>
+
+															<td><span id="agente_albertosoares_primarylabdigivoxcombr_hora-ultima-chamada"></span></td>
+									        				<td><span id="agente_albertosoares_primarylabdigivoxcombr_chamada_origem"></span></td>
+															<td><span id="agente_albertosoares_primarylabdigivoxcombr_chamada_tempo-espera-fila"></span></td>
+									        				<td><span id="timer_agente_albertosoares_primarylabdigivoxcombr_chamada_duracao"></span></td>
+									        				<td>
+									        					<a href="javascript:void(0)" onclick="ouvirChamada('albertosoares_primarylabdigivoxcombr')" title="Ouvir chamada" style="visibility:  hidden ">
+									        						<span id="button_ouvir_agente_albertosoares_primarylabdigivoxcombr" class="base-icon-headphones"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="transferirChamada('albertosoares_primarylabdigivoxcombr')" title="Transferir chamada" style="visibility:  hidden ">
+									        						<span id="button_transferir_agente_albertosoares_primarylabdigivoxcombr" class="base-icon-forward"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="logoutAgente('albertosoares_primarylabdigivoxcombr', 'alberto.soares@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_albertosoares_primarylabdigivoxcombr" class="base-icon-logout"></span>
+									        					</a>
+									        				</td>
+														</tr>
+
+														<tr id="tr_agente_albertosoares_primarylabdigivoxcombr_pausa" class="text-center warning text-live" style="display: none">
+									        				<th class="text-center">Alberto Local</th>
+									        				<td></td>
+									        				<td>Pausa</td>
+									        				<td>&nbsp;<span class="base-icon-clock" id="timer_pausa_agente_albertosoares_primarylabdigivoxcombr"></span></td>
+									        				<td class="text-left" colspan="7">Motivo:&nbsp;<span id="motivo_pausa_agente_albertosoares_primarylabdigivoxcombr">---</span></td>
+									        				<td>
+										        				<a href="javascript:void(0)" onclick="logoutAgente('albertosoares_primarylabdigivoxcombr', 'alberto.soares@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_albertosoares_primarylabdigivoxcombr_pausa" class="base-icon-logout"></span>
+									        					</a>
+								        					</td>
+									        			</tr>
+
+
+
+
+
+
+														<tr id="tr_agente_paulo_primarylabdigivoxcombr" class="text-center" style="display: none">
+
+															<th class="text-center text-success">Digivox Unity</th>
+									        				<td><span id="agente_paulo_primarylabdigivoxcombr_filas"></span></td>
+
+
+									        				<td><span id="agente_paulo_primarylabdigivoxcombr_status">Deslogado</span></td>
+
+									        				<td><span id="agente_paulo_primarylabdigivoxcombr_ramal">{call_timeout=20}</span></td>
+									        				<td><span id="agente_paulo_primarylabdigivoxcombr_level">0</span></td>
+															<td><span id="agente_paulo_primarylabdigivoxcombr_position">0</span></td>
+									        				<td><span id="agente_paulo_primarylabdigivoxcombr_hora-ultimo-logon">18:11:22</span></td>
+
+															<td><span id="agente_paulo_primarylabdigivoxcombr_hora-ultima-chamada">21:15:15</span></td>
+									        				<td><span id="agente_paulo_primarylabdigivoxcombr_chamada_origem"></span></td>
+															<td><span id="agente_paulo_primarylabdigivoxcombr_chamada_tempo-espera-fila"></span></td>
+									        				<td><span id="timer_agente_paulo_primarylabdigivoxcombr_chamada_duracao"></span></td>
+									        				<td>
+									        					<a href="javascript:void(0)" onclick="ouvirChamada('paulo_primarylabdigivoxcombr')" title="Ouvir chamada" style="visibility:  hidden ">
+									        						<span id="button_ouvir_agente_paulo_primarylabdigivoxcombr" class="base-icon-headphones"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="transferirChamada('paulo_primarylabdigivoxcombr')" title="Transferir chamada" style="visibility:  hidden ">
+									        						<span id="button_transferir_agente_paulo_primarylabdigivoxcombr" class="base-icon-forward"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="logoutAgente('paulo_primarylabdigivoxcombr', 'paulo@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_paulo_primarylabdigivoxcombr" class="base-icon-logout"></span>
+									        					</a>
+									        				</td>
+														</tr>
+
+														<tr id="tr_agente_paulo_primarylabdigivoxcombr_pausa" class="text-center warning text-live" style="display: none">
+									        				<th class="text-center">Digivox Unity</th>
+									        				<td></td>
+									        				<td>Pausa</td>
+									        				<td>&nbsp;<span class="base-icon-clock" id="timer_pausa_agente_paulo_primarylabdigivoxcombr"></span></td>
+									        				<td class="text-left" colspan="7">Motivo:&nbsp;<span id="motivo_pausa_agente_paulo_primarylabdigivoxcombr">---</span></td>
+									        				<td>
+										        				<a href="javascript:void(0)" onclick="logoutAgente('paulo_primarylabdigivoxcombr', 'paulo@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_paulo_primarylabdigivoxcombr_pausa" class="base-icon-logout"></span>
+									        					</a>
+								        					</td>
+									        			</tr>
+
+
+
+
+
+
+														<tr id="tr_agente_felipe_primarylabdigivoxcombr" class="text-center" style="display: none">
+
+															<th class="text-center text-success">Felipe Alves</th>
+									        				<td><span id="agente_felipe_primarylabdigivoxcombr_filas"></span></td>
+
+
+									        				<td><span id="agente_felipe_primarylabdigivoxcombr_status">Deslogado</span></td>
+
+									        				<td><span id="agente_felipe_primarylabdigivoxcombr_ramal">{call_timeout=15}</span></td>
+									        				<td><span id="agente_felipe_primarylabdigivoxcombr_level">0</span></td>
+															<td><span id="agente_felipe_primarylabdigivoxcombr_position">0</span></td>
+									        				<td><span id="agente_felipe_primarylabdigivoxcombr_hora-ultimo-logon">16:08:38</span></td>
+
+															<td><span id="agente_felipe_primarylabdigivoxcombr_hora-ultima-chamada">20:08:44</span></td>
+									        				<td><span id="agente_felipe_primarylabdigivoxcombr_chamada_origem"></span></td>
+															<td><span id="agente_felipe_primarylabdigivoxcombr_chamada_tempo-espera-fila"></span></td>
+									        				<td><span id="timer_agente_felipe_primarylabdigivoxcombr_chamada_duracao"></span></td>
+									        				<td>
+									        					<a href="javascript:void(0)" onclick="ouvirChamada('felipe_primarylabdigivoxcombr')" title="Ouvir chamada" style="visibility:  hidden ">
+									        						<span id="button_ouvir_agente_felipe_primarylabdigivoxcombr" class="base-icon-headphones"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="transferirChamada('felipe_primarylabdigivoxcombr')" title="Transferir chamada" style="visibility:  hidden ">
+									        						<span id="button_transferir_agente_felipe_primarylabdigivoxcombr" class="base-icon-forward"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="logoutAgente('felipe_primarylabdigivoxcombr', 'felipe@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_felipe_primarylabdigivoxcombr" class="base-icon-logout"></span>
+									        					</a>
+									        				</td>
+														</tr>
+
+														<tr id="tr_agente_felipe_primarylabdigivoxcombr_pausa" class="text-center warning text-live" style="display: none">
+									        				<th class="text-center">Felipe Alves</th>
+									        				<td></td>
+									        				<td>Pausa</td>
+									        				<td>&nbsp;<span class="base-icon-clock" id="timer_pausa_agente_felipe_primarylabdigivoxcombr"></span></td>
+									        				<td class="text-left" colspan="7">Motivo:&nbsp;<span id="motivo_pausa_agente_felipe_primarylabdigivoxcombr">---</span></td>
+									        				<td>
+										        				<a href="javascript:void(0)" onclick="logoutAgente('felipe_primarylabdigivoxcombr', 'felipe@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_felipe_primarylabdigivoxcombr_pausa" class="base-icon-logout"></span>
+									        					</a>
+								        					</td>
+									        			</tr>
+
+
+
+
+
+
+														<tr id="tr_agente_iwson_primarylabdigivoxcombr" class="text-center" style="display: none">
+
+															<th class="text-center text-success">Iwson Paulo</th>
+									        				<td><span id="agente_iwson_primarylabdigivoxcombr_filas"></span></td>
+
+
+									        				<td><span id="agente_iwson_primarylabdigivoxcombr_status">Deslogado</span></td>
+
+									        				<td><span id="agente_iwson_primarylabdigivoxcombr_ramal">{call_timeout=15}</span></td>
+									        				<td><span id="agente_iwson_primarylabdigivoxcombr_level">0</span></td>
+															<td><span id="agente_iwson_primarylabdigivoxcombr_position">0</span></td>
+									        				<td><span id="agente_iwson_primarylabdigivoxcombr_hora-ultimo-logon"></span></td>
+
+															<td><span id="agente_iwson_primarylabdigivoxcombr_hora-ultima-chamada"></span></td>
+									        				<td><span id="agente_iwson_primarylabdigivoxcombr_chamada_origem"></span></td>
+															<td><span id="agente_iwson_primarylabdigivoxcombr_chamada_tempo-espera-fila"></span></td>
+									        				<td><span id="timer_agente_iwson_primarylabdigivoxcombr_chamada_duracao"></span></td>
+									        				<td>
+									        					<a href="javascript:void(0)" onclick="ouvirChamada('iwson_primarylabdigivoxcombr')" title="Ouvir chamada" style="visibility:  hidden ">
+									        						<span id="button_ouvir_agente_iwson_primarylabdigivoxcombr" class="base-icon-headphones"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="transferirChamada('iwson_primarylabdigivoxcombr')" title="Transferir chamada" style="visibility:  hidden ">
+									        						<span id="button_transferir_agente_iwson_primarylabdigivoxcombr" class="base-icon-forward"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="logoutAgente('iwson_primarylabdigivoxcombr', 'iwson@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_iwson_primarylabdigivoxcombr" class="base-icon-logout"></span>
+									        					</a>
+									        				</td>
+														</tr>
+
+														<tr id="tr_agente_iwson_primarylabdigivoxcombr_pausa" class="text-center warning text-live" style="display: none">
+									        				<th class="text-center">Iwson Paulo</th>
+									        				<td></td>
+									        				<td>Pausa</td>
+									        				<td>&nbsp;<span class="base-icon-clock" id="timer_pausa_agente_iwson_primarylabdigivoxcombr"></span></td>
+									        				<td class="text-left" colspan="7">Motivo:&nbsp;<span id="motivo_pausa_agente_iwson_primarylabdigivoxcombr">---</span></td>
+									        				<td>
+										        				<a href="javascript:void(0)" onclick="logoutAgente('iwson_primarylabdigivoxcombr', 'iwson@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_iwson_primarylabdigivoxcombr_pausa" class="base-icon-logout"></span>
+									        					</a>
+								        					</td>
+									        			</tr>
+
+
+
+
+
+
+														<tr id="tr_agente_joseantonio_primarylabdigivoxcombr" class="text-center" style="display: none">
+
+															<th class="text-center text-success">Jose Antonio</th>
+									        				<td><span id="agente_joseantonio_primarylabdigivoxcombr_filas"></span></td>
+
+
+									        				<td><span id="agente_joseantonio_primarylabdigivoxcombr_status">Deslogado</span></td>
+
+									        				<td><span id="agente_joseantonio_primarylabdigivoxcombr_ramal">{call_timeout=15}</span></td>
+									        				<td><span id="agente_joseantonio_primarylabdigivoxcombr_level">0</span></td>
+															<td><span id="agente_joseantonio_primarylabdigivoxcombr_position">0</span></td>
+									        				<td><span id="agente_joseantonio_primarylabdigivoxcombr_hora-ultimo-logon">11:49:11</span></td>
+
+															<td><span id="agente_joseantonio_primarylabdigivoxcombr_hora-ultima-chamada">13:03:58</span></td>
+									        				<td><span id="agente_joseantonio_primarylabdigivoxcombr_chamada_origem"></span></td>
+															<td><span id="agente_joseantonio_primarylabdigivoxcombr_chamada_tempo-espera-fila"></span></td>
+									        				<td><span id="timer_agente_joseantonio_primarylabdigivoxcombr_chamada_duracao"></span></td>
+									        				<td>
+									        					<a href="javascript:void(0)" onclick="ouvirChamada('joseantonio_primarylabdigivoxcombr')" title="Ouvir chamada" style="visibility:  hidden ">
+									        						<span id="button_ouvir_agente_joseantonio_primarylabdigivoxcombr" class="base-icon-headphones"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="transferirChamada('joseantonio_primarylabdigivoxcombr')" title="Transferir chamada" style="visibility:  hidden ">
+									        						<span id="button_transferir_agente_joseantonio_primarylabdigivoxcombr" class="base-icon-forward"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="logoutAgente('joseantonio_primarylabdigivoxcombr', 'jose.antonio@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_joseantonio_primarylabdigivoxcombr" class="base-icon-logout"></span>
+									        					</a>
+									        				</td>
+														</tr>
+
+														<tr id="tr_agente_joseantonio_primarylabdigivoxcombr_pausa" class="text-center warning text-live" style="display: none">
+									        				<th class="text-center">Jose Antonio</th>
+									        				<td></td>
+									        				<td>Pausa</td>
+									        				<td>&nbsp;<span class="base-icon-clock" id="timer_pausa_agente_joseantonio_primarylabdigivoxcombr"></span></td>
+									        				<td class="text-left" colspan="7">Motivo:&nbsp;<span id="motivo_pausa_agente_joseantonio_primarylabdigivoxcombr">---</span></td>
+									        				<td>
+										        				<a href="javascript:void(0)" onclick="logoutAgente('joseantonio_primarylabdigivoxcombr', 'jose.antonio@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_joseantonio_primarylabdigivoxcombr_pausa" class="base-icon-logout"></span>
+									        					</a>
+								        					</td>
+									        			</tr>
+
+
+														<tr id="tr_agente_kleber_primarylabdigivoxcombr" class="text-center" style="display: none">
+
+															<th class="text-center text-success">Kleber Santos</th>
+									        				<td><span id="agente_kleber_primarylabdigivoxcombr_filas"></span></td>
+
+
+									        				<td><span id="agente_kleber_primarylabdigivoxcombr_status">Deslogado</span></td>
+
+									        				<td><span id="agente_kleber_primarylabdigivoxcombr_ramal">{call_timeout=15}</span></td>
+									        				<td><span id="agente_kleber_primarylabdigivoxcombr_level">0</span></td>
+															<td><span id="agente_kleber_primarylabdigivoxcombr_position">0</span></td>
+									        				<td><span id="agente_kleber_primarylabdigivoxcombr_hora-ultimo-logon">19:52:10</span></td>
+
+															<td><span id="agente_kleber_primarylabdigivoxcombr_hora-ultima-chamada"></span></td>
+									        				<td><span id="agente_kleber_primarylabdigivoxcombr_chamada_origem"></span></td>
+															<td><span id="agente_kleber_primarylabdigivoxcombr_chamada_tempo-espera-fila"></span></td>
+									        				<td><span id="timer_agente_kleber_primarylabdigivoxcombr_chamada_duracao"></span></td>
+									        				<td>
+									        					<a href="javascript:void(0)" onclick="ouvirChamada('kleber_primarylabdigivoxcombr')" title="Ouvir chamada" style="visibility:  hidden ">
+									        						<span id="button_ouvir_agente_kleber_primarylabdigivoxcombr" class="base-icon-headphones"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="transferirChamada('kleber_primarylabdigivoxcombr')" title="Transferir chamada" style="visibility:  hidden ">
+									        						<span id="button_transferir_agente_kleber_primarylabdigivoxcombr" class="base-icon-forward"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="logoutAgente('kleber_primarylabdigivoxcombr', 'kleber@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_kleber_primarylabdigivoxcombr" class="base-icon-logout"></span>
+									        					</a>
+									        				</td>
+														</tr>
+
+														<tr id="tr_agente_kleber_primarylabdigivoxcombr_pausa" class="text-center warning text-live" style="display: none">
+									        				<th class="text-center">Kleber Santos</th>
+									        				<td></td>
+									        				<td>Pausa</td>
+									        				<td>&nbsp;<span class="base-icon-clock" id="timer_pausa_agente_kleber_primarylabdigivoxcombr"></span></td>
+									        				<td class="text-left" colspan="7">Motivo:&nbsp;<span id="motivo_pausa_agente_kleber_primarylabdigivoxcombr">---</span></td>
+									        				<td>
+										        				<a href="javascript:void(0)" onclick="logoutAgente('kleber_primarylabdigivoxcombr', 'kleber@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_kleber_primarylabdigivoxcombr_pausa" class="base-icon-logout"></span>
+									        					</a>
+								        					</td>
+									        			</tr>
+
+														<tr id="tr_agente_mariafernanda_primarylabdigivoxcombr" class="text-center" style="display: none">
+
+															<th class="text-center text-success">Maria Fernanda</th>
+									        				<td><span id="agente_mariafernanda_primarylabdigivoxcombr_filas"></span></td>
+
+
+									        				<td><span id="agente_mariafernanda_primarylabdigivoxcombr_status">Deslogado</span></td>
+
+									        				<td><span id="agente_mariafernanda_primarylabdigivoxcombr_ramal">{call_timeout=0}</span></td>
+									        				<td><span id="agente_mariafernanda_primarylabdigivoxcombr_level">0</span></td>
+															<td><span id="agente_mariafernanda_primarylabdigivoxcombr_position">0</span></td>
+									        				<td><span id="agente_mariafernanda_primarylabdigivoxcombr_hora-ultimo-logon">16:58:49</span></td>
+
+															<td><span id="agente_mariafernanda_primarylabdigivoxcombr_hora-ultima-chamada">20:02:44</span></td>
+									        				<td><span id="agente_mariafernanda_primarylabdigivoxcombr_chamada_origem"></span></td>
+															<td><span id="agente_mariafernanda_primarylabdigivoxcombr_chamada_tempo-espera-fila"></span></td>
+									        				<td><span id="timer_agente_mariafernanda_primarylabdigivoxcombr_chamada_duracao"></span></td>
+									        				<td>
+									        					<a href="javascript:void(0)" onclick="ouvirChamada('mariafernanda_primarylabdigivoxcombr')" title="Ouvir chamada" style="visibility:  hidden ">
+									        						<span id="button_ouvir_agente_mariafernanda_primarylabdigivoxcombr" class="base-icon-headphones"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="transferirChamada('mariafernanda_primarylabdigivoxcombr')" title="Transferir chamada" style="visibility:  hidden ">
+									        						<span id="button_transferir_agente_mariafernanda_primarylabdigivoxcombr" class="base-icon-forward"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="logoutAgente('mariafernanda_primarylabdigivoxcombr', 'maria.fernanda@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_mariafernanda_primarylabdigivoxcombr" class="base-icon-logout"></span>
+									        					</a>
+									        				</td>
+														</tr>
+
+														<tr id="tr_agente_mariafernanda_primarylabdigivoxcombr_pausa" class="text-center warning text-live" style="display: none">
+									        				<th class="text-center">Maria Fernanda</th>
+									        				<td></td>
+									        				<td>Pausa</td>
+									        				<td>&nbsp;<span class="base-icon-clock" id="timer_pausa_agente_mariafernanda_primarylabdigivoxcombr"></span></td>
+									        				<td class="text-left" colspan="7">Motivo:&nbsp;<span id="motivo_pausa_agente_mariafernanda_primarylabdigivoxcombr">---</span></td>
+									        				<td>
+										        				<a href="javascript:void(0)" onclick="logoutAgente('mariafernanda_primarylabdigivoxcombr', 'maria.fernanda@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_mariafernanda_primarylabdigivoxcombr_pausa" class="base-icon-logout"></span>
+									        					</a>
+								        					</td>
+									        			</tr>
+
+														<tr id="tr_agente_nivaldo_primarylabdigivoxcombr" class="text-center" style="display: none">
+
+															<th class="text-center text-success">Nivaldo Montenegro</th>
+									        				<td><span id="agente_nivaldo_primarylabdigivoxcombr_filas"></span></td>
+
+
+									        				<td><span id="agente_nivaldo_primarylabdigivoxcombr_status">Deslogado</span></td>
+
+									        				<td><span id="agente_nivaldo_primarylabdigivoxcombr_ramal">{call_timeout=15}</span></td>
+									        				<td><span id="agente_nivaldo_primarylabdigivoxcombr_level">0</span></td>
+															<td><span id="agente_nivaldo_primarylabdigivoxcombr_position">0</span></td>
+									        				<td><span id="agente_nivaldo_primarylabdigivoxcombr_hora-ultimo-logon">13:20:20</span></td>
+
+															<td><span id="agente_nivaldo_primarylabdigivoxcombr_hora-ultima-chamada">12:45:17</span></td>
+									        				<td><span id="agente_nivaldo_primarylabdigivoxcombr_chamada_origem"></span></td>
+															<td><span id="agente_nivaldo_primarylabdigivoxcombr_chamada_tempo-espera-fila"></span></td>
+									        				<td><span id="timer_agente_nivaldo_primarylabdigivoxcombr_chamada_duracao"></span></td>
+									        				<td>
+									        					<a href="javascript:void(0)" onclick="ouvirChamada('nivaldo_primarylabdigivoxcombr')" title="Ouvir chamada" style="visibility:  hidden ">
+									        						<span id="button_ouvir_agente_nivaldo_primarylabdigivoxcombr" class="base-icon-headphones"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="transferirChamada('nivaldo_primarylabdigivoxcombr')" title="Transferir chamada" style="visibility:  hidden ">
+									        						<span id="button_transferir_agente_nivaldo_primarylabdigivoxcombr" class="base-icon-forward"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="logoutAgente('nivaldo_primarylabdigivoxcombr', 'nivaldo@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_nivaldo_primarylabdigivoxcombr" class="base-icon-logout"></span>
+									        					</a>
+									        				</td>
+														</tr>
+
+														<tr id="tr_agente_nivaldo_primarylabdigivoxcombr_pausa" class="text-center warning text-live" style="display: none">
+									        				<th class="text-center">Nivaldo Montenegro</th>
+									        				<td></td>
+									        				<td>Pausa</td>
+									        				<td>&nbsp;<span class="base-icon-clock" id="timer_pausa_agente_nivaldo_primarylabdigivoxcombr"></span></td>
+									        				<td class="text-left" colspan="7">Motivo:&nbsp;<span id="motivo_pausa_agente_nivaldo_primarylabdigivoxcombr">---</span></td>
+									        				<td>
+										        				<a href="javascript:void(0)" onclick="logoutAgente('nivaldo_primarylabdigivoxcombr', 'nivaldo@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_nivaldo_primarylabdigivoxcombr_pausa" class="base-icon-logout"></span>
+									        					</a>
+								        					</td>
+									        			</tr>
+
+														<tr id="tr_agente_paulodutra_primarylabdigivoxcombr" class="text-center" style="display: none">
+
+															<th class="text-center text-success">Paulo Dutra</th>
+									        				<td><span id="agente_paulodutra_primarylabdigivoxcombr_filas"></span></td>
+
+
+									        				<td><span id="agente_paulodutra_primarylabdigivoxcombr_status">Deslogado</span></td>
+
+									        				<td><span id="agente_paulodutra_primarylabdigivoxcombr_ramal">{call_timeout=15}</span></td>
+									        				<td><span id="agente_paulodutra_primarylabdigivoxcombr_level">0</span></td>
+															<td><span id="agente_paulodutra_primarylabdigivoxcombr_position">0</span></td>
+									        				<td><span id="agente_paulodutra_primarylabdigivoxcombr_hora-ultimo-logon"></span></td>
+
+															<td><span id="agente_paulodutra_primarylabdigivoxcombr_hora-ultima-chamada"></span></td>
+									        				<td><span id="agente_paulodutra_primarylabdigivoxcombr_chamada_origem"></span></td>
+															<td><span id="agente_paulodutra_primarylabdigivoxcombr_chamada_tempo-espera-fila"></span></td>
+									        				<td><span id="timer_agente_paulodutra_primarylabdigivoxcombr_chamada_duracao"></span></td>
+									        				<td>
+									        					<a href="javascript:void(0)" onclick="ouvirChamada('paulodutra_primarylabdigivoxcombr')" title="Ouvir chamada" style="visibility:  hidden ">
+									        						<span id="button_ouvir_agente_paulodutra_primarylabdigivoxcombr" class="base-icon-headphones"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="transferirChamada('paulodutra_primarylabdigivoxcombr')" title="Transferir chamada" style="visibility:  hidden ">
+									        						<span id="button_transferir_agente_paulodutra_primarylabdigivoxcombr" class="base-icon-forward"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="logoutAgente('paulodutra_primarylabdigivoxcombr', 'paulo.dutra@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_paulodutra_primarylabdigivoxcombr" class="base-icon-logout"></span>
+									        					</a>
+									        				</td>
+														</tr>
+
+														<tr id="tr_agente_paulodutra_primarylabdigivoxcombr_pausa" class="text-center warning text-live" style="display: none">
+									        				<th class="text-center">Paulo Dutra</th>
+									        				<td></td>
+									        				<td>Pausa</td>
+									        				<td>&nbsp;<span class="base-icon-clock" id="timer_pausa_agente_paulodutra_primarylabdigivoxcombr"></span></td>
+									        				<td class="text-left" colspan="7">Motivo:&nbsp;<span id="motivo_pausa_agente_paulodutra_primarylabdigivoxcombr">---</span></td>
+									        				<td>
+										        				<a href="javascript:void(0)" onclick="logoutAgente('paulodutra_primarylabdigivoxcombr', 'paulo.dutra@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_paulodutra_primarylabdigivoxcombr_pausa" class="base-icon-logout"></span>
+									        					</a>
+								        					</td>
+									        			</tr>
+
+
+
+
+
+
+														<tr id="tr_agente_rafaelcorrea_primarylabdigivoxcombr" class="text-center" style="display: none">
+
+															<th class="text-center text-success">Rafael Correa</th>
+									        				<td><span id="agente_rafaelcorrea_primarylabdigivoxcombr_filas"></span></td>
+
+
+									        				<td><span id="agente_rafaelcorrea_primarylabdigivoxcombr_status">Deslogado</span></td>
+
+									        				<td><span id="agente_rafaelcorrea_primarylabdigivoxcombr_ramal">{call_timeout=15}</span></td>
+									        				<td><span id="agente_rafaelcorrea_primarylabdigivoxcombr_level">0</span></td>
+															<td><span id="agente_rafaelcorrea_primarylabdigivoxcombr_position">0</span></td>
+									        				<td><span id="agente_rafaelcorrea_primarylabdigivoxcombr_hora-ultimo-logon"></span></td>
+
+															<td><span id="agente_rafaelcorrea_primarylabdigivoxcombr_hora-ultima-chamada"></span></td>
+									        				<td><span id="agente_rafaelcorrea_primarylabdigivoxcombr_chamada_origem"></span></td>
+															<td><span id="agente_rafaelcorrea_primarylabdigivoxcombr_chamada_tempo-espera-fila"></span></td>
+									        				<td><span id="timer_agente_rafaelcorrea_primarylabdigivoxcombr_chamada_duracao"></span></td>
+									        				<td>
+									        					<a href="javascript:void(0)" onclick="ouvirChamada('rafaelcorrea_primarylabdigivoxcombr')" title="Ouvir chamada" style="visibility:  hidden ">
+									        						<span id="button_ouvir_agente_rafaelcorrea_primarylabdigivoxcombr" class="base-icon-headphones"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="transferirChamada('rafaelcorrea_primarylabdigivoxcombr')" title="Transferir chamada" style="visibility:  hidden ">
+									        						<span id="button_transferir_agente_rafaelcorrea_primarylabdigivoxcombr" class="base-icon-forward"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="logoutAgente('rafaelcorrea_primarylabdigivoxcombr', 'rafael.correa@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_rafaelcorrea_primarylabdigivoxcombr" class="base-icon-logout"></span>
+									        					</a>
+									        				</td>
+														</tr>
+
+														<tr id="tr_agente_rafaelcorrea_primarylabdigivoxcombr_pausa" class="text-center warning text-live" style="display: none">
+									        				<th class="text-center">Rafael Correa</th>
+									        				<td></td>
+									        				<td>Pausa</td>
+									        				<td>&nbsp;<span class="base-icon-clock" id="timer_pausa_agente_rafaelcorrea_primarylabdigivoxcombr"></span></td>
+									        				<td class="text-left" colspan="7">Motivo:&nbsp;<span id="motivo_pausa_agente_rafaelcorrea_primarylabdigivoxcombr">---</span></td>
+									        				<td>
+										        				<a href="javascript:void(0)" onclick="logoutAgente('rafaelcorrea_primarylabdigivoxcombr', 'rafael.correa@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_rafaelcorrea_primarylabdigivoxcombr_pausa" class="base-icon-logout"></span>
+									        					</a>
+								        					</td>
+									        			</tr>
+
+
+
+
+
+
+														<tr id="tr_agente_rafael_primarylabdigivoxcombr" class="text-center" style="display: none">
+
+															<th class="text-center text-success">Rafael Felipe t</th>
+									        				<td><span id="agente_rafael_primarylabdigivoxcombr_filas"></span></td>
+
+
+									        				<td><span id="agente_rafael_primarylabdigivoxcombr_status">Deslogado</span></td>
+
+									        				<td><span id="agente_rafael_primarylabdigivoxcombr_ramal">{call_timeout=15}</span></td>
+									        				<td><span id="agente_rafael_primarylabdigivoxcombr_level">0</span></td>
+															<td><span id="agente_rafael_primarylabdigivoxcombr_position">0</span></td>
+									        				<td><span id="agente_rafael_primarylabdigivoxcombr_hora-ultimo-logon">10:14:53</span></td>
+
+															<td><span id="agente_rafael_primarylabdigivoxcombr_hora-ultima-chamada">13:24:14</span></td>
+									        				<td><span id="agente_rafael_primarylabdigivoxcombr_chamada_origem"></span></td>
+															<td><span id="agente_rafael_primarylabdigivoxcombr_chamada_tempo-espera-fila"></span></td>
+									        				<td><span id="timer_agente_rafael_primarylabdigivoxcombr_chamada_duracao"></span></td>
+									        				<td>
+									        					<a href="javascript:void(0)" onclick="ouvirChamada('rafael_primarylabdigivoxcombr')" title="Ouvir chamada" style="visibility:  hidden ">
+									        						<span id="button_ouvir_agente_rafael_primarylabdigivoxcombr" class="base-icon-headphones"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="transferirChamada('rafael_primarylabdigivoxcombr')" title="Transferir chamada" style="visibility:  hidden ">
+									        						<span id="button_transferir_agente_rafael_primarylabdigivoxcombr" class="base-icon-forward"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="logoutAgente('rafael_primarylabdigivoxcombr', 'rafael@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_rafael_primarylabdigivoxcombr" class="base-icon-logout"></span>
+									        					</a>
+									        				</td>
+														</tr>
+
+														<tr id="tr_agente_rafael_primarylabdigivoxcombr_pausa" class="text-center warning text-live" style="display: none">
+									        				<th class="text-center">Rafael Felipe t</th>
+									        				<td></td>
+									        				<td>Pausa</td>
+									        				<td>&nbsp;<span class="base-icon-clock" id="timer_pausa_agente_rafael_primarylabdigivoxcombr"></span></td>
+									        				<td class="text-left" colspan="7">Motivo:&nbsp;<span id="motivo_pausa_agente_rafael_primarylabdigivoxcombr">---</span></td>
+									        				<td>
+										        				<a href="javascript:void(0)" onclick="logoutAgente('rafael_primarylabdigivoxcombr', 'rafael@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_rafael_primarylabdigivoxcombr_pausa" class="base-icon-logout"></span>
+									        					</a>
+								        					</td>
+									        			</tr>
+
+
+
+
+
+
+														<tr id="tr_agente_romaryo_primarylabdigivoxcombr" class="text-center" style="display: none">
+
+															<th class="text-center text-success">Romaryo Ricardo</th>
+									        				<td><span id="agente_romaryo_primarylabdigivoxcombr_filas"></span></td>
+
+
+									        				<td><span id="agente_romaryo_primarylabdigivoxcombr_status">Deslogado</span></td>
+
+									        				<td><span id="agente_romaryo_primarylabdigivoxcombr_ramal">{call_timeout=15}</span></td>
+									        				<td><span id="agente_romaryo_primarylabdigivoxcombr_level">0</span></td>
+															<td><span id="agente_romaryo_primarylabdigivoxcombr_position">0</span></td>
+									        				<td><span id="agente_romaryo_primarylabdigivoxcombr_hora-ultimo-logon"></span></td>
+
+															<td><span id="agente_romaryo_primarylabdigivoxcombr_hora-ultima-chamada"></span></td>
+									        				<td><span id="agente_romaryo_primarylabdigivoxcombr_chamada_origem"></span></td>
+															<td><span id="agente_romaryo_primarylabdigivoxcombr_chamada_tempo-espera-fila"></span></td>
+									        				<td><span id="timer_agente_romaryo_primarylabdigivoxcombr_chamada_duracao"></span></td>
+									        				<td>
+									        					<a href="javascript:void(0)" onclick="ouvirChamada('romaryo_primarylabdigivoxcombr')" title="Ouvir chamada" style="visibility:  hidden ">
+									        						<span id="button_ouvir_agente_romaryo_primarylabdigivoxcombr" class="base-icon-headphones"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="transferirChamada('romaryo_primarylabdigivoxcombr')" title="Transferir chamada" style="visibility:  hidden ">
+									        						<span id="button_transferir_agente_romaryo_primarylabdigivoxcombr" class="base-icon-forward"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="logoutAgente('romaryo_primarylabdigivoxcombr', 'romaryo@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_romaryo_primarylabdigivoxcombr" class="base-icon-logout"></span>
+									        					</a>
+									        				</td>
+														</tr>
+
+														<tr id="tr_agente_romaryo_primarylabdigivoxcombr_pausa" class="text-center warning text-live" style="display: none">
+									        				<th class="text-center">Romaryo Ricardo</th>
+									        				<td></td>
+									        				<td>Pausa</td>
+									        				<td>&nbsp;<span class="base-icon-clock" id="timer_pausa_agente_romaryo_primarylabdigivoxcombr"></span></td>
+									        				<td class="text-left" colspan="7">Motivo:&nbsp;<span id="motivo_pausa_agente_romaryo_primarylabdigivoxcombr">---</span></td>
+									        				<td>
+										        				<a href="javascript:void(0)" onclick="logoutAgente('romaryo_primarylabdigivoxcombr', 'romaryo@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_romaryo_primarylabdigivoxcombr_pausa" class="base-icon-logout"></span>
+									        					</a>
+								        					</td>
+									        			</tr>
+
+
+
+
+
+
+														<tr id="tr_agente_teste_primarylabdigivoxcombr" class="text-center" style="display: none">
+
+															<th class="text-center text-success">teste</th>
+									        				<td><span id="agente_teste_primarylabdigivoxcombr_filas"></span></td>
+
+
+									        				<td><span id="agente_teste_primarylabdigivoxcombr_status">Deslogado</span></td>
+
+									        				<td><span id="agente_teste_primarylabdigivoxcombr_ramal">{call_timeout=15}</span></td>
+									        				<td><span id="agente_teste_primarylabdigivoxcombr_level">0</span></td>
+															<td><span id="agente_teste_primarylabdigivoxcombr_position">0</span></td>
+									        				<td><span id="agente_teste_primarylabdigivoxcombr_hora-ultimo-logon">19:57:48</span></td>
+
+															<td><span id="agente_teste_primarylabdigivoxcombr_hora-ultima-chamada"></span></td>
+									        				<td><span id="agente_teste_primarylabdigivoxcombr_chamada_origem"></span></td>
+															<td><span id="agente_teste_primarylabdigivoxcombr_chamada_tempo-espera-fila"></span></td>
+									        				<td><span id="timer_agente_teste_primarylabdigivoxcombr_chamada_duracao"></span></td>
+									        				<td>
+									        					<a href="javascript:void(0)" onclick="ouvirChamada('teste_primarylabdigivoxcombr')" title="Ouvir chamada" style="visibility:  hidden ">
+									        						<span id="button_ouvir_agente_teste_primarylabdigivoxcombr" class="base-icon-headphones"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="transferirChamada('teste_primarylabdigivoxcombr')" title="Transferir chamada" style="visibility:  hidden ">
+									        						<span id="button_transferir_agente_teste_primarylabdigivoxcombr" class="base-icon-forward"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="logoutAgente('teste_primarylabdigivoxcombr', 'teste@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_teste_primarylabdigivoxcombr" class="base-icon-logout"></span>
+									        					</a>
+									        				</td>
+														</tr>
+
+														<tr id="tr_agente_teste_primarylabdigivoxcombr_pausa" class="text-center warning text-live" style="display: none">
+									        				<th class="text-center">teste</th>
+									        				<td></td>
+									        				<td>Pausa</td>
+									        				<td>&nbsp;<span class="base-icon-clock" id="timer_pausa_agente_teste_primarylabdigivoxcombr"></span></td>
+									        				<td class="text-left" colspan="7">Motivo:&nbsp;<span id="motivo_pausa_agente_teste_primarylabdigivoxcombr">---</span></td>
+									        				<td>
+										        				<a href="javascript:void(0)" onclick="logoutAgente('teste_primarylabdigivoxcombr', 'teste@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_teste_primarylabdigivoxcombr_pausa" class="base-icon-logout"></span>
+									        					</a>
+								        					</td>
+									        			</tr>
+
+
+
+
+
+
+														<tr id="tr_agente_teste2_primarylabdigivoxcombr" class="text-center" style="display: none">
+
+															<th class="text-center text-success">Wagner</th>
+									        				<td><span id="agente_teste2_primarylabdigivoxcombr_filas"></span></td>
+
+
+									        				<td><span id="agente_teste2_primarylabdigivoxcombr_status">Deslogado</span></td>
+
+									        				<td><span id="agente_teste2_primarylabdigivoxcombr_ramal">{call_timeout=15}</span></td>
+									        				<td><span id="agente_teste2_primarylabdigivoxcombr_level">0</span></td>
+															<td><span id="agente_teste2_primarylabdigivoxcombr_position">0</span></td>
+									        				<td><span id="agente_teste2_primarylabdigivoxcombr_hora-ultimo-logon"></span></td>
+
+															<td><span id="agente_teste2_primarylabdigivoxcombr_hora-ultima-chamada"></span></td>
+									        				<td><span id="agente_teste2_primarylabdigivoxcombr_chamada_origem"></span></td>
+															<td><span id="agente_teste2_primarylabdigivoxcombr_chamada_tempo-espera-fila"></span></td>
+									        				<td><span id="timer_agente_teste2_primarylabdigivoxcombr_chamada_duracao"></span></td>
+									        				<td>
+									        					<a href="javascript:void(0)" onclick="ouvirChamada('teste2_primarylabdigivoxcombr')" title="Ouvir chamada" style="visibility:  hidden ">
+									        						<span id="button_ouvir_agente_teste2_primarylabdigivoxcombr" class="base-icon-headphones"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="transferirChamada('teste2_primarylabdigivoxcombr')" title="Transferir chamada" style="visibility:  hidden ">
+									        						<span id="button_transferir_agente_teste2_primarylabdigivoxcombr" class="base-icon-forward"></span>
+									        					</a>
+									        					&nbsp;
+									        					<a href="javascript:void(0)" onclick="logoutAgente('teste2_primarylabdigivoxcombr', 'teste2@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_teste2_primarylabdigivoxcombr" class="base-icon-logout"></span>
+									        					</a>
+									        				</td>
+														</tr>
+
+														<tr id="tr_agente_teste2_primarylabdigivoxcombr_pausa" class="text-center warning text-live" style="display: none">
+									        				<th class="text-center">Wagner</th>
+									        				<td></td>
+									        				<td>Pausa</td>
+									        				<td>&nbsp;<span class="base-icon-clock" id="timer_pausa_agente_teste2_primarylabdigivoxcombr"></span></td>
+									        				<td class="text-left" colspan="7">Motivo:&nbsp;<span id="motivo_pausa_agente_teste2_primarylabdigivoxcombr">---</span></td>
+									        				<td>
+										        				<a href="javascript:void(0)" onclick="logoutAgente('teste2_primarylabdigivoxcombr', 'teste2@primary.lab.digivox.com.br')" title="Deslogar agente">
+									        						<span id="button_logout_agente_teste2_primarylabdigivoxcombr_pausa" class="base-icon-logout"></span>
+									        					</a>
+								        					</td>
+									        			</tr>
+
+
+
+
+
+
+								        		</tbody>
+
+									        </table>
+
+									        <h3 class="text-embed">
+									        	<span class="base-icon-clock"></span> Chamadas em espera
+
+									        </h3>
+
+									        <table id="table_chamadas_espera" class="table table-striped table-hover table-condensed">
+									        	<thead>
+									        		<tr>
+									        			<th>#</th>
+									        			<th><span class="base-icon-users text-live"></span> Fila</th>
+									        			<th width="100" class="text-center"><span class="base-icon-phone text-live"></span> Número</th>
+									        			<th width="130" class="text-center"><span class="base-icon-clock text-live"></span> Tempo de espera</th>
+									        			<th><span class="base-icon-user text-live"></span> Agente</th>
+									        			<th>Status</th>
+									        		</tr>
+									        	</thead>
+
+
+
+														<tbody id="table_chamada_Suporte_primarylabdigivoxcombr_espera_1">
+
+											        	</tbody>
+
+														<tbody id="table_chamada_Suporte_primarylabdigivoxcombr_espera_2">
+
+											        	</tbody>
+
+														<tbody id="table_chamada_Suporte_primarylabdigivoxcombr_espera_3">
+
+											        	</tbody>
+
+														<tbody id="table_chamada_Suporte_primarylabdigivoxcombr_espera_4">
+
+											        	</tbody>
+
+														<tbody id="table_chamada_Suporte_primarylabdigivoxcombr_espera_5">
+
+											        	</tbody>
+
+														<tbody id="table_chamada_Suporte_primarylabdigivoxcombr_espera_6">
+
+											        	</tbody>
+
+														<tbody id="table_chamada_Suporte_primarylabdigivoxcombr_espera_7">
+
+											        	</tbody>
+
+														<tbody id="table_chamada_Suporte_primarylabdigivoxcombr_espera_8">
+
+											        	</tbody>
+
+														<tbody id="table_chamada_Suporte_primarylabdigivoxcombr_espera_9">
+
+											        	</tbody>
+
+														<tbody id="table_chamada_Suporte_primarylabdigivoxcombr_espera_10">
+
+											        	</tbody>
+
+
+									        </table>
+
+
+											</div>
+										</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Scroll Top -->
+			<a id="scroll-to-top" href="#goto-screen" class="nav-smooth"></a>
+
+			<!-- Footer -->
+			<div id="footer" class="mob-noNav">
+				<div class="container bs-container">
+					<div class="row">
+						<div class="row-wrapper">
+							<div class="row">
+								<div id="copyright" class="col-xs-6">
+									&copy;copyright 2015
+								</div>
+								<div id="info-dev" class="col-xs-6 text-right">
+									<img src="images/logo-developer.png" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Hidden -->
+			<div id="hidden" class=""></div>
+
+	<!-- / screen -->
+	</div>
+
+	<!-- jQuery UI -->
+	<script src="core/libs/jquery/jquery-ui.min.js" type="text/javascript"></script>
+
+	<!-- load app's default javascript -->
+	<script type="text/javascript" src="js/default.js"></script>
+	<script type="text/javascript" src="_dev/custom.js"></script>
+
+	<!-- load guide's default javascript -->
+	<script type="text/javascript" src="js/guide.js"></script>
+
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+		<script src="templates/base/core/libs/js/browser/html5shiv-printshiv.js"></script>
+	<![endif]-->
+
+	<script>
+	// CUSTOM SCRIPTS
+	jQuery(function() {
+
+		// define menu item active
+		jQuery('#navigation #guide').addClass('active');
+
+	});
+	</script>
+
+	<script>
+		// LOCAL FORM VALIDATIONS
+		jQuery(window).load( function() {
+
+			// form validations
+			jQuery("#form-validator").validate({
+				rules: {
+					password: {
+						rangelength: [6, 15]
+					},
+					repassword: {
+						equalTo: "#password"
+					},
+					url: "url",
+					price: {
+						notEqual: '0,00'
+					}
+				},
+				messages: {
+					price: {
+						notEqual: 'Campo Obrigatório'
+					}
+				},
+				submitHandler: function(form) {
+					jQuery('#alert-valid').show();
+					return false; // for demo
+				},
+				invalidHandler: function(event, validator) {
+					// run function if there is error
+					baseValidation(jQuery(this));
+				}
+			});
+
+		});
+	</script>
+	<script type="text/javascript" src="js/validate.js"></script>
+
+</body>
+</html>

@@ -3,6 +3,8 @@
 
 // Imports
 @import "mixins/editor";
-
 @import "cms";
-@import "cms.extensions";
+
+// JCE EDITOR
+// Editor de texto
+@include base-editor();

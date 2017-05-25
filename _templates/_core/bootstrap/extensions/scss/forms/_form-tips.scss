@@ -1,0 +1,18 @@
+// FIELD TIPS
+// Ícone de informações nos campos formulários
+
+  .iconTip.hasTooltip:after,
+  .iconTip.hasPopover:after {
+    font-family: "baseicons";
+    content: $baseicon-iconTip;
+    display: inline;
+    padding-left: 3px;
+    font-weight: normal;
+    color: $base-color-live;
+  }
+  label.iconTip.hasTooltip:after,
+  label.iconTip.hasPopover:after {
+    vertical-align: super;
+    font-size: 10px;
+  }
+  .iconTip { cursor: help; }

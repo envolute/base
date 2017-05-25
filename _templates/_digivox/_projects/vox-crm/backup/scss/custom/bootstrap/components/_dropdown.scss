@@ -1,0 +1,3 @@
+// DROPDOWN
+ul:not(.nav-child).dropdown-menu > li:not(.active) > a { color: $dropdown-link-color!important; }
+ul:not(.nav-child).dropdown-menu > li:not(.active) > a:hover { color: $dropdown-link-hover-color!important; }

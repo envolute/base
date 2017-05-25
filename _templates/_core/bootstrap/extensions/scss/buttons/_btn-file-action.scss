@@ -1,0 +1,9 @@
+// BTN FILE ACTION
+// Estados 'ativo' do botão
+
+  // active state success
+  .btn-file-action.active {
+    color: $btn-success-color;
+    background-color: $btn-success-bg;
+    border-color: $btn-success-border;
+  }

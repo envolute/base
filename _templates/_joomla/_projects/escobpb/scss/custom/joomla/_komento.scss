@@ -1,0 +1,13 @@
+// KOMENTO
+// sistema de comentários
+
+  // ARTICLE
+  #section-kmt { min-height: 0; }
+  // oculta elementos não "necessários"
+  #section-kmt div.kmt-form-author .kmt-author-time,
+  .markItUpHeader,
+  #section-kmt .kmt-btn-submit.disabled,
+  #section-kmt .kmt-fame-tabs.col1,
+  #section-kmt + div {
+    display:none;
+  }

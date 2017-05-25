@@ -1,0 +1,160 @@
+// DP CALENDAR
+// Calendário de eventos
+
+  // GERAL
+
+    // Container principal
+    .dp-container .fc {
+      border: 3px solid $gray-light;
+    }
+    // Botões de Compartilhamento
+    .dp-share-button {
+      margin: 0!important;
+    }
+    // Lista de Calendários
+    #dpcalendar_view_list {
+      padding: 15px 0 0;
+    }
+      // Opção (checkbox)
+      #dpcalendar_view_list label.checkbox {
+        margin-bottom: 0;
+      }
+      // Descrição do calendário
+      #dpcalendar_view_list dd {
+        font-size: .9rem;
+      }
+    // Cabeçalho da tabela de ações
+    // Botões de navegação e Título
+    table.fc-header {
+      background-color: $gray-light;
+      color: $brand-primary;
+    }
+    table.fc-header td {
+      vertical-align: middle !important;
+    }
+    table.fc-header .fc-button {
+    	margin: 3px 1px;
+    	color: #fff;
+      font-size: 13px!important;
+      text-shadow: none;
+      border: none;
+      background: $brand-primary;
+      box-shadow: none;
+    	border-radius: 0!important;
+    }
+    table.fc-header h2 {
+    	margin: 0;
+    	line-height: 20px;
+    	font-size: 14px;
+    }
+
+    // TABELA DE CONTEÚDO (widget)
+
+      // Celulas default da tabela
+      .fc-widget-header,
+      .fc-widget-content {
+      	font-size: .9em;
+        border: 1px solid $gray-light;
+      }
+      // Cabeçalho da tabela
+      // Dias da semana (calendário, semana), horários (dia, semana)
+      .fc-widget-header {
+      	color: #fff;
+      	font-weight: normal;
+        vertical-align: middle!important;
+      	background: $brand-primary;
+      }
+      // Destaca o dia atual (calendário, semana)
+      .fc-state-highlight {
+      	color: $base-color-live;
+      }
+      // Container de informação do evento
+      .fc-event {
+        padding: 0 4px;
+      }
+
+  // CALENDÁRIO
+
+    // GERAL
+
+      // Largura das colunas
+      // dias da semana => 100 / 7
+      .fc-view-month .fc-widget-header {
+      	width: 14.2%;
+      }
+
+    // COMPONENTE
+
+      #dpcalendar_component {
+        border-top: 1px solid $gray-light;
+      }
+      // Cabeçalho do conteúdo (dias da semana)
+      #dpcalendar_component .fc-agenda-days th,
+      #dpcalendar_component th.fc-day-header {
+        padding: 5px;
+      }
+
+    // MÓDULO
+
+      .module table.fc-header .fc-button {
+      	margin-top: 0;
+      	padding: 0;
+      }
+      // Container de informação do evento
+      // Customizado para não quebrar linha do calendário
+      .module .fc-grid .fc-day-content {
+        clear: none!important;
+        min-height: 24px;
+      }
+      .module .fc-event {
+        width: 12px!important;
+        height: 12px!important;
+      	margin: 4px;
+      	background-color: $brand-primary;
+      	border-radius: 20px;
+      }
+
+  // LIST VIEW
+
+    .fc-view-list,
+    .fc-view-table {
+      border: none;
+    }
+    .fc-view-list .fc-event {
+      font-size: inherit!important;
+    }
+    .fc-view-list .fc-event-time,
+    .fc-view-list .fc-event-title {
+      padding: 3px 6px;
+      font-size: inherit!important;
+    }
+
+  // TOOLTIP
+
+    .tooltipster-default { }
+    .tooltipster-content {
+      padding: 2px 4px!important;
+    }
+    .tooltipster-content a {
+      color: $base-color-live!important;
+    }
+    .tooltipster-content ul {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+    .tooltipster-content ul > li {
+      padding: 2px 0;
+      border-top: 1px solid $base-border-color;
+    }
+    .tooltipster-content ul > li:first-child {
+      padding-top: 0;
+      border-top: none;
+    }
+    .tooltipster-content ul > li:last-child {
+      padding-bottom: 0;
+    }
+    // 'hr' na tooltip
+    #dp-popup-window-divider {
+      margin: 4px 0;
+    }

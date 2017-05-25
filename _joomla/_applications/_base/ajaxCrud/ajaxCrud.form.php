@@ -1,0 +1,159 @@
+<?php
+defined('_JEXEC') or die;
+
+$query = 'SELECT * FROM '. $db->quoteName($cfg['mainTable'].'_types') .' WHERE state = 1 ORDER BY name';
+$db->setQuery($query);
+$types = $db->loadObjectList();
+?>
+
+<form name="form-<?php echo $APPTAG?>" id="form-<?php echo $APPTAG?>" method="post" enctype="multipart/form-data">
+
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<h4 class="modal-title">
+			<?php
+				echo JText::_('FORM_TITLE');
+				if($cfg['showFormDesc']) :
+					echo '<div class="small font-condensed">'.JText::_('FORM_DESCRIPTION').'</div>';
+				endif;
+			?>
+		</h4>
+	</div>
+	<div class="modal-body">
+		<fieldset>
+			<div class="row">
+				<div id="<?php echo $APPTAG?>-formPaginator" class="col-sm-4" hidden>
+					<div class="form-group field-required">
+						<span class="input-group">
+							<span class="input-group-btn">
+								<button id="btn-<?php echo $APPTAG?>-prev" class="base-icon-left-open btn btn-sm btn-default" disabled></button>
+							</span>
+							<input type="text" name="id" id="<?php echo $APPTAG?>-id" class="form-control form-control-sm" readonly="readonly" />
+							<input type="hidden" name="relationId" id="<?php echo $APPTAG?>-relationId" value="<?php echo $_SESSION[$RTAG.'RelId']?>" />
+							<input type="hidden" name="<?php echo $APPTAG?>-prev" id="<?php echo $APPTAG?>-prev" />
+							<input type="hidden" name="<?php echo $APPTAG?>-next" id="<?php echo $APPTAG?>-next" />
+							<span class="input-group-btn">
+								<button id="btn-<?php echo $APPTAG?>-next" class="base-icon-right-open btn btn-sm btn-default" disabled></button>
+							</span>
+						</span>
+					</div>
+				</div>
+				<div id="<?php echo $APPTAG?>-fieldState" class="col-sm-4">
+					<div class="form-group">
+						<span id="<?php echo $APPTAG?>-state-group" class="btn-group w-full" data-toggle="buttons">
+							<label class="col btn btn-sm btn-default btn-active-success strong">
+								<span class="base-icon-unset"></span>
+								<input type="radio" name="state" id="<?php echo $APPTAG?>-state-1" value="1" />
+								<?php echo JText::_('TEXT_ACTIVE'); ?>
+							</label>
+							<label class="col btn btn-sm btn-default btn-active-danger strong">
+								<span class="base-icon-unset"></span>
+								<input type="radio" name="state" id="<?php echo $APPTAG?>-state-0" value="0" />
+								<?php echo JText::_('TEXT_INACTIVE'); ?>
+							</label>
+						</span>
+					</div>
+				</div>
+				<div id="<?php echo $APPTAG?>-restart" class="col-sm-4" hidden>
+					<div class="form-group">
+						<button type="button" id="btn-<?php echo $APPTAG?>-restart" class="base-icon-cw btn btn-sm btn-default btn-block">
+							 <?php echo JText::_('TEXT_RESTART'); ?>
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<hr class="my-xs" />
+
+			<div class="row">
+				<div class="col-sm-8">
+					<div class="form-group field-required">
+						<label><?php echo JText::_('FIELD_LABEL_NAME'); ?></label>
+						<input type="text" name="name" id="<?php echo $APPTAG?>-name" class="form-control upper" />
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="form-group field-required">
+						<label><?php echo JText::_('FIELD_LABEL_DATE'); ?></label>
+						<input type="text" name="date" id="<?php echo $APPTAG?>-date" class="form-control field-date" data-convert="true" />
+					</div>
+				</div>
+				<div class="col-sm-8">
+					<div class="form-group field-required">
+						<label><?php echo JText::_('FIELD_LABEL_TYPE'); ?></label>
+						<select name="type" id="<?php echo $APPTAG?>-type" class="form-control field-id auto-tab" data-target="<?php echo $APPTAG?>-price">
+							<option value="0">- <?php echo JText::_('TEXT_SELECT'); ?> -</option>
+							<?php
+								foreach ($types as $obj) {
+									echo '<option value="'.$obj->id.'">'.$obj->name.'</option>';
+								}
+							?>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="form-group field-required">
+						<label><?php echo JText::_('FIELD_LABEL_PRICE'); ?></label>
+						<span class="input-group">
+							<span class="input-group-addon">R$</span>
+							<input type="text" name="price" id="<?php echo $APPTAG?>-price" size="6" class="form-control field-price" data-convert="true" />
+						</span>
+					</div>
+				</div>
+				<div class="col-sm-8">
+					<div class="form-group">
+						<label><?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?></label>
+						<input type="text" name="description" id="<?php echo $APPTAG?>-description" class="form-control" />
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="form-group">
+						<label class="display-block">&#160;</label>
+						<div class="checkbox field-required">
+							<label>
+								<input type="checkbox" name="check" id="<?php echo $APPTAG?>-check" value="1" /> Checkbox
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-8">
+					<div class="form-group field-required">
+						<label>File 1</label><br />
+						<span class="btn-group">
+							<button type="button" class="base-icon-search btn btn-default file-action"> <?php echo JText::_('TEXT_FILE_SELECT'); ?></button>
+						</span>
+						<input type="file" name="file[0]" id="<?php echo $APPTAG?>-file0" class="form-control" hidden />
+					</div>
+				</div>
+				<div class="col-sm-8">
+					<div class="form-group">
+						<label>File 2</label><br />
+						<span class="btn-group">
+							<button type="button" class="base-icon-search btn btn-default file-action"> <?php echo JText::_('TEXT_FILE_SELECT'); ?></button>
+						</span>
+						<input type="file" name="file[1]" id="<?php echo $APPTAG?>-file1" class="form-control" hidden />
+					</div>
+				</div>
+			</div>
+		</fieldset>
+		<div class="set-error alert alert-danger base-icon-cancel-circled p-1 mt-3 mb-0" hidden></div>
+	</div>
+	<div class="modal-footer">
+		<div class="col-3 p-0">
+			<h4 class="base-icon-ok-circled2 set-success text-success m-0" hidden></h4>
+		</div>
+		<div class="col p-0 text-right">
+			<div class="btn-group">
+				<button name="btn-<?php echo $APPTAG?>-save" id="btn-<?php echo $APPTAG?>-save" class="base-icon-ok btn btn-success" onclick="<?php echo $APPTAG?>_save();"> <?php echo JText::_('TEXT_SAVE'); ?></button>
+				<button type="button" class="btn btn-default dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="#" name="btn-<?php echo $APPTAG?>-save-new" id="btn-<?php echo $APPTAG?>-save-new" onclick="<?php echo $APPTAG?>_save('reset');"> <?php echo JText::_('TEXT_SAVENEW'); ?></a>
+					<a class="dropdown-item" href="#" name="btn-<?php echo $APPTAG?>-save-close" id="btn-<?php echo $APPTAG?>-save-close" onclick="<?php echo $APPTAG?>_save('close');"> <?php echo JText::_('TEXT_SAVECLOSE'); ?></a>
+				</div>
+			</div>
+			<button name="btn-<?php echo $APPTAG?>-delete" id="btn-<?php echo $APPTAG?>-delete" class="base-icon-trash btn btn-danger" hidden onclick="<?php echo $APPTAG?>_del(0, true)"> <?php echo JText::_('TEXT_DELETE'); ?></button>
+			<button name="btn-<?php echo $APPTAG?>-cancel" id="btn-<?php echo $APPTAG?>-cancel" class="base-icon-cancel btn btn-default" data-dismiss="modal"> <?php echo JText::_('TEXT_CANCEL'); ?></button>
+		</div>
+	</div>
+
+</form>

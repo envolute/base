@@ -1,0 +1,12 @@
+// @STYLE
+// Esse arquivo deve conter todas as classes para customização do template do projeto.
+
+// Core do template
+@import "../../_core/sass/chosen/chosen";
+@import "core.import";
+@import "../../_baseCore/core/sass/cms.frontend";
+
+// Arquivos de customização
+@import "custom.elements";
+@import "custom";
+@import "custom.animate";

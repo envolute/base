@@ -1,0 +1,22 @@
+// BUTTON ICON
+// Formato opciional para botões com ícones
+
+  .btn-icon {
+    margin: 0 7px 0 -3px;
+    padding-right: 6px;
+    border-right: 1px solid;
+  }
+  .btn-xs .btn-icon {
+    margin-left: 0;
+    padding-right: 4px;
+  }
+  .btn-icon[class*="base-icon-"]:before {
+    margin: 0!important;
+  }
+  // BTN-BLOCK
+  // Quando o ícone estiver em um botão do tipo 'btn-block'
+  // obs: a classe '.icon-default' desabilita a funcionalidade
+  .btn-block .btn-icon:not(.icon-default) {
+    float: left;
+    line-height: inherit!important;
+  }

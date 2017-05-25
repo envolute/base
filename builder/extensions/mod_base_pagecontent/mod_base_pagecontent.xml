@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<extension type="module" version="3.0" client="site" method="upgrade">
+	<name>PageContent</name>
+	<author>Envolute</author>
+	<creationDate>September 2016</creationDate>
+	<copyright>Copyright(C)2012 Open Source Matters. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; seeLICENSE.txt</license>
+	<authorEmail>dev@envolute.com</authorEmail>
+	<authorUrl>www.envolute.com</authorUrl>
+	<version>1.0.0</version>
+	<description>MOD_PAGEITENS_DESCRIPTION</description>
+	<files>
+		<filename module="mod_base_pagecontent">mod_base_pagecontent.php</filename>
+		<filename>index.html</filename>
+		<filename>mod_base_pagecontent.xml</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB.mod_base_pagecontent.ini</language>
+		<language tag="pt-BR">language/pt-BR.mod_base_pagecontent.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="appTag" type="text" filter="string" default="" label="MOD_PAGEITENS_APPTAG" description="MOD_PAGEITENS_APPTAG_DESC" />
+				<field name="relTag" type="text" filter="string" default="" label="MOD_PAGEITENS_RELTAG" description="MOD_PAGEITENS_RELTAG_DESC" />
+
+				<field name="pageContent" type="spacer" class="text"
+						label="MOD_PAGEITENS_CONTENT_LABEL"
+				/>
+
+				<field name="contentLayout" type="textarea" rows="12" filter="raw" default="" label="MOD_PAGEITENS_CONTENT_LAYOUT" description="MOD_PAGEITENS_CONTENT_LAYOUT_DESC" />
+				<field name="contentDateFormat" type="text" filter="string" default="d/m/Y" label="MOD_PAGEITENS_CONTENT_DATE_FORMAT" description="MOD_PAGEITENS_CONTENT_DATE_FORMAT_DESC" />
+				<field name="content_imageWidth" type="text" filter="string" default="" label="MOD_PAGEITENS_CONTENT_IMAGE_WIDTH" description="MOD_PAGEITENS_CONTENT_IMAGE_WIDTH_DESC" />
+				<field name="content_imageHeight" type="text" filter="string" default="" label="MOD_PAGEITENS_CONTENT_IMAGE_HEIGHT" description="MOD_PAGEITENS_CONTENT_IMAGE_HEIGHT_DESC" />
+				<field name="content_imageClass" type="text" filter="string" default="" label="MOD_PAGEITENS_CONTENT_IMAGE_CLASS" description="MOD_PAGEITENS_CONTENT_IMAGE_CLASS_DESC" />
+
+				<field name="pageGalleryView" type="spacer" class="text"
+						label="MOD_PAGEITENS_GALLERY_LABEL"
+				/>
+
+				<field name="content_galleryGrid" type="text" filter="string" default="col-sm-3" label="MOD_PAGEITENS_GRID" description="MOD_PAGEITENS_GRID_DESC" />
+				<field name="content_galImageWidth" type="text" filter="string" default="" label="MOD_PAGEITENS_CONTENT_GALLERY_IMAGE_WIDTH" description="MOD_PAGEITENS_CONTENT_GALLERY_IMAGE_WIDTH_DESC" />
+				<field name="content_galImageHeight" type="text" filter="string" default="" label="MOD_PAGEITENS_CONTENT_GALLERY_IMAGE_HEIGHT" description="MOD_PAGEITENS_CONTENT_GALLERY_IMAGE_HEIGHT_DESC" />
+				<field name="content_galImageClass" type="text" filter="string" default="" label="MOD_PAGEITENS_CONTENT_GALLERY_IMAGE_CLASS" description="MOD_PAGEITENS_CONTENT_GALLERY_IMAGE_CLASS_DESC" />
+			</fieldset>
+			<fieldset name="MOD_PAGEITENS_FORM">
+				<field name="formHideDescriptionField" type="radio" class="btn-group" default="0" label="MOD_PAGEITENS_HIDE_DESCRIPTION_FIELD" description="MOD_PAGEITENS_HIDE_DESCRIPTION_FIELD_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="formDescriptionHtml" type="radio" class="btn-group" default="1" label="MOD_PAGEITENS_DESCRIPTION_HTML_FIELD" description="MOD_PAGEITENS_DESCRIPTION_HTML_FIELD_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="formDescriptionHtmlFull" type="radio" class="btn-group" default="0" label="MOD_PAGEITENS_DESCRIPTION_HTML_FULL_FIELD" description="MOD_PAGEITENS_DESCRIPTION_HTML_FULL_FIELD_DESC">
+					<option value="0">MOD_PAGEITENS_FORM_EDITOR_SIMPLE</option>
+					<option value="1">MOD_PAGEITENS_FORM_EDITOR_FULL</option>
+				</field>
+				<field name="formImageInfo" type="text" filter="string" default="" label="MOD_PAGEITENS_LIST_IMAGE_INFO" description="MOD_PAGEITENS_LIST_IMAGE_INFO_DESC" />
+				<field name="formHideAllDateFields" type="radio" class="btn-group" default="0" label="MOD_PAGEITENS_HIDE_ALL_DATE_FIELDS" description="MOD_PAGEITENS_HIDE_ALL_DATE_FIELDS_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="formHideDateField" type="radio" class="btn-group" default="0" label="MOD_PAGEITENS_HIDE_DATE_FIELD" description="MOD_PAGEITENS_HIDE_DATE_FIELD_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="formHideMonthField" type="radio" class="btn-group" default="0" label="MOD_PAGEITENS_HIDE_MONTH_FIELD" description="MOD_PAGEITENS_HIDE_MONTH_FIELD_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="formHideYearField" type="radio" class="btn-group" default="0" label="MOD_PAGEITENS_HIDE_YEAR_FIELD" description="MOD_PAGEITENS_HIDE_YEAR_FIELD_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="formHideOrderField" type="radio" class="btn-group" default="0" label="MOD_PAGEITENS_HIDE_ORDER_FIELD" description="MOD_PAGEITENS_HIDE_ORDER_FIELD_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="formContentTypeDef" type="radio" class="btn-group" default="0" label="MOD_PAGEITENS_FORM_CONTENT_DEFAULT" description="MOD_PAGEITENS_FORM_CONTENT_DEFAULT_DESC">
+					<option value="0">MOD_PAGEITENS_FORM_CONTENT_LINK</option>
+					<option value="1">MOD_PAGEITENS_FORM_CONTENT_FILE</option>
+					<option value="2">MOD_PAGEITENS_FORM_CONTENT_TEXT</option>
+					<option value="3">MOD_PAGEITENS_FORM_CONTENT_GALLERY</option>
+				</field>
+				<field name="formOnlyContentDef" type="radio" class="btn-group" default="0" label="MOD_PAGEITENS_ONLY_CONTENT_DEFAULT_FIELD" description="MOD_PAGEITENS_ONLY_CONTENT_DEFAULT_FIELD_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="formTargetDef" type="radio" class="btn-group" default="0" label="MOD_PAGEITENS_FORM_TARGET_DEFAULT" description="MOD_PAGEITENS_FORM_TARGET_DEFAULT_DESC">
+					<option value="0">MOD_PAGEITENS_FORM_TARGET_SELF</option>
+					<option value="1">MOD_PAGEITENS_FORM_TARGET_BLANK</option>
+				</field>
+				<field name="showTabOptions" type="radio" class="btn-group" default="1" label="MOD_PAGEITENS_SHOW_TAB_OPTIONS_FIELD" description="MOD_PAGEITENS_SHOW_TAB_OPTIONS_FIELD_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+			</fieldset>
+			<fieldset name="MOD_PAGEITENS_CODE">
+				<field name="code" type="textarea" rows="8" class="input-xxlarge" filter="raw" label="PHP" description="MOD_PAGEITENS_PHP_DESC"></field>
+				<field name="css" type="textarea" filter="raw" rows="8" class="input-xxlarge" label="CSS"></field>
+				<field name="script" type="textarea" filter="raw" rows="8" class="input-xxlarge" label="Javascript"></field>
+			</fieldset>
+
+			<fieldset name="advanced">
+				<field name="moduleclass_sfx" type="text" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" desc="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"/>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

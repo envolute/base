@@ -1,0 +1,34 @@
+// LOADER
+#loader {
+  position: fixed;
+  left: 0;
+  bottom: -60px; // height + 5 -> hidden loader
+  opacity: 0;
+  width: 100%;
+  height: 30px;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  background-color: $loader-bg;
+  box-shadow: none;
+  transition: all .3s ease-in-out;
+  z-index: -1;
+}
+#loader.active {
+  bottom: 0;
+  opacity: 1;
+  z-index: 99999;
+}
+#loader.fullScreen {
+  top: 0;
+  bottom: auto;
+  height: 100%;
+  background-color: $loader-full-bg;
+}
+#loader .progress-bar {
+  position: absolute;
+  bottom: -4px;
+  width: 100%;
+  height: 15px;
+}
+#loader.fullScreen img { margin-top: 200px; }

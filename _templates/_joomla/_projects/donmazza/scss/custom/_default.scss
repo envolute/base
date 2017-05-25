@@ -1,0 +1,374 @@
+// @CUSTOM
+// customização de estilo do site
+// Esse arquivo deve conter todas as classes para customização do template para esse projeto.
+
+// WINDOW
+
+	// SCROLLBAR -> barra de rolagem
+	*::-webkit-scrollbar {
+		width:11px;
+		height:11px;
+		background-color: transparent;
+	}
+	*::-webkit-scrollbar-thumb,
+	*::-webkit-scrollbar-corner {
+		border-style: solid;
+		border-width: 2px;
+		border-color: $body-bg;
+		background-color: $gray-light;
+		border-radius: 10px;
+	}
+	*::-webkit-scrollbar-thumb:hover { background-color: $gray; }
+	*::-webkit-scrollbar-track-piece { background-color: none;}
+
+// TYPOGRAPHY
+
+	blockquote { font-family: $base-font-featured; }
+
+// HEADERS
+
+	h4, h5, h6 { line-height: 1.3em; }
+
+// TEMPLATE
+
+	// COMMON ELEMENTS
+
+		// 'clearfix' elements
+		// a classe 'elemento' só serve como modelo
+		// .elemento:before, .elemento:after {
+		// 	content: " ";
+		// 	display: table;
+		// }
+		// .elemento:after { clear: both; }
+
+	// BG LAYER
+
+		#base-bg-layer {
+	    background-image: url('../images/bg-home-grad-top.png'), url('../images/bg-home-1.jpg');
+			background-size: auto, cover;
+			background-position: left top, center;
+			background-repeat: repeat-x, no-repeat;
+		}
+
+	// SCREEN
+
+		body:not(.offline) #screen {
+			background: url('../images/bg-home-grad-bottom.png') left bottom repeat-x;
+		}
+
+	// WRAPPER
+
+		#wrapper {
+			position: relative;
+			margin: auto;
+			padding-bottom: 100px; // altura do #footer
+		}
+
+		// wrapper = container
+		// .media-sm #wrapper { width: 576px; }
+		// .media-md #wrapper { width: 768px; }
+		// .media-lg #wrapper { width: 992px; }
+		// .media-xs #wrapper { width: 1200px; }
+
+
+	// HEADER
+
+		#header { }
+
+		// NAVIGATION
+
+			// mobile
+			// mostra/esconde o menu principal para mostrar o menu mobile
+			// #{$base-break-down}.isMM .mainmenu { display: none; }
+
+			// Menu Principal
+
+				.mainmenu {
+					z-index: $zindex-mainmenu;
+				}
+
+				// MENU PRINCIPAL -> NÍVEL 1
+
+					// Item container <li>
+					.mainmenu .nav.menu > li {
+						display: flex;
+						align-items: center;
+						flex-basis: 0;
+				    flex-grow: 1;
+					}
+					// Espaço entre os itens -> horizontal
+					// Obs: não confundir com o tamanho do item
+					#{$base-break-up} .mainmenu .nav.menu > li:not(:last-child) { margin-right: 2px; }
+					// Item <a>
+					// Formato do item -> definido no link <a>
+					.mainmenu .nav.menu > li > a,
+					.mainmenu .nav.menu > li > a:link,
+					.mainmenu .nav.menu > li > a:visited {
+						flex: 0 0 100%;
+						color: #fff;
+						text-align: center;
+						font-size: 1.2rem;
+						text-shadow: 0px 1px 4px rgba(0,0,0,0.4);
+						background-color: transparent;
+					}
+					// Efeito hover
+					.mainmenu .nav.menu li:not(.active) > a:hover,
+					.mainmenu .nav.menu li:not(.active) > a:focus,
+					.mainmenu .nav.menu li.parent:not(.active):hover > a {
+						color: $base-color-live;
+						background-color: transparent;
+					}
+					// Item ativo
+					.mainmenu .nav.menu li.active > a {
+						color: $base-color-live;
+						background-color: transparent;
+					}
+					// Espaço entre o item principal (nível 1) e o sub-menu (nível 2)
+					// obs: apenas no formato horizontal
+					#{$base-break-up} .mainmenu .nav.menu > li.parent > a { margin-bottom: 0; }
+
+					// Itens Customizados
+
+						// Logomarca
+						.mainmenu .nav.menu li > a.logo {
+							height: 105px;
+							background-color: rgba($black, .85)!important;
+						}
+						.mainmenu .nav.menu li > a.logo img {
+							width: 90px;
+							margin-top: 10px;
+						}
+						.mainmenu .nav.menu li > a.logo .image-title {
+							display: none;
+						}
+						// Esconde a logo no menu mobile 'vertical menu'
+						.sm-menu .off-nav-101:not(.first) {
+							display: none;
+						}
+
+					// Mobile
+
+						// Oculta os itens de menu, mostrando apenas a logo 'item-248'
+						#{$base-break-down} .mainmenu .nav.menu li:not(.item-248) {
+							display: none;
+						}
+						// logo
+						#{$base-break-down} .mainmenu .nav.menu li.item-248 {
+							max-width: 150px;
+							margin: auto;
+						}
+
+					// SUB MENU
+
+						.mainmenu .nav-child {
+							border-color: $brand-primary!important;
+				    	background: rgba($black, .7)!important;
+						}
+						.mainmenu .nav.menu > li.parent > a + .nav-child {
+							top: 70%;
+						}
+						// Item <a>
+						.mainmenu .nav.menu:not(.nav-stacked) .nav-child li > a {
+					    padding: 0.4em 0.8em;
+					    border-bottom: 1px solid #222;
+						}
+						// Efeito hover
+						.mainmenu .nav.menu .nav-child li:not(.active) > a:hover,
+						.mainmenu .nav.menu .nav-child li:not(.active) > a:focus,
+						.mainmenu .nav.menu .nav-child li.parent:not(.active):hover > a {
+
+						}
+
+			#header-2 {
+				border-bottom: 5px solid rgba(249, 187, 0, .2);
+				background-color: rgba($black, .85);
+			}
+
+			#header-2 .slogan {
+				background: url('../images/bg-slogan.png') center no-repeat;
+			}
+
+			#header-2 .mod-search {
+				position: absolute;
+		    z-index: 1;
+			}
+			@include media-breakpoint-up(md) {
+				body:not(.home) #header-2 .mod-search {
+					top: 11px;
+			    right: 11px;
+			    left: auto;
+				}
+			}
+			@include media-breakpoint-down(md) {
+				body:not(.home) #header-2 .mod-search {
+					position: static;
+			    padding: 25px 0 10px;
+			    width: 100%;
+				}
+			}
+			// Na 'Home'
+			body.home #header-2 .mod-search {
+		    top: auto;
+		    bottom: -20px;
+				left: 0;
+		    width: 100%;
+			}
+			#header-2 .form-search {
+				max-width: 400px;
+				min-width: 250px;
+				margin: auto;
+			}
+			#header-2 .form-search::before {
+				font-family: "baseicons";
+				content: '\e818';
+				position: absolute;
+		    padding: 6px 10px;
+		    color: $base-color-secondary;
+		    font-size: 14px;
+			}
+			body.home #header-2 .form-search::before {
+				padding: 3px 10px;
+				font-size: 18px;
+			}
+			#header-2 .mod-search #mod-search-searchword {
+				color: $brand-primary;
+		    border: 1px solid $base-color-secondary;
+		    background: #000;
+			}
+			body.home #header-2 .mod-search #mod-search-searchword {
+				padding-left: 2.3em !important;
+		    border: 2px solid $base-color-secondary;
+		    border-radius: 20px;
+			}
+
+
+	// SHOWCASE
+
+		#showcase {
+
+		}
+
+	// FULL-CONTENT -> área total do conteúdo incluindo as laterais
+
+		// CONTENT
+		#full-content { }
+
+		#full-content > .container {
+			padding: $base-space-xl;
+    	background-color: rgba($black, .85);
+		}
+		.home #full-content > .container {
+			padding: ($base-space-xl + $base-space-lg) $base-space-xl;
+		}
+
+			// NOTÍCIAS
+			.news-home .allmode-showall {
+		    padding-top: $base-space-sm;
+		    margin-top: $base-space-sm;
+		    border-top: 1px solid $base-border-color;
+			}
+			.news-home .allmode-base-topitem h4 {
+		    min-height: 39px;
+			}
+
+			// ALBUNS
+			.albuns-home {
+		    margin-bottom: 32px;
+			}
+			.albuns-home .allmode-base-topitem,
+			.informativo-home .allmode-base-topitem {
+		    position: relative;
+		    padding-bottom: 10px;
+			}
+			.albuns-home .allmode-base-topitem figure,
+			.informativo-home .allmode-base-topitem figure {
+		    margin: 0;
+			}
+			.albuns-home .allmode-base-topitem h4,
+			.informativo-home .allmode-base-topitem h4 {
+		    position: absolute;
+		    bottom: 10px;
+				width: calc(100% - 6px);
+		    padding: 10px;
+		    margin: 3px;
+		    font-size: 14px;
+		    background: rgba(0,0,0,0.85);
+			}
+
+			// ARTIGOS
+			.artigos-home {
+
+			}
+
+		// Largura dos módulos na Home
+		.home #component-bottom .module .module,
+		.home #right .module {
+	    padding: 0 15px;
+		}
+
+		// LEFT & RIGHT
+		#left .module,
+		#right .module { margin-bottom: $base-space; }
+
+		// LINKS
+    .links ul > li > a:before {
+			display: block;
+			font-family: 'baseicons';
+      content: '\e9d8';
+      float: right;
+    }
+
+	// SYNDICATE
+
+		#syndicate {
+
+		}
+		#{$base-break-down} #syndicate { text-align: center; }
+
+	// FOOTER
+
+		#footer {
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			padding: 0;
+		}
+		#{$base-break-down}  #footer { text-align: center; }
+
+		#footer-row-1 > .container > .row {
+	    padding: $base-space-xl 0;
+		}
+		#footer-row-1 a { color: $base-text-color; }
+		#footer-row-1 a:hover { color: $brand-primary; }
+		#footer-row-1 .btn-default {
+	    border: none;
+		}
+		// Oculta o link para login quando o usuário está logado
+		body.logged #footer .item-214 { display: none; }
+
+	//SCROLLTOTOP
+
+		#scroll-to-top {
+			display: none;
+			position: fixed;
+			right: $base-space;
+			bottom: $base-space;
+			padding: 8px 16px;
+			color: #fff;
+			font-size: 20px;
+		  @if $base-enable-rounded { border-radius: $border-radius; }
+		  @else { border-radius: 0; }
+			background: #333;
+			opacity: 0.8;
+			overflow: hidden;
+			z-index: $zindex-scroll-to-top;
+		}
+		#scroll-to-top:before {
+			font-family: 'baseicons';
+			content: '\e889'; // base-icon-angle-double-up
+		}
+		.support-on #scroll-to-top {
+			right: 10px;
+			bottom: 50px;
+		}
+		#scroll-to-top:hover { opacity: 0.95; }

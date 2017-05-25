@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html class="isMM media-md" xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt-BR" lang="pt-BR">
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="rights" content="@envolute.com" />
+
+	<title>Envolute App</title>
+
+	<link href="favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+
+	<!-- jQuery -->
+	<script src="libs/template/jquery/jquery-1.12.4.min.js" type="text/javascript"></script>
+	<script>jQuery.noConflict();</script>
+	<script src="libs/template/jquery/jquery-ui.min.js" type="text/javascript"></script>
+	<!--script src="libs/template/jquery/jquery-migrate-1.2.1.min.js" type="text/javascript"></script-->
+
+	<!-- css template -->
+	<link rel="stylesheet" href="css/style.css" type="text/css" />
+	<link rel="stylesheet" href="libs/template/jquery/jquery-ui.min.css" type="text/css" />
+  <link rel="stylesheet" href="_dev/custom.css" type="text/css" />
+
+	<!-- css print -->
+	<link rel="stylesheet" href="css/style.print.css" type="text/css" media="print" />
+
+	<!-- For IE support -->
+	<!--[if IE]>
+		<link href="templates/base/css/style.ie.css" rel="stylesheet">
+	<![endif]-->
+
+
+</head>
+<body class="site fullScreen">
+
+	<a href="#main-content" class="sr-only">Skip to content</a>
+
+	<!-- Screen -->
+	<div id="screen" class="clearfix">
+
+		<!-- Header -->
+		<nav id="header" class="clearfix">
+			<div class="container bs-container">
+				<div class="row">
+					<div class="col-12">
+						<button name="name" type="button" id="toggleMenu" class="toggle_menu visible-xs visible-sm">
+							<span class="base-icon-menu"></span>
+						</button>
+						<a id="brand-client" class="float-right hidden-xs" href="index.php"><img class="img-responsive" src="images/logo-client.png" /></a>
+            <a id="user-edit" class="float-right all-expand hidden-xs hasPopover" href="#" data-placement="bottom" data-content="Gerente de Projeto<br>paulo.montenegro@ioip.com.br">
+              <span class="base-icon-user"></span> Paulo Montenegro
+            </a>
+						<div id="navigation" class="hidden-xs hidden-sm">
+							<ul class="nav nav-pills menu">
+								<!--li><a href="login.html"><span class="base-icon-home"></span></a></li-->
+								<li id="home"><a href="dashboard.html"><span class="base-icon-gauge"></span></a></li>
+								<li id="cadastro" class="parent">
+									<a href="usuarios.html"><span class="base-icon-edit"></span> Cadastros</a>
+									<ul class="nav-child dropdown-menu">
+										<li><a href="#">Usuários</a></li>
+										<li><a href="#">Perfis</a></li>
+										<li><a href="#">Setores</a></li>
+										<li>
+                      <a href="#">Atendimento</a>
+                      <ul class="nav-child dropdown-menu">
+												<li><a href="#">Motivos de Pausas</a></li>
+												<li><a href="#">Ocorrências [motivo]</a></li>
+												<li><a href="#">Tipos de Ocorrência</a></li>
+												<li><a href="#">Classificações</a></li>
+												<li><a href="#">Click to Call</a></li>
+												<li><a href="#">URL de Validação via URA</a></li>
+												<li><a href="#">Qualificação</a></li>
+												<li><a href="#">Padronização</a></li>
+												<li><a href="#">Modelo de Planilha para Importação</a></li>
+											</ul>
+                    </li>
+										<li>
+                      <a href="#">Clientes</a>
+                      <ul class="nav-child dropdown-menu">
+												<li><a href="#">Tipos</a></li>
+												<li><a href="#">Integração</a></li>
+												<li><a href="#">Consultas ao Cliente Remoto</a></li>
+												<li><a href="#">Pacotes de SLA</a></li>
+											</ul>
+                    </li>
+										<li><a href="#">Localidades</a></li>
+										<li><a href="#">PABX</a></li>
+										<li>
+                      <a href="#">Servidor</a>
+                      <ul class="nav-child dropdown-menu">
+												<li><a href="#">LDAP</a></li>
+												<li><a href="#">SMTP</a></li>
+											</ul>
+                    </li>
+										<li><a href="#">Feriados</a></li>
+										<li>
+                      <a href="#">Formulários</a>
+                      <ul class="nav-child dropdown-menu">
+												<li><a href="#">Padrão</a></li>
+												<li><a href="#">WEB</a></li>
+											</ul>
+                    </li>
+										<li>
+                      <a href="#">CHAT</a>
+                      <ul class="nav-child dropdown-menu">
+												<li><a href="#">Horários de Atendimento</a></li>
+												<li><a href="#">Filas</a></li>
+											</ul>
+                    </li>
+									</ul>
+								</li>
+								<li id="atendimento" class="parent">
+									<a href="usuarios.html"><span class="base-icon-phone-circled"></span> Atendimento</a>
+									<ul class="nav-child dropdown-menu">
+										<li><a href="#">Painel</a></li>
+										<li><a href="#">Pré-Atendimento</a></li>
+										<li><a href="#">Alertas</a></li>
+										<li><a href="#">Agendamentos</a></li>
+										<li><a href="#">Avisos</a></li>
+										<li><a href="#">Scripts</a></li>
+									</ul>
+								</li>
+								<li id="stats" class="parent">
+									<a href="usuarios.html"><span class="base-icon-chart-bar"></span> Estatísticas</a>
+									<ul class="nav-child dropdown-menu">
+										<li><a href="#">Relatórios</a></li>
+										<li><a href="#">Logs de Auditoria</a></li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<!-- wrapper -->
+		<div id="wrapper" class="wrapper">
+
+			<!-- Full Content -->
+			<div id="full-content" class="mob-noNav">
+				<div class="container bs-container">
+					<div class="row">
+
+						<!-- Main Content -->
+						<div id="main-content" class="col-12">
+
+							<!--
+								<div id="user-info">
+									<a href="#" id="alert-calling" class="no-border hidden" onclick="alertCalling(this)">
+										<span class="base-icon-clock"></span>
+									</a>
+	                <a id="eqwe" href="#" class="messages" data-toggle="popover" data-position="fixed" data-viewport="#eqwe" data-placement="left" title="<strong class='base-icon-bell'> Avisos</strong>" data-content="<ul class='list list-striped'><li><strong class='text-xs text-live'>09.06 - 12:00:00</strong><br>Lorem ipsum dolor sit amet</li><li><strong class='text-xs text-live'>09.06 - 12:00:00</strong><br>Lorem ipsum dolor sit amet</li><li><strong class='text-xs text-live'>09.06 - 12:00:00</strong><br>Lorem ipsum dolor sit amet</li><li class='text-right pt-2'><strong class='text-xs'>Ver todos &rarr;</strong></li></ul>">
+										<span class="base-icon-bell"></span>
+										<span class="badge">3</span>
+									</a>
+	                <a href="#" class="queues" data-toggle="popover" data-position="fixed" data-viewport="#eqwe" data-placement="left" onclick="setTodoAction()" title="<strong class='base-icon-list'> Filas de Atendimento</strong>" data-content="<ul class='list-menu list-striped todo'><li><a href='#' class='base-icon-check-empty strong text-live'> Logar em Todas</a></li><li><a href='#' class='base-icon-check-empty'> Suporte</a></li><li><a href='#' class='base-icon-check-empty'> Desenvolvimento</a></li><li><a href='#' class='base-icon-check-empty'> Financeiro</a></li></ul><hr class='my-xs' /><a href='#' class='base-icon-clock text-live text-xs strong'> Pausar todas</a><br /><a href='#' class='base-icon-cancel text-xs text-danger strong'> Sair de todas</a>"><span class="base-icon-list"></span></a>
+									<a href="#" class="queues-chat" data-toggle="popover" data-position="fixed" data-viewport="#eqwe" data-placement="left" onclick="setTodoAction()" title="<strong class='base-icon-comment'> Filas de Atendimento do CHAT</strong>" data-content="<ul class='list-menu list-striped todo'><li><a href='#' class='base-icon-check-empty strong text-live'> Logar em Todas</a></li><li><a href='#' class='base-icon-check-empty'> Suporte</a></li><li><a href='#' class='base-icon-check-empty'> Desenvolvimento</a></li><li><a href='#' class='base-icon-check-empty'> Financeiro</a></li></ul><hr class='my-xs' /><a href='#' class='base-icon-clock text-live text-xs strong'> Pausar todas</a><br /><a href='#' class='base-icon-cancel text-xs text-danger strong'> Sair de todas</a>"><span class="base-icon-comment"></span></a>
+	                <a href="#" class="hasTooltip" data-animation="false" data-position="fixed" data-placement="left" title="Configurações do Sistema"><span class="base-icon-cog"></span></a>
+									<a href="#" class="no-border hasTooltip" data-animation="false" data-position="fixed" data-placement="left" title="Ajuda do Sistema"><span class="base-icon-lifebuoy"></span></a>
+									<a href="#" class="logout hasTooltip" data-animation="false" data-position="fixed" data-placement="left" title="Sair"><span class="base-icon-logout-alt"></span></a>
+								</div>
+							-->
+
+							<div id="content-toolbar" class="clearfix">
+								<h3>Atendimento</h3>
+								<div id="toolbar-btns">
+									<a href="atendimento-novo.html" name="name" class="btn btn-success"><span class="base-icon-plus btn-icon"></span> Novo</a>
+									<a href="#" class="btn btn-danger" onclick="setAlert('danger')"><span class="base-icon-cancel"></span> Excluir</a>
+									<a href="#" class="btn btn-default" onclick="setAlert('success')"><span class="base-icon-folder-open"></span> Importar</a>
+									<a href="#" class="btn btn-default" onclick="setAlert('warning')"><span class="base-icon-arrows-cw"></span> Atualizar Status</a>
+									<a href="#" class="btn btn-default" onclick="setAlert('info')"><span class="base-icon-off"></span> Finalizar Etapas</a>
+								</div>
+							</div>
+
+							<div id="content-body" class="fullScreen">
+
+								<form class="collapse show">
+									<div class="row">
+										<div class="col-lg-8">
+											<fieldset id="filtro-atendimento" class="fieldset-embed">
+												<legend><span class="base-icon-filter"></span> Atendimento</legend>
+												<div style="position: absolute;right: 20px;top: 10px;">
+													<span class="input-group">
+														<span class="input-group-addon font-weight-bold">N&ordm; do Protocolo</span>
+														<input type="text" name="protocolo" value="" class="form-control" maxlength="13" />
+														<span class="input-group-btn">
+															<button type="button" class="base-icon-search btn btn-primary"></button>
+														</span>
+													</span>
+												</div>
+												<hr />
+												<div class="row">
+													<div class="col-md-4">
+														<div class="form-group">
+															<label>Abertura do Atendimento</label>
+															<span class="input-group">
+																<span class="input-group-addon font-weight-bold">De</span>
+																<input type="text" name="dateMin" value="" class="form-control field-date" data-width="100%" data-convert="true" />
+																<span class="input-group-addon">à</span>
+																<input type="text" name="dateMax" value="" class="form-control field-date" data-width="100%" data-convert="true" />
+															</span>
+														</div>
+													</div>
+													<div class="col-md-2">
+														<div class="form-group">
+															<label class="iconTip hasTooltip" data-animation="false" title="Executa a pesquisa com base na quantidade de dias anteriores à data atual">Dias atrás</label>
+															<input type="number" name="slatime" value="" class="form-control field-number mr-1" />
+														</div>
+													</div>
+													<div class="col-md-4">
+														<div class="form-group">
+															<label>Fechamento do Atendimento</label>
+															<span class="input-group">
+																<span class="input-group-addon font-weight-bold">De</span>
+																<input type="text" name="dateMin" value="" class="form-control field-date" data-width="100%" data-convert="true" />
+																<span class="input-group-addon">à</span>
+																<input type="text" name="dateMax" value="" class="form-control field-date" data-width="100%" data-convert="true" />
+															</span>
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Responsável</label>
+															<select name="type" id="type" class="form-control">
+																<option value="0">- Selecione -</option>
+															</select>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Atendente</label>
+															<select name="type" id="type" class="form-control">
+																<option value="0">- Selecione -</option>
+															</select>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Status</label>
+															<select name="type" id="type" class="form-control">
+																<option value="0">- Selecione -</option>
+															</select>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Origem</label>
+															<select name="type" id="type" class="form-control">
+																<option value="0">- Selecione -</option>
+															</select>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Setor</label>
+															<select name="type" id="type" class="form-control">
+																<option value="0">- Selecione -</option>
+															</select>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Abertura de Chamados</label><br />
+															<div class="btn-group" data-toggle="buttons">
+																<label class="btn btn-default btn-active-success">
+																	<span class="base-icon-unset"></span>
+																	<input type="radio" name="call" checked />
+																	Qualquer setor
+																</label>
+																<label class="btn btn-default btn-active-success">
+																	<span class="base-icon-unset"></span>
+																	<input type="radio" name="call" />
+																	Meu Setor
+																</label>
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Tipo de Ocorrência</label>
+															<select name="type" id="type" class="form-control">
+																<option value="0">- Selecione -</option>
+															</select>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Ocorrência</label>
+															<select multiple name="type" id="type" class="form-control">
+																<option value="0">- Selecione 1 -</option>
+																<option value="0">- Selecione 2 -</option>
+																<option value="0">- Selecione 3 -</option>
+																<option value="0">- Selecione 4 -</option>
+															</select>
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Solução</label>
+															<select name="type" id="type" class="form-control">
+																<option value="0">- Selecione -</option>
+															</select>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Etapa Atual</label>
+															<select name="type" id="type" class="form-control">
+																<option value="0">- Selecione -</option>
+															</select>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Qualificação</label>
+															<select name="type" id="type" class="form-control">
+																<option value="0">- Selecione -</option>
+															</select>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Classificação</label>
+															<select name="type" id="type" class="form-control">
+																<option value="0">- Selecione -</option>
+															</select>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Grupo de campos extras</label>
+															<select name="type" id="type" class="form-control">
+																<option value="0">- Selecione -</option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</fieldset>
+										</div>
+										<div class="col-lg-4">
+											<fieldset id="filtro-cliente" class="fieldset-embed">
+												<legend><span class="base-icon-filter"></span> Cliente</legend>
+												<div style="position: absolute;right: 20px;top: 10px;">
+													<span class="input-group">
+														<span class="input-group-addon font-weight-bold">Código</span>
+														<input type="text" name="protocolo" value="" class="form-control" maxlength="13" />
+														<span class="input-group-btn">
+															<button type="button" class="base-icon-search btn btn-primary"></button>
+														</span>
+													</span>
+												</div>
+												<hr />
+												<div class="form-group">
+													<label>Cliente</label>
+													<select name="type" id="type" class="form-control">
+														<option value="0">- Selecione -</option>
+													</select>
+												</div>
+												<div class="form-group">
+													<label>Solicitante</label>
+													<select name="type" id="type" class="form-control">
+														<option value="0">- Selecione -</option>
+													</select>
+												</div>
+												<div class="form-group">
+													<label>Site</label>
+													<select name="type" id="type" class="form-control">
+														<option value="0">- Selecione -</option>
+													</select>
+												</div>
+												<div class="form-group">
+													<label>Campo Extra - SLA</label>
+													<select name="type" id="type" class="form-control">
+														<option value="0">- Selecione -</option>
+													</select>
+												</div>
+												<div class="form-group">
+													<label>Localidade</label>
+													<select name="type" id="type" class="form-control">
+														<option value="0">- Selecione -</option>
+													</select>
+												</div>
+												<div class="form-group">
+													<label>Tipo</label>
+													<select multiple name="type" id="type" class="form-control">
+														<option value="0">- Selecione -</option>
+													</select>
+												</div>
+												<div class="form-group">
+													<label>Localidade</label>
+													<select multiple name="type" id="type" class="form-control">
+														<option value="0">- Selecione -</option>
+													</select>
+												</div>
+												<div class="form-group">
+													<label>Grupo de campos extras</label>
+													<select name="type" id="type" class="form-control">
+														<option value="0">- Selecione -</option>
+													</select>
+												</div>
+											</fieldset>
+										</div>
+									</div>
+									<div class="form-actions mt-0">
+										<button type="button" class="btn btn-primary">
+											<span class="base-icon-search btn-icon"></span> Pesquisar
+										</button>
+									</div>
+									<hr class="my-xs" />
+								</form>
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+											<th><input type="checkbox" /></th>
+                      <th class="text-center">SLA</th>
+                      <th>
+												<a href="#" class="btn btn-default btn-active-primary btn-xs collapse-all toggle-icon hasTooltip" data-animation="false" title="Expandir todas as informações" data-icon-default="base-icon-plus" data-icon-active="base-icon-minus" data-collapse-group=".collapse-group1" data-collapse-buttons=".collapse-btns"></a>
+												Ocorrência
+											</th>
+                      <th>Cliente</th>
+                      <th>Responsável</th>
+											<th>Atendente/Criador</th>
+                      <th class="text-center">Aberto em</th>
+                      <th class="text-center">Finalizado em</th>
+                      <th class="text-center">Status</th>
+                      <th class="text-center">Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+											<td class="align-middle"><input type="checkbox" /></td>
+                      <td>
+												<div class="text-center cursor-help hasPopover" data-animation="false" data-content="<span class=&quot;base-icon-attention text-live&quot;></span> O SLA está acima do limite contratado">
+													<span class="base-icon-clock text-danger font-weight-bold"></span><br />
+													<span class="text-danger">00:40</span>
+												</div>
+											</td>
+                      <td>
+                        <div>Protocolo: 1613737132587</div>
+												<a href="#item-1" class="btn btn-default btn-active-primary btn-xs toggle-state collapse-btns toggle-icon hasTooltip" data-animation="false" title="Informações detalhadas" data-toggle="collapse" data-icon-default="base-icon-plus" data-icon-active="base-icon-minus" data-target-inactive=".collapse-all"></a>
+												<span class="font-featured text-muted text-sm">Problema em uma PA</span>
+                      </td>
+                      <td>
+                        Ministério Público Federal - MPF/PGR
+                        <div class="text-sm text-live"><span class="base-icon-user hasTooltip cursor-help" title="Solicitante"></strong> Ricardo Manoel</div>
+                      </td>
+                      <td></td>
+											<td><span class="base-icon-user"> Simone Chagas</td>
+                      <td class="text-center">16/05/2016 18:00</td>
+											<td class="text-center text-danger">16/05/2016 18:00</td>
+                      <td class="text-center"><span class="base-icon-off text-success"><br /><small>Aberto</small></td>
+                      <td class="text-center">
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-default hasTooltip" data-animation="false" data-animation="false" title="Editar"><span class="base-icon-pencil"></button>
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                          </button>
+                          <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a class="dropdown-item" href="#"><span class="base-icon-folder-open"> Importar</span></a></li>
+                            <li><a class="dropdown-item" href="#"><span class="base-icon-volume-up"> Gravações</span></a></li>
+                            <li><a class="dropdown-item" href="#"><span class="base-icon-cancel text-danger"> Excluír</span></a></li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+										<tr id="item-1" class="table-info collapse collapse-group1">
+											<td colspan="2" class="text-right">
+												<span class="base-icon-level-down"></span>
+											</td>
+											<td colspan="8">
+												<div class="row">
+													<div class="col-7">
+														<div class="row">
+															<div class="col">
+																<strong>Tipo de Cliente:</strong> DIGI SOLUÇÕES...
+															</div>
+															<div class="col">
+																<strong>Site:</strong> Site 1
+															</div>
+														</div>
+													</div>
+													<div class="col">
+														<strong>Usuário:</strong> Alberto Carlos <span class="badge badge-primary">Técnico</span>
+													</div>
+												</div>
+												<hr class="my-2" />
+												<div class="row">
+													<div class="col-7">
+														<p><strong>Descrição:</strong><br />Estou com um problema na consulta de gravações da URA</p>
+														<p class="mb-0"><strong>Solução:</strong><br />Resolver problemas de gravação na URA</p>
+													</div>
+													<div class="col-5">
+														<p><strong>Etapa:</strong><br />Testando solução 1</p>
+														<p class="mb-0"><strong>Comentário:</strong><br />Testar as Consultas das gravações novamente</p>
+													</div>
+												</div>
+											</td>
+										</tr>
+                    <tr class="font-weight-bold">
+											<td class="align-middle"><input type="checkbox" /></td>
+                      <td></td>
+                      <td>
+                        <div class="font-weight-bold">Protocolo: 1613737132587</div>
+												<a href="#item-2" class="btn btn-default btn-active-primary btn-xs toggle-state collapse-btns toggle-icon hasTooltip" data-animation="false" title="Informações detalhadas" data-toggle="collapse" data-icon-default="base-icon-plus" data-icon-active="base-icon-minus" data-target-inactive=".collapse-all"></a>
+												<span class="font-featured text-muted text-sm">Problema em uma PA</span>
+                      </td>
+                      <td>
+                        Ministério Público Federal - MPF/PGR
+                        <div class="text-sm text-live"><span class="base-icon-user hasTooltip cursor-help" title="Solicitante"></strong> Ricardo Manoel</div>
+                      </td>
+											<td></td>
+											<td><span class="base-icon-user"> Simone Chagas</td>
+                      <td class="text-center">16/05/2016 18:00</td>
+											<td class="text-center text-danger">16/05/2016 18:00</td>
+                      <td class="text-center" style="vertical-align:middle"><span class="base-icon-phone-squared text-success"><br /><small>Atendendo</small></td>
+                      <td class="text-center">
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-default hasTooltip" data-animation="false" data-animation="false" title="Editar"><span class="base-icon-pencil"></button>
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                          </button>
+                          <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a class="dropdown-item" href="#"><span class="base-icon-folder-open"> Importar</span></a></li>
+                            <li><a class="dropdown-item" href="#"><span class="base-icon-volume-up"> Gravações</span></a></li>
+                            <li><a class="dropdown-item" href="#"><span class="base-icon-cancel text-danger"> Excluír</span></a></li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+										<tr id="item-x" class="table-info collapse collapse-group1">
+											<td colspan="2" class="text-right">
+												<span class="base-icon-level-down"></span>
+											</td>
+											<td colspan="8">
+												<div class="row">
+													<div class="col-7">
+														<div class="row">
+															<div class="col">
+																<strong>Tipo de Cliente:</strong> DIGI SOLUÇÕES...
+															</div>
+															<div class="col">
+																<strong>Site:</strong> Site 1
+															</div>
+														</div>
+													</div>
+													<div class="col">
+														<strong>Usuário:</strong> Alberto Carlos <span class="badge badge-primary">Técnico</span>
+													</div>
+												</div>
+												<hr class="my-2" />
+												<div class="row">
+													<div class="col-7">
+														<p><strong>Descrição:</strong><br />Estou com um problema na consulta de gravações da URA</p>
+														<p class="mb-0"><strong>Solução:</strong><br />Resolver problemas de gravação na URA</p>
+													</div>
+													<div class="col-5">
+														<p><strong>Etapa:</strong><br />Testando solução 1</p>
+														<p class="mb-0"><strong>Comentário:</strong><br />Testar as Consultas das gravações novamente</p>
+													</div>
+												</div>
+											</td>
+										</tr>
+                    <tr class="font-weight-bold">
+											<td class="align-middle"><input type="checkbox" /></td>
+                      <td></td>
+                      <td>
+                        <div class="font-weight-bold">Protocolo: 1613737132587</div>
+												<a href="#item-2" class="btn btn-default btn-active-primary btn-xs toggle-state collapse-btns toggle-icon hasTooltip" data-animation="false" title="Informações detalhadas" data-toggle="collapse" data-icon-default="base-icon-plus" data-icon-active="base-icon-minus" data-target-inactive=".collapse-all"></a>
+												<span class="font-featured text-muted text-sm">Problema em uma PA</span>
+                      </td>
+                      <td>
+                        Ministério Público Federal - MPF/PGR
+                        <div class="text-sm text-live"><span class="base-icon-user hasTooltip cursor-help" title="Solicitante"></strong> Ricardo Manoel</div>
+                      </td>
+											<td></td>
+											<td><span class="base-icon-user"> Simone Chagas</td>
+                      <td class="text-center">16/05/2016 18:00</td>
+											<td class="text-center text-danger">16/05/2016 18:00</td>
+                      <td class="text-center" style="vertical-align:middle"><span class="base-icon-phone-squared text-success"><br /><small>Atendendo</small></td>
+                      <td class="text-center">
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-default hasTooltip" data-animation="false" data-animation="false" title="Editar"><span class="base-icon-pencil"></button>
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                          </button>
+                          <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a class="dropdown-item" href="#"><span class="base-icon-folder-open"> Importar</span></a></li>
+                            <li><a class="dropdown-item" href="#"><span class="base-icon-volume-up"> Gravações</span></a></li>
+                            <li><a class="dropdown-item" href="#"><span class="base-icon-cancel text-danger"> Excluír</span></a></li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+										<tr id="item-x" class="table-info collapse collapse-group1">
+											<td colspan="2" class="text-right">
+												<span class="base-icon-level-down"></span>
+											</td>
+											<td colspan="8">
+												<div class="row">
+													<div class="col-7">
+														<div class="row">
+															<div class="col">
+																<strong>Tipo de Cliente:</strong> DIGI SOLUÇÕES...
+															</div>
+															<div class="col">
+																<strong>Site:</strong> Site 1
+															</div>
+														</div>
+													</div>
+													<div class="col">
+														<strong>Usuário:</strong> Alberto Carlos <span class="badge badge-primary">Técnico</span>
+													</div>
+												</div>
+												<hr class="my-2" />
+												<div class="row">
+													<div class="col-7">
+														<p><strong>Descrição:</strong><br />Estou com um problema na consulta de gravações da URA</p>
+														<p class="mb-0"><strong>Solução:</strong><br />Resolver problemas de gravação na URA</p>
+													</div>
+													<div class="col-5">
+														<p><strong>Etapa:</strong><br />Testando solução 1</p>
+														<p class="mb-0"><strong>Comentário:</strong><br />Testar as Consultas das gravações novamente</p>
+													</div>
+												</div>
+											</td>
+										</tr>
+                    <tr class="text-muted">
+											<td class="align-middle"><input type="checkbox" /></td>
+                      <td></td>
+                      <td>
+                        <div>Protocolo: 1613737132587</div>
+												<a href="#item-3" class="btn btn-default btn-active-primary btn-xs toggle-state collapse-btns toggle-icon hasTooltip" data-animation="false" title="Informações detalhadas" data-toggle="collapse" data-icon-default="base-icon-plus" data-icon-active="base-icon-minus" data-target-inactive=".collapse-all"></a>
+												<span class="font-featured text-muted text-sm">Problema em uma PA</span>
+                      </td>
+                      <td>
+                        Unimed João Pessoa
+                        <div class="text-sm text-live"><span class="base-icon-user hasTooltip cursor-help" title="Solicitante"></strong> Ricardo Manoel</div>
+                      </td>
+											<td>Carlos da Silva</td>
+											<td><span class="base-icon-user"> Simone Chagas</td>
+                      <td class="text-center">16/05/2016 18:00</td>
+											<td class="text-center text-danger">16/05/2016 18:00</td>
+                      <td class="text-center" style="vertical-align:middle"><span class="base-icon-ok text-success"><br /><small>Finalizado</small></td>
+                      <td class="text-center">
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-default hasTooltip" data-animation="false" data-animation="false" title="Editar"><span class="base-icon-pencil"></button>
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                          </button>
+                          <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a class="dropdown-item" href="#"><span class="base-icon-folder-open"> Importar</span></a></li>
+                            <li><a class="dropdown-item" href="#"><span class="base-icon-volume-up"> Gravações</span></a></li>
+                            <li><a class="dropdown-item" href="#"><span class="base-icon-cancel text-danger"> Excluír</span></a></li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+										<tr id="item-3" class="table-info collapse collapse-group1">
+											<td colspan="2" class="text-right">
+												<span class="base-icon-level-down"></span>
+											</td>
+											<td colspan="8">
+												<div class="row">
+													<div class="col-7">
+														<div class="row">
+															<div class="col">
+																<strong>Tipo de Cliente:</strong> DIGI SOLUÇÕES...
+															</div>
+															<div class="col">
+																<strong>Site:</strong> Site 1
+															</div>
+														</div>
+													</div>
+													<div class="col">
+														<strong>Usuário:</strong> Alberto Carlos <span class="badge badge-primary">Técnico</span>
+													</div>
+												</div>
+												<hr class="my-2" />
+												<div class="row">
+													<div class="col-7">
+														<p><strong>Descrição:</strong><br />Estou com um problema na consulta de gravações da URA</p>
+														<p class="mb-0"><strong>Solução:</strong><br />Resolver problemas de gravação na URA</p>
+													</div>
+													<div class="col-5">
+														<p><strong>Etapa:</strong><br />Testando solução 1</p>
+														<p class="mb-0"><strong>Comentário:</strong><br />Testar as Consultas das gravações novamente</p>
+													</div>
+												</div>
+											</td>
+										</tr>
+                    <tr class="table-warning">
+											<td class="align-middle"><input type="checkbox" /></td>
+                      <td></td>
+                      <td>
+                        <div>Protocolo: 1613737132587</div>
+												<a href="#item-4" class="btn btn-default btn-active-primary btn-xs toggle-state collapse-btns toggle-icon hasTooltip" data-animation="false" title="Informações detalhadas" data-toggle="collapse" data-icon-default="base-icon-plus" data-icon-active="base-icon-minus" data-target-inactive=".collapse-all"></a>
+												<span class="font-featured text-muted text-sm">Problema em uma PA</span>
+                      </td>
+                      <td>
+                        Ministério Público Federal - MPF/PGR
+                        <div class="text-sm text-live"><span class="base-icon-user hasTooltip cursor-help" title="Solicitante"></strong> Ricardo Manoel</div>
+                      </td>
+											<td></td>
+											<td><span class="base-icon-user"> Simone Chagas</td>
+                      <td class="text-center">16/05/2016 18:00</td>
+											<td class="text-center text-danger">16/05/2016 18:00</td>
+                      <td class="text-center" style="vertical-align:middle"><span class="base-icon-clock text-live"><br /><small>Espera</small></td>
+                      <td class="text-center">
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-default hasTooltip" data-animation="false" data-animation="false" title="Editar"><span class="base-icon-pencil"></button>
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                          </button>
+                          <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a class="dropdown-item" href="#"><span class="base-icon-folder-open"> Importar</span></a></li>
+                            <li><a class="dropdown-item" href="#"><span class="base-icon-volume-up"> Gravações</span></a></li>
+                            <li><a class="dropdown-item" href="#"><span class="base-icon-cancel text-danger"> Excluír</span></a></li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+										<tr id="item-4" class="table-info collapse collapse-group1">
+											<td colspan="2" class="text-right">
+												<span class="base-icon-level-down"></span>
+											</td>
+											<td colspan="8">
+												<div class="row">
+													<div class="col-7">
+														<div class="row">
+															<div class="col">
+																<strong>Tipo de Cliente:</strong> DIGI SOLUÇÕES...
+															</div>
+															<div class="col">
+																<strong>Site:</strong> Site 1
+															</div>
+														</div>
+													</div>
+													<div class="col">
+														<strong>Usuário:</strong> Alberto Carlos <span class="badge badge-primary">Técnico</span>
+													</div>
+												</div>
+												<hr class="my-2" />
+												<div class="row">
+													<div class="col-7">
+														<p><strong>Descrição:</strong><br />Estou com um problema na consulta de gravações da URA</p>
+														<p class="mb-0"><strong>Solução:</strong><br />Resolver problemas de gravação na URA</p>
+													</div>
+													<div class="col-5">
+														<p><strong>Etapa:</strong><br />Testando solução 1</p>
+														<p class="mb-0"><strong>Comentário:</strong><br />Testar as Consultas das gravações novamente</p>
+													</div>
+												</div>
+											</td>
+										</tr>
+                    <tr class="text-muted">
+											<td class="align-middle"><input type="checkbox" /></td>
+                      <td></td>
+                      <td>
+                        <div>Protocolo: 1613737132587</div>
+												<a href="#item-5" class="btn btn-default btn-active-primary btn-xs toggle-state collapse-btns toggle-icon hasTooltip" data-animation="false" title="Informações detalhadas" data-toggle="collapse" data-icon-default="base-icon-plus" data-icon-active="base-icon-minus" data-target-inactive=".collapse-all"></a>
+												<span class="font-featured text-muted text-sm">Problema em uma PA</span>
+                      </td>
+                      <td>
+                        Ministério Público Federal - MPF/PGR
+                        <div class="text-sm text-live"><span class="base-icon-user hasTooltip cursor-help" title="Solicitante"></strong> Ricardo Manoel</div>
+                      </td>
+											<td>José da Silva</td>
+											<td><span class="base-icon-user"> Simone Chagas</td>
+                      <td class="text-center">16/05/2016 18:00</td>
+											<td class="text-center text-danger">16/05/2016 18:00</td>
+                      <td class="text-center" style="vertical-align:middle"><span class="base-icon-cancel text-danger"><br /><small>Cancelado</small></td>
+                      <td class="text-center">
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-default hasTooltip" data-animation="false" data-animation="false" title="Editar"><span class="base-icon-pencil"></button>
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                          </button>
+                          <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a class="dropdown-item" href="#"><span class="base-icon-folder-open"> Importar</span></a></li>
+                            <li><a class="dropdown-item" href="#"><span class="base-icon-volume-up"> Gravações</span></a></li>
+                            <li><a class="dropdown-item" href="#"><span class="base-icon-cancel text-danger"> Excluír</span></a></li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+										<tr id="item-5" class="table-info collapse collapse-group1">
+											<td colspan="2" class="text-right">
+												<span class="base-icon-level-down"></span>
+											</td>
+											<td colspan="8">
+												<div class="row">
+													<div class="col-7">
+														<div class="row">
+															<div class="col">
+																<strong>Tipo de Cliente:</strong> DIGI SOLUÇÕES...
+															</div>
+															<div class="col">
+																<strong>Site:</strong> Site 1
+															</div>
+														</div>
+													</div>
+													<div class="col">
+														<strong>Usuário:</strong> Alberto Carlos <span class="badge badge-primary">Técnico</span>
+													</div>
+												</div>
+												<hr class="my-2" />
+												<div class="row">
+													<div class="col-7">
+														<p><strong>Descrição:</strong><br />Estou com um problema na consulta de gravações da URA</p>
+														<p class="mb-0"><strong>Solução:</strong><br />Resolver problemas de gravação na URA</p>
+													</div>
+													<div class="col-5">
+														<p><strong>Etapa:</strong><br />Testando solução 1</p>
+														<p class="mb-0"><strong>Comentário:</strong><br />Testar as Consultas das gravações novamente</p>
+													</div>
+												</div>
+											</td>
+										</tr>
+                    <tr class="text-muted">
+											<td class="align-middle"><input type="checkbox" /></td>
+                      <td></td>
+                      <td class="small">
+                        <div>Protocolo: 1613737132587</div>
+                        <span class="font-featured text-muted text-sm">Problema em uma PA</span>
+                      </td>
+                      <td>
+                        Ministério Público Federal - MPF/PGR
+                        <div class="text-sm text-live"><span class="base-icon-user hasTooltip cursor-help" title="Solicitante"></strong> Ricardo Manoel</div>
+                      </td>
+											<td></td>
+											<td><span class="base-icon-user"> Simone Chagas</td>
+                      <td class="text-center">16/05/2016 18:00</td>
+											<td class="text-center text-danger">16/05/2016 18:00</td>
+                      <td class="text-center" style="vertical-align:middle"><span class="base-icon-reply text-warning"><br /><small>Improcedente</small></td>
+                      <td class="text-center">
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-default hasTooltip" data-animation="false" data-animation="false" title="Editar"><span class="base-icon-pencil"></button>
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                          </button>
+                          <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a class="dropdown-item" href="#"><span class="base-icon-folder-open"> Importar</span></a></li>
+                            <li><a class="dropdown-item" href="#"><span class="base-icon-volume-up"> Gravações</span></a></li>
+                            <li><a class="dropdown-item" href="#"><span class="base-icon-cancel text-danger"> Excluír</span></a></li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="table-success">
+											<td class="align-middle"><input type="checkbox" /></td>
+                      <td></td>
+                      <td>
+                        <div>Protocolo: 1613737132587</div>
+                        <span class="font-featured text-muted text-sm">Problema em uma PA</span>
+                      </td>
+                      <td>
+                        Ministério Público Federal - MPF/PGR
+                        <div class="text-sm text-live"><span class="base-icon-user hasTooltip cursor-help" title="Solicitante"></strong> Ricardo Manoel</div>
+                      </td>
+											<td></td>
+											<td><span class="base-icon-user"> Simone Chagas</td>
+                      <td class="text-center">16/05/2016 18:00</td>
+											<td class="text-center text-danger">16/05/2016 18:00</td>
+                      <td class="text-center" style="vertical-align:middle"><span class="base-icon-phone-squared text-success"><br /><small>Atendendo</small></td>
+                      <td class="text-center">
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-default hasTooltip" data-animation="false" data-animation="false" title="Editar"><span class="base-icon-pencil"></button>
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                          </button>
+                          <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a class="dropdown-item" href="#"><span class="base-icon-folder-open"> Importar</span></a></li>
+                            <li><a class="dropdown-item" href="#"><span class="base-icon-volume-up"> Gravações</span></a></li>
+                            <li><a class="dropdown-item" href="#"><span class="base-icon-cancel text-danger"> Excluír</span></a></li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Scroll Top -->
+			<a id="scroll-to-top" href="#goto-screen" class="nav-smooth"></a>
+
+			<!-- Footer -->
+			<div id="footer" class="mob-noNav">
+				<div class="container bs-container">
+					<div class="row">
+						<div id="copyright" class="col-6">
+              <ul class="list-inline bordered list-lg m-0">
+                <li><span class="text-live">Ramal:</span> 8175</li>
+                <li class="cursor-help hasTooltip" data-animation="false" data-animation="false" title="Total de Chamadas"><span class="base-icon-phone text-live"></span> 82</li>
+                <li class="cursor-help hasTooltip" data-animation="false" data-animation="false" title="Duração Total"><span class="base-icon-clock text-live"></span> 02:25:08</li>
+              </ul>
+						</div>
+						<div id="info-dev" class="col-6 text-right">
+							<img src="images/logo-developer.png" />
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Hidden -->
+			<div id="hidden" class=""></div>
+
+		<!-- / wrapper -->
+		</div>
+
+	<!-- / screen -->
+	</div>
+
+	<!-- jQuery UI -->
+	<script src="libs/template/jquery/jquery-ui.min.js" type="text/javascript"></script>
+	<script src="libs/browser/tether.min.js" type="text/javascript"></script>
+
+	<!-- load app's default javascript -->
+	<script type="text/javascript" src="js/forms.js"></script>
+	<script type="text/javascript" src="js/default.js"></script>
+	<script type="text/javascript" src="_dev/custom.js"></script>
+
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+		<script src="templates/base/core/libs/js/browser/html5shiv-printshiv.js"></script>
+	<![endif]-->
+
+	<script>
+	// CUSTOM SCRIPTS
+	jQuery(function() {
+
+		// define menu item active
+		jQuery('#navigation #atendimento').addClass('active');
+
+	});
+	</script>
+
+	<script>
+		// LOCAL FORM VALIDATIONS
+		jQuery(window).load( function() {
+
+			// form validations
+			jQuery("#form-validator").validate({
+				rules: {
+					password: {
+						rangelength: [6, 15]
+					},
+					repassword: {
+						equalTo: "#password"
+					},
+					url: "url",
+					price: {
+						notEqual: '0,00'
+					}
+				},
+				messages: {
+					price: {
+						notEqual: 'Campo Obrigatório'
+					}
+				},
+				submitHandler: function(form) {
+					jQuery('#alert-valid').show();
+					return false; // for demo
+				},
+				invalidHandler: function(event, validator) {
+					// run function if there is error
+					baseValidation(jQuery(this));
+				}
+			});
+
+		});
+	</script>
+	<script type="text/javascript" src="js/validate.js"></script>
+
+</body>
+</html>

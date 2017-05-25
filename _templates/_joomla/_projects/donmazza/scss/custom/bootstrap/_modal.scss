@@ -1,0 +1,10 @@
+// MODAL
+
+.modal-header {
+  color: $brand-primary;
+  border-bottom: 3px solid $brand-primary;
+  background: #222;
+}
+.close, .close:focus, .close:hover {
+    color: $brand-primary;
+}

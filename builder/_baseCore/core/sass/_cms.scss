@@ -66,38 +66,6 @@
 
 // FORMS
 
-	// buttons
-	.btn:not([class*="btn-"]) {
-		padding: $padding-base-vertical $padding-base-horizontal;
-		line-height: $line-height-base;
-		color: $text-color;
-		cursor: pointer;
-		border: 1px solid $base-border-color;
-		@include build-prefix-values('border-radius', $border-radius-base);
-		text-shadow:1px 1px 0 #fff;
-		background-color: $gray-lighter;
-
-	}
-	.btn:not([class*="btn-"]):hover {
-		background-color: darken($gray-lighter, 30%);
-	}
-	.btn:not([class*="btn-"]):focus {
-		background-color: darken($gray-lighter, 30%);
-		outline: thin dotted $text-color;
-		outline: 5px auto -webkit-focus-ring-color;
-		outline-offset: -2px;
-	}
-	.btn:not([class*="btn-"]):active {
-		outline: 0;
-		@include build-prefix-values('box-shadow', 'inset 0 3px 5px rgba(0, 0, 0, 0.125)');
-	}
-	.btn:not([class*="btn-"])[disabled] {
-		pointer-events: none;
-		cursor: default;
-		opacity: 0.65;
-		filter: alpha(opacity=65);
-		@include build-prefix-values('box-shadow', 'none');
-	}
 	.btn.btn-micro {
 		padding: 1px 4px!important;
 		font-size: 10px!important;
@@ -124,6 +92,8 @@
 	.input-prepend.input-append input {
 		@include build-prefix-values('border-radius', '0!important');
 	}
+
+	// campo de upload de imagem
 	.media-preview.add-on {
 		display: inline-block;
 		padding: $padding-base-vertical $padding-base-horizontal;
@@ -147,39 +117,49 @@
 	.form-horizontal .control-label { text-align: left; }
 	.form-horizontal fieldset.radio.btn-group { padding: 0; }
 
+	// FORM VALIDATION
+	// estilo dos campos com erro
+	.invalid { color: #9d261d!important; font-weight: bold; }
+	input.invalid, textarea.invalid { border: 1px solid #9d261d!important; }
+
+	// RADIO BUTTONS
+	.radio.btn-group input[type="radio"] { display: none; }
+	fieldset.radio.btn-group { margin: 0; }
+	fieldset.radio.btn-group > label.btn:first-of-type:not(:last-child) {
+		padding-left: 12px;
+		@include build-prefix-values('border-radius', $border-radius-base 0 0 $border-radius-base);
+	}
+
 // #LIBS: CHOSEN
 // IMPORTANTE: o Joomla usa a class 'chzn' em vez do padrão 'chosen'
-@include base-chosen('chzn');
+// DESABILITADO:
+// -> o chosen padrão do joomla foi desabilitado. Assim, basta manter as classes do chosen da BASE
+// @include base-chosen('chzn');
 
 // EDIT
 // Edição de item no frontend
 
-
-	.edit .btn-toolbar {
-		margin: 0 0 20px;
+	.media-sm .edit .btn-toolbar:not(#editor-xtd-buttons) {
+		position: absolute;
+    right: $base-space;
+    top: -6px;
+    z-index: 1;
+	}
+	.media-only-xs .edit .btn-toolbar:not(#editor-xtd-buttons) {
+		margin: 0 0 10px;
+    border-bottom: 1px solid #ddd;
 		padding-bottom: 10px;
-		padding: 5px 0px;
-		border: 1px solid #ddd;
-		@include build-prefix-values('border-radius', $border-radius-base);
-		background: #f4f4f4;
-		@include build-prefix-values('box-shadow', 'inset 0px 20px 20px rgba(255,255,255,0.6)');
 	}
-	// dentro do formulário
-	#editor-xtd-buttons,
-	#editor-xtd-buttons .btn-toolbar {
-		padding:0;
-		border: none;
-		background: none;
-	}
+
+	// EDITOR
+	// melhora o espaçamento dos botões na parte infoerior do editor de texto
+	#editor-xtd-buttons.btn-toolbar { margin: 0; }
+	#editor-xtd-buttons.btn-toolbar .btn { margin: 8px 2px 0 0; padding: 4px 8px; font-size: 13px; }
+
 	// Link para editar módulo
 	.btn.jmodedit { padding: 0!important; margin: -15px 0 0 0; border: none!important; background: none!important; }
 	.edit #editor input#jform_title { width: 100%; }
 
-// EDITOR
-// melhora o espaçamento dos botões na parte infoerior do editor de texto
-
-	#editor-xtd-buttons.btn-toolbar .btn { margin: 8px 2px 0 0; padding: 4px 8px; font-size: 13px; }
-	.toggle-editor .btn { margin-top: 5px; }
 
 // MODAL
 // seta altura default
@@ -194,52 +174,13 @@
 		left: auto;
 		z-index: auto;
 		width: auto;
+	}
+	a.modal:not(.btn) {
 		margin: 0;
 		background-color: transparent;
 		border: none;
 		@include build-prefix-values('box-shadow', 'none!important');
 		overflow:hidden;
-	}
-
-// FORM VALIDATION
-// estilo dos campos com erro
-
-	.invalid { color: #9d261d!important; font-weight: bold; }
-	input.invalid, textarea.invalid { border: 1px solid #9d261d!important; }
-
-// RADIO BUTTONS
-
-	.radio.btn-group input[type="radio"] { display: none; }
-	fieldset.radio.btn-group { margin: 0; }
-	fieldset.radio.btn-group > label.btn:first-of-type:not(:last-child) {
-		padding-left: 12px;
-		@include build-prefix-values('border-radius', $border-radius-base 0 0 $border-radius-base);
-	}
-
-// TOOLTIP -> mooltools
-
-	div.tooltip {
-		background: transparent;
-		border: none;
-	}
-	.tip-wrap {
-		max-width: 200px!important;
-		padding: 3px 8px 5px;
-		color: #fff;
-		font-size:12px;
-		text-align: center;
-		text-decoration: none;
-		background-color: #000;
-		border-radius: 4px;
-		opacity:0.9;
-		box-shadow:1px 1px 4px rgba(0,0,0,0.3);
-		z-index: 100;
-	}
-	.tip-title {
-		margin: 2px -8px 2px;
-		font-size: 13px;
-		font-weight: bold;
-		padding: 0 8px 2px;
 	}
 
 // TABS
@@ -261,25 +202,24 @@
 		margin-left: $base-space;
 	}
 
-// ACCORDION
-.accordion { margin-bottom: $base-space; }
-.accordion-group {
-	margin-bottom: 2px;
-	border: 1px solid #e5e5e5;
-	@include build-prefix-values('border-radius', $border-radius-base);
-	background: #f8f8f8;
+// TIP
+.tooltip .tip {
+   float: left;
+   padding: 5px;
+   max-width: 200px;
+	 color: #fff;
+	 font-size: 12px;
+   background: #000;
+   background: rgba(0,0,0,0.9);
 }
-.accordion-heading { border-bottom: 0; }
-.accordion-heading .accordion-toggle {
-	display: block;
-	padding: 8px 15px;
-}
-.accordion-toggle { cursor: pointer; }
-.accordion-inner {
-	padding: 9px 15px;
-	border-top: 1px solid #e5e5e5;
-	@include build-prefix-values('border-radius', 0 0 $border-radius-base $border-radius-base);
-	background: #fff;
+.tooltip .tip-title {
+   padding: 0;
+   margin: 0;
+   font-size: 100%;
+   font-weight: bold;
+   margin-top: -15px;
+   padding-top: 15px;
+   padding-bottom: 5px;
 }
 
 // ICONS - ICOMOON
@@ -304,7 +244,7 @@
 	speak: none;
 }
 [class^="icon-"],
-[class*=" icon-"] {
+[class^="hasTooltip icon-"] { //corrige o link 'editar' no artigo
 	display: inline-block;
 	width: 14px;
 	height: 14px;
@@ -312,7 +252,7 @@
 	line-height: 14px;
 }
 [class^="icon-"]:before,
-[class*=" icon-"]:before {
+[class^="hasTooltip icon-"]:before { //corrige o link 'editar' no artigo
 	font-family: 'IcoMoon';
 	font-style: normal;
 	speak: none;

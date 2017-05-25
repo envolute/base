@@ -1,0 +1,13 @@
+// @ELEMENTS
+// CUSTOMIZAÇÕES PADRÃO PARA ELEMENTOS DO SISTEMA
+// Incluindo componentes personalizados e funcionalidades da 'BASE'
+
+// Base
+@import "base/bxslider";
+@import "base/changepass";
+@import "base/loader";
+@import "base/module";
+@import "base/nav.menu";
+
+// Project -> Do projeto
+@import "project/mmenu/mmenu.all";

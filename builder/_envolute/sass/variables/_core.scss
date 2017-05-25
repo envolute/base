@@ -1,0 +1,116 @@
+// @CORE VARIABLES
+
+// color scheme
+$base-color-1: #519994;
+$base-color-1-light: lighten( $base-color-1, 10% );
+$base-color-1-lighter: lighten( $base-color-1, 30% );
+$base-color-1-dark: darken( $base-color-1, 10% );
+$base-color-1-text: #fff;
+
+$base-color-2: #fdc892;
+$base-color-2-light: lighten( $base-color-2, 10% );
+$base-color-2-lighter: lighten( $base-color-2, 18% );
+$base-color-2-dark: darken( $base-color-2, 10% );
+$base-color-2-text: #fff;
+
+$base-color-3: #b22222;
+$base-color-3-light: lighten( $base-color-3, 10% );
+$base-color-3-lighter: lighten( $base-color-3, 30% );
+$base-color-3-dark: darken( $base-color-3, 10% );
+$base-color-3-text: #fff;
+
+$base-color-muted: #ccc; // #b4c7c6 pode ser usado
+$base-color-muted-light: lighten( $base-color-muted, 10% );
+$base-color-muted-lighter: lighten( $base-color-muted, 16% );
+$base-color-muted-dark: darken( $base-color-muted, 10% );
+$base-color-muted-text: #fff;
+
+$base-color-live: #f80;
+$base-color-live-text: #fff;
+
+// fonts
+$base-fonts-local: false; // false -> google fonts, true -> fonts locais
+$base-fonts: 'Roboto|Oswald|Droid+Serif:400,400italic';
+// font-primary
+$base-font-primary: 'Roboto' !default;
+$base-font-primary-local-path: '../core/fonts/roboto';
+$base-font-primary-weight: '400' !default;
+$base-font-primary-style: 'normal' !default;
+// font-condensed
+$base-font-condensed: 'Oswald' !default;
+$base-font-condensed-local-path: '../core/fonts/robotocondensed'; // 'Oswald' não foi baixada localmente
+$base-font-condensed-weight: '400' !default;
+$base-font-condensed-style: 'normal' !default;
+// font-serif
+$base-font-serif: 'Droid Serif' !default;
+$base-font-serif-local-path: '../core/fonts/droidserif';
+$base-font-serif-weight: '400' !default;
+$base-font-serif-style: 'normal' !default;
+// font-featured
+$base-font-featured: 'Droid Serif' !default;
+$base-font-featured-local-path: '../core/fonts/droidserif-italic';
+$base-font-featured-weight: '400' !default;
+$base-font-featured-style: 'italic' !default;
+
+// space
+$base-space: 15px; // IMPORTANT: define bootstrap '$grid-gutter-width' variable
+$base-space-xs: 5px;
+$base-space-sm: 10px;
+$base-space-lg: 20px;
+$base-space-xl: ($base-space * 2);
+
+// border default
+$base-border-color: #ddd;
+$base-border-color-strong: #ccc;
+$base-border-color-light: #eee;
+$base-border-color-inverted: #fff;
+$base-border-color-live: darken($base-color-live, 5%) !default;
+$base-list-border-style: dotted;
+
+// border radius
+$base-radius-default: 4px!important;
+$base-radius-default-sm: 2px!important;
+$base-radius-default-lg: 6px!important;
+
+// box shadow
+$base-shadow: 0 0 3px 1px rgba(0,0,0,0.15);
+$base-shadow-sm: 0 0 3px 0 rgba(0,0,0,0.1);
+$base-shadow-lg: 0 0 6px 1px rgba(0,0,0,0.15);
+$base-shadow-to-left: -1px 1px 3px rgba(0,0,0,0.1);
+$base-shadow-to-right: 1px 1px 3px rgba(0,0,0,0.1);
+
+// list-menu
+$base-list-menu-sublevel-top: -34px !default;
+
+// fieldset embed
+$fieldset-embed-padding: 35px 15px 15px;
+$fieldset-embed-bg: #f8f8f8;
+$fieldset-embed-shadow: inset 1px 1px 5px rgba(0,0,0,0.06);
+$fieldset-embed-legend-font-size: 14px;
+$fieldset-embed-legend-right: 15px;
+$fieldset-embed-legend-radius: 0 0 4px 4px;
+$fieldset-embed-legend-shadow: 1px 1px 2px rgba(0,0,0,0.06);
+$fieldset-embed-striped-color: #fff; // optional bootstrap striped color
+
+// loader
+$loader-bg: transparent;
+$loader-full-bg: rgba(255, 255, 255, 0.95);
+
+// icons
+$baseicon-field-required: '\e87a '; //base-icon-right-dir
+$baseicon-iconTip: '\e9d3'; //base-icon-help-circled
+$baseicon-menu-child-reveal: '\e877'; //base-icon-down-dir
+$baseicon-menu-child-reveal-sublevel: '\e87a'; //base-icon-right-dir
+$baseicon-menu-child-reveal-sublevel-opened: '\e877'; //base-icon-down-dir
+$baseicon-menu-child-reveal-sublevel-reverse: '\e879'; //base-icon-right-dir
+$baseicon-menulist-child-reveal: '\e9cc'; //base-icon-plus-squared
+$baseicon-menulist-child-reveal-open: '\e9d0'; //base-icon-minus-squared
+
+// text
+$text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+$text-shadow-strong: 1px 1px 1px rgba(0, 0, 0, 0.6);
+$text-embed: 1px 1px 0 #fff;
+
+// btn-icon
+$checkbox-icon-active: '\e9c3'; // base-icon-ok
+$checkbox-icon-inactive: '\e9c7'; // base-icon-cancel

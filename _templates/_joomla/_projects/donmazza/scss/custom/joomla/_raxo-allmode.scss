@@ -1,0 +1,21 @@
+// RAXO ALLMODE
+// Módulo para listagem de artigos
+
+
+  // Geral
+
+    // Imagem
+    .allmode-base-default figure {
+      border: 3px solid $brand-primary;
+    }
+
+  // Top Items
+  .allmode-base-default .allmode-base-topitem h4 {
+    font-size: 1.2rem;
+  }
+
+  // Items
+  .allmode-base-topbox + .allmode-base-itemsbox,
+  .allmode-base-default .allmode-base-item {
+    border-top: 1px dotted #333;
+  }

@@ -1,0 +1,185 @@
+// COM_CONTENT -> LIST
+// Classes Genéricas das Listagens
+// Serve a todas as listagens
+
+  .view-category-base .item-publish-info .hlist {
+    display: inline-block;
+    min-height: 15px;
+    vertical-align: -webkit-baseline-middle;
+  }
+
+	// texto de introdução -> resumo do conteúdo
+	.item-intro { margin-bottom: 10px; line-height: 1.3em; }
+
+  // ITEMS-LEADING
+  // itens principais da listagem tipo 'Blog'
+
+    .items-leading { margin-bottom: 10px; }
+    // espaço entre os itens principais (leading)
+    div.items-leading > [class*='leading-'] {
+      position:relative;
+      padding:30px 0 20px;
+      border-bottom: 1px solid $base-border-color;
+      @include build-prefix-values('box-shadow', '0 1px 0 '$base-border-color-inverted);
+    }
+    div.items-leading > [class*='leading-']:last-of-type {
+      border-bottom: none;
+      @include build-prefix-values('box-shadow', 'none');
+    }
+    div.items-leading > .leading-0 { padding-top:0; }
+    h4 + div.items-leading > .leading-0 { padding-top:15px; }
+
+    // informações de publicação
+    .view-category-base .item.thumbnail .item-publish-info { margin-bottom: 3px; }
+    .view-category-base .items-leading .hits,
+    .lead-default .bx-wrapper .hits {
+      padding-top: 3px;
+      margin-top: 5px;
+    }
+
+    // image
+    .media-only-xs .items-leading .item-image {
+      width: 100%!important;
+      margin:0 auto 10px!important;
+      float:none!important;
+    }
+    .media-only-xs .items-leading .item-image * { margin: auto!important; }
+
+    // informações de publicação
+    .lead-default [class*='leading-'] .item-publish-info {
+      display:block;
+      margin-bottom: $base-space-lg;
+      padding: 3px 5px;
+      line-height: 1em;
+      background: #fafafa;
+      border: 1px solid #eee;
+      border-width: 1px 0;
+    }
+    .media-sm .items-leading .obj-to-left + .item-publish-info { margin-left: $base-space; }
+    .media-sm .items-leading .obj-to-right + .item-publish-info { margin-right: $base-space; }
+
+    [class*='leading-'] .item-title {  margin:0 0 10px; line-height: 1.1em; }
+    [class*='leading-'] .item-publish-info + .item-title { margin: -10px 0 6px; }
+    [class*='leading-'] .item-image { position:relative; }
+
+    // FEATURE: BXSLIDER -> reseta a classe para carregar o texto limpo
+    // VIEW DEFAULT
+    .lead-default .bxslider { list-style: none; }
+    .lead-default .bx-wrapper {
+      margin-bottom: 30px;
+      border: none;
+      border-bottom: 1px solid $base-border-color;
+      background-color: transparent;
+      @include build-prefix-values('box-shadow', '0 1px 0 '$base-border-color-inverted);
+    }
+    // remove o estilo padrão do container -> border '5px' e sombra
+    .lead-default .bx-wrapper .bx-viewport {
+      left:0;
+      border: none;
+      background-color: transparent;
+      @include build-prefix-values('box-shadow', 'none');
+    }
+    .lead-default .bx-viewport ul {
+      padding:0 !important;
+      list-style: none;
+    }
+    // thumbnails -> pager
+    .lead-default .bx-pager { bottom: -27px; }
+    .lead-default .bx-pager .bx-pager-item { vertical-align: top; }
+
+		// VIEW SLIDER
+		.lead-slide .bx-wrapper {
+			margin: 0 auto 30px;
+			@include build-prefix-values('box-shadow', 0 0 6px rgba(0,0,0,0.3));
+		}
+    .lead-slide .bx-wrapper .bx-caption { background: rgba(0, 0, 0, 0.75); }
+    .lead-slide .bx-wrapper .bx-caption div { line-height: 1.3em; }
+		.lead-slide .bx-wrapper .bx-controls-auto,
+		.lead-slide .bx-wrapper .bx-pager {
+	    position: absolute;
+	    top: 10px;
+	    bottom: auto;
+			padding-top: 0;
+		}
+		.lead-slide .bx-wrapper .bx-controls.bx-has-controls-auto.bx-has-pager .bx-controls-auto {
+	    right: 5px;
+		}
+		.lead-slide .bx-wrapper .bx-controls.bx-has-controls-auto.bx-has-pager .bx-pager {
+	    left: 5px;
+		}
+		.lead-slide .bx-wrapper .bx-pager.bx-default-pager a,
+    .lead-slide .bx-wrapper .bx-pager.bx-default-pager a:focus {
+	    background: #444;
+	    background: rgba(0, 0, 0, 0.6);
+			@include build-prefix-values('box-shadow', 0 0 0 3px rgba(255,255,255,0.6));
+		}
+
+  // ITEMS
+  // itens secundários da listagem tipo 'Blog'
+
+    // container dos itens da listagem
+    // IMPORTANT: os itens são chamadas para os artigos, sendo assim o tamanho das fontes e imagens são menores.
+    .view-category-base .item {
+      position:relative;
+      padding:18px 0 10px;
+    }
+    .view-category-base .item.list-sm { padding: 8px 0 0; }
+    .view-category-base .item.list-lg { padding: 30px 0 20px; }
+    // listagem
+    .view-category-base .item.in-list { border-bottom: 1px dotted $base-border-color; }
+
+    // título
+    .view-category-base .item .item-title { margin: 5px 0; }
+
+    // texto de introdução -> resumo do conteúdo
+    .view-category-base .item .item-intro { font-size:0.95em; }
+
+    // link 'leia mais'
+    .view-category-base [class*='item'] a.readmore { font-size:0.95em; }
+
+	// IMAGE LAYER
+	// uma layer sobre a imagem que pode ser utilizada para adicionar um efeito hover à imagem
+	.item-image a { position: relative; }
+	.item-image a .item-image-layer {
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		@include build-prefix-values('transition', 'all .4s ease-in-out');
+	}
+  .item-image a > .img-thumbnail + .item-image-layer {
+    top: 4px;
+    left: 4px;
+    width: calc(100% - 8px);
+    height: calc(100% - 8px);
+  }
+	.item-image a:hover .item-image-layer { background-color: rgba(0,0,0,0.25); }
+
+  // KOMENTO -> sistema de comentários
+  // read only - content plugin
+  .kmt-readon { width:auto; font-size:0.85em; }
+  .kmt-readon span.aligned-right { margin-left: 10px; }
+  .kmt-readon span.kmt-readmore { font-weight: bold; }
+
+  // FEATURE: AJAX INFINITE [PLUGIN] -> paginação
+  .jscroll-inner a.ai-next {
+    margin: $base-space-lg auto;
+    padding: 6px 0;
+    width: 150px;
+    font-weight: bold;
+    font-size: 11px;
+    text-transform: uppercase;
+    line-height: 12px;
+    border: 1px solid $base-border-color;
+    @include build-prefix-values('border-radius', $border-radius-base);
+    background-color: #eee;
+  }
+  .jscroll-inner a:hover.ai-next {
+    background-color: #e8e8e8;
+    @include build-prefix-values('box-shadow', 'inset 1px 1px 0 #fff');
+  }
+  .jscroll-inner .ai-loading {
+    margin: 26px auto;
+  }

@@ -1,0 +1,33 @@
+// @BASE ANIMATE
+// Classes com efeitos para o template 'BASE'
+
+	
+
+	// CLICK ACTION
+
+		// Ripple
+		// Efeito de sombra circular no click do botão
+		.ripple {
+		  width: 0;
+		  height: 0;
+		  border-radius: 50%;
+		  background: rgba(255, 255, 255, 0.4);
+		  transform: scale(0);
+		  position: absolute;
+		  opacity: 0.6;
+			border: none!important;
+			outline: none!important;
+			box-shadow: none!important;
+		}
+		.ripple:focus {
+		  border: none!important;
+			outline: none!important;
+			box-shadow: none!important;
+		}
+		.rippleEffect { animation: rippleDrop .4s ease-out; }
+		@keyframes rippleDrop {
+		  100% {
+		    transform: scale(2);
+		    opacity: 0;
+		  }
+		}

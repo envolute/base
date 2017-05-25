@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<extension type="module" version="3.0" client="site" method="upgrade">
+	<name>BaseApp</name>
+	<author>Ivo Junior</author>
+	<creationDate>24/02/2017</creationDate>
+	<copyright>Copyright © 2012, Envolute Tecnologia, All Rights Reserved.</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>dev@envolute.com</authorEmail>
+	<authorUrl>http://www.envolute.com</authorUrl>
+	<version>1.0.0</version>
+	<description>MOD_BASEAPP_DESC</description>
+	<files>
+		<filename module="mod_baseapp">mod_baseapp.php</filename>
+		<filename>index.html</filename>
+		<filename>mod_baseapp.xml</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB.mod_baseapp.ini</language>
+		<language tag="en-GB">language/en-GB.mod_baseapp.sys.ini</language>
+		<language tag="pt-BR">language/pt-BR.mod_baseapp.ini</language>
+		<language tag="pt-BR">language/pt-BR.mod_baseapp.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic" label="MOD_BASEAPP_CONFIG">
+				<field name="app" type="text" filter="string" default="" label="MOD_BASEAPP_APP_LABEL" description="MOD_BASEAPP_APP_DESC" />
+				<field name="appTag" type="text" filter="string" default="" label="MOD_BASEAPP_APPTAG_LABEL" description="MOD_BASEAPP_APPTAG_DESC" />
+
+				<field name="appView" type="spacer" class="text"
+						label="MOD_BASEAPP_APP_VIEW_LABEL"
+				/>
+
+				<field name="showApp" type="radio" class="btn-group" label="MOD_BASEAPP_SHOW_APP_LABEL" description="MOD_BASEAPP_SHOW_APP_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+					<option value="">JGLOBAL_USE_GLOBAL</option>
+				</field>
+				<field name="showList" type="radio" class="btn-group" label="MOD_BASEAPP_SHOW_LIST_LABEL" description="MOD_BASEAPP_SHOW_LIST_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+					<option value="">JGLOBAL_USE_GLOBAL</option>
+				</field>
+				<field name="listModal" type="radio" class="btn-group" label="MOD_BASEAPP_LIST_MODAL_LABEL" description="MOD_BASEAPP_LIST_MODAL_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+					<option value="">JGLOBAL_USE_GLOBAL</option>
+				</field>
+				<field name="listFull" type="radio" class="btn-group" label="MOD_BASEAPP_LIST_FULL_LABEL" description="MOD_BASEAPP_LIST_FULL_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+					<option value="">JGLOBAL_USE_GLOBAL</option>
+				</field>
+				<field name="staticToolbar" type="radio" class="btn-group" label="MOD_BASEAPP_STATIC_TOOLBAR_LABEL" description="MOD_BASEAPP_STATIC_TOOLBAR_DESC">
+					<option value="0">MOD_BASEAPP_STATIC_TOOLBAR_INTEGRATE</option>
+					<option value="1">MOD_BASEAPP_STATIC_TOOLBAR_NATURAL</option>
+					<option value="">JGLOBAL_USE_GLOBAL</option>
+				</field>
+				<field name="showAddBtn" type="radio" class="btn-group" label="MOD_BASEAPP_SHOW_ADDBTN_LABEL" description="MOD_BASEAPP_SHOW_ADDBTN_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+					<option value="">JGLOBAL_USE_GLOBAL</option>
+				</field>
+				<field name="addText" type="radio" class="btn-group" label="MOD_BASEAPP_ADD_TEXT_LABEL" description="MOD_BASEAPP_ADD_TEXT_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+					<option value="">JGLOBAL_USE_GLOBAL</option>
+				</field>
+				<field name="hasUpload" type="radio" class="btn-group" label="MOD_BASEAPP_HAS_UPLOAD_LABEL" description="MOD_BASEAPP_HAS_UPLOAD_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+					<option value="">JGLOBAL_USE_GLOBAL</option>
+				</field>
+
+				<field name="relation" type="spacer" class="text"
+						label="MOD_BASEAPP_RELATION_LABEL"
+				/>
+				<field name="relTag" type="text" filter="string" default="" label="MOD_BASEAPP_REL_TAG_LABEL" description="MOD_BASEAPP_REL_TAG_DESC" />
+				<field name="relTable" type="text" filter="string" default="" label="MOD_BASEAPP_REL_TABLE_LABEL" description="MOD_BASEAPP_REL_TABLE_DESC" />
+				<field name="appNameId" type="text" filter="string" default="" label="MOD_BASEAPP_APP_NAMEID_LABEL" description="MOD_BASEAPP_APP_NAMEID_DESC" />
+				<field name="relNameId" type="text" filter="string" default="" label="MOD_BASEAPP_REL_NAMEID_LABEL" description="MOD_BASEAPP_REL_NAMEID_DESC" />
+				<field name="relId" type="text" filter="string" default="" label="MOD_BASEAPP_REL_ID_LABEL" description="MOD_BASEAPP_REL_ID_DESC" />
+				<field name="relationList" type="spacer" class="text"
+						label="MOD_BASEAPP_RELATION_LIST_LABEL"
+				/>
+				<field name="relListNameId" type="text" filter="string" default="" label="MOD_BASEAPP_REL_LIST_NAMEID_LABEL" description="MOD_BASEAPP_REL_LIST_NAMEID_DESC" />
+				<field name="relListId" type="text" filter="string" default="" label="MOD_BASEAPP_REL_LISTID_LABEL" description="MOD_BASEAPP_REL_LISTID_DESC" />
+				<field name="onlyChildList" type="radio" class="btn-group" label="MOD_BASEAPP_REL_LIST_ONLYCHILD_LABEL" description="MOD_BASEAPP_REL_LIST_ONLYCHILD_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+					<option value="">JGLOBAL_USE_GLOBAL</option>
+				</field>
+				<field name="relationField" type="spacer" class="text"
+						label="MOD_BASEAPP_RELATION_FIELD_LABEL"
+				/>
+				<field name="fieldUpdated" type="text" filter="string" default="" label="MOD_BASEAPP_FIELD_UPDATE_LABEL" description="MOD_BASEAPP_FIELD_UPDATE_DESC" />
+				<field name="tableField" type="text" filter="string" default="" label="MOD_BASEAPP_TABLE_FIELD_LABEL" description="MOD_BASEAPP_TABLE_FIELD_DESC" />
+				<field name="foreignKey" type="spacer" class="text"
+						label="MOD_BASEAPP_FOREIGN_KEY_LABEL"
+				/>
+				<field name="hideParentField" type="radio" class="btn-group" label="MOD_BASEAPP_HIDE_PARENT_LABEL" description="MOD_BASEAPP_HIDE_PARENT_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+					<option value="">JGLOBAL_USE_GLOBAL</option>
+				</field>
+
+				<field name="include" type="spacer" class="text"
+						label="MOD_BASEAPP_EXTRA"
+				/>
+				<field name="phpFile" type="text" filter="string" default="" label="MOD_BASEAPP_PHP_FILE_LABEL" description="MOD_BASEAPP_PHP_FILE_DESC" />
+
+				<field name="extraDesc" type="spacer" class="text"
+						label="MOD_BASEAPP_EXTRA_CODE_LABEL"
+				/>
+				<field name="code" type="textarea" filter="raw" class="input-xxlarge" rows="20" label="MOD_BASEAPP_CODE_LABEL" description="MOD_BASEAPP_CODE_DESC" />
+			</fieldset>
+			<fieldset name="advanced">
+				<field name="moduleclass_sfx" type="text" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" desc="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"/>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

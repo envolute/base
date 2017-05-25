@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="3.0" client="site" method="upgrade">
+	<name>Free Content</name>
+	<author>Ivo Junior</author>
+	<creationDate>26/12/2015</creationDate>
+	<copyright>Copyright © 2012, Envolute Tecnologia, All Rights Reserved.</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>dev@envolute.com</authorEmail>
+	<authorUrl>http://www.envolute.com</authorUrl>
+	<version>1.0.0</version>
+	<description>Html content, php code or loading a php file</description>
+	<files>
+		<filename module="mod_freecontent">mod_freecontent.php</filename>
+		<filename>index.html</filename>
+		<filename>mod_freecontent.xml</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB.mod_freecontent.ini</language>
+		<language tag="en-GB">language/en-GB.mod_freecontent.sys.ini</language>
+		<language tag="pt-BR">language/pt-BR.mod_freecontent.ini</language>
+		<language tag="pt-BR">language/pt-BR.mod_freecontent.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic" label="MOD_FREECONTENT_CONTENT">
+				<field name="html" type="editor" filter="raw" label="MOD_FREECONTENT_HTML_LABEL" description="MOD_FREECONTENT_HTML_DESC" />
+			</fieldset>
+			<fieldset name="code" label="MOD_FREECONTENT_CODE">
+				<field name="include" type="text" class="input-xxlarge" label="MOD_FREECONTENT_INCLUDE_LABEL" description="MOD_FREECONTENT_INCLUDE_DESC" />
+				<field type="spacer" name="spacer" hr="true" />
+				<field name="code" type="textarea" rows="8" class="input-xxlarge" filter="raw" label="MOD_FREECONTENT_CODE_LABEL" description="MOD_FREECONTENT_CODE_DESC"></field>
+				<field name="css" type="textarea" filter="raw" rows="5" class="input-xxlarge" label="MOD_FREECONTENT_CSS_LABEL" description="MOD_FREECONTENT_CSS_DESC"></field>
+				<field name="script" type="textarea" filter="raw" rows="5" class="input-xxlarge" label="MOD_FREECONTENT_SCRIPT_LABEL" description="MOD_FREECONTENT_SCRIPT_DESC"></field>
+			</fieldset>
+
+			<fieldset name="advanced">
+				<field
+					name="moduleclass_sfx"
+					type="textarea"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"
+					rows="3"
+				/>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

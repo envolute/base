@@ -1,0 +1,216 @@
+// @CUSTOM
+// customização de estilo do site
+// Esse arquivo deve conter todas as classes para customização do template para esse projeto.
+
+@import "variables";
+@import "mixins";
+@import "template";
+
+// WINDOW
+
+	html, body, #screen, #wrapper { min-height: 100%; }
+
+	// SCROLLBAR -> barra de rolagem
+	*::-webkit-scrollbar {
+		width:11px;
+		height:11px;
+		background-color: transparent;
+	}
+	*::-webkit-scrollbar-thumb,
+	*::-webkit-scrollbar-corner {
+		border-style: solid;
+		border-width: 2px;
+		border-color: $body-bg;
+		background-color: $gray-light;
+		@include build-prefix-values('border-radius', '10px');
+	}
+	*::-webkit-scrollbar-thumb:hover { background-color: $gray; }
+	*::-webkit-scrollbar-track-piece { background-color: none;}
+
+// TYPOGRAPHY
+
+		blockquote { font-family: $base-font-featured; }
+
+// HEADERS
+
+		h4,h5,h6 { line-height: 1.3em; }
+
+		// headers para componente e modulo
+		.componentheading,
+		.contentheading,
+		.module .page-header,
+		h4.page-header,
+		h5.page-header,
+		fieldset:not(.fieldset-bordered):not(.fieldset-embed) > legend {
+			margin: 2px 0px 10px 0px;
+			padding-bottom: 9px;
+		}
+		.componentheading,
+		.contentheading,
+		.page-header,
+		fieldset:not(.fieldset-bordered):not(.fieldset-embed) > legend {
+			border-bottom:1px solid $base-border-color;
+			@include build-prefix-values('box-shadow', '0 1px 0 '$base-border-color-inverted);
+		}
+		// mesma configuração do 'h4'
+		.componentheading,
+		.contentheading,
+		.module .page-header,
+		fieldset:not(.fieldset-bordered):not(.fieldset-embed) > legend
+		{
+			font-size:1.3em;
+			line-height: 1.3em;
+		}
+		fieldset:not(.fieldset-bordered):not(.fieldset-embed) > legend { margin-bottom: $base-space-lg; }
+		// CHROME ONLY
+		.chrome fieldset:not(.fieldset-bordered):not(.fieldset-embed) > legend { padding-top: 2px; }
+
+// MODULE
+
+	// WELL/WELL-SM
+	// adaptação do bootstrap 'well' e 'well-sm' para módulos
+
+	.module > .well { margin-bottom: 0; }
+	.module > .well .page-header {
+		padding: 0 0 5px;
+		margin: -6px 0 6px;
+	}
+	.module > .well-sm .page-header {
+		padding-bottom: 3px;
+		margin-top: -2px;
+	}
+
+	// PANEL
+	// adaptação do bootstrap 'panel' para módulos
+
+	.module > .panel { margin-bottom: 0; }
+	.module > .panel .panel-heading {
+		padding: 7px 10px 5px;
+		font-weight: bold;
+	}
+	.module > .panel .panel-body { padding: 10px; }
+
+// TEMPLATE
+
+	// COMMON ELEMENTS
+
+		// 'clearfix' elements
+		// a classe 'elemento' só serve como modelo
+		// .elemento:before, .elemento:after {
+		// 	content: " ";
+		// 	display: table;
+		// }
+		// .elemento:after { clear: both; }
+
+
+	// NAVSIDE
+
+		#navside {
+			padding: 10px;
+			border-right: 1px solid $base-border-color;
+			background: $base-color-muted-lighter;
+		}
+		#navside { width: 220px; }
+
+
+	// WRAPPER
+
+		#wrapper { margin: auto; }
+
+		// valores referentes a navside
+		#navside + #wrapper { margin-left: 220px; }
+
+		// wrapper = container
+		// .media-sm #wrapper { width: 750px; }
+		// .media-md #wrapper { width: 970px; }
+		// .media-lg #wrapper { width: 1170px; }
+
+
+	// TOP
+
+		#top {
+
+		}
+
+	// HEADER
+
+		#header {
+			padding: $base-space 0;
+		}
+
+	// NAVIGATION
+
+		// mobile
+		// mostra/esconde menus
+		html.media-md .menu-icon-cont.sm-btn-160,
+		html.media-only-xs #navigation { display: none; }
+
+	// INFO TOP
+
+		#info-top .breadcrumb {
+			margin: 0;
+		}
+
+	// FULL-CONTENT -> área total do conteúdo incluindo as laterais
+
+		// CONTENT
+		#full-content { padding: $base-space 0; }
+
+			// HOME
+
+				// Bxslider -> Legenda
+		    .home .bx-wrapper .bx-caption span {
+		      font-family: inherit;
+		      line-height: 2.5em;
+		    }
+
+		// LEFT & RIGHT
+		#left .module,
+		#right .module { margin-bottom: $base-space; }
+
+	// SYNDICATE
+
+		#syndicate {
+
+		}
+		.media-to-sm #syndicate { text-align: center; }
+
+	// BOTTOM
+
+		#bottom {
+
+		}
+		.media-to-sm #bottom { text-align: center; }
+
+	// FOOTER
+
+		#footer {
+			padding: $base-space 0;
+		}
+		.media-only-xs #footer { text-align: center; }
+
+	//SCROLLTOTOP
+
+		#scroll-to-top {
+			display: none;
+			position: fixed;
+			right: $base-space;
+			bottom: $base-space;
+			padding: 8px 16px;
+			color: #fff;
+			font-size: 20px;
+			@include build-prefix-values('border-radius', $border-radius-base);
+			background: #333;
+			opacity: 0.8;
+			overflow: hidden;
+			z-index: $zindex-scroll-to-top;
+		}
+		#scroll-to-top:before {
+			font-family: 'baseicons';
+			content: '\e889'; // base-icon-angle-double-up
+		}
+		.support-on #scroll-to-top {
+			right: 10px;
+			bottom: 50px;
+		}
+		#scroll-to-top:hover { opacity: 0.95; }

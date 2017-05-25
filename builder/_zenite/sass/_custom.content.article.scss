@@ -1,0 +1,203 @@
+// ITEM-PAGE
+// detalhamento do conteúdo
+
+  .item-page { position: relative; }
+
+  // HEADERS
+  .item-page #content-title {
+    margin: 0;
+    padding-bottom: $base-space-lg;
+  }
+
+  // ACTIONS -> botões de ação (imprimir, enviar, editar)
+  .item-page .item-actions {
+    margin-bottom: $base-space-lg;
+    padding: 3px 0;
+    border-top: 1px solid #e8e8e8;
+  }
+  // esconde o texto, mostra apenas o ícone
+  .item-actions .btn {
+    width: 27px;
+    overflow: hidden;
+  }
+  .item-actions .btn span {
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+
+  // EXTRAVOTE -> sistema de votação/hating
+  .item-page .extravote { float:left; margin:-2px 10px; }
+
+  // FONT-SIZE: botões para aumentar e diminuir o tamanho da fonte
+  .media-only-xs .item-page #fontsize { display: none; }
+  .item-page #fontsize .btn span { margin: 0; }
+  .item-page #fontsize .btn.a-min span { font-size:8px; }
+  .item-page #fontsize .btn.a-reset span { font-size:10px; }
+  .item-page #fontsize .btn.a-max span { font-size:12px; }
+
+  // PLUGIN: phocaPDF
+  .item-page #item-content-to-pdf a {
+    font-size: 11px;
+    color: #fff;
+  }
+
+  // EDIT: botão de editar
+  .item-actions + .btn-sm {
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0.9;
+  }
+  .item-actions + .btn-sm .icon-edit { margin-right: 5px; }
+
+  // TAGS -> lista de tags do conteúdo
+  .item-page .tags {
+    margin:0;
+    background:none;
+  }
+
+	// CAPTION -> legenda da imagem
+	p.img_caption {
+		margin: 8px 0 4px;
+		padding: 2px 4px;
+		color: $text-muted;
+		clear: both;
+	}
+
+  // TOC -> tabela de conteúdos (menu gerado quando há quebra de página)
+  .item-page .article-index {
+    margin: 0 0 20px 20px;
+    padding: 5px;
+    font-size: 13px;
+    border: 1px solid $base-border-color;
+    @include build-prefix-values('border-radius', $border-radius-base);
+    background-color: $base-color-muted-lighter;
+    overflow: hidden;
+  }
+  .media-only-xs .item-page .article-index {
+    float: none!important;
+    margin: 0 0 20px;
+  }
+  .item-page .article-index ul {
+    margin:0!important;
+    border:0!important;
+  }
+  .item-page .article-index li {
+    margin: 0!important;
+    border-bottom: 1px solid $base-border-color!important;
+  }
+  .item-page .article-index li a {
+    padding: 6px 8px;
+    margin: 0!important;
+    border: 0!important;
+    border-radius: 0!important;
+  }
+  .item-page .article-index li:not(.active) a:hover {
+    background-color: $base-color-muted-light;
+  }
+  .item-page .article-index li:last-child {
+    border: 0!important;
+    background-color:$base-color-muted-lighter;
+  }
+  // contador de quebras de páginas - (ex: página 1 de 4)
+  .item-page .pagenavcounter {
+    font-weight: bold;
+    margin-bottom: 1em;
+  }
+
+  // CONTENT -> Headers
+  .item-page .content-text h2,
+  .item-page .content-text h3 {
+    margin-top: $base-space-lg;
+  }
+
+  // LINKS -> listagem de links do conteúdo
+  .item-page .content-links { margin:30px 0; }
+
+  // PAGER -> links para navegação entre as 'PÁGINAS'
+  .item-page .pager:not(.pagenav) li {
+    min-width: 60px;
+    padding: 6px 8px;
+    margin-left: 2px;
+    font-size: 13px;
+    color: $base-color-muted;
+    border: 1px solid $base-border-color;
+    @include build-prefix-values('border-radius', $border-radius-base);
+    background-color: $base-color-muted-lighter;
+  }
+  .item-page .pager:not(.pagenav) li a {
+    float: none;
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+  }
+  .item-page .pager:not(.pagenav) li a:hover { background-color: transparent; }
+
+  // DESIGN: PAGENAV -> links para navegação entre 'ARTIGOS'
+  .item-page .pagenav-before { margin: 0 0 $base-space; }
+  .item-page .item-actions + .pagenav-before { margin-top: -$base-space; }
+  .media-md .item-page .pagenav-before { display: none; }
+
+  .item-page .pagenav-after { margin: $base-space 0; }
+  .media-md .item-page .pagenav-after { margin-top: $base-space * 2; }
+
+  .item-page .pagenav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .item-page .pagenav-before li { position: relative; }
+  .item-page .pagenav li.previous { float:left; }
+  .item-page .pagenav li.next {
+    left: auto!important;
+    right: 0;
+    float:right;
+  }
+  .item-page .pagenav li a {
+    display: block;
+    width: 30px;
+    text-indent: -9999px;
+    border-width: 0;
+    background: url(../core/images/arrows.png) no-repeat 1px -170px;
+    opacity: 0.2;
+    @include build-prefix-values('transition', 'opacity .15s ease-in-out');
+    z-index:999;
+  }
+  .item-page .pagenav li.next a { background-position: -170px -170px; }
+  .item-page .pagenav li a:hover {
+    background-color: transparent!important;
+    opacity:0.7;
+  }
+
+  // setas laterais
+  @media (min-width: 1300px) {
+    body:not(.fullScreen) .item-page .pagenav { margin: 0; }
+    body:not(.fullScreen) .item-page .pagenav li { position: fixed; top: 45%; left: 0; z-index: 99 }
+    body:not(.fullScreen) .item-page .pagenav li a { width: 60px; height: 88px; background-position: 5px 1px; }
+    body:not(.fullScreen) .item-page .pagenav li.next a { background-position: -145px 1px; }
+  }
+
+  // tags
+  div.tags .label {
+    display: inline-block;
+    padding: 3px 5px 2px;
+    margin-top: 3px;
+    font-family: $base-font-condensed;
+    font-size: 12px;
+    font-weight: normal!important;
+    text-transform: uppercase;
+    text-shadow: -1px -1px 0 rgba(0,0,0,0.4);
+    @include build-prefix-values('border-radius', '3px');
+  }
+
+  // KOMENTO
+  // sistema de comentários
+  #section-kmt { min-height: 0; }
+  // oculta elementos não "necessários"
+  #section-kmt div.kmt-form-author .kmt-author-time,
+  .markItUpHeader,
+  #section-kmt .kmt-btn-submit.disabled,
+  #section-kmt .kmt-fame-tabs.col1,
+  #section-kmt + div {
+    display:none;
+  }

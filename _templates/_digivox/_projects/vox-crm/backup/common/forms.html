@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html class="isMM media-md" xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt-BR" lang="pt-BR">
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="rights" content="@digivox.com.br" />
+
+	<title>Digivox</title>
+
+	<link href="favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+
+	<!--script src="core/libs/jquery/jquery-migrate-1.2.1.min.js" type="text/javascript"></script-->
+
+	<!-- css template -->
+	<link rel="stylesheet" href="css/style.css" type="text/css" />
+  	<link rel="stylesheet" href="_dev/custom.css" type="text/css" />
+
+	<!-- css jQuery UI -->
+	<link rel="stylesheet" href="core/libs/jquery/jquery-ui.min.css" type="text/css" />
+
+	<!-- css print -->
+	<link rel="stylesheet" href="css/style.print.css" type="text/css" media="print" />
+
+	<!-- For IE support -->
+	<!--[if IE]>
+		<link href="templates/base/css/style.ie.css" rel="stylesheet">
+	<![endif]-->
+
+
+</head>
+<body class="site">
+
+	<a href="#main-content" class="sr-only">Skip to content</a>
+
+	<!-- Screen -->
+	<div id="screen" class="clearfix">
+
+		<!-- Header -->
+		<nav id="header" class="clearfix">
+			<div class="container bs-container">
+				<div class="row">
+					<div class="row-wrapper">
+						<div class="row">
+							<div class="col-12">
+								<a href="#mm-navigation" role="button" id="toggleMenu" class="toggle_menu visible-xs visible-sm">
+									<span class="base-icon-menu"></span>
+								</a>
+								<a id="brand" class="brand" href="index.php"><img class="img-responsive" src="images/logo-site.png" /></a>
+								<div id="header-options" class="btn-group">
+									<a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<span class="base-icon-user"></span>
+									</a>
+									<ul class="dropdown-menu dropdown-menu-right">
+										<li><a href="#">Action</a></li>
+										<li><a href="#">Another action</a></li>
+										<li><a href="#">Something else here</a></li>
+										<li role="separator" class="divider"></li>
+										<li><a href="#">Separated link</a></li>
+									</ul>
+								</div>
+								<a id="brand-client" class="float-right hidden-xs" href="index.php"><img class="img-responsive" src="images/logo-client.png" /></a>
+								<div id="navigation" class="hidden-xs hidden-sm">
+									<ul id="main-menu" class="nav nav-pills menu">
+										<!--li><a href="login.html"><span class="base-icon-home"></span></a></li-->
+										<li id="guide"><a href="index.html">Guia</a></li>
+										<li id="login"><a href="login.html">Login</a></li>
+										<li id="icons"><a href="core/libs/baseicons/demo.html" target="_blank">Ícones</a></li>
+										<li id="lists"><a href="report.html">Listagem</a></li>
+										<li id="forms"><a href="form.html">Formulário</a></li>
+										<li class="parent">
+											<a href="#">Sub Level</a>
+											<ul class="nav-child">
+												<li class="parent">
+													<a href="#">Sub Level 2</a>
+													<ul class="nav-child">
+														<li><a href="#">Item</a></li>
+														<li><a href="#">Item</a></li>
+														<li><a href="#">Item</a></li>
+														<li><a href="#">Item</a></li>
+													</ul>
+												</li>
+												<li><a href="#">Item</a></li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<!-- wrapper -->
+		<div id="wrapper" class="wrapper">
+
+			<!-- Full Content -->
+			<div id="full-content" class="mob-noNav">
+				<div class="container-fluid bs-container">
+					<div class="row">
+						<div class="row-wrapper">
+							<div class="row">
+
+								<!-- Main Content -->
+								<div id="main-content" class="col-12">
+									<div id="content-toolbar" class="clearfix">
+										<h3>Page Header <small>(Sub Header)</small></h3>
+										<div id="toolbar-btns">
+											<a role="button" href="#" class="btn btn-default" onclick="toggleFieldsetEmbed(this, '#flt-sincronizacao', 300)">Dados de Sincronização <span class="base-icon-sort"></span></a>
+											<a role="button" href="#" class="btn btn-default" onclick="toggleFieldsetEmbed(this, '#flt-lista', 300)"><span class="base-icon-filter"></span> Filtro <span class="base-icon-sort"></span></a>
+										</div>
+									</div>
+
+									<ol id="breadcrumb" class="breadcrumb">
+										<li><span class="base-icon-location"></span></li>
+										<li><a href="index.php">Home</a></li>
+										<li><a href="#">Library</a></li>
+										<li class="active">Data</li>
+									</ol>
+
+									<div id="content-body">
+
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Scroll Top -->
+			<a id="scroll-to-top" href="#goto-screen" class="nav-smooth"></a>
+
+			<!-- Footer -->
+			<div id="footer" class="mob-noNav">
+				<div class="container-fluid bs-container">
+					<div class="row">
+						<div class="row-wrapper">
+							<div class="row">
+								<div id="copyright" class="col-6">
+									Versão: <span class="badge badge-success">3.0.0</span> &copy;copyright 2015
+								</div>
+								<div id="info-dev" class="col-6 text-right">
+									<img src="images/logo-developer.png" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Hidden -->
+			<div id="hidden" class=""></div>
+
+		<!-- / wrapper -->
+		</div>
+
+	<!-- / screen -->
+	</div>
+
+	<!-- jQuery -->
+	<script src="core/libs/jquery/jquery-1.12.4.min.js" type="text/javascript"></script>
+	<script>jQuery.noConflict();</script>
+
+	<!-- jQuery UI -->
+	<script src="core/libs/jquery/jquery-ui.min.js" type="text/javascript"></script>
+
+	<!-- load app's default javascript -->
+	<script type="text/javascript" src="js/default.js"></script>
+	<script type="text/javascript" src="_dev/custom.js"></script>
+
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+		<script src="templates/base/core/libs/js/browser/html5shiv-printshiv.js"></script>
+	<![endif]-->
+
+	<script>
+	// CUSTOM SCRIPTS
+	jQuery(function() {
+
+		// define menu item active
+		jQuery('#navigation #forms').addClass('active');
+
+	});
+	</script>
+
+	<script>
+		// LOCAL FORM VALIDATIONS
+		jQuery(window).load( function() {
+
+			// form validations
+			jQuery("#form-validator").validate({
+				rules: {
+					// local validation
+				},
+				submitHandler: function(form) {
+					return false; // for demo
+				},
+				invalidHandler: function(event, validator) {
+					// run function if there is error
+					baseValidation(jQuery(this));
+				}
+			});
+
+		});
+	</script>
+	<script type="text/javascript" src="js/validate.js"></script>
+
+</body>
+</html>

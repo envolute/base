@@ -1,0 +1,7 @@
+// LOGIN
+
+// módulo de login default
+.module .page-header + .module-body .userdata { margin-top: $base-space-lg; }
+// logout -> profile & modal
+.view-profile .mod-login .page-header,
+.logout-modal #cboxWrapper .login-greeting { display: none; }

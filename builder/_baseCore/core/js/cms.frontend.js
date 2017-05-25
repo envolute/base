@@ -1,15 +1,14 @@
-/**
- * @package     Joomla.Site
- * @subpackage  Templates.protostar
- * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
- * @since       3.2
- */
+// CUSTOMIZAÇÕES, ADAPTAÇÕES E CORREÇÕES DO CMS
 
-(function($)
-{
-	$(document).ready(function()
-	{
-		$('*[rel=tooltip]').tooltip();
-	})
-})(jQuery);
+jQuery(function() {
+
+  // define a class 'btn-default' para elementos '.btn' legado do bootstrap 2
+  jQuery('.btn:not([class*="btn-"])').each(function() {
+    jQuery(this).addClass('btn-default');
+  });
+
+  // Chosen -> campos chosen com largura de 100%
+  jQuery('#jform_tags').next('.chosen-container').width('100%');
+
+
+});

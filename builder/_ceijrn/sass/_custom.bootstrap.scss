@@ -1,0 +1,35 @@
+// BOOTSTRAP 'ELEMENTS'
+
+	// TABS
+	.nav-tabs { border-bottom: 3px solid $brand-primary; }
+	.nav-tabs > li { margin-bottom: 0; }
+	// margem inicial (esquerda) na primeira aba
+	.nav-tabs > li:first-child:not(.dropdown), .nav-tabs > li.dropdown + li { margin-left: 5px; }
+	.nav-tabs > li > a { border-width: 0px!important; }
+	// tab content
+	.tab-content {
+		margin-bottom: 0;
+		border-top: 0;
+		@include build-prefix-values('border-radius', 0 0 $border-radius-base $border-radius-base);
+	}
+	.tab-content:not(.well) { padding: $base-space-sm 0; }
+	// clearfix
+	.tab-content:before,.tab-content:after{display:table;content:"";line-height:0;}
+	.tab-content:after{clear:both;}
+	// forms
+	.tab-content .tab-pane > .form-group:last-child { margin-bottom: 0!important; }
+
+	// DROPDOWN
+	ul:not(.nav-child).dropdown-menu > li:not(.active) > a { color: $dropdown-link-color!important; }
+	ul:not(.nav-child).dropdown-menu > li:not(.active) > a:hover { color: $dropdown-link-hover-color!important; }
+
+	// POPOVER
+	.popover {
+		font-size: 13px;
+		@include build-prefix-values('box-shadow', '0 0 0 4px rgba(0,0,0,0.1)');
+	}
+	.popover-title, .popover-content { padding: 8px 10px; }
+	.popover-title { font-weight: bold; }
+
+	// WELL
+	body.site .well { background-color: #fff; }

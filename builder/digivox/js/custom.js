@@ -17,28 +17,6 @@ jQuery(function() {
 	customResponsive();
 	jQuery(window).resize(function() { customResponsive(); }); // ON RESIZE
 
-	// CHOSEN DEFAULT -> tradução
-	// essa função será mantida apenas em caratér informativo, pois
-	// como é utilizada a biblioteca do próprio joomla, a tradução é feita no arquivo de tradução "pt-BR.ini" (site & admin)
-	// Obs: A tradução não vem implementa por padrão no "pt-BR", dessa forma foi necessário colocar manualmente, a partir do "en-GB.ini"
-
-		var chzSearch = 10;
-		var chzNoResults = 'Sem resultados para';
-		// atribui o chosen default para todos os selects visíveis
-		jQuery('select').not('no-chosen').chosen({
-				disable_search_threshold: chzSearch,
-				no_results_text: chzNoResults,
-				placeholder_text_single: " ",
-				placeholder_text_multiple: " "
-		});
-		// para resolver o problema da largura = 0 para selects 'hidden'
-		// o chosen é atribuído a cada um 'select:hidden' separadamente
-		// assim é possível setar a largura através do plugin 'jquery.actual.js'
-		// pois ele consegue 'trazer' as dimensões dos elementos 'hidden'
-		jQuery('select:hidden').not('no-chosen').each(function() {
-			jQuery(this).next('.chosen-container').width(jQuery(this).actual('outerWidth') + 'px');
-		});
-
 	// SHOW/HIDE SCROLL-TO-TOP BUTTON
 
 		window.scrollToTop = function() {
@@ -50,21 +28,50 @@ jQuery(function() {
 		scrollToTop();
 		jQuery(window).scroll(function(){ scrollToTop() });
 
+	// NAV MENU -> Menu Principal
+
+		// Cria barra de rolagem caso o submenu ultrapasse o limite inferior da janela.
+		// É necessário por causa da posição fixa do menu,
+		// que esconde os itens abaixo do limite inferior da janela
+		window.navChildHeight = function() {
+			var wH = jQuery(window).height(); // window height
+			var hH = jQuery('#header').outerHeight(); // #header height
+			var fH = jQuery('#footer').outerHeight(); // #footer height
+			var e = jQuery('.nav').find('.nav-child');
+			e.each(function() {
+				var obj = jQuery(this);
+				var H = wH - (hH + fH);
+				var rH = getRealHeight(obj);
+				obj.css('height', (rH > H ? H : 'auto'));
+			});
+		};
+		window.getRealHeight = function(e) {
+			e.css({position:'absolute', visibility: 'hidden', display: 'block'}); // torna o objeto visível para o código
+			var h = e[0].scrollHeight; // pega altura real do objeto
+			e.css({position: '', visibility: '', display: ''}); // retorna ao padrão do objeto
+			return h;
+		};
+		// run function
+		navChildHeight();
+		jQuery(window).on('resize', function() { navChildHeight(); }); // on resize
+
 	// MMENU -> Mobile Menu
 
-		var $mmenu = jQuery("#navigation").clone();
-		$mmenu.removeClass().attr( "id", "mm-navigation" );
-		$mmenu.find('.nav.menu').removeClass();
-		$mmenu.mmenu({
-			navbars: false,
-			extensions: ["theme-black", "border-full", "pageshadow"]
-		});
-		jQuery(window).resize(function() { $mmenu.data("mmenu").close(); });
+		if(jQuery("#navigation").length) {
+			var $mmenu = jQuery("#navigation").clone();
+			$mmenu.removeClass().attr( "id", "mm-navigation" );
+			$mmenu.find('.nav.menu').removeClass();
+			$mmenu.mmenu({
+				navbars: false,
+				extensions: ["theme-black", "border-full", "pageshadow"]
+			});
+			jQuery(window).resize(function() { $mmenu.data("mmenu").close(); });
+		}
 
 	// AFFIX ELEMENTS
 
 		jQuery('#header').affix({ offset: { top: 1 } });
-		jQuery('#toolbar-btns').affix({ offset: { top: 15 } });
+		jQuery('#toolbar-btns').affix({ offset: { top: 12 } });
 
 	// BTN-TOOLBAR RIGHT POSITION CALCULATE
 
@@ -75,5 +82,18 @@ jQuery(function() {
 		toolbarPosition();
 		// call on resize
 		jQuery(window).resize(function() { toolbarPosition(); });
+
+	// CORREÇÃO PARA MODAL DENTRO DO 'toolbar-btns'
+
+		var newLocation = jQuery('#hidden');
+		jQuery('#toolbar-btns').find('.modal.fade').each(function() {
+			jQuery(this).appendTo(newLocation);
+		});
+
+	// BOTÃO 'TOGGLE' DO FILTRO DA TELA DE RAMAIS
+	jQuery('#filtro-reveal').click(function() {
+		jQuery('#filtro-agenda').toggleClass('active');
+	});
+	jQuery('#filtro-agenda').removeClass('hide');
 
 });

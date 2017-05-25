@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_BASECONTENT_CONTENT_PHP" option="include">
+		<message>
+			<![CDATA[COM_BASECONTENT_CONTENT_PHP_DESC]]>
+		</message>
+	</layout>
+
+	<!-- Add fields to the parameters object for the layout. -->
+	<fields name="params">
+		<fieldset name="phpTab" label="COM_BASECONTENT_PHP_CODE_LABEL">
+			<field name="phpFile" type="text" filter="string" class="input-xxlarge" default="" label="COM_BASECONTENT_PHP_FILE_LABEL" description="COM_BASECONTENT_PHP_FILE_DESC" />
+			<field name="code" type="textarea" filter="raw" class="input-xxlarge" rows="20" label="COM_BASECONTENT_CODE_LABEL" description="COM_BASECONTENT_CODE_DESC" />
+		</fieldset>
+	</fields>
+</metadata>

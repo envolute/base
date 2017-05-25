@@ -1,0 +1,13 @@
+// HR-TAG
+// Customização para uso com o elemento '.tag' do bootstrap
+
+  hr.hr-tag {
+    margin: $hr-tag-margin;
+    clear: both;
+  }
+  hr.hr-tag + .badge {
+    display: block;
+    float: left;
+    margin-top: $hr-tag-position;
+    text-decoration: none;
+  }

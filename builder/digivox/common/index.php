@@ -14,7 +14,7 @@
 	<link href="favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
 
 	<!-- jQuery -->
-	<script src="core/libs/jquery/jquery-1.11.3.min.js" type="text/javascript"></script>
+	<script src="core/libs/jquery/jquery-1.12.4.min.js" type="text/javascript"></script>
 	<script>jQuery.noConflict();</script>
 	<!--script src="core/libs/jquery/jquery-migrate-1.2.1.min.js" type="text/javascript"></script-->
 
@@ -1197,7 +1197,7 @@
 															<caption>Basic Table <code>&lt;table class="table"&gt;</code></caption>
 															<thead>
 															  <tr>
-																<th>#</th>
+																<th width="30">'.$$SETOrder('#', 'T1.id', $APPTAG).'</th>
 																<th>Heading</th>
 																<th>Heading</th>
 																<th>Heading</th>
@@ -1228,7 +1228,7 @@
 															<caption>Table Condensed <code>&lt;table class="table table-condensed"&gt;</code></caption>
 															<thead>
 															  <tr>
-																<th>#</th>
+																<th width="30">'.$$SETOrder('#', 'T1.id', $APPTAG).'</th>
 																<th>Heading</th>
 																<th>Heading</th>
 																<th>Heading</th>
@@ -1261,7 +1261,7 @@
 															<caption>All Styles <code>&lt;table class="table table-striped table-hover table-bordered"&gt;</code></caption>
 															<thead>
 															  <tr>
-																<th>#</th>
+																<th width="30">'.$$SETOrder('#', 'T1.id', $APPTAG).'</th>
 																<th>Heading</th>
 																<th>Heading</th>
 																<th>Heading</th>
@@ -1866,6 +1866,33 @@
 															<h4 class="alert alert-warning">
 																<span class="base-icon-attention-circled"></span> To add content to Popover use the attribute <strong>data-content</strong>. See more about Bootstrap <a href="http://getbootstrap.com/javascript/#tooltips">Tooltip</a> and <a href="http://getbootstrap.com/javascript/#popovers">Popover</a>...
 															</h4>
+														</div>
+														<h4 class="page-header top-space">INPUT FILE <small>(This is an option for fields of type 'file')</small></h4>
+														<div class="row">
+															<div class="col-lg-6">
+																<div class="form-group field-required">
+																	<label>Label</label>
+																	<div class="input-group">
+																		<input type="file" name="file" class="form-control" />
+																		<span class="input-group-btn">
+																			<button type="button" class="base-icon-download btn btn-default set-file-action"></button>
+																		</span>
+																	</div>
+																</div>
+																<p>Just assign a field of type "file" in a "input-group" with a button (input-group-btn). To implement the action on the button just assign it the class "<em class="strong text-danger">set-file-action</em>".</p>
+															</div>
+															<div class="col-lg-6">
+<pre>&lt;div class="form-group field-required"&gt;
+	&lt;label&gt;Label&lt;/label&gt;
+	&lt;div class="input-group"&gt;
+		&lt;input type="file" name="file" class="form-control" /&gt;
+		&lt;span class="input-group-btn"&gt;
+			&lt;button type="button" class="base-icon-download btn btn-default set-file-action"&gt;&lt;/button&gt;
+		&lt;/span&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+															</div>
 														</div>
 														<h4 id="custom-fields" class="page-header"><span class="base-icon-star text-live"></span> Custom Fields</h4>
 														<!-- Nav tabs -->
@@ -3606,6 +3633,10 @@
 															<tr>
 																<td>.pos-static</td>
 																<td>Assigns position "static"</td>
+															</tr>
+															<tr>
+																<td>.pos-fixed</td>
+																<td>Assigns position "fixed"</td>
 															</tr>
 															<tr>
 																<th colspan="2" class="active">VERTICAL ALIGNMENT</th>

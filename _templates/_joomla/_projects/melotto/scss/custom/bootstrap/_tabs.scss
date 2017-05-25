@@ -1,0 +1,35 @@
+// TABS
+// Obs: 'legacy' serve para manter o estilo caso a tab esteja no formato da versão anterior
+// sem as classes '.nav-item' e '.nav-link'
+
+.nav-tabs { border-bottom: $tab-border-size solid $brand-primary; }
+.nav-tabs > li, // legacy V3
+.nav-tabs .nav-item {
+  float: left;
+  margin-bottom: 0;
+}
+.nav-tabs > li > a, // legacy V3
+.nav-tabs .nav-link {
+  display: block;
+  padding: $nav-link-padding;
+  border-width: 0px;
+}
+.nav-tabs > li > a:hover, // legacy V3
+.nav-tabs .nav-link:focus {
+    background-color: #eee;
+}
+.nav-tabs > li.active > a,        // legacy V3
+.nav-tabs > li.active > a:focus,  // legacy V3
+.nav-tabs > li.active > a:hover,  // legacy V3
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-link.active:focus,
+.nav-tabs .nav-link.active:hover {
+  color: $btn-primary-color;
+  background-color: $btn-primary-bg;
+}
+.nav-tabs > li:first-child { margin-left: 5px; } // legacy
+// tab content
+.tab-content {
+  padding: $spacer-y 0 0;
+  border-top: 0;
+}

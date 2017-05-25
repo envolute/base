@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<extension type="module" version="3.0" client="site" method="upgrade">
+	<name>SimpleCode</name>
+	<author>Envolute</author>
+	<creationDate>March 2013</creationDate>
+	<copyright>Copyright(C)2012 Open Source Matters. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; seeLICENSE.txt</license>
+	<authorEmail>dev@envolute.com</authorEmail>
+	<authorUrl>www.envolute.com</authorUrl>
+	<version>1.0.0</version>
+	<description>Simple Code Embed</description>
+	<files>
+		<filename module="mod_base_simplecode">mod_base_simplecode.php</filename>
+		<filename>index.html</filename>
+		<filename>mod_base_simplecode.xml</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB.mod_base_simplecode.ini</language>
+		<language tag="pt-BR">language/pt-BR.mod_base_simplecode.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="type" type="radio" class="btn-group" description="MOD_SIMPLECODE_TYPE_DESC" label="MOD_SIMPLECODE_TYPE_LABEL" default="1">
+					<option value="0">HTML</option>
+					<option value="1">PHP</option>
+				</field>
+				<field name="code" type="textarea" rows="8" class="input-xxlarge" filter="raw" label="MOD_SIMPLECODE_LABEL" description="MOD_SIMPLECODE_DESC"></field>
+				<field name="css" type="textarea" filter="raw" rows="5" class="input-xxlarge" label="MOD_SIMPLECODE_CSS_LABEL"></field>
+				<field name="script" type="textarea" filter="raw" rows="5" class="input-xxlarge" label="MOD_SIMPLECODE_SCRIPT_LABEL"></field>
+				<field name="phpFile" type="text" class="input-xxlarge" filter="string" label="MOD_SIMPLECODE_INCLUDE_LABEL" description="MOD_SIMPLECODE_INCLUDE_DESC"></field>
+			</fieldset>
+			<fieldset name="advanced">
+				<field name="moduleclass_sfx" type="text" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" desc="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"/>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

@@ -44,6 +44,27 @@
 	.gray-light { background-color: $gray-light; }
 	.gray-lighter { background-color: $gray-lighter; }
 
+// GRID
+
+	// template BASE
+	.col-xs-0, .col-sm-0, .col-md-0, .col-lg-0 { display: none; }
+	// grid to 5 cols
+	.media-only-xs .col-xs-2-5,
+	.media-sm .col-sm-2_5,
+	.media-md .col-md-2_5,
+	.media-lg .col-lg-2_5 {
+		position: relative;
+		width: 20%;
+		min-height: 1px;
+		padding-left: 10px;
+		padding-right: 10px;
+		float: left;
+	}
+	.media-only-xs .col-xs-offset-2-5,
+	.media-sm .col-sm-offset-2_5,
+	.media-md .col-md-offset-2_5,
+	.media-lg .col-lg-offset-2_5 { margin-left: 20%; }
+
 // TYPOGRAPHY
 
 	.small .small { font-size: 1em; }
@@ -61,41 +82,53 @@
 
 // BUTTONS
 
+	// On 'table-condensed'
+	// diminui a altura do botão para ajustar a altura da linha
+	.table-condensed .btn-xs,
+	.table-condensed .btn-group-xs>.btn { line-height: 1.2; }
+
 	.btn-primary a { color: $btn-primary-color!important; }
 	.btn-info a { color: $btn-info-color!important; }
 	.btn-warning a { color: $btn-warning-color!important; }
 	.btn-danger a { color: $btn-danger-color!important; }
 	.btn-success a { color: $btn-success-color!important; }
 
+	.btn-default:not(.active).text-primary { color: $brand-primary!important; }
+	.btn-default:not(.active).text-success { color: $state-success-text!important; }
+	.btn-default:not(.active).text-info { color: $state-info-text!important; }
+	.btn-default:not(.active).text-warning { color: $state-warning-text!important; }
+	.btn-default:not(.active).text-danger { color: $state-danger-text!important; }
+
 	// CHECKBOX/RADIO
 	// necessário para posicionamento da label de validação
 	.btn-group label.btn { position: relative; }
 	 // btn-success
-	.btn-group label.btn.active {
+	.btn-group label.btn.active,
+	.btn-group label.btn-active-success.active {
 		color: $btn-success-color;
 		background-color: $btn-success-bg;
 		border-color: $btn-success-border;
 	}
 	// btn-primary
-	.btn-group label.btn.active.active-primary {
+	.btn-group label.btn-active-primary.active {
 		color: $btn-primary-color;
 		background-color: $btn-primary-bg;
 		border-color: $btn-primary-border;
 	}
 	// btn-info
-	.btn-group label.btn.active.active-info {
+	.btn-group label.btn-active-info.active {
 		color: $btn-info-color;
 		background-color: $btn-info-bg;
 		border-color: $btn-info-border;
 	}
 	// btn-warning
-	.btn-group label.btn.active.active-warning {
+	.btn-group label.btn-active-warning.active {
 		color: $btn-warning-color;
 		background-color: $btn-warning-bg;
 		border-color: $btn-warning-border;
 	}
 	// btn-danger
-	.btn-group label.btn.active.active-danger {
+	.btn-group label.btn-active-danger.active {
 		color: $btn-danger-color;
 		background-color: $btn-danger-bg;
 		border-color: $btn-danger-border;
@@ -106,19 +139,73 @@
 	.btn-icon {
 		margin: 0 7px 0 -3px;
 		padding-right: 6px;
-		border-right: 1px solid rgba(255, 255, 255, 0.7);
-	  @include build-prefix-values('box-shadow', 'inset -1px 0 0 rgba(0,0,0,0.1)');
+		border-right: 1px solid;
+	}
+	.btn-xs .btn-icon {
+		margin-left: 0;
+		padding-right: 4px;
+	}
+	// quando o ícone estiver em um botão do tipo 'btn-block'
+	// a classe '.icon-default' desabilita a funcionalidade
+	.btn-block .btn-icon:not(.icon-default) {
+		float: left;
+		line-height: inherit!important;
 	}
 
 	// btn icon for checkbox & radio
-	.btn-group .btn.active [class*="base-icon"]::before {
+	.btn-group .btn.active [class*="base-icon"]:not(.icon-default)::before {
 		content: $checkbox-icon-active;
+	}
+	// btn icon for checkbox & radio
+	.btn-group .btn.active [class*="base-icon"]:not(.icon-default).inverted::before {
+		content: $checkbox-icon-inactive;
 	}
 
 // FORMS
 
 	// opção para classe .checkbox com um input após a tag label
 	.checkbox > label + input { margin: 5px 0 15px; }
+
+	// INPUT-GROUP
+
+		// input-group > 'file'
+		// apenas no Firefox
+		@-moz-document url-prefix() {
+			.input-group input[type="file"] {
+				padding: 0;
+				border: none;
+				@include build-prefix-values('box-shadow', 'inset 0 0 0 1px '+$input-border);
+			}
+		}
+		// input-group > 'radio & checkbox'
+		.input-group-addon input[type="radio"], .input-group-addon input[type="checkbox"] {
+			vertical-align: bottom;
+		}
+
+		// display table não tem largura 100% por default
+		:not(.form-inline) .input-group { width: 100%; }
+
+		// options for input-group-addon
+		.input-group-addon.live {
+			color: $base-color-live-text;
+			border-color: $base-border-color-live;
+			background: $base-color-live;
+		}
+		.input-group-addon.success {
+			color: $btn-success-color;
+			border-color: $btn-success-border;
+			background: $btn-success-bg;
+		}
+		.input-group-addon.warning {
+			color: $btn-warning-color;
+			border-color: $btn-warning-border;
+			background: $btn-warning-bg;
+		}
+		.input-group-addon.danger {
+			color: $btn-danger-color;
+			border-color: $btn-danger-border;
+			background: $btn-danger-bg;
+		}
 
 // ALERTS
 
@@ -129,6 +216,7 @@
 	}
 	.alert.alert-icon::before {
 		position: absolute;
+		top: 12px;
     left: 0.5em;
 		font-family: 'baseicons';
 		font-size: 1.5em;
@@ -150,6 +238,9 @@
 	.alert-icon.help::before { content: '\e9d3'!important; }
 	.alert-icon.note::before { content: '\ea0f'!important; }
 
+	.alert h4 { margin: 0; }
+	.alert h4 + p { margin-top: $base-space-xs; }
+
 	// opção de mensagem de alerta como tooltip
 	.set-alert-balloon {
 		position: fixed!important;
@@ -162,52 +253,12 @@
     @include build-prefix-values('box-shadow', '0 0 6px 1px rgba(0,0,0,0.2)');
 	}
 
-// PROGRESS BARS
-
-	// LOAD ACTIVITY
-	#loader {
-		position: fixed;
-		left: 0;
-		bottom: -60px; // height + 5 -> hidden loader
-		opacity: 0;
-		width: 100%;
-		height: 55px;
-		margin: 0;
-		padding: 0;
-		text-align: center;
-		background-color: $loader-bg;
-		@include build-prefix-values('box-shadow', 'none');
-		@include build-prefix-values('transition', 'all .3s ease-in-out');
-		z-index: -1;
-	}
-	#loader.active {
-		bottom: 0;
-		opacity: 1;
-		z-index: 99999;
-	}
-	#loader.fullScreen {
-		top: 0;
-		bottom: auto;
-		height: 100%;
-    background-color: $loader-full-bg;
-	}
-	#loader .progress-bar {
-		position: absolute;
-		bottom: -2px;
-		width: 100%;
-		height: 15px;
-	}
-	#loader img {
-		width: 32px;
-		height: 32px;
-		margin: 5px 0;
-	}
-	#loader.fullScreen img { margin-top: 200px; }
-
 // WELL / THUMBNAIL
 
 	.well > *:last-child,
 	.thumbnail > *:last-child { margin-bottom: 0!important; }
+
+	.well .well { background-color: $body-bg; }
 
 // NAVS
 
@@ -220,7 +271,6 @@
 
 	// NAV-TABS
 	// formata quando tiver uma tag '<span>' ao invés de '<a>'
-
 
 		.nav-tabs > li > span {
 			display: block;
@@ -243,6 +293,16 @@
 
 // MODAL
 
+	// modal sem header
+	// -> quando for possível editar o código basta remover o 'modal-header'
+	// e adicionar o 'button.close' dentro do 'modal-body' (primeiro elemento)
+	.modal .modal-body > button.close {
+		position: absolute;
+		top: 5px;
+		right: 10px;
+		z-index: 1;
+	}
+	// Senão, usar a classe 'no-header' para forçar a remoção do 'modal-header'
 	.modal.no-header .modal-header {
 		position: absolute;
 		right: 0;
@@ -251,3 +311,12 @@
 		z-index: 1;
 	}
 	.modal.no-header .modal-header > *:not(.close) { display: none; }
+
+// UTILITIES
+
+	// image responsive
+	// alinhamento da imagem responsiva
+	.text-center .img-responsive,
+	.text-right .img-responsive {
+		display: inline-block;
+	}

@@ -70,19 +70,15 @@
 										<li id="login"><a href="login.html">Login</a></li>
 										<li id="icons"><a href="core/libs/baseicons/demo.html" target="_blank">Ícones</a></li>
 										<li id="lists"><a href="report.html">Listagem</a></li>
-										<li id="forms"><a href="form.html">Formulário</a></li>
+										<li id="forms"><a href="forms.html">Formulário</a></li>
 										<li class="parent">
 											<a href="#">Sub Level</a>
 											<ul class="nav-child">
-												<li class="parent">
-													<a href="#">Sub Level 2</a>
-													<ul class="nav-child">
-														<li><a href="#">Item</a></li>
-														<li><a href="#">Item</a></li>
-														<li><a href="#">Item</a></li>
-														<li><a href="#">Item</a></li>
-													</ul>
-												</li>
+												<li><a href="#">Item</a></li>
+												<li><a href="#">Item</a></li>
+												<li><a href="#">Item</a></li>
+												<li><a href="#">Item</a></li>
+												<li><a href="#">Item</a></li>
 												<li><a href="#">Item</a></li>
 											</ul>
 										</li>
@@ -100,13 +96,22 @@
 
 			<!-- Full Content -->
 			<div id="full-content" class="mob-noNav">
-				<div class="container-fluid bs-container">
+				<div class="container">
 					<div class="row">
 						<div class="row-wrapper">
 							<div class="row">
 
 								<!-- Main Content -->
 								<div id="main-content" class="col-xs-12">
+
+									<div id="user-info">
+										<a href="#"><span class="base-icon-user text-live"></span> Nome do usuário</a>
+										<span class="divisor"></span>
+										<a href="#"><span class="base-icon-cog text-live"></span> Meus dados</a>
+										<span class="divisor"></span>
+										<a href="#" class="logout"><span class="base-icon-logout-alt"></span> Sair</a>
+									</div>
+
 									<div id="content-toolbar" class="clearfix">
 										<h3>Page Header <small>(Sub Header)</small></h3>
 										<div id="toolbar-btns">
@@ -115,14 +120,9 @@
 										</div>
 									</div>
 
-									<ol id="breadcrumb" class="breadcrumb">
-										<li><span class="base-icon-location"></span></li>
-										<li><a href="index.php">Home</a></li>
-										<li><a href="#">Library</a></li>
-										<li class="active">Data</li>
-									</ol>
-
 									<div id="content-body">
+
+										# CONTENT
 
 									</div>
 
@@ -164,7 +164,7 @@
 	</div>
 
 	<!-- jQuery -->
-	<script src="core/libs/jquery/jquery-1.11.3.min.js" type="text/javascript"></script>
+	<script src="core/libs/jquery/jquery-1.12.4.min.js" type="text/javascript"></script>
 	<script>jQuery.noConflict();</script>
 
 	<!-- jQuery UI -->

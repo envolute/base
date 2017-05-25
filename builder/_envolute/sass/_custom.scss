@@ -1,0 +1,275 @@
+// @CUSTOM
+// customização de estilo do site
+// Esse arquivo deve conter todas as classes para customização do template para esse projeto.
+
+@import "variables";
+@import "mixins";
+@import "template";
+
+// WINDOW
+
+	html, body, #screen, #wrapper { min-height: 100%; }
+
+	// SCROLLBAR -> barra de rolagem
+	*::-webkit-scrollbar {
+		width:11px;
+		height:11px;
+		background-color: transparent;
+	}
+	*::-webkit-scrollbar-thumb,
+	*::-webkit-scrollbar-corner {
+		border-style: solid;
+		border-width: 2px;
+		border-color: $body-bg;
+		background-color: $gray-light;
+		@include build-prefix-values('border-radius', '10px');
+	}
+	*::-webkit-scrollbar-thumb:hover { background-color: $gray; }
+	*::-webkit-scrollbar-track-piece { background-color: none;}
+
+// TYPOGRAPHY
+
+		blockquote { font-family: $base-font-featured; }
+
+// HEADERS
+
+		h4,h5,h6 { line-height: 1.3em; }
+
+		// headers para componente e modulo
+		.componentheading,
+		.contentheading,
+		.module .page-header,
+		h4.page-header,
+		h5.page-header,
+		fieldset:not(.fieldset-bordered):not(.fieldset-embed) > legend {
+			margin: 2px 0px 10px 0px;
+			padding-bottom: 9px;
+		}
+		.componentheading,
+		.contentheading,
+		.page-header,
+		fieldset:not(.fieldset-bordered):not(.fieldset-embed) > legend {
+			border-bottom:1px solid $base-border-color;
+			@include build-prefix-values('box-shadow', '0 1px 0 '$base-border-color-inverted);
+		}
+		// mesma configuração do 'h4'
+		.componentheading,
+		.contentheading,
+		.module .page-header,
+		fieldset:not(.fieldset-bordered):not(.fieldset-embed) > legend
+		{
+			font-size:1.3em;
+			line-height: 1.3em;
+		}
+		fieldset:not(.fieldset-bordered):not(.fieldset-embed) > legend { margin-bottom: $base-space-lg; }
+		// CHROME ONLY
+		.chrome fieldset:not(.fieldset-bordered):not(.fieldset-embed) > legend { padding-top: 2px; }
+
+// MODULE
+
+	// WELL/WELL-SM
+	// adaptação do bootstrap 'well' e 'well-sm' para módulos
+
+	.module > .well { margin-bottom: 0; }
+	.module > .well .page-header {
+		padding: 0 0 5px;
+		margin: -6px 0 6px;
+	}
+	.module > .well-sm .page-header {
+		padding-bottom: 3px;
+		margin-top: -2px;
+	}
+
+	// PANEL
+	// adaptação do bootstrap 'panel' para módulos
+
+	.module > .panel { margin-bottom: 0; }
+	.module > .panel .panel-heading {
+		padding: 7px 10px 5px;
+		font-weight: bold;
+	}
+	.module > .panel .panel-body { padding: 10px; }
+
+// TEMPLATE
+
+	// COMMON ELEMENTS
+
+		// 'clearfix' elements
+		// a classe 'elemento' só serve como modelo
+		// .elemento:before, .elemento:after {
+		// 	content: " ";
+		// 	display: table;
+		// }
+		// .elemento:after { clear: both; }
+
+
+	// NAVSIDE
+
+		#navside {
+			padding: 10px;
+			border-right: 1px solid $base-border-color;
+			background: $base-color-muted-lighter;
+		}
+		#navside { width: 220px; }
+
+
+	// WRAPPER
+
+		#wrapper { margin: auto; }
+
+		// valores referentes a navside
+		#navside + #wrapper { margin-left: 220px; }
+
+		// wrapper = container
+		// .media-sm #wrapper { width: 750px; }
+		// .media-md #wrapper { width: 970px; }
+		// .media-lg #wrapper { width: 1170px; }
+
+
+	// TOP
+
+		#top {
+
+		}
+
+	// HEADER
+
+		#header {
+			position: relative;
+    	height: 60px;
+			padding: $base-space 0;
+			@include build-prefix-values('box-shadow', '0 1px 2px rgba(0,0,0,0.25)');
+			z-index: 1;
+		}
+
+			// dropdown menu
+			#header .dropdown-menu {
+				margin-top: 16px;
+			}
+			// botão do menu principal
+			#header-1 .base-icon-menu {
+				font-size: 14px;
+				vertical-align: text-bottom;
+			}
+			#header-1 .base-icon-menu:before { color: $base-color-live; }
+			#header-1 .btn-group.open .base-icon-menu:before { content: '\e9c7'; } // base-icon-cancel
+			#header-1 #item-742 { display: none; } // esconde o item 'extra-info' do menu
+			#header-2 #brand {
+		    position: relative;
+		    display: block;
+		    width: 120px;
+		    margin: auto;
+			}
+			#header-2 #brand-xs img { max-width: 100%; }
+			#header-2 #brand img {
+				position: absolute;
+		    top: -8px;
+		    left: 0;
+		    max-width: 100%;
+		    z-index: -1;
+			}
+			#header-2 #brand .brand-name {
+		    font-family: "Oswald";
+				font-size: 18px;
+				line-height: 1em;
+				color: $brand-primary;
+			}
+			#header-3 { text-align: right; }
+
+	// NAVIGATION
+	#navigation {
+		padding: 15px 0;
+		background: $base-color-1-dark;
+	}
+
+		#navigation .breadcrumb {
+	    margin: 0;
+			padding: 3px 0;
+	    color: $base-color-muted-lighter;
+	    font-size: 16px;
+		}
+		#navigation .breadcrumb a { color: $base-color-muted-lighter; }
+		#navigation .breadcrumb > .active { color: #fff; }
+		#navigation .breadcrumb>li+li:before {
+			font-family: "baseicons";
+			content: "\e87d";
+	    padding-right: 3px;
+			color: #fff;
+			font-size: 12px;
+		}
+
+		#navigation #mod-search-searchword {
+			width: 100%;
+			color: #fff;
+			border: none;
+			background-color: darken($base-color-1-dark, 5%);
+		}
+
+	// INFO TOP
+
+		#info-top .row-wrapper {
+			border-bottom: 1px solid $base-border-color;
+			padding: 12px 0;
+		}
+
+		// menu
+		#info-top ul.menu {
+			padding-left: 1px;
+			border-left: 4px solid $brand-primary;
+		}
+
+	// FULL-CONTENT -> área total do conteúdo incluindo as laterais
+
+		// CONTENT
+		#full-content { padding: $base-space 0; }
+
+		// LEFT & RIGHT
+		#left .module,
+		#right .module { margin-bottom: $base-space; }
+
+	// SYNDICATE
+
+		#syndicate {
+
+		}
+		.media-to-sm #syndicate { text-align: center; }
+
+	// BOTTOM
+
+		#bottom {
+
+		}
+		.media-to-sm #bottom { text-align: center; }
+
+	// FOOTER
+
+		#footer {
+			padding: $base-space 0;
+		}
+		.media-only-xs #footer { text-align: center; }
+
+	//SCROLLTOTOP
+
+		#scroll-to-top {
+			display: none;
+			position: fixed;
+			right: $base-space;
+			bottom: $base-space;
+			padding: 8px 16px;
+			color: #fff;
+			font-size: 20px;
+			@include build-prefix-values('border-radius', $border-radius-base);
+			background: #333;
+			opacity: 0.8;
+			overflow: hidden;
+			z-index: $zindex-scroll-to-top;
+		}
+		#scroll-to-top:before {
+			font-family: 'baseicons';
+			content: '\e889'; // base-icon-angle-double-up
+		}
+		.support-on #scroll-to-top {
+			right: 10px;
+			bottom: 50px;
+		}
+		#scroll-to-top:hover { opacity: 0.95; }

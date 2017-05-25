@@ -1,0 +1,16 @@
+// @STYLE
+// Esse arquivo deve conter todas as classes para customização do template do projeto.
+
+// variables
+@import "custom/_variables/template";
+@import "custom/_variables/bootstrap";
+@import "custom/_variables/custom";
+
+// Bootstrap
+@import "custom/_imports/bootstrap";
+@import "custom/_imports/extensions";
+// Joomla
+@import "custom/_imports/joomla";
+// Template
+@import "custom/template";
+@import "custom/default";

@@ -1,0 +1,7 @@
+// BUTTONS
+.btn { box-shadow: inset 0 1em 0 rgba(255,255,255,0.2); }
+.btn-lg { box-shadow: inset 0 1.25em 0 rgba(255,255,255,0.2); }
+.btn-xs { box-shadow: inset 0 .75em 0 rgba(255,255,255,0.2); }
+.btn:not(.btn-default):not(.btn-secondary):not(.btn-link) {
+  text-shadow: -1px -1px 0 rgba(0,0,0,0.3);
+}

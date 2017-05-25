@@ -1,0 +1,17 @@
+// BUTTONS
+.btn { box-shadow: inset 0 1em 0 rgba(255,255,255,0.2); }
+.btn:not(.btn-default):not(.btn-secondary) { text-shadow: -1px -1px 0 rgba(0,0,0,0.3); }
+
+// BTN DEFAULT
+// A opção '.btn-default' foi removida na versão 4 do Bootstrap
+// Porém, ela é semanticamente legal...
+// Assim, ela entrar como um complemento 'addon'...
+.btn-default {
+  color: $base-btn-default-color;
+  border-color: $base-btn-default-border;
+  background-color: $base-btn-default-bg;
+}
+.btn-default:hover {
+  border-color: darken($base-btn-default-border, 5%);
+  background-color: darken($base-btn-default-bg, 5%);
+}

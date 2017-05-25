@@ -1,0 +1,21 @@
+// @ELEMENTS
+// CUSTOMIZAÇÕES PADRÃO PARA ELEMENTOS DO JOOMLA
+// Incluindo componentes nativos, extensões e funcionalidades da 'BASE'
+
+// JOOMLA
+// Mantém a compatibilidade com a versão 2 do bootstrap
+// IMPORTANTE: Deve ser removido em breve na versão 4 do Joomla
+@import "../../../../../_core/scss/frontend.legacy"; // _builder/_joomla
+
+// Template
+@import "../joomla/navbar.admin";
+// Joomla native
+@import "../joomla/article";
+@import "../joomla/login";
+// Joomla Extensions
+@import "../joomla/colorbox";
+@import "../joomla/droppics";
+@import "../joomla/tabs";
+@import "../joomla/fastSocialShare";
+@import "../joomla/komento";
+@import "../joomla/verticalmenu";

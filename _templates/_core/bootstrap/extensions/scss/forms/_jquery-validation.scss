@@ -1,0 +1,40 @@
+// JQUERY VALIDATION
+// marcação dos campos validados pelo plugin "Jquery Validation"
+
+// Mensagem de erro
+
+  input.error,
+  textarea.error,
+  select.error,
+  // Bootstrap: Input group
+  .input-group.has-error .input-group-addon,
+  // Bootstrap: Btn group
+  .btn-group.has-error .btn,
+  // Base: Btn File
+  .btn-file.has-error .file-action,
+  // Chosen
+  select.error + .chosen-container-single .chosen-single,
+  select.error + .chosen-container-multi .chosen-choices {
+    color: $state-danger-text!important;
+    border-color: $state-danger-border!important;
+    background-color: $state-danger-bg!important;
+  }
+
+  // Bootstrap: Input group btns
+  label:not(.btn) input[type="checkbox"].error {
+    box-shadow: 0px 0px 2px 1px $state-danger-text;
+  }
+
+  span.error {
+    display: block;
+    padding: 2px 0 0;
+    margin: 0;
+    color: $state-danger-text;
+    font-weight: normal;
+    font-size: 12px;
+  }
+  span.error.valid,
+  // -> mostra apenas o primeiro erro de um "group"
+  span.error:not(.valid) + span.error:not(.valid) {
+    display: none!important;
+  }

@@ -1,0 +1,13 @@
+// FORM TOOLBAR
+// Container superior para botões -> antes do formulário
+.form-toolbar {
+	border-bottom: 1px solid $base-border-color;
+}
+.form-toolbar .form-title {
+	color: $brand-primary;
+}
+.form-toolbar .form-title small,
+.form-toolbar .form-title .small {
+	font-size: .9rem;
+  @extend .font-featured;
+}

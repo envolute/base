@@ -1,0 +1,24 @@
+// @CUSTOM VARS
+
+  // Z-INDEX DEFINITIONS
+  // Importante: não deve ser maior que '1030' (navbar)
+  $zindex-chosen:           996 !default;
+  $zindex-nav-child:        999 !default;
+  $zindex-scroll-to-top:    999 !default;
+  $zindex-datepicker:       1000 !default;
+  $zindex-mainmenu:         1001 !default;
+  $zindex-header:           1002 !default;
+
+  // ADMIN NAVBAR
+  $admin-navbar-height: 40px;
+  $admin-navbar-item-padding-x: $navbar-padding-x;
+  $admin-navbar-item-padding-y: $navbar-padding-y;
+  $admin-navbar-opacity: .95;
+  $admin-navbar-toggler-margin: 43px;
+  $admin-navbar-navchild-child-top: -2.05em;
+
+  // HEADER
+  $header-height: 115px;
+
+  // TAB
+  $tab-border-size: 3px;

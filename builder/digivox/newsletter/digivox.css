@@ -1,0 +1,304 @@
+* {
+  margin: 0;
+  padding: 0;
+  outline: none;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+nav,
+section {
+  display: block;
+}
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  line-height: 1.231;
+  background: url(http://www.digivox.com.br/wp-content/themes/digivox/css/../img/bg2.jpg) repeat;
+}
+body,
+button,
+input,
+select,
+textarea {
+  font-family: 'Open Sans', sans-serif;
+  color: #222;
+}
+html,
+body,
+#wrap {
+  height: 100%;
+}
+#wrap {
+  height: auto;
+  min-height: 100%;
+  width: 100%;
+  margin: 0 auto;
+}
+.sprite {
+  background: url(http://www.digivox.com.br/wp-content/themes/digivox/css/../img/sprite.png) no-repeat;
+}
+::-moz-selection {
+  background: #fb662b;
+  color: #fff;
+  text-shadow: none;
+}
+::selection {
+  background: #fb662b;
+  color: #fff;
+  text-shadow: none;
+}
+a {
+  color: #000;
+  text-decoration: none;
+}
+a:hover {
+  color: #000;
+  text-decoration: underline;
+}
+.centraliza {
+  width: 990px;
+  max-width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+@media (max-width: 991px) {
+  .centraliza { padding: 0 15px; }
+}
+header {
+  background: url(http://www.digivox.com.br/wp-content/themes/digivox/css/../img/bg.jpg) repeat-x top;
+  height: 202px;
+}
+header .centraliza {
+  height: 188px;
+  padding-top: 4px;
+}
+header .centraliza h1 {
+  width: 604px;
+  max-width: 100%;
+  height: 158px;
+  float: left;
+  text-indent: -9999px;
+  position: absolute;
+  top: 4px;
+  left: -50px;
+  margin: 0;
+}
+header .centraliza h1 a {
+  display: block;
+  width: 604px;
+  max-width: 100%;
+  height: 158px;
+  background: url(http://www.digivox.com.br/wp-content/themes/digivox/css/../img/digivox.png) no-repeat;
+  float: left;
+}
+@media (max-width: 991px) {
+  header { height: 155px; }
+  header .centraliza h1 { left: 0; height: 148px; }
+  header .centraliza h1 a { height: 148px; background-size: contain; background-position: center;}
+}
+header .centraliza .top_contato {
+  width: 452px;
+  float: right;
+  margin-top: 22px;
+}
+header .centraliza .top_contato h5 {
+  font-size: 14px;
+  margin-bottom: 10px;
+  font-family: Helvetica, Arial, sans-serif;
+}
+header .centraliza .top_contato h5 span {
+  color: #f54804;
+}
+header .centraliza .top_contato form {
+  width: 452px;
+  background: url(http://www.digivox.com.br/wp-content/themes/digivox/css/../img/bg_form_cima.jpg) repeat-x;
+  padding: 12px;
+  -webkit-border-radius: 10px 10px 10px 10px;
+  border-radius: 10px 10px 10px 10px;
+}
+header .centraliza .top_contato form .form-control {
+  width: 135px;
+  color: #929292;
+  padding: 6px 10px;
+  margin: 0 12px;
+}
+header .centraliza .top_contato form .btn {
+  width: 84px;
+}
+header .centraliza .menu {
+  width: 100%;
+  display: inline-block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+header .centraliza .menu ul#menu li {
+  float: left;
+  font-size: 13px;
+  background: url(http://www.digivox.com.br/wp-content/themes/digivox/css/../img/l_menu.jpg) no-repeat right;
+  padding: 0 10px 0 10px;
+  text-transform: uppercase;
+  margin-top: 10px;
+  z-index: 500;
+  position: relative;
+  display: block;
+}
+header .centraliza .menu ul#menu li a {
+  float: left;
+  color: #fff;
+  padding: 7px 9px 7px 9px;
+  display: block;
+}
+header .centraliza .menu ul#menu li a:hover,
+header .centraliza .menu ul#menu li a.ativo {
+  background: url(http://www.digivox.com.br/wp-content/themes/digivox/css/../img/bg_menu.jpg) repeat-x;
+  text-decoration: none;
+  color: #000;
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
+}
+header .centraliza .menu ul#menu li.ultimo {
+  padding-right: 0;
+  background: none;
+}
+footer {
+  width: 100%;
+  display: inline-block;
+  background: url(http://www.digivox.com.br/wp-content/themes/digivox/css/../img/bg_footer.jpg) repeat;
+  clear: both;
+  margin-top: 50px;
+  border-top: 6px solid #d5d5d5;
+  /* /centraliza */
+
+}
+footer .centraliza h1 {
+  color: #fff;
+  font-size: 24px;
+  margin: 20px 0 15px 10px;
+}
+footer .centraliza .bloco {
+  width: 230px;
+  float: left;
+  margin-left: 10px;
+}
+footer .centraliza .bloco h4 {
+  font-size: 16px;
+  color: #fb662b;
+  margin-bottom: 14px;
+}
+footer .centraliza .bloco ul {
+  margin: 0 0 14px 0;
+  padding: 0;
+}
+footer .centraliza .bloco ul li {
+  list-style: none;
+  font-size: 12px;
+  background: url(http://www.digivox.com.br/wp-content/themes/digivox/css/../img/ico_list_footer.png) no-repeat left;
+  padding-left: 14px;
+  margin-bottom: 5px;
+}
+footer .centraliza .bloco ul li a {
+  color: #fff;
+}
+footer .centraliza .bloco.b_dir ul {
+  margin: 0;
+  padding: 0;
+}
+footer .centraliza .bloco.b_dir ul li {
+  list-style: none;
+  font-size: 12px;
+  background: none;
+  padding-left: 0;
+  margin-bottom: 5px;
+  display: inline-block;
+}
+footer .centraliza .bloco.b_dir ul li a {
+  color: #fff;
+}
+footer .centraliza .bloco.b_dir ul li small {
+  font-size: 12px;
+  float: left;
+  margin-top: 5px;
+}
+footer .centraliza .bloco.b_dir ul li span {
+  width: 20px;
+  height: 20px;
+  background: url(http://www.digivox.com.br/wp-content/themes/digivox/css/../img/redes.png) no-repeat;
+  float: left;
+  margin-right: 5px;
+}
+footer .centraliza .bloco.b_dir ul li span.bt_facebook {
+  background-position: -45px 0;
+}
+footer .centraliza .bloco.b_dir ul li span.bt_twitter {
+  background-position: -45px -28px;
+}
+footer .centraliza .bloco.b_dir ul li span.bt_in {
+  background-position: -45px -57px;
+}
+footer .centraliza .bloco.b_dir ul li span.bt_instagram {
+  background-position: -45px -84px;
+}
+footer .bg_fim {
+  width: 100%;
+  margin-top: 20px;
+  background: #1b1b1b;
+  font-size: 12px;
+}
+footer .bg_fim .centraliza p {
+  text-align: center;
+  color: #9c9c9c;
+  padding: 8px 0;
+  margin: 0;
+}
+footer .bg_fim .centraliza .bt_questao {
+  width: 243px;
+  height: 30px;
+  padding-top: 10px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  text-align: center;
+  background: url(http://www.digivox.com.br/wp-content/themes/digivox/css/../img/bg_questao.jpg) repeat-x;
+  border: 2px solid #d93d00;
+  font-size: 18px;
+  color: #fff;
+  -webkit-border-radius: 10px 10px 0 0;
+  border-radius: 10px 10px 0 0;
+  font-weight: bold;
+}
+
+.clue-con {
+  padding: 10px;
+  margin: 20px 0;
+  text-align: center;
+  color: #fff;
+  background-image: url("https://cluecon.com/wp-content/themes/expo18/img/headline-shadow.png"), url("https://cluecon.com/wp-content/themes/expo18/img/bgset-1/headline-bg.jpg");
+  background-repeat: repeat-x, repeat-x;
+}
+.gift {
+  position: relative;
+}
+.gift img {
+  border: 1px solid #ddd;
+  padding: 5px;
+  background: #fafafa;
+}
+.gift span {
+  position: absolute;
+  right: -25px;
+  width: 50px;
+  height: 50px;
+  top: -20px;
+  background: url("images/gift_alt.png") center no-repeat;
+}

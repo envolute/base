@@ -1,0 +1,200 @@
+/**
+ * =============================================================
+ * RAXO All-mode PRO J3.x - Template CSS
+ * -------------------------------------------------------------
+ * @package		RAXO All-mode PRO
+ * @subpackage	All-mode Default Template
+ * @copyright	Copyright (C) 2009-2014 RAXO Group
+ * @license		RAXO Commercial License
+ * 				This file is forbidden for redistribution
+ * @link		http://www.raxo.org
+ * =============================================================
+ */
+
+
+
+/* ----- MODULE BLOCK Styles ----- */
+
+.allmode-base-default .allmode-base-name {			 /* BLOCK NAME Text */
+	margin: 0 8px; padding: 5px 4px;
+	font-size: 16px;
+	font-weight: normal !important;
+	color: #373737;
+	border-top: 2px solid #dddddd;
+}
+.allmode-base-default .allmode-base-showall {			 /* SHOW ALL Text */
+	margin: 0 8px; padding: 3px 4px 0;
+	text-align: right !important;
+	border-top: 1px solid #dddddd;
+}
+
+/* ----- GENERAL ITEMS Styles ----- */
+.allmode-base-default .allmode-base-text { /* Item TEXT */
+	font-weight: normal;
+	font-size: 0.86em;
+	color: #373737;
+}
+.allmode-base-default .allmode-base-info { /* Item INFO */
+	height: 15px;
+	font-size: 11px;
+	clear: none;
+}
+.allmode-base-default .allmode-base-info .allmode-base-date [class*="base-icon-"] { font-size: 10px; }
+.allmode-base-default .allmode-base-topitem:first-of-type,
+.allmode-base-default .allmode-base-itemsbox:first-of-type .allmode-base-item:first-of-type { /* Item DIV */
+	padding-top:0;
+	border-top: none;
+}
+.allmode-base-default .allmode-showall {
+	clear: both;
+}
+
+/* ----- TOP ITEMS Styles ----- */
+.allmode-base-default .allmode-base-topitem {			 /* Top Item DIV */
+	padding: 14px 0 10px;
+	overflow: hidden;
+	clear: left;
+	border-top: 1px dashed #dddddd;
+}
+.allmode-base-default .allmode-base-topitem .allmode-base-title { /* Top Item TITLE */
+	margin: 0 0 3px 0 !important;
+	font-weight: bold;
+	font-size: 16px;
+	line-height: 21px;
+	clear: left;
+}
+
+/* ----- ITEMS Styles ----- */
+.allmode-base-default .allmode-base-item { /* Item DIV */
+	padding: 8px 0 6px;
+	overflow: hidden;
+	clear: left;
+	border-top: 1px dashed #dddddd;
+}
+.allmode-base-default .allmode-base-item .allmode-base-title { /* Item TITLE */
+	margin: 0 0 3px 0 !important;
+	font-size: 1em;
+	line-height: 1.2em;
+}
+
+/* ----- COMMON Fields Styles ----- */
+.allmode-base-default .allmode-base-img img { /* Item IMAGE */
+	float: left;
+	display: block;
+	margin: 0 10px 2px 0;
+	max-width: 100%; height: auto;
+	transition: border 0.4s ease;
+}
+
+/* Item RATING */
+.allmode-base-default .allmode-base-rating {
+	white-space: nowrap;
+}
+	.allmode-base-default .allmode-base-rating span {
+		display: inline-block;
+		width: 10px; height: 10px;
+		background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAG4CAYAAAB8R3Z3AAABm0lEQVR42u2VYUQDYRzGrwzqe9GKoSmgKqVEtM/rOJICIlgIoajvUQAIFQIEibG+FxEUGKRMDC2qz33uGXdcS3vh1Z/8fjzudu/jOTf4ZYIWyuVylNymn2daSn26nMU/B5XX5KyzZXBL6Yqz/W1RK6u6Lih5ZTR1tqkUlJpy2Xz1njIQ/KRDGYsz03x1UXkOfqd5VuyMoqiqm5U2xWWlmnzMeJviRPqrw9TBR5wgfZb8jw/KtHKiHMTPdpRSfAYA8E/ItD64z+XcnlHJg2e0YuWZyXodzwAAmHimOr/v9oxKHjyjFSvPjFzv4hkAABPPPIa9bs+o5MEzWrHyzHDlDc8AAJh45v0mcHtGJQ+e0YqVZ3rmAjwDAGDimfB4yO0ZlTx4RitWnqmUnvAMAICJZ/orp27PqOTBM1qx8sxLuIZnAABMPNO9dOX2jEoePKMVK898nhfwDACAiWemjmpuz6jkwTNasfLM3XoezwAAmHhmY/bC7RmVPHhGK1aeObxdxDMAACaeyWazbs+o5MEzWrHyTKPRwDMAAH/BF4g4Fgjsmfc3AAAAAElFTkSuQmCC") no-repeat 0 0;
+		/*background: url("rating.png") no-repeat 0 0;*/
+		background-size: 10px 440px;
+	}
+	.allmode-base-default .allmode-base-star {
+		margin: 0 1px;
+	}
+	.allmode-base-default .allmode-base-star span {
+		display: block;
+	}
+
+/* ----- RESPONSIVE Breakpoints ----- */
+@media (max-width: 480px) {
+	.allmode-base-default .allmode-base-topitem img { width: 100%; max-width: 100%; }
+}
+
+/* ----- HIGH RESOLUTION Media Queries ----- */
+@media
+	only screen and (-webkit-min-device-pixel-ratio: 1.3),
+	only screen and (min-device-pixel-ratio: 1.3),
+	only screen and (min-resolution: 120dpi) {
+	.allmode-base-default .allmode-base-rating span {
+		background-image: url(rating@3x.png);
+	}
+}
+
+/* ----- CUSTOM -> COLUMNS ----- */
+.module.cols .allmode-base-itemsbox {
+  margin: 0 -10px;
+}
+.module.cols .allmode-base-item {
+  padding: 10px!important;
+  float: left;
+  width: 50%;
+  border: none;
+}
+.module.cols .allmode-base-item:nth-child(even) { clear: none; }
+
+/* ----- COLOR Schemes ----- */
+
+/* --- (default) --- */
+.allmode-base-default .allmode-base-star span {background-position: 0 -40px;}
+
+/* --- Pink Color --- */
+.default-pink a {color: #d24087 !important;}
+.default-pink .allmode-base-name,
+.default-pink .allmode-base-showall,
+.default-pink a:hover img {border-color: #d24087;}
+.default-pink .allmode-base-star span {background-position: 0 -80px;}
+
+/* --- Orange Color --- */
+.default-orange a {color: #d94d16 !important;}
+.default-orange .allmode-base-name,
+.default-orange .allmode-base-showall,
+.default-orange a:hover img {border-color: #d94d16;}
+.default-orange .allmode-base-star span {background-position: 0 -120px;}
+
+/* --- Yellow Color --- */
+.default-yellow a {color: #ebc300 !important;}
+.default-yellow .allmode-base-name,
+.default-yellow .allmode-base-showall,
+.default-yellow a:hover img {border-color: #ebc300;}
+.default-yellow .allmode-base-star span {background-position: 0 -160px;}
+
+/* --- Green Color --- */
+.default-green a {color: #4d9926 !important;}
+.default-green .allmode-base-name,
+.default-green .allmode-base-showall,
+.default-green a:hover img {border-color: #4d9926;}
+.default-green .allmode-base-star span {background-position: 0 -200px;}
+
+/* --- Turquoise Color --- */
+.default-turquoise a {color: #1bb39e !important;}
+.default-turquoise .allmode-base-name,
+.default-turquoise .allmode-base-showall,
+.default-turquoise a:hover img {border-color: #1bb39e;}
+.default-turquoise .allmode-base-star span {background-position: 0 -240px;}
+
+/* --- Blue Color --- */
+.default-blue a {color: #0a55bf !important;}
+.default-blue .allmode-base-name,
+.default-blue .allmode-base-showall,
+.default-blue a:hover img {border-color: #0a55bf;}
+.default-blue .allmode-base-star span {background-position: 0 -280px;}
+
+/* --- Light Blue Color --- */
+.default-lightblue a {color: #3598dc !important;}
+.default-lightblue .allmode-base-name,
+.default-lightblue .allmode-base-showall,
+.default-lightblue a:hover img {border-color: #3598dc;}
+.default-lightblue .allmode-base-star span {background-position: 0 -320px;}
+
+/* --- Violet Color --- */
+.default-violet a {color: #6c3aad !important;}
+.default-violet .allmode-base-name,
+.default-violet .allmode-base-showall,
+.default-violet a:hover img {border-color: #6c3aad;}
+.default-violet .allmode-base-star span {background-position: 0 -360px;}
+
+/* --- Black Color --- */
+.default-gray a {color: #1a1a1a !important;}
+.default-gray .allmode-base-name,
+.default-gray .allmode-base-showall,
+.default-gray a:hover img {border-color: #1a1a1a;}
+.default-gray .allmode-base-star span {background-position: 0 -400px;}

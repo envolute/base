@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_BASECONTENT_APPS" option="apps">
+		<message>
+			<![CDATA[COM_BASECONTENT_APPS_DESC]]>
+		</message>
+	</layout>
+
+	<!-- Add fields to the parameters object for the layout. -->
+	<fields name="params">
+		<fieldset name="config" label="COM_BASECONTENT_CONFIG">
+			<field name="app" type="text" filter="string" default="" label="COM_BASECONTENT_APP_LABEL" description="COM_BASECONTENT_APP_DESC" />
+			<field name="appTag" type="text" filter="string" default="" label="COM_BASECONTENT_APPTAG_LABEL" description="COM_BASECONTENT_APPTAG_DESC" />
+
+			<field name="appView" type="spacer" class="text"
+					label="COM_BASECONTENT_APP_VIEW_LABEL"
+			/>
+
+			<field name="showApp" type="radio" class="btn-group" label="COM_BASECONTENT_SHOW_APP_LABEL" description="COM_BASECONTENT_SHOW_APP_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+			</field>
+			<field name="showList" type="radio" class="btn-group" label="COM_BASECONTENT_SHOW_LIST_LABEL" description="COM_BASECONTENT_SHOW_LIST_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+			</field>
+			<field name="listModal" type="radio" class="btn-group" label="COM_BASECONTENT_LIST_MODAL_LABEL" description="COM_BASECONTENT_LIST_MODAL_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+			</field>
+			<field name="listFull" type="radio" class="btn-group" label="COM_BASECONTENT_LIST_FULL_LABEL" description="COM_BASECONTENT_LIST_FULL_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+			</field>
+			<field name="staticToolbar" type="radio" class="btn-group" label="COM_BASECONTENT_STATIC_TOOLBAR_LABEL" description="COM_BASECONTENT_STATIC_TOOLBAR_DESC">
+				<option value="0">COM_BASECONTENT_STATIC_TOOLBAR_INTEGRATE</option>
+				<option value="1">COM_BASECONTENT_STATIC_TOOLBAR_NATURAL</option>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+			</field>
+			<field name="showAddBtn" type="radio" class="btn-group" label="COM_BASECONTENT_SHOW_ADDBTN_LABEL" description="COM_BASECONTENT_SHOW_ADDBTN_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+			</field>
+			<field name="addText" type="radio" class="btn-group" label="COM_BASECONTENT_ADD_TEXT_LABEL" description="COM_BASECONTENT_ADD_TEXT_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+			</field>
+			<field name="hasUpload" type="radio" class="btn-group" label="COM_BASECONTENT_HAS_UPLOAD_LABEL" description="COM_BASECONTENT_HAS_UPLOAD_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+			</field>
+
+			<field name="relation" type="spacer" class="text"
+					label="COM_BASECONTENT_RELATION_LABEL"
+			/>
+			<field name="relTag" type="text" filter="string" default="" label="COM_BASECONTENT_REL_TAG_LABEL" description="COM_BASECONTENT_REL_TAG_DESC" />
+			<field name="relTable" type="text" filter="string" default="" label="COM_BASECONTENT_REL_TABLE_LABEL" description="COM_BASECONTENT_REL_TABLE_DESC" />
+			<field name="appNameId" type="text" filter="string" default="" label="COM_BASECONTENT_APP_NAMEID_LABEL" description="COM_BASECONTENT_APP_NAMEID_DESC" />
+			<field name="relNameId" type="text" filter="string" default="" label="COM_BASECONTENT_REL_NAMEID_LABEL" description="COM_BASECONTENT_REL_NAMEID_DESC" />
+			<field name="relId" type="text" filter="string" default="" label="COM_BASECONTENT_REL_ID_LABEL" description="COM_BASECONTENT_REL_ID_DESC" />
+			<field name="relationList" type="spacer" class="text"
+					label="COM_BASECONTENT_RELATION_LIST_LABEL"
+			/>
+			<field name="relListNameId" type="text" filter="string" default="" label="COM_BASECONTENT_REL_LIST_NAMEID_LABEL" description="COM_BASECONTENT_REL_LIST_NAMEID_DESC" />
+			<field name="relListId" type="text" filter="string" default="" label="COM_BASECONTENT_REL_LISTID_LABEL" description="COM_BASECONTENT_REL_LISTID_DESC" />
+			<field name="onlyChildList" type="radio" class="btn-group" label="COM_BASECONTENT_REL_LIST_ONLYCHILD_LABEL" description="COM_BASECONTENT_REL_LIST_ONLYCHILD_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+			</field>
+			<field name="relationField" type="spacer" class="text"
+					label="COM_BASECONTENT_RELATION_FIELD_LABEL"
+			/>
+			<field name="fieldUpdated" type="text" filter="string" default="" label="COM_BASECONTENT_FIELD_UPDATE_LABEL" description="COM_BASECONTENT_FIELD_UPDATE_DESC" />
+			<field name="tableField" type="text" filter="string" default="" label="COM_BASECONTENT_TABLE_FIELD_LABEL" description="COM_BASECONTENT_TABLE_FIELD_DESC" />
+			<field name="foreignKey" type="spacer" class="text"
+					label="COM_BASECONTENT_FOREIGN_KEY_LABEL"
+			/>
+			<field name="hideParentField" type="radio" class="btn-group" label="COM_BASECONTENT_HIDE_PARENT_LABEL" description="COM_BASECONTENT_HIDE_PARENT_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+			</field>
+
+		</fieldset>
+		<fieldset name="extra" label="COM_BASECONTENT_EXTRA">
+			<field name="relationField" type="spacer" class="text"
+					label="COM_BASECONTENT_EXTRA_CODE_LABEL"
+			/>
+			<field name="code" type="textarea" filter="raw" class="input-xxlarge" rows="20" label="COM_BASECONTENT_CODE_LABEL" description="COM_BASECONTENT_CODE_DESC" />
+		</fieldset>
+	</fields>
+</metadata>

@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install PUBLIC "-//Joomla! 2.5//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/2.5/template-install.dtd">
+<extension version="3.0" type="template" client="site">
+	<name>Base</name>
+	<version>4.0</version>
+	<creationDate>22/12/2016</creationDate>
+	<author>Ivo Junior</author>
+	<authorEmail>dev@envolute.com</authorEmail>
+	<copyright>Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.</copyright>
+	<description>TPL_BASE_XML_DESCRIPTION</description>
+	<files>
+		<filename>_init.tpl.php</filename>
+		<filename>_css.tpl.php</filename>
+		<filename>_js.tpl.php</filename>
+		<filename>component.php</filename>
+		<filename>error.php</filename>
+		<filename>offline.php</filename>
+		<filename>favicon.ico</filename>
+		<filename>index.php</filename>
+		<filename>templateDetails.xml</filename>
+		<filename>template_preview.png</filename>
+		<filename>template_thumbnail.png</filename>
+		<folder>css</folder>
+		<folder>fonts</folder>
+		<folder>html</folder>
+		<folder>images</folder>
+		<folder>libs</folder>
+		<folder>js</folder>
+		<folder>language</folder>
+		<folder>source</folder>
+	</files>
+	<positions>
+		<position>none</position>
+		<position>bg-layer</position>
+		<position>system-menu</position>
+		<position>base-menu</position>
+		<position>header-1</position>
+		<position>header-2</position>
+		<position>header-3</position>
+		<position>header-4</position>
+		<position>header-5</position>
+		<position>header-6</position>
+		<position>section-1</position>
+		<position>section-2</position>
+		<position>section-3</position>
+		<position>section-4</position>
+		<position>section-5</position>
+		<position>section-6</position>
+		<position>full-content-top</position>
+		<position>full-content-bottom</position>
+		<position>left</position>
+		<position>right</position>
+		<position>content-top</position>
+		<position>content-bottom</position>
+		<position>content-left</position>
+		<position>content-right</position>
+		<position>component-top</position>
+		<position>component-bottom</position>
+		<position>syndicate-1</position>
+		<position>syndicate-2</position>
+		<position>syndicate-3</position>
+		<position>syndicate-4</position>
+		<position>syndicate-5</position>
+		<position>syndicate-6</position>
+		<position>footer-1</position>
+		<position>footer-2</position>
+		<position>footer-3</position>
+		<position>footer-4</position>
+		<position>footer-5</position>
+		<position>footer-6</position>
+		<position>hidden</position>
+		<position>debug</position>
+	</positions>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.tpl_base.ini</language>
+		<language tag="en-GB">en-GB/en-GB.tpl_base.sys.ini</language>
+		<language tag="pt-BR">pt-BR/pt-BR.tpl_base.ini</language>
+		<language tag="pt-BR">pt-BR/pt-BR.tpl_base.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+
+				<field name="accessBase"
+					type="radio"
+					class="btn-group"
+					default="1"
+					label="TPL_BASE_ACCESS_LABEL"
+					description="TPL_BASE_ACCESS_DESC"
+				>
+					<option value="1">TPL_BASE_ACCESS_PUBLIC</option>
+					<option value="0">TPL_BASE_ACCESS_RESTRICT</option>
+				</field>
+
+				<field name="preloader"
+					type="radio"
+					class="btn-group"
+					default="1"
+					label="TPL_BASE_PRELOADER_LABEL"
+					description="TPL_BASE_PRELOADER_DESC"
+				>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+
+				<field name="navbarGroups"
+					type="usergroup"
+					label="TPL_BASE_ACCESS_ADMINTOOLS_LABEL"
+					description="TPL_BASE_ACCESS_ADMINTOOLS_DESC"
+					multiple="true" />
+
+				<field name="jsInit"
+					type="textarea"
+					rows="6"
+					class="input-xxlarge"
+					label="TPL_BASE_TEMPLATE_JS_INIT_LABEL"
+					description="TPL_BASE_TEMPLATE_JS_INIT_DESC"
+					filter="string" />
+
+				<field name="jsCustom"
+					type="textarea"
+					rows="6"
+					class="input-xxlarge"
+					label="TPL_BASE_TEMPLATE_JS_CUSTOM_LABEL"
+					description="TPL_BASE_TEMPLATE_JS_CUSTOM_DESC"
+					filter="string" />
+
+				<field name="jsRemove"
+					type="textarea"
+					rows="6"
+					class="input-xxlarge"
+					label="TPL_BASE_TEMPLATE_JS_REMOVE_LABEL"
+					description="TPL_BASE_TEMPLATE_JS_REMOVE_DESC"
+					filter="string" />
+
+				<field name="ssCustom"
+					type="textarea"
+					rows="6"
+					class="input-xxlarge"
+					label="TPL_BASE_TEMPLATE_SS_CUSTOM_LABEL"
+					description="TPL_BASE_TEMPLATE_SS_CUSTOM_DESC"
+					filter="string" />
+
+				<field name="ssRemove"
+					type="textarea"
+					rows="6"
+					class="input-xxlarge"
+					label="TPL_BASE_TEMPLATE_SS_REMOVE_LABEL"
+					description="TPL_BASE_TEMPLATE_SS_REMOVE_DESC"
+					filter="string" />
+
+			</fieldset>
+
+			<fieldset name="LAYOUT" label="TPL_BASE_LAYOUT">
+
+				<field name="navbars" type="spacer" class="text" label="TPL_BASE_TEMPLATE_NAVBAR_LABEL" />
+
+        <field name="navbar_container" type="list" default="0" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+					<option value="0">TPL_BASE_TEMPLATE_FLUID</option>
+					<option value="1">TPL_BASE_RESPONSIVE_LABEL</option>
+				</field>
+
+        <field name="navbarFixed"
+					type="radio"
+					class="btn-group"
+					default="1"
+					label="TPL_BASE_NAVBARFIXED_LABEL"
+					description="TPL_BASE_NAVBARFIXED_DESC"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+        <field name="navbarToggleable" type="list" default="sm" label="TPL_BASE_NAVBAR_TOGGLABLE_LABEL" description="TPL_BASE_NAVBAR_TOGGLABLE_DESC">
+					<option value="xs">Extra Small (xs)</option>
+					<option value="sm">Small (sm)</option>
+					<option value="md">Medio (md)</option>
+					<option value="lg">Large (lg)</option>
+					<option value="xl">Extra Large (xl)</option>
+				</field>
+
+        <field name="navbarTogglerSide"
+					type="radio"
+					class="btn-group"
+					default="right"
+					label="TPL_BASE_NAVBAR_TOGGLER_SIDE_LABEL"
+					description="TPL_BASE_NAVBAR_TOGGLER_SIDE_DESC"
+				>
+					<option value="left">TPL_BASE_LEFT</option>
+					<option value="right">TPL_BASE_RIGHT</option>
+				</field>
+
+				<field name="navbarStyle"
+					type="radio"
+					class="btn-group"
+					default="navbar-light"
+					label="TPL_BASE_NAVBARSTYLE_LABEL"
+					description="TPL_BASE_NAVBARSTYLE_DESC"
+				>
+					<option value="navbar-light">TPL_BASE_LIGHT</option>
+					<option value="navbar-inverse bg-inverse">TPL_BASE_INVERSE</option>
+					<option value="navbar-inverse bg-primary">TPL_BASE_PRIMARY</option>
+				</field>
+
+				<field name="grid" type="spacer" class="text" label="TPL_BASE_TEMPLATE_GRID_LABEL" />
+
+				<field name="H" type="spacer" class="text" label="TPL_BASE_TEMPLATE_HEADER_LABEL" />
+				<field name="header_1_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
+        <field name="header_1_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+					<option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
+					<option value="container-fluid">TPL_BASE_TEMPLATE_FLUID</option>
+					<option value="none">TPL_BASE_NONE</option>
+				</field>
+				<field name="header_1_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
+        <field name="H1" type="spacer" class="text" label="TPL_BASE_GRID_HEADER_1" />
+				<field name="header_1" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
+				<field name="header_1_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="header_2_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
+        <field name="header_2_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+					<option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
+					<option value="container-fluid">TPL_BASE_TEMPLATE_FLUID</option>
+					<option value="none">TPL_BASE_NONE</option>
+				</field>
+				<field name="header_2_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
+        <field name="H2" type="spacer" class="text" label="TPL_BASE_GRID_HEADER_2" />
+				<field name="header_2" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
+				<field name="header_2_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="header_3_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
+        <field name="header_3_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+					<option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
+					<option value="container-fluid">TPL_BASE_TEMPLATE_FLUID</option>
+					<option value="none">TPL_BASE_NONE</option>
+				</field>
+				<field name="header_3_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
+        <field name="H3" type="spacer" class="text" label="TPL_BASE_GRID_HEADER_3" />
+				<field name="header_3" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
+				<field name="header_3_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="header_4_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
+        <field name="header_4_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+					<option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
+					<option value="container-fluid">TPL_BASE_TEMPLATE_FLUID</option>
+					<option value="none">TPL_BASE_NONE</option>
+				</field>
+				<field name="header_4_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
+        <field name="H4" type="spacer" class="text" label="TPL_BASE_GRID_HEADER_4" />
+				<field name="header_4" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
+				<field name="header_4_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="header_5_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
+        <field name="header_5_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+					<option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
+					<option value="container-fluid">TPL_BASE_TEMPLATE_FLUID</option>
+					<option value="none">TPL_BASE_NONE</option>
+				</field>
+				<field name="header_5_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
+        <field name="H5" type="spacer" class="text" label="TPL_BASE_GRID_HEADER_5" />
+				<field name="header_5" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
+				<field name="header_5_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="header_6_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
+        <field name="header_6_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+					<option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
+					<option value="container-fluid">TPL_BASE_TEMPLATE_FLUID</option>
+					<option value="none">TPL_BASE_NONE</option>
+				</field>
+				<field name="header_6_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
+        <field name="H6" type="spacer" class="text" label="TPL_BASE_GRID_HEADER_6" />
+				<field name="header_6" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
+
+				<field name="SC" type="spacer" class="text" label="TPL_BASE_TEMPLATE_SECTION_LABEL" />
+				<field name="section_1_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
+        <field name="section_1_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+					<option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
+					<option value="container-fluid">TPL_BASE_TEMPLATE_FLUID</option>
+					<option value="none">TPL_BASE_NONE</option>
+				</field>
+				<field name="section_1_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
+        <field name="SC1" type="spacer" class="text" label="TPL_BASE_GRID_SECTION_1" />
+				<field name="section_1" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
+				<field name="section_1_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="section_2_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
+        <field name="section_2_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+					<option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
+					<option value="container-fluid">TPL_BASE_TEMPLATE_FLUID</option>
+					<option value="none">TPL_BASE_NONE</option>
+				</field>
+				<field name="section_2_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
+        <field name="SC2" type="spacer" class="text" label="TPL_BASE_GRID_SECTION_2" />
+				<field name="section_2" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
+				<field name="section_2_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="section_3_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
+        <field name="section_3_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+					<option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
+					<option value="container-fluid">TPL_BASE_TEMPLATE_FLUID</option>
+					<option value="none">TPL_BASE_NONE</option>
+				</field>
+				<field name="section_3_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
+        <field name="SC3" type="spacer" class="text" label="TPL_BASE_GRID_SECTION_3" />
+				<field name="section_3" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
+				<field name="section_3_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="section_4_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
+        <field name="section_4_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+					<option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
+					<option value="container-fluid">TPL_BASE_TEMPLATE_FLUID</option>
+					<option value="none">TPL_BASE_NONE</option>
+				</field>
+				<field name="section_4_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
+        <field name="SC4" type="spacer" class="text" label="TPL_BASE_GRID_SECTION_4" />
+				<field name="section_4" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
+				<field name="section_4_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="section_5_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
+        <field name="section_5_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+					<option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
+					<option value="container-fluid">TPL_BASE_TEMPLATE_FLUID</option>
+					<option value="none">TPL_BASE_NONE</option>
+				</field>
+				<field name="section_5_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
+        <field name="SC5" type="spacer" class="text" label="TPL_BASE_GRID_SECTION_5" />
+				<field name="section_5" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
+				<field name="section_5_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="section_6_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
+        <field name="section_6_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+					<option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
+					<option value="container-fluid">TPL_BASE_TEMPLATE_FLUID</option>
+					<option value="none">TPL_BASE_NONE</option>
+				</field>
+				<field name="section_6_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
+        <field name="SC6" type="spacer" class="text" label="TPL_BASE_GRID_SECTION_6" />
+				<field name="section_6" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
+
+				<field name="content-label" type="spacer" class="text" label="TPL_BASE_TEMPLATE_CONTENT_LABEL" />
+
+        <field name="full_content_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+					<option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
+					<option value="container-fluid">TPL_BASE_TEMPLATE_FLUID</option>
+				</field>
+
+        <field name="gridDefault"
+					type="list"
+					default="md"
+					label="Grid Default"
+				>
+					<option value="xs">col-xs</option>
+					<option value="sm">col-sm</option>
+					<option value="md">col-md</option>
+					<option value="lg">col-lg</option>
+				</field>
+
+        <field name="SIDES" type="spacer" class="text" label="TPL_BASE_TEMPLATE_CONTENT_SIDES_LABEL" />
+        <field name="leftWidth"
+					type="list"
+					default="4"
+					label="#left"
+					description="TPL_BASE_LEFTWIDTH_DESC"
+				>
+					<option value="1">col-1</option>
+					<option value="2">col-2</option>
+					<option value="3">col-3</option>
+					<option value="4">col-4</option>
+					<option value="5">col-5</option>
+					<option value="6">col-6</option>
+				</field>
+
+				<field name="rightWidth"
+					type="list"
+					default="4"
+					label="#right"
+					description="TPL_BASE_RIGHTWIDTH_DESC"
+				>
+					<option value="1">col-1</option>
+					<option value="2">col-2</option>
+					<option value="3">col-3</option>
+					<option value="4">col-4</option>
+					<option value="5">col-5</option>
+					<option value="6">col-6</option>
+				</field>
+
+				<field name="content_left" type="list" default="3"
+					label="#content-left"
+					description="TPL_BASE_CONTENT_LEFT_WIDTH_DESC"
+				>
+					<option value="1">col-1</option>
+					<option value="2">col-2</option>
+					<option value="3">col-3</option>
+					<option value="4">col-4</option>
+					<option value="5">col-5</option>
+					<option value="6">col-6</option>
+				</field>
+
+				<field name="content_right" type="list" default="3"
+					label="#content-right"
+					description="TPL_BASE_CONTENT_RIGHT_WIDTH_DESC"
+				>
+					<option value="1">col-1</option>
+					<option value="2">col-2</option>
+					<option value="3">col-3</option>
+					<option value="4">col-4</option>
+					<option value="5">col-5</option>
+					<option value="6">col-6</option>
+				</field>
+
+        <field name="CH" type="spacer" class="text" label="TPL_BASE_TEMPLATE_CONTENT_TOP_LABEL" />
+        <field name="content_top_class" type="text" filter="string" label="TPL_BASE_CONTAINER_CLASS_LABEL" description="TPL_BASE_CONTAINER_CLASS_DESC" />
+				<field name="CHF" type="spacer" class="text" label="TPL_BASE_TEMPLATE_CONTENT_BOTTOM_LABEL" />
+        <field name="content_bottom_class" type="text" filter="string" label="TPL_BASE_CONTAINER_CLASS_LABEL" description="TPL_BASE_CONTAINER_CLASS_DESC" />
+				<field name="CPH" type="spacer" class="text" label="TPL_BASE_TEMPLATE_COMPONENT_TOP_LABEL" />
+        <field name="component_top_class" type="text" filter="string" label="TPL_BASE_CONTAINER_CLASS_LABEL" description="TPL_BASE_CONTAINER_CLASS_DESC" />
+				<field name="CPF" type="spacer" class="text" label="TPL_BASE_TEMPLATE_COMPONENT_BOTTOM_LABEL" />
+        <field name="component_bottom_class" type="text" filter="string" label="TPL_BASE_CONTAINER_CLASS_LABEL" description="TPL_BASE_CONTAINER_CLASS_DESC" />
+
+				<field name="SD" type="spacer" class="text" label="TPL_BASE_TEMPLATE_SYNDICATE_LABEL" />
+				<field name="syndicate_1_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
+        <field name="syndicate_1_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+          <option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
+          <option value="container-fluid">TPL_BASE_TEMPLATE_FLUID</option>
+          <option value="none">TPL_BASE_NONE</option>
+        </field>
+				<field name="syndicate_1_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
+        <field name="SD1" type="spacer" class="text" label="TPL_BASE_GRID_SYNDICATE_1" />
+				<field name="syndicate_1" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
+				<field name="syndicate_1_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+				<field name="syndicate_2_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
+        <field name="syndicate_2_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+          <option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
+          <option value="container-fluid">TPL_BASE_TEMPLATE_FLUID</option>
+          <option value="none">TPL_BASE_NONE</option>
+        </field>
+				<field name="syndicate_2_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
+        <field name="SD2" type="spacer" class="text" label="TPL_BASE_GRID_SYNDICATE_2" />
+				<field name="syndicate_2" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
+				<field name="syndicate_2_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+				<field name="syndicate_3_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
+        <field name="syndicate_3_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+          <option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
+          <option value="container-fluid">TPL_BASE_TEMPLATE_FLUID</option>
+          <option value="none">TPL_BASE_NONE</option>
+        </field>
+				<field name="syndicate_3_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
+        <field name="SD3" type="spacer" class="text" label="TPL_BASE_GRID_SYNDICATE_3" />
+				<field name="syndicate_3" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
+				<field name="syndicate_3_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+				<field name="syndicate_4_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
+        <field name="syndicate_4_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+          <option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
+          <option value="container-fluid">TPL_BASE_TEMPLATE_FLUID</option>
+          <option value="none">TPL_BASE_NONE</option>
+        </field>
+				<field name="syndicate_4_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
+        <field name="SD4" type="spacer" class="text" label="TPL_BASE_GRID_SYNDICATE_4" />
+				<field name="syndicate_4" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
+				<field name="syndicate_4_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+				<field name="syndicate_5_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
+        <field name="syndicate_5_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+          <option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
+          <option value="container-fluid">TPL_BASE_TEMPLATE_FLUID</option>
+          <option value="none">TPL_BASE_NONE</option>
+        </field>
+				<field name="syndicate_5_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
+        <field name="SD5" type="spacer" class="text" label="TPL_BASE_GRID_SYNDICATE_5" />
+				<field name="syndicate_5" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
+				<field name="syndicate_5_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+				<field name="syndicate_6_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
+        <field name="syndicate_6_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+          <option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
+          <option value="container-fluid">TPL_BASE_TEMPLATE_FLUID</option>
+          <option value="none">TPL_BASE_NONE</option>
+        </field>
+				<field name="syndicate_6_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
+        <field name="SD6" type="spacer" class="text" label="TPL_BASE_GRID_SYNDICATE_6" />
+				<field name="syndicate_6" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
+
+				<field name="FT" type="spacer" class="text" label="TPL_BASE_TEMPLATE_FOOTER_LABEL" />
+				<field name="footer_1_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
+        <field name="footer_1_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+          <option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
+          <option value="container-fluid">TPL_BASE_TEMPLATE_FLUID</option>
+          <option value="none">TPL_BASE_NONE</option>
+        </field>
+				<field name="footer_1_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
+        <field name="F1" type="spacer" class="text" label="TPL_BASE_GRID_FOOTER_1" />
+				<field name="footer_1" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
+				<field name="footer_1_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+				<field name="footer_2_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
+        <field name="footer_2_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+          <option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
+          <option value="container-fluid">TPL_BASE_TEMPLATE_FLUID</option>
+          <option value="none">TPL_BASE_NONE</option>
+        </field>
+				<field name="footer_2_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
+        <field name="F2" type="spacer" class="text" label="TPL_BASE_GRID_FOOTER_2" />
+				<field name="footer_2" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
+				<field name="footer_2_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+				<field name="footer_3_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
+        <field name="footer_3_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+          <option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
+          <option value="container-fluid">TPL_BASE_TEMPLATE_FLUID</option>
+          <option value="none">TPL_BASE_NONE</option>
+        </field>
+				<field name="footer_3_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
+        <field name="F3" type="spacer" class="text" label="TPL_BASE_GRID_FOOTER_3" />
+				<field name="footer_3" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
+				<field name="footer_3_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+				<field name="footer_4_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
+        <field name="footer_4_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+          <option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
+          <option value="container-fluid">TPL_BASE_TEMPLATE_FLUID</option>
+          <option value="none">TPL_BASE_NONE</option>
+        </field>
+				<field name="footer_4_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
+        <field name="F4" type="spacer" class="text" label="TPL_BASE_GRID_FOOTER_4" />
+				<field name="footer_4" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
+				<field name="footer_4_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+				<field name="footer_5_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
+        <field name="footer_5_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+          <option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
+          <option value="container-fluid">TPL_BASE_TEMPLATE_FLUID</option>
+          <option value="none">TPL_BASE_NONE</option>
+        </field>
+				<field name="footer_5_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
+        <field name="F5" type="spacer" class="text" label="TPL_BASE_GRID_FOOTER_5" />
+				<field name="footer_5" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
+				<field name="footer_5_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+				<field name="footer_6_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
+        <field name="footer_6_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
+          <option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
+          <option value="container-fluid">TPL_BASE_TEMPLATE_FLUID</option>
+          <option value="none">TPL_BASE_NONE</option>
+        </field>
+				<field name="footer_6_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
+        <field name="F6" type="spacer" class="text" label="TPL_BASE_GRID_FOOTER_6" />
+				<field name="footer_6" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
+
+			</fieldset>
+
+			<fieldset name="analytics" label="TPL_BASE_ANALYTICS">
+
+				<field name="analyticsCode" type="text" label="TPL_BASE_ANALYTICSCODE_LABEL" description="TPL_BASE_ANALYTICSCODE_DESC" filter="string" />
+
+			</fieldset>
+		</fields>
+	</config>
+</extension>

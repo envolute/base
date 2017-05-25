@@ -7,21 +7,12 @@ jQuery(function() {
 	// GET INFO ABOUT BROWSER
 	var nua = navigator.userAgent;
 
-	// CORREÇÕES DO BOOTSTRAP PARA O ANDROID
-	var isAndroid = (nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 && nua.indexOf('AppleWebKit') > -1 && nua.indexOf('Chrome') === -1);
-	if (isAndroid) jQuery('select.form-control').removeClass('form-control').css('width', '100%');
-
-	// SETA OS CAMPOS OBRIGATÓRIOS
-	jQuery('.field-required input, .field-required select, .field-required textarea').each(function() {
-		jQuery(this).addClass('required');
-	});
-
 	// Essa função verifica se o parâmetro foi passado
 	window.isSet = function (e) {
 		return (typeof e === "null" || typeof e === "undefined") ? false : true;
 	};
 
-	// Essa função verifica se o parâmetro foi passado
+	// Essa função verifica se o parâmetro é uma string vazia
 	window.isEmpty = function (e) {
 	  return (e == "") ? true : false;
 	};
@@ -33,6 +24,7 @@ jQuery(function() {
 		if(!isSet(e)) {
 			obj = jQuery(def);
 		} else if(typeof e === 'string') {
+			e = e.replace('##', '#'); // evita erro no ID do elemento
 			obj = jQuery(e);
 		}
 		return obj;
@@ -45,11 +37,12 @@ jQuery(function() {
 	};
 
 	// FIELDS -> classes dos campos customizados
-	var fieldsetEmbed	= ".fieldset-embed";
+	var fieldsetEmbed	= ".fieldset-embed, .fieldset-toggle";
 	var btnToggleStatus	= ".toggle-status .btn, .btn.toggle-status";
 	var field_noDrop	= ".no-drop input, input.no-drop";
 	var field_noPaste	= ".no-paste input, input.no-paste";
 	var field_setFocus 	= ".set-focus input, input.set-focus";
+	var btn_fileAction	= ".set-file-action .btn, .btn.set-file-action"
 	var field_upper 	= ".upper input, input.upper";
 	var field_lower 	= ".lower input, input.lower";
 	var field_cpf 		= ".field-cpf input, input.field-cpf";
@@ -71,6 +64,10 @@ jQuery(function() {
 	var field_integer	= ".field-integer input, input.field-integer";
 	var field_float		= ".field-float input, input.field-float";
 	var field_number	= ".field-number input, input.field-number";
+	var field_editor	= ".field-editor textarea, textarea.field-editor, .field-html textarea, textarea.field-html";
+	var length_fixed	= ".length-fixed input, input.length-fixed";
+	var field_selectOrder	= ".select-order";
+	var field_selectTo	= ".select-order select.select-to";
 	// AUTO COMPLETE
 	var field_state		= '.field-state input, input.field-state';
 	var field_country	= '.field-country input, input.field-country';
@@ -83,12 +80,14 @@ jQuery(function() {
 	var field_district	= ".field-district input, input.field-district";
 
 	// TOGGLE FIELDSET FILTER
-	window.toggleFieldsetEmbed = function(button, target, offset) {
+	window.toggleFieldsetEmbed = function(button, target, offset, fieldFocus) {
 		var btn = jQuery(button);
-		var obj = setElement(target);
+		var obj = setElement(target, fieldsetEmbed);
+		var field = setElement(fieldFocus);
 		var tag = obj.attr('id');
 		var grp = obj.data('group');
-		var hide = (obj.css('display') == 'none') ? true : false;
+		var tEl = setElement(obj.data('toggleElement'));
+		var hide = (obj.hasClass('closed')) ? true : false;
 		var elem;
 
 		// se o fieldset 'target' fizer parte de um grupo
@@ -96,8 +95,8 @@ jQuery(function() {
 			// identifica os outros elementos do grupos e fecha todos
 			jQuery(fieldsetEmbed).filter(function() {
 				elem = jQuery(this);
-				if(elem.data('group') == grp && elem.css('display') != 'none') {
-					elem.slideToggle();
+				if(elem.data('group') == grp && !elem.hasClass('closed')) {
+					elem.slideToggle().toggleClass('closed');
 					// remove a classe 'active' dos botões relacionados aos outros elementos
 					jQuery('[data-target="'+elem.attr('id')+'"]').removeClass('active');
 				}
@@ -118,22 +117,27 @@ jQuery(function() {
 		// assim definimos uma relação entre o botão e o alvo
 		btn.attr('data-target', tag);
 
+		// verifica se existe um elemento para alternar
+		if(tEl && (tEl.css('display') != obj.css('display'))) tEl.slideToggle();
+
 		// mostra/esconde o fieldset
 		obj.slideToggle(function() {
 			// se o fieldset for aberto, atribui a classe 'active' ao botão
 			if(jQuery(this).css('display') != 'none') btn.addClass('active');
 			// senão, remove a classe 'active'
 			else btn.removeClass('active');
-		});
+		}).toggleClass('closed');
 		// rola a página até o elemento caso ele não esteja na área visível 'viewport'
 		if(!obj.isOnScreen() && hide) scrollTo(tag, offset);
+		// Seta o focus no campo indicado, caso o fieldset esteja sendo aberto
+		if(isSet(fieldFocus) && hide) field.focus();
 	};
 
 	// TOGGLE BTN STATUS
 	window.toggleBtnStatus = function(button) {
 		var btn = setElement(button, btnToggleStatus);
 		btn.each(function() {
-			jQuery(this).click(function() {
+			jQuery(this).off('click').on('click',function() {
 				jQuery(this).not(':disabled').not('.disabled').toggleClass('active');
 			});
 		});
@@ -169,16 +173,8 @@ jQuery(function() {
 			var obj = jQuery(this);
 			obj.val(obj.val().toUpperCase());
 			// quando for digitado no campo
-			obj.keyup(function() {
-				//Captura posição do cursor no input
-				var caret = jQuery(this).caret();
+			obj.on("focus blur change", function(e) {
 				//Transforma tudo em maiusculo
-				jQuery(this).val(jQuery(this).val().toUpperCase());
-				//Seta o cursor
-				jQuery(this).caret(caret.begin);
-			});
-			// quando for alterado sem digitar
-			obj.change(function() {
 				jQuery(this).val(jQuery(this).val().toUpperCase());
 			});
 		});
@@ -186,26 +182,43 @@ jQuery(function() {
 
 	// LOWER CASE
 	window.setLowercase = function(input) {
-		input = setElement(input, field_upper);
+		input = setElement(input, field_lower);
 		// quando vier preenchido
 		input.each(function(){
 			var obj = jQuery(this);
-			obj.val(obj.val().toUpperCase());
+			obj.val(obj.val().toLowerCase());
 			// quando for digitado no campo
-			obj.keyup(function() {
-				//Captura posição do cursor no input
-				var caret = jQuery(this).caret();
+			obj.on("focus blur change", function(e) {
 				//Transforma tudo em maiusculo
-				jQuery(this).val(jQuery(this).val().toLowerCase());
-				//Seta o cursor
-				jQuery(this).caret(caret.begin);
-			});
-			// quando for alterado sem digitar
-			obj.change(function() {
 				jQuery(this).val(jQuery(this).val().toLowerCase());
 			});
 		});
 	};
+
+	// SET ACTIVE STATE
+	// define os radios ou checkboxes ativos quando estiverem formatados como botão
+	window.setActiveState = function() {
+		var obj;
+		jQuery('.btn-group label.btn').find('input:radio, input:checkbox').each(function() {
+			obj = jQuery(this);
+			if(obj.prop('checked')) obj.closest('label').addClass('active');
+			else obj.closest('label').removeClass('active');
+		});
+	};
+
+	// Set State Value -> define o valor do campo 'state'
+	window.selectRadio = function(field, value) {
+		var input = setElement(field);
+		input.each(function() {
+			jQuery(this).prop('checked', false); // clear default value
+		});
+		// atribui o valor padrão
+		if(input.filter('[value="'+value+'"]').length)
+		input.filter('[value="'+value+'"]').prop('checked', true).trigger('change');
+		// if 'button', set active
+		setActiveState();
+	};
+
 
 	// AUTO TAB + INPUTMASK -> seta o focus no proximo campo após finalizar a mascara
 	// ex: jQuery("#data").inputmask("dd/mm/yyyy",{oncomplete: function(){obj.autoTab();}});
@@ -216,102 +229,143 @@ jQuery(function() {
 				var fields = jQuery(this).parents("form:eq(0),body").find("button,input,textarea,select");
 				var index = fields.index( this );
 				if ( index > -1 && ( index + 1 ) < fields.length ) {
-					fields.eq( index + 1 ).focus();
+					var obj = fields.eq( index + 1 );
+					obj.focus();
+					// verifica se é um 'select' chosen
+					if(obj.next('.chosen-container').length) {
+						// seta o foco no elemento 'chosen' após o evento autoTab
+						obj.next('.chosen-container').find('a.chosen-single').focus();
+					}
 				}
 				return false;
 			});
 		};
 
 		//SELECT AUTO-TAB
-		window.selectAutoTab = function (input, target) {
+		window.selectAutoTab = function (input, target, group) {
 			input = setElement(input, field_selectAutoTab);
 			input.each(function() {
 
-				if(!isSet(target))
-					this.target = jQuery('#'+jQuery(this).data('target'));
+				var obj = jQuery(this);
+				var objFocus = setElement((isSet(target) ? target : '#'+obj.data('target').replace('#','')));
+				var objGroup = setElement((isSet(group) ? group : obj.data('targetGroup')));
 
-				if(elementExist(this.target)) {
-					var obj = jQuery(this);
-					var isChosen = (obj.hasClass('.no-chosen')) ? false : true;
+				obj.change(function() {
 
-					obj.change(function() {
+					var option = jQuery(this).find('option:selected');
+					var disable = option.data('targetDisabled');
+					var display = option.data('targetDisplay');
+					var value = option.data('targetValue');
+					var newStatus;
 
-						var option = jQuery(this).find('option:selected');
-						var disable = option.data('targetDisabled');
-						var display = option.data('targetDisplay');
-						var value = option.data('targetValue');
-						var objFocus = this.target; //fix autotab on chosen
-
-						// IMPORTANT: this must go before autoTab
-						if(elementExist(this.target)) {
-							// set target disable status
-							if(disable != null) toggleDisabled(this.target, disable);
-							// set target status display
-							if(display != null) toggleDisplay(this.target, display);
-							// tab to target
-							if(this.target.is('input')) {
-								setTimeout(function() { objFocus.focus() }, 1);
-								// set value
-								if(value != null && value != "undefined") this.target.val(value);
-							} else {
-								setTimeout(function() { objFocus.find('input').focus() }, 1);
-								// set value
-								if(value != null && value != "undefined") this.target.find('input').val(value);
-							}
-						} else {
-							// auto tab
-							obj.autoTab();
+					// IMPORTANT: this must go before autoTab
+					// 'objFocus' corrige o focus do 'select.chosen'
+					if(elementExist(objFocus)) {
+						// set target disable status
+						if(disable != null) {
+							newStatus = toggleDisabled(objFocus, disable);
+							if(isSet(objGroup)) toggleDisabled(objGroup, (newStatus ? false : true));
 						}
-					});
-				}
+						// set target status display
+						if(display != null) {
+							newStatus = toggleDisplay(objFocus, display);
+							if(isSet(objGroup)) toggleDisplay(objGroup, (newStatus ? false : true));
+						}
+						// tab to target
+						element = (!objFocus.is('input') && !objFocus.is('textarea') && !objFocus.is('select')) ? objFocus.find('input').filter(':visible:first') : objFocus;
+						if(element.is('select') && element.next('.chosen-container').length) {
+							el = element.next('.chosen-container').find('a.chosen-single');
+							isChosen = true;
+						} else {
+							el = element;
+							isChosen = false;
+						}
+						setTimeout(function() { el.focus() }, 10);
+						// set value
+						if(value != null && value != "undefined") element.val(value);
+						if(isChosen) element.trigger("chosen:updated"); // select
+					} else {
+						// auto tab
+						obj.autoTab();
+					}
+				});
 			});
 		};
 
 		//CHECK AUTO-TAB
-		window.checkAutoTab = function (input, target) {
+		window.checkAutoTab = function (input, target, group) {
 			input = setElement(input, field_checkAutoTab);
 			input.each(function() {
 
-				if(!isSet(target))
-					this.target = jQuery('#'+jQuery(this).data('target'));
+				var obj = jQuery(this);
+				var objFocus = setElement((isSet(target) ? target : '#'+obj.data('target').replace('#','')));
+				var objGroup = setElement((isSet(group) ? group : obj.data('targetGroup')));
 
-				if(elementExist(this.target)) {
-					var obj = jQuery(this);
-					var disable = jQuery(this).data('targetDisabled');
-					var display = jQuery(this).data('targetDisplay');
-					var value = jQuery(this).data('targetValue');
+				if(elementExist(objFocus)) {
+					var disable = obj.data('targetDisabled');
+					var display = obj.data('targetDisplay');
+					var value = obj.data('targetValue');
+					var newStatus;
 
 					obj.change(function() {
 						if(jQuery(this).is(':checked')) {
 							// IMPORTANT: this must go before autoTab
-							if(elementExist(this.target)) {
+							if(elementExist(objFocus)) {
 								// set target disable status
-								if(disable != null) toggleDisabled(this.target, disable);
-								// set target status display
-								if(display != null) toggleDisplay(this.target, display);
-								// tab to target
-								if(this.target.is('input')) {
-									this.target.focus();
-									// set value
-									if(value != null && value != "undefined") this.target.val(value);
-								} else {
-									this.target.find('input').focus();
-									// set value
-									if(value != null && value != "undefined") this.target.find('input').val(value);
+								if(disable != null) {
+									newStatus = toggleDisabled(objFocus, disable);
+									if(isSet(objGroup)) toggleDisabled(objGroup, (newStatus ? false : true));
 								}
+								// set target status display
+								if(display != null) {
+									newStatus = toggleDisplay(objFocus, display);
+									if(isSet(objGroup)) toggleDisplay(objGroup, (newStatus ? false : true));
+								}
+								// tab to target
+								element = (!objFocus.is('input') && !objFocus.is('textarea') && !objFocus.is('select')) ? objFocus.find('input').filter(':visible:first') : objFocus;
+								if(element.is('select') && element.next('.chosen-container').length) {
+									el = element.next('.chosen-container').find('a.chosen-single');
+									isChosen = true;
+								} else {
+									el = element;
+									isChosen = false;
+								}
+								setTimeout(function() { el.focus() }, 10);
+								// set value
+								if(value != null && value != "undefined") element.val(value);
+								if(isChosen) element.trigger("chosen:updated"); // select
 							} else {
 								// auto tab
 								obj.autoTab();
 							}
 						} else {
-							if(elementExist(this.target)) {
+							if(elementExist(objFocus)) {
 								// set target status disable
-								if(disable != null) toggleDisabled(this.target, (disable ? false : true));
+								if(disable != null) {
+									toggleDisabled(objFocus, (disable ? false : true));
+									if(isSet(objGroup)) toggleDisabled(objGroup, disable);
+								}
 								// set target status display
-								if(display != null) toggleDisplay(this.target);
+								if(display != null) {
+									toggleDisplay(objFocus, (display ? false : true));
+									if(isSet(objGroup)) toggleDisplay(objGroup, display);
+								}
+								// tab to target
+								element = (!objFocus.is('input') && !objFocus.is('textarea') && !objFocus.is('select')) ? objFocus.find('input').filter(':visible:first') : objFocus;
+								if(element.is('select') && element.next('.chosen-container').length) {
+									el = element.next('.chosen-container').find('a.chosen-single');
+									isChosen = true;
+								} else {
+									el = element;
+									isChosen = false;
+								}
+								if(elementExist(el)) setTimeout(function() { el.focus() }, 10);
 								// set value
-								if(this.target.is('input')) if(value != null && value != "undefined") this.target.val(value);
-								else if(value != null && value != "undefined") this.target.find('input').val(value);
+								if(value != null && value != "undefined") element.val(value);
+								if(isChosen) element.trigger("chosen:updated"); // select
+							} else {
+								// auto tab
+								obj.autoTab();
 							}
 						}
 					});
@@ -321,23 +375,61 @@ jQuery(function() {
 
 		// TOGGLE DISPLAY FIELD
 		window.toggleDisplay = function (input, status) {
-			if(status == null || status == "undefined" || status == false || status == 'false') status = false;
+			if(!isSet(status) || status == false || status == 'false') status = false;
 			else status = true;
-			if(input.hasClass('hide') && status) {
-				input.removeClass('hide');
-				input.show();
-			} else if(status) {
-				input.show();
-			} else {
-				input.hide();
-			}
+			input.each(function() {
+				var obj = (input.is('select') && input.next('.chosen-container').length) ? jQuery(this).next('.chosen-container') : jQuery(this);
+				if(status) {
+					if(obj.hasClass('hide') || obj.hasClass('toggleHide'))
+					obj.removeClass('hide').addClass('toggleHide');
+					else obj.show();
+				} else {
+					if(obj.hasClass('hide') || obj.hasClass('toggleHide'))
+					obj.removeClass('toggleHide').addClass('hide');
+					else obj.hide();
+				}
+			});
+			return status;
 		};
 
 		// TOGGLE DISABLED FIELD
 		window.toggleDisabled = function (input, status) {
-			if(status == null || status == "undefined" || status == false || status == 'false') status = false;
+			if(!isSet(status) || status == false || status == 'false') status = false;
 			else status = true;
 			input.prop('disabled', status);
+			if(input.is('select') && input.next('.chosen-container').length) input.trigger("chosen:updated"); // select
+			return status;
+		};
+
+		// SET FILE ACTION -> Seta a ação em um campo do tipo file
+		window.setFileAction = function (btn, target, imgTarget, width, height) {
+			btn = setElement(btn, btn_fileAction);
+			var e = isSet(target) ? target : jQuery(btn.data('target'));
+			btn.each(function() {
+				jQuery(this).off('click').on('click',function() {
+					if(elementExist(e)) {
+						e.click();
+					} else {
+						jQuery(this).closest('.btn-group').next('input:file').click();
+					}
+				})
+			});
+		};
+
+		// SET FILE ACTIVE -> retorno, caso o arquivo seja selecionado
+		window.setFileActive = function () {
+			jQuery('.btn-group').next('input:file.element-invisible').each(function() {
+				jQuery(this).change(function() {
+					var obj = jQuery(this);
+					var group = obj.prev('.btn-group');
+					if(obj.val() != '') {
+						// mostra o indicador
+						group.find('.set-file-action').removeClass('btn-default').addClass('btn-success');
+						// remove error message if field is 'required'
+						obj.next('.error').addClass('valid').empty();
+					}
+				});
+			});
 		};
 
 		// SET BUTTON ACTION
@@ -460,16 +552,9 @@ jQuery(function() {
 		};
 
 		//TELEFONES
-		window.setPhone = function (input, toggleMask) {
+		window.setPhone = function (input, prefix, toggleMask) {
 		  input = setElement(input, field_setPhone);
-		  var ed = '(99) 9999-9999[9]'; // eight digits
-		  var nd = '(99) 9999[9]-9999'; // nine digits
 		  var ph = ' '; // placeholder
-		  var lg = ed.replace('[','').replace(']','').length;
-		  var msg1 = '<del>(99) 9999-9999</del>';
-		  var msg2 = '(99) 9999-9999';
-		  var btnMask = '<span class="input-group-btn"><a class="toggle-mask btn btn-info strong" title="'+msg1+'">#</a></span></div>';
-		  var btnUnmask = '<span class="input-group-btn"><a class="toggle-mask btn btn-danger strong" title="'+msg2+'">#</a></span></div>'
 		  //var width_noMask = '15em';
 		  var minWidth = '9.5em';
 		  // verifica se existe um campo do tipo 'phone'
@@ -477,12 +562,24 @@ jQuery(function() {
 		    //se existir, verifico o valor em cada um
 		    input.each(function() {
 		      var obj = jQuery(this);
-		      // resolve mask nine digits
+					// prefix param
+					var pfx = isSet(prefix) ? prefix : true;
+					pfx = isSet(obj.data('prefix')) ? obj.data('prefix') : pfx;
+					var pre = !pfx ? '' : '(99) ';
+					// mask format
+					var ed = pre+'9999-9999[9]'; // eight digits
+				  var nd = pre+'9999[9]-9999'; // nine digits
+				  var lg = ed.replace('[','').replace(']','').length;
+				  var msg1 = '<del>'+pre+'9999-9999</del>';
+				  var msg2 = pre+'9999-9999';
+					var btnMask = '<span class="input-group-btn"><a class="toggle-mask btn btn-info strong" title="'+msg1+'">#</a></span></div>';
+				  var btnUnmask = '<span class="input-group-btn"><a class="toggle-mask btn btn-danger strong" title="'+msg2+'">#</a></span></div>'
+				  // resolve mask nine digits
 		      var options = {
 		        greedy: false,
 		        placeholder: ph,
-		        onKeyValidation: function (result) {
-		          if(result.pos == (lg-1)) obj.inputmask(nd, options);
+		        onKeyValidation: function (key, result) {
+							if(result.pos == (lg-1)) obj.inputmask(nd, options);
 		        },
 		        onKeyDown: function(event, buffer, caretPos, opt){
 		          if(buffer[lg-5] == '-' && buffer[lg-1] == ph) obj.inputmask(ed, options);
@@ -491,14 +588,18 @@ jQuery(function() {
 		      var mask = (obj.val().replace(/[^0-9]/g, '').length > 10) ? nd : ed;
 		      // -------------------------
 		      var nomask = 0;
-		      var width = obj.data('width');
-		      if(width != null) input.css('width', width);
+		      var width = isSet(obj.data('width')) ? obj.data('width') : 'auto';
+		      if(width != 'auto') obj.css('width', width);
 					// togglemask param
 					var tm = isSet(toggleMask) ? toggleMask : false;
 					tm = isSet(obj.data('toggleMask')) ? obj.data('toggleMask') : tm;
 		      // if togglemask option is true
 		      if(tm == true) {
-		        obj.wrap('<div class="input-group" style="width:'+width+'; min-width:'+minWidth+'; max-width:100%;"></div>');
+						// clear object -> evita botões aninhados
+						var h = obj.closest('.input-group');
+						if(elementExist(h)) h.replaceWith(obj);
+						// create button for toggle mask
+		        obj.wrap('<div class="input-group" style="width:'+width+'; min-width:12em; max-width:100%;"></div>');
 		        obj.css({'width':'100%'});
 		        //se o campo não estiver preenchido
 		        if(isEmpty(obj.val()) || obj.val().indexOf("(") >= 0) {
@@ -520,7 +621,7 @@ jQuery(function() {
 		        }
 		        jQuery('.toggle-mask').tooltip({container: 'body', html: true});
 
-		        obj.next('span').find('.btn').click(function(){
+		        obj.next('span').find('.btn').off('click').on('click', function(){
 		          if(jQuery(this).hasClass('btn-info')) {
 		            obj.addClass('no-masked').inputmask('remove').focus();
 		            jQuery(this).removeClass('btn-info').addClass('btn-danger').attr('data-original-title', msg2).tooltip('fixTitle');
@@ -529,11 +630,16 @@ jQuery(function() {
 	              obj.removeClass('no-masked').inputmask(nMask, options).focus();
 	              jQuery(this).removeClass('btn-danger').addClass('btn-info').attr('data-original-title', msg1).tooltip('fixTitle');
 		          }
-
 		        });
 		      } else {
 		        obj.inputmask(mask, options);
 		      }
+					// seta a mascara no evento 'paste'
+					obj.on('paste', function(event) {
+						jQuery(this).removeClass('error');
+						setPhone(jQuery(this), toggleMask);
+						jQuery(this).focus();
+					});
 		    });
 		  }
 		};
@@ -554,22 +660,64 @@ jQuery(function() {
 			});
 		};
 
-		// CAMPOS COM MASCARA QUE APRESENTARAM PROBLEMAS QUANDO TENTA 'COLAR' UM VALOR
-		// alguns campos com mascara não estavam colando o valor corretamente, apenas quando a mascara toda é selecionada
-		// sendo assim, a função abaixo seleciona todo o valor do campo quando o evento 'paste'(copiar) é chamado...
-		jQuery(field_fixPaste).bind({
-			paste : function(){
-				jQuery(this).select();
-			}
-		});
+		// SET HTML EDITOR
+		window.setEditor = function (input, isFull, isDisable) {
+			// $.trumbowyg.svgPath = false:
+			input = setElement(input, field_editor);
+			input.each(function() {
+				var obj = jQuery(this);
+				// set full
+				var full = isSet(isFull) ? isFull : false;
+				full = isSet(obj.data('editorFull')) ? obj.data('editorFull') : full;
+				// set disabled
+				var disable = isSet(isDisable) ? isDisable : false;
+				disable = isSet(obj.data('editorDisabled')) ? obj.data('editorDisabled') : disable;
+
+				var basicOptions = ['btnGrp-semantic',['formatting'],'btnGrp-justify','btnGrp-lists',['horizontalRule'],['link'],['removeformat'],['fullscreen']];
+				var fullOptions = [['viewHTML'],'btnGrp-semantic','superscript',['formatting'],['foreColor'],'btnGrp-justify','btnGrp-lists',['horizontalRule'],['link'],'image',['noembed'],['removeformat'],['fullscreen']]
+				if(full) {
+					var options = fullOptions;
+					var imageGroup = { dropdown: ['insertImage', 'base64'], ico: 'insertImage' };
+				} else {
+					var options = basicOptions;
+					var imageGroup = null;
+				}
+
+				obj.trumbowyg({
+					lang: 'pt',
+					removeformatPasted: true,
+					disabled: disable,
+					btnsDef: { image: imageGroup },
+					btns: options
+				});
+			});
+		};
+		window.setContentEditor = function (input, value) {
+			input = setElement(input, field_editor);
+			input.each(function() {
+				var obj = jQuery(this);
+				var val = isEmpty(obj.val()) ? '' : obj.val();
+				val = isSet(value) ? value : val;
+				obj.trumbowyg('html', val); // html editor
+			});
+		};
+		window.getContentEditor = function (input) {
+			input = setElement(input, field_editor);
+			input.each(function() {
+				jQuery(this).val(jQuery(this).trumbowyg('html'));
+			});
+		};
 
 		// DATA
 		window.setDate = function (input, setTime, seconds, autotab) {
 		  input = setElement(input, field_date);
 		  input.each(function() {
 		    var obj = jQuery(this);
-		    if(obj.val() != '') obj.val(dateFormat(obj.val()));
-
+				// evita erros com data zerada '00/00/0000' ou em branco
+				// Obs: quando a vem em branco, obj.val() = '0_/__/____'
+				if(obj.val().indexOf('0_/') >= 0 || isEmpty(obj.val())) obj.val('');
+				// formata o valor
+		    else obj.val(dateFormat(obj.val()));
 		    // setTime param
 		    var time = isSet(setTime) ? setTime : false;
 		    time = isSet(obj.data('time')) ? obj.data('time') : time;
@@ -582,7 +730,7 @@ jQuery(function() {
 
 		    var mask = 'd/m/y';
 		    var hold = '__/__/____';
-		    var minW = '9em';
+		    var minW = '8.2em';
 		    if(time == true) {
 		      if(sec == true){
 		        mask = mask+' h:s:s';
@@ -607,6 +755,7 @@ jQuery(function() {
 		      showMaskOnHover: true,
 		      oncomplete: function(){
 		        obj.datepicker("hide");
+						obj.change();
 		        if(tab) obj.autoTab();
 		      },
 		      onKeyDown: function(){
@@ -614,7 +763,7 @@ jQuery(function() {
 		      }
 		    });
 		    // open datepicker on click
-		    obj.click(function() { obj.focus(); })
+		    obj.off('click').on('click', function() { obj.focus(); })
 		    // define datapicker format
 		    var _dateFormat = "dd/mm/yy";
 		    var _dayNames = ["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado","Domingo"];
@@ -667,7 +816,8 @@ jQuery(function() {
 		  if(val.indexOf('-') == 4) {
 		    var dh = val.split(' ');
 		    var dt = dh[0].split('-');
-		    return dt[2]+'/'+dt[1]+'/'+dt[0]+' '+dh[1];
+				var time = isSet(dh[1]) ? dh[1] : '00:00:00';
+		    return dt[2]+'/'+dt[1]+'/'+dt[0]+' '+time;
 		  } else {
 		    return val;
 		  }
@@ -677,7 +827,7 @@ jQuery(function() {
 		  jQuery('.field-date').each(function() {
 				var obj, dh, dt, d, m, y, t, setTime, seconds;
 		    obj = jQuery(this);
-		    if(isSet(obj.data('convert')) && obj.data('convert')) {
+		    if(isSet(obj.data('convert')) && obj.data('convert') && !isEmpty(obj.val())) {
 		      dh = obj.val().split(' ');
 		      dt = dh[0].split('/');
 		      d = (isSet(dt[0]) && dt[0].length == 2) ? dt[0] : '';
@@ -694,7 +844,7 @@ jQuery(function() {
 		        seconds = (isSet(obj.data('seconds')) && !obj.data('seconds')) ? false : true;
 		        setTimeout(function() {
 		          setDate(obj, setTime, seconds);
-		        } , 3000 );
+		        } , 1000 );
 		      }
 		    }
 		  });
@@ -749,7 +899,7 @@ jQuery(function() {
 	      f = isSet(obj.data('usFormat')) ? obj.data('usFormat') : f;
 
 	      if(width) obj.css('width', width);
-	      obj.css({'min-width':'8.5em', 'max-width':'100%'});
+	      obj.css('max-width','100%');
 
 	      // define se vai usar centavos.
 	      var decimal = (c == true) ? 2 : 0;
@@ -759,11 +909,11 @@ jQuery(function() {
 	      if(f == true) {
 	        sep1 = ',';
 	        sep2 = '.';
-	        if(c) obj.attr("placeholder","0.00");
+	        if(c) obj.attr('placeholder','0.00');
 	      } else {
 	        sep1 = '.';
 	        sep2 = ',';
-	        if(c) obj.attr("placeholder","0,00");
+	        if(c) obj.attr('placeholder','0,00');
 	      }
 
 	      obj.priceFormat({
@@ -780,12 +930,13 @@ jQuery(function() {
 	  }
 	};
 	// formata o 'field-price' para o formato de banco (decimal, float)
-	window.priceDecimal = function () {
-	  jQuery('.field-price').each(function() {
+	window.priceDecimal = function (input) {
+		price = setElement(input, field_price);
+	  price.each(function() {
 		  var obj, value, number, decimal;
 	    obj = jQuery(this);
 	    val = obj.val();
-	    if(isSet(obj.data('convert')) && obj.data('convert')) {
+	    if(isSet(input) || (isSet(obj.data('convert')) && obj.data('convert'))) {
 	      // replace comma ',' for dot '.'
 	      val = val.replace(/\,/g,'.');
 	      number = val.substring(0, val.lastIndexOf("."));
@@ -863,324 +1014,425 @@ jQuery(function() {
 			default:
 				setInteger(input);
 		}
+
 	};
 
-	// AUTOCOMPLETE
+	// COMPLETA O VALOR COM CARACTERES ADICIONAIS
+	// Caractere default é: char = '0'
+	// posição default é: placement = 'before' [after]
+	window.lengthFixed = function (length, input, char, placement) {
 
-		// cidades do brasil
-		jQuery(field_cidade).autocomplete({
-			delay: 200,
-			source: function(request, response){
-				jQuery.ajax({
-					url: "https://envolute.com/cdn/sources/db.cidades.json.php",
-					dataType:"jsonp",
-					data:{
-						cod : jQuery(".field-uf").val(),
-						search : request.term
-					},
-					minLength: 0,
-					success: function(data){
-						response( jQuery.map( data, function( item ) {
-							return {
-								label : item.name,
-								value : item.name
-							}
-						}));
-					}
-				});
-			},
-			search: function(event, ui) {
-				jQuery(this).addClass("autocomplete-load");
-			},
-			open: function(event, ui) {
-				jQuery(this).removeClass("autocomplete-load");
-			},
-			close: function(event, ui) {
-				jQuery(this).removeClass("autocomplete-load");
+		input = setElement(input, length_fixed);
+
+		input.each(function() {
+			var obj = jQuery(this);
+
+			// length
+			var l = isSet(length) ? length : 0;
+			l = isSet(obj.data('length')) ? obj.data('length') : l;
+			// char
+			var c = isSet(char) ? char : 0;
+			c = isSet(obj.data('char')) ? obj.data('char') : c;
+			// placement -> '0' = before; '1' = after
+			var p = isSet(placement) ? placement : 'before';
+			p = isSet(obj.data('placement')) ? obj.data('placement') : p;
+
+			// field length
+			var len = jQuery(this).val().length;
+			if(len > 0 && len < l) {
+				var e = l - len;
+				var x = '';
+				for(i=0; i<e; i++) {
+					x = x + c.toString();
+				}
+				var str = (p == 'before') ? x + obj.val() : obj.val() + x;
+				obj.val(str);
 			}
 		});
+	};
 
-	// CONSULTA CEP -> republicavirtual.com.br
-	if(elementExist(jQuery(field_searchCep))){
-		jQuery.getScript("https://envolute.com/cdn/sources/consulta_cep.js", function(){
-			jQuery(field_searchCep).blur(function(){
-				if(jQuery(this).val().replace(/\_/g, "").length == 9){
-					var campo_country = jQuery(field_country);
-					var campo_uf = jQuery(field_uf);
-					var campo_state = jQuery(field_state);
-					var campo_cidade = jQuery(field_cidade);
-					var campo_city = jQuery(field_city);
-					var campo_bairro = jQuery(field_district);
-					var campo_logradouro = jQuery(field_address);
-					var campo_numero = jQuery(field_address_number);
+	// MONTA UM SELECT A PARTIR DE OUTRO
+	// 'element' é referente ao container
+	window.selectOrder = function (element) {
+		el = setElement(element, field_selectOrder);
+	  el.each(function() {
+		  var obj = jQuery(this);
+			var selFrom = obj.find('.select-from');
+			var selTo = obj.find('.select-to');
+			h = isSet(obj.data('height')) ? obj.data('height') : 100;
+			selFrom.add(selTo).css('min-height', h);
+			obj.find('.btn-add').click(function(){
+				selFrom.find('option:selected').each( function() {
+					selTo.append("<option value='"+jQuery(this).val()+"'>"+jQuery(this).text()+"</option>");
+          jQuery(this).remove();
+        });
+	    });
+	    obj.find('.btn-remove').off('click').on('click', function(){
+        selTo.find('option:selected').each( function() {
+          selFrom.append("<option value='"+jQuery(this).val()+"'>"+jQuery(this).text()+"</option>");
+          jQuery(this).remove();
+        });
+	    });
+	    obj.find('.btn-up').off('click').on('click', function() {
+        selTo.find('option:selected').each( function() {
+          var newPos = selTo.find('option').index(this) - 1;
+          if (newPos > -1) {
+            selTo.find('option').eq(newPos).before("<option value='"+jQuery(this).val()+"' selected='selected'>"+jQuery(this).text()+"</option>");
+            jQuery(this).remove();
+          }
+        });
+	    });
+	    obj.find('.btn-down').off('click').on('click', function() {
+        var countOptions = obj.find('.select-to option').size();
+				var countSelected = obj.find('.select-to option:selected').size();
+        selTo.find('option:selected').each( function() {
+          var newPos = selTo.find('option').index(this) + countSelected;
+          if (newPos < countOptions) {
+            selTo.find('option').eq(newPos).after("<option value='"+jQuery(this).val()+"' selected='selected'>"+jQuery(this).text()+"</option>");
+            jQuery(this).remove();
+          }
+        });
+	    });
+	  });
+	};
+	// seleciona todas as opções de um select multiple
+	window.selectAllOptions = function (input) {
+		if(isSet(input)) {
+			input = setElement(input);
+			if(elementExist(input)) {
+			  input.each(function() {
+				  jQuery(this).find('option').prop('selected', true);
+				});
+			}
+		}
+	};
 
-					campo_numero.focus();
-					getEndereco(jQuery(this),campo_uf,campo_cidade,campo_bairro,campo_logradouro,campo_city,campo_state,campo_country);
-					//seta o evento change para avisar que os campos foram alterados
-					setTimeout(function(){
-						jQuery(field_address,field_address_number,field_district,field_cidade,field_city,field_uf,field_state,field_country).trigger("change");
-						if(elementExist(campo_uf.next('.chzn-container, .chosen-container'))) {
-							campo_uf.trigger("liszt:updated"); // versão antiga -> que funciona - OLD
-							campo_uf.trigger("chosen:updated"); // nova versão -> em caso de atualização
-						}
-					},1000);
-				}
-			});
-		});
-		jQuery(field_searchCep).on('paste', function(e){
-			setTimeout(function () {
-				if(e.target.value.replace(/\_/g, "").length == 9) {
-					jQuery(field_searchCep).val(e.target.value).trigger("blur");
-				}
-			}, 100);
-		});
+	// VALIDAÇÃO CPF/CNPJ
+	window.isCpf = function (cpf) {
+		var soma;
+		var resto;
+		var i;
+		if ( (cpf.length != 11) ||
+		(cpf == "00000000000") || (cpf == "11111111111") ||
+		(cpf == "22222222222") || (cpf == "33333333333") ||
+		(cpf == "44444444444") || (cpf == "55555555555") ||
+		(cpf == "66666666666") || (cpf == "77777777777") ||
+		(cpf == "88888888888") || (cpf == "99999999999") ) {
+			return false;
+		}
+		soma = 0;
+		for (i = 1; i <= 9; i++) {
+			soma += Math.floor(cpf.charAt(i-1)) * (11 - i);
+		}
+		resto = 11 - (soma - (Math.floor(soma / 11) * 11));
+		if ( (resto == 10) || (resto == 11) ) resto = 0;
+		if ( resto != Math.floor(cpf.charAt(9)) ) return false;
+		soma = 0;
+		for (i = 1; i<=10; i++) {
+			soma += cpf.charAt(i-1) * (12 - i);
+		}
+		resto = 11 - (soma - (Math.floor(soma / 11) * 11));
+		if ( (resto == 10) || (resto == 11) ) resto = 0;
+		if (resto != Math.floor(cpf.charAt(10)) ) return false;
+
+		return true;
+	}
+
+	window.isCnpj = function (cnpj){
+
+		if(cnpj == '') return false;
+
+		if (cnpj.length != 14)
+		return false;
+
+		// Elimina CNPJs invalidos conhecidos
+		if (cnpj == "00000000000000" ||
+		cnpj == "11111111111111" ||
+		cnpj == "22222222222222" ||
+		cnpj == "33333333333333" ||
+		cnpj == "44444444444444" ||
+		cnpj == "55555555555555" ||
+		cnpj == "66666666666666" ||
+		cnpj == "77777777777777" ||
+		cnpj == "88888888888888" ||
+		cnpj == "99999999999999")
+		return false;
+
+		// Valida DVs
+		tamanho = cnpj.length - 2
+		numeros = cnpj.substring(0,tamanho);
+		digitos = cnpj.substring(tamanho);
+		soma = 0;
+		pos = tamanho - 7;
+		for (i = tamanho; i >= 1; i--) {
+		soma += numeros.charAt(tamanho - i) * pos--;
+		if (pos < 2)
+		    pos = 9;
+		}
+		resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+		if (resultado != digitos.charAt(0))
+		return false;
+
+		tamanho = tamanho + 1;
+		numeros = cnpj.substring(0,tamanho);
+		soma = 0;
+		pos = tamanho - 7;
+		for (i = tamanho; i >= 1; i--) {
+		soma += numeros.charAt(tamanho - i) * pos--;
+		if (pos < 2)
+		    pos = 9;
+		}
+		resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+		if (resultado != digitos.charAt(1))
+		  return false;
+
+		return true;
+	}
+	window.isCpfCnpj = function (valor) {
+		var retorno = false;
+		var numero  = valor;
+		numero = String(numero).replace(/\D/g, "");
+		if (numero.length > 11) {
+			//numero = numero.replace(/^0+/, ""); // retira o zero inicial, se houver
+			if (isCnpj(numero)) retorno = true;
+		} else {
+			if (isCpf(numero)) retorno = true;
+		}
+		return retorno;
+	}
+
+	// RETORNA O ESTADO NO LUGAR DA SIGLA
+	window.ufToState = function (uf) {
+		switch (uf) {
+			case 'AC' :
+				return 'ACRE';
+			case 'AL' :
+				return 'ALAGOAS';
+			case 'AP' :
+				return 'AMAPÁ';
+			case 'AM' :
+				return 'AMAZONAS';
+			case 'BA' :
+				return 'BAHIA';
+			case 'CE' :
+				return 'CEARÁ';
+			case 'DF' :
+				return 'DISTRITO FEDERAL';
+			case 'ES' :
+				return 'ESPÍRITO SANTO';
+			case 'GO' :
+				return 'GOIÁS';
+			case 'MA' :
+				return 'MARANHÃO';
+			case 'MT' :
+				return 'MATO GROSSO';
+			case 'MS' :
+				return 'MATO GROSSO DO SUL';
+			case 'MG' :
+				return 'MINAS GERAIS';
+			case 'PA' :
+				return 'PARÁ';
+			case 'PB' :
+				return 'PARAÍBA';
+			case 'PR' :
+				return 'PARANÁ';
+			case 'PE' :
+				return 'PERNAMBUCO';
+			case 'PI' :
+				return 'PIAUÍ';
+			case 'RJ' :
+				return 'RIO DE JANEIRO';
+			case 'RN' :
+				return 'RIO GRANDE DO NORTE';
+			case 'RS' :
+				return 'RIO GRANDE DO SUL';
+			case 'RO' :
+				return 'RONDÔNIA';
+			case 'RR' :
+				return 'RORAIMA';
+			case 'SC' :
+				return 'SANTA CATARINA';
+			case 'SP' :
+				return 'SÃO PAULO';
+			case 'SE' :
+				return 'SERGIPE';
+			case 'TO' :
+				return 'TOCANTINS';
+			default :
+				return uf;
+		}
 
 	}
 
-	// TROCA A SIGLA PELO NOME DO ESTADO
-	if(elementExist(jQuery(field_state))) {
-		jQuery(field_state).on('change', function() {
-			jQuery(this).val(ufToState(jQuery(this).val()));
-		});
-	}
-
-	// FORMATA O NOME DO BRASIL
-	if(elementExist(jQuery(field_country))) {
-		jQuery(field_country).on('change', function() {
-			if(jQuery(this).val() == 'BRAZIL') { jQuery(this).val('BRASIL'); }
-		});
-	}
-
-	// CHAMADA GERAL DAS PREDEFINIÇÕES DE FORMULÁRIO
-	// -------------------------------------------------------------------------------
+	// END FUNCTION DECLARATIONS--------------------------------------------------------
 
 	window.setFormDefinitions = function () {
 
-		// TOGGLE BTN STATUS
-		toggleBtnStatus();
+		// CHAMADA GERAL DOS MÉTODOS AUXILIARES
+		// -------------------------------------------------------------------------------
 
-		// NO DROP
-		noDrop();
+			// TOGGLE BTN STATUS
+			toggleBtnStatus();
 
-		// NO PASTE
-		noPaste();
+			// NO DROP
+			noDrop();
 
-		// SET FOCUS
-		setFocus();
+			// NO PASTE
+			noPaste();
 
-		// UPPER CASE
-		setUppercase();
+			// SET FOCUS
+			setFocus();
 
-		// LOWER CASE
-		setLowercase();
+			// UPPER CASE
+			setUppercase();
 
-		//CPF
-		setCPF();
+			// LOWER CASE
+			setLowercase();
 
-		//CNPJ
-		setCNPJ();
+			// SET ACTIVE STATE
+			setActiveState();
 
-		//SELECT AUTO-TAB
-		selectAutoTab();
+			//CPF
+			setCPF();
 
-		//CHECK AUTO-TAB
-		checkAutoTab();
+			//CNPJ
+			setCNPJ();
 
-		// SET BUTTON ACTION
-		setBtnAction();
+			//SELECT AUTO-TAB
+			selectAutoTab();
 
-		//TELEFONES
-		setPhone();
+			//CHECK AUTO-TAB
+			checkAutoTab();
 
-		//DATA
-		setDate();
+			// SET BUTTON ACTION
+			setBtnAction();
 
-		//HORA
-		setTime();
+			// SET FILE ACTION
+			setFileAction();
 
-		//CEP
-		setCEP();
+			// SET FILE ACTIVE
+			setFileActive();
 
-		//FORMATA PREÇO
-		setPrice();
+			//TELEFONES
+			setPhone();
 
-		//APENAS LETRAS
-		setNoNumber();
+			//DATA
+			setDate();
 
-		//DESABILITA CARACTERES ESPECIAIS
-		setNoSpecialCharacter();
+			//HORA
+			setTime();
 
-		//DESABILITA CARACTERES ESPECIAIS
-		setNoBlankSpace();
+			//CEP
+			setCEP();
 
-		// SEM ACENTUAÇÃO
-		setNoAccents();
+			// SET HTML EDITOR
+			setEditor();
 
-		//APENAS NÚMEROS
-		setNumeric();
+			//FORMATA PREÇO
+			setPrice();
+
+			//APENAS LETRAS
+			setNoNumber();
+
+			//DESABILITA CARACTERES ESPECIAIS
+			setNoSpecialCharacter();
+
+			//DESABILITA CARACTERES ESPECIAIS
+			setNoBlankSpace();
+
+			// SEM ACENTUAÇÃO
+			setNoAccents();
+
+			//APENAS NÚMEROS
+			setNumeric();
+
+			// MONTA UM SELECT A PARTIR DE OUTRO
+			selectOrder();
+
+		// FUNCIONALIDADES ESPECÍFICAS
+		// -------------------------------------------------------------------------------
+
+			// CORREÇÕES DO BOOTSTRAP PARA O ANDROID
+			var isAndroid = (nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 && nua.indexOf('AppleWebKit') > -1 && nua.indexOf('Chrome') === -1);
+			if (isAndroid) jQuery('select.form-control').removeClass('form-control').css('width', '100%');
+
+			// SETA OS CAMPOS OBRIGATÓRIOS
+			jQuery('.field-required input, .field-required select, .field-required textarea').each(function() {
+				if(jQuery(this).hasClass('field-id')) {
+					jQuery(this).addClass('id-required');
+				} else {
+					jQuery(this).addClass('input-required');
+				}
+			});
+			// RESETA CAMPOS OBRIGATÓRIOS EM UM 'INPUT-GROUP'
+			jQuery('.input-group .input-required, .input-group .id-required').each(function() {
+				jQuery(this).change(function() {
+					jQuery(this).closest('.input-group').parent().children('.error').remove();
+				});
+			});
+
+			// CAMPOS COM MASCARA QUE APRESENTARAM PROBLEMAS QUANDO TENTA 'COLAR' UM VALOR
+			// alguns campos com mascara não estavam colando o valor corretamente, apenas quando a mascara toda é selecionada
+			// sendo assim, a função abaixo seleciona todo o valor do campo quando o evento 'paste'(copiar) é chamado...
+			jQuery(field_fixPaste).bind({
+				paste : function(){
+					jQuery(this).select();
+				}
+			});
+
+			// DESABILITA O CLICK EM LABEL "disabled"
+			jQuery('label.btn').each(function() {
+				jQuery(this).click(function() {
+					if(jQuery(this).hasClass('disabled')) jQuery(this).preventDefault();
+				});
+			});
+
+		// AUTOCOMPLETE
+
+		// CONSULTA CEP -> republicavirtual.com.br
+		if(elementExist(jQuery(field_searchCep))){
+			jQuery.getScript("https://envolute.com/cdn/sources/consulta_cep.js", function(){
+				jQuery(field_searchCep).blur(function(){
+					if(jQuery(this).val().replace(/\_/g, "").length == 9){
+						var campo_country = jQuery(field_country);
+						var campo_uf = jQuery(field_uf);
+						var campo_state = jQuery(field_state);
+						var campo_cidade = jQuery(field_cidade);
+						var campo_city = jQuery(field_city);
+						var campo_bairro = jQuery(field_district);
+						var campo_logradouro = jQuery(field_address);
+						var campo_numero = jQuery(field_address_number);
+
+						campo_numero.focus();
+						getEndereco(jQuery(this),campo_uf,campo_cidade,campo_bairro,campo_logradouro,campo_city,campo_state,campo_country);
+						//seta o evento change para avisar que os campos foram alterados
+						setTimeout(function(){
+							jQuery(field_address,field_address_number,field_district,field_cidade,field_city,field_uf,field_state,field_country).trigger("change");
+							if(elementExist(campo_uf.next('.chzn-container, .chosen-container'))) {
+								campo_uf.trigger("liszt:updated"); // versão antiga -> que funciona - OLD
+								campo_uf.trigger("chosen:updated"); // nova versão -> em caso de atualização
+							}
+						},1000);
+					}
+				});
+			});
+			jQuery(field_searchCep).on('paste', function(e){
+				setTimeout(function () {
+					if(e.target.value.replace(/\_/g, "").length == 9) {
+						jQuery(field_searchCep).val(e.target.value).trigger("blur");
+					}
+				}, 100);
+			});
+
+		}
+
 	};
-
-	// -------------------------------------------------------------------------------
+	// END FORM DEFINITIONS ------------------------------------------------------------
 
 });
 
-//DEFINIÇÃO DOS CAMPOS DE FORMULÁRIO APÓS O CARREGAMENTO DA PÁGINA
+// CHAMADA GERAL DAS PREDEFINIÇÕES DE FORMULÁRIO
+// -----------------------------------------------------------------------------------
 jQuery(window).load(function() {
 	setFormDefinitions();
 });
-
-// VALIDAÇÃO CPF/CNPJ
-function isCpf(cpf) {
-	var soma;
-	var resto;
-	var i;
-	if ( (cpf.length != 11) ||
-	(cpf == "00000000000") || (cpf == "11111111111") ||
-	(cpf == "22222222222") || (cpf == "33333333333") ||
-	(cpf == "44444444444") || (cpf == "55555555555") ||
-	(cpf == "66666666666") || (cpf == "77777777777") ||
-	(cpf == "88888888888") || (cpf == "99999999999") ) {
-		return false;
-	}
-	soma = 0;
-	for (i = 1; i <= 9; i++) {
-		soma += Math.floor(cpf.charAt(i-1)) * (11 - i);
-	}
-	resto = 11 - (soma - (Math.floor(soma / 11) * 11));
-	if ( (resto == 10) || (resto == 11) ) resto = 0;
-	if ( resto != Math.floor(cpf.charAt(9)) ) return false;
-	soma = 0;
-	for (i = 1; i<=10; i++) {
-		soma += cpf.charAt(i-1) * (12 - i);
-	}
-	resto = 11 - (soma - (Math.floor(soma / 11) * 11));
-	if ( (resto == 10) || (resto == 11) ) resto = 0;
-	if (resto != Math.floor(cpf.charAt(10)) ) return false;
-
-	return true;
-}
-
-function isCnpj(cnpj){
-
-	if(cnpj == '') return false;
-
-	if (cnpj.length != 14)
-	return false;
-
-	// Elimina CNPJs invalidos conhecidos
-	if (cnpj == "00000000000000" ||
-	cnpj == "11111111111111" ||
-	cnpj == "22222222222222" ||
-	cnpj == "33333333333333" ||
-	cnpj == "44444444444444" ||
-	cnpj == "55555555555555" ||
-	cnpj == "66666666666666" ||
-	cnpj == "77777777777777" ||
-	cnpj == "88888888888888" ||
-	cnpj == "99999999999999")
-	return false;
-
-	// Valida DVs
-	tamanho = cnpj.length - 2
-	numeros = cnpj.substring(0,tamanho);
-	digitos = cnpj.substring(tamanho);
-	soma = 0;
-	pos = tamanho - 7;
-	for (i = tamanho; i >= 1; i--) {
-	soma += numeros.charAt(tamanho - i) * pos--;
-	if (pos < 2)
-	    pos = 9;
-	}
-	resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
-	if (resultado != digitos.charAt(0))
-	return false;
-
-	tamanho = tamanho + 1;
-	numeros = cnpj.substring(0,tamanho);
-	soma = 0;
-	pos = tamanho - 7;
-	for (i = tamanho; i >= 1; i--) {
-	soma += numeros.charAt(tamanho - i) * pos--;
-	if (pos < 2)
-	    pos = 9;
-	}
-	resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
-	if (resultado != digitos.charAt(1))
-	  return false;
-
-	return true;
-}
-function isCpfCnpj(valor) {
-	var retorno = false;
-	var numero  = valor;
-	numero = String(numero).replace(/\D/g, "");
-	if (numero.length > 11) {
-		//numero = numero.replace(/^0+/, ""); // retira o zero inicial, se houver
-		if (isCnpj(numero)) retorno = true;
-	} else {
-		if (isCpf(numero)) retorno = true;
-	}
-	return retorno;
-}
-
-// RETORNA O ESTADO NO LUGAR DA SIGLA
-function ufToState(uf) {
-	switch (uf) {
-		case 'AC' :
-			return 'ACRE';
-		case 'AL' :
-			return 'ALAGOAS';
-		case 'AP' :
-			return 'AMAPÁ';
-		case 'AM' :
-			return 'AMAZONAS';
-		case 'BA' :
-			return 'BAHIA';
-		case 'CE' :
-			return 'CEARÁ';
-		case 'DF' :
-			return 'DISTRITO FEDERAL';
-		case 'ES' :
-			return 'ESPÍRITO SANTO';
-		case 'GO' :
-			return 'GOIÁS';
-		case 'MA' :
-			return 'MARANHÃO';
-		case 'MT' :
-			return 'MATO GROSSO';
-		case 'MS' :
-			return 'MATO GROSSO DO SUL';
-		case 'MG' :
-			return 'MINAS GERAIS';
-		case 'PA' :
-			return 'PARÁ';
-		case 'PB' :
-			return 'PARAÍBA';
-		case 'PR' :
-			return 'PARANÁ';
-		case 'PE' :
-			return 'PERNAMBUCO';
-		case 'PI' :
-			return 'PIAUÍ';
-		case 'RJ' :
-			return 'RIO DE JANEIRO';
-		case 'RN' :
-			return 'RIO GRANDE DO NORTE';
-		case 'RS' :
-			return 'RIO GRANDE DO SUL';
-		case 'RO' :
-			return 'RONDÔNIA';
-		case 'RR' :
-			return 'RORAIMA';
-		case 'SC' :
-			return 'SANTA CATARINA';
-		case 'SP' :
-			return 'SÃO PAULO';
-		case 'SE' :
-			return 'SERGIPE';
-		case 'TO' :
-			return 'TOCANTINS';
-		default :
-			return uf;
-	}
-}

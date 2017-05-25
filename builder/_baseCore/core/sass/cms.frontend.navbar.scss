@@ -25,7 +25,8 @@
 		-webkit-box-shadow:0px 1px 1px rgba(0,0,0,0.1);
 			box-shadow:0px 1px 1px rgba(0,0,0,0.1);
 	}
-	.media-only-xs #cmstools.navbar-fixed-top { padding-left: 50px; }
+	// quando o vertical menu estiver habilitado
+	.media-to-sm body.sm-container #cmstools.navbar-fixed-top { padding-left: 50px; }
 
 	// espaço entre o ícone e o link
 	#cmstools.navbar img.pull-left,

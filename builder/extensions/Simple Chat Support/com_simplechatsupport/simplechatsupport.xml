@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="3.3.0" method="install">
+    <name>COM_SIMPLECHATSUPPORT</name>
+	<creationDate>February 2015</creationDate>
+	<author>Envolute</author>
+	<authorEmail>dev@envolute.com</authorEmail>
+	<authorUrl>http://www.envolute.com</authorUrl>
+	<copyright>Copyright © 2015 - All rights reserved.</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<version>3.0.0</version>
+	<description>COM_SIMPLECHATSUPPORT_DESC</description>
+	
+    <files folder="site">
+        <file>getChat.php</file>
+		<file>getStatus.php</file>
+		<file>simplechatsupport.php</file>
+        <file>index.html</file>
+		<file>simplechatsupportController.php</file>
+		<folder>models</folder>
+		<folder>views</folder>
+		<folder>language</folder>
+		<folder>images</folder>
+		<folder>sounds</folder>
+    </files>
+	
+	<install>
+		<sql>
+			<file charset="utf8" driver="mysql">install.sql</file>
+		</sql>
+	</install>
+	<uninstall>
+		<sql>
+			<file charset="utf8" driver="mysql">uninstall.sql</file>
+		</sql>
+	</uninstall>
+
+	
+    <administration>
+		<menu>COM_SIMPLECHATSUPPORT</menu>
+		<submenu>
+			<menu link="option=com_simplechatsupport">COM_SIMPLECHATSUPPORTDASHBOARD</menu>
+			<menu link="option=com_simplechatsupport&amp;controller=messages">COM_SIMPLECHATSUPPORTQUICK_REPLY_SETTING</menu>
+		</submenu>		
+		
+		<files folder="admin">
+			<file>getChat.php</file>
+			<file>getChatRoom.php</file>
+			<file>getSavedChatRooms.php</file>
+			<file>statusChat.php</file>
+			<folder>images</folder>
+			<file>index.html</file>
+			<folder>javascript</folder>
+			<folder>sounds</folder>
+			<file>config.xml</file>
+			<file>install.sql</file>
+			<file>uninstall.sql</file>
+			<folder>views</folder>
+			<folder>controllers</folder>
+			<folder>models</folder>
+			<file>simplechatsupport.php</file>
+			<file>controller.php</file>
+		</files>
+		
+		<languages folder="admin">
+			<language tag="en-GB">language/en-GB/en-GB.com_simplechatsupport.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.com_simplechatsupport.sys.ini</language>
+			<language tag="pt-BR">language/pt-BR/pt-BR.com_simplechatsupport.ini</language>
+			<language tag="pt-BR">language/pt-BR/pt-BR.com_simplechatsupport.sys.ini</language>
+		</languages>
+    </administration>
+	
+	<scriptfile>install.simplechatsupport.php</scriptfile>
+</extension>

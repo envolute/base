@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_BASECONTENT_CONTENT" option="default">
+		<message>
+			<![CDATA[COM_BASECONTENT_CONTENT_DESC]]>
+		</message>
+	</layout>
+
+	<!-- Add fields to the parameters object for the layout. -->
+	<fields name="params">
+		<fieldset name="content" label="COM_BASECONTENT_CONTENT">
+			<field name="content" type="editor" filter="raw" buttons="true" label="COM_BASECONTENT_CONTENT_LABEL" description="COM_BASECONTENT_CONTENT_DESC" />
+		</fieldset>
+	</fields>
+</metadata>

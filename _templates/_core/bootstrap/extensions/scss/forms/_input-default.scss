@@ -1,0 +1,26 @@
+// INPUTS
+// Formato default para: inputs, textarea e selects
+// not(.form-control) evita conflito com a classe 'form-control' do bootstrap
+
+	input[type="text"]:not(.form-control),
+	input[type="password"]:not(.form-control),
+	input[type="datetime"]:not(.form-control),
+	input[type="datetime-local"]:not(.form-control),
+	input[type="date"]:not(.form-control),
+	input[type="month"]:not(.form-control),
+	input[type="time"]:not(.form-control),
+	input[type="week"]:not(.form-control),
+	input[type="number"]:not(.form-control),
+	input[type="email"]:not(.form-control),
+	input[type="url"]:not(.form-control),
+	input[type="search"]:not(.form-control),
+	input[type="tel"]:not(.form-control),
+	input[type="color"]:not(.form-control),
+	textarea:not(.form-control),
+	select.no-chosen:not(.form-control) // select sem o 'chosen'
+	{
+		@extend .form-control;
+		display: inline-block;
+		max-width: 100%!important;
+		width: auto;
+	}

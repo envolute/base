@@ -27,7 +27,7 @@ $brand-danger:          #d9534f !default;
 //## Settings for some of the most global styles.
 
 //** Background color for `<body>`.
-$body-bg:               #fafafa !default; // -> {CUSTOM: #fff}
+$body-bg:               #f8f8f8 !default; // -> {CUSTOM: #fff}
 //** Global text color on `<body>`.
 $text-color:            $gray-dark !default;
 
@@ -47,7 +47,7 @@ $font-family-sans-serif:  "Helvetica Neue", Helvetica, Arial, sans-serif !defaul
 $font-family-serif:       Georgia, "Times New Roman", Times, serif !default;
 //** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
 $font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace !default;
-$font-family-base:        "primary" !default; // -> {CUSTOM: $font-family-sans-serif}
+$font-family-base:        $font-family-sans-serif !default;
 
 $font-size-base:          13px !default; // -> {CUSTOM: 14px}
 $font-size-large:         ceil(($font-size-base * 1.25)) !default; // ~18px
@@ -55,7 +55,7 @@ $font-size-small:         ceil(($font-size-base * 0.85)) !default; // ~12px
 
 $font-size-h1:            floor(($font-size-base * 2.6)) !default; // ~36px
 $font-size-h2:            floor(($font-size-base * 2.15)) !default; // ~30px
-$font-size-h3:            ceil(($font-size-base * 1.7)) !default; // ~24px
+$font-size-h3:            ceil(($font-size-base * 1.5)) !default; // ~24px // -> {CUSTOM: 1.7}
 $font-size-h4:            ceil(($font-size-base * 1.25)) !default; // ~18px
 $font-size-h5:            $font-size-base !default;
 $font-size-h6:            ceil(($font-size-base * 0.85)) !default; // ~12px
@@ -107,9 +107,9 @@ $padding-xs-horizontal:     5px !default;
 $line-height-large:         1.3333333 !default; // extra decimals for Win 8.1 Chrome
 $line-height-small:         $line-height-base !default; // -> {CUSTOM: 1.5px}
 
-$border-radius-base:        2px !default; // -> {CUSTOM: 4px}
-$border-radius-large:       2px !default; // -> {CUSTOM: 6px}
-$border-radius-small:       2px !default; // -> {CUSTOM: 3px}
+$border-radius-base:        0px !default; // -> {CUSTOM: 4px}
+$border-radius-large:       0px !default; // -> {CUSTOM: 6px}
+$border-radius-small:       0px !default; // -> {CUSTOM: 3px}
 
 //** Global color for active items (e.g., navs or dropdowns).
 $component-active-color:    #fff !default;
@@ -149,8 +149,8 @@ $table-border-color:            $base-border-color !default; // -> {CUSTOM: #ddd
 
 $btn-font-weight:                normal !default;
 
-$btn-default-color:              #333 !default;
-$btn-default-bg:                 #fff !default;
+$btn-default-color:              #555 !default; // -> {CUSTOM: #333}
+$btn-default-bg:                 $body-bg !default;
 $btn-default-border:             $base-border-color !default; // -> {CUSTOM: #ccc}
 
 $btn-primary-color:              #fff !default;
@@ -193,7 +193,7 @@ $input-bg-disabled:              $gray-lighter !default;
 //** Text color for `<input>`s
 $input-color:                    $gray !default;
 //** `<input>` border color
-$input-border:                   $base-border-color-strong !default; // -> {CUSTOM: #ccc}
+$input-border:                   $base-border-color !default; // -> {CUSTOM: #ccc}
 
 // TODO: Rename `$input-border-radius` to `$input-border-radius-base` in v4
 //** Default `.form-control` border radius
@@ -502,20 +502,20 @@ $jumbotron-heading-font-size:    ceil(($font-size-base * 4.5)) !default;
 //## Define colors for form feedback states and, by default, alerts.
 
 $state-success-text:             #3c763d !default;
-$state-success-bg:               #eafbe4 !default; // -> {CUSTOM: #dff0d8}
-$state-success-border:           #c0d6b9 !default; // -> {CUSTOM: darken(adjust-hue($state-success-bg, -10), 5%)}
+$state-success-bg:               lighten($brand-success, 60%) !default; // -> {CUSTOM: #dff0d8}
+$state-success-border:           lighten($brand-success, 5%) !default; // -> {CUSTOM: darken(adjust-hue($state-success-bg, -10), 5%)}
 
 $state-info-text:                #31708f !default;
-$state-info-bg:                  #d9edf7 !default;
-$state-info-border:              darken(adjust-hue($state-info-bg, -10), 7%) !default;
+$state-info-bg:                  lighten($brand-info, 30%) !default; // -> {CUSTOM: #d9edf7}
+$state-info-border:              lighten($brand-info, 5%) !default; // -> {CUSTOM: darken(adjust-hue($state-info-bg, -10), 7%)}
 
 $state-warning-text:             #8a6d3b !default;
-$state-warning-bg:               #fcf8e3 !default;
-$state-warning-border:           darken(adjust-hue($state-warning-bg, -10), 5%) !default;
+$state-warning-bg:               lighten($brand-warning, 35%) !default; // -> {CUSTOM: #fcf8e3}
+$state-warning-border:           lighten($brand-warning, 5%) !default; // -> {CUSTOM: darken(adjust-hue($state-warning-bg, -10), 5%)}
 
 $state-danger-text:              #a94442 !default;
-$state-danger-bg:                #fde8e8 !default; // -> {CUSTOM: #f2dede}
-$state-danger-border:            #e8b3bc !default; // -> {CUSTOM: darken(adjust-hue($state-danger-bg, -10), 5%)}
+$state-danger-bg:                lighten($brand-danger, 35%) !default; // -> {CUSTOM: #f2dede}
+$state-danger-border:            lighten($brand-danger, 5%) !default; // -> {CUSTOM: darken(adjust-hue($state-danger-bg, -10), 5%)}
 
 
 //== Tooltips
@@ -593,10 +593,10 @@ $label-link-hover-color:      #fff !default;
 //##
 
 //** Padding applied to the modal body
-$modal-inner-padding:         15px !default;
+$modal-inner-padding:         10px !default; // -> {CUSTOM: 15px}
 
 //** Padding applied to the modal title
-$modal-title-padding:         15px !default;
+$modal-title-padding:         10px !default; // -> {CUSTOM: 15px}
 //** Modal title line-height
 $modal-title-line-height:     $line-height-base !default;
 
@@ -612,9 +612,9 @@ $modal-backdrop-bg:           #000 !default;
 //** Modal backdrop opacity
 $modal-backdrop-opacity:      .5 !default;
 //** Modal header border color
-$modal-header-border-color:   #e5e5e5 !default;
+$modal-header-border-color:   $base-color-live !default; // -> {CUSTOM: #e5e5e5}
 //** Modal footer border color
-$modal-footer-border-color:   $modal-header-border-color !default;
+$modal-footer-border-color:   $base-border-color !default; // -> {CUSTOM: $modal-header-border-color}
 
 $modal-lg:                    900px !default;
 $modal-md:                    600px !default;

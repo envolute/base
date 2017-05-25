@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="3.0" client="site" method="upgrade">
+	<name>COM_BASECONTENT</name>
+	<author>Ivo Junior</author>
+	<creationDate>24/02/2017</creationDate>
+	<copyright>Copyright © 2012, Envolute Tecnologia, All Rights Reserved.</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>dev@envolute.com</authorEmail>
+	<authorUrl>http://www.envolute.com</authorUrl>
+	<version>1.0.0</version>
+	<description>COM_BASECONTENT_DESC</description>
+	<files>
+		<filename component="com_basecontent">basecontent.php</filename>
+		<filename>basecontent.xml</filename>
+		<filename>controller.php</filename>
+		<filename>index.html</filename>
+		<folder>views/</folder>
+	</files>
+	<administration>
+		<menu link="option=com_basecontent">COM_BASECONTENT</menu>
+    <files>
+    	<filename component="com_basecontent">basecontent.php</filename>
+    </files>
+		<languages>
+			<language tag="en-GB">language/en-GB.com_basecontent.ini</language>
+			<language tag="en-GB">language/en-GB.com_basecontent.sys.ini</language>
+			<language tag="pt-BR">language/pt-BR.com_basecontent.ini</language>
+			<language tag="pt-BR">language/pt-BR.com_basecontent.sys.ini</language>
+		</languages>
+	</administration>
+</extension>

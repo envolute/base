@@ -1,9 +1,29 @@
 // @CORE BASE
 // Classes auxiliares do template 'BASE'
 // As classes abaixo são complementares as do bootstrap, ou seja, são recursos complementares.
-// IMPORTANTE: O seletor "body.site" serve para evitar conflito com os itens da administração.
+// IMPORTANTE: O seletor "body:not(.admin)" serve para evitar conflito com os itens da administração.
 
 // INICIALIZAÇÃO
+
+	// CUSTOM FONTS
+	// o sistema BASE disponibiliza 4 fontes padrão
+	// 'primary' é a fonte principal do projeto, ideal para menus, body, etc...
+	// 'condensed' é uma fonte mais compacta, boa para letras grandes. Ideal para cabeçalhos, chamadas, etc...
+	// 'serif' é uma opção de fonte com serif
+	// 'featured' é uma fonte mais 'informal', ideal para em blockquotes, citações, etc...
+	@if $base-fonts-local {
+		@include set-font-family($base-font-primary, $base-font-primary-local-path);
+		@include set-font-family($base-font-condensed, $base-font-condensed-local-path);
+		@include set-font-family($base-font-serif, $base-font-serif-local-path);
+		@include set-font-family($base-font-featured, $base-font-featured-local-path);
+	} @else {
+		@import url(https://fonts.googleapis.com/css?family=#{$base-fonts});
+	}
+	// set default classes
+	@include set-font-class('primary', $base-font-primary, $base-font-primary-weight, $base-font-primary-style);
+	@include set-font-class('condensed', $base-font-condensed, $base-font-condensed-weight, $base-font-condensed-style);
+	@include set-font-class('serif', $base-font-serif, $base-font-serif-weight, $base-font-serif-style);
+	@include set-font-class('featured', $base-font-featured, $base-font-featured-weight, $base-font-featured-style);
 
 	// lists
 	ul { padding-left: 24px; }
@@ -11,12 +31,17 @@
 	.pull-left + ul,
 	.obj-to-left + ul { display: inline-block; }
 
+	table.text-center th,
+	table.text-center td {
+		text-align: center;
+	}
+
 	iframe {
 		max-width: 100%;
 		border: none;
 	}
 
-	[class*="base-icon-"]:not(.btn) { line-height: 1em; }
+	[class*="base-icon-"]:not(.btn):not(.form-control-feedback) { line-height: 1em; }
 
 	// Chrome -> campos auto preenchidos
 	input:-webkit-autofill { text-indent:0!important; }
@@ -43,21 +68,7 @@
 	.color-muted-lighter { background-color: $base-color-muted-lighter; }
 	.color-muted-dark { background-color: $base-color-muted-dark; }
 
-	.bg-live, // legacy
 	.color-live { background-color: $base-color-live!important; }
-
-// FONTS
-// o sistema BASE disponibiliza 4 fontes padrão
-// 'primary' é a fonte principal do projeto, ideal para menus, body, etc...
-// 'condensed' é uma fonte mais compacta, boa para letras grandes. Ideal para cabeçalhos, chamadas, etc...
-// 'serif' é uma opção de fonte com serif
-// 'featured' é uma fonte mais 'informal', ideal para em blockquotes, citações, etc...
-
-
-	@include set-font-family('primary', $base-font-primary);
-	@include set-font-family('condensed', $base-font-condensed);
-	@include set-font-family('serif', $base-font-serif);
-	@include set-font-family('featured', $base-font-featured);
 
 // TYPOGRAPHY
 
@@ -67,6 +78,7 @@
 	.text-sm { font-size: $font-size-base - 1; }
 	.text-md { font-size: $font-size-base; }
 	.text-lg { font-size: 18px; }
+	.text-xl { font-size: 24px; }
 	// variable size
 	.tam1 { font-size: 70% !important}
 	.tam2 { font-size: 80% !important}
@@ -82,6 +94,7 @@
 	.strong { font-weight: bold!important; }
 	.text-upper { text-transform: uppercase; }
 	.text-shadow { text-shadow: $text-shadow; }
+	.text-shadow-strong { text-shadow: $text-shadow-strong; }
 	.text-embed { text-shadow: $text-embed; }
 	// Limita o texto de acordo com o a largura do container
 	// adiciona ellipses '...'
@@ -108,18 +121,22 @@
 		border-bottom: 0;
 		clear: both;
 	}
+	hr.hr-label.hr-xs { margin: 8px 0; }
 	hr.hr-label + .label {
 		display: block;
 		float: left;
-		margin-top: -29px;
-		padding: .3em .5em .2em;
+		margin-top: -($line-height-computed + 10);
+		padding: 4px .5em 3px;
 		text-decoration: none;
 		text-transform: uppercase;
 	}
 	hr.hr-label + .label:not([class*="label-"]) { background-color: $base-color-muted; }
-	hr.hr-label.hr-xs + .label { margin-top: -14px; }
-	hr.hr-label.hr-sm + .label { margin-top: -19px; }
-	hr.hr-label.hr-lg + .label { margin-top: -39px; }
+	hr.hr-label.hr-xs + .label {
+		margin-top: -17px;
+		font-size: 10px;
+	}
+	hr.hr-label.hr-sm + .label { margin-top: -20px; }
+	hr.hr-label.hr-lg + .label { margin-top: -40px; }
 
 	// Alinhamento responsivo
 	.media-only-xs .text-left-xs,
@@ -162,11 +179,14 @@
 		}
 		ul.list li ul,
 		ul.list-menu li ul {
-			padding-left: 1.5em;
+			padding-left: 1em;
 		}
-		.list li ul{
+		.list > li > ul {
 			padding-top: 0.25em;
 			margin-top: 0.5em;
+		}
+		.list > li > ul > li > ul {
+    	padding-top: .25em;
 		}
 		.list-menu li ul {
 			padding-top: 0.5em;
@@ -174,19 +194,37 @@
 		}
 
 		// como não há borda, diminui o espaçamento(pela metade) entre os itens
-		.list li ul li, .list-menu li ul li a{
+		.list > li > ul li, .list-menu > li > ul li a{
 			padding: 0.25em 0;
 			border:none;
 		}
+		.list > li > ul li:last-child, .list-menu > li > ul li:last-child a{
+			padding-bottom: 0;
+		}
 
 	// retira as bordas do primeiro e do primeiro item
-	.list li:first-child, .list-menu li:first-child a { border-top: none; }
+	.list li:first-child, .list-menu li:first-child a { border-top: none!important; }
 	// retira a margem inferior do último elemento
 	.list li > *:last-child, .list-menu li a > *:last-child{ margin-bottom: 0; }
 
 	// Opções de espaçamento
-	.list.list-sm li, .list-menu.list-sm li > a { padding: 0.2em; }
-	.list.list-lg li, .list-menu.list-lg li > a { padding: 1em; }
+	.list.list-sm li { padding: 0.2em 0; }
+	.list.list-lg li, .list-menu.list-lg li > a { padding: 1em 0; }
+	.list.list-sm.small li, .list.list-sm.text-xs li,
+	.list-menu.list-sm.small li > a, .list-menu.list-sm.text-xs li > a { padding-bottom: 0; }
+
+	// colunas
+	.list.list-cols { margin-left: -0.5em; }
+	.list.list-cols.list-sm { margin-left: -0.2em; }
+	.list.list-cols.list-lg { margin-left: -1em; }
+	.list.list-cols li, .list-menu.list-cols li > a {
+		width: 50%;
+		float: left;
+		padding-left: 0.5em;
+		padding-right: 0.5em;
+	}
+	.list.list-cols.list-sm li, .list-menu.list-cols.list-sm li > a { padding-left: 0.2em; padding-right: 0.2em; }
+	.list.list-cols.list-lg li, .list-menu.list-cols.list-lg li > a { padding-left: 1em; padding-right: 1em; }
 
 		// sub itens
 
@@ -221,6 +259,7 @@
 			}
 
 	// LISTAGEM HORIZONTAL - estilo 'menu'
+	// '.hlist' estiliza apenas o primeiro nível 'ul > li'
 	.hlist ul, ul.hlist,
 	.hlist-menu ul, ul.hlist-menu{
 		width:auto;
@@ -231,7 +270,8 @@
 		list-style:none;
 	}
 	// IMPORTANTE: a class 'menu' seta a formatação na tag '<a>' ao invés da '<li>'
-	.hlist li, .hlist-menu li a{
+	.hlist:not(ul) ul > li, ul.hlist > li,
+	.hlist-menu li a, .hlist-menu li a {
 		display:block;
 		float:left;
 		width:auto;
@@ -241,10 +281,12 @@
 		border-left:1px $base-list-border-style $base-border-color;
 	}
 	// retira a formatação da tag <li> quando usar a classe 'menu'
-	.hlist-menu li{ padding:0; border:none; }
+	.hlist-menu li { padding:0; border:none!important; }
 	// retira as bordas do primeiro e do último item
-	.hlist li:first-child, .hlist-menu li:first-child > a{ border-left:none; }
-	.hlist li:last-child, .hlist-menu li:last-child > a{ border-right:none; }
+	.hlist:not(ul) ul > li:first-child, ul.hlist > li:first-child,
+	.hlist-menu li:first-child > a{ border-left:none!important; }
+	.hlist:not(ul) ul > li:last-child, ul.hlist > li:last-child,
+	.hlist-menu li:last-child > a{ border-right:none!important; }
 
 	// Opções de espaçamento
 	.hlist.hlist-sm li,
@@ -257,10 +299,31 @@
 		// STRIPED -> listras zebradas
 		.list-striped > li:nth-child(odd),
 		.list-striped:not(ul) ul:first-of-type > li:nth-child(odd),
-		[class*="list-menu"].list-striped > li:nth-child(odd) > a,
-		[class*="list-menu"].list-striped:not(ul) ul:first-of-type > li:nth-child(odd) > a {
-			background-color: #f9f9f9;
+		.list-menu.list-striped > li:nth-child(odd) > a,
+		.list-menu.list-striped:not(ul) ul:first-of-type > li:nth-child(odd) > a {
+			background-color: $table-bg-accent;
 		}
+		.list.list-striped li {
+			padding-left: 0.5em;
+			padding-right: 0.5em;
+		}
+
+		// HOVER -> onmouseover
+		.list.list-hover > li:hover,
+		.list-menu.list-hover > li > a:hover {
+			background-color: $table-bg-hover;
+		}
+
+		// BOOTSTRAP CONTEXT -> background
+		.list > li.success { background-color: $state-success-bg; }
+		.list > li.info { background-color: $state-info-bg; }
+		.list > li.warning { background-color: $state-warning-bg; }
+		.list > li.danger { background-color: $state-danger-bg; }
+		// hover
+		.list-hover > li:hover.success { background-color: darken($state-success-bg, 5%); }
+		.list-hover > li:hover.info { background-color: darken($state-info-bg, 5%); }
+		.list-hover > li:hover.warning { background-color: darken($state-warning-bg, 5%); }
+		.list-hover > li:hover.danger { background-color: darken($state-danger-bg, 5%); }
 
 		// retira as bordas divisórias da listagem
 		.list-no-border li, li.list-no-border,
@@ -318,7 +381,9 @@
 			@include build-prefix-values('box-shadow', $fieldset-embed-legend-shadow);
 			z-index: 1;
 		}
+		// fieldset-embed for bootstrap elements
 		.well .fieldset-embed > legend { background-color: $well-bg; }
+		.modal-body .fieldset-embed legend { background-color: $modal-content-bg; }
 		.fieldset-embed > legend.pull-right { right: $fieldset-embed-legend-right; }
 		.fieldset-embed > .form-actions {
 			padding-top: 10px;
@@ -367,24 +432,24 @@
 	// Formato default para: inputs, textarea e selects
 	// not(.form-control) evita conflito com a classe 'form-control' do bootstrap
 
-		body.site input[type="text"]:not(.form-control),
-		body.site input[type="password"]:not(.form-control),
-		body.site input[type="datetime"]:not(.form-control),
-		body.site input[type="datetime-local"]:not(.form-control),
-		body.site input[type="date"]:not(.form-control),
-		body.site input[type="month"]:not(.form-control),
-		body.site input[type="time"]:not(.form-control),
-		body.site input[type="week"]:not(.form-control),
-		body.site input[type="number"]:not(.form-control),
-		body.site input[type="email"]:not(.form-control),
-		body.site input[type="url"]:not(.form-control),
-		body.site input[type="search"]:not(.form-control),
-		body.site input[type="tel"]:not(.form-control),
-		body.site input[type="color"]:not(.form-control),
-		body.site textarea:not(.form-control),
-		body.site select:not(.form-control) {
-			max-width:100%!important ;
-			min-height: $input-height-base;
+		body:not(.admin) input[type="text"]:not(.form-control),
+		body:not(.admin) input[type="password"]:not(.form-control),
+		body:not(.admin) input[type="datetime"]:not(.form-control),
+		body:not(.admin) input[type="datetime-local"]:not(.form-control),
+		body:not(.admin) input[type="date"]:not(.form-control),
+		body:not(.admin) input[type="month"]:not(.form-control),
+		body:not(.admin) input[type="time"]:not(.form-control),
+		body:not(.admin) input[type="week"]:not(.form-control),
+		body:not(.admin) input[type="number"]:not(.form-control),
+		body:not(.admin) input[type="email"]:not(.form-control),
+		body:not(.admin) input[type="url"]:not(.form-control),
+		body:not(.admin) input[type="search"]:not(.form-control),
+		body:not(.admin) input[type="tel"]:not(.form-control),
+		body:not(.admin) input[type="color"]:not(.form-control),
+		body:not(.admin) textarea:not(.form-control),
+		body:not(.admin) select:not(.form-control) {
+			max-width: 100%!important;
+			height: $input-height-base;
 			padding: $padding-base-vertical $padding-base-horizontal;
 			font-size: $font-size-base;
 			line-height: $line-height-base;
@@ -395,8 +460,14 @@
 			background-color: $input-bg;
 			@include build-prefix-values('box-shadow', 'inset 0 1px 1px rgba(0, 0, 0, 0.075)');
 			@include build-prefix-values('transition', 'all .15s ease-in-out');
+			// Customize the `:focus` state to imitate native WebKit styles.
+		  @include base-form-control-focus;
 		}
-		body.site textarea:not(.form-control) { width:100%; }
+		body:not(.admin) textarea:not(.form-control) {
+			width: 100%;
+			max-width: 100%;
+			height: auto;
+		}
 
 	// BUTTONS
 	// formato default dos botões
@@ -441,12 +512,12 @@
 		.alert-required {
 			padding: 10px 0 10px 1px;
 			margin-bottom: 10px;
-			font-family: featured;
+			font-family: $base-font-featured;
 			color: $text-muted;
 			font-weight: normal;
 		}
 		.alert-required:before,
-		.field-required > label:not(.error):before,
+		.field-required:not(.checkbox) > label:not(.error):not(.required-hidden):before,
 		label.field-required:not(.error):before {
 			font-family: "baseicons";
 			content: $baseicon-field-required;
@@ -462,6 +533,8 @@
 		input.error,
 		textarea.error,
 		select.error,
+		// groups
+		.input-group.has-error .input-group-addon,
 		// chosen
 		select.error + .chosen-container-single .chosen-single,
 		select.error + .chosen-container-multi .chosen-choices,
@@ -472,9 +545,15 @@
 			border-color: $state-danger-border!important;
 			background-color: $state-danger-bg!important;
 		}
+		label:not(.btn) input[type="checkbox"].error {
+			@include build-prefix-values('box-shadow', '0px 0px 2px 1px' $state-danger-text);
+		}
+		.radio+.error, .checkbox+.error {
+			position: absolute;
+			bottom: -7px;
+		}
 
 		// mensagem de erro
-		label.error,
 		span.error {
 			display: block;
 			padding: 2px 0 0;
@@ -483,17 +562,17 @@
 			font-weight: normal;
 			font-size: 12px;
 		}
-		select:not(.no-chosen) + label.error { display: inline-block!important; }
-		label.error.valid { display: none!important; }
-		label.error + .input-group-btn,
-l		label.error + .input-group-addon {
-			vertical-align: top!important;
-		}
-		.btn-group label.btn label.error {
+		select:not(.no-chosen) + span.error { display: inline-block!important; }
+		span.error.valid { display: none!important; }
+		.input-group span.error,
+		.btn-group label.btn span.error {
 			position: absolute;
-			bottom: -25px;
-			left: 0px;
+			top: $input-height-base;
+			left: 0;
 		}
+		.input-group .input-sm + span.error { top: $input-height-small; }
+		.input-group .input-lg + span.error { top: $input-height-large; }
+		.input-group.has-error,
 		.btn-group.has-error { margin-bottom: 20px; }
 
 	// CUSTOM FIELDS
@@ -505,10 +584,12 @@ l		label.error + .input-group-addon {
 		.field-date input, input.field-date,
 		.field-search input, input.field-search {
 			width:auto;
-			padding-left: 2.2em!important;
+			padding-left: 2em!important;
 			background-position: 0.6em;
 			background-repeat: no-repeat!important;
 		}
+		.field-date input.input-sm, input.field-date.input-sm,
+		.field-search input.input-sm, input.field-search.input-sm { padding-left: 2.3em!important; }
 
 		.field-date input, input.field-date { background-image: url("../core/images/form-icon-date.png"); }
 		.field-search input, input.field-search { background-image: url("../core/images/form-icon-search.png"); }
@@ -546,10 +627,9 @@ l		label.error + .input-group-addon {
 		}
 
 		// datepicker
-		.ui-datepicker {
-			position: relative;
-			z-index: 9!important;
-		}
+
+		.ui-datepicker { z-index: $zindex-datepicker!important; }
+
 		.ui-datepicker select.ui-datepicker-month,
 		.ui-datepicker select.ui-datepicker-year {
 			width: 48%;
@@ -570,22 +650,40 @@ l		label.error + .input-group-addon {
 		// LOADER
 		// gifs simuladores de carregamento
 
-		.ajax-loader
+		.ajax-loader,
 		.ajax-load,
 		.autocomplete-load,
 		.field-search.autocomplete-load input,
 		.field-search input.autocomplete-load,
-		input.field-search.autocomplete-load{
+		input.field-search.autocomplete-load {
+			min-width: 16px;
+			min-height: 16px;
 			background-image: url("../core/images/ajax-loader-arrows.gif")!important;
 			background-repeat:no-repeat;
 			background-position:right center;
 		}
+		.ajax-loader, .ajax-load { display: inline-block; }
 		.field-search.autocomplete-load input,
 		.field-search input.autocomplete-load,
 		input.field-search.autocomplete-load { background-position:7px!important; }
 
 	// #LIBS: CHOSEN
 	@include base-chosen('chosen');
+
+// BASE APPLICATION
+// 'base-app' -> formatos predefinidos para o crud padrão do 'Sistema BASE'
+
+	#component .base-app { margin-bottom: $base-space-lg; }
+	// checkbox default da listagem
+	.base-app .table .check-row input[type="checkbox"] { float: left }
+	// pagination
+	.base-app .base-app-pagination .pagination{ margin: 0!important; }
+	// loader da listagem ajax
+	.base-app .base-app-list .ajax-loader {
+		position: absolute;
+		top: 7px;
+		left: 7px;
+	}
 
 // NAV-PILLS > MENU (RECURSO)
 // 'nav-child' gera um menu popup 'sub-níveis' com os subtópicos do menu 'nav nav-pills'
@@ -618,8 +716,10 @@ l		label.error + .input-group-addon {
 	.nav.list-menu li.parent > a { padding-right: 15px; }
 
 	// child-reveal
-	.nav.menu li.parent > a .child-reveal:before { content: $baseicon-menu-child-reveal; }
-	.nav.menu > li.parent > a .child-reveal:before { content: $baseicon-menu-child-reveal-sublevel; }
+	.nav.menu .child-reveal:before { content: $baseicon-menu-child-reveal; }
+	.media-only-xs .nav.menu .child-reveal:before,
+	.nav.menu .nav-child .child-reveal:before { content: $baseicon-menu-child-reveal-sublevel; }
+	.media-only-xs .nav.menu li.opened > a .child-reveal:before { content: $baseicon-menu-child-reveal-sublevel-opened; }
 	.nav.menu > li.parent.child-reverse .nav-child a .child-reveal:before { content: $baseicon-menu-child-reveal-sublevel-reverse; }
 	.nav.list-menu li.parent > a .child-reveal:before { content: $baseicon-menulist-child-reveal; }
 	.nav.list-menu li.parent.active > a .child-reveal:before { content: $baseicon-menulist-child-reveal-open; }
@@ -628,12 +728,19 @@ l		label.error + .input-group-addon {
 
 		.nav.menu .nav-child {
 			position: absolute;
-			top: 94%; // original '95%' falha no FF
+			top: 100%; // original '95%' falha no FF
 			left: 0;
-			z-index: 1000;
+			margin-top: 0;
+			z-index: $zindex-nav-child;
 			display: none;
 			float: left;
 			list-style: none;
+		}
+		.media-only-xs .nav.menu .nav-child {
+			position: relative;
+			top: 0;
+			left: 0;
+			float: none;
 		}
 		// List Menu
 		.nav.list-menu .nav-child { display: none; }
@@ -653,9 +760,12 @@ l		label.error + .input-group-addon {
 		.nav.menu .nav-child li > a:focus,
 		.nav.menu .nav-child:hover > a { text-decoration: none; }
 
-		// mostra o 'nav-child' no 'mouse-over'
-		.nav.menu:not(.list-menu) > li.parent:hover > a + .nav-child,
-		.nav.menu:not(.list-menu) .nav-child > li.parent:hover > a + .nav-child { display: block; }
+		// mostra o 'nav-child'
+		.media-sm .nav.menu:not(.list-menu) > li.parent:hover > a + .nav-child, // no 'mouse-over'
+		.nav.menu:not(.list-menu) > li.parent.opened > a + .nav-child, // no 'click'
+		.media-sm .nav.menu:not(.list-menu) .nav-child > li.parent:hover > a + .nav-child, // no 'mouse-over'
+		.nav.menu:not(.list-menu) .nav-child > li.parent.opened > a + .nav-child // no 'click'
+		 { display: block; }
 
 		// child parent
 		.nav[class*="menu"] .nav-child > li.parent > a { padding-right: 20px; }
@@ -683,13 +793,13 @@ l		label.error + .input-group-addon {
 		// SUB-LEVELS >= 2
 
 			// abrindo a esquerda-> default
-			.nav.menu .nav-child > li > .nav-child {
+			.media-sm .nav.menu .nav-child > li > .nav-child {
 				left: 100%;
 				// IMPORTANTE: define a posição do sub-nível 2
 				margin-top: $base-list-menu-sublevel-top!important;
 			}
 			// abrindo a direita
-			.nav.menu .nav-child.pull-right {
+			.media-sm .nav.menu .nav-child.pull-right {
 				right: 0;
 				left: auto;
 			}
@@ -732,14 +842,25 @@ l		label.error + .input-group-addon {
 
 // MODULE
 
+	.module.header-no-space .page-header { margin-bottom: 0!important; }
 	.module .head-tag { float: right; }
+	.module .head-toolbar {
+		position: absolute;
+		top: 6px;
+		right: 6px;
+	}
+	.module .module-toggle + .head-toolbar {
+		right: $base-space * 2;
+	}
 
 	// Seta a class 'small' apenas para o conteúdo do módulo
 	.module.text-xs, .module.text-sm, .module.text-lg{ font-size: 1em!important; }
 	.module.text-xs .module-content { font-size: 11px!important; }
 	.module.text-sm .module-content { font-size: 13px!important; }
 	.module.text-lg .module-content { font-size: 18px!important; }
-	.module .module-content .small { font-size: 12px!important; }
+	.module.text-lg .module-content .small { font-size: 12px!important; }
+	.module.text-xs .module-content .small,
+	.module.text-sm .module-content .small { font-size: 11px!important; }
 
 // UTILITIES
 // classes auxiliares
@@ -753,10 +874,11 @@ l		label.error + .input-group-addon {
 	.pos-relative { position:relative; }
 	.pos-absolute { position:absolute; }
 	.pos-static { position:static; }
+	.pos-fixed { position:fixed; }
 
 	// VERTICAL ALIGNMENT FORM TD's
 	.valign-top { vertical-align: top!important; }
-	.valign-middle { vertical-align: middle!important; }
+	.valign-center, .valign-middle { vertical-align: middle!important; }
 	.valign-bottom { vertical-align: bottom!important; }
 
 	// VISIBILITY
@@ -789,6 +911,7 @@ l		label.error + .input-group-addon {
 	@include build-classes-spaces('space-xs', 'margin', $base-space-xs'!important');
 	@include build-classes-spaces('space-sm', 'margin', $base-space-sm'!important');
 	@include build-classes-spaces('space-lg', 'margin', $base-space-lg'!important');
+	@include build-classes-spaces('space-xl', 'margin', $base-space-xl'!important');
 	// sem margin
 	.no-margin{ margin:0!important; }
 	.no-margin-top { margin-top:0!important; }
@@ -801,6 +924,7 @@ l		label.error + .input-group-addon {
 	@include build-classes-spaces('expand-xs', 'padding', $base-space-xs'!important');
 	@include build-classes-spaces('expand-sm', 'padding', $base-space-sm'!important');
 	@include build-classes-spaces('expand-lg', 'padding', $base-space-lg'!important');
+	@include build-classes-spaces('expand-xl', 'padding', $base-space-xl'!important');
 	// sem padding
 	.no-padding{ padding:0!important; }
 	.no-padding-top { padding-top:0!important; }
@@ -861,6 +985,7 @@ l		label.error + .input-group-addon {
 	}
 
 	// BACKGROUND
+	.bg-live { color: $base-color-live-text; background-color: $base-color-live!important; }
 	.bg-white { background-color:#fff!important; }
 	.bg-gray { background-color:$gray-lighter!important; }
 	.bg-transparent { background-color:transparent!important; }
@@ -894,8 +1019,9 @@ l		label.error + .input-group-addon {
 		font-family: 'baseicons';
 		content: '\e9d7'; // base-icon-link-ext
 		font-size: 0.8em;
-		color: $text-muted;
-		margin-left: 0.2em;
+		font-style: normal!important;
+		color: $base-color-live;
+		margin-left: 0.25em;
 	}
 
 	// CLEAR
@@ -904,7 +1030,7 @@ l		label.error + .input-group-addon {
 	.clear:not(table),
 	.media-only-xs .clear-xs:not(table),
 	.media-to-sm .clear-sm:not(table) {
-		display: block!important;
+		display: block;
 		clear:	both!important;
 	}
 

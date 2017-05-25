@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_FREECONTENT" option="default">
+		<message>
+			<![CDATA[COM_FREECONTENT_DESC]]>
+		</message>
+	</layout>
+
+	<!-- Add fields to the parameters object for the layout. -->
+	<fields name="params">
+		<fieldset name="basic" label="COM_FREECONTENT_CODE">
+			<field name="include" type="text" class="input-xxlarge" label="COM_FREECONTENT_INCLUDE_LABEL" description="COM_FREECONTENT_INCLUDE_DESC" />
+			<field type="spacer" name="spacer" hr="true" />
+			<field name="code" type="textarea" rows="8" class="input-xxlarge" filter="raw" label="COM_FREECONTENT_CODE_LABEL" description="COM_FREECONTENT_CODE_DESC"></field>
+			<field name="css" type="textarea" filter="raw" rows="5" class="input-xxlarge" label="COM_FREECONTENT_CSS_LABEL" description="COM_FREECONTENT_CSS_DESC"></field>
+			<field name="script" type="textarea" filter="raw" rows="5" class="input-xxlarge" label="COM_FREECONTENT_SCRIPT_LABEL" description="COM_FREECONTENT_SCRIPT_DESC"></field>
+		</fieldset>
+		<fieldset name="content" label="COM_FREECONTENT_CONTENT">
+			<field name="html" type="editor" filter="raw" label="COM_FREECONTENT_HTML_LABEL" description="COM_FREECONTENT_HTML_DESC" />
+		</fieldset>
+	</fields>
+</metadata>

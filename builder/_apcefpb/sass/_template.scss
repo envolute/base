@@ -1,0 +1,108 @@
+// @CORE TEMPLATE
+// Importante: Não altere este arquivo.
+// Utilize 'custom.css' para sobrescrever as classes abaixo
+
+  html {
+    // overflow é por causa do módulo vertical-menu que atribui 'overflow-y: auto' à tag <html>
+    // isso causa conflito com a funcionalidade 'modal' do bootstrap
+    overflow: initial!important;
+  }
+  // mobile
+  @media (max-width: 767px) {
+		html.isMM { overflow-x: hidden; }
+	}
+
+	body { position: relative; }
+
+	// LAYOUT WIDTH
+
+		// fullscreen
+		html.media-sm body.fullScreen .container { width: 100% !important; }
+		// not responsive
+		body.not-responsive .container { width: $container-desktop !important; }
+		body.not-responsive.fullScreen .container { min-width: $container-desktop !important; }
+
+		// Templates do sistema -> Joomla
+		body.component { padding: 10px; }
+		body.component.layout-modal { padding: 10px 0 0; }
+		body.component-modal .wrapper-modal { padding: 5px 0 0; }
+		body.component-modal .wrapper-modal > .container { width: 100%; }
+		body.component-modal .wrapper-modal div.container,
+		body.component-modal .wrapper-modal div[class^="col-xs-"],
+		body.component-modal .wrapper-modal div[class^="col-sm-"],
+		body.component-modal .wrapper-modal div[class^="col-md-"],
+		body.component-modal .wrapper-modal div[class^="col-lg-"] {
+			padding-left: 5px;
+			padding-right: 5px;
+		}
+		body.component-modal .wrapper-modal div.row {
+			margin-left: -5px;
+			margin-right: -5px;
+		}
+
+// COMMON TO VARIOUS ELEMENTS
+
+	.bs-container,
+	.module,
+	#main-content,
+	#right {
+		position: relative;
+	}
+
+	.row-wrapper {
+		margin-left: $base-space;
+		margin-right: $base-space;
+	}
+
+	// mobile
+  @media (max-width: 767px) {
+		.bs-container {
+			position: static;
+		}
+	}
+
+// NAVBAR -> barra de navegação do bootstrap. utilizada para o menu de administração
+
+	// corrige o fechamento da navbar na versão mobile
+	.media-only-xs .navbar-collapse.collapse:not(.in) { display: none!important; }
+
+// NAVTOP -> barra fixa de navegação superior
+
+	.media-sm #navtop.navtop-fixed {
+		position: fixed;
+		width: 100%;
+		z-index: 1029;
+	}
+
+// NAVSIDE -> barra fixa de navegação lateral
+
+	#navside {
+		position: fixed;
+		height: 100%;
+		overflow: auto;
+	}
+	.isMM.media-only-xs #navside { display: none; }
+
+// WRAPPER -> container do template
+
+	.isMM.media-only-xs #wrapper { margin-left: 0!important; }
+
+
+// FOOTER
+
+	.media-to-sm #footer {
+		// fix z-index issue from '#scroll-to-top'
+		-webkit-transform: translate3d(0,0,0);
+			transform: translate3d(0,0,0);
+	}
+
+// HIDDEN -> área reservada a toda informação que não deva aparecer na página
+
+	#hidden {
+		position: fixed;
+		bottom: -10px;
+		left: -10px;
+		width: 1px;
+		height: 1px;
+    z-index: $zindex-modal;
+	}

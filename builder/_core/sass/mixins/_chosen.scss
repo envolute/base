@@ -17,13 +17,56 @@
 		max-width:100% !important;
 		text-align: left;
 	}
-	select.form-control + .#{$class}-container { width: 100%!important; }
 
+		// bootstrap
+		select.pull-left + .#{$class}-container { float: left!important; }
+		select.pull-right + .#{$class}-container { float: right!important; }
+		select.form-control + .#{$class}-container { width: 100%!important; }
+		.input-group .#{$class}-container {
+			display: table-cell;
+			position: relative;
+			z-index: 3;
+			float: left;
+			margin-bottom: 0;
+		}
+		.input-group .#{$class}-container:last-child .#{$class}-single,
+		.input-group .#{$class}-container:last-child .#{$class}-choices {
+			border-bottom-left-radius: 0;
+			border-top-left-radius: 0;
+		}
+		.input-group .#{$class}-container:first-child .#{$class}-single,
+		.input-group .#{$class}-container:first-child .#{$class}-choices {
+			border-bottom-right-radius: 0;
+			border-top-right-radius: 0;
+		}
+		.input-group .#{$class}-container:not(:first-child):not(:last-child) .#{$class}-single,
+		.input-group .#{$class}-container:not(:first-child):not(:last-child) .#{$class}-choices {
+			border-radius: 0;
+		}
+
+	// set border-color default
+	.#{$class}-container-single .#{$class}-single,
+	.#{$class}-container-multi .#{$class}-choices {
+		color: $input-color;
+	  background: $input-bg;
+		@include build-prefix-values('box-shadow', 'inset 0 1px 1px rgba(0,0,0,.075)');
+	}
+	.#{$class}-container-single:not(.#{$class}-container-active) .#{$class}-single,
+	.#{$class}-container-multi:not(.#{$class}-container-active) .#{$class}-choices {
+		border-color: $input-border;
+	}
+	// set active shadow
+	.#{$class}-container-single.#{$class}-container-active .#{$class}-single,
+	.#{$class}-container-multi.#{$class}-container-active .#{$class}-choices {
+		$color-rgba: rgba(red($input-border-focus), green($input-border-focus), blue($input-border-focus), .6);
+		border-color: $input-border-focus!important;
+		outline: 0;
+		@include build-prefix-values('box-shadow', 'inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px '+$color-rgba+'!important');
+	}
 	// altura single and multiple
 	.#{$class}-container-single .#{$class}-single,
 	.#{$class}-container-multi .#{$class}-choices {
 		min-height: $input-height-base;
-		border-color: $input-border;
 		@include build-prefix-values('border-radius', $border-radius-base);
 	}
 	.input-sm + .#{$class}-container-single .#{$class}-single,
@@ -73,14 +116,20 @@
 	.#{$class}-container-multi .#{$class}-choices li.search-field { padding: 4px 0 0; }
 	.input-sm + .#{$class}-container-multi .#{$class}-choices li.search-field { padding: 2px 0 0; }
 
-	.#{$class}-container .search-field input { width: 100%!important; }
+	.#{$class}-container-single .#{$class}-search input[type="text"] { padding: 2px 20px 2px 6px!important; }
 	.#{$class}-container-single .#{$class}-search input[type="text"],
 	.#{$class}-container-multi .#{$class}-choices li.search-field input[type="text"] {
-		min-height: 1em;
+		min-height: 1em!important;
 		height: auto;
 		margin: 0;
 	}
-	.#{$class}-container-multi .#{$class}-choices li.search-field input[type="text"] { padding: 0 5px; }
+	.#{$class}-container-multi .#{$class}-choices li.search-field input[type="text"] {
+		padding: 0 5px;
+		&:focus {
+	    outline: 0;
+	    @include build-prefix-values('box-shadow', 'none');
+	  }
+	}
 	.#{$class}-container-multi .#{$class}-choices li.search-choice { margin: 5px 2px 0px; }
 	.input-sm + .#{$class}-container-multi .#{$class}-choices li.search-choice { margin: 3px 1px 0px; }
 
@@ -91,6 +140,7 @@
 		border-top-width: 1px!important;
 		@include build-prefix-values('border-radius', 0 0 $border-radius-base $border-radius-base);
 		overflow: hidden;
+		z-index: $zindex-chosen;
 	}
 	.input-sm + .#{$class}-container .#{$class}-drop { top: 97%; }
 

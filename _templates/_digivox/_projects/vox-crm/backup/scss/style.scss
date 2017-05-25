@@ -1,0 +1,17 @@
+// @STYLE
+// Esse arquivo deve conter todas as classes para customização do template do projeto.
+
+// variables
+@import "custom/variables";
+// mixins
+@import "custom/mixins";
+
+// Templates Core
+@import "custom/bootstrap/imports";
+@import "custom/core/imports";
+// Template custom elements
+@import "custom/elements/imports";
+// Template custom
+@import "custom/animate";
+@import "custom/template";
+@import "custom/default";

@@ -1,0 +1,17 @@
+// BASEICONS
+// Opções para customização de ícones
+
+  // Contextual Colors
+  [class*="base-icon-"].icon-color-live:before { color: $base-color-live; }
+  [class*="base-icon-"].icon-color-white:before { color: #fff; }
+  [class*="base-icon-"].icon-color-primary:before { color: $brand-primary; }
+  [class*="base-icon-"].icon-color-success:before { color: $brand-success; }
+  [class*="base-icon-"].icon-color-info:before { color: $brand-info; }
+  [class*="base-icon-"].icon-color-warning:before { color: $brand-warning; }
+  [class*="base-icon-"].icon-color-danger:before { color: $brand-danger; }
+
+  // NAV MENU ICON
+  // Integração com o componente 'nav-menu'
+  .nav.menu a[class*="base-icon-"]:before {
+    margin-right: .3em;
+  }

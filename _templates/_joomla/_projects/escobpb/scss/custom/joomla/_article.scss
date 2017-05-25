@@ -1,0 +1,210 @@
+// ITEM-PAGE
+// detalhamento do conteúdo
+
+  .item-page { position: relative; }
+
+  // HEADERS
+  .item-page #content-title {
+    margin: 0;
+    padding-bottom: $base-space-lg;
+  }
+
+  // ACTIONS -> botões de ação (imprimir, enviar, editar)
+  .item-page .item-actions {
+    margin-bottom: $base-space-xs;
+    padding: 8px 0;
+    text-align: right;
+    border-top: 1px solid #e8e8e8;
+  }
+  // CUSTOM -> Content Tab Menu
+  // Simula um menu de conteúdo a partir de uma Tab
+  .content-tab-menu .item-page .item-actions {
+    margin-bottom: -35px;
+  }
+  // Esconde o texto do botão, mostra apenas o ícone
+  .item-actions .btn {
+    width: 27px;
+    overflow: hidden;
+  }
+  .item-actions .btn span {
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+
+  // EXTRAVOTE -> sistema de votação/hating
+  .item-page .extravote { float:left; margin:-2px 10px; }
+
+  // FONT-SIZE: botões para aumentar e diminuir o tamanho da fonte
+  html:not(.media-md)  .item-page #fontsize { display: none; }
+  .item-page #fontsize .btn span { margin: 0; }
+  .item-page #fontsize .btn.a-min span { font-size:8px; }
+  .item-page #fontsize .btn.a-reset span { font-size:10px; }
+  .item-page #fontsize .btn.a-max span { font-size:12px; }
+
+  // EDIT: botão de editar
+  .item-actions + .btn-sm {
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0.9;
+  }
+  .item-actions + .btn-sm .icon-edit { margin-right: 5px; }
+
+  // IMAGE FULL
+  .item-image { margin: 0 auto 1em; }
+  @include media-breakpoint-up(sm) {
+    .item-image.to-left {
+      width: 42%;
+      float: left;
+      margin: 0 2% 1em 0;
+    }
+    .item-image.to-right {
+      width: 42%;
+      float: right;
+      margin: 0 0 1em 2%;
+    }
+  }
+
+	// CAPTION -> legenda da imagem
+	p.img_caption {
+		margin: 8px 0 0;
+		padding: 2px 0;
+    font-size: .9rem;
+		color: $text-muted;
+		clear: both;
+	}
+
+  // TAGS -> lista de tags do conteúdo
+  .item-page .tags {
+    margin:0;
+    background:none;
+  }
+
+  // TOC -> tabela de conteúdos (menu gerado quando há quebra de página)
+  .item-page .article-index {
+    margin: 0 0 20px 20px;
+    padding: 5px;
+    font-size: 13px;
+    border: 1px solid $base-border-color;
+		@if $base-enable-rounded { border-radius: $border-radius; }
+	  @else { border-radius: 0; }
+    background-color: $gray-lighter;
+    overflow: hidden;
+  }
+  html:not(.media-md)  .item-page .article-index {
+    float: none!important;
+    margin: 0 0 20px;
+  }
+  .item-page .article-index ul {
+    margin:0!important;
+    border:0!important;
+  }
+  .item-page .article-index li {
+    margin: 0!important;
+    border-bottom: 1px solid $base-border-color!important;
+  }
+  .item-page .article-index li a {
+    padding: 6px 8px;
+    margin: 0!important;
+    border: 0!important;
+    border-radius: 0!important;
+  }
+  .item-page .article-index li:not(.active) a:hover {
+    background-color: $gray-lighter;
+  }
+  .item-page .article-index li:last-child {
+    border: 0!important;
+    background-color:$gray-lighter;
+  }
+  // contador de quebras de páginas - (ex: página 1 de 4)
+  .item-page .pagenavcounter {
+    font-weight: bold;
+    margin-bottom: 1em;
+  }
+
+  // CONTENT -> Headers
+  .item-page .content-text h2,
+  .item-page .content-text h3 {
+    margin-top: $base-space-lg;
+  }
+
+  // LINKS -> listagem de links do conteúdo
+  .item-page .content-links { margin:30px 0; }
+
+  // PAGER -> links para navegação entre as 'PÁGINAS'
+  .item-page .pager:not(.pagenav) li {
+    min-width: 60px;
+    padding: 6px 8px;
+    margin-left: 2px;
+    font-size: 13px;
+    color: $gray-light;
+    border: 1px solid $base-border-color;
+		@if $base-enable-rounded { border-radius: $border-radius; }
+	  @else { border-radius: 0; }
+    background-color: $gray-lighter;
+  }
+  .item-page .pager:not(.pagenav) li a {
+    float: none;
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+  }
+  .item-page .pager:not(.pagenav) li a:hover { background-color: transparent; }
+
+  // DESIGN: PAGENAV -> links para navegação entre 'ARTIGOS'
+  .item-page .pagenav-before { margin: 0 0 $base-space; }
+  .item-page .item-actions + .pagenav-before { margin-top: -$base-space; }
+  .media-md .item-page .pagenav-before { display: none; }
+
+  .item-page .pagenav-after { margin: $base-space 0; }
+  .media-md .item-page .pagenav-after { margin-top: $base-space * 2; }
+
+  .item-page .pagenav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .item-page .pagenav-before li { position: relative; }
+  .item-page .pagenav li.previous { float:left; }
+  .item-page .pagenav li.next {
+    left: auto!important;
+    right: 0;
+    float:right;
+  }
+  .item-page .pagenav li a {
+    display: block;
+    width: 30px;
+    text-indent: -9999px;
+    border-width: 0;
+    background: url(../images/core/arrows.png) no-repeat 1px -170px;
+    opacity: 0.2;
+    transition: opacity .15s ease-in-out;
+    z-index:999;
+  }
+  .item-page .pagenav li.next a { background-position: -170px -170px; }
+  .item-page .pagenav li a:hover {
+    background-color: transparent!important;
+    opacity:0.7;
+  }
+
+  // setas laterais
+  @media (min-width: 1300px) {
+    body:not(.fullScreen) .item-page .pagenav { margin: 0; }
+    body:not(.fullScreen) .item-page .pagenav li { position: fixed; top: 45%; left: 0; z-index: 99 }
+    body:not(.fullScreen) .item-page .pagenav li a { width: 60px; height: 88px; background-position: 5px 1px; }
+    body:not(.fullScreen) .item-page .pagenav li.next a { background-position: -145px 1px; }
+  }
+
+  // tags
+  div.tags .label {
+    display: inline-block;
+    padding: 3px 5px 2px;
+    margin-top: 3px;
+    font-family: $base-font-condensed;
+    font-size: 12px;
+    font-weight: normal!important;
+    text-transform: uppercase;
+    text-shadow: -1px -1px 0 rgba(0,0,0,0.4);
+		@if $base-enable-rounded { border-radius: 3px; }
+	  @else { border-radius: 0; }
+  }

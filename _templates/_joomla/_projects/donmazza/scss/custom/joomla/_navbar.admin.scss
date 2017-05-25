@@ -1,0 +1,119 @@
+// ADMIN NAVBAR
+
+  // ÁREA DE CONTEÚDO
+  // Quando a navbar está ativa, a área de conteúdo é posicionada mais abaixo
+  // para que não fique por trás da navbar.
+  // IMPORTANTE: O posicionamento era feito na div "#wrapper". Mas isso estava alterando
+  // o posicionamento da modal quando utilizado o plugin "modals". Assim o posicionamento
+  // passou a ser realizado na div "#screen"
+  #{$base-break-up}.isAdmin #screen { padding-top: $admin-navbar-height; }
+
+  // NAVBAR
+  #cmstools.navbar {
+    font-size: 13px;
+    font-family: arial;
+  }
+  #cmstools.navbar [class*="base-icon-"]:before { font-size: 14px; }
+  #{$base-break-up} #cmstools.navbar {
+    height: $admin-navbar-height;
+    padding: 0;
+  }
+  #{$base-break-up} #cmstools.fixed-top {
+    opacity: $admin-navbar-opacity;
+    box-shadow: 0px 1px 3px rgba(0,0,0,0.3);
+  }
+  // Navegação em dispositivos móveis
+  #{$base-break-down} #cmstools.fixed-top {
+    position: relative!important;
+  }
+  #cmstools .navbar-toggler {
+    background-color: $gray-light;
+  }
+  // Quando o vertical menu estiver habilitado
+  body.sm-container #cmstools .navbar-toggler {
+    margin-left: $admin-navbar-toggler-margin;
+  }
+  // Inverted/Primary
+  #cmstools.navbar.bg-inverse,
+  #cmstools.navbar.bg-primary,
+  #cmstools.navbar.bg-inverse a,
+  #cmstools.navbar.bg-primary a {
+    color: darken(#fff, 15%);
+  }
+  // Collapsed
+  #cmstools .navbar-collapse.show { padding-top: $base-space; }
+
+  // NAV MENU
+
+    // LINKS
+    #cmstools.navbar .nav.menu a { }
+
+      // HOVER & ACTIVE STATES
+      //-> Light
+      #cmstools.navbar-light .nav.menu li:not(.active) > a:hover,
+      #cmstools.navbar-light .nav.menu li:not(.active) > a:focus,
+      #cmstools.navbar-light .nav.menu li.parent:not(.active):hover > a,
+      #cmstools.navbar-light .nav.menu li.opened:not(.active) > a {
+        color: $link-hover-color;
+        background-color: rgba($gray-dark, .8);
+      }
+      //-> Inverse
+      #cmstools.bg-inverse .nav.menu li > a:hover,
+      #cmstools.bg-inverse .nav.menu li > a:focus,
+      #cmstools.bg-inverse .nav.menu li.parent:hover > a,
+      #cmstools.bg-inverse .nav.menu li.active > a,
+      #cmstools.bg-inverse .nav.menu li.opened > a {
+        color: #fff;
+        background-color: #000;
+      }
+      //-> Primary
+      #cmstools.bg-primary .nav.menu li > a:hover,
+      #cmstools.bg-primary .nav.menu li > a:focus,
+      #cmstools.bg-primary .nav.menu li.parent:hover > a,
+      #cmstools.bg-primary .nav.menu li.active > a,
+      #cmstools.bg-primary .nav.menu li.opened > a {
+        color: #fff;
+        background-color: darken($brand-primary, 4%);
+      }
+
+    // ITENS PRINCIPAIS -> NÍVEL 1
+    #{$base-break-up} #cmstools.navbar .nav.menu > li > a {
+      padding: $admin-navbar-item-padding-y $admin-navbar-item-padding-x;
+    }
+    #{$base-break-down} #cmstools.navbar .nav.menu > li > a {
+      padding: ($admin-navbar-item-padding-y / 2);
+    }
+
+    // NAV CHILD
+    #cmstools .nav.menu:not(.nav-stacked) .nav-child {
+      padding: 0;
+      border-width: 1px 0 0;
+      box-shadow: 2px 3px 3px rgba(0,0,0,0.2);
+    }
+    #{$base-break-up} #cmstools.navbar .nav-child .nav-child {
+      margin-top: $admin-navbar-navchild-child-top !important;
+    }
+    #cmstools.navbar .nav.menu .nav-child a:not(.child-reveal) {
+      padding: ($admin-navbar-item-padding-y / 2) $admin-navbar-item-padding-x;
+    }
+      //-> Light
+      #cmstools.navbar-light .nav.menu .nav-child {
+        border-color: darken($body-bg, 3%); // bg-faded
+        background-color: darken($body-bg, 3%); // bg-faded
+      }
+      //-> Inverse
+      #cmstools.bg-inverse .nav.menu .nav-child {
+        border-color: $brand-inverse;
+        background-color: $brand-inverse;
+      }
+      #cmstools.bg-inverse .nav.menu .nav-child .divider {
+        background-color: #222;
+      }
+      //-> Primary
+      #cmstools.bg-primary .nav.menu .nav-child {
+        border-color: $brand-primary;
+        background-color: lighten($brand-primary, 1%);
+      }
+      #cmstools.bg-primary .nav.menu .nav-child .divider {
+        background-color: lighten($brand-primary, 5%);
+      }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="editors-xtd" method="upgrade">
+	<name>plg_editorsxtd_baseicons</name>
+	<author>Envolute Tecnologia</author>
+	<creationDate>Oct 2014</creationDate>
+	<copyright>Copyright (C) 2005 - 2012 Open Source Matters. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorEmail>dev@envolute.com</authorEmail>
+	<authorUrl>www.envolute.com</authorUrl>
+	<version>1.0.2</version>
+	<description>PLG_EDITORSXTD_BASEICONS_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="baseicons">baseicons.php</filename>
+		<filename>index.html</filename>
+		<filename>icons_display.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB.plg_editors-xtd_baseicons.ini</language>
+		<language tag="en-GB">language/en-GB.plg_editors-xtd_baseicons.sys.ini</language>
+		<language tag="pt-BR">language/pt-BR.plg_editors-xtd_baseicons.ini</language>
+		<language tag="pt-BR">language/pt-BR.plg_editors-xtd_baseicons.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+
+				<field type="spacer" name="spacerwarn" label="PLG_EDITORSXTD_BASEICONSBTN_WARN" />
+
+			</fieldset>
+		</fields>
+	</config>
+</extension>

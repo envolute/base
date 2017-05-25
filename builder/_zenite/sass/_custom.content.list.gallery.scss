@@ -1,0 +1,82 @@
+// IMAGE GALLERY
+// Formato que possibilita um layout em formato de álbum
+// desde listagens básicas até itens de catálogo ou galerias de imagens...
+
+  // moldura -> para colocar o item em um container é utilizada a class 'thumbnail'
+  .view-category-base .item.thumbnail {
+    padding: 10px;
+    margin: 15px 0;
+  }
+  .view-category-base .item.thumbnail.list-md { padding: 5px; }
+  .view-category-base .item.thumbnail.list-sm { padding: 2px; }
+
+  // botõo de editar
+  .view-category-base .item.thumbnail .edit-icon {
+    position: absolute;
+    top: -22px;
+    right: 4px;
+    z-index: 99;
+  }
+  .view-category-base .item.thumbnail .edit-icon .btn {
+    @include build-prefix-values('border-bottom-left-radius', 0);
+    @include build-prefix-values('border-bottom-right-radius', 0);
+  }
+
+  // informações de publicação
+  .view-category-base .view-category-base .item.thumbnail .item-publish-info .hlist {
+    width: 100%;
+  }
+  // plugins -> rating e outros mais...
+  .view-category-base .item.thumbnail .item-plugin { margin-bottom:9px; }
+
+  // link 'leia mais'
+  .view-category-base .item.thumbnail a.readmore { clear:both; }
+
+  // IMPORTANT: elimina o espaçamento inferior da caixa
+  .view-category-base .item.thumbnail > .clearfix { margin-top:-9px; }
+
+  // DESIGN: LIST -> listagem simples de conteúdo
+  .view-category-base .item.in-list { border-bottom: 1px dotted $base-border-color; }
+
+  // video-gallery -> itens da galeria de vídeos
+  body.video-gallery .item .item-image a .item-image-layer {
+    background-image: url('../core/images/icon-video-player.png');
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  // IMAGE ZOOM
+  // link para ampliar a imagem.
+  // possibilita visualizar a imagem mesmo quando a imagem linka para o conteúdo
+  a.img-zoom {
+    display:block;
+    position:absolute;
+    top:0;
+    right:0;
+    width:38px;
+    height:38px;
+    text-indent:-9999px;
+    background:url("../core/images/img-zoom.png") no-repeat;
+    z-index:99;
+  }
+  .thumbnail a.img-zoom {
+    @include build-prefix-values('border-radius', '0 3px 0 0');
+  }
+
+  // EXTRAVOTE -> sistema de votação/hating
+  // when show extravote before title
+  .item.thumbnail .extravote { margin:0; }
+  .item.thumbnail.list-lg .extravote { margin:0 5px; }
+  .item.thumbnail .extravote-info { display:none; }
+
+  // KOMENTO -> sistema de comentários
+  // read only - content plugin
+  .kmt-readon { width:auto; font-size:0.85em; }
+  .kmt-readon span.aligned-right { margin-left: 10px; }
+  .kmt-readon span.kmt-readmore { font-weight: bold; }
+  // inside thumbnail -> gallery
+  .item.thumbnail .kmt-readon {
+    margin: 0 0 -9px;
+    font-size: 11px;
+  }
+  .item.thumbnail.list-lg .kmt-readon {   margin: 15px 0 0 -10px; }

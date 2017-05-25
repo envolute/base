@@ -1,0 +1,299 @@
+// @CORE ELEMENTS
+// CUSTOMIZAÇÕES PADRÃO PARA ELEMENTOS DO SISTEMA
+// Incluindo componentes nativos e extensões da 'BASE'
+
+// BASE 'ELEMENTS'
+// Elementos do template BASE
+
+	// NAV MENU
+
+		// atribui 'hover' a class 'hovered'
+		.nav.menu li.parent:not(.active):hover > a { background-color: $nav-link-hover-bg; }
+
+		// child reveal
+		.nav.menu a.child-reveal {
+	    padding: 0 0 0 10px;
+	    margin-left: 8px;
+			color: inherit;
+	    border-left: 1px solid $base-border-color;
+		}
+		.media-only-xs .nav.menu a.child-reveal { padding-left: 15px; }
+		.media-only-xs .nav.menu .nav-child a.child-reveal { padding-right: 5px; }
+
+		// submenus mobile
+		.media-only-xs .nav.menu .nav-child .nav-child {
+			border-width: 1px 0 0 15px;
+			border-style: solid;
+			border-color: $base-border-color;
+			@include build-prefix-values('box-shadow', 'none');
+		}
+
+	// BXSLIDER
+	// slider padrão do sistema BASE
+
+		// geral
+		.bx-wrapper .bx-pager-item {
+			font-size: inherit!important;
+			line-height: inherit!important;
+		}
+		.bx-wrapper .bx-pager.bx-default-pager a.active,
+		.bx-wrapper .bx-pager.bx-default-pager a:hover {
+	    background: $base-color-live!important;
+		}
+		.bx-wrapper ul {
+	    padding: 0!important;
+		  margin: 0!important;
+		}
+		.bx-wrapper .bx-caption {
+	    background: rgba(0,0,0,0.75);
+		}
+		.bx-wrapper img { margin: auto; }
+		// custom
+		.no-border .bx-wrapper {
+	    border: none;
+	    background: transparent;
+			@include build-prefix-values('box-shadow', 'none');
+		}
+		// fullscreen
+		// imagens como background
+		.slider-fullScreen .bx-viewport,
+		.slider-fullScreen .bx-wrapper{
+			position:relative;
+			width:100%;
+			height:100% !important;
+			top:0;
+			left:0;
+			margin: 0 auto;
+		}
+		.slider-fullScreen .bx-wrapper ul,
+		.slider-fullScreen .bx-wrapper ul li {
+			height: 100%;
+			max-height: 100vh !important;
+		}
+		.slider-fullScreen .bx-wrapper ul li {
+			background-repeat: no-repeat;
+			background-position: top center;
+			background-size: cover;
+		}
+		.slider-fullScreen .bx-controls {
+	    position: absolute;
+	    width: 100%;
+	    bottom: 40px;
+		}
+
+	// CHANGE PASS
+	// modal para mudança de senha
+	#modal-changePass {
+		color: $text-color;
+		text-shadow: none;
+	}
+
+	// LOAD ACTIVITY
+	// loader
+	#loader {
+		position: fixed;
+		left: 0;
+		bottom: -60px; // height + 5 -> hidden loader
+		opacity: 0;
+		width: 100%;
+		height: 30px;
+		margin: 0;
+		padding: 0;
+		text-align: center;
+		background-color: $loader-bg;
+		@include build-prefix-values('box-shadow', 'none');
+		@include build-prefix-values('transition', 'all .3s ease-in-out');
+		z-index: -1;
+	}
+	#loader.active {
+		bottom: 0;
+		opacity: 1;
+		z-index: 99999;
+	}
+	#loader.fullScreen {
+		top: 0;
+		bottom: auto;
+		height: 100%;
+    background-color: $loader-full-bg;
+	}
+	#loader .progress-bar {
+		position: absolute;
+		bottom: -4px;
+		width: 100%;
+		height: 15px;
+	}
+	#loader.fullScreen img { margin-top: 200px; }
+
+// JOOMLA 'ELEMENTS'
+// Customizações para módulos e plugins do joomla
+// Elementos que podem aser visualizados em qualquer página ou comum a vários componentes
+
+	// descrição da categoria
+	div.category-desc {
+		margin: 10px 0;
+		line-height:1.3em;
+	}
+
+  // paginação
+  #view-pagination-base { text-align: center; }
+	#view-pagination-base p.counter { margin: 30px 0 10px;}
+	#view-pagination-base p.counter + ul.pagination { margin-top:0; }
+
+	// USERS
+
+		// LOGIN
+		// módulo de login default
+		.module .page-header + .module-body .userdata { margin-top: $base-space-lg; }
+		// logout -> profile & modal
+		.view-profile .mod-login .page-header,
+		.logout-modal #cboxWrapper .login-greeting { display: none; }
+
+	// COM_MEDIA
+	// formata a janela modal para publicação de imagens no conteúdo
+
+		.com_media.view-images .control-label,
+		.com_media.view-images .controls,
+		.com_media.view-images .help-block {
+			margin: 0!important;
+			display: inline;
+		}
+		.com_media.view-images .help-block {
+			font-size: 11px;
+			color: $brand-danger;
+		}
+		.com_media.view-images #imageForm .well {
+			padding: 10px 25px 0;
+			margin: 0;
+		}
+		.com_media.view-images #imageframe { height: 285px; }
+		.com_media.view-imagesList ul.thumbnails {
+			padding: 10px 0;
+			margin-left: -5px;
+		}
+		.com_media.view-imagesList ul.thumbnails > li {
+			width: 88px!important;
+			margin: 0 0 5px 5px;
+		}
+		.com_media.view-imagesList ul.manager.thumbnails [class^="icon-"] {
+			font-size: 50px;
+			width: 50px;
+			line-height: 50px;
+			color: #fc0;
+		}
+		.com_media.view-images #imageframe + .well {
+			width: 48%;
+			margin-right: 2%;
+			float: left;
+		}
+		.com_media.view-images #imageframe + .well .span6,
+		.com_media.view-images #imageframe + .well .controls,
+		.com_media.view-images #imageframe + .well input { width: 100%; }
+		.com_media.view-images #uploadform {
+			width: 50%;
+			float: left;
+			padding: 10px 10px 0;
+			margin: 0;
+		}
+		.com_media.view-images #upload-submit { margin-top: 10px; }
+
+	// JEVENTS
+	// Publicação de eventos
+
+		// MÓDULO DE CALENDÁRIO
+		.jeventsCal {
+			position: relative;
+			top: -1px;
+			outline: none;
+		}
+		// padronização dos campos de formulário
+		div#jevents input, div#jevents textarea, div#jevents inputbox {
+		  padding: $padding-base-vertical $padding-base-horizontal;
+		}
+
+	// DROPPICS
+	// galeria de imagens
+
+		// DEFAULT
+		.droppicspictures {
+			margin-left: -10px;
+			margin-right: -10px;
+		}
+		.droppicsgallerydefault .wimg a { display: block; }
+		.droppicsgallerydefault .img {
+			margin: 5px;
+			border: 5px solid #fff;
+			@include build-prefix-values('box-shadow', '0 0 5px rgba(0,0,0,0.1)');
+		}
+		.droppicsgallerydefault .wimg a:hover .img {
+			@include build-prefix-values('box-shadow', '0 0 5px rgba(0,0,0,0.3)');
+		}
+
+	// ACYMAILING
+	// newsletter
+
+		// module
+		.acymailing_module .acymailing_introtext {
+			margin-bottom: 10px!important;
+			font-size: 0.9em;
+			line-height: 1.3em;
+		}
+		.acymailing_module .acysubbuttons {
+			display: inline;
+			text-align:inherit;
+		}
+		// desktop
+		.media-md .onefield {
+			display: inline-block;
+			margin-right: 10px;
+		}
+
+	// REGULAR LABS -> NONUMBER EXTENSIONS
+	// extensões Regular Labs
+
+		// TABS
+		.nn_tabs-responsive {
+			margin-bottom: 10px;
+			clear: both;
+		}
+		.nn_tabs > .tab-content > .tab-pane .nn_tabs-title { display: none; }
+		// opção de título na impressão
+		.tab-content > .tab-pane .tab-title { display: none; }
+
+		// MODALS
+		#colorbox {
+			border: none;
+			@include build-prefix-values('border-radius', '0!important');
+		}
+		#cboxTitle { font-size: 16px; }
+		#cboxCurrent, #cboxNext, #cboxPrevious, #cboxSlideshow {
+			@include build-prefix-values('border-radius', '0!important');
+			@include build-prefix-values('box-shadow', 'none');
+		}
+		#cboxNext { background-position: -26px 0; }
+		#cboxCurrent {
+			bottom: 20px;
+			right: 20px;
+			border-width: 3px 7px;
+		}
+		// modal sem o header
+		#colorbox.no-header #cboxTitle { display: none!important; }
+		#colorbox.no-header #cboxLoadedContent { margin-top: 0!important; }
+		#colorbox.no-header #cboxClose { top: 2px; right: 2px; }
+
+	// VERTICAL MENU
+	// Módulo para menus verticais...
+
+		// mantém o menu 'mobile' abaixo da modal default do bootstrap
+		.menu-icon-cont { zindex: 1049!important; }
+
+	// FACEBOOK SHARE BUTTONS
+	// Plugin para botões de compartilhamento
+
+		// o botão "like" gera um iframe que precisa ter o tamanho definido, maior que o seu container
+		.we_fblikeplg iframe { max-width: none!important; }
+
+	// MOD LCA
+	// Módulo de listagem de publicações por data
+
+		.mod-archive ul { list-style: none!important; }
+		.mod-archive .module-content > ul { padding: 0!important; }

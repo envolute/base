@@ -1,0 +1,41 @@
+// BASE APPLICATION
+// 'base-app' -> crud padrão do 'Sistema BASE'
+
+// IMPORTS
+@import "variables";
+@import "mixins";
+
+  // botões de ação da listagem
+  .base-app .list-toolbar {
+    margin-bottom: 10px;
+    text-align: right;
+  }
+  .media-md #component .base-app .list-toolbar.floating,
+  // no módulo, apenas se tiver o header
+  .media-md .module > .page-header + .module-body .base-app .list-toolbar.floating {
+    position: absolute;
+    top: 0;
+    right: 15px;
+    margin: 0;
+  }
+  .media-md .module > .page-header + .module-body .base-app .list-toolbar.floating {
+    top: 2px;
+    right: 0;
+  }
+  .media-md .base-app .list-toolbar .btn {
+    padding: 6px 5px 5px;
+    line-height: 1;
+  }
+  .base-app .modal .modal-list-toolbar {
+    position: absolute;
+    top: -38px;
+    right: 40px;
+  }
+  .base-app .table th .SETOrder {
+    white-space: nowrap;
+  }
+
+  // PAGE ITENS
+    // image
+    .pageItens-item-image  { max-width: 100%; }
+    body.pageItens #component .pageItens-item-image  { max-height: 100px; } // List Admin Image

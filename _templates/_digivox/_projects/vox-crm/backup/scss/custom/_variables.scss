@@ -1,0 +1,22 @@
+// @CORE VARS
+@import "core/variables";
+@import "bootstrap/variables";
+
+// @CUSTOM VARS
+
+  // Z-INDEX DEFINITIONS
+  // Importante: não deve ser maior que '1030' (navbar)
+  $zindex-chosen:           996 !default;
+  $zindex-toolbar-btns:     997 !default;
+  $zindex-header:           998 !default;
+  $zindex-footer:           998 !default;
+  $zindex-nav-child:        999 !default;
+  $zindex-scroll-to-top:    999 !default;
+  $zindex-datepicker:       1000 !default;
+
+  // TAB
+  $tab-border-size: 3px;
+
+  // HEADER
+  $header-height: 48px;
+  $logo-width: 135px

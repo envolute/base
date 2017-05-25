@@ -1,0 +1,37 @@
+// MODALS -> Regular Labs
+#colorbox {
+  border: none;
+  @if $base-enable-rounded { border-radius: $border-radius!important; }
+  @else { border-radius: 0!important; }
+  background-color: rgba($black, .8);
+  box-shadow: 0 0 30px rgba($brand-primary, .2);
+}
+#cboxLoadedContent * {
+  // IMPORTANTE:
+  // Corrige a largura dos 'inputs'
+  // Essa definição não vem por padrão no Bootstrap 4
+  box-sizing: border-box;
+}
+#cboxTitle {
+  font-size: 16px;
+  @extend .modal-header;
+}
+#cboxClose {
+  background-color: $brand-primary!important;
+  opacity: .5;
+  filter: alpha(opacity=50);
+}
+#cboxCurrent, #cboxNext, #cboxPrevious, #cboxSlideshow {
+  border-radius: 0!important;
+  border-color: #000;
+  background-color: #000;
+  box-shadow: none;
+}
+#cboxNext { background-position: -26px 0; }
+#cboxCurrent {
+  bottom: 20px;
+  right: 20px;
+  font-weight: normal;
+  font-size: 12px;
+  border-width: 3px 7px;
+}

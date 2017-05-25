@@ -1,0 +1,33 @@
+// COM_CONTENT
+// sistema de conteúdo
+
+  // descrição da categoria principal
+  .page-header + .category-desc {
+    border-bottom: 1px solid $base-border-color;
+    @include build-prefix-values('box-shadow', '0 1px 0 '$base-border-color-inverted);
+  }
+
+  // informações de publicação
+  .item-publish-info {
+    margin-bottom: $base-space-xs;
+    line-height: 1em;
+  }
+  .media-only-xs .item-publish-info { display: none; }
+
+  // imagem principal -> responsiva
+  .item-image, .item-image * { max-width:100%; }
+
+	// IMPORTANT:
+	// quando a imagem principal for alinhada a esquerda ou direita 'pull-[left/right]'
+	// terá um tamanho máximo de 40% com margem lateral de 2%. Isso gera um valor exato de 42%
+	// com isso, temos um valor exato de 58% para posicionar um elemento ao lado da imagem principal
+	.item-image[class*='obj-to-'] > a { display: block; }
+	.media-sm .item-page .item-image.obj-to-left { max-width: 40%; margin-right: 2%; }
+	.media-sm .item-page .item-image.obj-to-right { max-width: 40%; margin-left: 2%; }
+	.media-only-xs .item-page .item-image.obj-to-left,
+	.media-only-xs .item-page .item-image.obj-to-right,
+	.item-page .item-image.obj-to-none { margin: 0 0 2em; }
+
+  // EXTRAVOTE
+  // sistema de votação/hating
+  .media-only-xs .extravote-info { display:none; }

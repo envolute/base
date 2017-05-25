@@ -1,0 +1,35 @@
+// ACY MAILING
+// Componente para envio de newsletters
+
+  // COMPONENTE
+
+  // MÓDULO
+
+    // Container dos campos
+    .onefield { margin-bottom: .5rem!important; }
+
+    // descrição
+    .acymailing_introtext {
+      font-size: .9rem;
+    }
+
+    // Checkbox para termos
+    .fieldacyterms { font-size: .9rem; }
+    .fieldacyterms input[type="checkbox"] { vertical-align: middle; }
+
+    // Buttons
+    .acysubbuttons {
+      margin-bottom: 0;
+      text-align: left!important;
+    }
+
+    // Error
+    input.invalid,
+    textarea.invalid {
+      border-color: $state-danger-border!important;
+      background-color: $state-danger-bg!important;
+    }
+    .invalid {
+      color: $state-danger-text!important;
+      font-weight: normal;
+    }

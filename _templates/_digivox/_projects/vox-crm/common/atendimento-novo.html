@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html class="isMM media-md" xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt-BR" lang="pt-BR">
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="rights" content="@envolute.com" />
+
+	<title>Envolute App</title>
+
+	<link href="favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+
+	<!-- jQuery -->
+	<script src="libs/template/jquery/jquery-1.12.4.min.js" type="text/javascript"></script>
+	<script>jQuery.noConflict();</script>
+	<script src="libs/template/jquery/jquery-ui.min.js" type="text/javascript"></script>
+	<!--script src="libs/template/jquery/jquery-migrate-1.2.1.min.js" type="text/javascript"></script-->
+
+	<!-- css template -->
+	<link rel="stylesheet" href="css/style.css" type="text/css" />
+	<link rel="stylesheet" href="libs/template/jquery/jquery-ui.min.css" type="text/css" />
+	<link rel="stylesheet" href="libs/forms/editor/ui/trumbowyg.min.css" type="text/css" />
+  <link rel="stylesheet" href="_dev/custom.css" type="text/css" />
+
+	<!-- css print -->
+	<link rel="stylesheet" href="css/style.print.css" type="text/css" media="print" />
+
+	<!-- For IE support -->
+	<!--[if IE]>
+		<link href="css/style.ie.css" rel="stylesheet">
+	<![endif]-->
+
+
+</head>
+<body class="site fullScreen">
+
+	<a href="#main-content" class="sr-only">Skip to content</a>
+
+	<!-- Screen -->
+	<div id="screen" class="clearfix">
+
+		<!-- Header -->
+		<nav id="header" class="clearfix">
+			<div class="container bs-container">
+				<div class="row">
+					<div class="col-12">
+						<button name="name" type="button" id="toggleMenu" class="toggle_menu visible-xs visible-sm">
+							<span class="base-icon-menu"></span>
+						</button>
+						<a id="brand" href="index.php"><img class="img-responsive" src="images/logo-site.png" /></a>
+            <a id="brand-client" class="float-right hidden-xs" href="index.php"><img class="img-responsive" src="images/logo-client.png" /></a>
+            <a id="user-edit" class="float-right all-expand hidden-xs hasPopover" href="#" data-placement="bottom" data-content="Gerente de Projeto<br>paulo.montenegro@ioip.com.br">
+              <span class="base-icon-user"></span> Paulo Montenegro
+            </a>
+						<div id="navigation" class="hidden-xs hidden-sm">
+							<ul class="nav nav-pills menu">
+								<!--li><a href="login.html"><span class="base-icon-home"></span></a></li-->
+								<li id="home"><a href="dashboard.html"><span class="base-icon-gauge"></span></a></li>
+								<li id="cadastro" class="parent">
+									<a href="usuarios.html"><span class="base-icon-edit"></span> Cadastros</a>
+									<ul class="nav-child dropdown-menu">
+										<li><a href="#">Usuários</a>
+										<ul class="nav-child dropdown-menu">
+											<li><a href="#">Tipos</a></li>
+											<li><a href="#">Integração</a></li>
+											<li><a href="#">Consultas ao Cliente Remoto</a></li>
+											<li><a href="#">Pacotes de SLA</a></li>
+										</ul></li>
+										<li><a href="#">Perfis</a></li>
+										<li><a href="#">Setores</a></li>
+										<li>
+                      <a href="#">Atendimento</a>
+                      <ul class="nav-child dropdown-menu">
+												<li><a href="#">Motivos de Pausas</a></li>
+												<li><a href="#">Ocorrências [motivo]</a></li>
+												<li><a href="#">Tipos de Ocorrência</a></li>
+												<li><a href="#">Classificações</a></li>
+												<li><a href="#">Click to Call</a></li>
+												<li><a href="#">URL de Validação via URA</a></li>
+												<li><a href="#">Qualificação</a></li>
+												<li><a href="#">Padronização</a></li>
+												<li><a href="#">Modelo de Planilha para Importação</a></li>
+											</ul>
+                    </li>
+										<li>
+                      <a href="#">Clientes</a>
+                      <ul class="nav-child dropdown-menu">
+												<li><a href="#">Tipos</a></li>
+												<li><a href="#">Integração</a></li>
+												<li><a href="#">Consultas ao Cliente Remoto</a></li>
+												<li><a href="#">Pacotes de SLA</a></li>
+											</ul>
+                    </li>
+										<li><a href="#">Localidades</a></li>
+										<li><a href="#">PABX</a></li>
+										<li>
+                      <a href="#">Servidor</a>
+                      <ul class="nav-child dropdown-menu">
+												<li><a href="#">LDAP</a></li>
+												<li><a href="#">SMTP</a></li>
+											</ul>
+                    </li>
+										<li><a href="#">Feriados</a></li>
+										<li>
+                      <a href="#">Formulários</a>
+                      <ul class="nav-child dropdown-menu">
+												<li><a href="#">Padrão</a></li>
+												<li><a href="#">WEB</a></li>
+											</ul>
+                    </li>
+										<li>
+                      <a href="#">CHAT</a>
+                      <ul class="nav-child dropdown-menu">
+												<li><a href="#">Horários de Atendimento</a></li>
+												<li><a href="#">Filas</a></li>
+											</ul>
+                    </li>
+									</ul>
+								</li>
+								<li id="atendimento" class="parent">
+									<a href="usuarios.html"><span class="base-icon-phone-circled"></span> Atendimento</a>
+									<ul class="nav-child dropdown-menu">
+										<li><a href="#">Painel</a></li>
+										<li><a href="#">Pré-Atendimento</a></li>
+										<li><a href="#">Alertas</a></li>
+										<li><a href="#">Agendamentos</a></li>
+										<li><a href="#">Avisos</a></li>
+										<li><a href="#">Scripts</a></li>
+									</ul>
+								</li>
+								<li id="stats" class="parent">
+									<a href="usuarios.html"><span class="base-icon-chart-bar"></span> Estatísticas</a>
+									<ul class="nav-child dropdown-menu">
+										<li><a href="#">Relatórios</a></li>
+										<li><a href="#">Logs de Auditoria</a></li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<!-- wrapper -->
+		<div id="wrapper" class="wrapper">
+
+			<!-- Full Content -->
+			<div id="full-content" class="mob-noNav">
+				<div class="container bs-container">
+					<div class="row">
+
+						<!-- Main Content -->
+						<div id="main-content" class="col-12">
+
+							<!--
+								<div id="user-info">
+									<a href="#" id="alert-calling" class="no-border hidden" onclick="alertCalling(this)">
+										<span class="base-icon-clock"></span>
+									</a>
+                  <a id="eqwe" href="#" class="messages" data-toggle="popover" data-position="fixed" data-viewport="#eqwe" data-placement="left" title="<strong class='base-icon-bell'> Avisos</strong>" data-content="<ul class='list list-striped'><li><strong class='text-xs text-live'>09.06 - 12:00:00</strong><br>Lorem ipsum dolor sit amet</li><li><strong class='text-xs text-live'>09.06 - 12:00:00</strong><br>Lorem ipsum dolor sit amet</li><li><strong class='text-xs text-live'>09.06 - 12:00:00</strong><br>Lorem ipsum dolor sit amet</li><li class='text-right pt-2'><strong class='text-xs'>Ver todos &rarr;</strong></li></ul>">
+										<span class="base-icon-bell"></span>
+										<span class="badge">3</span>
+									</a>
+                  <a href="#" class="queues" data-toggle="popover" data-position="fixed" data-viewport="#eqwe" data-placement="left" onclick="setTodoAction()" title="<strong class='base-icon-list'> Filas de Atendimento</strong>" data-content="<ul class='list-menu list-striped todo'><li><a href='#' class='base-icon-check-empty strong text-live'> Logar em Todas</a></li><li><a href='#' class='base-icon-check-empty'> Suporte</a></li><li><a href='#' class='base-icon-check-empty'> Desenvolvimento</a></li><li><a href='#' class='base-icon-check-empty'> Financeiro</a></li></ul><hr class='my-xs' /><a href='#' class='base-icon-clock text-live text-xs strong'> Pausar todas</a><br /><a href='#' class='base-icon-cancel text-xs text-danger strong'> Sair de todas</a>"><span class="base-icon-list"></span></a>
+									<a href="#" class="queues-chat" data-toggle="popover" data-position="fixed" data-viewport="#eqwe" data-placement="left" onclick="setTodoAction()" title="<strong class='base-icon-comment'> Filas de Atendimento do CHAT</strong>" data-content="<ul class='list-menu list-striped todo'><li><a href='#' class='base-icon-check-empty strong text-live'> Logar em Todas</a></li><li><a href='#' class='base-icon-check-empty'> Suporte</a></li><li><a href='#' class='base-icon-check-empty'> Desenvolvimento</a></li><li><a href='#' class='base-icon-check-empty'> Financeiro</a></li></ul><hr class='my-xs' /><a href='#' class='base-icon-clock text-live text-xs strong'> Pausar todas</a><br /><a href='#' class='base-icon-cancel text-xs text-danger strong'> Sair de todas</a>"><span class="base-icon-comment"></span></a>
+                  <a href="#" class="hasTooltip" data-position="fixed" data-placement="left" title="Configurações do Sistema"><span class="base-icon-cog"></span></a>
+									<a href="#" class="no-border hasTooltip" data-position="fixed" data-placement="left" title="Ajuda do Sistema"><span class="base-icon-lifebuoy"></span></a>
+									<a href="#" class="logout hasTooltip" data-position="fixed" data-placement="left" title="Sair"><span class="base-icon-logout-alt"></span></a>
+								</div>
+							-->
+
+							<div id="content-toolbar" class="clearfix">
+								<h3>Novo Atendimento</h3>
+								<div id="toolbar-btns">
+                  <h3 class="mr-1 ml-1 mt-1">N&ordm; de Protocolo: <span class="text-live">161655331220</span></h3>
+									<button type="submit" name="name" class="btn btn-success" onclick="setAlert('success')"><span class="base-icon-ok btn-icon"></span> Salvar</button>
+                  <a href="#" class="btn btn-primary"><span class="base-icon-ccw"></span> 2&ordf; Via</a>
+                  <a href="#" class="btn btn-primary"><span class="base-icon-mail"></span> Enviar por E-mail</a>
+									<a href="#" class="btn btn-default" onclick="setAlert('danger')"><span class="base-icon-left-big"></span> Descartar</a>
+								</div>
+							</div>
+
+							<div id="content-body" class="fullScreen">
+                <div class="row">
+                  <div class="col-lg-7">
+										<fieldset id="filtro-atendimento" class="fieldset-embed all-expand-sm">
+											<legend><span class="base-icon-user"></span> Cliente</legend>
+                      <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="nav-item active"><a class="nav-link" href="#dadosPrincipais" aria-controls="dadosPrincipais" role="tab" data-toggle="tab">Dados</a></li>
+                        <li role="presentation" class="nav-item"><a class="nav-link" href="#integradas" aria-controls="integradas" role="tab" data-toggle="tab">Informações Integradas</a></li>
+                        <li role="presentation" class="nav-item"><a class="nav-link" href="#formularios" aria-controls="formularios" role="tab" data-toggle="tab">Formulários</a></li>
+                        <li role="presentation" class="nav-item"><a class="nav-link" href="#clienteAnexos" aria-controls="clienteAnexos" role="tab" data-toggle="tab">Anexos</a></li>
+                      </ul>
+                      <div class="tab-content pb-0">
+                        <div role="tabpanel" class="tab-pane active" id="dadosPrincipais">
+                          <div class="row">
+                            <div class="col-md-8 col-lg-12 col-xl-8">
+                              <div class="row">
+																<div class="col-sm-7">
+																	<div class="form-group">
+																		<label>Código</label>
+																		<div class="input-group">
+																			<input type="text" name="name" class="form-control" />
+																			<span class="input-group-btn">
+																				<button type="button" class="base-icon-search btn btn-primary"></button>
+																			</span>
+																		</div>
+																	</div>
+																</div>
+                                <div class="col-12">
+                                  <div class="form-group">
+                                    <label>Nome</label>
+                                    <div class="input-group">
+                                      <input type="text" name="name" class="form-control" />
+                                      <span class="input-group-btn">
+                                        <button type="button" class="base-icon-search btn btn-primary"></button>
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-sm-7">
+                                  <div class="form-group">
+                                    <label>Tipo</label>
+                                    <select name="type" id="type" class="form-control">
+                                      <option value="0">- Selecione -</option>
+                                      <option value="1">Local</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label>Localidade</label>
+                                    <select name="type" id="type" class="form-control">
+                                      <option value="0">- Selecione -</option>
+                                      <option value="1">Local</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label>E-mail</label>
+                                    <input type="text" name="name" class="form-control field-phone" />
+                                  </div>
+                                  <div class="form-group">
+                                    <label>Solicitante</label>
+                                    <div class="input-group">
+                                      <select name="type" id="type" class="form-control">
+                                        <option value="0">- Selecione -</option>
+                                        <option value="1">Local</option>
+                                      </select>
+                                      <span class="input-group-btn">
+                                        <button type="button" class="btn btn-primary hasTooltip" data-animation="false" title="Novo Solicitante">
+                                          <span class="base-icon-plus"></span>
+                                        </button>
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-sm-5">
+                                  <div class="form-group">
+                                    <label>Telefone</label>
+                                    <div class="input-group">
+                                      <input type="text" name="name" class="form-control field-phone" />
+                                      <span class="input-group-btn">
+                                        <a href="#" class="base-icon-phone btn btn-primary hasTooltip" data-animation="false" title="Ligar"></a>
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label>Telefone 2</label>
+                                    <div class="input-group">
+                                      <input type="text" name="name" class="form-control field-phone" />
+                                      <span class="input-group-btn">
+                                        <a href="#" class="base-icon-phone btn btn-primary hasTooltip" data-animation="false" title="Ligar"></a>
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label>Celular</label>
+                                    <div class="input-group">
+                                      <input type="text" name="name" class="form-control field-phone" />
+                                      <span class="input-group-btn">
+                                        <a href="#" class="base-icon-phone btn btn-primary hasTooltip" data-animation="false" title="Ligar"></a>
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label>Data de Nascimento</label>
+                                    <input type="text" name="name" class="form-control field-date" />
+                                  </div>
+                                </div>
+                              </div>
+                              <hr class="hr-tag" />
+                              <span class="badge badge-primary">Campos Extras</span>
+															<div class="row">
+																<div class="col-sm-6">
+																	<div class="form-group">
+																		<label>Campo extra 1</label>
+																		<input type="text" name="name" class="form-control field-date" />
+																	</div>
+																</div>
+																<div class="col-sm-6">
+																	<div class="form-group">
+																		<label>Campo extra 2</label>
+																		<input type="text" name="name" class="form-control field-date" />
+																	</div>
+																</div>
+                              </div>
+                            </div>
+                            <div class="col-md-4 col-lg-12 col-xl-4">
+                              <h3 class="page-header">Scripts</h3>
+                              <select name="type" id="type" class="form-control">
+                                <option value="0">- Selecione -</option>
+                              </select>
+                              <ul class="list-unstyled bordered no-space set-border border-default p-2 mt-2 bg-white">
+                                <li>osdos ofs odfosdi ofs</li>
+                                <li>jdosd fsdf sodkfh soodfosd fosdof sodf sd</li>
+                                <li>on onono onono nono onono nonon onono nonono nonononon on</li>
+                                <li>osdos ofs odfosdi ofs</li>
+                                <li>Foweosd fos dfos dnfsodfosdi fsokd fos dof sdf</li>
+                                <li>osdos ofs odfosdi ofs</li>
+                                <li>jdosd fsdf sodkfh soodfosd fosdof sodf</li>
+                                <li>on onono onono nono onono nonon onono nonono</li>
+                                <li>osdos ofs odfosdi ofs</li>
+                                <li>osdos ofs odfosdi ofs</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="integradas">
+													<ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="nav-item active"><a class="nav-link" href="#info1" aria-controls="info1" role="tab" data-toggle="tab">Informações 1</a></li>
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#info2" aria-controls="info2" role="tab" data-toggle="tab">Informações 2</a></li>
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#info3" aria-controls="info3" role="tab" data-toggle="tab">Informações 3</a></li>
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#info4" aria-controls="info4" role="tab" data-toggle="tab">Informações 4</a></li>
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#info5" aria-controls="info5" role="tab" data-toggle="tab">Informações 5</a></li>
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#info6" aria-controls="info6" role="tab" data-toggle="tab">Informações 6</a></li>
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#info7" aria-controls="info7" role="tab" data-toggle="tab">Informações 7</a></li>
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#info8" aria-controls="info8" role="tab" data-toggle="tab">Informações 8</a></li>
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#info9" aria-controls="info9" role="tab" data-toggle="tab">Informações 9</a></li>
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#info10" aria-controls="info10" role="tab" data-toggle="tab">Informações 10</a></li>
+                          </ul>
+                          <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="info1">
+															Informações Integradas 1
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="info2">
+															Informações Integradas 2
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="info3">
+															Informações Integradas 3
+                            </div>
+                          </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="formularios">
+													<ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="nav-item active"><a class="nav-link" href="#form1" aria-controls="form1" role="tab" data-toggle="tab">Formulário 1</a></li>
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#form2" aria-controls="form2" role="tab" data-toggle="tab">Formulário 2</a></li>
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#form3" aria-controls="form3" role="tab" data-toggle="tab">Formulário 3</a></li>
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#form4" aria-controls="form4" role="tab" data-toggle="tab">Formulário 4</a></li>
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#form5" aria-controls="form5" role="tab" data-toggle="tab">Formulário 5</a></li>
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#form6" aria-controls="form6" role="tab" data-toggle="tab">Formulário 6</a></li>
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#form7" aria-controls="form7" role="tab" data-toggle="tab">Formulário 7</a></li>
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#form8" aria-controls="form8" role="tab" data-toggle="tab">Formulário 8</a></li>
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#form9" aria-controls="form9" role="tab" data-toggle="tab">Formulário 9</a></li>
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#form10" aria-controls="form10" role="tab" data-toggle="tab">Formulário 10</a></li>
+                          </ul>
+                          <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="form1">
+															Formulário 1
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="form2">
+															Formulário 2
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="form">
+															Formulário 3
+                            </div>
+                          </div>
+                        </div>
+												<div role="tabpanel" class="tab-pane" id="clienteAnexos">
+													<div class="pt-sm">
+														<span class="btn-group">
+															<button type="button" class="btn btn-default btn-active-primary file-action"><span class="base-icon-search"> Selecionar</span></button>
+														</span>
+														<input type="file" class="form-control" hidden />
+													</div>
+													<hr class="my-2" />
+													<ul class="list-unstyled bordered no-space">
+														<li>
+															<a href="#">Documento de visualização</a>
+															<a href="#" class="btn btn-xs btn-link float-right hasTooltip" data-animation="false" title="Excluír"><span class="base-icon-cancel text-danger"></span></a>
+														</li>
+														<li>
+															<a href="#">Print da Tela Principal</a>
+															<a href="#" class="btn btn-xs btn-link float-right hasTooltip" data-animation="false" title="Excluír"><span class="base-icon-cancel text-danger"></span></a>
+														</li>
+													</ul>
+												</div>
+                      </div>
+
+											<hr />
+
+											<ul class="nav nav-tabs mb-0" role="tablist">
+												<li role="presentation" class="active nav-item"><a class="nav-link" href="#atendimentos" aria-controls="atendimentos" role="tab" data-toggle="tab">Últimos Atendimentos</a></li>
+												<li role="presentation" class="nav-item"><a class="nav-link" href="#solucoes" aria-controls="solucoes" role="tab" data-toggle="tab">Possíveis Soluções</a></li>
+											</ul>
+											<div class="tab-content py-0">
+												<div role="tabpanel" class="tab-pane active" id="atendimentos">
+
+													<table class="table table-hover mb-0">
+					                  <thead>
+					                    <tr>
+																<th>
+																	<a href="#" class="btn btn-default btn-active-primary btn-xs collapse-all toggle-icon hasTooltip" data-animation="false" title="Expandir todas as informações" data-icon-default="base-icon-plus" data-icon-active="base-icon-minus" data-collapse-group=".collapse-group1" data-collapse-buttons=".collapse-btns"></a>
+																	Ocorrência
+																</th>
+					                      <th>Responsável</th>
+																<th>Atendente/Criador</th>
+					                      <th class="text-center">Aberto em</th>
+					                      <th class="text-center">Status</th>
+					                    </tr>
+					                  </thead>
+					                  <tbody>
+					                    <tr>
+																<td>
+					                        <div>Protocolo: 1613737132587</div>
+																	<a href="#item-1" class="btn btn-default btn-active-primary btn-xs toggle-state collapse-btns toggle-icon hasTooltip" data-animation="false" title="Informações detalhadas" data-toggle="collapse" data-icon-default="base-icon-plus" data-icon-active="base-icon-minus" data-target-inactive=".collapse-all"></a>
+																	<span class="font-featured text-muted text-sm">Problema em uma PA</span>
+					                      </td>
+					                      <td></td>
+																<td><span class="base-icon-user"> Simone Chagas</td>
+					                      <td class="text-center">16/05/2016 18:00</td>
+																<td class="text-center"><span class="base-icon-off text-success"><br /><small>Aberto</small></td>
+					                    </tr>
+															<tr id="item-1" class="table-info collapse collapse-group1">
+																<td colspan="5">
+																	<div class="row">
+																		<div class="col-7">
+																			<div class="row">
+																				<div class="col">
+																					<strong>Tipo de Cliente:</strong> DIGI SOLUÇÕES...
+																				</div>
+																				<div class="col">
+																					<strong>Site:</strong> Site 1
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col">
+																			<strong>Usuário:</strong> Alberto Carlos <span class="badge badge-primary">Técnico</span>
+																		</div>
+																	</div>
+																	<hr class="my-2" />
+																	<div class="row">
+																		<div class="col-7">
+																			<p><strong>Descrição:</strong><br />Estou com um problema na consulta de gravações da URA</p>
+																			<p class="mb-0"><strong>Solução:</strong><br />Resolver problemas de gravação na URA</p>
+																		</div>
+																		<div class="col-5">
+																			<p><strong>Etapa:</strong><br />Testando solução 1</p>
+																			<p class="mb-0"><strong>Comentário:</strong><br />Testar as Consultas das gravações novamente</p>
+																		</div>
+																	</div>
+																</td>
+															</tr>
+					                    <tr class="font-weight-bold">
+																<td>
+					                        <div class="font-weight-bold">Protocolo: 1613737132587</div>
+																	<a href="#item-2" class="btn btn-default btn-active-primary btn-xs toggle-state collapse-btns toggle-icon hasTooltip" data-animation="false" title="Informações detalhadas" data-toggle="collapse" data-icon-default="base-icon-plus" data-icon-active="base-icon-minus" data-target-inactive=".collapse-all"></a>
+																	<span class="font-featured text-muted text-sm">Problema em uma PA</span>
+					                      </td>
+					                      </td>
+																<td></td>
+																<td><span class="base-icon-user"> Simone Chagas</td>
+					                      <td class="text-center">16/05/2016 18:00</td>
+																<td class="text-center" style="vertical-align:middle"><span class="base-icon-phone-squared text-success"><br /><small>Atendendo</small></td>
+					                    </tr>
+															<tr id="item-x" class="table-info collapse collapse-group1">
+																<td colspan="5">
+																	<div class="row">
+																		<div class="col-7">
+																			<div class="row">
+																				<div class="col">
+																					<strong>Tipo de Cliente:</strong> DIGI SOLUÇÕES...
+																				</div>
+																				<div class="col">
+																					<strong>Site:</strong> Site 1
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col">
+																			<strong>Usuário:</strong> Alberto Carlos <span class="badge badge-primary">Técnico</span>
+																		</div>
+																	</div>
+																	<hr class="my-2" />
+																	<div class="row">
+																		<div class="col-7">
+																			<p><strong>Descrição:</strong><br />Estou com um problema na consulta de gravações da URA</p>
+																			<p class="mb-0"><strong>Solução:</strong><br />Resolver problemas de gravação na URA</p>
+																		</div>
+																		<div class="col-5">
+																			<p><strong>Etapa:</strong><br />Testando solução 1</p>
+																			<p class="mb-0"><strong>Comentário:</strong><br />Testar as Consultas das gravações novamente</p>
+																		</div>
+																	</div>
+																</td>
+															</tr>
+					                    <tr class="font-weight-bold">
+																<td>
+					                        <div class="font-weight-bold">Protocolo: 1613737132587</div>
+																	<a href="#item-2" class="btn btn-default btn-active-primary btn-xs toggle-state collapse-btns toggle-icon hasTooltip" data-animation="false" title="Informações detalhadas" data-toggle="collapse" data-icon-default="base-icon-plus" data-icon-active="base-icon-minus" data-target-inactive=".collapse-all"></a>
+																	<span class="font-featured text-muted text-sm">Problema em uma PA</span>
+					                      </td>
+					                      <td></td>
+																<td><span class="base-icon-user"> Simone Chagas</td>
+					                      <td class="text-center">16/05/2016 18:00</td>
+																<td class="text-center" style="vertical-align:middle"><span class="base-icon-phone-squared text-success"><br /><small>Atendendo</small></td>
+					                    </tr>
+															<tr id="item-x" class="table-info collapse collapse-group1">
+																<td colspan="5">
+																	<div class="row">
+																		<div class="col-7">
+																			<div class="row">
+																				<div class="col">
+																					<strong>Tipo de Cliente:</strong> DIGI SOLUÇÕES...
+																				</div>
+																				<div class="col">
+																					<strong>Site:</strong> Site 1
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col">
+																			<strong>Usuário:</strong> Alberto Carlos <span class="badge badge-primary">Técnico</span>
+																		</div>
+																	</div>
+																	<hr class="my-2" />
+																	<div class="row">
+																		<div class="col-7">
+																			<p><strong>Descrição:</strong><br />Estou com um problema na consulta de gravações da URA</p>
+																			<p class="mb-0"><strong>Solução:</strong><br />Resolver problemas de gravação na URA</p>
+																		</div>
+																		<div class="col-5">
+																			<p><strong>Etapa:</strong><br />Testando solução 1</p>
+																			<p class="mb-0"><strong>Comentário:</strong><br />Testar as Consultas das gravações novamente</p>
+																		</div>
+																	</div>
+																</td>
+															</tr>
+					                    <tr class="text-muted">
+																<td>
+					                        <div>Protocolo: 1613737132587</div>
+																	<a href="#item-3" class="btn btn-default btn-active-primary btn-xs toggle-state collapse-btns toggle-icon hasTooltip" data-animation="false" title="Informações detalhadas" data-toggle="collapse" data-icon-default="base-icon-plus" data-icon-active="base-icon-minus" data-target-inactive=".collapse-all"></a>
+																	<span class="font-featured text-muted text-sm">Problema em uma PA</span>
+					                      </td>
+					                      <td>Carlos da Silva</td>
+																<td><span class="base-icon-user"> Simone Chagas</td>
+					                      <td class="text-center">16/05/2016 18:00</td>
+																<td class="text-center" style="vertical-align:middle"><span class="base-icon-ok text-success"><br /><small>Finalizado</small></td>
+					                    </tr>
+															<tr id="item-3" class="table-info collapse collapse-group1">
+																<td colspan="5">
+																	<div class="row">
+																		<div class="col-7">
+																			<div class="row">
+																				<div class="col">
+																					<strong>Tipo de Cliente:</strong> DIGI SOLUÇÕES...
+																				</div>
+																				<div class="col">
+																					<strong>Site:</strong> Site 1
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col">
+																			<strong>Usuário:</strong> Alberto Carlos <span class="badge badge-primary">Técnico</span>
+																		</div>
+																	</div>
+																	<hr class="my-2" />
+																	<div class="row">
+																		<div class="col-7">
+																			<p><strong>Descrição:</strong><br />Estou com um problema na consulta de gravações da URA</p>
+																			<p class="mb-0"><strong>Solução:</strong><br />Resolver problemas de gravação na URA</p>
+																		</div>
+																		<div class="col-5">
+																			<p><strong>Etapa:</strong><br />Testando solução 1</p>
+																			<p class="mb-0"><strong>Comentário:</strong><br />Testar as Consultas das gravações novamente</p>
+																		</div>
+																	</div>
+																</td>
+															</tr>
+					                    <tr class="table-warning">
+																<td>
+					                        <div>Protocolo: 1613737132587</div>
+																	<a href="#item-4" class="btn btn-default btn-active-primary btn-xs toggle-state collapse-btns toggle-icon hasTooltip" data-animation="false" title="Informações detalhadas" data-toggle="collapse" data-icon-default="base-icon-plus" data-icon-active="base-icon-minus" data-target-inactive=".collapse-all"></a>
+																	<span class="font-featured text-muted text-sm">Problema em uma PA</span>
+					                      </td>
+					                      <td></td>
+																<td><span class="base-icon-user"> Simone Chagas</td>
+					                      <td class="text-center">16/05/2016 18:00</td>
+																<td class="text-center" style="vertical-align:middle"><span class="base-icon-clock text-live"><br /><small>Espera</small></td>
+					                    </tr>
+					                  </tbody>
+					                </table>
+
+												</div>
+												<div role="tabpanel" class="tab-pane" id="solucoes">
+													<div class="pt-2">
+														<span class="btn-group">
+															<button type="button" class="btn btn-default btn-active-primary file-action"><span class="base-icon-search"> Selecionar</span></button>
+														</span>
+														<input type="file" class="form-control" hidden />
+													</div>
+													<hr class="my-2" />
+													<ul class="list-unstyled bordered no-space">
+														<li>
+															<a href="#">Documento de visualização</a>
+															<a href="#" class="btn btn-xs btn-link float-right hasTooltip" data-animation="false" title="Excluír"><span class="base-icon-cancel text-danger"></span></a>
+														</li>
+														<li>
+															<a href="#">Print da Tela Principal</a>
+															<a href="#" class="btn btn-xs btn-link float-right hasTooltip" data-animation="false" title="Excluír"><span class="base-icon-cancel text-danger"></span></a>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</fieldset>
+                  </div>
+                  <div class="col-lg-5">
+                    <form>
+                      <fieldset id="filtro-atendimento" class="fieldset-embed all-expand-sm">
+                        <legend><span class="base-icon-phone-squared"></span> Atendimento</legend>
+                        <ul class="nav nav-tabs" role="tablist">
+                          <li role="presentation" class="active nav-item"><a class="nav-link" href="#filtroIntervalo" aria-controls="filtroIntervalo" role="tab" data-toggle="tab">Dados</a></li>
+                          <li role="presentation" class="nav-item"><a class="nav-link" href="#filtroCliente" aria-controls="filtroCliente" role="tab" data-toggle="tab">Anexos</a></li>
+                        </ul>
+                        <div class="tab-content pb-0">
+                          <div role="tabpanel" class="tab-pane active" id="filtroIntervalo">
+                            <div class="row">
+                              <div class="col-sm-6">
+                                <div class="form-group">
+                                  <label>Origem</label>
+                                  <select name="type" id="type" class="form-control">
+                                    <option value="0">- Selecione -</option>
+                                    <option value="1">Local</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col-sm-6">
+                                <div class="form-group">
+                                  <label>Qualificação</label>
+                                  <div class="input-group">
+                                    <select name="type" id="type" class="form-control">
+                                      <option value="0">- Selecione -</option>
+                                      <option value="1">Local</option>
+                                    </select>
+                                    <span class="input-group-btn">
+                                      <button type="button" class="base-icon-search btn btn-primary"></button>
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-sm-9">
+                                <div class="form-group">
+                                  <label>Tipo de Ocorrência</label>
+                                  <div class="input-group">
+                                    <select name="type" id="type" class="form-control">
+                                      <option value="0">- Selecione -</option>
+                                      <option value="1">Local</option>
+                                    </select>
+                                    <span class="input-group-btn">
+                                      <button type="button" class="base-icon-search btn btn-primary"></button>
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-sm-9">
+                                <div class="form-group">
+                                  <label>Ocorrência</label>
+                                  <select name="type" id="type" class="form-control">
+                                    <option value="0">- Selecione -</option>
+                                    <option value="1">Local</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col-9">
+																<div class="form-group">
+																	<label>Soluções</label>
+																	<select name="type" id="type" class="form-control">
+																		<option value="0">- Selecione -</option>
+																		<option value="1">Local</option>
+																	</select>
+																</div>
+															</div>
+                              <div class="col-3">
+																<div class="form-group">
+																	<label>&#160;</label>
+																	<button type="button" class="btn btn-primary btn-block">Detalhes</button>
+																</div>
+															</div>
+														</div>
+                            <div class="form-group">
+                              <label>Descrição</label>
+                              <textarea name="name" class="field-html"></textarea>
+                            </div>
+                          </div>
+                          <div role="tabpanel" class="tab-pane" id="filtroCliente">
+                            <div class="pt-sm">
+															<span class="btn-group">
+																<button type="button" class="btn btn-default btn-active-primary file-action"><span class="base-icon-search"> Selecionar</span></button>
+															</span>
+                              <input type="file" class="form-control" hidden />
+                            </div>
+                            <hr class="my-2" />
+                            <ul class="list-unstyled bordered no-space">
+                              <li>
+                                <a href="#">Documento de visualização</a>
+                                <a href="#" class="btn btn-xs btn-link float-right hasTooltip" data-animation="false" title="Excluír"><span class="base-icon-cancel text-danger"></span></a>
+                              </li>
+                              <li>
+                                <a href="#">Print da Tela Principal</a>
+                                <a href="#" class="btn btn-xs btn-link float-right hasTooltip" data-animation="false" title="Excluír"><span class="base-icon-cancel text-danger"></span></a>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </form>
+                  </div>
+								</div>
+
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Scroll Top -->
+			<a id="scroll-to-top" href="#goto-screen" class="nav-smooth"></a>
+
+			<!-- Footer -->
+			<div id="footer" class="mob-noNav">
+				<div class="container bs-container">
+					<div class="row">
+						<div id="copyright" class="col-6">
+              <ul class="list-inline bordered list-lg m-0">
+                <li><span class="text-live">Ramal:</span> 8175</li>
+                <li class="cursor-help hasTooltip" data-animation="false" data-animation="false" title="Total de Chamadas"><span class="base-icon-phone text-live"></span> 82</li>
+                <li class="cursor-help hasTooltip" data-animation="false" data-animation="false" title="Duração Total"><span class="base-icon-clock text-live"></span> 02:25:08</li>
+              </ul>
+						</div>
+						<div id="info-dev" class="col-6 text-right">
+							<img src="images/logo-developer.png" />
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Hidden -->
+			<div id="hidden" class=""></div>
+
+		<!-- / wrapper -->
+		</div>
+
+	<!-- / screen -->
+	</div>
+
+	<!-- jQuery UI -->
+	<script src="libs/template/jquery/jquery-ui.min.js" type="text/javascript"></script>
+	<script src="libs/browser/tether.min.js" type="text/javascript"></script>
+
+	<!-- load app's default javascript -->
+	<script type="text/javascript" src="js/forms.js"></script>
+	<script type="text/javascript" src="js/default.js"></script>
+	<!-- trumbowyg: html editor -->
+	<script type="text/javascript" src="libs/forms/editor/trumbowyg.min.js"></script>
+	<script type="text/javascript" src="libs/forms/editor/langs/pt.min.js"></script>
+	<script type="text/javascript" src="libs/forms/editor/plugins/base64/trumbowyg.base64.min.js"></script>
+	<script type="text/javascript" src="libs/forms/editor/plugins/noembed/trumbowyg.noembed.min.js"></script>
+
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+		<script src="core/libs/js/browser/html5shiv-printshiv.js"></script>
+	<![endif]-->
+
+	<script>
+	// CUSTOM SCRIPTS
+	jQuery(function() {
+
+		// define menu item active
+		jQuery('#navigation #atendimento').addClass('active');
+
+	});
+	</script>
+
+	<script>
+		// LOCAL FORM VALIDATIONS
+		jQuery(window).load( function() {
+
+			// form validations
+			jQuery("#form-validator").validate({
+				rules: {
+					password: {
+						rangelength: [6, 15]
+					},
+					repassword: {
+						equalTo: "#password"
+					},
+					url: "url",
+					price: {
+						notEqual: '0,00'
+					}
+				},
+				messages: {
+					price: {
+						notEqual: 'Campo Obrigatório'
+					}
+				},
+				submitHandler: function(form) {
+					jQuery('#alert-valid').show();
+					return false; // for demo
+				},
+				invalidHandler: function(event, validator) {
+					// run function if there is error
+					baseValidation(jQuery(this));
+				}
+			});
+
+		});
+	</script>
+	<script type="text/javascript" src="js/validate.js"></script>
+
+</body>
+</html>

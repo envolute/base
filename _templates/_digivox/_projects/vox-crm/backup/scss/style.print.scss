@@ -1,0 +1,10 @@
+// @PRINT
+// css que define a impressao do template
+
+// variables
+@import "custom/variables";
+// mixins
+@import "custom/mixins";
+
+// Arquivos de customização
+@import "custom/print";

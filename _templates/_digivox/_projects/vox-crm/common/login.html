@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html class="isMM media-md" xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt-BR" lang="pt-BR">
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="rights" content="@envolute.com" />
+
+	<title>Envolute App</title>
+
+	<link href="favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+
+	<!-- jQuery -->
+	<script src="core/libs/jquery/jquery-1.12.4.min.js" type="text/javascript"></script>
+	<script>jQuery.noConflict();</script>
+	<!--script src="core/libs/jquery/jquery-migrate-1.2.1.min.js" type="text/javascript"></script-->
+
+	<!-- css template -->
+	<link rel="stylesheet" href="css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_dev/custom.css" type="text/css" />
+
+	<!-- load guide's default css -->
+	<link rel="stylesheet" href="css/style.guide.css" type="text/css" />
+
+	<!-- css jQuery UI -->
+	<link rel="stylesheet" href="core/libs/jquery/jquery-ui.min.css" type="text/css" />
+
+	<!-- css print -->
+	<link rel="stylesheet" href="css/style.print.css" type="text/css" media="print" />
+
+	<!-- For IE support -->
+	<!--[if IE]>
+		<link href="templates/base/css/style.ie.css" rel="stylesheet">
+	<![endif]-->
+
+
+</head>
+<body class="site login footer-fixed">
+
+	<a href="#main-content" class="sr-only">Skip to content</a>
+
+	<!-- Screen -->
+	<div id="screen" class="clearfix">
+
+		<!-- Header -->
+		<nav id="header" class="clearfix">
+			<div class="container-fluid bs-container">
+				<div class="row">
+					<div class="row-wrapper">
+						<div class="row">
+							<a id="brand" class="brand" href="index.php"><img class="img-responsive" src="images/logo-site.png" /></a>
+							<!-- <a id="brand-client" class="brand float-right hidden-xs" href="index.php"><img class="img-responsive" src="images/logo-client.png" /></a> -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<!-- wrapper -->
+		<div id="wrapper" class="wrapper">
+
+			<!-- Full Content -->
+			<div id="full-content" class="mob-noNav">
+				<div class="container-fluid bs-container">
+					<div class="row">
+						<div class="row-wrapper">
+							<div class="row">
+
+								<!-- Main Content -->
+								<div id="main-content" class="col-12">
+
+                  <form id="form-login" action="dashboard.php">
+                    <img class="img-responsive" src="images/logo-client.png">
+										<fieldset class="fieldset-embed">
+  										<legend><span class="base-icon-lock"></span> Login</legend>
+											<div class="form-group mb-1pb-1">
+												<label>Usuário</label>
+												<input type="text" class="form-control form-control-lg w-full field-user set-focus" />
+											</div>
+											<div class="form-group mb-1">
+												<label>Senha</label>
+												<input type="password" class="form-control form-control-lg field-password" />
+											</div>
+											<div class="checkbox mb-1">
+												<label><input type="checkbox" /> Lembrar-me
+											</div>
+											<a href="forms.php" class="btn btn-lg btn-block btn-primary mb-2">Acessar <span class="base-icon-login"></span></a>
+											<a href="#">Esqueceu a Senha?</a>
+										</fieldset>
+									</form>
+
+                </div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Scroll Top -->
+			<a id="scroll-to-top" href="#goto-screen" class="nav-smooth"></a>
+
+			<!-- Footer -->
+			<div id="footer" class="mob-noNav">
+				<div class="container-fluid bs-container">
+					<div class="row">
+						<div class="row-wrapper">
+							<div class="row">
+								<div id="copyright" class="col-6">
+									Versão: <span class="badge badge-success">3.0.0</span> &copy;copyright 2015
+								</div>
+								<div id="info-dev" class="col-6 text-right">
+									<img src="images/logo-developer.png" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Hidden -->
+			<div id="hidden" class=""></div>
+
+		<!-- / wrapper -->
+		</div>
+
+	<!-- / screen -->
+	</div>
+
+	<!-- jQuery UI -->
+	<script src="core/libs/jquery/jquery-ui.min.js" type="text/javascript"></script>
+
+	<!-- load app's default javascript -->
+	<script type="text/javascript" src="js/default.js"></script>
+	<script type="text/javascript" src="_dev/custom.js"></script>
+
+	<!-- load guide's default javascript -->
+	<script type="text/javascript" src="js/guide.js"></script>
+
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+		<script src="templates/base/core/libs/js/browser/html5shiv-printshiv.js"></script>
+	<![endif]-->
+
+	<script>
+	// CUSTOM SCRIPTS
+	jQuery(function() {
+
+		// define menu item active
+		jQuery('#navigation #guide').addClass('active');
+
+	});
+	</script>
+
+	<script>
+		// LOCAL FORM VALIDATIONS
+		jQuery(window).load( function() {
+
+			// form validations
+			jQuery("#form-validator").validate({
+				rules: {
+					password: {
+						rangelength: [6, 15]
+					},
+					repassword: {
+						equalTo: "#password"
+					},
+					url: "url"
+				},
+				submitHandler: function(form) {
+					jQuery('#alert-valid').show();
+					return false; // for demo
+				},
+				invalidHandler: function(event, validator) {
+					// run function if there is error
+					baseValidation(jQuery(this));
+				}
+			});
+
+		});
+	</script>
+	<script type="text/javascript" src="js/validate.js"></script>
+
+</body>
+</html>

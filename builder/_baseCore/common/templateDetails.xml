@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install PUBLIC "-//Joomla! 2.5//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/2.5/template-install.dtd">
+<extension version="2.0" type="template" client="site">
+	<name>Base</name>
+	<version>3.0</version>
+	<creationDate>22/11/2012</creationDate>
+	<author>Ivo Junior</author>
+	<authorEmail>dev@envolute.com</authorEmail>
+	<copyright>Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.</copyright>
+	<description>TPL_BASE_XML_DESCRIPTION</description>
+	<files>
+		<filename>_init.tpl.php</filename>
+		<filename>_css.tpl.php</filename>
+		<filename>_js.tpl.php</filename>
+		<filename>component.php</filename>
+		<filename>error.php</filename>
+		<filename>offline.php</filename>
+		<filename>favicon.ico</filename>
+		<filename>index.php</filename>
+		<filename>templateDetails.xml</filename>
+		<filename>template_preview.png</filename>
+		<filename>template_thumbnail.png</filename>
+		<folder>core</folder>
+		<folder>css</folder>
+		<folder>html</folder>
+		<folder>images</folder>
+		<folder>js</folder>
+		<folder>language</folder>
+		<folder>source</folder>
+	</files>
+	<positions>
+		<position>bg-layer</position>
+		<position>admin-components</position>
+		<position>admin-report</position>
+		<position>admin-menu</position>
+		<position>admin-base</position>
+		<position>admin-helper</position>
+		<position>navtop</position>
+		<position>navside</position>
+		<position>navside-header</position>
+		<position>navside-footer</position>
+		<position>top</position>
+		<position>header-1</position>
+		<position>header-2</position>
+		<position>header-3</position>
+		<position>Navigation</position>
+		<position>showcase</position>
+		<position>info-top</position>
+		<position>info-bottom</position>
+		<position>full-featured</position>
+		<position>featured-1</position>
+		<position>featured-2</position>
+		<position>featured-3</position>
+		<position>featured-4</position>
+		<position>featured-5</position>
+		<position>featured-6</position>
+		<position>full-content-top</position>
+		<position>all-content-top</position>
+		<position>sidebar</position>
+		<position>main-content-top</position>
+		<position>content-top</position>
+		<position>content-bottom</position>
+		<position>main-content-bottom</position>
+		<position>left</position>
+		<position>right</position>
+		<position>all-content-bottom</position>
+		<position>full-content-bottom</position>
+		<position>full-syndicate</position>
+		<position>syndicate-1</position>
+		<position>syndicate-2</position>
+		<position>syndicate-3</position>
+		<position>syndicate-4</position>
+		<position>syndicate-5</position>
+		<position>syndicate-6</position>
+		<position>full-bottom</position>
+		<position>bottom-1</position>
+		<position>bottom-2</position>
+		<position>bottom-3</position>
+		<position>bottom-4</position>
+		<position>bottom-5</position>
+		<position>bottom-6</position>
+		<position>footer-1</position>
+		<position>footer-2</position>
+		<position>footer-3</position>
+		<position>hidden</position>
+		<position>debug</position>
+	</positions>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.tpl_base.ini</language>
+		<language tag="en-GB">en-GB/en-GB.tpl_base.sys.ini</language>
+		<language tag="pt-BR">pt-BR/pt-BR.tpl_base.ini</language>
+		<language tag="pt-BR">pt-BR/pt-BR.tpl_base.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+
+				<field name="accessBase"
+					type="radio"
+					class="btn-group"
+					default="1"
+					label="TPL_BASE_ACCESS_LABEL"
+					description="TPL_BASE_ACCESS_DESC"
+				>
+					<option value="1">TPL_BASE_ACCESS_PUBLIC</option>
+					<option value="0">TPL_BASE_ACCESS_RESTRICT</option>
+				</field>
+
+					<field name="navbarGroups"
+						type="usergroup"
+						label="TPL_BASE_ACCESS_ADMINTOOLS_LABEL"
+						description="TPL_BASE_ACCESS_ADMINTOOLS_DESC"
+						multiple="true" />
+
+				<field name="items_full"
+					type="textarea"
+					rows="6"
+					class="width-full"
+					label="TPL_BASE_TEMPLATE_ITEMS_FULL_LABEL"
+					description="TPL_BASE_TEMPLATE_ITEMS_FULL_DESC"
+					filter="string" />
+
+				<field name="loadDev"
+					type="radio"
+					class="btn-group"
+					default="1"
+					label="TPL_BASE_LOAD_DEV_LABEL"
+					description="TPL_BASE_LOAD_DEV_DESC"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+			</fieldset>
+
+			<fieldset name="LAYOUT" label="TPL_BASE_LAYOUT">
+
+				<field name="responsive"
+					type="radio"
+					class="btn-group"
+					default="1"
+					label="TPL_BASE_RESPONSIVE_LABEL"
+					description="TPL_BASE_RESPONSIVE_DESC"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field name="fullScreen"
+					type="radio"
+					class="btn-group"
+					default="0"
+					label="TPL_BASE_FULLSCREEN_LABEL"
+					description="TPL_BASE_FULLSCREEN_DESC"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field name="navbars" type="spacer" class="text" label="TPL_BASE_TEMPLATE_NAVBAR_LABEL" />
+
+				<field name="navbarFixed"
+					type="radio"
+					class="btn-group"
+					default="1"
+					label="TPL_BASE_NAVBARFIXED_LABEL"
+					description="TPL_BASE_NAVBARFIXED_DESC"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field name="navbarStyle"
+					type="radio"
+					class="btn-group"
+					default="1"
+					label="TPL_BASE_NAVBARSTYLE_LABEL"
+					description="TPL_BASE_NAVBARSTYLE_DESC"
+				>
+					<option value="1">TPL_BASE_CLEAR</option>
+					<option value="2">TPL_BASE_DARK</option>
+				</field>
+
+				<field name="grid" type="spacer" class="text" label="TPL_BASE_TEMPLATE_GRID_LABEL" />
+
+				<field name="H" type="spacer" class="text" label="TPL_BASE_TEMPLATE_HEADER_LABEL" />
+				<field name="header_1" type="text" label="header-1" filter="string" />
+				<field name="header_2" type="text" label="header-2" filter="string" />
+				<field name="header_3" type="text" label="header-3" filter="string" />
+
+				<field name="F" type="spacer" class="text" label="TPL_BASE_TEMPLATE_FEATURED_LABEL" />
+				<field name="featured_1" type="text" label="featured-1" filter="string" />
+				<field name="featured_2" type="text" label="featured-2" filter="string" />
+				<field name="featured_3" type="text" label="featured-3" filter="string" />
+				<field name="featured_4" type="text" label="featured-4" filter="string" />
+				<field name="featured_5" type="text" label="featured-5" filter="string" />
+				<field name="featured_6" type="text" label="featured-6" filter="string" />
+
+				<field name="content-label" type="spacer" class="text" label="TPL_BASE_TEMPLATE_CONTENT_LABEL" />
+
+				<field name="gridDefault"
+					type="list"
+					default="md"
+					label="Grid Default"
+				>
+					<option value="xs">col-xs</option>
+					<option value="sm">col-sm</option>
+					<option value="md">col-md</option>
+					<option value="lg">col-lg</option>
+				</field>
+
+				<field name="leftWidth"
+					type="list"
+					default="4"
+					label="TPL_BASE_LEFTWIDTH_LABEL"
+					description="TPL_BASE_LEFTWIDTH_DESC"
+				>
+					<option value="1">col-1</option>
+					<option value="2">col-2</option>
+					<option value="3">col-3</option>
+					<option value="4">col-4</option>
+					<option value="5">col-5</option>
+					<option value="6">col-6</option>
+				</field>
+
+				<field name="rightWidth"
+					type="list"
+					default="4"
+					label="TPL_BASE_RIGHTWIDTH_LABEL"
+					description="TPL_BASE_RIGHTWIDTH_DESC"
+				>
+					<option value="1">col-1</option>
+					<option value="2">col-2</option>
+					<option value="3">col-3</option>
+					<option value="4">col-4</option>
+					<option value="5">col-5</option>
+					<option value="6">col-6</option>
+				</field>
+
+				<field name="sidebarWidth"
+					type="list"
+					default="3"
+					label="TPL_BASE_SIDEBARWIDTH_LABEL"
+					description="TPL_BASE_SIDEBARWIDTH_DESC"
+				>
+					<option value="1">col-1</option>
+					<option value="2">col-2</option>
+					<option value="3">col-3</option>
+					<option value="4">col-4</option>
+					<option value="5">col-5</option>
+					<option value="6">col-6</option>
+				</field>
+
+				<field name="sidebarFloat"
+					type="radio"
+					class="btn-group"
+					default="right"
+					label="TPL_BASE_SIDEBARFLOAT_LABEL"
+					description="TPL_BASE_SIDEBARFLOAT_DESC"
+				>
+					<option value="left">TPL_BASE_LEFT</option>
+					<option value="right">TPL_BASE_RIGHT</option>
+				</field>
+
+				<field name="S" type="spacer" class="text" label="TPL_BASE_TEMPLATE_SYNDICATE_LABEL" />
+				<field name="syndicate_1" type="text" label="syndicate-1" filter="string" />
+				<field name="syndicate_2" type="text" label="syndicate-2" filter="string" />
+				<field name="syndicate_3" type="text" label="syndicate-3" filter="string" />
+				<field name="syndicate_4" type="text" label="syndicate-4" filter="string" />
+				<field name="syndicate_5" type="text" label="syndicate-5" filter="string" />
+				<field name="syndicate_6" type="text" label="syndicate-6" filter="string" />
+
+				<field name="B" type="spacer" class="text" label="TPL_BASE_TEMPLATE_BOTTOM_LABEL" />
+				<field name="bottom_1" type="text" label="bottom-1" filter="string" />
+				<field name="bottom_2" type="text" label="bottom-2" filter="string" />
+				<field name="bottom_3" type="text" label="bottom-3" filter="string" />
+				<field name="bottom_4" type="text" label="bottom-4" filter="string" />
+				<field name="bottom_5" type="text" label="bottom-5" filter="string" />
+				<field name="bottom_6" type="text" label="bottom-6" filter="string" />
+
+				<field name="FT" type="spacer" class="text" label="TPL_BASE_TEMPLATE_FOOTER_LABEL" />
+				<field name="footer_1" type="text" label="footer-1" filter="string" />
+				<field name="footer_2" type="text" label="footer-2" filter="string" />
+				<field name="footer_3" type="text" label="footer-3" filter="string" />
+
+			</fieldset>
+
+			<fieldset name="mobile" label="TPL_BASE_MOBILE">
+
+				<field name="showFooter"
+					type="radio"
+					class="btn-group"
+					default="1"
+					label="TPL_BASE_SHOWFOOTER_LABEL"
+					description="TPL_BASE_SHOWFOOTER_DESC"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+			</fieldset>
+
+			<fieldset name="analytics" label="TPL_BASE_ANALYTICS">
+
+				<field name="analyticsCode" type="text" label="TPL_BASE_ANALYTICSCODE_LABEL" description="TPL_BASE_ANALYTICSCODE_DESC" filter="string" />
+
+			</fieldset>
+		</fields>
+	</config>
+</extension>

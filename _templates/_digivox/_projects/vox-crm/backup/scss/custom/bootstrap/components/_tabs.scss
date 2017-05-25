@@ -1,0 +1,32 @@
+// TABS
+.nav-tabs { border-bottom: $tab-border-size solid $brand-primary; }
+.nav-tabs > li,
+.nav-tabs .nav-item {
+  float: left;
+  margin-bottom: 0;
+}
+.nav-tabs > li > a,
+.nav-tabs .nav-link {
+  display: block;
+  padding: $nav-link-padding;
+  border-width: 0px;
+}
+.nav-tabs > li > a:hover,
+.nav-tabs .nav-link:focus {
+    background-color: #eee;
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:focus,
+.nav-tabs > li.active > a:hover,
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-link.active:focus,
+.nav-tabs .nav-link.active:hover {
+  color: $btn-primary-color;
+  background-color: $btn-primary-bg;
+}
+.nav-tabs > li:first-child { margin-left: 5px; }
+// tab content
+.tab-content {
+  padding: $spacer-y 0 0;
+  border-top: 0;
+}

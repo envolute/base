@@ -1,0 +1,56 @@
+// @CORE TEMPLATE
+// Importante: Não altere este arquivo.
+// Utilize 'custom.css' para sobrescrever as classes abaixo
+
+
+	// mobile
+  html.media-only-xs.isMM { overflow-x: hidden; }
+
+	body { position: relative; }
+
+	// LAYOUT WIDTH
+
+		// fullscreen
+		html.media-md body.fullScreen .container { width: 100% !important; }
+		// not responsive
+		body.not-responsive .container { width: $container-desktop !important; }
+		body.not-responsive.fullScreen .container { min-width: $container-desktop !important; }
+
+// COMMON TO VARIOUS ELEMENTS
+
+	.bs-container,
+	.module,
+	#main-content,
+	#right {
+		position: relative;
+	}
+
+	.row-wrapper {
+		margin-left: $base-space;
+		margin-right: $base-space;
+	}
+
+	// mobile
+  @media (max-width: 767px) {
+		.bs-container {
+			position: static;
+		}
+	}
+
+// NAVBAR -> barra de navegação do bootstrap. utilizada para o menu de administração
+
+	// corrige o fechamento da navbar na versão mobile
+	.media-only-xs .navbar-collapse.collapse:not(.in) { display: none!important; }
+
+// WRAPPER -> container do template
+
+	.isMM.media-only-xs #wrapper { margin-left: 0!important; }
+
+
+// FOOTER
+
+	.media-to-sm #footer {
+		// fix z-index issue from '#scroll-to-top'
+		-webkit-transform: translate3d(0,0,0);
+			transform: translate3d(0,0,0);
+	}

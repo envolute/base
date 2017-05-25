@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<extension type="module" version="3.0" client="site" method="upgrade">
+	<name>BaseCode</name>
+	<author>Ivo Junior</author>
+	<creationDate>24/02/2017</creationDate>
+	<copyright>Copyright © 2012, Envolute Tecnologia, All Rights Reserved.</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>dev@envolute.com</authorEmail>
+	<authorUrl>http://www.envolute.com</authorUrl>
+	<version>1.0.0</version>
+	<description>MOD_BASECODE_DESC</description>
+	<files>
+		<filename module="mod_basecode">mod_basecode.php</filename>
+		<filename>index.html</filename>
+		<filename>mod_basecode.xml</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB.mod_basecode.ini</language>
+		<language tag="en-GB">language/en-GB.mod_basecode.sys.ini</language>
+		<language tag="pt-BR">language/pt-BR.mod_basecode.ini</language>
+		<language tag="pt-BR">language/pt-BR.mod_basecode.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic" label="MOD_BASECODE_CONFIG">
+				<field name="phpFile" type="text" filter="string" default="" label="MOD_BASECODE_PHP_FILE_LABEL" description="MOD_BASECODE_PHP_FILE_DESC" />
+				<field name="code" type="textarea" filter="raw" class="input-xxlarge" rows="30" label="MOD_BASECODE_CODE_LABEL" description="MOD_BASECODE_CODE_DESC" />
+			</fieldset>
+			<fieldset name="advanced">
+				<field name="moduleclass_sfx" type="text" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" desc="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"/>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

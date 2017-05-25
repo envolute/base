@@ -1,0 +1,252 @@
+// @CUSTOM
+// customização de estilo do site
+// Esse arquivo deve conter todas as classes para customização do template para esse projeto.
+
+// WINDOW
+
+	// SCROLLBAR -> barra de rolagem
+	*::-webkit-scrollbar {
+		width:11px;
+		height:11px;
+		background-color: transparent;
+	}
+	*::-webkit-scrollbar-thumb,
+	*::-webkit-scrollbar-corner {
+		border-style: solid;
+		border-width: 2px;
+		border-color: $body-bg;
+		background-color: $gray-light;
+		border-radius: 10px;
+	}
+	*::-webkit-scrollbar-thumb:hover { background-color: $gray; }
+	*::-webkit-scrollbar-track-piece { background-color: none;}
+
+// TYPOGRAPHY
+
+	blockquote { font-family: $base-font-featured; }
+
+// HEADERS
+
+	h4, h5, h6 { line-height: 1.3em; }
+
+// TEMPLATE
+
+	// COMMON ELEMENTS
+
+		// 'clearfix' elements
+		// a classe 'elemento' só serve como modelo
+		// .elemento:before, .elemento:after {
+		// 	content: " ";
+		// 	display: table;
+		// }
+		// .elemento:after { clear: both; }
+
+	// BG LAYER
+
+		#base-bg-layer { }
+
+	// SCREEN
+
+		#screen {
+			background: url('../images/bg-screen.png') center bottom repeat-x;
+		}
+
+	// WRAPPER
+
+		#wrapper {
+			position: relative;
+			margin: auto;
+		}
+
+		// wrapper = container
+		// .media-sm #wrapper { width: 576px; }
+		// .media-md #wrapper { width: 768px; }
+		// .media-lg #wrapper { width: 992px; }
+		// .media-xs #wrapper { width: 1200px; }
+
+
+	// HEADER
+
+		#header {
+			position: relative;
+			border-top: 4px solid $gray-light;
+			border-bottom: 4px solid $gray-light;
+			z-index: 2;
+		}
+
+		#header-row-2 {
+			height: 70px;
+			background-color: #fff;
+			box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+		}
+		#logo-header {
+			display: block;
+	    padding-top: 14px;
+		}
+
+		// NAVIGATION
+
+			// mobile
+			// mostra/esconde o menu principal para mostrar o menu mobile
+			#{$base-break-down}.isMM .mainmenu { display: none; }
+
+			// Menu Principal
+			.mainmenu .nav.menu {
+				justify-content: flex-end!important;
+			}
+
+				// MENU PRINCIPAL -> NÍVEL 1
+
+					// Item container <li>
+					.mainmenu .nav.menu > li {  }
+					// Espaço entre os itens -> horizontal
+					// Obs: não confundir com o tamanho do item
+					#{$base-break-up} .mainmenu .nav.menu > li:not(:last-child) { margin-right: 0; }
+					// Item <a>
+					// Formato do item -> definido no link <a>
+					.mainmenu .nav.menu > li > a,
+					.mainmenu .nav.menu > li > a:link,
+					.mainmenu .nav.menu > li > a:visited {
+				    height: 74px;
+						padding-top: 24px;
+						border-bottom: 4px solid transparent;
+					}
+					// Efeito hover
+					.mainmenu .nav.menu li:not(.active) > a:hover,
+					.mainmenu .nav.menu li:not(.active) > a:focus,
+					.mainmenu .nav.menu li.parent:not(.active):hover > a {
+						color: $base-color-live;
+						border-bottom-color: $base-color-live;
+						background-color: transparent;
+					}
+					// Item ativo
+					.mainmenu .nav.menu li.active > a {
+						color: $base-color-secondary;
+						border-bottom-color: $base-color-secondary;
+						background-color: $gray-lighter;
+					}
+					// Espaço entre o item principal (nível 1) e o sub-menu (nível 2)
+					// obs: apenas no formato horizontal
+					#{$base-break-up} .mainmenu .nav.menu > li.parent > a { margin-bottom: 0; }
+
+					// SUB MENU
+
+						// Item <a>
+						// Efeito hover
+						.mainmenu .nav.menu .nav-child li:not(.active) > a:hover,
+						.mainmenu .nav.menu .nav-child li:not(.active) > a:focus,
+						.mainmenu .nav.menu .nav-child li.parent:not(.active):hover > a {
+
+						}
+
+	// SECTION
+
+		#section { }
+		#section-row-1 {
+			padding: $base-space-xl 0;
+    	background-color: $brand-primary;
+		}
+		#section-1 {
+			padding: 0;
+		}
+		#section-1 .showcase {
+			padding: 5px;
+			background-color: #fff;
+			box-shadow: 0 0 20px 2px rgba(0,0,0,0.3);
+		}
+		#section-row-2 {
+			background-color: $brand-primary;
+		}
+		#section-row-2 > .container {
+			width: $brand-primary;
+		}
+		#section-row-2 .infobar {
+			position: relative;
+			color: darken($brand-primary, 30%);
+			background-color: $gray-light;
+			z-index: 1;
+		}
+		#section-row-2 .infobar #mod-search-searchword {
+	    background-color: #7072c8;
+	    border: none;
+		}
+
+
+	// FULL-CONTENT -> área total do conteúdo incluindo as laterais
+
+		// CONTENT
+		#full-content { }
+		#full-content > .container {
+	    padding: $base-space $base-space 0;
+	    background-color: #fff;
+			background-color: rgba(255, 255, 255, .8);
+			box-shadow: 0 0px 15px rgba(0,0,0,0.4);
+		}
+
+		.home .items-leading {
+	    padding-bottom: $base-space;
+	    margin-bottom: $base-space;
+	    border-bottom: 1px solid $base-border-color;
+	    box-shadow: 0 1px 0 #fff;
+		}
+
+		.home #content-bottom .allmode-base-topitem h4 {
+    	font-size: 1.2rem;
+		}
+
+		#full-content-bottom {
+			margin-top: 30px;
+	    padding: 15px 0;
+	    border-top: 1px solid $gray-light;
+	    background-color: #fff;
+		}
+
+		// LEFT & RIGHT
+		#left .module,
+		#right .module { margin-bottom: $base-space-xl; }
+
+	// SYNDICATE
+
+		#syndicate {
+
+		}
+		#{$base-break-down} #syndicate { text-align: center; }
+
+	// FOOTER
+
+		#footer-6 {
+			padding: 30px 0 20px;
+			text-align: center;
+			color: #fff;
+			text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
+		}
+		#footer-6 a { color: #fff; }
+		#footer-6 a:hover { color: #fc0; }
+		#footer-6 .btn-social-group a { font-size: 22px; }
+
+	//SCROLLTOTOP
+
+		#scroll-to-top {
+			display: none;
+			position: fixed;
+			right: $base-space;
+			bottom: $base-space;
+			padding: 8px 16px;
+			color: #fff;
+			font-size: 20px;
+		  @if $base-enable-rounded { border-radius: $border-radius; }
+		  @else { border-radius: 0; }
+			background: #333;
+			opacity: 0.8;
+			overflow: hidden;
+			z-index: $zindex-scroll-to-top;
+		}
+		#scroll-to-top:before {
+			font-family: 'baseicons';
+			content: '\e889'; // base-icon-angle-double-up
+		}
+		.support-on #scroll-to-top {
+			right: 10px;
+			bottom: 50px;
+		}
+		#scroll-to-top:hover { opacity: 0.95; }

@@ -1,0 +1,19 @@
+/* DETALHAMENTO DE ALTERAÇÕES
+ * Tipo:	CORREÇÃO
+ * Objeto:	MOD_RAXO_ALLMODE
+ * data:	11/05/2016
+ * autor:	Ivo Junior
+*/
+
+RECURSOS ADICIONADOS:
+Nenhum
+
+OBJETIVO:
+Remover a classe "redundante" no conteúdo do módulo.
+
+CUSTOMIZAÇÕES:
+1. Arquivo 'modules/mod_raxo_allmode/mod_raxo_allmode.php'
+A class atribuída ao módulo é carregada novamente no conteúdo do módulo
+
+OBS:
+Nenhuma

@@ -1,0 +1,54 @@
+// NAV MENU
+
+  // Item <a>
+  .nav.menu > li > a {
+    padding: $nav-menu-main-item-padding;
+  }
+  // Stacked -> Menu vertical
+  .nav-stacked.menu > li > a {
+    padding: $nav-stacked-main-item-padding;
+  }
+  // atribui 'hover' a class 'hovered'
+  .nav.menu li:not(.active) > a:hover,
+  .nav.menu li:not(.active) > a:focus,
+  .nav.menu li.parent:not(.active):hover > a {
+    background-color: $gray-lightest;
+  }
+  .nav.menu li.active > a {
+    color: $btn-primary-color;
+    background-color: $btn-primary-bg;
+  }
+  .nav.menu li.opened > a { background-color: $nav-stacked-item-opened-bg; }
+
+  // Item link + Child reveal
+  // Quando o link pai tiver um link ativo ao invés de "#"
+  .nav.menu a.child-reveal {
+    margin-left: .5rem;
+    color: inherit;
+    border-left: 1px solid $base-border-color;
+  }
+
+  // SUB MENU
+
+    #{$base-break-up} .nav.menu:not(.nav-stacked) .nav-child {
+      min-width: $nav-menu-child-minWidth;
+      padding: $nav-menu-child-padding;
+      margin: $nav-menu-child-margin;
+      border: $nav-menu-child-border;
+      background: $nav-menu-child-background;
+    }
+    #{$base-break-down} .nav.menu .nav-child,
+    .nav-stacked.menu .nav-child {
+      max-width: 100%;
+      padding: $nav-stacked-child-padding;
+      margin: $nav-stacked-child-margin;
+      border-bottom: $nav-stacked-child-border;
+      background: $nav-stacked-child-background;
+    }
+    // item divisor
+    .nav.menu .nav-child .divider {
+      height: 1px;
+      margin: 1px 0;
+      overflow: hidden;
+      background-color: $base-border-color;
+    }

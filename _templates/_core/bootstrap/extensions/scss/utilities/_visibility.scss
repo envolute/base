@@ -1,0 +1,12 @@
+// DISPLAY OPTIONS
+
+  // Off Stage -> Fora do cenário
+  // O elemento está disponível, mas removido do cenário
+  // Importante: 'display: none' faz com que um campo de formulário não fique disponível no submit
+  // Assim, '.element-off' apenas remove o elemento do cenário
+  // Obs: Pode ser utilizado com a classe '.invisible' para impedir totalmente sua visualização
+  .off-stage {
+    position: fixed!important;
+    top: -999999em!important;
+    height: 1px;
+  }

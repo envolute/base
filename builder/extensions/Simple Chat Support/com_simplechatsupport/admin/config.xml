@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+    <fieldset name="component" label="COM_SIMPLECHATSUPPORT_CONFIG">
+        <field name="contact" type="text" size="40" label="COM_SIMPLECHATSUPPORT_OFFLINE_EMAIL_LABEL" description="COM_SIMPLECHATSUPPORT_OFFLINE_EMAIL_DESC" />
+        <field name="message" type="textarea" rows="5" cols="30" label="COM_SIMPLECHATSUPPORT_GREETING_MESSAGE_LABEL" description="COM_SIMPLECHATSUPPORT_GREETING_MESSAGE_DESC" filter="raw" />
+        <field name="message_on" type="textarea" rows="5" cols="30" label="COM_SIMPLECHATSUPPORT_ONLINE_MESSAGE_LABEL" description="COM_SIMPLECHATSUPPORT_ONLINE_MESSAGE_DESC" filter="raw" />
+        <field name="message_off" type="textarea" rows="5" cols="30" label="COM_SIMPLECHATSUPPORT_OFFLINE_MESSAGE_LABEL" description="COM_SIMPLECHATSUPPORT_OFFLINE_MESSAGE_DESC" filter="raw" />
+    </fieldset>
+</config>

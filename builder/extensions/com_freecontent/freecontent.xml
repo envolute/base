@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="3.0" client="site" method="upgrade">
+	<name>COM_FREECONTENT</name>
+	<author>Ivo Junior</author>
+	<creationDate>13/12/2015</creationDate>
+	<copyright>Copyright © 2012, Envolute Tecnologia, All Rights Reserved.</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>dev@envolute.com</authorEmail>
+	<authorUrl>http://www.envolute.com</authorUrl>
+	<version>1.0.0</version>
+	<description>COM_FREECONTENT_DESC</description>
+	<files>
+		<filename component="com_freecontent">freecontent.php</filename>
+		<filename>controller.php</filename>
+		<filename>index.html</filename>
+		<folder>views/</folder>
+	</files>
+	<administration>
+		<menu link="option=com_freecontent">COM_FREECONTENT</menu>
+    <files>
+    	<filename component="com_freecontent">freecontent.php</filename>
+    </files>
+		<languages>
+			<language tag="en-GB">language/en-GB.com_freecontent.ini</language>
+			<language tag="en-GB">language/en-GB.com_freecontent.sys.ini</language>
+			<language tag="pt-BR">language/pt-BR.com_freecontent.ini</language>
+			<language tag="pt-BR">language/pt-BR.com_freecontent.sys.ini</language>
+		</languages>
+	</administration>
+</extension>
