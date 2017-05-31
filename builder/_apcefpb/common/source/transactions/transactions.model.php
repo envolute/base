@@ -346,11 +346,6 @@ header( 'content-type: application/json; charset=utf-8' );
   					$db->setQuery($query);
   					$db->execute();
 
-            // Se for parcela ou fixas (filhas), exclui todas as movimentações
-      		  $query = 'DELETE FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('transaction_id') .' IN ('.$ids.') OR '. $db->quoteName('parent_id') .' IN ('.$ids.')';
-            $db->setQuery($query);
-            $db->execute();
-
             // FILE: remove o(s) arquivo(s)
             if($cfg['hasUpload'] && !empty($ids) && $ids != 0)
             $fileMsg = uploader::deleteFiles($ids, $cfg['fileTable'], $cfg['uploadDir'], JText::_('MSG_FILEERRODEL'));
@@ -764,7 +759,7 @@ header( 'content-type: application/json; charset=utf-8' );
     			ON T2.id = T1.provider_id
     			JOIN '. $db->quoteName('#__apcefpb_clients') .' T3
     			ON T3.id = T1.client_id
-        WHERE T1.fixed = 1 AND T1.invoice_group = '.$state.'
+        WHERE T1.fixed = 1 AND T1.state = 1 AND T1.invoice_group = '.$state.'
         ORDER BY T1.id
         ';
 

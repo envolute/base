@@ -1,0 +1,11 @@
+// IMAGE CONTAINER
+.image-container {
+  display: inline-block;
+  position: relative;
+  max-width: 100%;
+  overflow: hidden;
+}
+.image-container img {
+  width: 100%;
+  height: auto;
+}

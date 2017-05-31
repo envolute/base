@@ -1,6 +1,6 @@
 <?php if($navbarContainer == 1) echo '<div class="container">'; ?>
 
-  <nav id="cmstools" class="navbar <?php echo 'navbar-toggleable-'.$navbarToggleable.' '.$navbarStyle.' '.$navbarFixed; ?> bg-faded">
+  <nav id="cmstools" class="navbar <?php echo 'navbar-expand-'.$navbarToggleable.' '.$navbarStyle.' '.$navbarFixed; ?> bg-faded">
     <button class="navbar-toggler <?php echo 'navbar-toggler-'.$navbarTogglerSide; ?>" type="button" data-toggle="collapse" data-target="#cmstoolsCollapsing" aria-controls="cmstoolsCollapsing" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>

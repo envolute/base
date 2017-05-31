@@ -1,8 +1,21 @@
 // TEXT COLORS
-.text-secondary { color: $base-color-secondary; }
-.text-tertiary { color: $base-color-tertiary; }
-.text-live { color: $base-color-live; }
 .text-color { color: $body-color; }
 .link-color { color: $link-color; }
 .link-hover-color { color: $link-hover-color; }
+.text-secondary, .text-secondary { color: $base-color-secondary; }
+.text-tertiary { color: $base-color-tertiary; }
+.text-live { color: $base-color-live; }
 .text-inverse { color: $base-color-inverse; }
+.text-gray-dark { color: $gray-dark; }
+.text-gray { color: $gray; }
+.text-gray-light { color: $gray-light; }
+.text-gray-lighter { color: $gray-lighter; }
+.text-gray-lightest { color: $gray-lightest; }
+.text-red { color: $red; }
+.text-orange { color: $orange; }
+.text-yellow { color: $yellow; }
+.text-green { color: $green; }
+.text-blue { color: $blue; }
+.text-teal { color: $teal; }
+.text-pink { color: $pink; }
+.text-purple { color: $purple; }

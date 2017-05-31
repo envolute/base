@@ -1,0 +1,80 @@
+// LIST BORDERED
+// Customização dos elemento '.list-unstyled' e '.list-inline' do bootstrap
+// para implementação de lista no formato de 'menu' com bordas
+
+	// VERTICAL
+
+		.list-unstyled.bordered li {
+	    padding: $list-bordered-padding-y $list-bordered-padding-x;
+			line-height: $list-bordered-line-height;
+		}
+		.list-unstyled.bordered > li:not(:last-child) {
+	    border-bottom: $base-list-border;
+	    margin-bottom: -1px;
+		}
+		// list spaces => espaço entre os itens
+		.list-unstyled.bordered.list-sm li { padding: $list-bordered-padding-sm-y $list-bordered-padding-sm-x; }
+		.list-unstyled.bordered.list-lg li { padding: $list-bordered-padding-lg-y $list-bordered-padding-lg-x; }
+		// no-space => remove os espaçossuperior e inferior da listagem
+		.list-unstyled.bordered.no-space > li:first-child { padding-top: 0!important; }
+		.list-unstyled.bordered.no-space > li:last-child { padding-bottom: 0!important; }
+		// sub itens
+		.list-unstyled.bordered > li ul {
+			list-style: none;
+			padding-left: $list-bordered-child-left;
+		}
+
+	// HORIZONTAL
+
+		.list-inline.bordered { display: flex; }
+		.list-inline.bordered > li {
+			padding: $list-inline-padding-y $list-inline-padding-x;
+			margin: 0;
+			line-height: $list-inline-line-height;
+			vertical-align: top;
+		}
+		.list-inline.bordered > li:not(:last-child) {
+			border-right: $base-list-inline-border;
+		}
+		// list spaces => espaço entre os itens
+		.list-inline.bordered.list-sm > li { padding: $list-inline-padding-sm-y $list-inline-padding-sm-x; }
+		.list-inline.bordered.list-lg > li { padding: $list-inline-padding-lg-y $list-inline-padding-lg-x; }
+		// no-space => remove os espaçossuperior e inferior da listagem
+		.list-inline.bordered.no-space > li:first-child { padding-left: 0!important; }
+		.list-inline.bordered.no-space > li:last-child { padding-right: 0!important; }
+		// sub itens
+		.list-inline.bordered > li > ul {
+			list-style: none;
+			padding-left: 0;
+		}
+		.list-inline.bordered > li > ul ul {
+			list-style: none;
+			padding-left: $list-inline-child-left;
+		}
+
+	// UTILITIES
+
+		// STRIPED -> listras zebradas
+		.list-striped > li:nth-child(odd),
+		.list-striped:not(ul) ul:first-of-type > li:nth-child(odd) {
+			background-color: $table-bg-accent;
+		}
+		.list-striped > li { padding: $list-striped-padding!important; }
+		.list-sm.list-striped > li { padding: $list-striped-padding-sm!important; }
+		.list-lg.list-striped > li { padding: $list-striped-padding-lg!important; }
+
+		// HOVER -> onmouseover
+		.list-hover > li:hover {
+			background-color: $table-bg-hover;
+		}
+		// Content Header Option
+		.list-hover > li > h5 {
+			margin: 0;
+		}
+
+		// CONTEXTUAL COLORS
+		li.list-active { background-color: $table-bg-active!important; }
+		li.list-success { background-color: $state-success-bg!important; }
+		li.list-info { background-color: $state-info-bg!important; }
+		li.list-warning { background-color: $state-warning-bg!important; }
+		li.list-danger { background-color: $state-danger-bg!important; }

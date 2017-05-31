@@ -1,0 +1,21 @@
+// FIELD REQUIRED
+// Marcação dos campos obrigatórios
+
+  // Container para informação sobre campos obrigatórios
+	.alert-required {
+		padding: 0 0 1em;
+		font-family: $base-font-featured;
+		color: $text-muted;
+		font-weight: normal;
+	}
+  // Ícone indicativo de campo obrigatório
+	.alert-required:before,
+	.field-required:not(.checkbox) > label:not(.error):not(.required-hidden):before,
+	label.field-required:not(.error):before {
+		font-family: "baseicons";
+		content: $baseicon-field-required;
+		padding-right: 3px;
+		color: $brand-danger;
+		font-weight: normal;
+		line-height: 1em;
+	}

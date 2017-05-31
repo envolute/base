@@ -1,0 +1,7 @@
+// RADIUS
+
+  // Opções de tamanhos para o raio das curvas
+  // pode trabalhar junto com as classes default do bootstrap
+  // -> rounded, rounded-top, rounded-right, rounded-bottom, rounded-left
+  .rounded-sm { border-radius: $border-radius-sm; }
+  .rounded-lg { border-radius: $border-radius-lg; }

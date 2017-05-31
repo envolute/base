@@ -1,0 +1,9 @@
+// ACYMAILING -> NEWSLETTER
+
+.acymailing_form input[type='text'] {
+    width: 100%;
+    padding: 1rem 4em 1em 1em;
+    color: $gray;
+    border: none;
+    background: $base-color-live url('../../../images/template/icone-email-newsletter.png') 97% 12px no-repeat;
+}

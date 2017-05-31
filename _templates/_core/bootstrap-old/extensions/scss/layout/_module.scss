@@ -1,0 +1,21 @@
+// MODULE
+// Container opcional do template Base
+.mod-base.header-no-space .page-header { margin-bottom: 0!important; }
+.mod-base .head-tag { float: right; }
+// Module "Toggleable"
+// mostra e esconde conteúdo clicando no header
+.mod-base.toggleable .mod-base-header { cursor: pointer; }
+.mod-base .mod-base-toggle:before {
+  font-family: "baseicons";
+  width: 1em;
+  text-align: center;
+  line-height: 1em;
+}
+.mod-base:not(.closed) .mod-base-toggle:before  { content: '\e87b'; }
+.mod-base.closed .mod-base-toggle:before  { content: '\e87e'; }
+.mod-base.closed .mod-base-body  { display: none!important; }
+// Header Toolbar
+// Container para botões de ação
+.mod-base .mod-base-toolbar {
+	position: absolute;
+}

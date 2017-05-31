@@ -11,7 +11,7 @@
 .nav-tabs > li > a, // legacy V3
 .nav-tabs .nav-link {
   display: block;
-  padding: $nav-link-padding;
+  padding: $nav-link-padding-y $nav-link-padding-x
   border-width: 0px;
 }
 .nav-tabs > li > a:hover, // legacy V3

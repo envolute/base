@@ -2,7 +2,7 @@
 var gulp = require('gulp');
 
 // Define Project Name
-var project     = 'base';
+var project     = 'hilton';
 
 // Define base folders
 var builder     = '_templates';
@@ -202,17 +202,17 @@ var del           = require('del');
   // COPY TEMPLATE LIBS
     // CORE
     gulp.task('build-common', function() {
-      gulp.src(common+'/**/*', {base: common})
+      return gulp.src(common+'/**/*', {base: common})
       .pipe(gulp.dest(tmpl))
     });
     // BASE
     gulp.task('cms-build-common', function() {
-      gulp.src(commonCms+'/**/*', {base: commonCms})
+      return gulp.src(commonCms+'/**/*', {base: commonCms})
       .pipe(gulp.dest(tmpl))
     });
     // SITE
     gulp.task('site-build-common', function() {
-      gulp.src(commonSite+'/**/*', {base: commonSite})
+      return gulp.src(commonSite+'/**/*', {base: commonSite})
       .pipe(gulp.dest(tmpl))
     });
 
@@ -225,6 +225,6 @@ gulp.task('builder-js', ['default.js', 'forms.js', 'validate.js']);
 // Builder CSS
 gulp.task('builder-css', ['style.css', 'style.basic.css', 'style.ie.css', 'style.print.css', 'style.app.css']);
 // Builder Template
-gulp.task('_builder-core', ['build-common', 'cms-build-common', 'site-build-common', 'builder-js', 'builder-css']);
+gulp.task('_builder-core', ['builder-css', 'builder-js', 'build-common', 'cms-build-common', 'site-build-common']);
 gulp.task('_builder-tmpl', ['site-build-common']);
 gulp.task('_builder', ['_builder-core', '_builder-tmpl']);

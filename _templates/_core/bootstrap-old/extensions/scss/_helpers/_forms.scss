@@ -1,0 +1,33 @@
+// @BOOTSTRAP HELPERS
+// Adaptações e correções para casos específicos
+
+// FORMS
+
+	// FORM INLINE
+
+		// ÍCONES
+		// A classe '.form-inline' remove os espaços entre os elementos
+		// Isso afeta os ícones, que 'colam' nos elementos
+		// As classes abaixo tentam 'corrigir' o problema
+		// => Espaço entre o ícone e elementos do form-inline
+		.form-inline [class*="base-icon-"]:before { margin: 0 .25rem; }
+		// => BUTTON: Espaço entre o ícone do botão e o texto
+		.form-inline .btn[class*="base-icon-"]:before,
+		.form-inline .btn > [class*="base-icon-"]:before { margin: 0 .15rem; }
+
+	// INPUT-GROUP
+
+		// input-group > 'radio | checkbox'
+    // Melhora a posição do input no container '.input-group-addon'
+		.input-group-addon input[type="radio"],
+		.input-group-addon input[type="checkbox"] {
+			vertical-align: bottom;
+		}
+
+		// Opções de customização para 'input-group-addon'
+		.input-group-addon.live { color: $base-color-live; }
+		.input-group-addon.primary { color: $brand-primary; }
+		.input-group-addon.info { color: $brand-info; }
+		.input-group-addon.success { color: $brand-success; }
+		.input-group-addon.warning { color: $brand-warning; }
+		.input-group-addon.danger { color: $brand-danger; }

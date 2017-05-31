@@ -1,0 +1,31 @@
+// FIELDSET BORDERED
+// Fieldset com bordas
+
+	.fieldset-bordered fieldset,
+  fieldset.fieldset-bordered {
+		padding: $fieldset-padding-top $fieldset-padding $fieldset-padding;
+		margin-bottom: $base-space;
+		border: 1px solid $base-border-color;
+		@if $base-enable-rounded { border-radius: $border-radius; }
+	  @else { border-radius: 0; }
+	}
+
+  // Legenda
+	.fieldset-bordered legend {
+		width: auto;
+		padding: 0 $base-space-sm;
+		margin: -$base-space 0;
+		font-size: 1.3rem;
+		border: none;
+	}
+
+  // FORM ACTIONS
+  // Customização do form-actions
+	.fieldset-bordered .form-actions{
+		padding: $fieldset-padding-sm $fieldset-padding;
+		margin: $fieldset-padding (-$fieldset-padding) (-$fieldset-padding);
+		@if $base-enable-rounded { border-radius: 0 0 $border-radius $border-radius; }
+	  @else { border-radius: 0; }
+		background-color: $fieldset-bordered-form-actions-bg;
+		border-top: $fieldset-border;
+	}

@@ -1,0 +1,22 @@
+// TABLE
+
+	// Evita a borda da tabela quando a propriedade "border" é inserida diretamente na tabela
+	// Ex: <table border="1">
+	.table:not(.table-bordered) { border: 0; }
+	.table:not(.table-bordered) tr > * {
+		border-left: 0;
+		border-right: 0;
+	}
+	.table th,
+	.table td { line-height: $base-table-line-height; }
+	// Centraliza toda a tabela
+	table.text-center th,
+	table.text-center td { text-align: center; }
+
+	// Checkbox / Radio
+	.table th > input[type="checkbox"],
+	.table td > input[type="checkbox"],
+	.table th > input[type="radio"],
+	.table td > input[type="radio"] {
+		margin-top: 1.5px;
+	}

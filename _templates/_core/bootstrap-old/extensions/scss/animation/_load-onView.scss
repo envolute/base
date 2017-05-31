@@ -1,0 +1,41 @@
+// VISIBILITY
+
+  // Elemento a ser revelado
+  .load-onView {
+    display: block;
+    position: relative;
+    opacity: 0;
+    transition-property: all;
+    transition-duration: 1s;
+    transition-timing-function: ease;
+    transition-delay: .5s;
+  }
+  // atraso na animação
+  // Utilizar em caso de elementos carregados em sequencia
+
+  .reveal-delay-1 {
+    transition-delay: 1s;
+  }
+  .reveal-delay-2 {
+    transition-delay: 1.5s;
+  }
+  .reveal-delay-3 {
+    transition-delay: 2s;
+  }
+  .reveal-delay-4 {
+    transition-delay: 2.5s;
+  }
+  // efeito de movimento
+  .reveal-to-top { top: 50px; }
+  .reveal-to-right { right: 50px; }
+  .reveal-to-bottom { bottom: 50px; }
+  .reveal-to-left { left: 50px; }
+
+  // reseta o elemento para seu status default
+  .load-onView.viewed {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 1;
+  }

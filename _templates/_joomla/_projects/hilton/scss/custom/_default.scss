@@ -1,0 +1,157 @@
+// @CUSTOM
+// customização de estilo do site
+// Esse arquivo deve conter todas as classes para customização do template para esse projeto.
+
+// WINDOW
+
+	// SCROLLBAR -> barra de rolagem
+	*::-webkit-scrollbar {
+		width:11px;
+		height:11px;
+		background-color: transparent;
+	}
+	*::-webkit-scrollbar-thumb,
+	*::-webkit-scrollbar-corner {
+		border-style: solid;
+		border-width: 2px;
+		border-color: $body-bg;
+		background-color: $gray-light;
+		border-radius: 10px;
+	}
+	*::-webkit-scrollbar-thumb:hover { background-color: $gray; }
+	*::-webkit-scrollbar-track-piece { background-color: none;}
+
+// TYPOGRAPHY
+
+	blockquote { font-family: $base-font-featured; }
+
+// HEADERS
+
+	h4, h5, h6 { line-height: 1.3em; }
+
+// TEMPLATE
+
+	// COMMON ELEMENTS
+
+		// 'clearfix' elements
+		// a classe 'elemento' só serve como modelo
+		// .elemento:before, .elemento:after {
+		// 	content: " ";
+		// 	display: table;
+		// }
+		// .elemento:after { clear: both; }
+
+	// BG LAYER
+
+		#base-bg-layer { }
+
+	// SCREEN
+
+		#screen { padding-top: $header-menu-height; }
+
+	// WRAPPER
+
+		#wrapper {
+			position: relative;
+			margin: auto;
+		}
+
+		// wrapper = container
+		// .media-sm #wrapper { width: 576px; }
+		// .media-md #wrapper { width: 768px; }
+		// .media-lg #wrapper { width: 992px; }
+		// .media-xs #wrapper { width: 1200px; }
+
+
+	// HEADER
+
+		#header { }
+		#header-row-1 {
+			position: fixed;
+			top: 0;
+			width: 100%;
+			z-index: $zindex-header-menu;
+		}
+		#{$base-break-up}.isAdmin #header-row-1 {
+			top: $admin-navbar-height;
+		}
+
+		#logo-header {
+			max-width: 300px;
+			padding: 20px 0;
+		}
+		#logo-header h4 {
+			display: none;
+			margin: 1rem 0 0;
+		}
+		body.home #logo-header {
+			max-width: 100%;
+			padding: 15vh 0;
+		}
+		body.home #logo-header h4 { display: block; }
+
+		@include media-breakpoint-down(sm) {
+			#logo-header h4 { font-size: 1.2rem; }
+		}
+		@include media-breakpoint-up(sm) {
+			#logo-header h4 { margin: 3rem 0 0; }
+			body.home #logo-header { padding: 20vh 0; }
+		}
+
+
+	// SECTION
+
+		#section {
+
+		}
+
+	// FULL-CONTENT -> área total do conteúdo incluindo as laterais
+
+		// CONTENT
+		#full-content { padding: $base-space 0; }
+
+		// LEFT & RIGHT
+		#left .module,
+		#right .module { margin-bottom: $base-space; }
+
+	// SYNDICATE
+
+		#syndicate {
+
+		}
+		#{$base-break-down} #syndicate { text-align: center; }
+
+	// FOOTER
+
+		#footer { }
+		#{$base-break-down}  #footer { text-align: center; }
+
+	//SCROLLTOTOP
+
+		#scroll-to-top {
+			display: none;
+			position: fixed;
+			right: $base-space;
+			bottom: $base-space;
+			padding: 14px 16px 18px;
+			color: $gray;
+			font-size: 20px;
+			line-height: 20px;
+		  // @if $base-enable-rounded { border-radius: $border-radius; }
+		  // @else { border-radius: 0; }
+			border-radius: 50%;
+			background: $base-color-live;
+			opacity: 0.85;
+			box-shadow: 1px 1px 4px 1px rgba(0,0,0,0.2);
+			overflow: hidden;
+			z-index: $zindex-scroll-to-top;
+		}
+		#scroll-to-top:before {
+			font-family: 'baseicons';
+			content: '\e87e'; // base-icon-angle-double-up
+		}
+		.support-on #scroll-to-top {
+			right: 10px;
+			bottom: 50px;
+		}
+		#scroll-to-top:hover { opacity: 0.95; }

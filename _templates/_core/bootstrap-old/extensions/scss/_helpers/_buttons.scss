@@ -1,0 +1,28 @@
+// @BOOTSTRAP HELPERS
+// Adaptações e correções para casos específicos
+
+// BUTTONS
+
+	.btn {
+		position: relative;
+		cursor: pointer;
+	}
+
+  // Atribui a cor correta, caso o link esteja dentro de um container com a classe '.btn'
+	.btn-primary a { color: $btn-primary-color!important; }
+	.btn-info a { color: $btn-info-color!important; }
+	.btn-warning a { color: $btn-warning-color!important; }
+	.btn-danger a { color: $btn-danger-color!important; }
+	.btn-success a { color: $btn-success-color!important; }
+
+	// DEFAULT -> formato default dos botões
+	// segue o estilo da class '.btn' do bootstrap
+	// 'not()' evita conflito com as classes do bootstrap
+	input[type="submit"]:not([class*="btn-"]),
+	input[type="button"]:not([class*="btn-"]) {
+		@extend .btn;
+	}
+	// input[type="submit"]:not([class*="btn-"]):hover,
+	// input[type="button"]:not([class*="btn-"]):hover {
+	// 	background-color: $gray-light;
+	// }

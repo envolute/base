@@ -8,7 +8,7 @@
 .nav-tabs > li > a,
 .nav-tabs .nav-link {
   display: block;
-  padding: $nav-link-padding;
+  padding: $nav-link-padding-y $nav-link-padding-x
   border-width: 0px;
 }
 .nav-tabs > li > a:hover,

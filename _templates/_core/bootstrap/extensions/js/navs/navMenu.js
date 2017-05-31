@@ -42,16 +42,23 @@ jQuery(function() {
 
   };
 
+  // NAV STACKED -> Seta o menu como vertical
+  // É necessário setar a class 'stacked-*' para que o menu 'quebre' no ponto deteminado
+  // 'stacked-lg': 'quebra' a partir da resolução 'lg'
+  // 'stacked-md': 'quebra' a partir da resolução 'md'
+  // 'stacked-sm': 'quebra' a partir da resolução 'sm'
+  // 'stacked-xs': 'quebra' a partir da resolução 'xs'
+  // Obs: para que o menu seja vertical sempre basta adicionar as classes 'nav-stacked stacked'
   window.navStacked = function() {
-    var menu = jQuery('.nav.menu').not('.no-stacked');
+    var menu = jQuery('.nav.menu[class*="stacked-"]');
     if(elementExist(menu)) {
       menu.each(function() {
         var obj = jQuery(this);
         if(!obj.hasClass('nav-stacked') || obj.hasClass('stacked')) {
-          if(obj.hasClass('stacked-lg') && _WIDTH_ < _XS_) obj.addClass('nav-stacked stacked');
+          if(obj.hasClass('stacked-lg') && _WIDTH_ < _XL_) obj.addClass('nav-stacked stacked');
           else if(obj.hasClass('stacked-md') && _WIDTH_ < _LG_) obj.addClass('nav-stacked stacked');
           else if(obj.hasClass('stacked-sm') && _WIDTH_ < _MD_) obj.addClass('nav-stacked stacked');
-          else if(_WIDTH_ < _SM_) obj.addClass('nav-stacked stacked');
+          else if(obj.hasClass('stacked-xs') && _WIDTH_ < _SM_) obj.addClass('nav-stacked stacked');
           else obj.removeClass('nav-stacked stacked'); // reseta
         }
       });

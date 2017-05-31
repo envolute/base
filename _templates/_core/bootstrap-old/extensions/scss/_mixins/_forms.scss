@@ -1,0 +1,16 @@
+// FORM MIXINS
+
+// Form control focus state
+//
+// Essa função é uma réplica da função 'form-control-focus' do bootstrap
+// localizada no arquivo: _core/bootstrap/sass/bootstrap/mixins/_form.scss
+// Ela implementa o estado 'focus' nos campos de formulário
+@mixin base-form-control-focus() {
+	&:focus {
+    color: $input-color-focus;
+    background-color: $input-bg-focus;
+    border-color: $input-border-focus;
+    outline: none;
+    @include box-shadow($input-box-shadow-focus);
+  }
+}

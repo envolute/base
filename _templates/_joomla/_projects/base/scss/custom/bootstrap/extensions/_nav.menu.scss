@@ -82,7 +82,9 @@
         background-color: transparent!important;
       }
       // Item ativo
-      .mainmenu.nav.menu li.active > a {
+      .mainmenu.nav.menu li.active > a,
+      .mainmenu.nav.menu li > a.active // em caso de scroll 'go-to'
+      {
         color: $white;
       }
       // Espaço entre o item principal (nível 1) e o sub-menu (nível 2)
