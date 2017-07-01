@@ -2,7 +2,7 @@
 var gulp = require('gulp');
 
 // Define Project Name
-var project     = 'hilton';
+var project     = 'base';
 
 // Define base folders
 var builder     = '_templates';

@@ -10,19 +10,22 @@
 		}
 		.list-unstyled.bordered > li:not(:last-child) {
 	    border-bottom: $base-list-border;
-	    margin-bottom: -1px;
 		}
 		// list spaces => espaço entre os itens
 		.list-unstyled.bordered.list-sm li { padding: $list-bordered-padding-sm-y $list-bordered-padding-sm-x; }
 		.list-unstyled.bordered.list-lg li { padding: $list-bordered-padding-lg-y $list-bordered-padding-lg-x; }
-		// no-space => remove os espaçossuperior e inferior da listagem
+		// no-space => remove os espaços (superior e inferior) da listagem
 		.list-unstyled.bordered.no-space > li:first-child { padding-top: 0!important; }
 		.list-unstyled.bordered.no-space > li:last-child { padding-bottom: 0!important; }
 		// sub itens
 		.list-unstyled.bordered > li ul {
 			list-style: none;
 			padding-left: $list-bordered-child-left;
+			margin-top: $list-bordered-padding-y;
 		}
+		.list-unstyled.bordered.list-sm > li ul { padding-top: $list-bordered-padding-sm-y; }
+		.list-unstyled.bordered.list-lg > li ul { padding-top: $list-bordered-padding-lg-y; }
+		.list-unstyled.bordered > li ul li:last-child { padding-bottom: 0; }
 
 	// HORIZONTAL
 

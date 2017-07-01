@@ -1,59 +1,79 @@
 <p>O Bootstrap, através de variáveis SASS, disponibiliza uma lista de cores contextuais (primary, success, danger...). Desde a versão 4 foram adicionadas variáveis referêntes às cores básicas como green, yellow, blue, entre outras. Por sua vez, a BASE adiciona mais algumas cores, visando uma paleta de cores quase completa para qualquer projeto.</p>
 <hr class="my-1" />
-  <strong>Backgrounds:</strong><br />Para permitir a utilização dessas cores como background, a BASE disponibiliza diversas classes customizadas.
-  <br /><span class="base-icon-attention text-live"> Clique na cor para visualizar a variável e a classe referênte ao background.</span>
+<strong>Backgrounds:</strong><br />Para permitir a utilização dessas cores como background, a BASE disponibiliza diversas classes customizadas.
+<br /><span class="base-icon-attention text-live"> Clique na cor para visualizar a variável e a classe referênte ao background.</span>
 <hr class="my-1" />
 <div class="row">
-  <div class="col-md-6 mb-3">
-    <h5 class="my-3">Template</h5>
-    <div class="row no-gutters">
-      <a href="#" class="col-sm-6 p-2 bg-body set-border border-default setPopover" title="Body" data-placement="top" data-content="Indica a cor de fundo do site<hr />Var: $body-bg<br />Class: bg-body">Body</a>
-      <a href="#" class="col-sm-6 p-2 bg-inverse text-white setPopover" title="Inverse" data-placement="top" data-content="O oposto do background da página<hr />Var: $brand-inverse<br />Class: bg-inverse">Inverse</a>
-    </div>
-    <h5 class="my-3">Marca</h5>
-    <div class="row no-gutters">
-      <a href="#" class="col-12 p-2 bg-primary text-white setPopover" data-placement="top" title="Primary" data-content="Indica a cor principal da Marca<hr />Var: $brand-primary<br />Class: bg-primary"><span class="base-icon-down-big text-live hasTooltip" title="Opções a cor primária"></span> Primary</a>
-      <a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-primary-dark text-white setPopover" data-placement="top" title="Primary Dark" data-content="Opção de cor primaria em uma tonalidade mais escura<hr />Var: $brand-primary-dark {snippet icon-base}<br />Class: bg-primary-dark {snippet icon-base}">Dark {snippet estrela-base}</a>
-      <a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-primary-light text-white setPopover" data-placement="top" title="Primary Light" data-content="Opção de cor primaria em uma tonalidade mais clara<hr />Var: $brand-primary-light {snippet icon-base}<br />Class: bg-primary-light {snippet icon-base}">Light {snippet estrela-base}</a>
-      <a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-primary-lighter text-white setPopover" data-placement="top" title="Primary Lighter" data-content="Opção de cor primaria em uma tonalidade mais clara<hr />Var: $brand-primary-lighter {snippet icon-base}<br />Class: bg-primary-lighter {snippet icon-base}">Lighter {snippet estrela-base}</a>
-      <a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-primary-lightest text-white setPopover" data-placement="top" title="Primary Lightest" data-content="Opção de cor primaria em uma tonalidade mais clara<hr />Var: $brand-primary-lightest {snippet icon-base}<br />Class: bg-primary-lightest {snippet icon-base}">Lightest {snippet estrela-base}</a>
-      <a href="#" class="col-6 p-2 bg-secondary text-white setPopover" data-placement="top" title="Secondary" data-content="Indica a cor secundária da marca. Caso a marca seja monocromática, pode-se utilizar uma cor opcional<hr />Var: $brand-secondary<br />Class: bg-secondary {snippet icon-base}">Secondary {snippet estrela-base}</a>
-      <a href="#" class="col-6 p-2 bg-tertiary text-white setPopover" data-placement="top" title="Tertiary" data-content="Indica a cor terciária da marca. Caso não exista, pode-se utilizar uma cor opcional<hr />Var: $brand-tertiary {snippet icon-base}<br />Class: bg-tertiary {snippet icon-base}">Tertiary {snippet estrela-base}</a>
-    </div>
-    <h5 class="my-3">Contextual</h5>
-    <div class="row no-gutters">
-      <a href="#" class="col-12 p-2 bg-live text-white setPopover" data-placement="top" title="Live" data-content="Indica uma informação em 'destaque'<hr />Var: $brand-live {snippet icon-base}<br />Class: bg-live {snippet icon-base}">Live {snippet estrela-base}</a>
-      <a href="#" class="col-sm-3 p-2 bg-success text-white setPopover" data-placement="top" title="Success" data-content="Indica um resultado positivo/inclusão<hr />Var: $brand-success<br />Class: bg-success">Success</a>
-      <a href="#" class="col-sm-3 p-2 bg-info text-white setPopover" data-placement="top" title="Info" data-content="Indica informações/alertas relacionadas a 'dicas/informativos/observações'<hr />Var: $brand-info<br />Class: bg-info">Info</a>
-      <a href="#" class="col-sm-3 p-2 bg-warning text-white setPopover" data-placement="top" title="Warning" data-content="Indica informações/alertas relacionadas a 'atenção/cuidado'<hr />Var: $brand-warning<br />Class: bg-warning">Warning</a>
-      <a href="#" class="col-sm-3 p-2 bg-danger text-white setPopover" data-placement="top" title="Danger" data-content="Indica um resultado negativo/exclusão<hr />Var: $brand-danger<br />Class: bg-danger">Danger</a>
-    </div>
-  </div>
-  <div class="col-md-6 mb-3">
-    <h5 class="my-3">Útil</h5>
-    <div class="row no-gutters">
-      <a href="#" class="col-12 p-2 bg-transparent set-border border-default setPopover" title="Transparent" data-placement="top" data-content="Remove a cor de fundo do elemento<hr />Class: bg-transparent {snippet icon-base}">Transparent</a>
-    </div>
-    <h5 class="my-3">Cinza</h5>
-    <div class="row no-gutters">
-      <a href="#" class="col-12 p-2 bg-gray text-white setPopover" data-placement="top" title="Gray" data-content="Var: $gray<br />Class: bg-gray {snippet icon-base}"><span class="base-icon-down-big text-live hasTooltip" title="Opções ao cinza"></span> Gray</a>
-      <a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-gray-dark text-white setPopover" data-placement="top" title="Gray Dark" data-content="Opção de cinza em uma tonalidade mais escura<hr />Var: $gray-dark<br />Class: bg-gray-dark {snippet icon-base}">Dark {snippet estrela-base}</a>
-      <a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-gray-light text-white setPopover" data-placement="top" title="Gray Light" data-content="Opção de cinza em uma tonalidade mais clara<hr />Var: $gray-light<br />Class: bg-gray-light {snippet icon-base}">Light {snippet estrela-base}</a>
-      <a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-gray-lighter setPopover" data-placement="top" title="Gray Lighter" data-content="Opção de cinza em uma tonalidade mais clara<hr />Var: $gray-lighter<br />Class: bg-gray-lighter {snippet icon-base}">Lighter {snippet estrela-base}</a>
-      <a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-gray-lightest setPopover" data-placement="top" title="Gray Lightest" data-content="Opção de cinza em uma tonalidade mais clara<hr />Var: $gray-lightest<br />Class: bg-gray-lightest {snippet icon-base}">Lightest {snippet estrela-base}</a>
-      <a href="#" class="col-6 p-2 bg-black text-white setPopover" data-placement="top" title="Black" data-content="Var: $black<br />Class: bg-black {snippet icon-base}">Black</a>
-      <a href="#" class="col-6 p-2 bg-white set-border-bottom set-border-right border-default setPopover" data-placement="top" title="White" data-content="Var: $white<br />Class: bg-white {snippet icon-base}">White</a>
-    </div>
-    <h5 class="my-3">Cores Básicas</h5>
-    <div class="row no-gutters">
-      <a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-red text-white setPopover" data-placement="top" title="Red" data-content="Var: $red<br />Class: bg-red">Red</a>
-      <a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-orange text-white setPopover" data-placement="top" title="Orange" data-content="Var: $orange<br />Class: bg-orange">Orange</a>
-      <a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-yellow text-white setPopover" data-placement="top" title="Yellow" data-content="Var: $yellow<br />Class: bg-yellow">Yellow</a>
-      <a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-green text-white setPopover" data-placement="top" title="Green" data-content="Var: $green<br />Class: bg-green">Green</a>
-      <a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-blue text-white setPopover" data-placement="top" title="Blue" data-content="Var: $blue<br />Class: bg-blue">Blue</a>
-      <a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-teal text-white setPopover" data-placement="top" title="Teal" data-content="Var: $teal<br />Class: bg-teal">Teal</a>
-      <a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-pink text-white setPopover" data-placement="top" title="Pink" data-content="Var: $pink<br />Class: bg-pink">Pink</a>
-      <a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-purple text-white setPopover" data-placement="top" title="Purple" data-content="Var: $purple<br />Class: bg-purple">Purple</a>
-    </div>
-  </div>
+	<div class="col-md-6 mb-3">
+		<h5 class="my-3">Template</h5>
+		<div class="row no-gutters">
+			<a href="#" class="col-sm-6 p-2 bg-body set-border border-default setPopover" title="Body" data-placement="top" data-content="Indica a cor de fundo do site<hr />Var: $body-bg<br />Class: bg-body">Body</a>
+			<a href="#" class="col-sm-6 p-2 bg-inverse text-white setPopover" title="Inverse" data-placement="top" data-content="O oposto do background da página<hr />Var: $brand-inverse<br />Class: bg-inverse">Inverse</a>
+		</div>
+		<h5 class="my-3">Marca</h5>
+		<div class="row no-gutters">
+			<a href="#" class="col-12 p-2 bg-primary text-white setPopover" data-placement="top" title="Primary" data-content="Indica a cor principal da Marca<hr />Var: $brand-primary<br />Class: bg-primary"><span class="base-icon-down-big text-live hasTooltip" title="Opções a cor primária"></span> Primary</a>
+			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-primary-dark text-white setPopover" data-placement="top" title="Primary Dark" data-content="Opção de cor primaria em uma tonalidade mais escura<hr />Var: $brand-primary-dark {snippet icon-base}<br />Class: bg-primary-dark {snippet icon-base}">Dark {snippet estrela-base}</a>
+			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-primary-light text-white setPopover" data-placement="top" title="Primary Light" data-content="Opção de cor primaria em uma tonalidade mais clara<hr />Var: $brand-primary-light {snippet icon-base}<br />Class: bg-primary-light {snippet icon-base}">Light {snippet estrela-base}</a>
+			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-primary-lighter text-white setPopover" data-placement="top" title="Primary Lighter" data-content="Opção de cor primaria em uma tonalidade mais clara<hr />Var: $brand-primary-lighter {snippet icon-base}<br />Class: bg-primary-lighter {snippet icon-base}">Lighter {snippet estrela-base}</a>
+			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-primary-lightest setPopover" data-placement="top" title="Primary Lightest" data-content="Opção de cor primaria em uma tonalidade mais clara<hr />Var: $brand-primary-lightest {snippet icon-base}<br />Class: bg-primary-lightest {snippet icon-base}">Lightest {snippet estrela-base}</a>
+			<a href="#" class="col-6 p-2 bg-secondary text-white setPopover" data-placement="top" title="Secondary" data-content="Indica a cor secundária da marca. Caso a marca seja monocromática, pode-se utilizar uma cor opcional<hr />Var: $brand-secondary<br />Class: bg-secondary {snippet icon-base}">Secondary {snippet estrela-base}</a>
+			<a href="#" class="col-6 p-2 bg-tertiary text-white setPopover" data-placement="top" title="Tertiary" data-content="Indica a cor terciária da marca. Caso não exista, pode-se utilizar uma cor opcional<hr />Var: $brand-tertiary {snippet icon-base}<br />Class: bg-tertiary {snippet icon-base}">Tertiary {snippet estrela-base}</a>
+		</div>
+		<h5 class="my-3">Contextual</h5>
+		<div class="row no-gutters">
+			<a href="#" class="col-12 p-2 bg-live text-white setPopover" data-placement="top" title="Live" data-content="Indica uma informação em 'destaque'<hr />Var: $brand-live {snippet icon-base}<br />Class: bg-live {snippet icon-base}">Live {snippet estrela-base}</a>
+			<a href="#" class="col-sm-3 p-2 bg-success text-white setPopover" data-placement="top" title="Success" data-content="Indica um resultado positivo/inclusão<hr />Var: $brand-success<br />Class: bg-success">Success</a>
+			<a href="#" class="col-sm-3 p-2 bg-info text-white setPopover" data-placement="top" title="Info" data-content="Indica informações/alertas relacionadas a 'dicas/informativos/observações'<hr />Var: $brand-info<br />Class: bg-info">Info</a>
+			<a href="#" class="col-sm-3 p-2 bg-warning text-white setPopover" data-placement="top" title="Warning" data-content="Indica informações/alertas relacionadas a 'atenção/cuidado'<hr />Var: $brand-warning<br />Class: bg-warning">Warning</a>
+			<a href="#" class="col-sm-3 p-2 bg-danger text-white setPopover" data-placement="top" title="Danger" data-content="Indica um resultado negativo/exclusão<hr />Var: $brand-danger<br />Class: bg-danger">Danger</a>
+		</div>
+	</div>
+	<div class="col-md-6 mb-3">
+		<h5 class="my-3">Útil</h5>
+		<div class="row no-gutters">
+			<a href="#" class="col-12 p-2 bg-transparent set-border border-default setPopover" title="Transparent" data-placement="top" data-content="Remove a cor de fundo do elemento<hr />Class: bg-transparent {snippet icon-base}">Transparent</a>
+		</div>
+		<h5 class="my-3">Cinza</h5>
+		<div class="row no-gutters">
+			<a href="#" class="col-12 p-2 bg-gray text-white setPopover" data-placement="top" title="Gray" data-content="Var: $gray<br />Class: bg-gray {snippet icon-base}"><span class="base-icon-down-big text-live hasTooltip" title="Opções ao cinza"></span> Gray</a>
+			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-gray-dark text-white setPopover" data-placement="top" title="Gray Dark" data-content="Opção de cinza em uma tonalidade mais escura<hr />Var: $gray-dark<br />Class: bg-gray-dark {snippet icon-base}">Dark {snippet estrela-base}</a>
+			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-gray-light text-white setPopover" data-placement="top" title="Gray Light" data-content="Opção de cinza em uma tonalidade mais clara<hr />Var: $gray-light<br />Class: bg-gray-light {snippet icon-base}">Light {snippet estrela-base}</a>
+			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-gray-lighter setPopover" data-placement="top" title="Gray Lighter" data-content="Opção de cinza em uma tonalidade mais clara<hr />Var: $gray-lighter<br />Class: bg-gray-lighter {snippet icon-base}">Lighter {snippet estrela-base}</a>
+			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-gray-lightest setPopover" data-placement="top" title="Gray Lightest" data-content="Opção de cinza em uma tonalidade mais clara<hr />Var: $gray-lightest<br />Class: bg-gray-lightest {snippet icon-base}">Lightest {snippet estrela-base}</a>
+			<a href="#" class="col-6 p-2 bg-black text-white setPopover" data-placement="top" title="Black" data-content="Var: $black<br />Class: bg-black {snippet icon-base}">Black</a>
+			<a href="#" class="col-6 p-2 bg-white set-border-bottom set-border-right border-default setPopover" data-placement="top" title="White" data-content="Var: $white<br />Class: bg-white {snippet icon-base}">White</a>
+		</div>
+	    <h5 class="my-3">Cores Básicas</h5>
+		<div class="row no-gutters">
+			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-red text-white setPopover" data-placement="top" title="Red" data-content="Var: $red<br />Class: bg-red">Red</a>
+			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-orange text-white setPopover" data-placement="top" title="Orange" data-content="Var: $orange<br />Class: bg-orange">Orange</a>
+			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-yellow text-white setPopover" data-placement="top" title="Yellow" data-content="Var: $yellow<br />Class: bg-yellow">Yellow</a>
+			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-green text-white setPopover" data-placement="top" title="Green" data-content="Var: $green<br />Class: bg-green">Green</a>
+			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-blue text-white setPopover" data-placement="top" title="Blue" data-content="Var: $blue<br />Class: bg-blue">Blue</a>
+			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-teal text-white setPopover" data-placement="top" title="Teal" data-content="Var: $teal<br />Class: bg-teal">Teal</a>
+			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-pink text-white setPopover" data-placement="top" title="Pink" data-content="Var: $pink<br />Class: bg-pink">Pink</a>
+			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-purple text-white setPopover" data-placement="top" title="Purple" data-content="Var: $purple<br />Class: bg-purple">Purple</a>
+		</div>
+	</div>
+</div>
+<hr class="hr-tag" />
+<span class="badge badge-warning">EXEMPLO</span>
+<div class="row">
+	<div class="col-md-6 mb-3">
+		<div class="mb-3">
+			<div class="bg-primary">BG PRIMARY</div>
+			<div class="bg-red text-white">BG RED</div>
+		</div>
+<pre class="code">&lt;div class="bg-primary"&gt;BG PRIMARY&lt;/div&gt;
+&lt;div class="bg-red text-white"&gt;BG RED&lt;/div&gt;</pre>
+	</div>
+	<div class="col-md-6 mb-3">
+		<div class="alert alert-info">
+			Verifique ao lado o uso da classe <code>text-white</code> que serve para atribuir a cor "branca" ao texto.<br />
+			Clique no link abaixo para saber mais sobre as classes de atribuição de cores de texto.
+			<hr class="my-1" />
+			<a href="template/utilities/text-colors" class="strong">Cores de Texto &raquo;</a>
+		</div>
+	</div>
 </div>

@@ -104,11 +104,11 @@ $pink:   #ff5b77 !default;
 $purple: #613d7c !default;
 
 // Create grayscale
-$gray-dark:                 #292b2c !default;
-$gray:                      #464a4c !default;
-$gray-light:                #636c72 !default;
-$gray-lighter:              #eceeef !default;
-$gray-lightest:             #f7f7f9 !default;
+$gray-dark:                 $base-gray-dark !default;		// -> {CUSTOM: #292b2c}
+$gray:                      $base-gray !default;			// -> {CUSTOM: #464a4c}
+$gray-light:                $base-gray-light !default;		// -> {CUSTOM: #636c72}
+$gray-lighter:              $base-gray-lighter !default;	// -> {CUSTOM: #eceeef}
+$gray-lightest:             $base-gray-lightest !default;	// -> {CUSTOM: #f7f7f9}
 
 // Reassign color vars to semantic color scheme
 $brand-primary:             $base-color-primary !default; // -> {CUSTOM: $blue}
@@ -123,7 +123,7 @@ $brand-inverse:             $gray-dark !default;
 //
 // Quickly modify global styling by enabling or disabling optional features.
 
-$enable-rounded:            true !default; // -> {CUSTOM: true}
+$enable-rounded:            false !default; // -> {CUSTOM: true}
 $enable-shadows:            false !default;
 $enable-gradients:          false !default;
 $enable-transitions:        true !default;
@@ -744,7 +744,7 @@ $badge-link-hover-color:      $white !default;
 $badge-font-size:             80% !default; // -> {CUSTOM: 75%}
 $badge-font-weight:           $font-weight-normal !default; // -> {CUSTOM: $font-weight-bold}
 $badge-padding-y:             .25em !default;
-$badge-padding-x:             .4em !default;
+$badge-padding-x:             .4em .2em !default; // -> {CUSTOM: .4em (.2é para adicionar um 'padding-bottom' diferente)}
 
 $badge-pill-padding-x:        .6em !default;
 // Use a higher than normal value to ensure completely rounded edges when

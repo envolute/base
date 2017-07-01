@@ -53,3 +53,60 @@
       overflow: hidden;
       background-color: $base-border-color;
     }
+
+  // MAINMENU -> MENU PRINCIPAL
+
+	// mobile
+	// mostra/esconde o menu principal para mostrar o menu mobile
+	#{$base-break-down}.isMM .mainmenu { display: none; }
+
+	// Menu Principal
+	.mainmenu.nav.menu {
+		justify-content: flex-end!important;
+	}
+
+		// MENU PRINCIPAL -> NÍVEL 1
+
+		// Item container <li>
+		.mainmenu.nav.menu > li {  }
+		// Espaço entre os itens -> horizontal
+		// Obs: não confundir com o tamanho do item
+		#{$base-break-up} .mainmenu.nav.menu > li:not(:last-child) { margin-right: 0; }
+		// Item <a>
+		// Formato do item -> definido no link <a>
+		.mainmenu.nav.menu > li > a,
+		.mainmenu.nav.menu > li > a:link,
+		.mainmenu.nav.menu > li > a:visited {
+			height: 74px;
+			padding-top: 24px;
+			border-bottom: 4px solid transparent;
+		}
+		// Efeito hover
+		.mainmenu.nav.menu li:not(.active) > a:hover,
+		.mainmenu.nav.menu li:not(.active) > a:focus,
+		.mainmenu.nav.menu li.parent:not(.active):hover > a {
+			color: $base-color-live;
+			border-bottom-color: $base-color-live;
+			background-color: transparent;
+		}
+		// Item ativo
+		.mainmenu.nav.menu li.active > a,
+        .mainmenu.nav.menu li > a.active // em caso de scroll 'go-to'
+		{
+			color: $base-color-secondary;
+			border-bottom-color: $base-color-secondary;
+			background-color: $gray-lightest;
+		}
+		// Espaço entre o item principal (nível 1) e o sub-menu (nível 2)
+		// obs: apenas no formato horizontal
+		#{$base-break-up} .mainmenu.nav.menu > li.parent > a { margin-bottom: 0; }
+
+		// SUB MENU
+
+		// Item <a>
+		// Efeito hover
+		.mainmenu.nav.menu .nav-child li:not(.active) > a:hover,
+		.mainmenu.nav.menu .nav-child li:not(.active) > a:focus,
+		.mainmenu.nav.menu .nav-child li.parent:not(.active):hover > a {
+
+		}

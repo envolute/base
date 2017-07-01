@@ -20,9 +20,44 @@
 	// 'not()' evita conflito com as classes do bootstrap
 	input[type="submit"]:not([class*="btn-"]),
 	input[type="button"]:not([class*="btn-"]) {
-		@extend .btn;
+
+		// Copia da class '.btn' em 'CORE/bootstrap/scss/_buttons.scss'
+		display: inline-block;
+	    font-weight: $btn-font-weight;
+	    text-align: center;
+	    white-space: nowrap;
+	    vertical-align: middle;
+	    user-select: none;
+	    border: $input-btn-border-width solid $base-border-color; //-> {CUSTOM: transparent}
+		background-color: $gray-lightest; //-> {ADD}
+	    @include button-size($input-btn-padding-y, $input-btn-padding-x, $font-size-base, $input-btn-line-height, $btn-border-radius);
+	    @include transition($btn-transition);
+
+	    // Share hover and focus styles
+	    @include hover-focus {
+	      text-decoration: none;
+	    }
+	    &:focus,
+	    &.focus {
+	      outline: 0;
+	      box-shadow: $btn-focus-box-shadow;
+	    }
+
+	    // Disabled comes first so active can properly restyle
+	    &.disabled,
+	    &:disabled {
+	      opacity: .65;
+	      @include box-shadow(none);
+	    }
+
+	    &:active,
+	    &.active {
+	      background-image: none;
+	      @include box-shadow($btn-focus-box-shadow, $btn-active-box-shadow);
+	    }
+
 	}
-	// input[type="submit"]:not([class*="btn-"]):hover,
-	// input[type="button"]:not([class*="btn-"]):hover {
-	// 	background-color: $gray-light;
-	// }
+	input[type="submit"]:not([class*="btn-"]):hover,
+	input[type="button"]:not([class*="btn-"]):hover {
+		background-color: $gray-lighter;
+	}
