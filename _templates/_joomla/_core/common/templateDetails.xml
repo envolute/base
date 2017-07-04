@@ -193,13 +193,13 @@
 				<field name="navbarStyle"
 					type="radio"
 					class="btn-group"
-					default="navbar-light"
+					default="navbar-light bg-light"
 					label="TPL_BASE_NAVBARSTYLE_LABEL"
 					description="TPL_BASE_NAVBARSTYLE_DESC"
 				>
-					<option value="navbar-light">TPL_BASE_LIGHT</option>
-					<option value="navbar-inverse bg-inverse">TPL_BASE_INVERSE</option>
-					<option value="navbar-inverse bg-primary">TPL_BASE_PRIMARY</option>
+					<option value="navbar-light bg-light">TPL_BASE_LIGHT</option>
+					<option value="navbar-dark bg-dark">TPL_BASE_DARK</option>
+					<option value="navbar-dark bg-primary">TPL_BASE_PRIMARY</option>
 				</field>
 
 				<field name="grid" type="spacer" class="text" label="TPL_BASE_TEMPLATE_GRID_LABEL" />

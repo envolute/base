@@ -4,7 +4,7 @@
 	border-bottom: 1px solid $base-border-color;
 }
 .form-toolbar .form-title {
-	color: $brand-primary;
+	color: theme-color("primary");
 }
 .form-toolbar .form-title small,
 .form-toolbar .form-title .small {

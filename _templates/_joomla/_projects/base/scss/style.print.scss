@@ -1,10 +1,14 @@
 // @PRINT
 // css que define a impressao do template
 
-// variables
+// Variáveis da BASE
 @import "custom/_variables/template";
-@import "custom/_variables/bootstrap";
+// Bootstrap
+@import "custom/_imports/bootstrap";
+// Variáveis específicas do projeto
 @import "custom/_variables/custom";
+// Customizações do Bootstrap
+@import "custom/_imports/extensions";
 
 // Arquivos de customização
 @import "custom/print";

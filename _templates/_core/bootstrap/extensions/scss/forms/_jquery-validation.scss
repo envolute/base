@@ -15,21 +15,23 @@
   // Chosen
   select.error + .chosen-container-single .chosen-single,
   select.error + .chosen-container-multi .chosen-choices {
-    color: $state-danger-text!important;
-    border-color: $state-danger-border-color!important;
-    background-color: $state-danger-bg!important;
+    color: $form-feedback-invalid-color!important;
+    border-color: $form-feedback-invalid-color!important;
+	&:focus {
+	  box-shadow: 0 0 0 .2rem rgba($form-feedback-invalid-color,.25);
+	}
   }
 
   // Bootstrap: Input group btns
   label:not(.btn) input[type="checkbox"].error {
-    box-shadow: 0px 0px 2px 1px $state-danger-text;
+    box-shadow: 0px 0px 2px 1px $form-feedback-invalid-color;
   }
 
   span.error {
     display: block;
     padding: 2px 0 0;
     margin: 0;
-    color: $state-danger-text;
+    color: $form-feedback-invalid-color;
     font-weight: normal;
     font-size: 12px;
   }

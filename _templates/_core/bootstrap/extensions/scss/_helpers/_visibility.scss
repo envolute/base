@@ -3,8 +3,8 @@
 
 // Hidden Only
 // Oculta o elemento em um breakpoint específico
-@include media-breakpoint-only(xs) { .hidden-xs { display: none !important; } }
-@include media-breakpoint-only(sm) { .hidden-sm { display: none !important; } }
-@include media-breakpoint-only(md) { .hidden-md { display: none !important; } }
-@include media-breakpoint-only(lg) { .hidden-lg { display: none !important; } }
-@include media-breakpoint-only(xl) { .hidden-xl { display: none !important; } }
+@include media-breakpoint-only(xs) { .hidden-only-xs { display: none !important; } }
+@include media-breakpoint-only(sm) { .hidden-only-sm { display: none !important; } }
+@include media-breakpoint-only(md) { .hidden-only-md { display: none !important; } }
+@include media-breakpoint-only(lg) { .hidden-only-lg { display: none !important; } }
+@include media-breakpoint-only(xl) { .hidden-only-xl { display: none !important; } }

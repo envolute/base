@@ -88,7 +88,7 @@
     border: 1px solid $base-border-color;
 		@if $base-enable-rounded { border-radius: $border-radius; }
 	  @else { border-radius: 0; }
-    background-color: $gray-lighter;
+    background-color: $gray-400;
     overflow: hidden;
   }
   html:not(.media-md)  .item-page .article-index {
@@ -110,11 +110,11 @@
     border-radius: 0!important;
   }
   .item-page .article-index li:not(.active) a:hover {
-    background-color: $gray-lighter;
+    background-color: $gray-400;
   }
   .item-page .article-index li:last-child {
     border: 0!important;
-    background-color:$gray-lighter;
+    background-color:$gray-400;
   }
   // contador de quebras de páginas - (ex: página 1 de 4)
   .item-page .pagenavcounter {
@@ -137,11 +137,11 @@
     padding: 6px 8px;
     margin-left: 2px;
     font-size: 13px;
-    color: $gray-light;
+    color: $gray-600;
     border: 1px solid $base-border-color;
 		@if $base-enable-rounded { border-radius: $border-radius; }
 	  @else { border-radius: 0; }
-    background-color: $gray-lighter;
+    background-color: $gray-400;
   }
   .item-page .pager:not(.pagenav) li a {
     float: none;

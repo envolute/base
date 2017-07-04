@@ -30,13 +30,6 @@
   body.sm-container #cmstools .navbar-toggler {
     margin-left: $admin-navbar-toggler-margin;
   }
-  // Inverted/Primary
-  #cmstools.navbar.bg-inverse,
-  #cmstools.navbar.bg-primary,
-  #cmstools.navbar.bg-inverse a,
-  #cmstools.navbar.bg-primary a {
-    color: darken(#fff, 15%);
-  }
   // Collapsed
   #cmstools .navbar-collapse.show { padding-top: $base-space; }
 
@@ -52,14 +45,14 @@
       #cmstools.navbar-light .nav.menu li.parent:not(.active):hover > a,
       #cmstools.navbar-light .nav.menu li.opened:not(.active) > a {
         color: $link-hover-color;
-        background-color: darken($gray-lightest, 4%);
+        background-color: darken($gray-200, 4%);
       }
       //-> Inverse
-      #cmstools.bg-inverse .nav.menu li > a:hover,
-      #cmstools.bg-inverse .nav.menu li > a:focus,
-      #cmstools.bg-inverse .nav.menu li.parent:hover > a,
-      #cmstools.bg-inverse .nav.menu li.active > a,
-      #cmstools.bg-inverse .nav.menu li.opened > a {
+      #cmstools.bg-dark .nav.menu li > a:hover,
+      #cmstools.bg-dark .nav.menu li > a:focus,
+      #cmstools.bg-dark .nav.menu li.parent:hover > a,
+      #cmstools.bg-dark .nav.menu li.active > a,
+      #cmstools.bg-dark .nav.menu li.opened > a {
         color: #fff;
         background-color: #000;
       }
@@ -70,16 +63,8 @@
       #cmstools.bg-primary .nav.menu li.active > a,
       #cmstools.bg-primary .nav.menu li.opened > a {
         color: #fff;
-        background-color: darken($brand-primary, 4%);
+        background-color: darken(theme-color("primary"), 4%);
       }
-
-    // ITENS PRINCIPAIS -> NÍVEL 1
-    #{$base-break-up} #cmstools.navbar .nav.menu > li > a {
-      padding: $admin-navbar-item-padding-y $admin-navbar-item-padding-x;
-    }
-    #{$base-break-down} #cmstools.navbar .nav.menu > li > a {
-      padding: ($admin-navbar-item-padding-y / 2);
-    }
 
     // NAV CHILD
     #cmstools .nav.menu:not(.nav-stacked) .nav-child {
@@ -87,64 +72,24 @@
       border-width: 1px 0 0;
       box-shadow: 2px 3px 3px rgba(0,0,0,0.2);
     }
-    #{$base-break-up} #cmstools.navbar .nav-child .nav-child {
-      margin-top: $admin-navbar-navchild-child-top !important;
-    }
-    #cmstools.navbar .nav.menu .nav-child a:not(.child-reveal) {
-      padding: ($admin-navbar-item-padding-y / 2) $admin-navbar-item-padding-x;
-    }
       //-> Light
       #cmstools.navbar-light .nav.menu .nav-child {
-        border-color: $gray-lightest;
-        background-color: $gray-lightest;
+        border-color: $gray-200;
+        background-color: $gray-200;
       }
       //-> Inverse
-      #cmstools.bg-inverse .nav.menu .nav-child {
+      #cmstools.bg-dark .nav.menu .nav-child {
         border-color: #111;
         background-color: #111;
       }
-      #cmstools.bg-inverse .nav.menu .nav-child .divider {
+      #cmstools.bg-dark .nav.menu .nav-child .divider {
         background-color: #333;
       }
       //-> Primary
       #cmstools.bg-primary .nav.menu .nav-child {
-        border-color: $brand-primary;
-        background-color: lighten($brand-primary, 1%);
+        border-color: theme-color("primary");
+        background-color: lighten(theme-color("primary"), 1%);
       }
       #cmstools.bg-primary .nav.menu .nav-child .divider {
-        background-color: lighten($brand-primary, 5%);
+        background-color: lighten(theme-color("primary"), 5%);
       }
-
-  // CUSTOM LINKS
-
-    // itens do menu
-    // #cmstools a:before,
-    // #cmstools a:after { font-family: 'baseicons'; }
-    // #cmstools a:before { margin-right: 5px; }
-    // #cmstools a:after { margin-left: 5px; }
-    // #cmstools .add-item:before {
-    //   content: '\e9cb'; // base-icon-plus-circled
-    //   color: #080;
-    // }
-    // #cmstools .cogs:before { content: '\e85a'; } // base-icon-cogs
-    // #cmstools .help:before { content: '\e949'; } // base-icon-lifebuoy
-    // #cmstools .docs:before { content: '\e841'; } // base-icon-docs
-    // #cmstools .tools:before {
-    //   content: '\e805'; // base-icon-tools
-    //   color: #c35514;
-    // }
-    // #cmstools .manager:before { content: '\e926'; } // base-icon-gauge
-    // #cmstools .component:before {
-    //   content: '\e93b'; // base-icon-puzzle
-    //   color: #6B89E0;
-    // }
-    // #cmstools .style:before {
-    //   content: '\e9f9'; // base-icon-diamond
-    //   color: #e91e63;
-    // }
-    // #cmstools .featured:before {
-    //   content: '\e81e'; // base-icon-star
-    //   color: #f90;
-    // }
-    // #cmstools .bootstrap:before { content: '\e97c'; } // base-icon-bootstrap
-    // #cmstools .services:before { content: '\e8bc'; } // base-icon-globe

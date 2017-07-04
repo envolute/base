@@ -102,10 +102,58 @@
 
 // TEMPLATE
 
+	// MENU
+
+	#mm-navigation:not(.closed) {
+	    display: block!important;
+	    width: 270px;
+		background-color: #eee!important;
+	}
+	#screen:not(.closed) {
+		width: calc(100% - 270px);
+	    margin-left: 270px;
+	    transform: none !important;
+	}
+	// panels
+	.mm-panels > .mm-panel.mm-hasnavbar {
+		padding-top: 75px;
+		box-shadow: inset -1px 0 0 #ddd;
+	}
+	.mm-panel.mm-hasnavbar .mm-navbar {
+		height: 56px!important;
+		border-bottom: 3px solid #f80!important;
+		box-shadow: inset 0 -1px 0 #ddd, 0 1px 0 #fff;
+	}
+	.mm-navbar > * {
+	    padding: 16px 0!important;
+	}
+	.mm-navbar a.mm-title {
+	    display: none;
+	}
+	.mm-navbar .mm-btn {
+	    height: 53px!important;
+	}
+	.mm-menu .mm-navbar > *,
+	.mm-menu .mm-navbar a {
+	    color: $base-color-live;
+	}
+	.mm-menu .mm-navbar .mm-btn:before,
+	.mm-menu .mm-navbar .mm-btn:after {
+	    border-color: $base-color-live;
+	}
+	.mm-prev:before, .mm-next:after, .mm-arrow:after {
+    	border-width: 3px!important;
+	    width: 11px;
+	    height: 11px;
+	}
+	.mm-prev:before {
+	    left: 17px;
+	}
+
 	// HEADER
 
 		#header {
-			position: absolute; //corrigir problema com o scroll por causa do affix
+			position: fixed;
 			width: 100%;
 			height: 56px;
 			padding: 0;
@@ -113,63 +161,67 @@
 			color: #fff;
 			border-bottom: 3px solid $base-color-live;
 			background-color: $brand-primary;
-			@include build-prefix-values('box-shadow', '0 1px 0 #fff, inset 0 -30px 50px rgba(0, 0, 0, 0.15), inset 0 30px 50px rgba(26, 107, 255, 0.15), inset 0 -1px 0 #18223E');
+			@include build-prefix-values('box-shadow', '0 1px 0 #fff, inset 0 -30px 50px rgba(0, 0, 0, 0.15), inset 0 30px 50px rgba(26, 107, 255, 0.15)');
 			z-index: $zindex-header;
 		}
 		#header.affix {
 			position: fixed;
-			height: 53px;
-			border: none;
-			@include build-prefix-values('box-shadow', '0 1px 8px 1px rgba(0,0,0,0.2)');
+			@include build-prefix-values('box-shadow', 'inset 0 -30px 50px rgba(0, 0, 0, 0.15), inset 0 30px 50px rgba(26, 107, 255, 0.15), 0 1px 8px 1px rgba(0,0,0,0.2)');
 		}
 
 		#header a {
 			color: #eee;
-	    text-shadow: -1px -1px 0 #000;
+	    	text-shadow: -1px -1px 0 #000;
 		}
 		#header a:hover { color: #fff; }
 		#header .dropdown-menu a { color: #555; }
 
-		#toggleMenu {
+		#toggle-menu {
 			display:block;
 			float:left;
-			width:40px;
+			width:42px;
 			height:53px;
-			margin-left: 200px;
 			background:none;
 			border:0;
 			cursor:pointer;
 			@include build-prefix-values('box-shadow', 'inset -1px 0 0 #4B618D');
 		}
-		.toggle_menu span{
+		#screen.closed #toggle-menu {
+			margin-left: 202px;
+		}
+		#toggle-menu span {
 			display:block;
 			font-size:28px;
-			line-height:50px!important;
+			line-height:53px!important;
 		}
 
 		// logo
 		#header #brand {
-			position: absolute;
+			position: fixed;
+			left: 40px;
 			display: block;
-			float: left;
 			width: 188px;
-			height: 75px;
+			height: 65px;
 			padding: 12px 20px 0;
 			background-color: #e8e8e8;
 			@include build-prefix-values('border-radius', '0 0 6px 6px');
 			@include build-prefix-values('box-shadow', 'inset 0 20px 10px #fff, inset 0 40px 20px #f8f8f8, 0 0 5px rgba(0,0,0,0.6)');
-			@include build-prefix-values('transition', 'all .5s linear');
+			@include build-prefix-values('transition', 'all .1s linear');
 		}
-		.media-to-sm body:not(.login) #header #brand {
-	    height: 58px;
-	    padding: 4px 18px 0;
+		#screen.closed #header #brand {
+			left: 15px;
 		}
-		// -> affix
-		.media-md body:not(.login) #header.affix #brand {
-	    height: 58px;
-	    padding-top: 5px;
+		.media-to-sm body:not(.login) #header #brand,
+		.media-md body:not(.login) #header.affix #brand // -> affix
+		{
+		    height: 58px;
+		    padding-top: 8px;
 		}
-		#header #brand-client { padding: 5px; }
+		#header #brand-client {
+			position: fixed;
+			right: 0;
+			padding: 5px;
+		}
 		#header #brand-client img {
 			max-width: 100px;
 			max-height: 42px;
@@ -217,116 +269,6 @@
 		#header-options > a + .dropdown-menu .divider {
 			background-color: #435A8E;
 			border-color: #435A8E;
-		}
-
-	// NAVIGATION
-
-	#navigation {
-		height: 54px;
-		float: left;
-		border-top: 1px solid transparent;
-	}
-	.media-md #navigation { margin-left: 188px; }
-	#navigation .nav.menu {
-		padding: 0;
-		margin: 0;
-	}
-
-	// raíz
-
-		#navigation .nav > li { margin: 0; }
-		#navigation .nav a {
-			display: block;
-			padding: 10px 15px;
-			border: 1px solid transparent;
-			@include build-prefix-values('border-radius', '0');
-		}
-		#navigation .nav a:hover,
-		#navigation .nav a.hovered { background-color: rgba(0,0,0,0.2); }
-		#navigation .nav > li > a {
-			padding: 15px 5px;
-			margin-bottom: 0;
-			font-size: 14px;
-		}
-		.media-lg #navigation .nav > li > a { padding: 15px; }
-		#navigation .nav > li.parent > a { padding-right: 15px; }
-		.media-lg #navigation .nav > li.parent > a { padding-right: 20px; }
-		#navigation .nav > li:first-child > a {
-		  padding: 16px 14px 15px;
-			border-top-width: 0;
-			border-right: 1px solid #3B4F8A;
-			@include build-prefix-values('box-shadow', 'inset -1px 0 0 #1B284A');
-		}
-
-		// icons
-		#navigation li:not(.item-home):not(.item-logout) a [class*="base-icon-"]{
-			margin-right: 3px;
-			color: #fff;
-		}
-		// icons
-		#navigation li.item-logout > a {
-			margin-right: 3px;
-			color: #fc0;
-		}
-
-		// item ativo
-		#navigation .nav > li > a:active,
-		#navigation .nav > li > a:focus,
-		#navigation .nav > li.active > a,
-		#navigation .nav > li.active:hover > a,
-		#navigation .nav > li.active:focus > a {
-			color: #fd0;
-			text-shadow: -1px -1px 0 rgba(0,0,0,0.6);
-			background-color: transparent;
-		}
-		#navigation .nav > li.active::after {
-			display: block;
-			font-family: 'baseicons';
-			content: '\e878';
-			position: absolute;
-			bottom: -1px;
-			width: 100%;
-			text-align: center;
-			color: $base-color-live;
-		}
-		#header.affix #navigation .nav > li.active::after {
-			bottom: -4px;
-			color: #ccc;
-		}
-
-		// menus sub-níveis
-
-		// desktop
-		#navigation .nav .nav-child {
-			min-width: 160px;
-			padding: 0;
-			margin: 0;
-			background-color: $brand-primary;
-			@include build-prefix-values('box-shadow', '1px 1px 4px rgba(0,0,0,0.3)');
-			overflow-x: visible;
-			overflow-y: auto;
-		}
-		#header.affix #navigation .nav .nav-child { border-top: 1px solid #192b5d; }
-
-		// links
-		#navigation .nav .nav-child a {
-			white-space: nowrap;
-			border-top: 1px dotted $base-border-color-strong;
-		}
-
-		// divisor
-		#navigation .nav .nav-child .divider {
-			height: 1px;
-			margin: 8px 1px;
-			overflow: hidden;
-			background-color: $base-border-color;
-			border-bottom: 1px solid #fff;
-		}
-
-		// menu sub-nível 2
-		#navigation .nav .nav-child > li > .nav-child {
-			border-left: 1px solid $base-border-color;
-			@include build-prefix-values('border-top-left-radius', '0');
 		}
 
 		// MMENU -> mobile menu
@@ -402,8 +344,8 @@
 		}
 		// -> affix
 		.media-sm #toolbar-btns.affix {
-			top: 53px;
-			right: 30px;
+			top: 56px;
+			right: 15px;
 			background-color: #fafafa;
 			z-index: $zindex-toolbar-btns;
 			@include build-prefix-values('border-radius', '0 0 2px 2px');

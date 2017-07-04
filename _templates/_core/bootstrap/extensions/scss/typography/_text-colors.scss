@@ -1,21 +1,28 @@
 // TEXT COLORS
-.text-color { color: $body-color; }
-.link-color { color: $link-color; }
-.link-hover-color { color: $link-hover-color; }
-.text-secondary, .text-secondary { color: $base-color-secondary; }
-.text-tertiary { color: $base-color-tertiary; }
-.text-live { color: $base-color-live; }
-.text-inverse { color: $base-color-inverse; }
-.text-gray-dark { color: $gray-dark; }
-.text-gray { color: $gray; }
-.text-gray-light { color: $gray-light; }
-.text-gray-lighter { color: $gray-lighter; }
-.text-gray-lightest { color: $gray-lightest; }
-.text-red { color: $red; }
-.text-orange { color: $orange; }
-.text-yellow { color: $yellow; }
-.text-green { color: $green; }
-.text-blue { color: $blue; }
-.text-teal { color: $teal; }
-.text-pink { color: $pink; }
-.text-purple { color: $purple; }
+
+	.text-color { color: $body-color; }
+	.link-color { color: $link-color; }
+	.link-hover-color { color: $link-hover-color; }
+	// theme addons
+	.text-live { color: $base-color-live; }
+	// gray options
+	.text-gray-100 { color: $gray-100; }
+	.text-gray-200 { color: $gray-200; }
+	.text-gray-300 { color: $gray-300; }
+	.text-gray-400 { color: $gray-400; }
+	.text-gray-500 { color: $gray-500; }
+	.text-gray-600 { color: $gray-600; }
+	.text-gray-700 { color: $gray-700; }
+	.text-gray-800 { color: $gray-800; }
+	.text-gray-900 { color: $gray-900; }
+	// colors options
+	.text-blue { color: $blue; }
+	.text-indigo { color: $indigo; }
+	.text-purple { color: $purple; }
+	.text-pink { color: $pink; }
+	.text-red { color: $red; }
+	.text-orange { color: $orange; }
+	.text-yellow { color: $yellow; }
+	.text-green { color: $green; }
+	.text-teal { color: $teal; }
+	.text-cyan { color: $cyan; }

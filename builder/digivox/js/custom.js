@@ -62,26 +62,32 @@ jQuery(function() {
 			$mmenu.removeClass().attr( "id", "mm-navigation" );
 			$mmenu.find('.nav.menu').removeClass();
 			$mmenu.mmenu({
-				navbars: false,
-				extensions: ["theme-black", "border-full", "pageshadow"]
+
 			});
-			jQuery(window).resize(function() { $mmenu.data("mmenu").close(); });
+			jQuery('#toggle-menu').click(function() {
+				jQuery('#mm-navigation, #screen').toggleClass('closed');
+			});
+			if(!jQuery('html').hasClass('media-md')) jQuery('#mm-navigation, #screen').addClass('closed');
+			jQuery(window).resize(function() {
+				if(!jQuery('html').hasClass('media-md')) jQuery('#mm-navigation, #screen').addClass('closed');
+				else jQuery('#mm-navigation, #screen').removeClass('closed');
+			});
 		}
 
 	// AFFIX ELEMENTS
 
 		jQuery('#header').affix({ offset: { top: 1 } });
-		jQuery('#toolbar-btns').affix({ offset: { top: 12 } });
+		jQuery('#toolbar-btns').affix({ offset: { top: 15 } });
 
 	// BTN-TOOLBAR RIGHT POSITION CALCULATE
 
-		window.toolbarPosition = function() {
-			var toolbarPos = (jQuery(window).width() - jQuery('#main-content').width()) / 2;
-			jQuery('#toolbar-btns').css('right', toolbarPos);
-		};
-		toolbarPosition();
-		// call on resize
-		jQuery(window).resize(function() { toolbarPosition(); });
+		// window.toolbarPosition = function() {
+		// 	var toolbarPos = (jQuery(window).width() - jQuery('#main-content').width()) / 2;
+		// 	jQuery('#toolbar-btns').css('right', toolbarPos);
+		// };
+		// toolbarPosition();
+		// // call on resize
+		// jQuery(window).resize(function() { toolbarPosition(); });
 
 	// CORREÇÃO PARA MODAL DENTRO DO 'toolbar-btns'
 

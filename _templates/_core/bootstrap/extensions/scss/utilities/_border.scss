@@ -15,21 +15,42 @@
   .border-dashed { border-style:dashed!important; }
 
   // border color
-  .border-default { border-color: $base-border-color; }
-  .border-dark { border-color: $base-border-color-dark; }
-  .border-light { border-color: $base-border-color-light; }
-  .border-live { border-color: $base-color-live; }
-  .border-primary { border-color: $brand-primary; }
-  .border-success { border-color: $brand-success; }
-  .border-info { border-color: $brand-info; }
-  .border-warning { border-color: $brand-warning; }
-  .border-danger { border-color: $brand-danger; }
-  .border-white { border-color: $white; }
-  .border-black { border-color: $black; }
-  .border-red { border-color: $red; }
-  .border-yellow { border-color: $yellow; }
-  .border-green { border-color: $green; }
-  .border-blue { border-color: $blue; }
-  .border-teal { border-color: $teal; }
-  .border-pink { border-color: $pink; }
-  .border-purple { border-color: $purple; }
+
+  	// default
+	.border-default { border-color: $base-border-color; }
+	.border-default-dark { border-color: $base-border-color-dark; }
+	.border-default-light { border-color: $base-border-color-light; }
+	// theme
+	.border-primary { border-color: theme-color("primary"); }
+	.border-dark { border-color: theme-color("secondary"); }
+	.border-light { border-color: theme-color("light"); }
+	.border-dark { border-color: theme-color("dark"); }
+	.border-live { border-color: $base-color-live; }
+	// contextual
+	.border-success { border-color: theme-color("success"); }
+	.border-info { border-color: theme-color("info"); }
+	.border-warning { border-color: theme-color("warning"); }
+	.border-danger { border-color: theme-color("danger"); }
+	// gray
+	.border-white { border-color: $white; }
+	.border-gray-100 { border-color: $gray-100; }
+	.border-gray-200 { border-color: $gray-200; }
+	.border-gray-300 { border-color: $gray-300; }
+	.border-gray-400 { border-color: $gray-400; }
+	.border-gray-500 { border-color: $gray-500; }
+	.border-gray-600 { border-color: $gray-600; }
+	.border-gray-700 { border-color: $gray-700; }
+	.border-gray-800 { border-color: $gray-800; }
+	.border-gray-900 { border-color: $gray-900; }
+	.border-black { border-color: $black; }
+	// colors
+	.border-blue { border-color: $blue; }
+	.border-indigo { border-color: $indigo; }
+	.border-purple { border-color: $purple; }
+	.border-pink { border-color: $pink; }
+	.border-red { border-color: $red; }
+	.border-orange { border-color: $orange; }
+	.border-yellow { border-color: $yellow; }
+	.border-green { border-color: $green; }
+	.border-teal { border-color: $teal; }
+	.border-cyan { border-color: $cyan; }

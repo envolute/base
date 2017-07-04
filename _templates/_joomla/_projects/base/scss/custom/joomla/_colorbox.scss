@@ -13,7 +13,7 @@
 #cboxTitle {
   font-size: 16px;
   @extend .modal-header;
-  // color: $brand-primary;
+  // color: theme-color("primary");
   // border-bottom: 3px solid #f80;
   // background: #f8f8f8;
 }

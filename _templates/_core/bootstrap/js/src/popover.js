@@ -30,9 +30,9 @@ const Popover = (($) => {
     trigger   : 'click',
     content   : '',
     template  : '<div class="popover" role="tooltip">'
-              + '<div class="arrow" x-arrow></div>'
-              + '<h3 class="popover-title"></h3>'
-              + '<div class="popover-content"></div></div>'
+              + '<div class="arrow"></div>'
+              + '<h3 class="popover-header"></h3>'
+              + '<div class="popover-body"></div></div>'
   })
 
   const DefaultType = $.extend({}, Tooltip.DefaultType, {
@@ -45,8 +45,8 @@ const Popover = (($) => {
   }
 
   const Selector = {
-    TITLE   : '.popover-title',
-    CONTENT : '.popover-content'
+    TITLE   : '.popover-header',
+    CONTENT : '.popover-body'
   }
 
   const Event = {

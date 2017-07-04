@@ -15,7 +15,7 @@
 		font-family: "baseicons";
 		content: $baseicon-field-required;
 		padding-right: 3px;
-		color: $brand-danger;
+		color: theme-color("danger");
 		font-weight: normal;
 		line-height: 1em;
 	}

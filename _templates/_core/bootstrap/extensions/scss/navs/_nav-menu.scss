@@ -37,14 +37,13 @@
 		.nav.menu .child-reveal {
 			font-family: 'baseicons';
 			display: inline-block;
+			float: right;
 			padding: $nav-menu-indicator-padding;
 			cursor: pointer;
 		}
-		.nav-stacked.menu .child-reveal {
-			float: right;
-		}
-		// Stacked: indicador de sub nível
-		.nav-stacked.menu .child-reveal {
+		// Stacked & child: indicador de sub nível
+		.nav-stacked.menu .child-reveal,
+		.nav.menu .nav-child .child-reveal {
 			padding: $nav-stacked-indicator-padding;
 		}
 		// Ícone do indicador

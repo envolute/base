@@ -5,11 +5,11 @@
 	// VERTICAL
 
 		.list-unstyled.bordered li {
-	    padding: $list-bordered-padding-y $list-bordered-padding-x;
+	    	padding: $list-bordered-padding-y $list-bordered-padding-x;
 			line-height: $list-bordered-line-height;
 		}
-		.list-unstyled.bordered > li:not(:last-child) {
-	    border-bottom: $base-list-border;
+		.list-unstyled.bordered li:not(:last-child) {
+	    	border-bottom: $base-list-border;
 		}
 		// list spaces => espaço entre os itens
 		.list-unstyled.bordered.list-sm li { padding: $list-bordered-padding-sm-y $list-bordered-padding-sm-x; }
@@ -21,10 +21,11 @@
 		.list-unstyled.bordered > li ul {
 			list-style: none;
 			padding-left: $list-bordered-child-left;
-			margin-top: $list-bordered-padding-y;
+			margin-top: ($list-bordered-padding-y - 0.06); // 0.06 =~ 1px => equivalente a borda divisora
+			border-top: $base-list-border;
 		}
-		.list-unstyled.bordered.list-sm > li ul { padding-top: $list-bordered-padding-sm-y; }
-		.list-unstyled.bordered.list-lg > li ul { padding-top: $list-bordered-padding-lg-y; }
+		.list-unstyled.bordered.list-sm > li ul { margin-top: ($list-bordered-padding-sm-y - 0.06); } // 0.06 =~ 1px => equivalente a borda divisora
+		.list-unstyled.bordered.list-lg > li ul { margin-top: ($list-bordered-padding-lg-y - 0.06); } // 0.06 =~ 1px => equivalente a borda divisora
 		.list-unstyled.bordered > li ul li:last-child { padding-bottom: 0; }
 
 	// HORIZONTAL
@@ -60,7 +61,7 @@
 		// STRIPED -> listras zebradas
 		.list-striped > li:nth-child(odd),
 		.list-striped:not(ul) ul:first-of-type > li:nth-child(odd) {
-			background-color: $table-bg-accent;
+			background-color: $table-accent-bg;
 		}
 		.list-striped > li { padding: $list-striped-padding!important; }
 		.list-sm.list-striped > li { padding: $list-striped-padding-sm!important; }
@@ -68,7 +69,7 @@
 
 		// HOVER -> onmouseover
 		.list-hover > li:hover {
-			background-color: $table-bg-hover;
+			background-color: $table-hover-bg;
 		}
 		// Content Header Option
 		.list-hover > li > h5 {
@@ -76,8 +77,6 @@
 		}
 
 		// CONTEXTUAL COLORS
-		li.list-active { background-color: $table-bg-active!important; }
-		li.list-success { background-color: $state-success-bg!important; }
-		li.list-info { background-color: $state-info-bg!important; }
-		li.list-warning { background-color: $state-warning-bg!important; }
-		li.list-danger { background-color: $state-danger-bg!important; }
+		@each $color, $value in $theme-colors {
+		  li.list-#{$color} { background-color: theme-color-level($color, -9)!important; }
+		}

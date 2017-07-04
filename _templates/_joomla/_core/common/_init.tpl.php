@@ -60,11 +60,11 @@ $this->direction = $doc->direction;
 	$screen		= ($responsive ? ' responsive' : ' not-responsive');
 	$menuMobile		= ($responsive) ? ' isMM' : ''; // indica se carrega o menu responsivo
 	// NavBar (admin)
-  $navbarContainer	= $this->params->get('navbar_container', 0);
+  	$navbarContainer	= $this->params->get('navbar_container', 0);
 	$navbarGroups = $this->params->get('navbarGroups');
 	$navbarAccess = !empty($navbarGroups) ? array_intersect($groups, $navbarGroups) : ''; // se está na lista de grupos permitidos
 	$hasAdmin = !empty($navbarAccess) ? ' isAdmin' : ''; // classe para setar a navbar ativa
-	$navbarStyle	= $this->params->get('navbarStyle', 'navbar-light');
+	$navbarStyle	= $this->params->get('navbarStyle', 'navbar-light bg-light');
 	$navbarFixed	= $this->params->get('navbarFixed', 1) == 1 ? 'fixed-top' : '';
 	$navbarToggleable	= $this->params->get('navbarToggleable', 'sm');
 	$navbarTogglerSide	= $this->params->get('navbarTogglerSide', 'right');

@@ -1,79 +1,191 @@
-<p>O Bootstrap, através de variáveis SASS, disponibiliza uma lista de cores contextuais (primary, success, danger...). Desde a versão 4 foram adicionadas variáveis referêntes às cores básicas como green, yellow, blue, entre outras. Por sua vez, a BASE adiciona mais algumas cores, visando uma paleta de cores quase completa para qualquer projeto.</p>
+<p>O Bootstrap disponibiliza uma paleta com as principais cores. Assim como disponibiliza classes para utilização direta dessas cores em backgrounds, bordas, texto e etc... O Template BASE adiciona ainda mais classes com o objetivo de oferecer mais recursos para customização de elementos. Confira abaixo todas as cores/classes disponíveis para a customização de elementos.</p>
 <hr class="my-1" />
-<strong>Backgrounds:</strong><br />Para permitir a utilização dessas cores como background, a BASE disponibiliza diversas classes customizadas.
-<br /><span class="base-icon-attention text-live"> Clique na cor para visualizar a variável e a classe referênte ao background.</span>
-<hr class="my-1" />
-<div class="row">
-	<div class="col-md-6 mb-3">
-		<h5 class="my-3">Template</h5>
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" data-toggle="tab" href="#bg-colors" role="tab">Backgrounds</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#border-colors" role="tab">Bordas</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#text-colors" role="tab">Texto</a>
+  </li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+	<div class="tab-pane active" id="bg-colors" role="tabpanel">
+		<h5 class="text-primary">Útil</h5>
 		<div class="row no-gutters">
-			<a href="#" class="col-sm-6 p-2 bg-body set-border border-default setPopover" title="Body" data-placement="top" data-content="Indica a cor de fundo do site<hr />Var: $body-bg<br />Class: bg-body">Body</a>
-			<a href="#" class="col-sm-6 p-2 bg-inverse text-white setPopover" title="Inverse" data-placement="top" data-content="O oposto do background da página<hr />Var: $brand-inverse<br />Class: bg-inverse">Inverse</a>
+		  <div class="col-6 p-2 bg-body set-border">Body<div class="small">.bg-body</div></div>
+		  <div class="col-6 p-2 bg-transparent set-border border-left-0">Transparent<div class="small">.bg-transparent</div></div>
 		</div>
-		<h5 class="my-3">Marca</h5>
+		<h5 class="text-primary my-3">Tema</h5>
 		<div class="row no-gutters">
-			<a href="#" class="col-12 p-2 bg-primary text-white setPopover" data-placement="top" title="Primary" data-content="Indica a cor principal da Marca<hr />Var: $brand-primary<br />Class: bg-primary"><span class="base-icon-down-big text-live hasTooltip" title="Opções a cor primária"></span> Primary</a>
-			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-primary-dark text-white setPopover" data-placement="top" title="Primary Dark" data-content="Opção de cor primaria em uma tonalidade mais escura<hr />Var: $brand-primary-dark {snippet icon-base}<br />Class: bg-primary-dark {snippet icon-base}">Dark {snippet estrela-base}</a>
-			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-primary-light text-white setPopover" data-placement="top" title="Primary Light" data-content="Opção de cor primaria em uma tonalidade mais clara<hr />Var: $brand-primary-light {snippet icon-base}<br />Class: bg-primary-light {snippet icon-base}">Light {snippet estrela-base}</a>
-			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-primary-lighter text-white setPopover" data-placement="top" title="Primary Lighter" data-content="Opção de cor primaria em uma tonalidade mais clara<hr />Var: $brand-primary-lighter {snippet icon-base}<br />Class: bg-primary-lighter {snippet icon-base}">Lighter {snippet estrela-base}</a>
-			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-primary-lightest setPopover" data-placement="top" title="Primary Lightest" data-content="Opção de cor primaria em uma tonalidade mais clara<hr />Var: $brand-primary-lightest {snippet icon-base}<br />Class: bg-primary-lightest {snippet icon-base}">Lightest {snippet estrela-base}</a>
-			<a href="#" class="col-6 p-2 bg-secondary text-white setPopover" data-placement="top" title="Secondary" data-content="Indica a cor secundária da marca. Caso a marca seja monocromática, pode-se utilizar uma cor opcional<hr />Var: $brand-secondary<br />Class: bg-secondary {snippet icon-base}">Secondary {snippet estrela-base}</a>
-			<a href="#" class="col-6 p-2 bg-tertiary text-white setPopover" data-placement="top" title="Tertiary" data-content="Indica a cor terciária da marca. Caso não exista, pode-se utilizar uma cor opcional<hr />Var: $brand-tertiary {snippet icon-base}<br />Class: bg-tertiary {snippet icon-base}">Tertiary {snippet estrela-base}</a>
+		  <div class="col-12 p-2 bg-primary text-white"> Primary<div class="small">.bg-primary</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-primary-dark text-white"> Primary Dark<div class="small">.bg-primary-dark</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-primary-light text-white"> Primary Light<div class="small">.bg-primary-light</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-primary-lighter text-white"> Primary Lighter<div class="small">.bg-primary-lighter</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-primary-lightest"> Primary Lightest<div class="small">.bg-primary-lightest</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-secondary"> Secondary<div class="small">.bg-secondary</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-light"> Light<div class="small">.bg-light</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-dark text-white"> Dark<div class="small">.bg-dark</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-live text-white"> Live<div class="small">.bg-live</div></div>
 		</div>
-		<h5 class="my-3">Contextual</h5>
+		<h5 class="text-primary my-3">Contextual</h5>
 		<div class="row no-gutters">
-			<a href="#" class="col-12 p-2 bg-live text-white setPopover" data-placement="top" title="Live" data-content="Indica uma informação em 'destaque'<hr />Var: $brand-live {snippet icon-base}<br />Class: bg-live {snippet icon-base}">Live {snippet estrela-base}</a>
-			<a href="#" class="col-sm-3 p-2 bg-success text-white setPopover" data-placement="top" title="Success" data-content="Indica um resultado positivo/inclusão<hr />Var: $brand-success<br />Class: bg-success">Success</a>
-			<a href="#" class="col-sm-3 p-2 bg-info text-white setPopover" data-placement="top" title="Info" data-content="Indica informações/alertas relacionadas a 'dicas/informativos/observações'<hr />Var: $brand-info<br />Class: bg-info">Info</a>
-			<a href="#" class="col-sm-3 p-2 bg-warning text-white setPopover" data-placement="top" title="Warning" data-content="Indica informações/alertas relacionadas a 'atenção/cuidado'<hr />Var: $brand-warning<br />Class: bg-warning">Warning</a>
-			<a href="#" class="col-sm-3 p-2 bg-danger text-white setPopover" data-placement="top" title="Danger" data-content="Indica um resultado negativo/exclusão<hr />Var: $brand-danger<br />Class: bg-danger">Danger</a>
+		  <div class="col-6 col-md-3 p-2 bg-success text-white">Success<div class="small">.bg-success</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-info text-white">Info<div class="small">.bg-info</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-warning text-white">Warning<div class="small">.bg-warning</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-danger text-white">Danger<div class="small">.bg-danger</div></div>
+		</div>
+		<h5 class="text-primary my-3">Cinza</h5>
+		<div class="row no-gutters">
+		  <div class="col-6 p-2 bg-white set-border-top set-border-left border-default">White<div class="small">.bg-white</div></div>
+		  <div class="col-6 p-2 bg-black text-white">Black<div class="small">.bg-black</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-gray-100">Gray 100<div class="small">.bg-gray-100</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-gray-200">Gray 200<div class="small">.bg-gray-200</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-gray-300">Gray 300<div class="small">.bg-gray-300</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-gray-400">Gray 400<div class="small">.bg-gray-400</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-gray-500 text-white">Gray 500<div class="small">.bg-gray-500</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-gray-600 text-white">Gray 600<div class="small">.bg-gray-600</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-gray-700 text-white">Gray 700<div class="small">.bg-gray-700</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-gray-800 text-white">Gray 800<div class="small">.bg-gray-800</div></div>
+		  <div class="col-12 p-2 bg-gray-900 text-white">Gray 900<div class="small">.bg-gray-900</div></div>
+		</div>
+		<h5 class="text-primary my-3">Cores Básicas</h5>
+		<div class="row no-gutters">
+		  <div class="col-6 col-md-3 p-2 bg-blue text-white">Blue<div class="small">.bg-blue</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-red text-white">Red<div class="small">.bg-red</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-yellow text-white">Yellow<div class="small">.bg-yellow</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-green text-white">Green<div class="small">.bg-green</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-indigo text-white">Indigo<div class="small">.bg-indigo</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-purple text-white">Purple<div class="small">.bg-purple</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-pink text-white">Pink<div class="small">.bg-pink</div></div>
+		  <div class="col-6 col-md-3 p-2 bg-orange text-white">Orange<div class="small">.bg-orange</div></div>
+		  <div class="col-6 p-2 bg-teal text-white">Teal<div class="small">.bg-teal</div></div>
+		  <div class="col-6 p-2 bg-cyan text-white">Cyan<div class="small">.bg-cyan</div></div>
 		</div>
 	</div>
-	<div class="col-md-6 mb-3">
-		<h5 class="my-3">Útil</h5>
-		<div class="row no-gutters">
-			<a href="#" class="col-12 p-2 bg-transparent set-border border-default setPopover" title="Transparent" data-placement="top" data-content="Remove a cor de fundo do elemento<hr />Class: bg-transparent {snippet icon-base}">Transparent</a>
+	<div class="tab-pane" id="border-colors" role="tabpanel">
+		<div class="pb-3">
+			<h5 class="text-primary">Default<br /><small class="text-muted">Bordas padrão do tema. Definidas de acordo com o background da página...</small></h5>
+			<div class="row">
+				<div class="col-4">
+					<div class="p-2 set-border border-default">Border Default<div class="small float-md-right">.border-default</div></div>
+				</div>
+				<div class="col-4">
+					<div class="p-2 set-border border-default-light">Border Default Light<div class="small float-md-right">.border-default-light</div></div>
+				</div>
+				<div class="col-4">
+					<div class="p-2 set-border border-default-dark">Border Default Dark<div class="small float-md-right">.border-default-dark</div></div>
+				</div>
+			</div>
 		</div>
-		<h5 class="my-3">Cinza</h5>
-		<div class="row no-gutters">
-			<a href="#" class="col-12 p-2 bg-gray text-white setPopover" data-placement="top" title="Gray" data-content="Var: $gray<br />Class: bg-gray {snippet icon-base}"><span class="base-icon-down-big text-live hasTooltip" title="Opções ao cinza"></span> Gray</a>
-			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-gray-dark text-white setPopover" data-placement="top" title="Gray Dark" data-content="Opção de cinza em uma tonalidade mais escura<hr />Var: $gray-dark<br />Class: bg-gray-dark {snippet icon-base}">Dark {snippet estrela-base}</a>
-			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-gray-light text-white setPopover" data-placement="top" title="Gray Light" data-content="Opção de cinza em uma tonalidade mais clara<hr />Var: $gray-light<br />Class: bg-gray-light {snippet icon-base}">Light {snippet estrela-base}</a>
-			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-gray-lighter setPopover" data-placement="top" title="Gray Lighter" data-content="Opção de cinza em uma tonalidade mais clara<hr />Var: $gray-lighter<br />Class: bg-gray-lighter {snippet icon-base}">Lighter {snippet estrela-base}</a>
-			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-gray-lightest setPopover" data-placement="top" title="Gray Lightest" data-content="Opção de cinza em uma tonalidade mais clara<hr />Var: $gray-lightest<br />Class: bg-gray-lightest {snippet icon-base}">Lightest {snippet estrela-base}</a>
-			<a href="#" class="col-6 p-2 bg-black text-white setPopover" data-placement="top" title="Black" data-content="Var: $black<br />Class: bg-black {snippet icon-base}">Black</a>
-			<a href="#" class="col-6 p-2 bg-white set-border-bottom set-border-right border-default setPopover" data-placement="top" title="White" data-content="Var: $white<br />Class: bg-white {snippet icon-base}">White</a>
-		</div>
-	    <h5 class="my-3">Cores Básicas</h5>
-		<div class="row no-gutters">
-			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-red text-white setPopover" data-placement="top" title="Red" data-content="Var: $red<br />Class: bg-red">Red</a>
-			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-orange text-white setPopover" data-placement="top" title="Orange" data-content="Var: $orange<br />Class: bg-orange">Orange</a>
-			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-yellow text-white setPopover" data-placement="top" title="Yellow" data-content="Var: $yellow<br />Class: bg-yellow">Yellow</a>
-			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-green text-white setPopover" data-placement="top" title="Green" data-content="Var: $green<br />Class: bg-green">Green</a>
-			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-blue text-white setPopover" data-placement="top" title="Blue" data-content="Var: $blue<br />Class: bg-blue">Blue</a>
-			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-teal text-white setPopover" data-placement="top" title="Teal" data-content="Var: $teal<br />Class: bg-teal">Teal</a>
-			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-pink text-white setPopover" data-placement="top" title="Pink" data-content="Var: $pink<br />Class: bg-pink">Pink</a>
-			<a href="#" class="col-6 col-sm-3 col-md-6 col-lg-3 p-2 bg-purple text-white setPopover" data-placement="top" title="Purple" data-content="Var: $purple<br />Class: bg-purple">Purple</a>
+		<hr class="hr-tag border-info" />
+		<span class="badge badge-info">OUTRAS OPÇÕES</span>
+		<div class="row">
+			<div class="col-lg-4">
+				<h5 class="text-primary my-3">Tema</h5>
+				<div class="mb-2 set-border-bottom border-primary">Border Primary<small class="float-right">.border-primary</small></div>
+				<div class="mb-2 set-border-bottom border-secondary">Border Secondary<small class="float-right">.border-secondary</small></div>
+				<div class="mb-2 set-border-bottom border-light">Border Light<small class="float-right">.border-light</small></div>
+				<div class="mb-2 set-border-bottom border-dark">Border Dark<small class="float-right">.border-dark</small></div>
+				<div class="mb-2 set-border-bottom border-live">Border Live<small class="float-right">.border-live</small></div>
+				<h5 class="text-primary my-3">Contextual</h5>
+				<div class="mb-2 set-border-bottom border-success">Border Success<small class="float-right">.border-success</small></div>
+				<div class="mb-2 set-border-bottom border-info">Border Info<small class="float-right">.border-info</small></div>
+				<div class="mb-2 set-border-bottom border-warning">Border Warning<small class="float-right">.border-warning</small></div>
+				<div class="mb-2 set-border-bottom border-danger">Border Danger<small class="float-right">.border-danger</small></div>
+			</div>
+			<div class="col-lg-4">
+				<h5 class="text-primary my-3">Cinza</h5>
+				<div class="mb-2 set-border-bottom border-white">Border White<small class="float-right">.border-white</small></div>
+				<div class="mb-2 set-border-bottom border-gray-100">Border Gray 100<small class="float-right">.border-gray-100</small></div>
+				<div class="mb-2 set-border-bottom border-gray-200">Border Gray 200<small class="float-right">.border-gray-200</small></div>
+				<div class="mb-2 set-border-bottom border-gray-300">Border Gray 300<small class="float-right">.border-gray-300</small></div>
+				<div class="mb-2 set-border-bottom border-gray-400">Border Gray 400<small class="float-right">.border-gray-400</small></div>
+				<div class="mb-2 set-border-bottom border-gray-500">Border Gray 500<small class="float-right">.border-gray-500</small></div>
+				<div class="mb-2 set-border-bottom border-gray-600">Border Gray 600<small class="float-right">.border-gray-600</small></div>
+				<div class="mb-2 set-border-bottom border-gray-700">Border Gray 700<small class="float-right">.border-gray-700</small></div>
+				<div class="mb-2 set-border-bottom border-gray-800">Border Gray 800<small class="float-right">.border-gray-800</small></div>
+				<div class="mb-2 set-border-bottom border-gray-900">Border Gray 900<small class="float-right">.border-gray-900</small></div>
+				<div class="mb-2 set-border-bottom border-black">Border Black<small class="float-right">.border-black</small></div>
+			</div>
+			<div class="col-lg-4">
+				<h5 class="text-primary my-3">Cores Básicas</h5>
+				<div class="mb-2 set-border-bottom border-blue">Border Blue<small class="float-right">.border-blue</small></div>
+				<div class="mb-2 set-border-bottom border-indigo">Border indigo<small class="float-right">.border-indigo</small></div>
+				<div class="mb-2 set-border-bottom border-purple">Border purple<small class="float-right">.border-purple</small></div>
+				<div class="mb-2 set-border-bottom border-pink">Border pink<small class="float-right">.border-pink</small></div>
+				<div class="mb-2 set-border-bottom border-red">Border red<small class="float-right">.border-red</small></div>
+				<div class="mb-2 set-border-bottom border-orange">Border orange<small class="float-right">.border-orange</small></div>
+				<div class="mb-2 set-border-bottom border-yellow">Border yellow<small class="float-right">.border-yellow</small></div>
+				<div class="mb-2 set-border-bottom border-green">Border green<small class="float-right">.border-green</small></div>
+				<div class="mb-2 set-border-bottom border-teal">Border teal<small class="float-right">.border-teal</small></div>
+				<div class="mb-2 set-border-bottom border-cyan">Border cyan<small class="float-right">.border-cyan</small></div>
+			</div>
 		</div>
 	</div>
-</div>
-<hr class="hr-tag" />
-<span class="badge badge-warning">EXEMPLO</span>
-<div class="row">
-	<div class="col-md-6 mb-3">
-		<div class="mb-3">
-			<div class="bg-primary">BG PRIMARY</div>
-			<div class="bg-red text-white">BG RED</div>
+	<div class="tab-pane" id="text-colors" role="tabpanel">
+		<div class="pb-3">
+			<h5 class="text-primary">Default<br /><small class="text-muted">Cores padrão do tema. Definidas de acordo com o background da página...</small></h5>
+			<div class="row">
+				<div class="col-4">
+					<div class="p-2 text-color set-border border-default">Text Color<div class="small float-md-right">.text-color</div></div>
+				</div>
+				<div class="col-4">
+					<div class="p-2 link-color set-border border-default">Link Color<div class="small float-md-right">.link-color</div></div>
+				</div>
+				<div class="col-4">
+					<div class="p-2 link-hover-color set-border border-default">Link Hover Color<div class="small float-md-right">.link-hover-color</div></div>
+				</div>
+			</div>
 		</div>
-<pre class="code">&lt;div class="bg-primary"&gt;BG PRIMARY&lt;/div&gt;
-&lt;div class="bg-red text-white"&gt;BG RED&lt;/div&gt;</pre>
-	</div>
-	<div class="col-md-6 mb-3">
-		<div class="alert alert-info">
-			Verifique ao lado o uso da classe <code>text-white</code> que serve para atribuir a cor "branca" ao texto.<br />
-			Clique no link abaixo para saber mais sobre as classes de atribuição de cores de texto.
-			<hr class="my-1" />
-			<a href="template/utilities/text-colors" class="strong">Cores de Texto &raquo;</a>
+		<hr class="hr-tag border-info" />
+		<span class="badge badge-info">OUTRAS OPÇÕES</span>
+		<div class="row">
+			<div class="col-lg-4">
+				<h5 class="text-primary my-3">Tema</h5>
+				<div class="mb-2 text-primary">Text Primary<small class="float-right">.text-primary</small></div>
+				<div class="mb-2 text-secondary">Text Secondary<small class="float-right">.text-secondary</small></div>
+				<div class="mb-2 text-light">Text Light<small class="float-right">.text-light</small></div>
+				<div class="mb-2 text-dark">Text Dark<small class="float-right">.text-dark</small></div>
+				<div class="mb-2 text-live">Text Live<small class="float-right">.text-live</small></div>
+				<h5 class="text-primary my-3">Contextual</h5>
+				<div class="mb-2 text-success">Text Success<small class="float-right">.text-success</small></div>
+				<div class="mb-2 text-info">Text Info<small class="float-right">.text-info</small></div>
+				<div class="mb-2 text-warning">Text Warning<small class="float-right">.text-warning</small></div>
+				<div class="mb-2 text-danger">Text Danger<small class="float-right">.text-danger</small></div>
+			</div>
+			<div class="col-lg-4">
+				<h5 class="text-primary my-3">Cinza</h5>
+				<div class="mb-2 text-white">Text White<small class="float-right">.text-white</small></div>
+				<div class="mb-2 text-gray-100">Text Gray 100<small class="float-right">.text-gray-100</small></div>
+				<div class="mb-2 text-gray-200">Text Gray 200<small class="float-right">.text-gray-200</small></div>
+				<div class="mb-2 text-gray-300">Text Gray 300<small class="float-right">.text-gray-300</small></div>
+				<div class="mb-2 text-gray-400">Text Gray 400<small class="float-right">.text-gray-400</small></div>
+				<div class="mb-2 text-gray-500">Text Gray 500<small class="float-right">.text-gray-500</small></div>
+				<div class="mb-2 text-gray-600">Text Gray 600<small class="float-right">.text-gray-600</small></div>
+				<div class="mb-2 text-gray-700">Text Gray 700<small class="float-right">.text-gray-700</small></div>
+				<div class="mb-2 text-gray-800">Text Gray 800<small class="float-right">.text-gray-800</small></div>
+				<div class="mb-2 text-gray-900">Text Gray 900<small class="float-right">.text-gray-900</small></div>
+				<div class="mb-2 text-black">Text Black<small class="float-right">.text-black</small></div>
+			</div>
+			<div class="col-lg-4">
+				<h5 class="text-primary my-3">Cores Básicas</h5>
+				<div class="mb-2 text-blue">Text Blue<small class="float-right">.text-blue</small></div>
+				<div class="mb-2 text-indigo">Text indigo<small class="float-right">.text-indigo</small></div>
+				<div class="mb-2 text-purple">Text purple<small class="float-right">.text-purple</small></div>
+				<div class="mb-2 text-pink">Text pink<small class="float-right">.text-pink</small></div>
+				<div class="mb-2 text-red">Text red<small class="float-right">.text-red</small></div>
+				<div class="mb-2 text-orange">Text orange<small class="float-right">.text-orange</small></div>
+				<div class="mb-2 text-yellow">Text yellow<small class="float-right">.text-yellow</small></div>
+				<div class="mb-2 text-green">Text green<small class="float-right">.text-green</small></div>
+				<div class="mb-2 text-teal">Text teal<small class="float-right">.text-teal</small></div>
+				<div class="mb-2 text-cyan">Text cyan<small class="float-right">.text-cyan</small></div>
+			</div>
 		</div>
 	</div>
 </div>

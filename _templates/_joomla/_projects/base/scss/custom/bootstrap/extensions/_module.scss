@@ -11,11 +11,11 @@
 	margin: 0!important;
 	font-size: 1rem;
 	line-height: 1;
-	color: $brand-primary;
+	color: theme-color("primary");
 	font-weight: 600;
 	text-shadow: 1px 1px 0 #fff;
-	border-bottom: 2px solid $brand-primary;
-	background-color: $gray-lightest;
+	border-bottom: 2px solid theme-color("primary");
+	background-color: $gray-200;
 }
 .mod-base .mod-base-toolbar {
   top: .4rem;

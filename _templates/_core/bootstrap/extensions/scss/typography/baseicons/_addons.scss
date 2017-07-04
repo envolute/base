@@ -4,11 +4,11 @@
   // Contextual Colors
   [class*="base-icon-"].icon-color-live:before { color: $base-color-live; }
   [class*="base-icon-"].icon-color-white:before { color: #fff; }
-  [class*="base-icon-"].icon-color-primary:before { color: $brand-primary; }
-  [class*="base-icon-"].icon-color-success:before { color: $brand-success; }
-  [class*="base-icon-"].icon-color-info:before { color: $brand-info; }
-  [class*="base-icon-"].icon-color-warning:before { color: $brand-warning; }
-  [class*="base-icon-"].icon-color-danger:before { color: $brand-danger; }
+  [class*="base-icon-"].icon-color-primary:before { color: theme-color("primary"); }
+  [class*="base-icon-"].icon-color-success:before { color: theme-color("success"); }
+  [class*="base-icon-"].icon-color-info:before { color: theme-color("info"); }
+  [class*="base-icon-"].icon-color-warning:before { color: theme-color("warning"); }
+  [class*="base-icon-"].icon-color-danger:before { color: theme-color("danger"); }
 
   // NAV MENU ICON
   // Integração com o componente 'nav-menu'

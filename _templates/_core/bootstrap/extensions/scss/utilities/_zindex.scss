@@ -1,0 +1,6 @@
+// Z-INDEX
+// Auxilia na visualização de propriedades externas ao elemento como "box-shadow", "outline"...
+// 'zindex-up' faz com que o objeto fique 1 nivel acima do próximo elemento
+// ou vice-versa no caso de 'zindex-down'
+.zindex-up { z-index: 1!important; }
+.zindex-down { z-index: -1!important; }
