@@ -55,9 +55,9 @@ require_once('_init.tpl.php');
 			<?php
 			// HEADER
 			loadPosition($this, $params, 'header', 6);
-      // SECTION
+			// SECTION
 			loadPosition($this, $params, 'section', 6);
-      ?>
+			?>
 
 			<!-- Full Content -->
 			<div id="full-content">

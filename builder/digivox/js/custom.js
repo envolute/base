@@ -60,15 +60,18 @@ jQuery(function() {
 		if(jQuery("#navigation").length) {
 			var $mmenu = jQuery("#navigation").clone();
 			$mmenu.removeClass().attr( "id", "mm-navigation" );
-			$mmenu.find('.nav.menu').removeClass();
 			$mmenu.mmenu({
-
+				"slidingSubmenus": false
+			});
+			jQuery('#close-menu').click(function() {
+				$mmenu.data("mmenu").close();
 			});
 			jQuery('#toggle-menu').click(function() {
 				jQuery('#mm-navigation, #screen').toggleClass('closed');
 			});
 			if(!jQuery('html').hasClass('media-md')) jQuery('#mm-navigation, #screen').addClass('closed');
 			jQuery(window).resize(function() {
+				$mmenu.data("mmenu").close();
 				if(!jQuery('html').hasClass('media-md')) jQuery('#mm-navigation, #screen').addClass('closed');
 				else jQuery('#mm-navigation, #screen').removeClass('closed');
 			});

@@ -38,57 +38,63 @@
 
 		<!-- Header -->
 		<nav id="header" class="clearfix">
-			<div class="container-fluid bs-container">
-				<div class="row">
-					<div class="row-wrapper">
-						<div class="row">
-							<div class="col-xs-12">
-								<a href="#" role="button" id="toggle-menu">
-									<span class="base-icon-menu"></span>
-								</a>
-								<a id="brand" class="brand" href="index.php"><img class="img-responsive" src="images/logo-site.png" /></a>
-								<div id="header-options" class="btn-group">
-									<a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<span class="base-icon-user"></span>
-									</a>
-									<ul class="dropdown-menu dropdown-menu-right">
-										<li><a href="#">Action</a></li>
-										<li><a href="#">Another action</a></li>
-										<li><a href="#">Something else here</a></li>
-										<li role="separator" class="divider"></li>
-										<li><a href="#">Separated link</a></li>
-									</ul>
-								</div>
-								<a id="brand-client" class="hidden-xs" href="index.php"><img class="img-responsive" src="images/logo-client.png" /></a>
-								<div id="navigation" class="hidden">
-									<ul id="main-menu" class="nav nav-pills menu">
-										<!--li><a href="login.html"><span class="base-icon-home"></span></a></li-->
-										<li id="guide"><a href="index.html">Guia</a></li>
-										<li id="login"><a href="login.html">Login</a></li>
-										<li id="icons"><a href="core/libs/baseicons/demo.html" target="_blank">Ícones</a></li>
-										<li id="lists"><a href="report.html">Listagem</a></li>
-										<li id="forms"><a href="forms.html">Formulário</a></li>
-										<li class="parent">
-											<a href="#">Sub Level</a>
-											<ul class="nav-child">
-												<li class="parent">
-													<span>Sub Level 2</span>
-													<ul class="nav-child">
-														<li><a href="#">Item</a></li>
-														<li><a href="#">Item</a></li>
-														<li><a href="#">Item</a></li>
-														<li><a href="#">Item</a></li>
-													</ul>
-												</li>
-												<li><a href="#">Item</a></li>
-											</ul>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+			<a href="#" role="button" id="close-menu" class="visible-xs visible-sm">
+				<span class="base-icon-cancel"></span>
+			</a>
+			<a href="#" role="button" id="toggle-menu" class="hidden-xs hidden-sm">
+				<span class="base-icon-menu"></span>
+			</a>
+			<a href="#mm-navigation" role="button" id="toggleMenu" class="toggle_menu visible-xs visible-sm">
+				<span class="base-icon-menu"></span>
+			</a>
+			<a id="brand" class="brand" href="index.php"><img class="img-responsive" src="images/logo-site.png" /></a>
+			<div id="header-options" class="btn-group">
+				<a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<span class="base-icon-user"></span>
+				</a>
+				<ul class="dropdown-menu dropdown-menu-right">
+					<li><a href="#">Action</a></li>
+					<li><a href="#">Another action</a></li>
+					<li><a href="#">Something else here</a></li>
+					<li role="separator" class="divider"></li>
+					<li><a href="#">Separated link</a></li>
+				</ul>
+			</div>
+			<a id="brand-client" class="hidden-xs" href="index.php"><img class="img-responsive" src="images/logo-client.png" /></a>
+			<div id="navigation" class="hidden">
+				<ul>
+					<!--li><a href="login.html"><span class="base-icon-home"></span></a></li-->
+					<li id="guide"><a href="index.html">Guia</a></li>
+					<li id="login"><a href="login.html">Login</a></li>
+					<li id="icons"><a href="core/libs/baseicons/demo.html" target="_blank">Ícones</a></li>
+					<li id="lists"><a href="report.html">Listagem</a></li>
+					<li id="forms"><a href="forms.html">Formulário</a></li>
+					<li class="parent">
+						<a href="#">Sub Level</a>
+						<ul class="nav-child">
+							<li class="parent">
+								<span>Sub Level 2</span>
+								<ul class="nav-child">
+									<li><a href="#">Item</a></li>
+									<li><a href="#">Item</a></li>
+									<li><a href="#">Item</a></li>
+									<li><a href="#">Item</a></li>
+								</ul>
+							</li>
+							<li><a href="#">Item</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+			<div id="user-info">
+				<span class="hidden-xs">
+					<a href="#"><span class="base-icon-user text-live"></span> Nome do usuário</a>
+					<span class="divisor"></span>
+				</span>
+				<a href="#"><span class="base-icon-cog text-live"></span> Meus dados</a>
+				<span class="divisor"></span>
+				<a href="#" class="logout"><span class="base-icon-logout-alt"></span> Sair</a>
 			</div>
 		</nav>
 
@@ -104,14 +110,6 @@
 
 								<!-- Main Content -->
 								<div id="main-content" class="col-xs-12">
-
-									<div id="user-info">
-										<a href="#"><span class="base-icon-user text-live"></span> Nome do usuário</a>
-										<span class="divisor"></span>
-										<a href="#"><span class="base-icon-cog text-live"></span> Meus dados</a>
-										<span class="divisor"></span>
-										<a href="#" class="logout"><span class="base-icon-logout-alt"></span> Sair</a>
-									</div>
 
 									<div id="content-toolbar" class="clearfix">
 										<h3>Page Header <small>(Sub Header)</small></h3>

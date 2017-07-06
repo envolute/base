@@ -104,57 +104,57 @@
 
 	// MENU
 
-	#mm-navigation:not(.closed) {
-	    display: block!important;
-	    width: 270px;
-		background-color: #eee!important;
-	}
-	#screen:not(.closed) {
-		width: calc(100% - 270px);
-	    margin-left: 270px;
-	    transform: none !important;
-	}
-	// panels
-	.mm-panels > .mm-panel.mm-hasnavbar {
-		padding-top: 75px;
-		box-shadow: inset -1px 0 0 #ddd;
-	}
-	.mm-panel.mm-hasnavbar .mm-navbar {
-		height: 56px!important;
-		border-bottom: 3px solid #f80!important;
-		box-shadow: inset 0 -1px 0 #ddd, 0 1px 0 #fff;
-	}
-	.mm-navbar > * {
-	    padding: 16px 0!important;
-	}
-	.mm-navbar a.mm-title {
-	    display: none;
-	}
-	.mm-navbar .mm-btn {
-	    height: 53px!important;
-	}
-	.mm-menu .mm-navbar > *,
-	.mm-menu .mm-navbar a {
-	    color: $base-color-live;
-	}
-	.mm-menu .mm-navbar .mm-btn:before,
-	.mm-menu .mm-navbar .mm-btn:after {
-	    border-color: $base-color-live;
-	}
-	.mm-prev:before, .mm-next:after, .mm-arrow:after {
-    	border-width: 3px!important;
-	    width: 11px;
-	    height: 11px;
-	}
-	.mm-prev:before {
-	    left: 17px;
-	}
+		#mm-navigation {
+		    padding-top: 67px;
+			background-color: #eee!important;
+			box-shadow: inset -1px 0 0 #ddd;
+    		overflow-y: auto;
+		}
+		html.media-md #mm-navigation:not(.closed) {
+		    width: 270px;
+		    display: block!important;
+		}
+		// evita sobreposição da página sobre o menu
+		// quando está fechado, mas visível...
+		html.media-md .mm-page {
+		    position:static!important;
+		}
+		#screen:not(.closed) {
+			width: calc(100% - 270px);
+		    margin-left: 270px;
+		    transform: none !important;
+		}
+		// panels
+		.mm-panels {
+			height: 56px!important;
+			border-bottom: 3px solid #f80!important;
+			box-shadow: inset 0 -1px 0 #ddd, 0 1px 0 #fff;
+		}
+		.mm-listview {
+		    font-size: 13px!important;
+		}
+		.mm-listview > li > a,
+		.mm-listview > li > span {
+		    /* text-overflow: ellipsis; */
+		    /* white-space: nowrap; */
+		    padding-left: 10px!important;
+		}
+		.mm-listview>li:not(.mm-divider):after {
+		    left: 0px!important;
+		}
+		.mm-vertical .mm-listview .mm-panel,
+		.mm-listview .mm-vertical .mm-panel {
+		    padding-top: 10px!important;
+		}
+		.mm-panel .nav-child {
+		    background-color: #eee!important;
+		}
 
 	// HEADER
 
 		#header {
 			position: fixed;
-			width: 100%;
+			width: calc(100% - 270px);
 			height: 56px;
 			padding: 0;
 			margin-bottom: 1px;
@@ -164,8 +164,10 @@
 			@include build-prefix-values('box-shadow', '0 1px 0 #fff, inset 0 -30px 50px rgba(0, 0, 0, 0.15), inset 0 30px 50px rgba(26, 107, 255, 0.15)');
 			z-index: $zindex-header;
 		}
+		#screen.closed #header {
+			width: 100%;
+		}
 		#header.affix {
-			position: fixed;
 			@include build-prefix-values('box-shadow', 'inset 0 -30px 50px rgba(0, 0, 0, 0.15), inset 0 30px 50px rgba(26, 107, 255, 0.15), 0 1px 8px 1px rgba(0,0,0,0.2)');
 		}
 
@@ -176,23 +178,34 @@
 		#header a:hover { color: #fff; }
 		#header .dropdown-menu a { color: #555; }
 
-		#toggle-menu {
+		#toggle-menu,
+		#toggleMenu {
 			display:block;
 			float:left;
-			width:42px;
+			width:53px;
 			height:53px;
-			background:none;
+			text-align: center;
 			border:0;
 			cursor:pointer;
+			background:none;
 			@include build-prefix-values('box-shadow', 'inset -1px 0 0 #4B618D');
 		}
-		#screen.closed #toggle-menu {
-			margin-left: 202px;
+		#screen.closed #toggle-menu,
+		#screen.closed #toggleMenu {
+			margin-left: 198px;
 		}
-		#toggle-menu span {
+		#toggle-menu span,
+		#toggleMenu span {
 			display:block;
 			font-size:28px;
 			line-height:53px!important;
+		}
+		#close-menu {
+			margin: 6px 0 0 -45px;
+		    float: left;
+		    font-size: 30px;
+		    color: #f80!important;
+		    font-weight: normal;
 		}
 
 		// logo
@@ -209,7 +222,7 @@
 			@include build-prefix-values('transition', 'all .1s linear');
 		}
 		#screen.closed #header #brand {
-			left: 15px;
+			left: $base-space;
 		}
 		.media-to-sm body:not(.login) #header #brand,
 		.media-md body:not(.login) #header.affix #brand // -> affix
@@ -218,14 +231,26 @@
 		    padding-top: 8px;
 		}
 		#header #brand-client {
-			position: fixed;
-			right: 0;
+			margin-left: 10px;
 			padding: 5px;
+			float: right;
 		}
 		#header #brand-client img {
 			max-width: 100px;
 			max-height: 42px;
 		}
+
+		// USER INFO
+		#user-info {
+			margin: 18px $base-space 0 0 !important;
+			font-size: $font-size-small;
+			text-align: right;
+			color: #cac7c7;
+		}
+		#user-info a { color: #cac7c7; }
+		#user-info a:hover { color: $base-color-live; }
+		#user-info a.logout:link { color: #fff; }
+		#user-info .divisor { padding: 0 5px; }
 
 		#header-btn-group {
 			float: right;
@@ -282,7 +307,6 @@
 	#wrapper {
 		margin: auto;
 		padding-top: 56px;
-		@include build-prefix-values('box-shadow', 'inset 0 70px 30px rgba(255,255,255,0.4), inset 0 85px 0px '+$gray-lighter);
 	}
 
 	// wrapper = container
@@ -297,36 +321,22 @@
 			font-size: 12px;
 			white-space: nowrap;
 			@include build-prefix-values('border-radius', '0');
-	    background-color: #fff;
+	    	background-color: #fff;
 		}
 
 
 	// FULL-CONTENT -> área total do conteúdo incluindo as laterais
 
-		body:not(.component) #full-content { padding: 5px 0 50px; }
+		body:not(.component) #full-content { padding: 10px 0 50px 5px; }
 
 		// LEFT & RIGHT
 		#left .module,
 		#right .module { margin-bottom: $base-space; }
 
-		// USER INFO
-		#user-info {
-			margin: 2px 5px 5px 0 !important;
-			font-size: $font-size-small;
-			text-align: right;
-			text-shadow: 1px 1px 0 #fff;
-			color: $base-color-live;
-		}
-		#user-info a { color: #999; }
-		#user-info a:hover { color: $base-color-live; }
-		#user-info a.logout { color: #d00; }
-		#user-info a.logout:hover { color: #f00; }
-		#user-info .divisor { padding: 0 5px; }
-
 		// TOOLBAR
 		#content-toolbar {
-	    margin-bottom: 15px;
-	    border-bottom: 1px solid $base-color-live;
+		    margin-bottom: $base-space;
+		    border-bottom: 1px solid $base-color-live;
 			@include build-prefix-values('box-shadow', '0 1px 0 #fff');
 		}
 		#content-toolbar h3 {
@@ -345,7 +355,7 @@
 		// -> affix
 		.media-sm #toolbar-btns.affix {
 			top: 56px;
-			right: 15px;
+			right: $base-space;
 			background-color: #fafafa;
 			z-index: $zindex-toolbar-btns;
 			@include build-prefix-values('border-radius', '0 0 2px 2px');
@@ -372,7 +382,7 @@
 
 			.media-md #content-body:not(.fullScreen) {
 				max-width: 1200px;
-		    margin: auto;
+		    	margin: auto;
 			}
 
 			// TABLE PAGINATION
@@ -470,7 +480,7 @@
 			bottom: 0;
 			width: 100%;
 			font-size: 13px;
-			padding: 3px 13px;
+			padding: 3px 0;
 			border-top: 1px solid #d0d8e6;
 			background-color: $gray-lighter;
 			background-color: rgba(240, 240, 240, 0.9);
@@ -524,6 +534,43 @@
 
 
 // BASE 'ELEMENTS'
+
+	// LOAD ACTIVITY
+
+		// loader
+		#loader {
+			position: fixed;
+			left: 0;
+			bottom: -60px; // height + 5 -> hidden loader
+			opacity: 0;
+			width: 100%;
+			height: 30px;
+			margin: 0;
+			padding: 0;
+			text-align: center;
+			background-color: $loader-bg;
+			@include build-prefix-values('box-shadow', 'none');
+			@include build-prefix-values('transition', 'all .3s ease-in-out');
+			z-index: -1;
+		}
+		#loader.active {
+			bottom: 0;
+			opacity: 1;
+			z-index: 99999;
+		}
+		#loader.fullScreen {
+			top: 0;
+			bottom: auto;
+			height: 100%;
+			background-color: $loader-full-bg;
+		}
+		#loader .progress-bar {
+			position: absolute;
+			bottom: -4px;
+			width: 100%;
+			height: 15px;
+		}
+		#loader.fullScreen img { margin-top: 200px; }
 
 	// fieldser-bordered inside tab-content
 	.tab-content .fieldset-bordered .fieldset-sm {

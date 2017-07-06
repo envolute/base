@@ -676,7 +676,7 @@ $badge-color:                 $white !default;
 $badge-font-size:             80% !default; // -> {CUSTOM: 75%}
 $badge-font-weight:           $font-weight-normal !default; // -> {CUSTOM: $font-weight-bold}
 $badge-padding-y:             .25em !default;
-$badge-padding-x:             .4em .2em !default; // -> {CUSTOM: .4em (.2 � para adicionar um 'padding-bottom' diferente)}
+$badge-padding-x:             .4em .2em !default; // -> {CUSTOM: .4em (.2 adiciona um 'padding-bottom' diferente)}
 
 $badge-pill-padding-x:        .6em !default;
 // Use a higher than normal value to ensure completely rounded edges when

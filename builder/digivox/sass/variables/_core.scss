@@ -53,10 +53,10 @@ $base-font-featured-weight: '400' !default;
 $base-font-featured-style: 'italic' !default;
 
 // space
-$base-space: 15px; // IMPORTANT: define bootstrap '$grid-gutter-width' variable
-$base-space-xs: 5px;
-$base-space-sm: 10px;
-$base-space-lg: 20px;
+$base-space: 10px; // IMPORTANT: define bootstrap '$grid-gutter-width' variable
+$base-space-xs: 4px;
+$base-space-sm: 8px;
+$base-space-lg: 15px;
 $base-space-xl: ($base-space * 2);
 
 // border default

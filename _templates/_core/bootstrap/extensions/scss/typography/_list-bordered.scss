@@ -9,7 +9,7 @@
 			line-height: $list-bordered-line-height;
 		}
 		.list-unstyled.bordered li:not(:last-child) {
-	    	border-bottom: $base-list-border;
+	    	border-bottom: $list-bordered-border;
 		}
 		// list spaces => espaço entre os itens
 		.list-unstyled.bordered.list-sm li { padding: $list-bordered-padding-sm-y $list-bordered-padding-sm-x; }
@@ -22,7 +22,7 @@
 			list-style: none;
 			padding-left: $list-bordered-child-left;
 			margin-top: ($list-bordered-padding-y - 0.06); // 0.06 =~ 1px => equivalente a borda divisora
-			border-top: $base-list-border;
+			border-top: $list-bordered-border;
 		}
 		.list-unstyled.bordered.list-sm > li ul { margin-top: ($list-bordered-padding-sm-y - 0.06); } // 0.06 =~ 1px => equivalente a borda divisora
 		.list-unstyled.bordered.list-lg > li ul { margin-top: ($list-bordered-padding-lg-y - 0.06); } // 0.06 =~ 1px => equivalente a borda divisora
@@ -38,7 +38,7 @@
 			vertical-align: top;
 		}
 		.list-inline.bordered > li:not(:last-child) {
-			border-right: $base-list-inline-border;
+			border-right: $list-bordered-inline-border;
 		}
 		// list spaces => espaço entre os itens
 		.list-inline.bordered.list-sm > li { padding: $list-inline-padding-sm-y $list-inline-padding-sm-x; }

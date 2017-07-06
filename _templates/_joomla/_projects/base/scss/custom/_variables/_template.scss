@@ -43,8 +43,6 @@
 	$base-border-color-dark:			$base-gray-500;
 	$base-border-color-light:			$base-gray-200;
 	$base-border-color-live:			shade($base-color-live, 15%) !default;
-	$base-list-border:					1px dotted $base-border-color;
-	$base-list-inline-border:			1px dotted $base-border-color;
 
 // BOOTSTRAP DEFINITIONS
 
@@ -122,6 +120,9 @@
     $list-bordered-padding-lg-y:		.8rem;
     $list-bordered-padding-lg-x:		0;
     $list-bordered-child-left:			1.2rem;
+	// border
+	$list-bordered-border:				1px dotted $base-border-color;
+	$list-bordered-inline-border:		1px dotted $base-border-color;
     // inline
     $list-inline-line-height:			1.15em;
     $list-inline-padding-y:				0;
