@@ -23,8 +23,11 @@ var tmplCSS     = tmpl + '/css';
   // JS files
 
     // Bootstrap JS -> Javascript libraries from bootstrap
+	// IMPORTANTE:
+	// Não utilizar o arquivo 'bootstrap.min.js' (minified), pois o mesmo
+	// quebra algumas funcionalidades como 'collapse'...
     var bootstrapJs = [
-      core+'/bootstrap/js/bootstrap.min.js' // Bootstrap functionalities
+      core+'/bootstrap/js/bootstrap.js' // Bootstrap functionalities
     ];
     // Bootstrap Extensions
     var bootstrapExtJs = [
@@ -54,6 +57,7 @@ var tmplCSS     = tmpl + '/css';
       core+'/bootstrap/extensions/js/typography/linkActions.js',
       // Utilities
       core+'/bootstrap/extensions/js/utilities/elementHeight.js',
+      core+'/bootstrap/extensions/js/utilities/imageRetina.js',
       core+'/bootstrap/extensions/js/utilities/parentWidth.js',
       core+'/bootstrap/extensions/js/utilities/isOnScreen.js',
       core+'/bootstrap/extensions/js/utilities/setScroll.js',
@@ -202,17 +206,17 @@ var del           = require('del');
   // COPY TEMPLATE LIBS
     // CORE
     gulp.task('build-common', function() {
-      gulp.src(common+'/**/*', {base: common})
+      return gulp.src(common+'/**/*', {base: common})
       .pipe(gulp.dest(tmpl))
     });
     // BASE
     gulp.task('cms-build-common', function() {
-      gulp.src(commonCms+'/**/*', {base: commonCms})
+      return gulp.src(commonCms+'/**/*', {base: commonCms})
       .pipe(gulp.dest(tmpl))
     });
     // SITE
     gulp.task('site-build-common', function() {
-      gulp.src(commonSite+'/**/*', {base: commonSite})
+      return gulp.src(commonSite+'/**/*', {base: commonSite})
       .pipe(gulp.dest(tmpl))
     });
 
@@ -225,6 +229,6 @@ gulp.task('builder-js', ['default.js', 'forms.js', 'validate.js']);
 // Builder CSS
 gulp.task('builder-css', ['style.css', 'style.basic.css', 'style.ie.css', 'style.print.css', 'style.app.css']);
 // Builder Template
-gulp.task('_builder-core', ['build-common', 'cms-build-common', 'site-build-common', 'builder-js', 'builder-css']);
+gulp.task('_builder-core', ['builder-css', 'builder-js', 'build-common', 'cms-build-common', 'site-build-common']);
 gulp.task('_builder-tmpl', ['site-build-common']);
 gulp.task('_builder', ['_builder-core', '_builder-tmpl']);

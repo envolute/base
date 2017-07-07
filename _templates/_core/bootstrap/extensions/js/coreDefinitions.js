@@ -28,6 +28,7 @@ jQuery(document).ready(function() {
 		linkActionsDef();
 		// Utilities
 		setElementHeight();
+		imageRetina();
 		setParentWidth();
 		gotoElement();
 		toggleIcon();

@@ -29,11 +29,7 @@ defined('_JEXEC') or die;
 function modChrome_noContainer($module, &$params, &$attribs)
 {
 	$mClass = !empty($params->get('moduleclass_sfx')) ? htmlspecialchars($params->get('moduleclass_sfx')) : '';
-	if ($module->content) :
-		if(!empty($mClass)) echo '<span id="module-'.$module->id.'" class="module '.$mClass.'">';
-			echo $module->content;
-		if(!empty($mClass)) echo '</span>';
-	endif;
+	if($module->content) echo $module->content;
 }
 
 function modChrome_base($module, &$params, &$attribs)
@@ -41,7 +37,7 @@ function modChrome_base($module, &$params, &$attribs)
 	$hTag		= $params->get('header_tag', 'h4');
 	$hClass		= $params->get('header_class');
 	$mClass    = !empty($params->get('moduleclass_sfx')) ? htmlspecialchars($params->get('moduleclass_sfx')) : '';
-	if ($module->content) :
+	if($module->content) :
 		echo '<div id="module-'.$module->id.'" class="module '.$mClass.'">';
 			if ((bool) $module->showtitle) echo '<'.$hTag.' class="'.$hClass.'">'.$module->title.'</'.$hTag.'>';
 			echo $module->content;
@@ -55,7 +51,7 @@ function modChrome_module($module, &$params, &$attribs)
 	$hClass		= 'mod-base-header clearfix '.$params->get('header_class');
 	$mClass		= !empty($params->get('moduleclass_sfx')) ? ' '.htmlspecialchars($params->get('moduleclass_sfx')) : '';
 
-	if (!empty ($module->content)) :
+	if(!empty($module->content)) :
 		echo '<div id="module-'.$module->id.'" class="mod-base module '.$mClass.' clearfix">';
 		if ((bool) $module->showtitle) :
 			echo '

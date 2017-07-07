@@ -1,0 +1,11 @@
+// @STYLE EDITOR
+// Esse arquivo serve para compilar o css de customização do editor de texto
+
+// Variáveis da BASE
+@import "custom/_variables/template";
+// Bootstrap
+@import "custom/_imports/bootstrap.basic";
+// Variáveis específicas do projeto
+@import "custom/_variables/custom";
+// Customizações do Bootstrap
+@import "custom/_imports/extensions.basic";

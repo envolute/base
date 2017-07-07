@@ -1,0 +1,42 @@
+// LIGHTING
+// Efeito acende/apaga
+
+  // PRIMARY
+  @keyframes primaryLighting {
+  	0% { background-color: theme-color("primary"); }
+  	50% { background-color: $base-color-live; }
+  	100% { background-color: theme-color("primary"); }
+  }
+  .lighting-primary { animation: primaryLighting 1500ms infinite; }
+
+  // SUCCESS
+  @keyframes successLighting {
+  	0% { background-color: theme-color("success"); }
+  	50% { background-color: saturate(theme-color("success"), 20%); }
+  	100% { background-color: theme-color("success"); }
+  }
+  .lighting-success { animation: successLighting 1500ms infinite; }
+
+  // INFO
+  @keyframes infoLighting {
+  	0% { background-color: theme-color("info"); }
+  	50% { background-color: saturate(theme-color("info"), 20%); }
+  	100% { background-color: theme-color("info"); }
+  }
+  .lighting-info { animation: infoLighting 1500ms infinite; }
+
+  // WARNING
+  @keyframes warningLighting {
+  	0% { background-color: theme-color("warning"); }
+  	50% { background-color: saturate(theme-color("warning"), 20%); }
+  	100% { background-color: theme-color("warning"); }
+  }
+  .lighting-warning { animation: warningLighting 1500ms infinite; }
+
+  // DANGER
+  @keyframes dangerLighting {
+  	0% { background-color: theme-color("danger"); }
+  	50% { background-color: saturate(theme-color("danger"), 20%); }
+  	100% { background-color: theme-color("danger"); }
+  }
+  .lighting-danger { animation: dangerLighting 1500ms infinite; }

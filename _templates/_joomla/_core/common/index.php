@@ -53,10 +53,13 @@ require_once('_init.tpl.php');
 		<div id="wrapper">
 
 			<?php
+
 			// HEADER
 			loadPosition($this, $params, 'header', 6);
-			// SECTION
-			loadPosition($this, $params, 'section', 6);
+
+			// SECTION TOP
+			loadSection($this, $params, 'top');
+
 			?>
 
 			<!-- Full Content -->
@@ -73,13 +76,13 @@ require_once('_init.tpl.php');
 
 						<?php if($this->countModules('left') > 0): ?>
 							<!-- Left -->
-							<div id="left" class="<?php echo grid($params['leftWidth'], $gDef);?>">
+							<div id="left" class="<?php echo $params['left']?>">
 								<jdoc:include type="modules" name="left" style="base" />
 							</div>
 						<?php endif; ?>
 
 						<!-- Content -->
-						<div id="content" class="<?php echo grid(setOffset($params['rightWidth'] + $params['leftWidth']), $gDef);?>">
+						<div id="content" class="col">
 
 							<?php if($this->countModules('content-top') > 0): ?>
 								<!-- Content Top -->
@@ -92,15 +95,15 @@ require_once('_init.tpl.php');
 
 								<?php if($this->countModules('content-left') > 0) :?>
 									<!-- Content Left -->
-									<div id="content-left" class="<?php echo grid($params['contentLeftWidth'], $gDef);?>">
+									<div id="content-left" class="<?php echo $params['content_left']?>">
 										<jdoc:include type="modules" name="content-left" style="base" />
 									</div>
 								<?php endif; ?>
 
 								<!-- Component -->
-								<div id="component" class="<?php echo grid(setOffset($params['contentLeftWidth'] + $params['contentRightWidth']), $gDef);?>">
+								<div id="component" class="col">
 
-                  <jdoc:include type="message" />
+									<jdoc:include type="message" />
 
 									<?php if($this->countModules('component-top') > 0): ?>
 										<!-- Component Top -->
@@ -113,7 +116,7 @@ require_once('_init.tpl.php');
 										<jdoc:include type="component" />
 									</div>
 
-                  <?php if($this->countModules('component-bottom') > 0): ?>
+									<?php if($this->countModules('component-bottom') > 0): ?>
 										<!-- Component Bottom -->
 										<div id="component-bottom" class="<?php echo $params['component_bottom']?>">
 											<jdoc:include type="modules" name="component-bottom" style="base" />
@@ -122,9 +125,9 @@ require_once('_init.tpl.php');
 
 								</div>
 
-                <?php if($this->countModules('content-right') > 0): ?>
+								<?php if($this->countModules('content-right') > 0): ?>
 									<!-- Content Right -->
-									<div id="content-right" class="<?php echo grid($params['contentRightWidth'], $gDef);?>">
+									<div id="content-right" class="<?php echo $params['content_right']?>">
 										<jdoc:include type="modules" name="content-right" style="base" />
 									</div>
 								<?php endif; ?>
@@ -142,12 +145,12 @@ require_once('_init.tpl.php');
 
 						<?php if($this->countModules('right') > 0): ?>
 							<!-- Right -->
-							<div id="right" class="<?php echo grid($params['rightWidth'], $gDef);?>">
+							<div id="right" class="<?php echo $params['right']?>">
 								<jdoc:include type="modules" name="right" style="base" />
 							</div>
 						<?php endif; ?>
 
-            <?php if($this->countModules('full-content-bottom') > 0): ?>
+						<?php if($this->countModules('full-content-bottom') > 0): ?>
 							<!-- Full Content Footer -->
 							<div id="full-content-bottom" class="col-12 <?php echo $params['full_content_bottom']?>">
 								<jdoc:include type="modules" name="full-content-bottom" style="base" />
@@ -157,24 +160,29 @@ require_once('_init.tpl.php');
 					</div>
 				</div>
 			</div>
-      <!--/ Full Content -->
+			<!--/ Full Content -->
 
-      <?php
-      // SYNDICATE
-      loadPosition($this, $params, 'syndicate', 6);
-      // SCROLL TO TOP
+			<?php
+
+			// SECTION BOTTOM
+			loadSection($this, $params, 'bottom');
+
+			// SCROLL TO TOP
 			echo '<a id="scroll-to-top" href="#screen" class="go-to"></a>';
-      // FOOTER
-      loadPosition($this, $params, 'footer', 6);
-      // HIDDEN
-      if($this->countModules('hidden') > 0):
-        echo '
-				<div id="hidden">
-					<jdoc:include type="modules" name="hidden" style="base" />
-				</div>
-        ';
+
+			// FOOTER
+			loadPosition($this, $params, 'footer', 6);
+
+			// HIDDEN
+			if($this->countModules('hidden') > 0):
+				echo '
+					<div id="hidden">
+						<jdoc:include type="modules" name="hidden" style="base" />
+					</div>
+				';
 			endif;
-      ?>
+
+			?>
 
 			<jdoc:include type="modules" name="debug" style="base" />
 

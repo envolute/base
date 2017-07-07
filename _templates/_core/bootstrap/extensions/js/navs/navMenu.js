@@ -29,7 +29,7 @@ jQuery(function() {
         var obj = jQuery(this);
         var a = obj.children('a[href="#"]');
         var b = obj.children('a').find('a.child-reveal');
-        a.add(b).off().on('click', function(e) {
+        a.add(b).off().on('click focus', function(e) {
           e.preventDefault();
           obj.toggleClass('opened');
           // remove também dos sub-itens
