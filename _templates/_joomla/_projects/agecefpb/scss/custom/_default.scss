@@ -76,7 +76,7 @@
 		    position: absolute;
 		    top: 0px;
 		    display: block;
-		    width: 120px;
+		    width: 100px;
 		    height: 90px;
 			text-align: center;
 		    border-radius: 0 0 10px 10px;
@@ -85,10 +85,13 @@
 		    z-index: 3;
 		}
 		#header #logo-header img {
-			width: 100px;
-			margin-top: -5px;
+			width: 90px;
+			margin-top: 7px;
 		}
-		#header #logo-header img {
+		html.media-md #header #logo-header {
+		    width: 120px;
+		}
+		html.media-md #header #logo-header img {
 			width: 100px;
 			margin-top: -5px;
 		}

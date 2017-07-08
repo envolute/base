@@ -192,22 +192,21 @@
 	$nav-menu-indicator-padding:		0 .5em !default; // child-reveal
 	$nav-menu-child-indicator-mr-1:		8px !default; // child-reveal
 	$nav-menu-child-minWidth:			14rem;
-	$nav-menu-child-padding:			0.2rem 0;
+	$nav-menu-child-padding:			0;
 	$nav-menu-child-margin:				0;
 	$nav-menu-child-border:				none;
 	$nav-menu-child-bg:					$base-gray-200;
 	$nav-menu-child-shadow:				2px 3px 3px rgba(0, 0, 0, 0.2);
 	$nav-menu-child-item-padding:		.35em $nav-menu-main-item-padding-x !default;
 	$nav-menu-child-item-hover-bg:		$base-gray-300;
-	$nav-menu-child-top:				-2.2em !default; // Seta o alinhamento do submenu
+	$nav-menu-child-top:				-2.55em !default; // Seta o alinhamento do submenu
 	// Stacked -> Menu vertical
 	$nav-stacked-main-item-padding:		$nav-menu-child-item-padding !default;
 	$nav-stacked-indicator-padding:		0px .7em !default; // child-reveal
-	$nav-stacked-item-opened-bg:		$base-body-bg !default;
 	$nav-stacked-child-padding:			.1rem 0 .1rem .8rem !default;
 	$nav-stacked-child-margin:			0;
 	$nav-stacked-child-border:			1px solid $base-border-color;
-	$nav-stacked-child-bg:				$base-body-bg;
+	$nav-stacked-child-bg:				transparent;
 	$nav-stacked-child-item-padding:	$nav-stacked-main-item-padding !default;
 
 // ÍCONS

@@ -15,6 +15,7 @@
 		// atribui 'hover' a class 'hovered'
 		.nav.menu li:not(.active) > a:hover,
 		.nav.menu li:not(.active) > a:focus,
+	    .nav.menu li.opened:not(.active) > a,
 		.nav.menu li.parent:not(.active):hover > a {
 			background-color: $nav-menu-main-item-hover-bg;
 		}
@@ -28,7 +29,18 @@
 		.nav.menu a.child-reveal {
 			margin-left: .5rem;
 			color: inherit;
-			border-left: 1px solid $base-border-color;
+			border-left: 1px solid mix(black, $body-bg, 20%);
+		}
+		// borda do divisor quando o link estiver 'hovered'
+		.nav.menu li:not(.active) > a:hover > a,
+		.nav.menu li:not(.active) > a:focus > a,
+	    .nav.menu li.opened:not(.active) > a > a,
+		.nav.menu li.parent:not(.active):hover > a > a {
+			border-color: mix(black, $nav-menu-main-item-hover-bg, 20%);
+		}
+		// e quando estiver em um 'sub menu'
+		.nav.menu:not(.nav-stacked) .nav-child a.child-reveal {
+			border-color: mix(black, $nav-menu-child-bg, 20%);
 		}
 
 	// SUB MENU
@@ -65,7 +77,7 @@
 // MAINMENU -> MENU PRINCIPAL
 
 	// mostra/esconde o menu principal para mostrar o menu mobile
-	#{$base-break-down}.isMM .mainmenu { display: none; }
+	// #{$base-break-down}.isMM .mainmenu { display: none; }
 
 	// MENU PRINCIPAL -> NÍVEL 1
 
@@ -76,9 +88,9 @@
 		#{$base-break-up} .mainmenu.nav.menu > li:not(:last-child) { margin-right: 0; }
 		// Item <a>
 		// Formato do item -> definido no link <a>
-		.mainmenu.nav.menu > li > a,
-		.mainmenu.nav.menu > li > a:link,
-		.mainmenu.nav.menu > li > a:visited {
+		.mainmenu.nav.menu:not(.nav-stacked) > li > a,
+		.mainmenu.nav.menu:not(.nav-stacked) > li > a:link,
+		.mainmenu.nav.menu:not(.nav-stacked) > li > a:visited {
 			padding: 2rem 1rem;
 			margin-bottom: -3px;
 			border-bottom: 3px solid transparent;
@@ -93,17 +105,17 @@
 			border-color: $base-color-live;
 		}
 		// Item ativo
-		.mainmenu.nav.menu li.active > a,
-		.mainmenu.nav.menu li > a.active // em caso de scroll 'go-to'
+		.mainmenu.nav.menu:not(.nav-stacked) li.active > a,
+		.mainmenu.nav.menu:not(.nav-stacked) li > a.active // em caso de scroll 'go-to'
 		{
 			color: $base-color-live;
 			border-color: $base-color-live;
-			background-color: mix(white, $gray-200, 15%);
+			background-color: mix(white, $gray-200, 20%);
 		}
 
 	// SUB MENU
 
-		.mainmenu.nav.menu .nav-child {
+		.mainmenu.nav.menu:not(.nav-stacked) .nav-child {
 			border-bottom: 3px solid $base-color-live;
 		}
 
@@ -117,5 +129,5 @@
 			.mainmenu.nav.menu .nav-child li:not(.active) > a:hover,
 			.mainmenu.nav.menu .nav-child li:not(.active) > a:focus,
 			.mainmenu.nav.menu .nav-child li.parent:not(.active):hover > a {
-				
+
 			}
