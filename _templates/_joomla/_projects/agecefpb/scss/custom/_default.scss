@@ -106,7 +106,7 @@
 	// FULL-CONTENT -> área total do conteúdo incluindo as laterais
 
 		// CONTENT
-		#full-content { padding: $base-space 0; }
+		#full-content { padding: $grid-gutter-width 0; }
 
 		// LEFT & RIGHT
 		#left .module,

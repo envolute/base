@@ -1,54 +1,7 @@
 // @BOOTSTRAP HELPERS
 // Adaptações e correções para casos específicos
 
-// FIGURES
-
-.figure.text-over {
-  position: relative;
-  overflow: hidden;
-}
-.figure.text-over img,
-.figure.text-over .figure-img {
-  margin-bottom: 0;
-}
-.figure.text-over figcaption,
-.figure.text-over .figure-caption {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  padding: $figure-text-over-padding;
-  font-size: $figure-text-over-size;
-  line-height: $figure-text-over-line-height;
-  color: $figure-text-over-color;
-  background-color: $figure-text-over-bg;
-}
-// Position Top
-.figure.text-over.text-top figcaption,
-.figure.text-over.text-top .figure-caption {
-  top: 0;
-  bottom: auto;
-}
-// Full Height
-.figure.text-over.text-full figcaption,
-.figure.text-over.text-full .figure-caption {
-  height: 100%;
-}
-
-// thumbnail
-.figure.text-over.img-thumbnail figcaption,
-.figure.text-over.img-thumbnail .figure-caption {
-  bottom: ($thumbnail-padding + $thumbnail-border-width);
-  left: ($thumbnail-padding + $thumbnail-border-width);
-  width: calc(100% - #{(($thumbnail-padding + $thumbnail-border-width) * 2)};
-}
-// Position Top
-.figure.text-over.text-top.img-thumbnail figcaption,
-.figure.text-over.text-top.img-thumbnail .figure-caption {
-  top: ($thumbnail-padding + $thumbnail-border-width);
-  bottom: auto;
-}
-// Full Height
-.figure.text-over.text-full.img-thumbnail figcaption,
-.figure.text-over.text-full.img-thumbnail .figure-caption {
-  height: calc(100% - #{(($thumbnail-padding + $thumbnail-border-width) * 2)};
+// Quando a imagem a tag da imagem <img> não está acessível...
+.img-fluid img {
+	@include img-fluid;
 }
