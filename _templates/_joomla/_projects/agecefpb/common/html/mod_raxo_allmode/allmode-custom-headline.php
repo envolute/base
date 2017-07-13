@@ -20,24 +20,63 @@ $app = JFactory::getApplication();
 
 <div class="row">
 	<?php if ($toplist) { ?>
-		<div class="main-headline col-lg-7">
-		<?php
-		// All-mode TOP Items Output
-		foreach ($toplist as $item) { ?>
+		<div class="main-headline<?php if(count($toplist) > 1) echo ' allmode-slider no-container'?> col-lg-7">
+			<?php
+			$tag		= 'div';
+			$tagClass	= 'pb-3 mb-3';
+			// Slider
+			if(count($toplist) > 1) :
+				$doc = JFactory::getDocument();
+				// Importa biblioteca bxslider
+				$doc->addStyleSheet(JURI::root().'templates/base/libs/content/bxslider/jquery.bxslider.min.css');
+				$doc->addScript(JURI::root().'templates/base/libs/content/bxslider/jquery.bxslider.min.js');
+				// CHAMADA DO SLIDER
+				// esconde imagens no carregamento
+				$doc->addStyleDeclaration('.bxslider > li:not(:first-child) { position: absolute; top: 0; visibility: hidden; }');
+				$script = '
+				jQuery(window).load(function(){
+					jQuery(".bxslider").bxSlider({
+						mode: "horizontal",
+						autoHover: true,
+						auto: true,
+						pause: 7000,
+						controls: false,
+						pager: true,
+						infiniteLoop: true,
+						onSliderLoad:function(currentIndex){
+							// mostra as imagens após o carregamento do plugin
+							jQuery(".bxslider img").attr("title","");
+							jQuery(".bxslider > li:not(:first-child)").css("visibility", "visible");
+						}
+					});
+				});
+				';
+				$doc->addScriptDeclaration($script);
+				echo '<ul class="bxslider">';
+				$tag		= 'li';
+				$tagClass	= '';
+			endif;
+			?>
 
-			<div class="headline pb-3 clearfix">
-				<figure class="pos-relative img-fluid">
-					<?php if ($item->image) echo $item->image; ?>
-					<?php if ($item->title) { ?>
-						<figcaption class="pos-absolute pos-bottom-0 w-full bg-black-80 p-2 p-md-3 text-lg lh-1-2">
-							<a class="text-white" href="<?php echo $item->link; ?>"><?php echo $item->title; ?></a>
-						</figcaption>
-					<?php } ?>
-				</figure>
-			</div>
+				<?php
+				// All-mode TOP Items Output
+				foreach ($toplist as $item) {
+				?>
 
-		<?php } ?>
-	</div>
+					<<?php echo $tag?> class="headline <?php echo $tagClass?> clearfix">
+						<figure class="pos-relative img-fluid m-0">
+							<?php if ($item->image) echo $item->image; ?>
+							<?php if ($item->title) { ?>
+								<figcaption class="pos-absolute pos-bottom-0 w-full bg-black-80 p-2 p-md-3 text-lg lh-1-2">
+									<a class="text-white" href="<?php echo $item->link; ?>"><?php echo $item->title; ?></a>
+								</figcaption>
+							<?php } ?>
+						</figure>
+					</<?php echo $tag?>>
+
+				<?php } ?>
+			<?php if($tag == 'li') echo '</ul>'; ?>
+		</div>
 	<?php } ?>
 
 
@@ -45,7 +84,8 @@ $app = JFactory::getApplication();
 	<div class="items-headline col">
 	<?php
 	// All-mode Items Output
-	foreach ($list as $item) { ?>
+	foreach ($list as $item) {
+	?>
 
 		<div class="headline-item mb-3 clearfix">
 

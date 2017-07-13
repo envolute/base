@@ -153,8 +153,11 @@ $where = '';
 	$btnFile = '';
 	if($pID != 0) :
 		$btnFile = '
-		<button type="button" class="btn btn-sm btn-success '.$APPTAG.'-btn-action hasTooltip" title="'.JText::_('TEXT_GENERATE_FILE_DESC').'" onclick="'.$APPTAG.'_getSubsFile('.$pID.')">
-			<span class="base-icon-download"></span> CSV
+		<button type="button" class="btn btn-sm btn-success hasTooltip" title="'.JText::_('TEXT_GENERATE_FILE_DESC').'" onclick="'.$APPTAG.'_getSubsFile('.$pID.', 1)">
+			<span class="base-icon-download"></span> Inscritos
+		</button>
+		<button type="button" class="btn btn-sm btn-success hasTooltip" title="'.JText::_('TEXT_GENERATE_FILE_DESC').'" onclick="'.$APPTAG.'_getSubsFile('.$pID.', 0)">
+			<span class="base-icon-download"></span> Não Inscritos
 		</button>
 		';
 	endif;
@@ -226,7 +229,7 @@ $htmlFilter = '
 					</div>
 				</div>
 				<hr />
-				<div class="col-sm-2">
+				<div class="col-sm-10">
 					'.$btnFile.'
 				</div>
 				<div class="col-sm-2 pull-right">

@@ -4,6 +4,9 @@
 
 	// VERTICAL
 
+		.list-unstyled.bordered {
+			margin: 0;
+		}
 		.list-unstyled.bordered li {
 	    	padding: $list-bordered-padding-y $list-bordered-padding-x;
 			line-height: $list-bordered-line-height;
@@ -14,9 +17,9 @@
 		// list spaces => espaço entre os itens
 		.list-unstyled.bordered.list-sm li { padding: $list-bordered-padding-sm-y $list-bordered-padding-sm-x; }
 		.list-unstyled.bordered.list-lg li { padding: $list-bordered-padding-lg-y $list-bordered-padding-lg-x; }
-		// no-space => remove os espaços (superior e inferior) da listagem
-		.list-unstyled.bordered.no-space > li:first-child { padding-top: 0!important; }
-		.list-unstyled.bordered.no-space > li:last-child { padding-bottom: 0!important; }
+		// list trim => remove os espaços (superior e inferior) da listagem
+		.list-unstyled.bordered.list-trim > li:first-child { padding-top: 0!important; }
+		.list-unstyled.bordered.list-trim > li:last-child { padding-bottom: 0!important; }
 		// sub itens
 		.list-unstyled.bordered > li ul {
 			list-style: none;
@@ -30,7 +33,10 @@
 
 	// HORIZONTAL
 
-		.list-inline.bordered { display: flex; }
+		.list-inline.bordered {
+			display: flex;
+			margin: 0;
+		}
 		.list-inline.bordered > li {
 			padding: $list-inline-padding-y $list-inline-padding-x;
 			margin: 0;
@@ -43,9 +49,9 @@
 		// list spaces => espaço entre os itens
 		.list-inline.bordered.list-sm > li { padding: $list-inline-padding-sm-y $list-inline-padding-sm-x; }
 		.list-inline.bordered.list-lg > li { padding: $list-inline-padding-lg-y $list-inline-padding-lg-x; }
-		// no-space => remove os espaçossuperior e inferior da listagem
-		.list-inline.bordered.no-space > li:first-child { padding-left: 0!important; }
-		.list-inline.bordered.no-space > li:last-child { padding-right: 0!important; }
+		// list trim => remove os espaçossuperior e inferior da listagem
+		.list-inline.bordered.list-trim > li:first-child { padding-left: 0!important; }
+		.list-inline.bordered.list-trim > li:last-child { padding-right: 0!important; }
 		// sub itens
 		.list-inline.bordered > li > ul {
 			list-style: none;

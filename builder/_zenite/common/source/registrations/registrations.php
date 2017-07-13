@@ -257,7 +257,7 @@ jQuery(function() {
 					}
 					html = path = '';
 				}
-				
+
 				setJsDefinitions(); // core
 				setFileActive();
 			};
@@ -798,7 +798,7 @@ jQuery(function() {
 		};
 
 		// CUSTOM -> gera arquivo de débito
-		window.<?php echo $APPTAG?>_getSubsFile = function(pID) {
+		window.<?php echo $APPTAG?>_getSubsFile = function(pID, st) {
 
 			if(pID == 0) {
         alert('<?php echo JText::_('MSG_PROJECT_NOT_SELECTED'); ?>');
@@ -806,7 +806,7 @@ jQuery(function() {
       }
 
 			jQuery.ajax({
-				url: "<?php echo JURI::root().'templates/base/source/'.$APPNAME.'/'.$APPNAME ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=subsFile&st="+pID,
+				url: "<?php echo JURI::root().'templates/base/source/'.$APPNAME.'/'.$APPNAME ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=subsFile&pID="+pID+"&st="+st,
 				dataType: 'json',
 				cache: false,
 				success: function(data) {

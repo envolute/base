@@ -6,16 +6,19 @@
 // -> border-0, border-top-0, border-right-0, border-bottom-0, border-left-0
 
 // Borders Addon's
-.border-top { border-top: $border-width solid $base-border-color; }
-.border-bottom { border-bottom: $border-width solid $base-border-color; }
-.border-right { border-right: $border-width solid $base-border-color; }
-.border-left { border-left: $border-width solid $base-border-color; }
+.border-top { border-top: $border-width solid; }
+.border-bottom { border-bottom: $border-width solid; }
+.border-right { border-right: $border-width solid; }
+.border-left { border-left: $border-width solid; }
+// border type
+.border-dotted { border-style: dotted!important; border-width: 0; }
+.border-dashed { border-style: dashed!important; border-width: 0; }
 // width 1
-.border-1 { border-width:1px!important; }
-.border-top-1 { border-top-width:1px!important; }
-.border-bottom-1 { border-bottom-width:1px!important; }
-.border-right-1 { border-right-width:1px!important; }
-.border-left-1 { border-left-width:1px!important; }
+.border-1 { border-width: 1px!important; }
+.border-top-1 { border-top-width: 1px!important; }
+.border-bottom-1 { border-bottom-width: 1px!important; }
+.border-right-1 { border-right-width: 1px!important; }
+.border-left-1 { border-left-width: 1px!important; }
 // width 2
 .border-2 { border-width: 2px!important; }
 .border-top-2 { border-top-width: 2px!important; }
@@ -29,13 +32,10 @@
 .border-right-3 { border-right-width: 3px!important; }
 .border-left-3 { border-left-width: 3px!important; }
 
-// border type
-.border-dotted { border-style:dotted!important; }
-.border-dashed { border-style:dashed!important; }
-
 // COLOR
 
 	// default addon's
+	.border-default { border-color: $base-border-color!important; }
 	.border-default-dark { border-color: $base-border-color-dark!important; }
 	.border-default-light { border-color: $base-border-color-light!important; }
 	// theme

@@ -77,31 +77,32 @@ $this->direction = $doc->direction;
 // GRID
 
 	// Header
+	$params['header_class']	= $this->params->get('header_class');
 	$params['header_1_newRowClass']	= $this->params->get('header_1_newRowClass');
 	$params['header_1_container'] = $this->params->get('header_1_container', 'container');
 	$params['header_1_newContainerClass']	= $this->params->get('header_1_newContainerClass');
 	$params['header_1']  = $this->params->get('header_1');
-	$params['header_1_newRow']       = $this->params->get('header_1_newRow', 0);
+	$params['header_2_newRow']       = $this->params->get('header_2_newRow', 0);
 	$params['header_2_newRowClass']	= $this->params->get('header_2_newRowClass');
 	$params['header_2_container'] = $this->params->get('header_2_container', 'container');
 	$params['header_2_newContainerClass']	= $this->params->get('header_2_newContainerClass');
 	$params['header_2']  = $this->params->get('header_2');
-	$params['header_2_newRow']       = $this->params->get('header_2_newRow', 0);
-	$params['header_2_newRowClass']	= $this->params->get('header_2_newRowClass');
+	$params['header_3_newRow']       = $this->params->get('header_3_newRow', 0);
+	$params['header_3_newRowClass']	= $this->params->get('header_3_newRowClass');
 	$params['header_3_container'] = $this->params->get('header_3_container', 'container');
 	$params['header_3_newContainerClass']	= $this->params->get('header_3_newContainerClass');
 	$params['header_3']  = $this->params->get('header_3');
-	$params['header_3_newRow']       = $this->params->get('header_3_newRow', 0);
+	$params['header_4_newRow']       = $this->params->get('header_4_newRow', 0);
 	$params['header_4_newRowClass']	= $this->params->get('header_4_newRowClass');
 	$params['header_4_container'] = $this->params->get('header_4_container', 'container');
 	$params['header_4_newContainerClass']	= $this->params->get('header_4_newContainerClass');
 	$params['header_4']  = $this->params->get('header_4');
-	$params['header_4_newRow']       = $this->params->get('header_4_newRow', 0);
+	$params['header_5_newRow']       = $this->params->get('header_5_newRow', 0);
 	$params['header_5_newRowClass']	= $this->params->get('header_5_newRowClass');
 	$params['header_5_container'] = $this->params->get('header_5_container', 'container');
 	$params['header_5_newContainerClass']	= $this->params->get('header_5_newContainerClass');
 	$params['header_5']  = $this->params->get('header_5');
-	$params['header_5_newRow']       = $this->params->get('header_5_newRow', 0);
+	$params['header_6_newRow']       = $this->params->get('header_6_newRow', 0);
 	$params['header_6_newRowClass']	= $this->params->get('header_6_newRowClass');
 	$params['header_6_container'] = $this->params->get('header_6_container', 'container');
 	$params['header_6_newContainerClass']	= $this->params->get('header_6_newContainerClass');
@@ -138,31 +139,32 @@ $this->direction = $doc->direction;
     $params['component_bottom']	= $this->params->get('component_bottom_class'); // col
 
 	// Footer
+	$params['footer_class']	= $this->params->get('footer_class');
 	$params['footer_1_newRowClass']	= $this->params->get('footer_1_newRowClass');
 	$params['footer_1_container'] = $this->params->get('footer_1_container', 'container');
 	$params['footer_1_newContainerClass']	= $this->params->get('footer_1_newContainerClass');
 	$params['footer_1']	= $this->params->get('footer_1');
-	$params['footer_1_newRow']       = $this->params->get('footer_1_newRow', 0);
+	$params['footer_2_newRow']       = $this->params->get('footer_2_newRow', 0);
 	$params['footer_2_newRowClass']	= $this->params->get('footer_2_newRowClass');
 	$params['footer_2_container'] = $this->params->get('footer_2_container', 'container');
 	$params['footer_2_newContainerClass']	= $this->params->get('footer_2_newContainerClass');
 	$params['footer_2']	= $this->params->get('footer_2');
-	$params['footer_2_newRow']       = $this->params->get('footer_2_newRow', 0);
+	$params['footer_3_newRow']       = $this->params->get('footer_3_newRow', 0);
 	$params['footer_3_newRowClass']	= $this->params->get('footer_3_newRowClass');
 	$params['footer_3_container'] = $this->params->get('footer_3_container', 'container');
 	$params['footer_3_newContainerClass']	= $this->params->get('footer_3_newContainerClass');
 	$params['footer_3']	= $this->params->get('footer_3');
-	$params['footer_3_newRow']       = $this->params->get('footer_3_newRow', 0);
+	$params['footer_4_newRow']       = $this->params->get('footer_4_newRow', 0);
 	$params['footer_4_newRowClass']	= $this->params->get('footer_4_newRowClass');
 	$params['footer_4_container'] = $this->params->get('footer_4_container', 'container');
 	$params['footer_4_newContainerClass']	= $this->params->get('footer_4_newContainerClass');
 	$params['footer_4']	= $this->params->get('footer_4');
-	$params['footer_4_newRow']       = $this->params->get('footer_4_newRow', 0);
+	$params['footer_5_newRow']       = $this->params->get('footer_5_newRow', 0);
 	$params['footer_5_newRowClass']	= $this->params->get('footer_5_newRowClass');
 	$params['footer_5_container'] = $this->params->get('footer_5_container', 'container');
 	$params['footer_5_newContainerClass']	= $this->params->get('footer_5_newContainerClass');
 	$params['footer_5']	= $this->params->get('footer_5');
-	$params['footer_5_newRow']       = $this->params->get('footer_5_newRow', 0);
+	$params['footer_6_newRow']       = $this->params->get('footer_6_newRow', 0);
 	$params['footer_6_newRowClass']	= $this->params->get('footer_6_newRowClass');
 	$params['footer_6_container'] = $this->params->get('footer_6_container', 'container');
 	$params['footer_6_newContainerClass']	= $this->params->get('footer_6_newContainerClass');
@@ -172,10 +174,10 @@ $this->direction = $doc->direction;
 
     	$hasContainer = $hasWrapper = $closed = false;
 		$html = '';
-		$current = $counter = 0;
+		$counter = 0; // get active position
     	for($i = 1; $i <= $total; $i++) {
 
-      		if($tmpl->countModules($position.'-'.$i) > 0) :
+			if($tmpl->countModules($position.'-'.$i) > 0) :
 				// Contador indica o número real de itens
 				// Caso não seja atribuído nenhum módulo à primeira posição
 				$counter++;
@@ -185,63 +187,62 @@ $this->direction = $doc->direction;
 		        $hasContainer = isset($params[$position.'_'.$i.'_container']) ? true : false;
 				if($hasContainer) :
 
-					$newLine = ($i < $total) ? $params[$position.'_'.$i.'_newRow'] : 0;
+					$newLine = ($i > 1) ? $params[$position.'_'.$i.'_newRow'] : 0;
 					$container = $params[$position.'_'.$i.'_container'];
 					$setContainer = ($container == 'none' ? false : true);
 
-					// start new line
-    				if($counter == 1 || $closed) :
-						// open new line
+					if($newLine || $i == 1) :
+						// Fecha linha
+						// Se uma nova linha se inicia "$newLine == 1"
+						// após a primeira posição "$counter > 1"
+						// fecha a linha anterior
+						if($counter > 1) :
+							if($hasWrapper) :
+								$html .= '  </div>'; // fecha 'row'
+			        			$html .= '</div>'; // fecha 'container'
+								$hasWrapper = false;
+			      			endif;
+			      			$html .= '</div>'; // fecha 'new-line'
+				        endif;
+						// Nova linha
 						$rowClass = !empty($params[$position.'_'.$i.'_newRowClass']) ? $params[$position.'_'.$i.'_newRowClass'] : '';
 						$containerClass = !empty($params[$position.'_'.$i.'_newContainerClass']) ? $params[$position.'_'.$i.'_newContainerClass'] : '';
-      					if($setContainer) :
-      						$html .= '
+	  					if($setContainer) :
+	  						$html .= '
 								<div id="'.$position.'-row-'.$i.'" class="'.$rowClass.' clearfix">
 	      						<div class="'.$container.'">
 	      						<div class="row '.$containerClass.'">
-      						';
-              				$hasWrapper = true;
+	  						';
+	          				$hasWrapper = true;
 						else :
 							$html .= '<div id="'.$position.'-row-'.$i.'" class="'.$rowClass.' clearfix">';
-      					endif;
-      				endif;
-        		endif;
+	  					endif;
+					endif; // $newline
+
+	    		endif; // $hasContainer
 
 	    		// carrega a posição
 	  			$class = ' class="'.$params[$position.'_'.$i].' tmplPos"';
-        		$html .= '
+	    		$html .= '
 	  				<!-- '.$position.'-'.$i.' -->
 	  				<div id="'.$position.'-'.$i.'"'.$class.'>
 	  					<jdoc:include type="modules" name="'.$position.'-'.$i.'" style="'.$modStyle.'" />
 	  				</div>
-  				';
-
-				$closed = false;
-        		if($newLine == 1 || $i == $total) : // close line
-					if($hasWrapper) :
-						$html .= '  </div>'; // fecha 'row'
-            			$html .= '</div>'; // fecha 'container'
-						$hasWrapper = false;
-          			endif;
-          			$html .= '</div>'; // fecha 'new-line'
-					$closed = true; // indica que a linha foi fechada
-		        endif;
-		        $current = $i;
-
-      		endif; // fecha 'countModules'
+				';
+			endif; // fecha 'countModules'
 
   		} // fecha 'for'
 
 		if(!empty($html)) :
-			// fecha a posição caso o loop não vá até o último item
-			if($current < $total && !$closed) :
-				if($hasWrapper) :
-					$html .= '  </div>'; // fecha 'row'
-					$html .= '</div>'; // fecha 'container'
-        		endif;
-				$html .= '</div>'; // fecha 'new-line'
-			endif;
-			echo '<div id="'.$position.'">'.$html.'</div>';
+			// fecha a última posição
+			if($hasWrapper) :
+				$html .= '  </div>'; // fecha 'row'
+				$html .= '</div>'; // fecha 'container'
+    		endif;
+			$html .= '</div>'; // fecha 'new-line'
+			// Mostra a posição
+			$class = !empty($params[$position.'_class']) ? ' class="'.$params[$position.'_class'].'"' : '';
+			echo '<div id="'.$position.'"'.$class.'>'.$html.'</div>';
 		endif;
 
 	} // fecha 'funcion'

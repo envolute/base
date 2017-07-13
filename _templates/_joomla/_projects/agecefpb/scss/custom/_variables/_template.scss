@@ -33,6 +33,8 @@
 	// theme
 	$base-color-primary:				#5F7599;
 	$base-color-primary-dark:			mix(black, $base-color-primary, 15%);
+	$base-color-primary-darker:			mix(black, $base-color-primary, 50%);
+	$base-color-primary-darkest:		mix(black, $base-color-primary, 70%);
 	$base-color-primary-light:			mix(white, $base-color-primary, 15%);
 	$base-color-primary-lighter:		mix(white, $base-color-primary, 50%);
 	$base-color-primary-lightest:		mix(white, $base-color-primary, 70%);
@@ -108,6 +110,13 @@
 	$page-header-padding:				0 0 .5em;
 	$page-header-border-bottom:			1px solid $base-border-color;
 	$page-header-box-shadow:			0 1px 0 mix(black, $base-body-bg, 10%) !default;
+
+	// text sizes
+	$base-text-xs:						.8rem;
+	$base-text-sm:						.9rem;
+	$base-text-md:						$base-font-size-root; // Geralmente de 13 à 16px
+	$base-text-lg:						1.3rem;
+	$base-text-xl:						1.7rem;
 
   // list
 

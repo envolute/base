@@ -1,11 +1,15 @@
+.dp-upcoming li {
+    padding: .6rem 0!important;
+}
 .dp-upcoming-calendar {
 	float: left;
 	width: 38px;
 	height: 40px;
 	margin: 0 8px 0 0;
-  padding:0;
-  border-radius: 0 0 3px 3px;
+	padding:0;
+	border-radius: 0 0 3px 3px;
 	background-color: rgba(255,255,255,.9);
+	box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.15), 1px 1px 0px rgba(0,0,0,0.1);
 }
 
 .dp-upcoming-calendar-background {
@@ -24,17 +28,17 @@
 	font-size: 11px;
 	line-height: 1em;
 	text-align: center;
-  text-transform: uppercase;
+	text-transform: uppercase;
 }
 
 .dp-upcoming-text-day {
 	width: 38px;
 	margin:0px;
 	padding:1px 0 0;
-  font-family:arial,sans-serif;
+	font-family:arial,sans-serif;
 	font-weight: bold;
-	font-size: 1.3em;
-	line-height:1.4em;
+	font-size: 1.3rem;
+	line-height:1.4;
 	text-align: center;
 }
 
@@ -44,6 +48,5 @@
 
 .dp-upcoming-info h6 {
 	margin: 0;
-  font-size: 1.1rem;
-  line-height: 1.1rem;
+	line-height: 1.1rem;
 }

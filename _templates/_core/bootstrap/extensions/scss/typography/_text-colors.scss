@@ -3,7 +3,15 @@
 	.text-color { color: $body-color; }
 	.link-color { color: $link-color; }
 	.link-hover-color { color: $link-hover-color; }
+	.link-inherit a:not(.btn) { color: inherit; }
+	.link-inherit a:not(.btn):hover { opacity: .8; }
 	// theme addons
+	.text-primary-dark { color: $base-color-primary-dark; }
+	.text-primary-darker { color: $base-color-primary-darker; }
+	.text-primary-darkest { color: $base-color-primary-darkest; }
+	.text-primary-light { color: $base-color-primary-light; }
+	.text-primary-lighter { color: $base-color-primary-lighter; }
+	.text-primary-lightest { color: $base-color-primary-lightest; }
 	.text-live { color: $base-color-live; }
 	// gray options
 	.text-gray-100 { color: $gray-100; }

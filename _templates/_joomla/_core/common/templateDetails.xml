@@ -195,6 +195,8 @@
 				<field name="grid" type="spacer" class="text" label="TPL_BASE_TEMPLATE_GRID_LABEL" />
 
 				<field name="H" type="spacer" class="text" label="TPL_BASE_TEMPLATE_HEADER_LABEL" />
+				<field name="header_class" type="text" label="TPL_BASE_TEMPLATE_HEADER_CLASS_LABEL" filter="string" description="TPL_BASE_TEMPLATE_HEADER_CLASS_DESC" />
+				<field name="H1" type="spacer" class="text" label="TPL_BASE_GRID_HEADER_1" />
 				<field name="header_1_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
 				<field name="header_1_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
 					<option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
@@ -202,9 +204,9 @@
 					<option value="none">TPL_BASE_NONE</option>
 				</field>
 				<field name="header_1_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
-				<field name="H1" type="spacer" class="text" label="TPL_BASE_GRID_HEADER_1" />
 				<field name="header_1" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
-				<field name="header_1_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+				<field name="H2" type="spacer" class="text" label="TPL_BASE_GRID_HEADER_2" />
+				<field name="header_2_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
@@ -215,9 +217,9 @@
 					<option value="none">TPL_BASE_NONE</option>
 				</field>
 				<field name="header_2_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
-				<field name="H2" type="spacer" class="text" label="TPL_BASE_GRID_HEADER_2" />
 				<field name="header_2" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
-				<field name="header_2_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+				<field name="H3" type="spacer" class="text" label="TPL_BASE_GRID_HEADER_3" />
+				<field name="header_3_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
@@ -228,9 +230,9 @@
 					<option value="none">TPL_BASE_NONE</option>
 				</field>
 				<field name="header_3_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
-				<field name="H3" type="spacer" class="text" label="TPL_BASE_GRID_HEADER_3" />
 				<field name="header_3" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
-				<field name="header_3_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+				<field name="H4" type="spacer" class="text" label="TPL_BASE_GRID_HEADER_4" />
+				<field name="header_4_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
@@ -241,9 +243,9 @@
 					<option value="none">TPL_BASE_NONE</option>
 				</field>
 				<field name="header_4_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
-				<field name="H4" type="spacer" class="text" label="TPL_BASE_GRID_HEADER_4" />
 				<field name="header_4" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
-				<field name="header_4_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+				<field name="H5" type="spacer" class="text" label="TPL_BASE_GRID_HEADER_5" />
+				<field name="header_5_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
@@ -254,9 +256,9 @@
 					<option value="none">TPL_BASE_NONE</option>
 				</field>
 				<field name="header_5_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
-				<field name="H5" type="spacer" class="text" label="TPL_BASE_GRID_HEADER_5" />
 				<field name="header_5" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
-				<field name="header_5_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+				<field name="H6" type="spacer" class="text" label="TPL_BASE_GRID_HEADER_6" />
+				<field name="header_6_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
@@ -267,7 +269,6 @@
 					<option value="none">TPL_BASE_NONE</option>
 				</field>
 				<field name="header_6_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
-				<field name="H6" type="spacer" class="text" label="TPL_BASE_GRID_HEADER_6" />
 				<field name="header_6" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
 
 				<field name="ST" type="spacer" class="text" label="TPL_BASE_TEMPLATE_SECTION_TOP_LABEL" />
@@ -309,6 +310,8 @@
 				<field name="component_bottom_class" type="text" filter="string" label="TPL_BASE_CONTAINER_CLASS_LABEL" description="TPL_BASE_CONTAINER_CLASS_DESC" />
 
 				<field name="FT" type="spacer" class="text" label="TPL_BASE_TEMPLATE_FOOTER_LABEL" />
+				<field name="footer_class" type="text" label="TPL_BASE_TEMPLATE_FOOTER_CLASS_LABEL" filter="string" description="TPL_BASE_TEMPLATE_FOOTER_CLASS_DESC" />
+				<field name="F1" type="spacer" class="text" label="TPL_BASE_GRID_FOOTER_1" />
 				<field name="footer_1_newRowClass" type="text" label="TPL_BASE_BREAKLINE_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CLASS_DESC" />
 				<field name="footer_1_container" type="list" default="container" label="TPL_BASE_TEMPLATE_HAS_CONTAINER_LABEL" description="TPL_BASE_TEMPLATE_HAS_CONTAINER_DESC">
 					<option value="container">TPL_BASE_RESPONSIVE_LABEL</option>
@@ -316,9 +319,9 @@
 					<option value="none">TPL_BASE_NONE</option>
 				</field>
 				<field name="footer_1_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
-				<field name="F1" type="spacer" class="text" label="TPL_BASE_GRID_FOOTER_1" />
 				<field name="footer_1" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
-				<field name="footer_1_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+				<field name="F2" type="spacer" class="text" label="TPL_BASE_GRID_FOOTER_2" />
+				<field name="footer_2_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
@@ -329,9 +332,9 @@
 					<option value="none">TPL_BASE_NONE</option>
 				</field>
 				<field name="footer_2_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
-				<field name="F2" type="spacer" class="text" label="TPL_BASE_GRID_FOOTER_2" />
 				<field name="footer_2" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
-				<field name="footer_2_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+				<field name="F3" type="spacer" class="text" label="TPL_BASE_GRID_FOOTER_3" />
+				<field name="footer_3_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
@@ -342,9 +345,9 @@
 					<option value="none">TPL_BASE_NONE</option>
 				</field>
 				<field name="footer_3_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
-				<field name="F3" type="spacer" class="text" label="TPL_BASE_GRID_FOOTER_3" />
 				<field name="footer_3" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
-				<field name="footer_3_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+				<field name="F4" type="spacer" class="text" label="TPL_BASE_GRID_FOOTER_4" />
+				<field name="footer_4_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
@@ -355,9 +358,9 @@
 					<option value="none">TPL_BASE_NONE</option>
 				</field>
 				<field name="footer_4_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
-				<field name="F4" type="spacer" class="text" label="TPL_BASE_GRID_FOOTER_4" />
 				<field name="footer_4" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
-				<field name="footer_4_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+				<field name="F5" type="spacer" class="text" label="TPL_BASE_GRID_FOOTER_5" />
+				<field name="footer_5_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
@@ -368,9 +371,9 @@
 					<option value="none">TPL_BASE_NONE</option>
 				</field>
 				<field name="footer_5_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
-				<field name="F5" type="spacer" class="text" label="TPL_BASE_GRID_FOOTER_5" />
 				<field name="footer_5" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
-				<field name="footer_5_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
+				<field name="F6" type="spacer" class="text" label="TPL_BASE_GRID_FOOTER_6" />
+				<field name="footer_6_newRow" type="radio" class="btn-group" default="0" label="TPL_BASE_BREAKLINE_LABEL" description="TPL_BASE_BREAKLINE_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
@@ -381,7 +384,6 @@
 					<option value="none">TPL_BASE_NONE</option>
 				</field>
 				<field name="footer_6_newContainerClass" type="text" label="TPL_BASE_BREAKLINE_CONTAINER_CLASS_LABEL" filter="string" description="TPL_BASE_BREAKLINE_CONTAINER_CLASS_DESC" />
-				<field name="F6" type="spacer" class="text" label="TPL_BASE_GRID_FOOTER_6" />
 				<field name="footer_6" type="text" label="TPL_BASE_POSITION_CLASS_LABEL" filter="string" description="TPL_BASE_POSITION_CLASS_DESC" />
 
 			</fieldset>

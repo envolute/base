@@ -632,8 +632,6 @@ header( 'content-type: application/json; charset=utf-8' );
       // CUSTOM -> GENERATE CSV FILE FOR DEBITS
       elseif($task == 'subsFile') :
 
-        $project = $state;
-
         if($project != 0) :
 
           $query = '
@@ -665,13 +663,13 @@ header( 'content-type: application/json; charset=utf-8' );
               ON T6.id = T1.user_id
               JOIN '. $db->quoteName('#__zenite_user_info') .' T7
               ON T7.user_id = T6.id
-            WHERE T2.id = '.$project.' AND T1.status = 2
-          ';
+            WHERE T2.id = '.$project.' AND '.($state ? 'T1.status = 2' : 'T1.state = 0')
+          ;
           // gera o resultado para o CSV
           $result = setFile($query,'NOME,CPF,SEXO,DATA DE NASCIMENTO,TELEFONE,EMAIL,EQUIPE,MODALIDADE,DISTÂNCIA,DEFICIÊNCIA,TAM. DA CAMISA,VALOR,DATA DA INSCRIÇÃO',NULL,'',false);
           if($result == true) :
 
-            $file = 'inscricoes-evento-'.$project.'.csv';
+            $file = ($state ? 'inscritos' : 'nao-inscritos').'-evento-'.$project.'.csv';
             $path = JPATH_SITE.'images/registrations/';
             $filePath = $path.$file;
 

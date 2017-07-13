@@ -79,7 +79,7 @@ if ($params->get('show_as_popup', '0') == '1' || $params->get('show_as_popup', '
 }
 ?>
 
-<ul id="<?php echo $id; ?>-container" class="dp-upcoming list-unstyled bordered list-lg m-0" itemscope itemtype="http://schema.org/Thing">
+<ul id="<?php echo $id; ?>-container" class="dp-upcoming list-unstyled bordered list-trim m-0" itemscope itemtype="http://schema.org/Thing">
 	<?php
 	$lastHeading = '';
 	$grouping = $params->get('output_grouping', '');
@@ -105,7 +105,7 @@ if ($params->get('show_as_popup', '0') == '1' || $params->get('show_as_popup', '
 					<div class="dp-upcoming-text-day" style="color: #<?php echo $event->color?>"><?php echo $startDate->format('j', true);?></div>
 				</div>
 				<div class="dp-upcoming-info">
-					<div class="text-sm" itemprop="startDate" content="<?php echo $startDate->format('c')?>">
+					<div class="small" itemprop="startDate" content="<?php echo $startDate->format('c')?>">
 						<?php echo DPCalendarHelper::getDateStringFromEvent($event, $params->get('date_format'), $params->get('time_format'));?>
 					</div>
 					<h6>
