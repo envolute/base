@@ -1,7 +1,17 @@
 // TYPOGRAPHY
 
-	// blockquote
-	blockquote { font-family: $base-font-featured; }
-
 	// headers
 	h4, h5, h6 { line-height: 1.3em; }
+
+		// PAGE HEADER -> header do conteúdo principal
+		.page-header {
+			margin: $page-header-margin;
+			padding: $page-header-padding;
+			font-size: $page-header-font-size;
+		    line-height: $page-header-line-height;
+			border-bottom: $page-header-border-bottom;
+			box-shadow: $page-header-box-shadow;
+		}
+
+	// blockquote
+	blockquote { font-family: $base-font-featured; }

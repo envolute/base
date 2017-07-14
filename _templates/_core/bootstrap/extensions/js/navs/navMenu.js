@@ -89,7 +89,7 @@ jQuery(function() {
   // 'stacked-xs': 'quebra' a partir da resolução 'xs'
   // Obs: para que o menu seja vertical sempre basta adicionar as classes 'nav-stacked stacked'
   window.navStacked = function() {
-    var menu = jQuery('.nav.menu[class*="stacked-"]');
+    var menu = jQuery('.nav.menu[class*=" stacked-"]');
     if(elementExist(menu)) {
       menu.each(function() {
         var obj = jQuery(this);

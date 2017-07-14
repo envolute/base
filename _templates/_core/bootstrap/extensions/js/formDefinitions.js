@@ -147,7 +147,7 @@ jQuery(function() {
 			// CAMPOS COM MASCARA QUE APRESENTARAM PROBLEMAS QUANDO TENTA 'COLAR' UM VALOR
 		  // alguns campos com mascara não estavam colando o valor corretamente, apenas quando a mascara toda é selecionada
 		  // sendo assim, a função abaixo seleciona todo o valor do campo quando o evento 'paste'(copiar) é chamado...
-		  var field_fixPaste	= "input[class*='field-']";
+		  var field_fixPaste	= "input[class^='field-'], input[class*=' field-']";
 	    jQuery(field_fixPaste).bind({
 	      paste : function(){ jQuery(this).select().trigger('change'); }
 	    });

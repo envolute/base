@@ -26,7 +26,7 @@ jQuery(function() {
 	// customização/adaptação de elementos nativos do joomla
 	window.joomlaFrontendCustom = function() {
 		// define a class 'btn-default' para elementos '.btn' legado do bootstrap 2
-	  jQuery('.btn:not([class*="btn-"])').each(function() {
+	  jQuery('.btn:not([class*=" btn-"])').each(function() {
 	    jQuery(this).addClass('btn-default');
 	  });
 	};

@@ -1,10 +1,6 @@
 // TEXT COLORS
 
 	.text-color { color: $body-color; }
-	.link-color { color: $link-color; }
-	.link-hover-color { color: $link-hover-color; }
-	.link-inherit a:not(.btn) { color: inherit; }
-	.link-inherit a:not(.btn):hover { opacity: .8; }
 	// theme addons
 	.text-primary-dark { color: $base-color-primary-dark; }
 	.text-primary-darker { color: $base-color-primary-darker; }

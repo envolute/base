@@ -1,0 +1,74 @@
+// BORDERS
+// Classe 'border' adiciona bordas a um elemento
+// Abaixo são disponibilizadas classes adicionais para customização
+// das larguras das bordas...
+// Obs: para remover bordas utilize as classes default do bootstrap
+// -> b-0, b-top-0, b-right-0, b-bottom-0, b-left-0
+
+// Borders Addon's
+[class^="b-"], [class*=" b-"] {
+	border-style: solid;
+	border-color: $base-border-color;
+}
+// border type
+.b-dotted { border-style: dotted!important; border-width: 0; }
+.b-dashed { border-style: dashed!important; border-width: 0; }
+// default -> width 1
+.b-all, .b-1 { border-width: 1px!important; }
+.b-top, .b-top-1 { border-top-width: 1px!important; }
+.b-bottom, .b-bottom-1 { border-bottom-width: 1px!important; }
+.b-right, .b-right-1 { border-right-width: 1px!important; }
+.b-left, .b-left-1 { border-left-width: 1px!important; }
+// width 2
+.b-2 { border-width: 2px!important; }
+.b-top-2 { border-top-width: 2px!important; }
+.b-bottom-2 { border-bottom-width: 2px!important; }
+.b-right-2 { border-right-width: 2px!important; }
+.b-left-2 { border-left-width: 2px!important; }
+// width 3
+.b-3 { border-width: 3px!important; }
+.b-top-3 { border-top-width: 3px!important; }
+.b-bottom-3 { border-bottom-width: 3px!important; }
+.b-right-3 { border-right-width: 3px!important; }
+.b-left-3 { border-left-width: 3px!important; }
+
+// COLOR
+
+	// default addon's
+	.b-inherit { border-color: inherit!important; } // utiliza a cor de texto do container
+	.b-color { border-color: $base-border-color!important; }
+	.b-color-dark { border-color: $base-border-color-dark!important; }
+	.b-color-light { border-color: $base-border-color-light!important; }
+	// theme
+	// -> bootstrap já disponibiliza bordas nas cores do tema
+	.b-primary { border-color: $base-color-primary!important; }
+	.b-primary-dark { border-color: $base-color-primary-dark!important; }
+	.b-primary-darker { border-color: $base-color-primary-darker!important; }
+	.b-primary-darkest { border-color: $base-color-primary-darkest!important; }
+	.b-primary-light { border-color: $base-color-primary-light!important; }
+	.b-primary-lighter { border-color: $base-color-primary-lighter!important; }
+	.b-primary-lightest { border-color: $base-color-primary-lightest!important; }
+	.b-live { border-color: $base-color-live!important; }
+	// gray
+	.b-white { border-color: $white!important; }
+	.b-gray-100 { border-color: $gray-100!important; }
+	.b-gray-200 { border-color: $gray-200!important; }
+	.b-gray-300 { border-color: $gray-300!important; }
+	.b-gray-400 { border-color: $gray-400!important; }
+	.b-gray-500 { border-color: $gray-500!important; }
+	.b-gray-600 { border-color: $gray-600!important; }
+	.b-gray-700 { border-color: $gray-700!important; }
+	.b-gray-800 { border-color: $gray-800!important; }
+	.b-gray-900 { border-color: $gray-900!important; }
+	.b-black { border-color: $black!important; }
+	// colors
+	.b-blue { border-color: $blue!important; }
+	.b-indigo { border-color: $indigo!important; }
+	.b-purple { border-color: $purple!important; }
+	.b-pink { border-color: $pink!important; }
+	.b-red { border-color: $red!important; }
+	.b-orange { border-color: $orange!important; }
+	.b-yellow { border-color: $yellow!important; }
+	.b-green { border-color: $green!important; }
+	.b-teal { border-color: $teal!important; }
+	.b-cyan { border-color: $cyan!important; }

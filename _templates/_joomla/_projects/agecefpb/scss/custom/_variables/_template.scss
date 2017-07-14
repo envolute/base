@@ -103,13 +103,16 @@
 	// text
 	$text-shadow:						1px 1px 0 rgba(0, 0, 0, 0.2);
 	$text-shadow-strong:				1px 1px 1px rgba(0, 0, 0, 0.6);
-	$text-embed:						1px 1px 0 #fff;
+	$text-embed:						1px 1px 0 rgba(255, 255, 255, 0.6);
+	$text-embed-inverse:				-1px -1px 0 rgba(0, 0, 0, 0.6);
 
 	// page header
 	$page-header-margin:				0 0 .5em;
 	$page-header-padding:				0 0 .5em;
+	$page-header-font-size:				1.3rem;
+	$page-header-line-height:			1.3rem;
 	$page-header-border-bottom:			1px solid $base-border-color;
-	$page-header-box-shadow:			0 1px 0 mix(black, $base-body-bg, 10%) !default;
+	$page-header-box-shadow:			none !default;
 
 	// text sizes
 	$base-text-xs:						.8rem;

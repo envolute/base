@@ -18,8 +18,8 @@
 	// DEFAULT -> formato default dos botões
 	// segue o estilo da class '.btn' do bootstrap
 	// 'not()' evita conflito com as classes do bootstrap
-	input[type="submit"]:not([class*="btn-"]),
-	input[type="button"]:not([class*="btn-"]) {
+	input[type="submit"]:not([class*=" btn-"]),
+	input[type="button"]:not([class*=" btn-"]) {
 
 		// Copia da class '.btn' em 'CORE/bootstrap/scss/_buttons.scss'
 		display: inline-block;
@@ -57,7 +57,7 @@
 	    }
 
 	}
-	input[type="submit"]:not([class*="btn-"]):hover,
-	input[type="button"]:not([class*="btn-"]):hover {
+	input[type="submit"]:not([class*=" btn-"]):hover,
+	input[type="button"]:not([class*=" btn-"]):hover {
 		background-color: $gray-200;
 	}

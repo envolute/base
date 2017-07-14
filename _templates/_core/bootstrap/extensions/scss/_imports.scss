@@ -14,7 +14,6 @@
 @import "_helpers/tables";
 @import "_helpers/typography";
 @import "_helpers/utilities";
-@import "_helpers/visibility";
 
 // EXTENSIONS
 @import "animation/load-onView";
@@ -48,11 +47,9 @@
 @import "navs/nav-menu";
 // Typography
 @import "typography/fonts";
-@import "typography/hr-context";
 @import "typography/hr-tag";
 @import "typography/line-height";
 @import "typography/list-bordered";
-@import "typography/page-header";
 @import "typography/text-breakline";
 @import "typography/text-colors";
 @import "typography/text-shadows";
@@ -61,18 +58,16 @@
 @import "typography/baseicons/baseicons";
 @import "typography/baseicons/addons";
 // Utilities
-@import "utilities/background-colors";
-@import "utilities/border";
+@import "utilities/background";
+@import "utilities/borders";
 @import "utilities/box-shadows";
 @import "utilities/clear";
 @import "utilities/cursor";
 @import "utilities/height";
-@import "utilities/image-container";
+@import "utilities/image";
 @import "utilities/link";
-@import "utilities/margin";
 @import "utilities/opacity";
 @import "utilities/overflow";
-@import "utilities/padding";
 @import "utilities/position";
 @import "utilities/print";
 @import "utilities/radius";

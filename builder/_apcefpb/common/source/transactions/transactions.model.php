@@ -738,6 +738,7 @@ header( 'content-type: application/json; charset=utf-8' );
           $db->quoteName('installment') .','.
           $db->quoteName('total') .','.
           $db->quoteName('doc_number') .','.
+          $db->quoteName('note') .','.
           $db->quoteName('state') .','.
           $db->quoteName('created_by')
         .')
@@ -752,7 +753,8 @@ header( 'content-type: application/json; charset=utf-8' );
           $db->quoteName('T1.date') .', CURDATE(),'.
           $db->quoteName('T1.price') .','.
           $db->quoteName('T1.price_total') .', 1, 1,'.
-          $db->quoteName('T1.doc_number') .', 1,'.
+          $db->quoteName('T1.doc_number') .','.
+          $db->quoteName('T1.note') .', 1,'.
           $user->id
         .' FROM '. $db->quoteName($cfg['mainTable']) .' T1
     			JOIN '. $db->quoteName('#__apcefpb_providers') .' T2
