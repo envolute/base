@@ -9,10 +9,7 @@
 
 defined('_JEXEC') or die;
 // CUSTOM
-// removido <?php echo $moduleclass_sfx... da classe "custom"
+// removido o container '<div class="custom"...>'
+echo $module->content;
+
 ?>
-
-
-<div class="custom" <?php if ($params->get('backgroundimage')) : ?> style="background-image:url(<?php echo $params->get('backgroundimage');?>)"<?php endif;?> >
-	<?php echo $module->content;?>
-</div>

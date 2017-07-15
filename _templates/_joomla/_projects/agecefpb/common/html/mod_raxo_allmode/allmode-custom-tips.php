@@ -24,16 +24,16 @@ $app = JFactory::getApplication();
 	// All-mode TOP Items Output
 	foreach ($toplist as $item) { ?>
 
-		<div class="artip row no-gutters border-top border-top-2 border-bottom border-bottom-2 border-primary mb-4 clearfix">
+		<div class="artip row no-gutters b-top-2 b-bottom-2 b-primary mb-4 clearfix">
 
-			<div class="col-7">
+			<div class="col-6 col-md-8 col-lg-7 col-xl-6 zindex-1" style="min-height: 132px;">
 				<?php if ($item->title) { ?>
-					<h4 class="lh-1 pt-2 pr-2">
+					<h5 class="lh-1-1 pt-2 pr-2">
 						<a href="<?php echo $item->link; ?>"><?php echo $item->title; ?></a>
-					</h4>
+					</h5>
 				<?php } ?>
 				<?php if ($item->category || $item->date || $item->hits || $item->comments_count || $item->rating) { ?>
-				<ul class="article-info list-inline bordered no-space small mb-1">
+				<ul class="article-info list-inline bordered list-trim small mb-1">
 
 					<?php if ($item->category) { ?>
 					<li class="article-category list-inline-item"><?php echo $item->category; ?></li>
@@ -60,18 +60,15 @@ $app = JFactory::getApplication();
 				</ul>
 				<?php } ?>
 			</div>
-			<div class="col-5">
+			<div class="col">
 				<?php if ($item->image) { ?>
-				<figure class="img-fluid m-0"><?php echo $item->image; ?></figure>
+				<figure class="img-fluid m-0 text-right"><?php echo $item->image; ?></figure>
 				<?php } ?>
 			</div>
-			<div class="col-7 p-2 lh-1 bg-gray-200">
+			<div class="col-12 p-2 lh-1 bg-gray-200">
 				<?php if ($item->author) { ?>
 				<small>Autor:</small><div class="font-condensed text-truncate"><?php echo $item->author?></div>
 				<?php } ?>
-			</div>
-			<div class="col-5">
-				<a href="#" class="btn btn-lg btn-block btn-primary">Leia mais</a>
 			</div>
 
 		</div>
@@ -93,7 +90,7 @@ $app = JFactory::getApplication();
 			<?php } ?>
 
 			<?php if ($item->category || $item->author || $item->date || $item->hits || $item->comments_count || $item->rating) { ?>
-			<ul class="article-info list-inline bordered no-space small mb-1">
+			<ul class="article-info list-inline bordered list-trim small mb-1">
 
 				<?php if ($item->category) { ?>
 				<li class="article-category list-inline-item"><?php echo $item->category; ?></li>

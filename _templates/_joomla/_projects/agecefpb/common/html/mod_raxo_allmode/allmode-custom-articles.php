@@ -31,7 +31,7 @@ $app = JFactory::getApplication();
 			<?php } ?>
 
 			<?php if ($item->category || $item->author || $item->date || $item->hits || $item->comments_count || $item->rating) { ?>
-			<ul class="article-info list-inline bordered no-space small mb-1">
+			<ul class="article-info list-inline bordered list-trim small mb-1">
 
 				<?php if ($item->category) { ?>
 				<li class="article-category list-inline-item"><?php echo $item->category; ?></li>
@@ -63,7 +63,7 @@ $app = JFactory::getApplication();
 			<?php } ?>
 
 			<?php if ($item->title) { ?>
-				<h5 class="pb-3 m-0 lh-1-2 border-bottom border-bottom-2 border-primary" style="min-height:4.2rem">
+				<h5 class="pb-3 m-0 lh-1-2 b-bottom-2 b-primary" style="min-height:4.2rem">
 					<a href="<?php echo $item->link; ?>"><?php echo $item->title; ?></a>
 				</h5>
 			<?php } ?>
@@ -87,7 +87,7 @@ $app = JFactory::getApplication();
 			<?php } ?>
 
 			<?php if ($item->category || $item->author || $item->date || $item->hits || $item->comments_count || $item->rating) { ?>
-			<ul class="article-info list-inline bordered no-space small mb-1">
+			<ul class="article-info list-inline bordered list-trim small mb-1">
 
 				<?php if ($item->category) { ?>
 				<li class="article-category list-inline-item"><?php echo $item->category; ?></li>

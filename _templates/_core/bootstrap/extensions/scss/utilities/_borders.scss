@@ -7,14 +7,15 @@
 
 // Borders Addon's
 [class^="b-"], [class*=" b-"] {
-	border-style: solid;
-	border-color: $base-border-color;
+	border: 0 solid $base-border-color;
 }
 // border type
-.b-dotted { border-style: dotted!important; border-width: 0; }
-.b-dashed { border-style: dashed!important; border-width: 0; }
+.b-dotted { border-style: dotted!important; }
+.b-dashed { border-style: dashed!important; }
 // default -> width 1
 .b-all, .b-1 { border-width: 1px!important; }
+.b-y { border-top-width: 1px!important; border-bottom-width: 1px!important; }
+.b-x { border-left-width: 1px!important; border-right-width: 1px!important; }
 .b-top, .b-top-1 { border-top-width: 1px!important; }
 .b-bottom, .b-bottom-1 { border-bottom-width: 1px!important; }
 .b-right, .b-right-1 { border-right-width: 1px!important; }

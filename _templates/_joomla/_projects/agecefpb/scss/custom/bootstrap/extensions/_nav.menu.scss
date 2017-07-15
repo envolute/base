@@ -92,8 +92,6 @@
 		.mainmenu.nav.menu:not(.nav-stacked) > li > a:link,
 		.mainmenu.nav.menu:not(.nav-stacked) > li > a:visited {
 			padding: 2rem 1rem;
-			margin-bottom: -3px;
-			border-bottom: 3px solid transparent;
 			font-size: 1.1rem;
 			text-shadow: 1px 1px 0 $white;
 		}
@@ -102,21 +100,19 @@
 		.mainmenu.nav.menu li:not(.active) > a:focus,
 		.mainmenu.nav.menu li.parent:not(.active):hover > a {
 			color: $base-color-live;
-			border-color: $base-color-live;
 		}
 		// Item ativo
 		.mainmenu.nav.menu:not(.nav-stacked) li.active > a,
 		.mainmenu.nav.menu:not(.nav-stacked) li > a.active // em caso de scroll 'go-to'
 		{
 			color: $base-color-live;
-			border-color: $base-color-live;
 			background-color: mix(white, $gray-200, 20%);
 		}
 
 	// SUB MENU
 
 		.mainmenu.nav.menu:not(.nav-stacked) .nav-child {
-			border-bottom: 3px solid $base-color-live;
+
 		}
 
 		// Item <a>

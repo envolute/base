@@ -129,25 +129,43 @@ function modChrome_cardPrimary($module, &$params, &$attribs)
 
 function modChrome_modal($module, &$params, &$attribs)
 {
-	$mTitle    = htmlspecialchars(str_replace(' ','',strtolower($module->title)));
-	$mTag      = $params->get('module_tag', 'div');
-	$hTag      = htmlspecialchars($params->get('header_tag', 'h3'));
+	$mTag		= $params->get('module_tag', 'div');
+	$hTag		= htmlspecialchars($params->get('header_tag', 'h5'));
+	$mClass		= !empty($params->get('moduleclass_sfx')) ? ' '.htmlspecialchars($params->get('moduleclass_sfx')) : '';
+	$mhead		= '';
+	$close		= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
 
 	if(!empty ($module->content)) :
-		echo '<div id="'.$mTitle.'" class="modal fade '.htmlspecialchars($params->get('moduleclass_sfx')).'" tabindex="-1">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h4 class="modal-title">'.$module->title.'</h4>
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		// IMPORTANTE:
+		// Quando o link para edição de módulos está disponível, são adicionadas
+		// classes na primeira tag do módulo. Dessa forma, foi adicionada tag '<span>'
+		// para receber essas classes e conflito com a classe 'modal'...
+		// '<span>' é para possibilitar que o módulo possa ser adicionado em qualquer Local
+		// sem que haja quebra do layout...
+		if ((bool) $module->showtitle) :
+			$mhead = '
+			<div class="modal-header">
+				<'.$hTag.' class="modal-title">'.$module->title.'</'.$hTag.'>
+				'.$close.'
+			</div>
+			';
+			$close = '';
+		endif;
+		echo '
+		<span>
+			<div id="modal-'.$module->id.'" class="modal fade" tabindex="-1">
+				<div class="modal-dialog'.$mClass.'">
+					<div class="modal-content">
+						'.$mhead.'
+						<div class="modal-body clearfix">'.$close.$module->content.'</div>
+						<!-- div class="modal-footer">
+							<a href="#" class="btn" close" data-dismiss="modal">Close</a>
+						</div-->
 					</div>
-					<div class="modal-body clearfix">'.$module->content.'</div>
-					<!-- div class="modal-footer">
-						<a href="#" class="btn" close" data-dismiss="modal">Close</a>
-					</div-->
 				</div>
 			</div>
-		</div>';
+		</span>
+		';
 	endif;
 }
 ?>

@@ -20,7 +20,7 @@ $app = JFactory::getApplication();
 
 <div class="row">
 	<?php if ($toplist) { ?>
-		<div class="main-headline<?php if(count($toplist) > 1) echo ' allmode-slider no-container'?> col-lg-7">
+		<div class="main-headline<?php if(count($toplist) > 1) echo ' allmode-slider no-container'?> col-lg-8">
 			<?php
 			$tag		= 'div';
 			$tagClass	= 'pb-3 mb-3';
@@ -67,7 +67,7 @@ $app = JFactory::getApplication();
 						<figure class="pos-relative img-fluid m-0">
 							<?php if ($item->image) echo $item->image; ?>
 							<?php if ($item->title) { ?>
-								<figcaption class="pos-absolute pos-bottom-0 w-full bg-black-80 p-2 p-md-3 text-lg lh-1-2">
+								<figcaption class="pos-absolute pos-bottom-0 w-100 bg-black-80 p-2 p-md-3 text-lg lh-1-2">
 									<a class="text-white" href="<?php echo $item->link; ?>"><?php echo $item->title; ?></a>
 								</figcaption>
 							<?php } ?>
@@ -94,7 +94,7 @@ $app = JFactory::getApplication();
 			<?php } ?>
 
 			<?php if ($item->category || $item->author || $item->date || $item->hits || $item->comments_count || $item->rating) { ?>
-			<ul class="headline-info list-inline bordered no-space small mb-1">
+			<ul class="headline-info list-inline bordered list-trim small mb-1">
 
 				<?php if ($item->category) { ?>
 				<li class="headline-category list-inline-item"><?php echo $item->category; ?></li>
@@ -126,7 +126,7 @@ $app = JFactory::getApplication();
 			<?php } ?>
 
 			<?php if ($item->title) { ?>
-				<h6 class="m-0 lh-1-2"><a href="<?php echo $item->link; ?>"><?php echo $item->title; ?></a></h6>
+				<h6 class="m-0"><a href="<?php echo $item->link; ?>"><?php echo $item->title; ?></a></h6>
 			<?php } ?>
 
 		</div>
