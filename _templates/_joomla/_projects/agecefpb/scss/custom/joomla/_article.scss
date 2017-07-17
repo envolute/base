@@ -5,16 +5,19 @@
 
   // HEADERS
   .item-page #content-title {
+    padding-bottom: map-get($spacers, 3);
+  }
+  .item-page #content-title {
     margin: 0;
-    padding-bottom: $base-space-lg;
+    padding-bottom: map-get($spacers, 3);
   }
 
   // ACTIONS -> botões de ação (imprimir, enviar, editar)
   .item-page .item-actions {
-    margin-bottom: $base-space-xs;
-    padding: 8px 0;
+    margin-bottom: map-get($spacers, 2);
+    padding: map-get($spacers, 2);
     text-align: right;
-    border-top: 1px solid #e8e8e8;
+    border-top: 1px solid $base-border-color;
   }
   // CUSTOM -> Content Tab Menu
   // Simula um menu de conteúdo a partir de uma Tab
@@ -82,12 +85,12 @@
 
   // TOC -> tabela de conteúdos (menu gerado quando há quebra de página)
   .item-page .article-index {
-    margin: 0 0 20px 20px;
-    padding: 5px;
-    font-size: 13px;
+    margin: 0 0 map-get($spacers, 4) map-get($spacers, 4);
+    padding: map-get($spacers, 2);
+    font-size: $base-text-sm;
     border: 1px solid $base-border-color;
-		@if $base-enable-rounded { border-radius: $border-radius; }
-	  @else { border-radius: 0; }
+	@if $base-enable-rounded { border-radius: $border-radius; }
+    @else { border-radius: 0; }
     background-color: $gray-400;
     overflow: hidden;
   }
@@ -114,7 +117,7 @@
   }
   .item-page .article-index li:last-child {
     border: 0!important;
-    background-color:$gray-400;
+    background-color: $gray-400;
   }
   // contador de quebras de páginas - (ex: página 1 de 4)
   .item-page .pagenavcounter {
@@ -125,18 +128,18 @@
   // CONTENT -> Headers
   .item-page .content-text h2,
   .item-page .content-text h3 {
-    margin-top: $base-space-lg;
+    margin-top: map-get($spacers, 4);
   }
 
   // LINKS -> listagem de links do conteúdo
-  .item-page .content-links { margin:30px 0; }
+  .item-page .content-links { margin: map-get($spacers, 4) 0; }
 
   // PAGER -> links para navegação entre as 'PÁGINAS'
   .item-page .pager:not(.pagenav) li {
     min-width: 60px;
     padding: 6px 8px;
     margin-left: 2px;
-    font-size: 13px;
+    font-size: $base-text-sm;
     color: $gray-600;
     border: 1px solid $base-border-color;
 		@if $base-enable-rounded { border-radius: $border-radius; }

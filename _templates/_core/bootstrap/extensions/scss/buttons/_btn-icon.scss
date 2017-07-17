@@ -1,22 +1,71 @@
 // BUTTON ICON
 // Formato opciional para botões com ícones
 
-  .btn-icon {
-    margin: 0 7px 0 -3px;
-    padding-right: 6px;
-    border-right: 1px solid;
-  }
-  .btn-xs .btn-icon {
-    margin-left: 0;
-    padding-right: 4px;
-  }
-  .btn-icon[class*="base-icon-"]:before {
-    margin: 0!important;
-  }
-  // BTN-BLOCK
-  // Quando o ícone estiver em um botão do tipo 'btn-block'
-  // obs: a classe '.icon-default' desabilita a funcionalidade
-  .btn-block .btn-icon:not(.icon-default) {
-    float: left;
-    line-height: inherit!important;
-  }
+	.btn .btn-icon,
+	.btn.btn-icon::before {
+		display: block;
+		float: left;
+		padding: inherit;
+		margin: (-$input-btn-padding-y) $input-btn-padding-x (-$input-btn-padding-y) (-$input-btn-padding-x);
+		line-height: inherit;
+	}
+	// Sizes
+	.btn-xs .btn-icon,
+	.btn-xs.btn-icon::before {
+		margin: -2px 5px 0 -5px;
+	}
+	.btn-sm .btn-icon,
+	.btn-sm.btn-icon::before {
+		margin: (-$input-btn-padding-y-sm) $input-btn-padding-x-sm (-$input-btn-padding-y-sm) (-$input-btn-padding-x-sm);
+	}
+	.btn-lg .btn-icon,
+	.btn-lg.btn-icon::before {
+		margin: (-$input-btn-padding-y-lg) $input-btn-padding-x-lg (-$input-btn-padding-y-lg) (-$input-btn-padding-x-lg);
+	}
+	// Contextual colors
+	.btn-link .btn-icon,
+	.btn-link.btn-icon::before,
+	.btn-default .btn-icon,
+	.btn-default.btn-icon::before {
+		border-right: 1px solid;
+	}
+	.btn-primary .btn-icon,
+	.btn-primary.btn-icon::before {
+		color: theme-color("primary");
+		@include base-color-yiq(theme-color("primary"), 'background-color');
+	}
+	.btn-secondary .btn-icon,
+	.btn-secondary.btn-icon::before {
+		color: theme-color("secondary");
+		@include base-color-yiq(theme-color("secondary"), 'background-color');
+	}
+	.btn-success .btn-icon,
+	.btn-success.btn-icon::before {
+		color: theme-color("success");
+		@include base-color-yiq(theme-color("success"), 'background-color');
+	}
+	.btn-info .btn-icon,
+	.btn-info.btn-icon::before {
+		color: theme-color("info");
+		@include base-color-yiq(theme-color("info"), 'background-color');
+	}
+	.btn-warning .btn-icon,
+	.btn-warning.btn-icon::before {
+		color: theme-color("warning");
+		@include base-color-yiq(theme-color("warning"), 'background-color');
+	}
+	.btn-danger .btn-icon,
+	.btn-danger.btn-icon::before {
+		color: theme-color("danger");
+		@include base-color-yiq(theme-color("danger"), 'background-color');
+	}
+	.btn-dark .btn-icon,
+	.btn-dark.btn-icon::before {
+		color: theme-color("dark");
+		@include base-color-yiq(theme-color("dark"), 'background-color');
+	}
+	.btn-light .btn-icon,
+	.btn-light.btn-icon::before {
+		color: theme-color("light");
+		@include base-color-yiq(theme-color("light"), 'background-color');
+	}

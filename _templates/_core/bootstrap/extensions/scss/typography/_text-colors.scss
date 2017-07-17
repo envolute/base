@@ -1,6 +1,7 @@
 // TEXT COLORS
 
 	.text-color { color: $body-color; }
+	.text-transparent { color: transparent!important; }
 	// theme addons
 	.text-primary-dark { color: $base-color-primary-dark; }
 	.text-primary-darker { color: $base-color-primary-darker; }

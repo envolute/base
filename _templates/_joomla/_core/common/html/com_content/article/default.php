@@ -73,7 +73,7 @@ JLoader::register('baseHelper', JPATH_BASE.'/libraries/envolute/helpers/base.php
 
 		$info .= '<div class="item-publish-info clearfix">';
 
-			$info .= '<ul class="list-inline bordered no-space small float-left">';
+			$info .= '<ul class="list-inline bordered list-trim small float-left">';
 
 				// CATEGORIA -> caso a page-heading seja informada
 				if($categ != '') $info .= $categ;

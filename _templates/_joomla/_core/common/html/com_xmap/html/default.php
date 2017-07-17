@@ -68,7 +68,7 @@ if ($this->displayer->canEdit) {
 <?php endif; ?>
 
 <?php if ($params->get('access-edit') || $params->get('show_title') ||  $params->get('show_print_icon') || $params->get('show_email_icon')) : ?>
-    <ul class="list-inline bordered no-space">
+    <ul class="list-inline bordered list-trim">
     <?php if (!$this->print) : ?>
         <?php if ($params->get('show_print_icon')) : ?>
         <li>

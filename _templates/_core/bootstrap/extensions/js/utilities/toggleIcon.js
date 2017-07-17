@@ -15,11 +15,15 @@ jQuery(function() {
       // Icon Active
       var iconAct = isSet(iconActive) ? iconActive : false;
       iconAct = isSet(obj.data('iconActive')) ? obj.data('iconActive') : iconAct;
-      // Localiza o elemento 'alvo'
+      // Target = Elemento 'alvo' (onde o ícone é declarado)
+	  // Obs: Geralmente é o proprio elemento. Ex: <a class="btn... base-icon-*"></a>
+	  // Porém, o ícone pode ser declarado dentro do elemento
+	  // Ex: <a class="btn..."><span class="base-icon-*"></span></a>
       var target = obj.hasClass(iconDef) ? obj : obj.find('.'+iconDef);
       // Caso o icone 'default' do elemento tenha sido alternado, ele não será encontrado
       // Assim, verifica se o elemento tem o ícone 'ativo'
       if(!target.length) target = obj.hasClass(iconAct) ? obj : obj.find('.'+iconAct);
+	  // Caso não localize o 'alvo', atribui ao elemento 'obj'
       if(!target.length) target = obj;
 
       if(elementExist(target) && iconDef && iconAct) {

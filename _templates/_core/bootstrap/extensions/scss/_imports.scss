@@ -3,6 +3,7 @@
 // MIXINS
 @import "_mixins/fonts";
 @import "_mixins/forms";
+@import "_mixins/color-yiq";
 
 // HELPERS
 @import "_helpers/init";
@@ -41,7 +42,7 @@
 @import "forms/custom-fields";
 // Layout
 @import "layout/affix";
-@import "layout/module";
+@import "layout/portlet";
 // Modal
 @import "modal/no-header";
 // Navs

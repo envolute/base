@@ -1,7 +1,0 @@
-// BTN DEFAULT
-// A opção '.btn-default' foi removida na versão 4 do Bootstrap
-// Porém, ela é mentida para que '.btn-scondary' possa ser mais flexível
-// Assim, ela entrar como uma extensão...
-.btn-default {
-  @include button-variant($base-btn-default-color, $base-btn-default-bg, $base-btn-default-border);
-}

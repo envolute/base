@@ -17,6 +17,7 @@ jQuery(document).ready(function() {
 		gotoElement();
 		// Buttons
 		btnRippleEffect();
+		btnToggleState();
 		// Forms
 		setChosenDefault();
 		// Layout

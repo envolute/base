@@ -193,7 +193,7 @@
 	// search
 	$base-field-search-icon:			url("../images/core/form-icon-search.png");
 
-	// NAVS
+// NAVS
 
 	// nav menu
 	$nav-menu-main-item-color:			$base-link-color;
@@ -220,6 +220,14 @@
 	$nav-stacked-child-border:			1px solid $base-border-color;
 	$nav-stacked-child-bg:				transparent;
 	$nav-stacked-child-item-padding:	$nav-stacked-main-item-padding !default;
+
+// PORTLET
+
+	$portlet-border-color: $base-border-color !default;
+	$portlet-bg: transparent !default;
+	$portlet-shadow: 0 0 4px rgba(0,0,0,0.1);
+	$portlet-header-border: 2px solid !default;
+	$portlet-header-font-weight: bold !default;
 
 // ÍCONS
 

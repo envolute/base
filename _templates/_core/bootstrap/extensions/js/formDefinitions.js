@@ -8,9 +8,6 @@ jQuery(function() {
 
 			// BUTTONS
 
-				// TOGGLE STATE
-				btnToggleState();
-
 				// CHECK STATE
 				btnCheckState();
 

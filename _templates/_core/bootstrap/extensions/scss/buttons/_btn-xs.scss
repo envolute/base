@@ -19,12 +19,3 @@
 	.table .btn-xs {
 		vertical-align: text-top;
 	}
-
-	// ICONS.base-icon
-	.btn-xs[class*="base-icon-"]:before,
-	.btn-xs [class*="base-icon-"]:before {
-		margin-top: -2px;
-		font-size: 15px;
-		line-height: 16px;
-		vertical-align: middle;
-	}

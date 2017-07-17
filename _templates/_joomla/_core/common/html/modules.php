@@ -45,28 +45,28 @@ function modChrome_base($module, &$params, &$attribs)
 	endif;
 }
 
-function modChrome_module($module, &$params, &$attribs)
+function modChrome_portlet($module, &$params, &$attribs)
 {
-	$hTag		= $params->get('header_tag', 'h4');
-	$hClass		= 'mod-base-header clearfix '.$params->get('header_class');
+	$hClass		= $params->get('header_class');
 	$mClass		= !empty($params->get('moduleclass_sfx')) ? ' '.htmlspecialchars($params->get('moduleclass_sfx')) : '';
 
 	if(!empty($module->content)) :
-		echo '<div id="module-'.$module->id.'" class="mod-base module '.$mClass.' clearfix">';
+		echo '<div id="module-'.$module->id.'" class="module portlet '.$mClass.' clearfix">';
 		if ((bool) $module->showtitle) :
 			echo '
-			<'.$hTag.' class="'.$hClass.'">
-				<span class="head-container">'.$module->title.'</span>
-				<a href="#" class="float-right mod-base-toggle base-icon-down-open"></a>
-			</'.$hTag.'>
+			<header class="'.$hClass.'">
+				<h6 class="portlet-title">'.$module->title.'</h6>
+				<span class="btn-group">
+					<button type="button" href="#portlet-'.$module->id.'" class="btn btn-sm btn-link toggle-state toggle-icon" data-icon-default="base-icon-down-open" data-icon-active="base-icon-up-open" data-toggle="collapse" aria-expanded="false" aria-controls="portlet'.$module->id.'"></button>
+				</span>
+			</header>
 			';
 		endif;
 		echo '
-				<span class="mod-base-toolbar"></span>
-				<div class="mod-base-body">
-					<div class="mod-base-content">'.$module->content.'</div>
-				</div>
+			<div id="portlet-'.$module->id.'" class="portlet-body collapse show clearfix">
+				<div class="mod-base-content">'.$module->content.'</div>
 			</div>
+		</div>
 		';
 	endif;
 }
