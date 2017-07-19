@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="file" version="3.0" method="upgrade">
+	<name>RAXO Module Template - Custom Headline 2</name>
+	<author>RAXO Group</author>
+	<copyright>Copyright (C) 2015 Envolute Group. All rights reserved.</copyright>
+	<authorEmail>dev@envolute.com</authorEmail>
+	<authorUrl>http://www.envolute.com</authorUrl>
+	<license>
+		GNU General Public License v2.0 for PHP files.
+		If not otherwise stated, all other files (CSS, JS, images, icons, etc) are NOT GPL, these files are under RAXO Commercial License.
+	</license>
+	<version>1.0</version>
+	<creationDate>10.07.2015</creationDate>
+	<description>
+		<![CDATA[<h3 style="margin-left:10px">Custom Headline 2.</p>]]>
+	</description>
+	<fileset>
+		<files target="modules/mod_raxo_allmode/tmpl">
+			<filename>custom-headline-2.php</filename>
+			<filename>custom-headline-2.xml</filename>
+		</files>
+	</fileset>
+</extension>

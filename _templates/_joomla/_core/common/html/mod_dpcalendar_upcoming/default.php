@@ -79,7 +79,7 @@ if ($params->get('show_as_popup', '0') == '1' || $params->get('show_as_popup', '
 }
 ?>
 
-<ul id="<?php echo $id; ?>-container" class="dp-upcoming list-unstyled bordered list-trim m-0" itemscope itemtype="http://schema.org/Thing">
+<ul id="<?php echo $id; ?>-container" class="dp-upcoming set-list bordered list-trim m-0" itemscope itemtype="http://schema.org/Thing">
 	<?php
 	$lastHeading = '';
 	$grouping = $params->get('output_grouping', '');

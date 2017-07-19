@@ -33,7 +33,7 @@ $app = JFactory::getApplication();
 					</h5>
 				<?php } ?>
 				<?php if ($item->category || $item->date || $item->hits || $item->comments_count || $item->rating) { ?>
-				<ul class="article-info list-inline bordered list-trim small mb-1">
+				<ul class="article-info set-list inline bordered list-trim small mb-1">
 
 					<?php if ($item->category) { ?>
 					<li class="article-category list-inline-item"><?php echo $item->category; ?></li>
@@ -90,7 +90,7 @@ $app = JFactory::getApplication();
 			<?php } ?>
 
 			<?php if ($item->category || $item->author || $item->date || $item->hits || $item->comments_count || $item->rating) { ?>
-			<ul class="article-info list-inline bordered list-trim small mb-1">
+			<ul class="article-info set-list inline bordered list-trim small mb-1">
 
 				<?php if ($item->category) { ?>
 				<li class="article-category list-inline-item"><?php echo $item->category; ?></li>

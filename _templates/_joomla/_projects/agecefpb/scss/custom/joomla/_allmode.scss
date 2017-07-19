@@ -1,0 +1,40 @@
+// ALL MODE
+
+	// CUSTOM HEADLINE 1 [SLIDER]
+
+		// main items
+		.custom-headline-1 .main-item .item-info {
+			margin: 0 0 .25rem;
+			font-size: $small-font-size;
+		}
+		.custom-headline-1 .main-item .item-info {
+			margin: 0 0 .25rem;
+			font-size: $small-font-size;
+		}
+
+	// CUSTOM HEADLINE 2
+
+		// GENERAL
+		.custom-headline-2 .item-info {
+			margin-bottom: .25rem!important;
+			font-size: $small-font-size;
+		}
+
+		// MAIN ITEMS
+		.custom-headline-2 .main-items {
+			margin-bottom: map-get($spacers, 2); // mb-2
+			border-bottom: 2px solid theme-color("primary");
+		}
+		.custom-headline-2 .main-item figure {
+			margin-bottom: .75rem;
+		}
+		.custom-headline-2 .main-item h5 {
+			min-height: 3.4em;
+			padding-bottom: map-get($spacers, 3); // pb-3
+			margin: 0;
+		}
+
+		// SUB ITEMS
+		.custom-headline-2 .main-item h6 {
+			line-height: 1.2rem;
+		}

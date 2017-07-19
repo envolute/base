@@ -50,7 +50,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 	<?php if ($this->items == false || $n == 0) : ?>
 		<p class="alert alert-warning base-icon-attention"> <?php echo JText::_('COM_TAGS_NO_ITEMS'); ?></p></div>
 	<?php else : ?>
-		<ul class="list-unstyled bordered list-lg clearfix">
+		<ul class="set-list bordered list-lg clearfix">
 			<?php foreach ($this->items as $i => $item) : ?>
 				<?php if ($this->items[$i]->core_state == 0) : ?>
 				 <li class="system-unpublished">

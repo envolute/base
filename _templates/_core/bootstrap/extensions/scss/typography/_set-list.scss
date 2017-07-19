@@ -1,0 +1,100 @@
+// LIST VIEW
+// Exibição de Listagem vertical/horizontal com/sem bordas
+
+	// DEFAULT -> VERTICAL
+
+		.set-list:not(ul) ul:first-of-type,
+		ul.set-list {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+		.set-list li {
+	    	padding: $set-list-padding-y $set-list-padding-x;
+			line-height: $set-list-line-height;
+		}
+		.set-list.bordered li:not(:last-child) {
+	    	border-bottom: $set-list-border;
+		}
+		// list spaces => espaço entre os itens
+		.set-list.list-sm li { padding: $set-list-padding-sm-y $set-list-padding-sm-x; }
+		.set-list.list-lg li { padding: $set-list-padding-lg-y $set-list-padding-lg-x; }
+		.set-list.list-xl li { padding: $set-list-padding-xl-y $set-list-padding-xl-x; }
+		// list trim => remove os espaços (superior e inferior) da listagem
+		.set-list.list-trim:not(ul) ul:first-of-type > li:first-child,
+		ul.set-list.list-trim > li:first-child { padding-top: 0!important; }
+		.set-list.list-trim:not(ul) ul:first-of-type > li:last-child,
+		ul.set-list.list-trim > li:last-child { padding-bottom: 0!important; }
+		// sub itens
+		.set-list li ul:not(.inline) {
+			list-style: none;
+			padding-left: $set-list-child-left;
+			margin-top: ($set-list-padding-y - 0.06); // 0.06 =~ 1px => equivalente a borda divisora
+		}
+		.set-list.bordered li ul:not(.inline) {
+			border-top: $set-list-border;
+		}
+		.set-list.list-sm li ul:not(.inline) { margin-top: ($set-list-padding-sm-y - 0.06); } // 0.06 =~ 1px => equivalente a borda divisora
+		.set-list.list-lg li ul:not(.inline) { margin-top: ($set-list-padding-lg-y - 0.06); } // 0.06 =~ 1px => equivalente a borda divisora
+		.set-list.list-xl li ul:not(.inline) { margin-top: ($set-list-padding-xl-y - 0.06); } // 0.06 =~ 1px => equivalente a borda divisora
+		.set-list li ul:not(.inline) li:last-child { padding-bottom: 0; }
+
+	// INLINE
+
+		.set-list.inline {
+			display: flex!important;
+		}
+		.set-list.inline > li {
+			padding: $set-list-inline-padding-y $set-list-inline-padding-x!important;
+			margin: 0;
+			line-height: $set-list-inline-line-height;
+			vertical-align: top;
+			border: 0!important;
+		}
+		.set-list.inline.bordered > li:not(:last-child) {
+			border-right: $set-list-inline-border!important;
+		}
+		// list spaces => espaço entre os itens
+		.set-list.inline.list-sm > li { padding: $set-list-inline-padding-sm-y $set-list-inline-padding-sm-x!important; }
+		.set-list.inline.list-lg > li { padding: $set-list-inline-padding-lg-y $set-list-inline-padding-lg-x!important; }
+		.set-list.inline.list-xl > li { padding: $set-list-inline-padding-xl-y $set-list-inline-padding-xl-x!important; }
+		// list trim => remove os espaçossuperior e inferior da listagem
+		.set-list.inline.list-trim > li:first-child { padding-left: 0!important; }
+		.set-list.inline.list-trim > li:last-child { padding-right: 0!important; }
+		// sub itens
+		.set-list.inline > li > ul {
+			list-style: none;
+			padding-left: 0;
+		}
+		.set-list.inline > li > ul ul {
+			list-style: none;
+			padding-left: $set-list-inline-child-left;
+		}
+
+	// UTILITIES
+
+		// ONLY LIST DEFAULT
+
+			// STRIPED -> listras zebradas
+			ul.list-striped > li:nth-child(odd),
+			.list-striped:not(ul) ul:not(.inline):first-of-type > li:nth-child(odd) {
+				background-color: $table-accent-bg;
+			}
+			ul.list-striped > li,
+			.list-striped:not(ul) ul:not(.inline):first-of-type > li { padding: $list-striped-padding!important; }
+			.list-sm.list-striped > li,
+			.list-sm.list-striped:not(ul) ul:not(.inline):first-of-type > li  { padding: $list-striped-padding-sm!important; }
+			.list-lg.list-striped > li,
+			.list-lg.list-striped:not(ul) ul:not(.inline):first-of-type > li { padding: $list-striped-padding-lg!important; }
+			.list-xl.list-striped > li,
+			.list-xl.list-striped:not(ul) ul:not(.inline):first-of-type > li { padding: $list-striped-padding-xl!important; }
+			// HOVER -> onmouseover
+			ul.list-hover li:hover,
+			.list-hover:not(ul) ul:not(.inline):first-of-type li:hover  {
+				background-color: $table-hover-bg;
+			}
+
+		// CONTEXTUAL COLORS
+		@each $color, $value in $theme-colors {
+		  li.list-#{$color} { background-color: theme-color-level($color, -9)!important; }
+		}

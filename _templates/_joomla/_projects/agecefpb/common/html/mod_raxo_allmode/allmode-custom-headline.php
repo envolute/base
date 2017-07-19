@@ -31,10 +31,10 @@ $app = JFactory::getApplication();
 			$doc->addScript(JURI::root().'templates/base/libs/content/bxslider/jquery.bxslider.min.js');
 			// CHAMADA DO SLIDER
 			// esconde imagens no carregamento
-			$doc->addStyleDeclaration('.bxslider > li:not(:first-child) { position: absolute; top: 0; visibility: hidden; }');
+			$doc->addStyleDeclaration('.allmode-slider-'.$module->id.' > li:not(:first-child) { position: absolute; top: 0; visibility: hidden; }');
 			$script = '
 			jQuery(window).load(function(){
-				jQuery(".bxslider").bxSlider({
+				jQuery(".allmode-slider-'.$module->id.'").bxSlider({
 					mode: "horizontal",
 					autoHover: true,
 					auto: true,
@@ -44,14 +44,14 @@ $app = JFactory::getApplication();
 					infiniteLoop: true,
 					onSliderLoad:function(currentIndex){
 						// mostra as imagens após o carregamento do plugin
-						jQuery(".bxslider img").attr("title","");
-						jQuery(".bxslider > li:not(:first-child)").css("visibility", "visible");
+						jQuery(".allmode-slider-'.$module->id.' img").attr("title","");
+						jQuery(".allmode-slider-'.$module->id.' > li:not(:first-child)").css("visibility", "visible");
 					}
 				});
 			});
 			';
 			$doc->addScriptDeclaration($script);
-			echo '<ul class="bxslider">';
+			echo '<ul class="allmode-slider-<?php echo $module->id; ?>">';
 			$tag		= 'li';
 			$tagClass	= '';
 		endif;
@@ -93,7 +93,7 @@ foreach ($list as $item) {
 		<?php } ?>
 
 		<?php if ($item->category || $item->author || $item->date || $item->hits || $item->comments_count || $item->rating) { ?>
-		<ul class="headline-info list-inline bordered list-trim small mb-1">
+		<ul class="headline-info set-list inline bordered list-trim small mb-1">
 
 			<?php if ($item->category) { ?>
 			<li class="headline-category list-inline-item"><?php echo $item->category; ?></li>

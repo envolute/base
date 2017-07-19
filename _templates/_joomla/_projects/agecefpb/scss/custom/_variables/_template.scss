@@ -124,30 +124,35 @@
   // list
 
     // vertical
-    $list-bordered-line-height:			1.15em;
-    $list-bordered-padding-y:			.4rem;
-    $list-bordered-padding-x:			0;
-    $list-bordered-padding-sm-y:		.2rem;
-    $list-bordered-padding-sm-x:		0;
-    $list-bordered-padding-lg-y:		.8rem;
-    $list-bordered-padding-lg-x:		0;
-    $list-bordered-child-left:			1.2rem;
+    $set-list-line-height:				1.15em;
+    $set-list-padding-y:				.4rem;
+    $set-list-padding-x:				0;
+    $set-list-padding-sm-y:				.2rem;
+    $set-list-padding-sm-x:				0;
+    $set-list-padding-lg-y:				.8rem;
+    $set-list-padding-lg-x:				0;
+    $set-list-padding-xl-y:				1.5rem;
+    $set-list-padding-xl-x:				0;
+    $set-list-child-left:				1.2rem;
 	// border
-	$list-bordered-border:				1px dotted $base-border-color;
-	$list-bordered-inline-border:		1px dotted $base-border-color;
+	$set-list-border:					1px dotted $base-border-color;
+	$set-list-inline-border:			1px dotted $base-border-color;
     // inline
-    $list-inline-line-height:			1.15em;
-    $list-inline-padding-y:				0;
-    $list-inline-padding-x:				.5rem;
-    $list-inline-padding-sm-y:			0;
-    $list-inline-padding-sm-x:			.3rem;
-    $list-inline-padding-lg-y:			0;
-    $list-inline-padding-lg-x:			1rem;
-    $list-inline-child-left:			1.2rem;
+    $set-list-inline-line-height:		1.15em;
+    $set-list-inline-padding-y:			0;
+    $set-list-inline-padding-x:			.5rem;
+    $set-list-inline-padding-sm-y:		0;
+    $set-list-inline-padding-sm-x:		.3rem;
+    $set-list-inline-padding-lg-y:		0;
+    $set-list-inline-padding-lg-x:		1rem;
+    $set-list-inline-padding-xl-y:		0;
+    $set-list-inline-padding-xl-x:		1.5rem;
+    $set-list-inline-child-left:		1.2rem;
     // striped
-    $list-striped-padding:				$list-bordered-padding-y;
-    $list-striped-padding-sm:			$list-bordered-padding-sm-y;
-    $list-striped-padding-lg:			$list-bordered-padding-lg-y;
+    $list-striped-padding:				$set-list-padding-y;
+    $list-striped-padding-sm:			$set-list-padding-sm-y;
+    $list-striped-padding-lg:			$set-list-padding-lg-y;
+    $list-striped-padding-xl:			$set-list-padding-xl-y;
 
 // IMAGES
 

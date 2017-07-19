@@ -32,7 +32,7 @@ foreach ($toplist as $item) { ?>
 		<?php } ?>
 
 		<?php if ($item->date || $item->category || $item->hits || $item->comments_count || $item->rating) { ?>
-		<ul class="allmode-base-info hlist hlist-condensed hlist-no-space">
+		<ul class="allmode-base-info hlist hlist-condensed list-trim">
 
 			<?php if ($item->date) { ?>
 			<li class="allmode-base-date"><span class="base-icon-calendar"></span> <?php echo $item->date; ?></li>
@@ -96,7 +96,7 @@ foreach ($list as $item) { ?>
 		<?php } ?>
 
 		<?php if ($item->date || $item->category || $item->hits || $item->comments_count || $item->rating) { ?>
-		<ul class="allmode-base-info hlist hlist-condensed hlist-no-space">
+		<ul class="allmode-base-info hlist hlist-condensed list-trim">
 
 			<?php if ($item->date) { ?>
 			<li class="allmode-base-date"><span class="base-icon-calendar"></span> <?php echo $item->date; ?></li>

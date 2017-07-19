@@ -18,7 +18,7 @@ if ($urls && (!empty($urls->urla) || !empty($urls->urlb) || !empty($urls->urlc))
 ?>
 <div class="content-links">
 	<h4 class="page-header">Links</h4>
-	<ul class="list-unstyled bordered">
+	<ul class="set-list bordered">
 		<?php
 			$urlarray = array(
 			array($urls->urla, $urls->urlatext, $urls->targeta, 'a'),

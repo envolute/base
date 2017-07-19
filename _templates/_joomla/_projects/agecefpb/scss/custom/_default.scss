@@ -100,6 +100,20 @@
 			body.home #right .proximo-evento {
 				margin-bottom: 32px!important;
 			}
+			// Convênios
+			body.home #right .convenios .bx-wrapper {
+				margin: 0;
+				padding: 7px 0;
+				border-style: solid;
+				border-color: theme-color("primary");
+				border-width: 2px 0;
+			}
+			body.home #right .convenios .bx-wrapper .bx-pager {
+				position: absolute;
+				bottom: -18px;
+				right: -5px;
+				width: auto;
+			}
 
 	// SECTION BOTTOM
 

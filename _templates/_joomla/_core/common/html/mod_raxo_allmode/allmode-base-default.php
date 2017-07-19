@@ -34,7 +34,7 @@ foreach ($toplist as $item) { ?>
 		<?php } ?>
 
 		<?php if ($item->category || $item->author || $item->date || $item->hits || $item->comments_count || $item->rating) { ?>
-		<ul class="allmode-base-info list-inline bordered list-trim">
+		<ul class="allmode-base-info set-list inline bordered list-trim">
 
 			<?php if ($item->category) { ?>
 			<li class="allmode-base-category list-inline-item"><?php echo $item->category; ?></li>
@@ -98,7 +98,7 @@ foreach ($list as $item) { ?>
 		<?php } ?>
 
 		<?php if ($item->category || $item->author || $item->date || $item->hits || $item->comments_count || $item->rating) { ?>
-		<ul class="allmode-base-info list-inline bordered list-trim">
+		<ul class="allmode-base-info set-list inline bordered list-trim">
 
 			<?php if ($item->category) { ?>
 			<li class="allmode-base-category list-inline-item"><?php echo $item->category; ?></li>
