@@ -33,27 +33,27 @@ jQuery(function() {
 		// Cria barra de rolagem caso o submenu ultrapasse o limite inferior da janela.
 		// É necessário por causa da posição fixa do menu,
 		// que esconde os itens abaixo do limite inferior da janela
-		window.navChildHeight = function() {
-			var wH = jQuery(window).height(); // window height
-			var hH = jQuery('#header').outerHeight(); // #header height
-			var fH = jQuery('#footer').outerHeight(); // #footer height
-			var e = jQuery('.nav').find('.nav-child');
-			e.each(function() {
-				var obj = jQuery(this);
-				var H = wH - (hH + fH);
-				var rH = getRealHeight(obj);
-				obj.css('height', (rH > H ? H : 'auto'));
-			});
-		};
-		window.getRealHeight = function(e) {
-			e.css({position:'absolute', visibility: 'hidden', display: 'block'}); // torna o objeto visível para o código
-			var h = e[0].scrollHeight; // pega altura real do objeto
-			e.css({position: '', visibility: '', display: ''}); // retorna ao padrão do objeto
-			return h;
-		};
-		// run function
-		navChildHeight();
-		jQuery(window).on('resize', function() { navChildHeight(); }); // on resize
+		// window.navChildHeight = function() {
+		// 	var wH = jQuery(window).height(); // window height
+		// 	var hH = jQuery('#header').outerHeight(); // #header height
+		// 	var fH = jQuery('#footer').outerHeight(); // #footer height
+		// 	var e = jQuery('.nav').find('.nav-child');
+		// 	e.each(function() {
+		// 		var obj = jQuery(this);
+		// 		var H = wH - (hH + fH);
+		// 		var rH = getRealHeight(obj);
+		// 		obj.css('height', (rH > H ? H : 'auto'));
+		// 	});
+		// };
+		// window.getRealHeight = function(e) {
+		// 	e.css({position:'absolute', visibility: 'hidden', display: 'block'}); // torna o objeto visível para o código
+		// 	var h = e[0].scrollHeight; // pega altura real do objeto
+		// 	e.css({position: '', visibility: '', display: ''}); // retorna ao padrão do objeto
+		// 	return h;
+		// };
+		// // run function
+		// navChildHeight();
+		// jQuery(window).on('resize', function() { navChildHeight(); }); // on resize
 
 	// MMENU -> Mobile Menu
 
@@ -75,6 +75,18 @@ jQuery(function() {
 				if(!jQuery('html').hasClass('media-md')) jQuery('#mm-navigation, #screen').addClass('closed');
 				else jQuery('#mm-navigation, #screen').removeClass('closed');
 			});
+		}
+
+		// Seleciona o menu ativo
+		window.menuItemActive = function(item) {
+			if(isSet(item)) {
+				// define menu item active
+				var i = jQuery('#mm-navigation '+item);
+				if(i.length) {
+					i.addClass('active current');
+					i.parents('li.parent').addClass('mm-opened active');
+				}
+			}
 		}
 
 	// AFFIX ELEMENTS

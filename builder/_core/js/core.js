@@ -164,8 +164,8 @@ jQuery(document).ready(function() {
 	};
 
 	// SHOW/HIDE LOADER
-	window.toggleLoader = function(el, fullScreen) {
-		var obj = setElement(el, '#loader');
+	window.toggleLoader = function(fullScreen) {
+		var obj = jQuery('#loader');
 		if(typeof fullScreen === "null" || typeof fullScreen === "undefined") {
 			obj.toggleClass('active');
 		} else {

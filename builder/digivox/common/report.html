@@ -75,7 +75,7 @@
 							<li class="parent">
 								<span>Sub Level 2</span>
 								<ul class="nav-child">
-									<li><a href="#">Item</a></li>
+									<li id="ativo"><a href="#">Item</a></li>
 									<li><a href="#">Item</a></li>
 									<li><a href="#">Item</a></li>
 									<li><a href="#">Item</a></li>
@@ -776,8 +776,7 @@
 	// CUSTOM SCRIPTS
 	jQuery(function() {
 
-		// define menu item active
-		jQuery('#navigation #lists').addClass('active');
+		menuItemActive('li#ativo');
 
 	});
 	</script>
