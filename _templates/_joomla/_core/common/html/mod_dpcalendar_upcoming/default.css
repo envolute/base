@@ -1,5 +1,5 @@
 .dp-upcoming li {
-    padding: .6rem 0!important;
+    padding: .6rem 0;
 }
 .dp-upcoming-calendar {
 	float: left;
@@ -45,8 +45,12 @@
 .dp-container .row {
 	margin-left: 0;
 }
-
+.dp-upcoming-info .dp-upcoming-date {
+	font-size: 10px;
+	line-height: 8px;
+    margin-bottom: 4px;
+}
 .dp-upcoming-info h6 {
 	margin: 0;
-	line-height: 1.1rem;
+	line-height: 1rem;
 }

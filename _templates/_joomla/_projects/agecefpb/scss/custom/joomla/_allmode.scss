@@ -1,40 +1,88 @@
-// ALL MODE
+// ALL MODE BASE
 
-	// CUSTOM HEADLINE 1 [SLIDER]
+	// GENERAL
+
+		.allmode-base .allmode-info {
+			margin-bottom: map-get($spacers, 1)!important; // mb-1
+			font-size: $small-font-size;
+		}
+		// SUB ITEMS
+		.allmode-base .allmode-sub-item .allmode-image {
+			float: left;
+			margin-right: map-get($spacers, 2); // mr-2
+		}
+		.allmode-base .allmode-sub-item h6 {
+			margin: 0;
+			line-height: 1.2rem;
+		}
+		// Mantém o espaço entre a listagem e o link 'showall'
+		.list-trim .allmode-showall {
+			margin-top: 1rem;
+		}
+
+	// FEATURED NEWS
 
 		// main items
-		.custom-headline-1 .main-item .item-info {
-			margin: 0 0 .25rem;
-			font-size: $small-font-size;
+		.allmode-base.featured-news figure {
+			position: relative;
 		}
-		.custom-headline-1 .main-item .item-info {
-			margin: 0 0 .25rem;
-			font-size: $small-font-size;
+		.allmode-base.featured-news figcaption {
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			padding: .8rem;
+			font-size: 1.3rem;
+			line-height: 1.2rem;
+			background-color: #000;
+			background-color: rgba(0, 0, 0, 0.8);
 		}
 
-	// CUSTOM HEADLINE 2
-
-		// GENERAL
-		.custom-headline-2 .item-info {
-			margin-bottom: .25rem!important;
-			font-size: $small-font-size;
-		}
+	// HEADLINES
 
 		// MAIN ITEMS
-		.custom-headline-2 .main-items {
+		.allmode-base.headlines .allmode-main-items {
 			margin-bottom: map-get($spacers, 2); // mb-2
-			border-bottom: 2px solid theme-color("primary");
+			border-bottom: 2px solid theme-color("primary"); // AGECEF
 		}
-		.custom-headline-2 .main-item figure {
+		.allmode-base.headlines .allmode-main-item figure {
 			margin-bottom: .75rem;
 		}
-		.custom-headline-2 .main-item h5 {
-			min-height: 3.4em;
+		.allmode-base.headlines .allmode-main-item h5 {
+			min-height: 3.4em; // AGECEF
 			padding-bottom: map-get($spacers, 3); // pb-3
 			margin: 0;
 		}
 
-		// SUB ITEMS
-		.custom-headline-2 .main-item h6 {
-			line-height: 1.2rem;
+	// SLIDER BRANDS
+
+		.allmode-base.slider-brands figure {
+			margin: 0;
+		}
+		.allmode-base.slider-brands .bx-wrapper {
+			margin: 0;
+		}
+		// AGECEF
+		.allmode-base.slider-brands .bx-controls-direction {
+		    position: absolute;
+		    width: 60px;
+		    top: -15px;
+		    right: -10px;
+		}
+		.allmode-base.slider-brands .bx-wrapper .bx-controls-direction a {
+		    width: 20px;
+		    height: 20px;
+		}
+		.allmode-base.slider-brands .bx-wrapper .bx-prev {
+		    background-position: -5px -38px;
+		}
+		.allmode-base.slider-brands .bx-wrapper .bx-prev:focus,
+		.allmode-base.slider-brands .bx-wrapper .bx-prev:hover {
+		    background-position: -5px -6px;
+		}
+		.allmode-base.slider-brands .bx-wrapper .bx-next {
+		    background-position: -50px -38px;
+		}
+		.allmode-base.slider-brands .bx-wrapper .bx-next:focus,
+		.allmode-base.slider-brands .bx-wrapper .bx-next:hover {
+		    background-position: -50px -6px;
 		}
