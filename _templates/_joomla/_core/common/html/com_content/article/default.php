@@ -18,7 +18,11 @@ $urls    = json_decode($this->item->urls);
 $canEdit = $params->get('access-edit');
 $user    = JFactory::getUser();
 $info    = $params->get('info_block_position', 0);
+
+// Check if associations are implemented. If they are, define the parameter.
+$assocParam = (JLanguageAssociations::isEnabled() && $params->get('show_associations'));
 JHtml::_('behavior.caption');
+
 $doc	 = JFactory::getDocument();
 
 // IMPORTANTE: Carrega o arquivo 'helper' do template
@@ -51,17 +55,62 @@ JLoader::register('baseHelper', JPATH_BASE.'/libraries/envolute/helpers/base.php
 
 	endif;
 
+// AÇÕES -> FONTSIZE, PLUGINS DE CONTEÚDO(beforeDisplayContent), {PRINT, E-MAIL, EDIT}
+
+	$actions = '';
+
+	if (!$this->print) :
+		if ($params->get('show_icons') || $canEdit) :
+
+			// PRINT & SEND
+			// Links para imprimie e enviar
+			if($params->get('show_print_icon') || $params->get('show_email_icon')) :
+				$actions .= '<span class="float-left mr-1">';
+					if ($params->get('show_print_icon'))
+					$actions .= '<span class="btn btn-default btn-xs mr-1">'.JHtml::_('icon.print_popup', $this->item, $params).'</span>';
+
+					if ($params->get('show_email_icon'))
+					$actions .= '<span class="btn btn-default btn-xs">'.JHtml::_('icon.email', $this->item, $params).'</span>';
+				$actions .= '</span>';
+			endif;
+
+			// BTN EDIT
+			// Link para editar o conteúdo
+			if($canEdit)
+			$actions .= '<div class="btn btn-success btn-xs ml-1 float-right">'.JHtml::_('icon.edit', $this->item, $params).'</div>';
+
+			// FONT SIZER
+			// Carrega a funcionalidade para alteração do tamanho da fonte como um recurso de acessibilidade
+			$actions .= '<span id="fontsize" class="btn-group float-right"></span>';
+			$doc->addScriptDeclaration('jQuery(function() { jQuery("#fontsize").fontSize(".content-text"); });');
+
+		endif;
+	else :
+		$actions .= '<div class="btn btn-default btn-xs float-right hidden-print">'.JHtml::_('icon.print_screen', $this->item, $params).'</div>';
+	endif;
+
 // PAGE HEADING
 
-	$pagehead = '';
+	$heading = '';
 
 	// Page Heading
 	if ($this->params->get('show_page_heading')) :
-		$pagehead = '<h4 class="page-header heading">'.$this->escape($this->params->get('page_heading')).'</h4>';
+		$heading = $this->escape($this->params->get('page_heading'));
 	// Ou Categoria [Categoria Pai > Categoria]
-	elseif($categ != '') :
-		$pagehead = '<h4 class="page-header category-info">'.$categ.'</h4>';
+	elseif($categ) :
+		$heading = $categ;
 		$categ = '';
+	endif;
+
+	if(!empty($pagehead) || !empty($actions)) :
+		$pagehead = '<h4 id="item-page-heading" class="page-header clearfix">';
+			if(!empty($heading)) :
+				$pagehead .= $heading;
+				$pagehead .= '<span class="float-right">'.$actions.'</span>';
+			elseif(!empty($actions)):
+				$pagehead .= $actions;
+			endif;
+		$pagehead .= '</h4>';
 	endif;
 
 // INFORMAÇÕES DE PUBLICAÇÃO -> *CATEGORIA, AUTOR, DATA DE PUBLICAÇÃO, ACESSOS.
@@ -71,107 +120,48 @@ JLoader::register('baseHelper', JPATH_BASE.'/libraries/envolute/helpers/base.php
 
 	if ($params->get('show_publish_date') || $params->get('show_author') || $params->get('show_hits')) :
 
-		$info .= '<div class="item-publish-info clearfix">';
+		$info .= '<ul id="item-publish-info" class="set-list inline bordered list-sm list-trim small">';
 
-			$info .= '<ul class="set-list inline bordered list-trim small float-left">';
+			// CATEGORIA -> caso a page-heading seja informada
+			if(!empty($categ)) $info .= '<li class="category">'.$categ.'</li>';
 
-				// CATEGORIA -> caso a page-heading seja informada
-				if($categ != '') $info .= $categ;
+			// AUTOR
+			if ($params->get('show_author') && !empty($this->item->author)) :
+				$author = $this->item->created_by_alias ? $this->item->created_by_alias : $this->item->author;
+				$info .= '<li class="createdby">'.JText::sprintf('COM_CONTENT_WRITTEN_BY', $author).'</li>';
+				$elem = true;
+			endif;
 
-				// AUTOR
-				if ($params->get('show_author') && !empty($this->item->author )) :
-					$author = $this->item->created_by_alias ? $this->item->created_by_alias : $this->item->author;
-					$info .= '<li class="createdby">'.JText::sprintf('COM_CONTENT_WRITTEN_BY', $author).'</li>';
-					$elem = true;
-				endif;
+			// DATA DE PUBLICAÇÃO
+			if ($params->get('show_publish_date')) :
+				$info .= '<li class="published">';
+				$info .= JText::sprintf(JHtml::_('date', $this->item->publish_up, JText::_('DATE_FORMAT_LC3')));
+				$info .= '</li>';
+				$elem = true;
+			endif;
 
-				// DATA DE PUBLICAÇÃO
-				if ($params->get('show_publish_date')) :
-					$info .= '<li class="published">';
-					$info .= JText::sprintf(JHtml::_('date', $this->item->publish_up, JText::_('DATE_FORMAT_LC3')));
-					$info .= '</li>';
-					$elem = true;
-				endif;
+			// ACESSOS
+			if ($params->get('show_hits')):
+				$info .= '<li class="hits">'.JText::sprintf('COM_CONTENT_ARTICLE_HITS', $this->item->hits).'</li>';
+			endif;
 
-				// ACESSOS
-				if ($params->get('show_hits')):
-					$info .= '<li class="hits">'.JText::sprintf('COM_CONTENT_ARTICLE_HITS', $this->item->hits).'</li>';
-				endif;
+			// UNPUBLISHED ALERT
+			if ($this->item->state == 0) :
+				echo '<li class="unpublished"><span class="badge badge-warning">'.JText::_('JUNPUBLISHED').'</span></li>';
+			endif;
 
-				// UNPUBLISHED ALERT
-				if ($this->item->state == 0) :
-					echo '<li class="unpublished"><span class="badge badge-warning">'.JText::_('JUNPUBLISHED').'</span></li>';
-				endif;
+			// NOT PUBLISHED ALERT
+			if (strtotime($this->item->publish_up) > strtotime(JFactory::getDate())) :
+				echo '<li class="notpublished"><span class="badge badge-warning">'.JText::_('JNOTPUBLISHEDYET').'</span></li>';
+			endif;
 
-				// NOT PUBLISHED ALERT
-				if (strtotime($this->item->publish_up) > strtotime(JFactory::getDate())) :
-					echo '<li class="notpublished"><span class="badge badge-warning">'.JText::_('JNOTPUBLISHEDYET').'</span></li>';
-				endif;
+			// EXPIRED ALERT
+			if ((strtotime($this->item->publish_down) < strtotime(JFactory::getDate())) && $this->item->publish_down != JFactory::getDbo()->getNullDate()) :
+				echo '<li class="expired"><span class="badge badge-warning">'.JText::_('JEXPIRED').'</span></li>';
+			endif;
 
-				// EXPIRED ALERT
-				if ((strtotime($this->item->publish_down) < strtotime(JFactory::getDate())) && $this->item->publish_down != JFactory::getDbo()->getNullDate()) :
-					echo '<li class="expired"><span class="badge badge-warning">'.JText::_('JEXPIRED').'</span></li>';
-				endif;
+		$info .= '</ul>';
 
-			$info .= '</ul>';
-
-		$info .= '</div>';
-
-	endif;
-
-// HEADER
-
-	$head = '';
-
-	if ($params->get('show_title')) :
-
-		$title = $this->escape($this->item->title);
-
-		// Introdução
-		if (!$params->get('show_intro')) :
-			$title .= '<br /><small class="text-md">'.$this->item->event->afterDisplayTitle.'</small>';
-		endif;
-
-		$head .= '<h2 id="content-title" itemprop="headline">'.$title.'</h2>';
-
-	endif;
-
-// AÇÕES -> FONTSIZE, PLUGINS DE CONTEÚDO(beforeDisplayContent), {PRINT, E-MAIL, EDIT}
-
-	$actions = '';
-
-	if (!$this->print) :
-		if ($params->get('show_icons') || $this->item->event->beforeDisplayContent) :
-			$actions .= '<div class="item-actions clearfix">';
-
-				// FONT SIZER
-				// Carrega a funcionalidade para alteração do tamanho da fonte como um recurso de acessibilidade
-				$actions .= '<div id="fontsize" class="btn-group"></div>';
-				$doc->addScriptDeclaration('jQuery(function() { jQuery("#fontsize").fontSize(".content-text"); });');
-
-				$actions .= '<div class="btn-group">';
-
-						if ($params->get('show_print_icon'))
-						$actions .= '<span class="btn btn-default btn-xs">'.JHtml::_('icon.print_popup', $this->item, $params).'</span>';
-
-						if ($params->get('show_email_icon'))
-						$actions .= '<span class="btn btn-default btn-xs">'.JHtml::_('icon.email', $this->item, $params).'</span>';
-
-					$actions .= '</div>';
-
-				$actions .= '<div class="float-right">';
-
-					// actions + plugins antes do conteúdo
-					if ($this->item->event->beforeDisplayContent) :
-						$actions .= $this->item->event->beforeDisplayContent;
-					endif;
-
-				$actions .= '</div>';
-
-			$actions .= '</div>';
-		endif;
-	else :
-		$actions .= '<div class="btn btn-default btn-xs float-right hidden-print">'.JHtml::_('icon.print_screen', $this->item, $params).'</div>';
 	endif;
 
 // IMAGEM PRINCIPAL
@@ -220,9 +210,6 @@ JLoader::register('baseHelper', JPATH_BASE.'/libraries/envolute/helpers/base.php
 
 	$pagenav = (!empty($this->item->pagination) && $this->item->pagination && $this->item->paginationrelative) ? 1 : 0;
 
-	// Antes e Depois do conteúdo
-	$navBefore = ($pagenav && !$this->item->paginationposition) ? '<div class="pagenav-before">'.$this->item->pagination.'</div>' : '';
-
 	// Depois do conteúdo
 	$navAfter = ($pagenav) ? '<div class="pagenav-after">'.$this->item->pagination.'</div>' : '';
 
@@ -257,37 +244,40 @@ JLoader::register('baseHelper', JPATH_BASE.'/libraries/envolute/helpers/base.php
 	<meta itemprop="inLanguage" content="<?php echo ($this->item->language === '*') ? JFactory::getConfig()->get('language') : $this->item->language; ?>" />
 	<?php
 
-	// NAVEGAÇÃO ENTRE ARTIGOS -> ANTES DO CONTEÚDO COMPLETO
-	if (isset($this->item->paginationrelative)) echo $navBefore;
-
 	// PAGE HEADING
 	echo $pagehead;
 
-	// TÍTULO -> INFO, HEADER, AÇÕES
-	echo $info.$head.$actions;
+	// TÍTULO
+	if ($params->get('show_title'))
+	echo '<h2 class="m-0 pb-4" itemprop="headline">'.$this->escape($this->item->title).'</h2>';
 
-	// BOTÃO PARA EDITAR DO CONTEÚDO
-	if ($canEdit) echo '<span class="btn btn-success btn-sm">'.JHtml::_('icon.edit', $this->item, $params).'</span>';
+	// INFO
+	echo $info;
+
+	// INTRODUÇÃO
+	if ($params->get('show_intro') && !empty($this->item->event->afterDisplayTitle))
+	echo '<div class="text-muted py-3">'.$this->item->event->afterDisplayTitle.'</div>';
+
+	// PLUGINS ANTES DO CONTEÚDO
+	if ($this->item->event->beforeDisplayContent) :
+		echo '<div class="before-content">'.$this->item->event->beforeDisplayContent.'</div>';
+	endif;
 
 	if ($params->get('access-view')):
 
-		// NAVEGAÇÃO ENTRE ARTIGOS -> ANTES DO TEXTO
-		if (!isset($this->item->paginationrelative)) echo $navBefore;
+		// TOC
+		echo $toc;
 
 		// LINKS NO INÍCIO
 		echo $linksBefore;
 
-		echo '<div class="content-text">';
-
-			// TOC
-			echo $toc;
+		echo '<div id="item-content-text" itemprop="articleBody">';
 
 			// IMAGEM PRINCIPAL
 			// '$start = 1,2,3...' indica que é uma quebra de página
 			echo (isset($_REQUEST['start']) && $_REQUEST['start'] > 1) ? '' : $image;
 
 			// CONTEÚDO
-
 			echo $this->item->text;
 
 		echo '</div>';
@@ -298,7 +288,7 @@ JLoader::register('baseHelper', JPATH_BASE.'/libraries/envolute/helpers/base.php
 		echo '<div class="clearfix"></div>';
 
 		// LINKS NO FIM
-		echo isset($pagerAfter) ? $linksAfter : '';
+		echo isset($linksAfter) ? $linksAfter : '';
 
 		// PAGINAÇÃO NO FIM
 		echo isset($pagerAfter) ? $pagerAfter : '';
