@@ -89,7 +89,7 @@ JHtml::_('bootstrap.tooltip');
 			<div class="clear"></div>
 			<hr class="my-sm" />
 			<?php if ($usersConfig->get('allowUserRegistration')) : ?>
-				<a class="btn btn-default btn-block mr-1 mb-2" href="<?php echo JRoute::_('index.php?option=com_users&view=registration&Itemid=' . UsersHelperRoute::getRegistrationRoute()); ?>">
+				<a class="btn btn-outline-primary btn-block mr-1 mb-2" href="<?php echo JRoute::_('index.php?option=com_users&view=registration&Itemid=' . UsersHelperRoute::getRegistrationRoute()); ?>">
 					<span class="base-icon-user-add"></span> <?php echo JText::_('MOD_LOGIN_REGISTER'); ?>
 				</a>
 			<?php endif; ?>

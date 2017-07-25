@@ -208,15 +208,11 @@ JLoader::register('baseHelper', JPATH_BASE.'/libraries/envolute/helpers/base.php
 
 // NAVEGAÇÃO ENTRE ARTIGOS -> PAGINAÇÃO
 
-	$pagenav = (!empty($this->item->pagination) && $this->item->pagination && $this->item->paginationrelative) ? 1 : 0;
-
+	$pagenav = (!empty($this->item->pagination) && $this->item->pagination) ? 1 : 0;
 	// Depois do conteúdo
 	$navAfter = ($pagenav) ? '<div class="pagenav-after">'.$this->item->pagination.'</div>' : '';
 
 // LISTA DE LINKS
-
-	// Antes do conteúdo
-	$linksBefore = ((isset($urls)) && ((!empty($urls->urls_position) && ($urls->urls_position == '0')) || ($params->get('urls_position') == '0' && empty($urls->urls_position))) || (empty($urls->urls_position) && (!$params->get('urls_position')))) ? $this->loadTemplate('links') : '';
 
 	// Depois do conteúdo
 	$linksAfter = (isset($urls) && ((!empty($urls->urls_position) && ($urls->urls_position == '1')) || ($params->get('urls_position') == '1'))) ? $this->loadTemplate('links') : '';
@@ -256,7 +252,7 @@ JLoader::register('baseHelper', JPATH_BASE.'/libraries/envolute/helpers/base.php
 
 	// INTRODUÇÃO
 	if ($params->get('show_intro') && !empty($this->item->event->afterDisplayTitle))
-	echo '<div class="text-muted py-3">'.$this->item->event->afterDisplayTitle.'</div>';
+	echo '<div class="text-muted pb-4">'.$this->item->event->afterDisplayTitle.'</div>';
 
 	// PLUGINS ANTES DO CONTEÚDO
 	if ($this->item->event->beforeDisplayContent) :
@@ -267,9 +263,6 @@ JLoader::register('baseHelper', JPATH_BASE.'/libraries/envolute/helpers/base.php
 
 		// TOC
 		echo $toc;
-
-		// LINKS NO INÍCIO
-		echo $linksBefore;
 
 		echo '<div id="item-content-text" itemprop="articleBody">';
 

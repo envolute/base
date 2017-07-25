@@ -1,0 +1,233 @@
+// @CORE VARIABLES
+
+// Options
+
+	$base-font-size-root:				14px; // Tamanho 'raíz' da fonte, atribuida ao elemento '<html>'
+	$base-break-up:						'.media-md'; // ponto de quebra do layout para o modo 'desktop'
+	$base-break-down:					'html:not(.media-md)'; // ponto de quebra do layout para o modo 'mobile'
+	$base-enable-rounded:				false;
+
+// COLORS
+
+	//-> gray
+	$base-gray-100:						#f8f9fa !default;
+	$base-gray-200:						#e9ecef !default;
+	$base-gray-300:						#dee2e6 !default;
+	$base-gray-400:						#ced4da !default;
+	$base-gray-500:						#adb5bd !default;
+	$base-gray-600:						#868e96 !default;
+	$base-gray-700:						#495057 !default;
+	$base-gray-800:						#343a40 !default;
+	$base-gray-900:						#212529 !default;
+	// colors
+	$base-blue:							#007bff !default;
+	$base-indigo:						#6610f2 !default;
+	$base-purple:						#6f42c1 !default;
+	$base-pink:							#e83e8c !default;
+	$base-red:							#dc3545 !default;
+	$base-orange:						#fd7e14 !default;
+	$base-yellow:						#ffc107 !default;
+	$base-green:						#28a745 !default;
+	$base-teal:							#20c997 !default;
+	$base-cyan:							#17a2b8 !default;
+	// theme
+	$base-color-primary:				#5F7599;
+	$base-color-primary-dark:			mix(black, $base-color-primary, 15%);
+	$base-color-primary-light:			mix(white, $base-color-primary, 15%);
+	$base-color-primary-lighter:		mix(white, $base-color-primary, 50%);
+	$base-color-primary-lightest:		mix(white, $base-color-primary, 70%);
+	$base-color-live:					$base-orange;
+	$base-color-white:					#fff;
+	// border default
+	$base-border-color:					$base-gray-300;
+	$base-border-color-dark:			$base-gray-500;
+	$base-border-color-light:			$base-gray-200;
+	$base-border-color-live:			shade($base-color-live, 15%) !default;
+
+// BOOTSTRAP DEFINITIONS
+
+	$base-body-bg:						#fff;
+	$base-text-color:         			#555;
+	$base-link-color:         			$base-color-primary;
+	$base-link-hover-color:				darken($base-link-color, 15%); // copy of 'link-hover-color' bootstrap
+	$base-btn-default-color:			$base-color-primary;
+	$base-btn-default-bg:				#fff;
+	$base-btn-default-border:			$base-border-color;
+	$base-input-padding-x:				.75rem;
+	$base-input-padding-y:				.5rem;
+
+	// space
+	$base-space:						15px; // IMPORTANT: define bootstrap '$grid-gutter-width-base' variable
+	$base-space-xs:						5px;
+	$base-space-sm:						10px;
+	$base-space-lg:						20px;
+	$base-space-xl:						($base-space * 2);
+
+	// border radius
+	$base-radius-default:     			.25rem !default;
+	$base-radius-default-sm:  			.3rem !default;
+	$base-radius-default-lg:  			.2rem !default;
+
+// TYPOGRAPHY
+
+	// fonts
+	$base-fonts-local:					false; // false -> google fonts, true -> fonts locais
+	$base-fonts:						'Roboto|Roboto+Condensed|Droid+Serif:400,400italic';
+	// font-primary
+	$base-font-primary:					'Roboto' !default;
+	$base-font-primary-local-path:		'../fonts/roboto';
+	$base-font-primary-weight:			'400' !default;
+	$base-font-primary-style:			'normal' !default;
+	// font-condensed
+	$base-font-condensed:				'Roboto Condensed' !default;
+	$base-font-condensed-local-path:	'../fonts/robotocondensed';
+	$base-font-condensed-weight:		'400' !default;
+	$base-font-condensed-style:			'normal' !default;
+	// font-serif
+	$base-font-serif:					'Droid Serif' !default;
+	$base-font-serif-local-path:		'../fonts/droidserif';
+	$base-font-serif-weight:			'400' !default;
+	$base-font-serif-style:				'normal' !default;
+	// font-featured
+	$base-font-featured: 				'Droid Serif' !default;
+	$base-font-featured-local-path:		'../fonts/droidserif-italic';
+	$base-font-featured-weight:			'400' !default;
+	$base-font-featured-style:			'italic' !default;
+
+	// hr tag
+	$hr-tag-margin:						1.3em 0;
+	$hr-tag-position:					-1.95rem;
+
+	// text
+	$text-shadow:						1px 1px 0 rgba(0, 0, 0, 0.2);
+	$text-shadow-strong:				1px 1px 1px rgba(0, 0, 0, 0.6);
+	$text-embed:						1px 1px 0 #fff;
+
+	// page header
+	$page-header-margin:				0 0 .5em;
+	$page-header-padding:				0 0 .5em;
+	$page-header-border-bottom:			1px solid $base-border-color;
+	$page-header-box-shadow:			0 1px 0 shade($base-body-bg, 10%) !default;
+
+  // list
+
+    // vertical
+    $list-bordered-line-height:			1.15em;
+    $list-bordered-padding-y:			.4rem;
+    $list-bordered-padding-x:			0;
+    $list-bordered-padding-sm-y:		.2rem;
+    $list-bordered-padding-sm-x:		0;
+    $list-bordered-padding-lg-y:		.8rem;
+    $list-bordered-padding-lg-x:		0;
+    $list-bordered-child-left:			1.2rem;
+	// border
+	$list-bordered-border:				1px dotted $base-border-color;
+	$list-bordered-inline-border:		1px dotted $base-border-color;
+    // inline
+    $list-inline-line-height:			1.15em;
+    $list-inline-padding-y:				0;
+    $list-inline-padding-x:				.5rem;
+    $list-inline-padding-sm-y:			0;
+    $list-inline-padding-sm-x:			.3rem;
+    $list-inline-padding-lg-y:			0;
+    $list-inline-padding-lg-x:			1rem;
+    $list-inline-child-left:			1.2rem;
+    // striped
+    $list-striped-padding:				$list-bordered-padding-y;
+    $list-striped-padding-sm:			$list-bordered-padding-sm-y;
+    $list-striped-padding-lg:			$list-bordered-padding-lg-y;
+
+// IMAGES
+
+	$figure-text-over-padding:			.3em .5em !default;
+	$figure-text-over-size:				.9em;
+	$figure-text-over-line-height:		1.15em;
+	$figure-text-over-color:			$base-color-white;
+	$figure-text-over-bg:				rgba(0, 0, 0, .8);
+
+// TABLE
+
+ 	$base-table-line-height:			1.25 !default;
+
+// FORMS
+
+	// fieldset
+	$fieldset-padding-top:				2.5em;
+	$fieldset-padding:					1.5em;
+	$fieldset-padding-sm:				1em;
+	$fieldset-border:					1px solid $base-border-color;
+	// -> bordered
+	$fieldset-bordered-form-actions-bg:	$base-gray-100;
+	// -> embed
+	$fieldset-embed-bg:					$base-gray-100;
+	$fieldset-embed-border:				$fieldset-border;
+	$fieldset-embed-shadow:				inset 1px 1px 5px rgba(0,0,0,0.06);
+	$fieldset-embed-outline:			4px solid $base-body-bg;
+	$fieldset-embed-legend-bg:			$base-body-bg;
+	$fieldset-embed-legend-padding:		0 1rem 0.3rem;
+	$fieldset-embed-legend-font-size:	.86rem;
+	$fieldset-embed-legend-color:		$base-color-primary;
+	$fieldset-embed-legend-radius:		0 0 $base-radius-default $base-radius-default;
+	$fieldset-embed-legend-shadow:		1px 1px 2px rgba(0,0,0,0.06);
+	$fieldset-embed-striped-color:		#fff; // optional bootstrap striped color
+
+	// Field Icon
+	$base-field-icon-padding-left:		2em !default;
+	$base-field-icon-position:			0.4em !default;
+	$base-field-sm-icon-position:		0.35em !default; // field-sm
+	$base-field-lg-icon-position:		0.6em 0.8em !default; // field-lg
+	// date
+	$base-field-date-icon:				url("../images/core/form-icon-date.png");
+	// search
+	$base-field-search-icon:			url("../images/core/form-icon-search.png");
+
+	// NAVS
+
+	// nav menu
+	$nav-menu-main-item-color:			$base-link-color;
+	$nav-menu-main-item-hover-color:	$base-link-hover-color;
+	$nav-menu-main-item-padding:		$base-input-padding-y $base-input-padding-x !default;
+	$nav-menu-indicator-padding:		0 .5em !default; // child-reveal
+	$nav-menu-child-indicator-mr-1:		8px !default; // child-reveal
+	$nav-menu-child-minWidth:			14rem;
+	$nav-menu-child-padding:			0.2rem 0;
+	$nav-menu-child-margin:				0;
+	$nav-menu-child-border:				1px solid $base-border-color;
+	$nav-menu-child-background:			$base-body-bg;
+	$nav-menu-child-item-padding:		.35em $base-input-padding-x !default;
+	$nav-menu-child-top:				-2.25em !default; // Seta o alinhamento do submenu
+	// Stacked -> Menu vertical
+	$nav-stacked-main-item-padding:		$nav-menu-child-item-padding !default;
+	$nav-stacked-indicator-padding:		0px .7em !default; // child-reveal
+	$nav-stacked-item-opened-bg:		$base-body-bg !default;
+	$nav-stacked-child-padding:			.1rem 0 .1rem .8rem !default;
+	$nav-stacked-child-margin:			0;
+	$nav-stacked-child-border:			1px solid $base-border-color;
+	$nav-stacked-child-background:		$base-body-bg;
+	$nav-stacked-child-item-padding:	$nav-stacked-main-item-padding !default;
+
+// ÍCONS
+
+	$baseicon-field-required:			'\e87a'; //base-icon-right-dir
+	$baseicon-iconTip:					'\e9d3'; //base-icon-help-circled
+	$baseicon-menu-child:				'\e87a'; //base-icon-right-dir
+	$baseicon-menu-child-reverse:		'\e879'; //base-icon-left-dir
+	$baseicon-menu-child-opened:		'\e877'; //base-icon-down-dir
+	// btn-icon
+	$checkbox-icon-active:				'\e9c3'; // base-icon-ok
+	$checkbox-icon-inactive:			'\e9c7'; // base-icon-cancel
+
+// UTILITIES
+
+	// box shadow
+	$base-shadow: 						0 0 3px 1px rgba(0,0,0,0.15);
+	$base-shadow-sm:					0 0 3px 0 rgba(0,0,0,0.15);
+	$base-shadow-lg:					0 0 8px 1px rgba(0,0,0,0.15);
+	$base-shadow-xl:					0 0 12px 2px rgba(0,0,0,0.15);
+	$base-shadow-to-left:				-1px 1px 3px rgba(0,0,0,0.1);
+	$base-shadow-to-right:				1px 1px 3px rgba(0,0,0,0.1);
+
+	// loader
+	$loader-bg:							transparent;
+	$loader-full-bg:					#fff;
+	$loader-indicator-top:				42px;

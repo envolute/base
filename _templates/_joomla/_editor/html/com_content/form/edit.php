@@ -11,9 +11,11 @@ defined('_JEXEC') or die;
 
 JHtml::_('behavior.tabstate');
 JHtml::_('behavior.keepalive');
-JHtml::_('behavior.calendar');
 JHtml::_('behavior.formvalidator');
+JHtml::_('formbehavior.chosen', '#jform_catid', null, array('disable_search_threshold' => 0));
 JHtml::_('formbehavior.chosen', 'select');
+$this->tab_name = 'com-content-form';
+$this->ignore_fieldsets = array('image-intro', 'image-full', 'jmetadata', 'item_associations');
 
 // Create shortcut to parameters.
 $params = $this->state->get('params');
@@ -37,7 +39,7 @@ JFactory::getDocument()->addScriptDeclaration("
 	}
 ");
 ?>
-<div class="edit item-page<?php echo $this->pageclass_sfx; ?>">
+<div class="edit item-page">
 	<?php if ($params->get('show_page_heading')) : ?>
 	<div class="page-header">
 		<h1>
@@ -64,6 +66,9 @@ JFactory::getDocument()->addScriptDeclaration("
 			</div>
 			<?php endif; ?>
 		</div>
+		<?php if ($this->captchaEnabled) : ?>
+			<?php echo $this->form->renderField('captcha'); ?>
+		<?php endif; ?>
 		<fieldset>
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#editor" data-toggle="tab"><?php echo JText::_('COM_CONTENT_ARTICLE_CONTENT') ?></a></li>
@@ -141,10 +146,14 @@ JFactory::getDocument()->addScriptDeclaration("
 								<?php endif; ?>
 							</div>
 							<div class="row-fluid">
-								<div class="span4">
-									<?php echo $this->form->renderField('alias'); ?>
-								</div>
-								<div class="span8 input-full">
+								<?php if (is_null($this->item->id)) : ?>
+									<div class="span4">
+										<?php echo $this->form->renderField('alias'); ?>
+									</div>
+									<div class="span8 input-full">
+								<?php else : ?>
+									<div class="span12 input-full">
+								<?php endif; ?>
 									<?php echo $this->form->renderField('tags'); ?>
 								</div>
 							</div>

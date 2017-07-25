@@ -95,6 +95,9 @@ textarea {
 .chzn-container-single .chzn-single div b {
   background-position: 0px 4px;
 }
+.well.input-image {
+  margin-top: 40px;
+}
 /*DROPPICS*/
 span.editable {
   line-height: 20px;

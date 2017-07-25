@@ -44,6 +44,7 @@ var tmplCSS     = tmpl + '/css';
       core+'/bootstrap/extensions/js/browser/SmoothScroll.js',
       // Buttons
       core+'/bootstrap/extensions/js/buttons/btn-rippleEffect.js',
+      core+'/bootstrap/extensions/js/buttons/btn-toggleState.js',
       // Layout
       core+'/bootstrap/extensions/js/layout/alertBalloon.js',
       core+'/bootstrap/extensions/js/layout/loader.js',
@@ -81,7 +82,6 @@ var tmplCSS     = tmpl + '/css';
       // Buttons
       core+'/bootstrap/extensions/js/buttons/btn-checkState.js',
       core+'/bootstrap/extensions/js/buttons/btn-fileAction.js',
-      core+'/bootstrap/extensions/js/buttons/btn-toggleState.js',
       // Form Fields
       core+'/bootstrap/extensions/js/forms/check-autoTab.js',
       core+'/bootstrap/extensions/js/forms/field-cep.js',

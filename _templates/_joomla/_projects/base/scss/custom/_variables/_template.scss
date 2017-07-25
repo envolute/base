@@ -33,6 +33,8 @@
 	// theme
 	$base-color-primary:				#5F7599;
 	$base-color-primary-dark:			mix(black, $base-color-primary, 15%);
+	$base-color-primary-darker:			mix(black, $base-color-primary, 50%);
+	$base-color-primary-darkest:		mix(black, $base-color-primary, 70%);
 	$base-color-primary-light:			mix(white, $base-color-primary, 15%);
 	$base-color-primary-lighter:		mix(white, $base-color-primary, 50%);
 	$base-color-primary-lightest:		mix(white, $base-color-primary, 70%);
@@ -42,7 +44,7 @@
 	$base-border-color:					$base-gray-300;
 	$base-border-color-dark:			$base-gray-500;
 	$base-border-color-light:			$base-gray-200;
-	$base-border-color-live:			shade($base-color-live, 15%) !default;
+	$base-border-color-live:			mix(black, $base-color-live, 15%) !default;
 
 // BOOTSTRAP DEFINITIONS
 
@@ -101,41 +103,56 @@
 	// text
 	$text-shadow:						1px 1px 0 rgba(0, 0, 0, 0.2);
 	$text-shadow-strong:				1px 1px 1px rgba(0, 0, 0, 0.6);
-	$text-embed:						1px 1px 0 #fff;
+	$text-embed:						1px 1px 0 rgba(255, 255, 255, 0.6);
+	$text-embed-inverse:				-1px -1px 0 rgba(0, 0, 0, 0.6);
 
 	// page header
 	$page-header-margin:				0 0 .5em;
 	$page-header-padding:				0 0 .5em;
+	$page-header-font-size:				1.3rem;
+	$page-header-line-height:			1.3rem;
 	$page-header-border-bottom:			1px solid $base-border-color;
-	$page-header-box-shadow:			0 1px 0 shade($base-body-bg, 10%) !default;
+	$page-header-box-shadow:			none !default;
+
+	// text sizes
+	$base-text-xs:						.8rem;
+	$base-text-sm:						.9rem;
+	$base-text-md:						$base-font-size-root; // Geralmente de 13 à 16px
+	$base-text-lg:						1.3rem;
+	$base-text-xl:						1.7rem;
 
   // list
 
     // vertical
-    $list-bordered-line-height:			1.15em;
-    $list-bordered-padding-y:			.4rem;
-    $list-bordered-padding-x:			0;
-    $list-bordered-padding-sm-y:		.2rem;
-    $list-bordered-padding-sm-x:		0;
-    $list-bordered-padding-lg-y:		.8rem;
-    $list-bordered-padding-lg-x:		0;
-    $list-bordered-child-left:			1.2rem;
+    $set-list-line-height:				1.15em;
+    $set-list-padding-y:				.5rem;
+    $set-list-padding-x:				0;
+    $set-list-padding-sm-y:				.3rem;
+    $set-list-padding-sm-x:				0;
+    $set-list-padding-lg-y:				1rem;
+    $set-list-padding-lg-x:				0;
+    $set-list-padding-xl-y:				1.5rem;
+    $set-list-padding-xl-x:				0;
+    $set-list-child-left:				1.2rem;
 	// border
-	$list-bordered-border:				1px dotted $base-border-color;
-	$list-bordered-inline-border:		1px dotted $base-border-color;
+	$set-list-border:					1px dotted $base-border-color;
+	$set-list-inline-border:			1px dotted $base-border-color;
     // inline
-    $list-inline-line-height:			1.15em;
-    $list-inline-padding-y:				0;
-    $list-inline-padding-x:				.5rem;
-    $list-inline-padding-sm-y:			0;
-    $list-inline-padding-sm-x:			.3rem;
-    $list-inline-padding-lg-y:			0;
-    $list-inline-padding-lg-x:			1rem;
-    $list-inline-child-left:			1.2rem;
+    $set-list-inline-line-height:		1.15em;
+    $set-list-inline-padding-y:			0;
+    $set-list-inline-padding-x:			.5rem;
+    $set-list-inline-padding-sm-y:		0;
+    $set-list-inline-padding-sm-x:		.3rem;
+    $set-list-inline-padding-lg-y:		0;
+    $set-list-inline-padding-lg-x:		1rem;
+    $set-list-inline-padding-xl-y:		0;
+    $set-list-inline-padding-xl-x:		1.5rem;
+    $set-list-inline-child-left:		1.2rem;
     // striped
-    $list-striped-padding:				$list-bordered-padding-y;
-    $list-striped-padding-sm:			$list-bordered-padding-sm-y;
-    $list-striped-padding-lg:			$list-bordered-padding-lg-y;
+    $list-striped-padding:				$set-list-padding-y;
+    $list-striped-padding-sm:			$set-list-padding-sm-y;
+    $list-striped-padding-lg:			$set-list-padding-lg-y;
+    $list-striped-padding-xl:			$set-list-padding-xl-y;
 
 // IMAGES
 
@@ -181,30 +198,41 @@
 	// search
 	$base-field-search-icon:			url("../images/core/form-icon-search.png");
 
-	// NAVS
+// NAVS
 
 	// nav menu
 	$nav-menu-main-item-color:			$base-link-color;
 	$nav-menu-main-item-hover-color:	$base-link-hover-color;
-	$nav-menu-main-item-padding:		$base-input-padding-y $base-input-padding-x !default;
+	$nav-menu-main-item-hover-bg:		$base-gray-200;
+	$nav-menu-main-item-padding-y:		$base-input-padding-y !default;
+	$nav-menu-main-item-padding-x:		$base-input-padding-x !default;
 	$nav-menu-indicator-padding:		0 .5em !default; // child-reveal
 	$nav-menu-child-indicator-mr-1:		8px !default; // child-reveal
 	$nav-menu-child-minWidth:			14rem;
-	$nav-menu-child-padding:			0.2rem 0;
+	$nav-menu-child-padding:			0;
 	$nav-menu-child-margin:				0;
-	$nav-menu-child-border:				1px solid $base-border-color;
-	$nav-menu-child-background:			$base-body-bg;
-	$nav-menu-child-item-padding:		.35em $base-input-padding-x !default;
-	$nav-menu-child-top:				-2.25em !default; // Seta o alinhamento do submenu
+	$nav-menu-child-border:				none;
+	$nav-menu-child-bg:					$base-gray-200;
+	$nav-menu-child-shadow:				2px 3px 3px rgba(0, 0, 0, 0.2);
+	$nav-menu-child-item-padding:		.35em $nav-menu-main-item-padding-x !default;
+	$nav-menu-child-item-hover-bg:		$base-gray-300;
+	$nav-menu-child-top:				-2.55em !default; // Seta o alinhamento do submenu
 	// Stacked -> Menu vertical
 	$nav-stacked-main-item-padding:		$nav-menu-child-item-padding !default;
 	$nav-stacked-indicator-padding:		0px .7em !default; // child-reveal
-	$nav-stacked-item-opened-bg:		$base-body-bg !default;
 	$nav-stacked-child-padding:			.1rem 0 .1rem .8rem !default;
 	$nav-stacked-child-margin:			0;
 	$nav-stacked-child-border:			1px solid $base-border-color;
-	$nav-stacked-child-background:		$base-body-bg;
+	$nav-stacked-child-bg:				transparent;
 	$nav-stacked-child-item-padding:	$nav-stacked-main-item-padding !default;
+
+// PORTLET
+
+	$portlet-border-color: $base-border-color !default;
+	$portlet-bg: transparent !default;
+	$portlet-shadow: 0 0 4px rgba(0,0,0,0.1);
+	$portlet-header-border: 2px solid !default;
+	$portlet-header-font-weight: bold !default;
 
 // ÍCONS
 
@@ -220,10 +248,10 @@
 // UTILITIES
 
 	// box shadow
-	$base-shadow: 						0 0 3px 1px rgba(0,0,0,0.15);
-	$base-shadow-sm:					0 0 3px 0 rgba(0,0,0,0.15);
-	$base-shadow-lg:					0 0 8px 1px rgba(0,0,0,0.15);
-	$base-shadow-xl:					0 0 12px 2px rgba(0,0,0,0.15);
+	$base-shadow: 						0 0 3px 1px rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.2);
+	$base-shadow-sm:					0 0 3px 0 rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.2);
+	$base-shadow-lg:					0 0 10px 2px rgba(0,0,0,0.2), 0 0 1px rgba(0,0,0,0.2);
+	$base-shadow-xl:					0 0 15px 2px rgba(0,0,0,0.2), 0 0 1px 1px rgba(0,0,0,0.2);
 	$base-shadow-to-left:				-1px 1px 3px rgba(0,0,0,0.1);
 	$base-shadow-to-right:				1px 1px 3px rgba(0,0,0,0.1);
 

@@ -272,14 +272,14 @@ $display-line-height: $headings-line-height !default;
 $lead-font-size:   1.25rem !default;
 $lead-font-weight: 300 !default;
 
-$small-font-size: 80% !default;
+$small-font-size: .8rem !default; // -> {CUSTOM: 80%}
 
 $text-muted: $gray-600 !default;
 
 $blockquote-small-color:  $gray-600 !default;
 $blockquote-font-size:    ($font-size-base * 1.25) !default;
 
-$hr-border-color: rgba($black,.1) !default;
+$hr-border-color: $base-border-color!important; // -> {CUSTOM: rgba($black,.1) !default}
 $hr-border-width: $border-width !default;
 
 $mark-padding: .2em !default;
@@ -787,7 +787,7 @@ $breadcrumb-padding-y:          0 !default; // -> {CUSTOM: .75rem}
 $breadcrumb-padding-x:          0 !default; // -> {CUSTOM: 1rem}
 $breadcrumb-item-padding:       $base-input-padding-y !default; // -> {CUSTOM: .5rem}
 
-$breadcrumb-bg:                 $gray-200 !default;
+$breadcrumb-bg:                 transparent !default; // -> {CUSTOM: $gray-200}
 $breadcrumb-divider-color:      $gray-600 !default;
 $breadcrumb-active-color:       $gray-600 !default;
 $breadcrumb-divider:            "\00BB" !default; // -> {CUSTOM: "/"}

@@ -18,8 +18,8 @@
 	// PUBLISH INFO
 
 		.item-page #item-publish-info {
-			margin-bottom: map-get($spacers, 4);
-			padding-bottom: map-get($spacers, 2);
+			margin-bottom: 2em;
+			padding-bottom: .5em;
 			border-bottom: 1px solid $base-border-color;
 		}
 
@@ -32,12 +32,12 @@
 			.item-page .item-image.to-left {
 				width: 42%;
 				float: left;
-				margin: 0 2% 1em 0;
+				margin: .25em 2% 1em 0;
 			}
 			.item-page .item-image.to-right {
 				width: 42%;
 				float: right;
-				margin: 0 0 1em 2%;
+				margin: .25em 0 1em 2%;
 			}
 		}
 		// CAPTION -> legenda da imagem
@@ -52,7 +52,7 @@
 	// ITEM TOC
 
 		.pagenavcounter {
-			margin-bottom: map-get($spacers, 3);
+			margin-top: -(map-get($spacers, 3));
 		}
 
 	// TAGS -> lista de tags do conteúdo
@@ -76,66 +76,8 @@
 	// LINKS -> listagem de links do conteúdo
 	.item-page .content-links { margin: map-get($spacers, 4) 0; }
 
-	// PAGER -> links para navegação entre as 'PÁGINAS'
-	.item-page .pager:not(.pagenav) li {
-		min-width: 60px;
-		padding: 6px 8px;
-		margin-left: 2px;
-		font-size: $base-text-sm;
-		color: $gray-600;
-		border: 1px solid $base-border-color;
-		@if $base-enable-rounded { border-radius: $border-radius; }
-		@else { border-radius: 0; }
-		background-color: $gray-400;
-	}
-	.item-page .pager:not(.pagenav) li a {
-		float: none;
-		padding: 0;
-		border: 0;
-		background-color: transparent;
-	}
-	.item-page .pager:not(.pagenav) li a:hover { background-color: transparent; }
-
-	// DESIGN: PAGENAV -> links para navegação entre 'ARTIGOS'
-	.item-page .pagenav-before { margin: 0 0 $base-space; }
-	.item-page .item-actions + .pagenav-before { margin-top: -$base-space; }
-	.media-md .item-page .pagenav-before { display: none; }
-
-	.item-page .pagenav-after { margin: $base-space 0; }
-	.media-md .item-page .pagenav-after { margin-top: $base-space * 2; }
-
-	.item-page .pagenav {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-	}
-	.item-page .pagenav-before li { position: relative; }
-	.item-page .pagenav li.previous { float:left; }
-	.item-page .pagenav li.next {
-		left: auto!important;
-		right: 0;
-		float:right;
-	}
-	.item-page .pagenav li a {
-		display: block;
-		width: 30px;
-		text-indent: -9999px;
-		border-width: 0;
-		background: url(../images/core/arrows.png) no-repeat 1px -170px;
-		opacity: 0.2;
-		transition: opacity .15s ease-in-out;
-		z-index:999;
-	}
-	.item-page .pagenav li.next a { background-position: -170px -170px; }
-	.item-page .pagenav li a:hover {
-		background-color: transparent!important;
-		opacity:0.7;
-	}
-
-	// setas laterais
-	@media (min-width: 1300px) {
-		body:not(.fullScreen) .item-page .pagenav { margin: 0; }
-		body:not(.fullScreen) .item-page .pagenav li { position: fixed; top: 45%; left: 0; z-index: 99 }
-		body:not(.fullScreen) .item-page .pagenav li a { width: 60px; height: 88px; background-position: 5px 1px; }
-		body:not(.fullScreen) .item-page .pagenav li.next a { background-position: -145px 1px; }
+	// PAGENAV -> links de navegação entre artigos
+	.item-page .pagenav .btn {
+		min-width: 70px;
+		margin: 0 5px;
 	}

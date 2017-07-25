@@ -79,7 +79,7 @@
 	// mostra/esconde o menu principal para mostrar o menu mobile
 	// #{$base-break-down}.isMM .mainmenu { display: none; }
 
-	// MENU PRINCIPAL -> NÍVEL 1
+	// NÍVEL 1
 
 		// Item container <li>
 		.mainmenu.nav.menu > li { }
@@ -106,7 +106,7 @@
 		.mainmenu.nav.menu:not(.nav-stacked) li > a.active // em caso de scroll 'go-to'
 		{
 			color: $base-color-live;
-			background-color: mix(white, $gray-200, 20%);
+			background-color: mix(white, $gray-200, 40%);
 		}
 
 	// SUB MENU
