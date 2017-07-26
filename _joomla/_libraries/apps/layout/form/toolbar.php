@@ -19,7 +19,7 @@
   </div>
   <div id="<?php echo $APPTAG?>-fieldState" class="col-sm">
     <div class="form-group">
-      <span id="<?php echo $APPTAG?>-state-group" class="btn-group w-full" data-toggle="buttons">
+      <span id="<?php echo $APPTAG?>-state-group" class="btn-group w-100" data-toggle="buttons">
         <label class="col btn btn-sm btn-default btn-active-success strong">
           <span class="base-icon-unset"></span>
           <input type="radio" name="state" id="<?php echo $APPTAG?>-state-1" value="1" />

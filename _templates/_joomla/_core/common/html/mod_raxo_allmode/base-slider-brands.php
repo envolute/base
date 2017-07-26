@@ -53,7 +53,6 @@ $app = JFactory::getApplication();
 			// Define a largura do item "slideWidth", de acordo com o
 			// "tamanho do container" dividido pelo número de itens visíveis "maxSlides" menos o espaço entre os itens
 			var iW'.$module->id.' = (cW'.$module->id.' / mI'.$module->id.') - iS'.$module->id.';
-			console.log(iW'.$module->id.'+" / "+cW'.$module->id.');
 			// Chamada do Slider
 			jQuery("#allmode-slider-brands-'.$module->id.'").bxSlider({
 				mode: "horizontal",

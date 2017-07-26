@@ -172,8 +172,8 @@ class XmapHtmlDisplayer extends XmapDisplayer {
     function endMenu(&$menu) {
         $sitemap=&$this->sitemap;
         $this->_closeItem='';
-        if( $sitemap->params->get('columns')> 1 ) {
+        //if( $sitemap->params->get('columns') > 1 ) {
             echo "</div>\n";
-        }
+        //}
     }
 }

@@ -10,3 +10,8 @@
 		right: 3px;
 		z-index: 1;
 	}
+
+	.modal.show {
+		-webkit-transform: translateZ(0);
+		        transform: translateZ(0);
+	}
