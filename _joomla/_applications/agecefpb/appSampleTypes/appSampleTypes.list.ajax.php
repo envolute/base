@@ -25,32 +25,32 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	endif;
 
 	//joomla get request data
-	$input      = $app->input;
+	$input		= $app->input;
 
 	// params requests
-	$APPTAG			= $input->get('aTag', $APPTAG, 'str');
-	$RTAG				= $input->get('rTag', $APPTAG, 'str');
-	$oCHL				= $input->get('oCHL', 0, 'bool');
-	$oCHL				= $_SESSION[$RTAG.'OnlyChildList'] ? $_SESSION[$RTAG.'OnlyChildList'] : $oCHL;
-	$rNID       = $input->get('rNID', '', 'str');
-	$rNID				= !empty($_SESSION[$RTAG.'RelListNameId']) ? $_SESSION[$RTAG.'RelListNameId'] : $rNID;
-	$rID      	= $input->get('rID', 0, 'int');
-	$rID				= !empty($_SESSION[$RTAG.'RelListId']) ? $_SESSION[$RTAG.'RelListId'] : $rID;
+	$APPTAG		= $input->get('aTag', $APPTAG, 'str');
+	$RTAG		= $input->get('rTag', $APPTAG, 'str');
+	$oCHL		= $input->get('oCHL', 0, 'bool');
+	$oCHL		= $_SESSION[$RTAG.'OnlyChildList'] ? $_SESSION[$RTAG.'OnlyChildList'] : $oCHL;
+	$rNID		= $input->get('rNID', '', 'str');
+	$rNID		= !empty($_SESSION[$RTAG.'RelListNameId']) ? $_SESSION[$RTAG.'RelListNameId'] : $rNID;
+	$rID		= $input->get('rID', 0, 'int');
+	$rID		= !empty($_SESSION[$RTAG.'RelListId']) ? $_SESSION[$RTAG.'RelListId'] : $rID;
 
 	// get current user's data
-	$user = JFactory::getUser();
-	$groups = $user->groups;
+	$user		= JFactory::getUser();
+	$groups		= $user->groups;
 
 	// verifica o acesso
-	$hasGroup = array_intersect($groups, $cfg['groupId']['viewer']); // se está na lista de grupos permitidos
-	$hasAdmin = array_intersect($groups, $cfg['groupId']['admin']); // se está na lista de administradores permitidos
+	$hasGroup	= array_intersect($groups, $cfg['groupId']['viewer']); // se está na lista de grupos permitidos
+	$hasAdmin	= array_intersect($groups, $cfg['groupId']['admin']); // se está na lista de administradores permitidos
 
 	// database connect
-	$db = JFactory::getDbo();
+	$db		= JFactory::getDbo();
 
 	// GET DATA
-	$noReg = true;
-	$query = 'SELECT *';
+	$noReg	= true;
+	$query	= 'SELECT *';
 	if(!empty($rID) && $rID !== 0) :
 		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
 			$query .= ' FROM '.
@@ -70,21 +70,19 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$noReg = false;
 		endif;
 	endif;
-	$query .= ' ORDER BY '. $db->quoteName('id') .' DESC';
+	$query	.= ' ORDER BY '. $db->quoteName('id') .' DESC';
 	try {
-
 		$db->setQuery($query);
 		$db->execute();
 		$num_rows = $db->getNumRows();
 		$res = $db->loadObjectList();
-
 	} catch (RuntimeException $e) {
-		 echo $e->getMessage();
-		 return;
+		echo $e->getMessage();
+		return;
 	}
 
 	if($num_rows) : // verifica se existe
-		$html .= '<ul class="list-unstyled bordered list-striped list-lg list-hover m-0">';
+		$html .= '<ul class="set-list bordered list-striped list-hover">';
 		foreach($res as $item) {
 
 			if($cfg['hasUpload']) :

@@ -51,7 +51,7 @@ $htmlFilter = '
 			<div class="row">
 				<div class="col-sm-6">
 					<div class="form-group">
-            <input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm field-search w-full" />
+						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm field-search w-full" />
 					</div>
 				</div>
 				<div class="col-sm-2">
@@ -67,8 +67,8 @@ $htmlFilter = '
 					<div class="form-group">
 						<span class="btn-group">
 							<button type="submit" class="btn btn-sm btn-primary">
-                <span class="base-icon-search btn-icon"></span> '.JText::_('TEXT_SEARCH').'
-              </button>
+								<span class="base-icon-search btn-icon"></span> '.JText::_('TEXT_SEARCH').'
+							</button>
 							<a href="'.JURI::current().'" class="base-icon-cancel-circled btn btn-sm btn-danger hasTooltip" data-animation="false" title="'.JText::_('TEXT_CLEAR').' '.JText::_('TEXT_FILTER').'"></a>
 						</span>
 					</div>

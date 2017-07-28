@@ -11,8 +11,13 @@ jQuery(function() {
 				// CHECK STATE
 				btnCheckState();
 
-				// FILE ACTION
+			// FILE
+
+				// BUTTON FILE ACTION
 				btnFileAction();
+
+				// IMAGE FILE ACTION
+				imageFileAction();
 
 			// INPUTS
 			// -> CONTROLADORES DE EVENTOS

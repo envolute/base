@@ -69,7 +69,7 @@ jQuery(function() {
 
 		// ON FOCUS
 		// campo que recebe o focus no carregamento
-		var firstField = type_id;
+		var firstField		= name;
 
 		// ON MODAL OPEN -> Ações quando o modal do form é aberto
 		popup.on('shown.bs.modal', function () {
@@ -265,7 +265,7 @@ jQuery(function() {
 						place_birth.val(item.place_birth);
 						marital_status.val(item.marital_status).trigger("chosen:updated"); // select
 						price.val(item.price);
-						selectRadio(status, item.status); // radio
+						checkOption(status, item.status); // radio
 						// mostra/esconde o campo 'motivo'
 						if(item.status == 1) jQuery('#status_desc-group').addClass('hide');
 						else jQuery('#status_desc-group').removeClass('hide');

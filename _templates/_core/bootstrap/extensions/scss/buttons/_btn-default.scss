@@ -3,5 +3,5 @@
 // Porém, ela é mentida para que '.btn-scondary' possa ser mais flexível
 // Assim, ela entrar como uma extensão...
 .btn-default {
-  @include button-variant($base-gray-200, $base-gray-200);
+  @include button-variant($base-bg-muted, $base-border-color);
 }

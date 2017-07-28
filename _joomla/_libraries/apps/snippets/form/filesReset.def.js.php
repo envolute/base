@@ -6,19 +6,23 @@ var s = (typeof single !== "null" && typeof single !== "undefined") ? single : f
 <?php
 // remove dinamic files
 if($cfg['dinamicFiles']) :
-  echo '
-  if(!s) {
-    '.$APPTAG.'IndexFile = '.$APPTAG.'IndexFileInit;
-    filesGroup.empty();
-  }
-  ';
+	echo '
+	if(!s) {
+		'.$APPTAG.'IndexFile = '.$APPTAG.'IndexFileInit;
+		filesGroup.empty();
+	}
+	';
 endif;
 ?>
-inputFiles.val('').prev('.btn-group').each(function() {
-  var el = jQuery(this);
-  // Reset selected button
-  el.removeClass('has-error');
-  el.find('.file-action').removeClass('active');
-  // Remove file info/action buttons
-  el.find('a').remove();
+inputFiles.val('').each(function() {
+	var el = jQuery(this);
+	var gr = jQuery(this).prev('.btn-group');
+	// Reset selected button
+	gr.removeClass('has-error');
+	var btn = gr.find('.file-action');
+	var img = gr.closest('.image-file').find('.image-action');
+	if(btn.length) btnFileDefault(el);
+	else if(img.length) fieldImageDefault(el);
+	// Remove file info/action buttons
+	gr.find('a').remove();
 });

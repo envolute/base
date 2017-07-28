@@ -2,12 +2,8 @@
 
 // Variáveis da BASE
 @import "custom/_variables/template";
-// Bootstrap
-@import "custom/_imports/bootstrap";
 // Variáveis específicas do projeto
 @import "custom/_variables/custom";
-// Customizações do Bootstrap
-@import "custom/_imports/extensions";
 
 // Arquivos de customização
 @import "custom/_imports/app";

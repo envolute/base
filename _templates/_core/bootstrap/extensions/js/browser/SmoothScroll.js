@@ -7,14 +7,14 @@ var
   mult = 0, // how fast do we scroll
   dir = 0, // 1 = scroll down, -1 = scroll up
   steps = 50, // how many steps in animation
-  length = 15; // how long to animate
+  length = 20; // how long to animate
 function MouseWheelHandler(e) {
   e.preventDefault(); // prevent default browser scroll
   clearInterval(interval); // cancel previous animation
   ++mult; // we are going to scroll faster
   var delta = -Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
   if(dir!=delta) { // scroll direction changed
-    mult = 5; // start slowly
+    mult = 2; // start slowly
     dir = delta;
   }
   for(var tgt=e.target; tgt!=document.documentElement; tgt=tgt.parentNode) {

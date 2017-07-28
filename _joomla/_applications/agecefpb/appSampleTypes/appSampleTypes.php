@@ -32,12 +32,12 @@ jQuery(function() {
 	?>
 
 	// APP FIELDS
-	var name 					= jQuery('#<?php echo $APPTAG?>-name');
-	var description		= jQuery('#<?php echo $APPTAG?>-description');
+	var name				= jQuery('#<?php echo $APPTAG?>-name');
+	var description			= jQuery('#<?php echo $APPTAG?>-description');
 
 	// PARENT FIELD -> Select
 	// informe, se houver, o campo que representa a chave estrangeira principal
-	var parentFieldId			= null;
+	var parentFieldId		= null;
 	var parentFieldGroup	= elementExist(parentFieldId) ? parentFieldId.closest('[class*="col-"]') : null;
 
 	// GROUP RELATION'S BUTTONS -> grupo de botões de relacionamentos no form
@@ -48,7 +48,7 @@ jQuery(function() {
 
 		// ON FOCUS
 		// campo que recebe o focus no carregamento
-		var firstField = name;
+		var firstField		= name;
 
 		// ON MODAL OPEN -> Ações quando o modal do form é aberto
 		popup.on('shown.bs.modal', function () {
@@ -211,11 +211,8 @@ jQuery(function() {
 						?>
 
 						// App Fields
-						type_id.val(item.type_id).trigger("chosen:updated"); // selects;
-						user_id.val(item.user_id).trigger("chosen:updated"); // selects;
 						name.val(item.name);
 						description.val(item.description);
-						checkOption(access, item.access);
 
 						<?php // Closure Actions
 						require(JPATH_CORE.DS.'apps/snippets/form/loadEdit.end.js.php');

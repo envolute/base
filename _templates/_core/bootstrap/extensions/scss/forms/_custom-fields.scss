@@ -1,42 +1,73 @@
 // CUSTOM FIELDS
 // Campos personalizados
 
-  // UPPER/LOWER CASE
-  input.upper{ text-transform: uppercase!important; }
-  input.lower{ text-transform: lowercase!important; }// DATE
+	// UPPER/LOWER CASE
+	input.upper{ text-transform: uppercase!important; }
+	input.lower{ text-transform: lowercase!important; }
 
-  // FIELD PRICE
-  // Campo para valor financeiro. Ex: 0,00
-  .field-price input, input.field-price { text-align:right; }
+	// FIELD PRICE
+	// Campo para valor financeiro. Ex: 0,00
+	.field-price input, input.field-price { text-align:right; }
 
-  // ICON FIELDS
-  // Campos com ícones indicativos
-  input.field-search, // Campo de busca
-  input.ajax-loader // Ícone de carregamento
-  {
-    padding-left: $base-field-icon-padding-left !important;
-    background-position: $base-field-icon-position;
-    background-repeat: no-repeat!important;
-  }
-  input.field-search.form-control-sm,
-  input.ajax-loader.form-control-sm {
-    background-position: $base-field-sm-icon-position;
-  }
-  input.field-search.form-control-lg,
-  input.ajax-loader.form-control-lg {
-    background-position: $base-field-lg-icon-position;
-  }
-  // Search Icon
-  input.field-search { background-image: #{$base-field-search-icon}; }
-  // Ajax Loader
-  // Está definido em '_PROJETO_/scss/custom/bootstrap/extensions/loader.scss'
+	// FIELD IMAGE FILE
+	.image-file {
+		position: relative;
+	}
+	.image-file .image-action {
+		position: relative;
+		display: block;
+		width: 100%;
+		padding-top: 100%; // mantém o aspect 1:1 => "quadrado" (altura = largura)
+		overflow: hidden;
+	}
+	.image-file .image-file-label {
+		position: absolute;
+		top: 3px;
+		left: 3px;
+		right: 3px;
+		bottom: 3px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		word-break: break-all;
+		background-position: center;
+		background-size: cover;
+	}
+	.image-file .btn-group {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+	}
 
-  // EDITOR
-  // Editor de texto
-  .trumbowyg-box, .trumbowyg-editor {
-    min-height: initial!important; // Permite definir uma altura
-    margin-bottom: 0!important;
-  }
-  .trumbowyg-textarea {
-    position: absolute;
-  }
+	// ICON FIELDS
+	// Campos com ícones indicativos
+	input.field-search, // Campo de busca
+	input.ajax-loader // Ícone de carregamento
+	{
+		padding-left: $base-field-icon-padding-left !important;
+		background-position: $base-field-icon-position;
+		background-repeat: no-repeat!important;
+	}
+	input.field-search.form-control-sm,
+	input.ajax-loader.form-control-sm {
+		background-position: $base-field-sm-icon-position;
+	}
+	input.field-search.form-control-lg,
+	input.ajax-loader.form-control-lg {
+		background-position: $base-field-lg-icon-position;
+	}
+	// Search Icon
+	input.field-search { background-image: #{$base-field-search-icon}; }
+	// Ajax Loader
+	// Está definido em '_PROJETO_/scss/custom/bootstrap/extensions/loader.scss'
+
+	// EDITOR
+	// Editor de texto
+	.trumbowyg-box, .trumbowyg-editor {
+		min-height: initial!important; // Permite definir uma altura
+		margin-bottom: 0!important;
+	}
+	.trumbowyg-textarea {
+		position: absolute;
+	}

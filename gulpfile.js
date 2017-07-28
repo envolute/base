@@ -81,13 +81,14 @@ var tmplCSS     = tmpl + '/css';
       core+'/bootstrap/extensions/js/forms/libs/jquery.price_format.min.js', // Formats the price in text fields
       // Buttons
       core+'/bootstrap/extensions/js/buttons/btn-checkState.js',
-      core+'/bootstrap/extensions/js/buttons/btn-fileAction.js',
       // Form Fields
       core+'/bootstrap/extensions/js/forms/check-autoTab.js',
       core+'/bootstrap/extensions/js/forms/field-cep.js',
       core+'/bootstrap/extensions/js/forms/field-cpf-cnpj.js',
       core+'/bootstrap/extensions/js/forms/field-date.js',
       core+'/bootstrap/extensions/js/forms/field-editor.js',
+      core+'/bootstrap/extensions/js/forms/field-fileAction.js',
+      core+'/bootstrap/extensions/js/forms/field-image.js',
       core+'/bootstrap/extensions/js/forms/field-ip.js',
       core+'/bootstrap/extensions/js/forms/field-phone.js',
       core+'/bootstrap/extensions/js/forms/field-price.js',

@@ -23,11 +23,9 @@
 		margin: (-$input-btn-padding-y-lg) $input-btn-padding-x-lg (-$input-btn-padding-y-lg) (-$input-btn-padding-x-lg);
 	}
 	// Contextual colors
-	.btn-link .btn-icon,
-	.btn-link.btn-icon::before,
 	.btn-default .btn-icon,
 	.btn-default.btn-icon::before {
-		border-right: 1px solid;
+		border-right: 1px solid $base-border-color;
 	}
 	.btn-primary .btn-icon,
 	.btn-primary.btn-icon::before {

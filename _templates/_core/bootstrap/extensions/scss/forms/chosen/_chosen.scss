@@ -124,7 +124,10 @@ $get-path-to-assets: '../libs/forms/chosen/';
     right: 0;
     display: block;
     width: 18px;
-    height: 100%;
+    height: 18px; // Orig: 100%
+	// Quando 'height: 100%;' o elemento passa da altura da div
+	// por causa da posição absoluta. Isso causa uma rolagem do elemento interno
+	// como se fosse um iframe...
 }
 
 .chosen-container-single .chosen-single div b {

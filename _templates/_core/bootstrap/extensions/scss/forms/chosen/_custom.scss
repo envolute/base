@@ -36,8 +36,7 @@
       }
     }
     .chosen-container-multi .chosen-choices li.search-choice {
-      margin: 2px 2px 0 0;
-      line-height: 1rem;
+      line-height: inherit;
       border-radius: 0;
     }
 
@@ -147,24 +146,25 @@
 
       // Seta (caret)
       .chosen-container-single .chosen-single div b {
-        margin-top: ($input-height/2) - .2!important;
+        margin-top: ($input-height-inner/2) - .1!important;
         background-position: 0 -7px!important;
       }
-      #{$select-sm} + .chosen-container-single .chosen-single div b { margin-top: ($input-height-sm/2) - .2!important; }
-      #{$select-lg} + .chosen-container-single .chosen-single div b { margin-top: ($input-height-lg/2) - .2!important; }
+      #{$select-sm} + .chosen-container-single .chosen-single div b { margin-top: ($input-height-inner-sm/2) - .2!important; }
+      #{$select-lg} + .chosen-container-single .chosen-single div b { margin-top: ($input-height-inner-lg/2)!important; }
 
-      .chosen-container-single .chosen-single abbr { top: ($input-height/2) - 6; }
-      #{$select-sm} + .chosen-container-single .chosen-single abbr { top: ($input-height-sm/2) - .6; }
-      #{$select-lg} + .chosen-container-single .chosen-single abbr { top: ($input-height-lg/2) - .6; }
+      .chosen-container-single .chosen-single abbr { top: ($input-height-inner/2) - .6; }
+      #{$select-sm} + .chosen-container-single .chosen-single abbr { top: ($input-height-inner-sm/2) - .6; }
+      #{$select-lg} + .chosen-container-single .chosen-single abbr { top: ($input-height-inner-lg/2) - .6; }
 
       // Multiple
       #{$select-sm} + .chosen-container-multi .chosen-choices li.search-choice {
-        padding-top: 1px;
-        padding-bottom: 1px;
         font-size: $font-size-sm;
       }
-      #{$select-sm} + .chosen-container-multi .chosen-choices li.search-choice .search-choice-close {
-        top: 3px;
+      #{$select-lg} + .chosen-container-multi .chosen-choices li.search-choice {
+        font-size: $font-size-lg;
+      }
+      .chosen-container-multi .chosen-choices li.search-choice .search-choice-close {
+        top: 27%!important;
       }
 
       // menu popup com os resultados

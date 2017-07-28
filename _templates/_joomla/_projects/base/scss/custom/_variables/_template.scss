@@ -40,6 +40,8 @@
 	$base-color-primary-lightest:		mix(white, $base-color-primary, 70%);
 	$base-color-live:					$base-orange;
 	$base-color-white:					#fff;
+	// bg 'gray' default
+	$base-bg-muted:						$base-gray-100;
 	// border default
 	$base-border-color:					$base-gray-300;
 	$base-border-color-dark:			$base-gray-500;

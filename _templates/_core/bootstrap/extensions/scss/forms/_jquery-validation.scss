@@ -28,12 +28,13 @@
   }
 
   span.error {
-    display: block;
+    display: inline-block!important;
     padding: 2px 0 0;
     margin: 0;
     color: $form-feedback-invalid-color;
     font-weight: normal;
     font-size: 12px;
+	line-height: 1.2;
   }
   span.error.valid,
   // -> mostra apenas o primeiro erro de um "group"
