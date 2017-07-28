@@ -18,6 +18,9 @@ $types = $db->loadObjectList();
 		<a class="nav-link" href="#tab-address" data-toggle="tab" role="tab">Endereço</a>
 	</li>
 	<li class="nav-item">
+		<a class="nav-link" href="#tab-files" data-toggle="tab" role="tab">Arquivos</a>
+	</li>
+	<li class="nav-item">
 		<a class="nav-link" href="#tab-images" data-toggle="tab" role="tab">Imagens</a>
 	</li>
 	<li class="nav-item">
@@ -69,7 +72,7 @@ $types = $db->loadObjectList();
 							</div>
 						</a>
 						<span class="btn-group mt-2"></span>
-						<input type="file" name="file[0]" id="<?php echo $APPTAG?>-file0" class="form-control field-image" hidden />
+						<input type="file" name="file[0]" id="<?php echo $APPTAG?>-file0" class="field-image" hidden />
 					</div>
 				</div>
 			</div>
@@ -214,7 +217,7 @@ $types = $db->loadObjectList();
 			</div>
 		</div>
 	</div>
-	<div class="tab-pane" id="tab-images" role="tabpanel">
+	<div class="tab-pane" id="tab-files" role="tabpanel">
 		<div class="row">
 			<div class="col-lg-3">
 				<div class="form-group">
@@ -227,7 +230,24 @@ $types = $db->loadObjectList();
 					</div>
 				</div>
 			</div>
+			<div class="col-lg-3">
+				<div class="form-group">
+					<label>&#160;</label>
+					<button type="button" class="base-icon-plus btn btn-block btn-success" onclick="<?php echo $APPTAG?>_setNewFile('#<?php echo $APPTAG?>-files-group', 'col-md-6 col-lg-3')">
+						<?php echo JText::_('TEXT_ADD'); ?>
+					</button>
+				</div>
+			</div>
 		</div>
+		<hr />
+		<div id="<?php echo $APPTAG?>-files-group" class="row"></div>
+	</div>
+	<div class="tab-pane" id="tab-images" role="tabpanel">
+		<button type="button" class="base-icon-plus btn btn-success" onclick="<?php echo $APPTAG?>_setNewImageFile('#<?php echo $APPTAG?>-images-group', 'col-md-6 col-lg-3')">
+			<?php echo JText::_('TEXT_ADD'); ?>
+		</button>
+		<hr />
+		<div id="<?php echo $APPTAG?>-images-group" class="row"></div>
 	</div>
 	<div class="tab-pane" id="tab-extra-info" role="tabpanel">
 		<div class="row">

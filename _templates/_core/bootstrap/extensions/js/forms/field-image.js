@@ -6,7 +6,7 @@ jQuery(function() {
 	var field_image	= ".image-action";
 
 	// Seta a ação em um campo do tipo file
-	window.imageFileAction = function (field, target, width, height) {
+	window.imgFileAction = function (field, target, width, height) {
 		field = setElement(field, field_image);
 		field.each(function() {
 			var obj = jQuery(this);

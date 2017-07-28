@@ -9,7 +9,8 @@ if($cfg['dinamicFiles']) :
 	echo '
 	if(!s) {
 		'.$APPTAG.'IndexFile = '.$APPTAG.'IndexFileInit;
-		filesGroup.empty();
+		jQuery(".'.$APPTAG.'-btnFileGroup").empty();
+		jQuery(".'.$APPTAG.'-imgFileGroup").empty();
 	}
 	';
 endif;

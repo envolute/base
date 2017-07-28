@@ -96,7 +96,7 @@ $cfg = array();
     // valor inicial do index do arquivo... considerando '0' o campo estático
     // caso exitam outros campos estáticos, o index será igual ao número de itens estáticos
     // Ex: 4 itens estáticos => $cfg['indexFileInit'] = 4;
-    $cfg['indexFileInit']     = 1;
+    $cfg['indexFileInit']     = 2;
 
   if($cfg['hasUpload']) :
     $cfg['fileField']       = 'file'; // upload's field name

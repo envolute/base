@@ -17,7 +17,7 @@ jQuery(function() {
 				btnFileAction();
 
 				// IMAGE FILE ACTION
-				imageFileAction();
+				imgFileAction();
 
 			// INPUTS
 			// -> CONTROLADORES DE EVENTOS

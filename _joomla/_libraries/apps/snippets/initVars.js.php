@@ -42,8 +42,5 @@ var state					= mainForm.find('input[name=state]:radio');
   <?php if($cfg['dinamicFiles']) :?>
     // valor inicial do index do arquivo... considerando '0' o campo estático
     window.<?php echo $APPTAG?>IndexFile = window.<?php echo $APPTAG?>IndexFileInit = <?php echo $cfg['indexFileInit']?>;
-    // container para campos dinâmicos de arquivos
-    // Obs: não colocar campos 'file' estáticos dentro do container
-    var filesGroup	= jQuery('#<?php echo $APPTAG?>-files-group');
   <?php endif;?>
 <?php endif;?>
