@@ -11,7 +11,16 @@ window.<?php echo $APPTAG?>_loadFiles = function(files) {
 	for(a = 0; (a < (len + 1) && files.length > 0); a++) { // len + 1, pois conta com o zero!
 		<?php
 		// load dinamic files
-		if($cfg['dinamicFiles']) echo 'if(a >= ('.$APPTAG.'IndexFileInit - 1) && a < len) '.$APPTAG.'_setNewFile();';
+		if($cfg['dinamicFiles']) :
+			echo '
+			if(a > ('.$APPTAG.'IndexFileInit - 1) && a <= len) {
+				for(i = 0; i < files.length; i++) {
+					if(files[i]["index"] == a && files[i]["group"] != "")
+					'.$APPTAG.'_setNewFile(files[i]["group"], files[i]["groupType"], files[i]["class"], files[i]["label"]);
+				}
+			}
+			';
+		endif;
 		?>
 		obj = jQuery('input:file[name="file['+a+']"]');
 

@@ -233,7 +233,7 @@ $types = $db->loadObjectList();
 			<div class="col-lg-3">
 				<div class="form-group">
 					<label>&#160;</label>
-					<button type="button" class="base-icon-plus btn btn-block btn-success" onclick="<?php echo $APPTAG?>_setNewFile('#<?php echo $APPTAG?>-files-group', 'col-md-6 col-lg-3')">
+					<button type="button" class="base-icon-plus btn btn-block btn-success" onclick="<?php echo $APPTAG?>_setNewFile('#<?php echo $APPTAG?>-files-group', 'file', 'col-md-6 col-lg-3')">
 						<?php echo JText::_('TEXT_ADD'); ?>
 					</button>
 				</div>
@@ -243,7 +243,7 @@ $types = $db->loadObjectList();
 		<div id="<?php echo $APPTAG?>-files-group" class="row"></div>
 	</div>
 	<div class="tab-pane" id="tab-images" role="tabpanel">
-		<button type="button" class="base-icon-plus btn btn-success" onclick="<?php echo $APPTAG?>_setNewImageFile('#<?php echo $APPTAG?>-images-group', 'col-md-6 col-lg-3')">
+		<button type="button" class="base-icon-plus btn btn-success" onclick="<?php echo $APPTAG?>_setNewFile('#<?php echo $APPTAG?>-images-group', 'image', 'col-md-6 col-lg-3')">
 			<?php echo JText::_('TEXT_ADD'); ?>
 		</button>
 		<hr />

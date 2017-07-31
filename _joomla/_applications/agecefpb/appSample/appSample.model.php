@@ -72,8 +72,14 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		// upload actions
 		$fileMsg 	= '';
 		if($cfg['hasUpload']) :
-			$fname	= $input->get('fname', '', 'string');
-			$fileId	= $input->get('fileId', 0, 'int');
+			$fname		= $input->get('fname', '', 'string');
+			$fileId		= $input->get('fileId', 0, 'int');
+			// image groups
+			$fileGrp	= $_POST[$cfg['fileField'].'Group'];
+			$fileGtp	= $_POST[$cfg['fileField'].'Gtype'];
+			$fileCls	= $_POST[$cfg['fileField'].'Class'];
+			// image description
+			$fileLbl	= $_POST[$cfg['fileField'].'Label'];
 			// load 'uploader' class
 			JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 		endif;
@@ -215,7 +221,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 						// Upload
 						if($cfg['hasUpload'])
-						$fileMsg = uploader::uploadFile($id, $cfg['fileTable'], $_FILES[$cfg['fileField']], $cfg);
+						$fileMsg = uploader::uploadFile($id, $cfg['fileTable'], $_FILES[$cfg['fileField']], $fileGrp, $fileGtp, $fileCls, $fileLbl, $cfg);
 
 						// UPDATE FIELD
 						$element = $elemVal = $elemLabel = '';
@@ -358,14 +364,21 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					// FILE: remove o arquivo
 					$fileMsg = uploader::deleteFile($fname, $cfg['fileTable'], $cfg['uploadDir'], JText::_('MSG_FILEERRODEL'));
 
+					if(empty($fileMsg)) {
+						// IMPORTANTE: Reorganiza a ordem
+						// remove os saltos entre os "index", pois não deve haver!!
+						$sIndex = $cfg['indexFileInit'] - 1;
+						uploader::rebuildIndexFiles($cfg['fileTable'], $id, $sIndex);
+					}
+
 					$data[] = array(
 						'status'				=> 5,
 						'msg'					=> JText::_('MSG_FILE_DELETED'),
 						'uploadError'			=> $fileMsg
 					);
 
-					// DELETE FILES
-					elseif($cfg['hasUpload'] && $task == 'delFiles' && $fileId) :
+				// DELETE FILES
+				elseif($cfg['hasUpload'] && $task == 'delFiles' && $fileId) :
 
 					// FILE: remove o arquivo
 					$fileMsg = uploader::deleteFiles($fileId, $cfg['fileTable'], $cfg['uploadDir'], JText::_('MSG_FILEERRODEL'));
@@ -448,7 +461,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$id = $db->insertid();
 						// Upload
 						if($cfg['hasUpload'] && $id)
-						$fileMsg = uploader::uploadFile($id, $cfg['fileTable'], $_FILES[$cfg['fileField']], $cfg);
+						$fileMsg = uploader::uploadFile($id, $cfg['fileTable'], $_FILES[$cfg['fileField']], $fileGrp, $fileGtp, $fileCls, $fileLbl, $cfg);
 
 						// CREATE RELATIONSHIP
 						if(!empty($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelNameId']) && !empty($_SESSION[$RTAG.'AppNameId']) && !empty($request['relationId'])) :

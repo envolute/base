@@ -9,6 +9,6 @@ displayId.val(item.id);
 checkOption(state, item.state);
 // se houver upload
 <?php if($cfg['hasUpload']) :?>
-  <?php echo $APPTAG?>_resetFiles(files);
-  <?php echo $APPTAG?>_loadFiles(item.files);
+	<?php echo $APPTAG?>_resetFiles(files);
+	<?php echo $APPTAG?>_loadFiles(item.files);
 <?php endif;?>
