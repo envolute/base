@@ -176,20 +176,21 @@ class uploader {
 		if(isset($query)) :
 			$db->setQuery($query);
 			$f = $db->loadAssoc();
-			return (!empty($f['filename']) && file_exists($path.$f['filename'])) ? $f : $f;
+			return (!empty($f['filename']) && file_exists($path.$f['filename'])) ? $f : '';
 		else :
 			return false;
 		endif;
 	}
 
 	// PEGA O NOME DOS ARQUIVOS
-	public static function getFiles($table, $ids) {
+	public static function getFiles($table, $ids, $group = '') {
 		if(empty($ids) || $ids == 0) return false;
 		// database connect
 		$db = JFactory::getDbo();
 
+		$grp = !empty($group) ? ' AND '.$db->quoteName('group').' = '. $db->quote($group) : '';
 		// FILE: GET FILENAME
-		$query = 'SELECT * FROM '. $db->quoteName($table) .' WHERE '. $db->quoteName('id_parent') .' IN ('.$ids.') ORDER BY '. $db->quoteName('index');
+		$query = 'SELECT * FROM '. $db->quoteName($table) .' WHERE '. $db->quoteName('id_parent') .' IN ('.$ids.')'.$grp.' ORDER BY '. $db->quoteName('index');
 		$db->setQuery($query);
 		return $db->loadObjectList();
 	}

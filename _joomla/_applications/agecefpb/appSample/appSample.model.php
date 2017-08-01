@@ -210,6 +210,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$db->quoteName('address_state')		.'='. $db->quote($request['address_state']) .','.
 					$db->quoteName('description')		.'='. $db->quote($request['description']) .','.
 					$db->quoteName('state')				.'='. $request['state'] .','.
+					$db->quoteName('alter_date')		.'= NOW(),'.
 					$db->quoteName('alter_by')			.'='. $user->id
 					;
 					$query .= ' WHERE '. $db->quoteName('id') .'='. $id;

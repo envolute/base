@@ -2,6 +2,10 @@
 
 // Variáveis da BASE
 @import "custom/_variables/template";
+// Variáveis do BOOTSTRAP
+@import "../../../../_core/bootstrap/scss/functions";
+@import "custom/_variables/bootstrap";
+@import "../../../../_core/bootstrap/scss/mixins";
 // Variáveis específicas do projeto
 @import "custom/_variables/custom";
 

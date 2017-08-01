@@ -5,8 +5,8 @@
 
 		// PAGE HEADER -> header do conteúdo principal
 		.page-header {
-			margin: $page-header-margin;
-			padding: $page-header-padding;
+			margin-bottom: $page-header-margin-bottom;
+			padding-bottom: $page-header-padding-bottom;
 			font-size: $page-header-font-size;
 		    line-height: $page-header-line-height;
 			border-bottom: $page-header-border-bottom;

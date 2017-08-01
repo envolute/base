@@ -109,8 +109,8 @@
 	$text-embed-inverse:				-1px -1px 0 rgba(0, 0, 0, 0.6);
 
 	// page header
-	$page-header-margin:				0 0 .5em;
-	$page-header-padding:				0 0 .5em;
+	$page-header-margin-bottom:			.5em;
+	$page-header-padding-bottom:		.5em;
 	$page-header-font-size:				1.3rem;
 	$page-header-line-height:			1.3rem;
 	$page-header-border-bottom:			1px solid $base-border-color;
@@ -199,6 +199,9 @@
 	$base-field-date-icon:				url("../images/core/form-icon-date.png");
 	// search
 	$base-field-search-icon:			url("../images/core/form-icon-search.png");
+
+	// Label
+	$base-label-sm-color:				$base-gray-600;
 
 // NAVS
 

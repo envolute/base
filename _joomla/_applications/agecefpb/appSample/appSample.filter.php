@@ -13,21 +13,40 @@ $where = '';
 	// TYPE -> select
 	$fType	= $app->input->get('fType', 0, 'int');
 	if($fType != 0) $where .= ' AND '.$db->quoteName('T1.type_id').' = '.$fType;
-	// USER
-	$userID	= $app->input->get('uID', 0, 'int');
-	if($userID != 0) $where .= ' AND '.$db->quoteName('T3.id').' = '.$userID;
-	// ACCESS -> select
-	$fAccess	= $app->input->get('fAccess', 2, 'int');
-	if($fAccess != 2) $where .= ' AND '.$db->quoteName('T1.access').' = '.$fAccess;
 
-	// search
+	// DATE
+	$dateMin	= $app->input->get('dateMin', '', 'string');
+	$dateMax	= $app->input->get('dateMax', '', 'string');
+	$dtmin = !empty($dateMin) ? $dateMin : '0000-00-00';
+	$dtmax = !empty($dateMax) ? $dateMax : '9999-12-31';
+	if(!empty($dateMin) || !empty($dateMax)) $where .= ' AND '.$db->quoteName('T1.created_date').' BETWEEN '.$db->quote($dtmin).' AND '.$db->quote($dtmax);
+	// PRICE
+	$priceMin	= $app->input->get('priceMin', '', 'string');
+	$priceMax	= $app->input->get('priceMax', '', 'string');
+	$prmin = !empty($priceMin) ? $priceMin : '0.00';
+	$prmax = (!empty($priceMax) && $priceMax != '0.00') ? $priceMax : '9999999999.99';
+	if(!empty($priceMin) || !empty($priceMax)) $where .= ' AND '.$db->quoteName('T1.price').' BETWEEN '.$prmin.' AND '.$prmax;
+
+	// Search 'Text fields'
 	$search	= $app->input->get('fSearch', '', 'string');
-	if(!empty($search)) :
-		$where .= ' AND (';
-		$where .= 'LOWER('.$db->quoteName('T1.name').') LIKE LOWER("%'.$search.'%")';
-		$where .= ' OR LOWER('.$db->quoteName('T1.description').') LIKE LOWER("%'.$search.'%")';
-		$where .= ')';
-	endif;
+	$sQuery = ''; // query de busca
+	$sLabel = array(); // label do campo de busca
+	$searchFields = array(
+		'T1.name'				=> 'FIELD_LABEL_NAME',
+		'T1.email'				=> 'E-mail',
+		'T1.cpf'				=> 'CPF',
+		'T1.rg'					=> 'RG',
+		'T1.place_birth'		=> 'FIELD_LABEL_PLACE_BIRTH',
+		'T1.description'		=> 'FIELD_LABEL_DESCRIPTION'
+	);
+	$i = 0;
+	foreach($searchFields as $key => $value) {
+		$_OR = ($i > 0) ? ' OR ' : '';
+		$sQuery .= $_OR.'LOWER('.$db->quoteName($key).') LIKE LOWER("%'.$search.'%")';
+		if(!empty($value)) $sLabel[] .= JText::_($value);
+		$i++;
+	}
+	if(!empty($search)) $where .= ' AND ('.$sQuery.')';
 
 // ORDER BY
 
@@ -36,8 +55,8 @@ $where = '';
 
 	$orderDef = ''; // não utilizar vírgula no inicio ou fim
 	if(!isset($_SESSION[$APPTAG.'oF'])) : // DEFAULT ORDER
-			$_SESSION[$APPTAG.'oF'] = 'T1.id';
-			$_SESSION[$APPTAG.'oT'] = 'DESC';
+		$_SESSION[$APPTAG.'oF'] = 'T1.name';
+		$_SESSION[$APPTAG.'oT'] = 'ASC';
 	endif;
 	if(!empty($ordf)) :
 		$_SESSION[$APPTAG.'oF'] = $ordf;
@@ -55,21 +74,30 @@ $where = '';
 // FILTER'S DINAMIC FIELDS
 
 	// types -> select
-  $flt_type = '';
-  $query = 'SELECT * FROM '. $db->quoteName($cfg['mainTable'].'_types') .' ORDER BY name';
-  $db->setQuery($query);
-  $types = $db->loadObjectList();
-  foreach ($types as $obj) {
-    $flt_type .= '<option value="'.$obj->id.'"'.($obj->id == $fType ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
-  }
-	// users -> select
-	$flt_user = '';
-	$query = 'SELECT * FROM '. $db->quoteName('#__users') .' WHERE block = 0 ORDER BY name';
+	$flt_type = '';
+	$query = 'SELECT * FROM '. $db->quoteName($cfg['mainTable'].'_types') .' ORDER BY name';
 	$db->setQuery($query);
-	$users = $db->loadObjectList();
-	foreach ($users as $obj) {
-		$flt_user .= '<option value="'.$obj->id.'"'.($obj->id == $userID ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
+	$types = $db->loadObjectList();
+	foreach ($types as $obj) {
+		$flt_type .= '<option value="'.$obj->id.'"'.($obj->id == $fType ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
 	}
+
+// VISIBILITY
+// Elementos visíveis apenas quando uma consulta é realizada
+
+	$hasFilter = $app->input->get($APPTAG.'_filter', 0, 'int');
+	// Estado inicial dos elementos
+	$btnClearFilter		= ''; // botão de resetar
+	$textResults		= ''; // Texto informativo
+	// Filtro ativo
+	if($hasFilter) :
+		$btnClearFilter = '
+			<a href="'.JURI::current().'" class="btn btn-sm btn-danger base-icon-cancel-circled btn-icon">
+				'.JText::_('TEXT_CLEAR').' '.JText::_('TEXT_FILTER').'
+			</a>
+		';
+		$textResults = '<span class="base-icon-down-big text-muted d-none d-sm-inline"> '.JText::_('TEXT_SEARCH_RESULTS').'</span>';
+	endif;
 
 // VIEW
 $htmlFilter = '
@@ -80,31 +108,16 @@ $htmlFilter = '
 			<div class="row">
 				<div class="col-sm-4">
 					<div class="form-group">
+						<label class="label-sm">'.JText::_('FIELD_LABEL_TYPE').'</label>
 						<select name="fType" id="fType" class="form-control form-control-sm set-filter">
-							<option value="0">- '.JText::_('FIELD_LABEL_TYPE').' -</option>
+							<option value="0">- '.JText::_('TEXT_SELECT').' -</option>
 							'.$flt_type.'
 						</select>
 					</div>
 				</div>
 				<div class="col-sm-4">
 					<div class="form-group">
-						<select name="uID" id="uID" class="form-control form-control-sm set-filter">
-							<option value="">- '.JText::_('FIELD_LABEL_USER').' -</option>
-							'.$flt_user.'
-						</select>
-					</div>
-				</div>
-				<div class="col-sm-2">
-					<div class="form-group">
-						<select name="fAccess" id="fAccess" class="form-control form-control-sm set-filter">
-							<option value="2">- '.JText::_('FIELD_LABEL_ACCESS').' -</option>
-							<option value="0"'.($fAccess == 0 ? ' selected' : '').'>'.JText::_('TEXT_PRIVATE').'</option>
-							<option value="1"'.($fAccess == 1 ? ' selected' : '').'>'.JText::_('TEXT_PUBLIC').'</option>
-						</select>
-					</div>
-				</div>
-				<div class="col-sm-2">
-					<div class="form-group">
+						<label class="label-sm">'.JText::_('TEXT_STATE').'</label>
 						<select name="active" id="active" class="form-control form-control-sm set-filter">
 							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
 							<option value="1"'.($active == 1 ? ' selected' : '').'>'.JText::_('TEXT_ACTIVES').'</option>
@@ -114,18 +127,20 @@ $htmlFilter = '
 				</div>
 				<div class="col-sm-4">
 					<div class="form-group">
-						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm field-search w-full" />
+						<label class="label-sm text-truncate">'.implode(', ', $sLabel).'</label>
+						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />
 					</div>
 				</div>
+			</div>
+			<div id="base-app-filter-buttons" class="row py-3 b-top align-items-center">
+				<div class="col-sm">
+					'.$textResults.'
+				</div>
 				<div class="col-sm text-right">
-					<div class="form-group">
-						<span class="btn-group">
-							<button type="submit" class="btn btn-sm btn-primary">
-                <span class="base-icon-search btn-icon"></span> '.JText::_('TEXT_SEARCH').'
-              </button>
-							<a href="'.JURI::current().'" class="base-icon-cancel-circled btn btn-sm btn-danger hasTooltip" data-animation="false" title="'.JText::_('TEXT_CLEAR').' '.JText::_('TEXT_FILTER').'"></a>
-						</span>
-					</div>
+					<button type="submit" class="btn btn-sm btn-primary base-icon-search btn-icon">
+						'.JText::_('TEXT_SEARCH').'
+					</button>
+					'.$btnClearFilter.'
 				</div>
 			</div>
 		</fieldset>
