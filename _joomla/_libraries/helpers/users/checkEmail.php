@@ -3,7 +3,7 @@
 if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQUESTED_WITH"]) == "xmlhttprequest") :
 
 	// load Joomla's framework
-	require(__DIR__.'/../../libraries/envolute/_init.joomla.php');
+	require(__DIR__.'/../../_init.joomla.php');
 	$app = JFactory::getApplication('site');
 
 	defined('_JEXEC') or die;

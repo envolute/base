@@ -25,7 +25,7 @@ $users = $db->loadObjectList();
 		<a class="nav-link" href="#tab-address" data-toggle="tab" role="tab"><?php echo JText::_('TEXT_CONTACT_DATA'); ?></a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link" href="#tab-account-info" data-toggle="tab" role="tab"><?php echo JText::_('FIELD_LABEL_ACCOUNT_DATA'); ?></a>
+		<a class="nav-link" href="#tab-account-info" data-toggle="tab" role="tab"><?php echo JText::_('TEXT_ACCOUNT_DATA'); ?></a>
 	</li>
 </ul>
 
@@ -162,20 +162,23 @@ $users = $db->loadObjectList();
 			</div>
 			<div class="col-lg-6">
 				<fieldset class="fieldset-embed fieldset-sm">
-					<legend><?php echo JText::_('TEXT_DATA_ACCESS'); ?></legend>
+					<legend><?php echo JText::_('TEXT_DATA_REGISTRATION'); ?></legend>
 					<div class="form-group">
-						<label><?php echo JText::_('FIELD_LABEL_ALLOW_ACCESS'); ?></label>
+						<label><?php echo JText::_('FIELD_LABEL_ACCESS_STATUS'); ?></label>
 						<span class="btn-group btn-group-justified" data-toggle="buttons">
 							<label class="btn btn-default btn-active-danger">
-								<input type="radio" name="access" id="<?php echo $APPTAG?>-access-0" value="0" onchange="<?php echo $APPTAG?>_accessForm(0)" />
-								<?php echo JText::_('TEXT_NO'); ?>
+								<input type="radio" name="access" id="<?php echo $APPTAG?>-access-0" value="0" onchange="<?php echo $APPTAG?>_accessForm(0)" class="auto-tab" data-target="#<?php echo $APPTAG?>-statusReason" />
+								<?php echo JText::_('TEXT_PENDING'); ?>
 							</label>
 							<label class="btn btn-default btn-active-success">
 								<input type="radio" name="access" id="<?php echo $APPTAG?>-access-1" value="1" onchange="<?php echo $APPTAG?>_accessForm(1)" />
-								<?php echo JText::_('TEXT_YES'); ?>
+								<?php echo JText::_('TEXT_APPROVED'); ?>
 							</label>
 						</span>
 						<input type="hidden" name="user_id" id="<?php echo $APPTAG?>-user_id" />
+					</div>
+					<div id="reasonStatus" class="collapse">
+						<input type="text" name="statusReason" id="<?php echo $APPTAG?>-statusReason" class="form-control" maxlength="50" placeholder="<?php echo JText::_('FIELD_LABEL_REASON'); ?>" />
 					</div>
 					<div id="accessFields" class="collapse">
 						<div class="row">
@@ -196,6 +199,10 @@ $users = $db->loadObjectList();
 									</div>
 								</div>
 							</div>
+							<div class="col-12 edit-user-data">
+								<hr class="hr-tag" />
+								<span class="badge badge-primary"><?php echo JText::_('TEXT_PASSWORD_RESET'); ?></span>
+							</div>
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label class="d-block">
@@ -204,7 +211,7 @@ $users = $db->loadObjectList();
 									</label>
 									<div class="input-group">
 										<input type="password" name="password" id="<?php echo $APPTAG?>-password" class="form-control" />
-										<span class="input-group-addon hasPopover" data-content="<?php echo JText::_('MSG_PASSWORD_INFO'); ?>">
+										<span class="input-group-addon hasPopover" data-content="<?php echo JText::_('MSG_PASSWORD_INFO'); ?>" data-placement="top">
 											<span class="base-icon-info-circled"></span>
 										</span>
 									</div>
@@ -292,19 +299,19 @@ $users = $db->loadObjectList();
 			<div class="col-sm-3">
 				<div class="form-group">
 					<label><?php echo JText::_('FIELD_LABEL_AGENCY'); ?></label>
-					<input type="text" name="agency" id="<?php echo $APPTAG?>-agency" class="form-control" />
+					<input type="text" name="agency" id="<?php echo $APPTAG?>-agency" class="form-control length-fixed" data-length="4" maxlength="4" />
 				</div>
 			</div>
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label><?php echo JText::_('FIELD_LABEL_OPERATION'); ?></label>
-					<input type="text" name="operation" id="<?php echo $APPTAG?>-operation" class="form-control" />
+					<input type="text" name="operation" id="<?php echo $APPTAG?>-operation" class="form-control length-fixed" data-length="3" maxlength="3" />
 				</div>
 			</div>
 			<div class="col-sm-3">
 				<div class="form-group">
 					<label><?php echo JText::_('FIELD_LABEL_ACCOUNT'); ?></label>
-					<input type="text" name="account" id="<?php echo $APPTAG?>-account" class="form-control" />
+					<input type="text" name="account" id="<?php echo $APPTAG?>-account" class="form-control length-fixed" data-length="10" maxlength="10" />
 				</div>
 			</div>
 		</div>

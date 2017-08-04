@@ -15,7 +15,7 @@ jQuery(function() {
 		// define a propriedade dos elementos setados em 'elem'
 		if(elementExist(e)) e.each(function() { jQuery(this).prop('hidden', s) });
 		// Inverte a propriedade dos elementos setados em 'toggleElem'
-		if(elementExist(i)) e.each(function() { jQuery(this).prop('hidden', (s ? false : true)) });
+		if(elementExist(i)) i.each(function() { jQuery(this).prop('hidden', t) });
 	};
 
 });

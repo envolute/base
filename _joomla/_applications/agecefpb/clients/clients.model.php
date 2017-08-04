@@ -129,6 +129,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	  	$request['password']			= $input->get('password', '', 'string');
 	  	$request['emailConfirm']		= $input->get('emailConfirm', 0, 'int');
 	  	$request['emailInfo']			= $input->get('emailInfo', '', 'string');
+	  	$request['reasonStatus']		= $input->get('reasonStatus', '', 'string');
+		// Se o acesso for liberado, limpa o valor do campo 'motivo'
+		$reason = $request['access'] ? '' : $request['reasonStatus'];
 
 	    // CUSTOM -> default vars for registration e-mail
 	    if($request['emailConfirm'] == 1) :
@@ -231,6 +234,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'account'			=> $item->account,
 						'operation'			=> $item->operation,
 						'access'			=> ($itemBlock ? 0 : 1),
+						'reasonStatus'		=> $item->reasonStatus,
 						'files'				=> $listFiles
 					);
 
@@ -264,6 +268,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$db->quoteName('account')			.'='. $db->quote($request['account']) .','.
 					$db->quoteName('operation')			.'='. $db->quote($request['operation']) .','.
 					$db->quoteName('access')			.'='. $request['access'] .','.
+					$db->quoteName('reasonStatus')		.'='. $db->quote($reason) .','.
 					$db->quoteName('state')				.'='. $request['state'] .','.
 					$db->quoteName('alter_date')		.'= NOW(),'.
 					$db->quoteName('alter_by')			.'='. $user->id
@@ -530,6 +535,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('agency') .','.
 							$db->quoteName('account') .','.
 							$db->quoteName('operation') .','.
+							$db->quoteName('access') .','.
+							$db->quoteName('reasonStatus') .','.
 							$db->quoteName('state') .','.
 							$db->quoteName('created_by')
 						.') VALUES ('.
@@ -557,6 +564,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quote($request['agency']) .','.
 							$db->quote($request['account']) .','.
 							$db->quote($request['operation']) .','.
+							$request['access'] .','.
+							$db->quote($reason) .','.
 							$request['state'] .','.
 							$user->id
 						.')

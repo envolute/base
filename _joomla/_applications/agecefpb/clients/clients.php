@@ -67,6 +67,7 @@ jQuery(function() {
 	var repassword			= jQuery('#<?php echo $APPTAG?>-repassword');
 	var emailConfirm		= jQuery('#<?php echo $APPTAG?>-emailConfirm');
 	var emailInfo			= jQuery('#<?php echo $APPTAG?>-emailInfo');
+	var reasonStatus		= jQuery('#<?php echo $APPTAG?>-reasonStatus');
 
 	// PARENT FIELD
 	// informe, se houver, o campo que representa a chave estrangeira principal
@@ -131,7 +132,7 @@ jQuery(function() {
 			rg_orgao.val('');
 			checkOption(gender, 0); // radio
 			birthday.val('');
-			marital_status.val('').trigger("chosen:updated"); // select
+			marital_status.val('').selectUpdate(); // select
 			partner.val('');
 			cx_code.val('');
 			cx_email.val('');
@@ -148,6 +149,7 @@ jQuery(function() {
 			account.val('');
 			operation.val('');
 			checkOption(access, 1);
+			reasonStatus.val('');
 
 			<?php // Closure Actions
 			require(JPATH_CORE.DS.'apps/snippets/form/formReset.end.js.php');
@@ -157,13 +159,14 @@ jQuery(function() {
 
 		// CUSTOM -> Reset Registration Fields
 		window.<?php echo $APPTAG?>_accessForm = function(val) {
-			newUser.val('0').trigger("chosen:updated"); // select
+			newUser.val('0').selectUpdate(); // select
 			password.val('');
 			repassword.val('');
 			emailInfo.val('');
 			checkOption(emailConfirm, (val && user_id.val() != 0 ? 0 : 1));
 			jQuery('#accessFields').collapse((val ? 'show' : 'hide'));
-			setHidden('.new-user-data', (val && user_id.val() != 0 ? true : false), '#accessMsg');
+			jQuery('#reasonStatus').collapse((!val ? 'show' : 'hide'));
+			setHidden('.new-user-data', (val && user_id.val() != 0 ? true : false), '.edit-user-data');
 		};
 
 		// CUSTOM -> Sincroniza com os contatos
@@ -317,7 +320,7 @@ jQuery(function() {
 						rg_orgao.val(item.rg_orgao);
 						checkOption(gender, item.gender); // radio
 						birthday.val(dateFormat(item.birthday)); // DATE -> conversão de data
-						marital_status.val(item.marital_status).trigger("chosen:updated"); // select
+						marital_status.val(item.marital_status).selectUpdate(); // select
 						// mostra/esconde o campo 'motivo'
 						if(item.marital_status != '') setHidden('#mstatus_desc-group', true);
 						else setHidden('#mstatus_desc-group', false);
@@ -337,6 +340,7 @@ jQuery(function() {
 						account.val(item.account);
 						operation.val(item.operation);
 						checkOption(access, item.access);
+						reasonStatus.val(item.reasonStatus);
 
 						<?php // Closure Actions
 						require(JPATH_CORE.DS.'apps/snippets/form/loadEdit.end.js.php');

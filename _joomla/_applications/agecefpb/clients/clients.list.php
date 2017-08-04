@@ -13,6 +13,10 @@ require($PATH_APP_FILE.'.filter.php');
 		SELECT SQL_CALC_FOUND_ROWS
 			T1.id,
 			T1.name,
+			T1.cx_role,
+			T1.cx_situated,
+			T1.access,
+			T1.reasonStatus,
 			T1.created_date,
 			T1.created_by,
 			T1.alter_date,
@@ -59,6 +63,7 @@ $html = '
 				<tr>
 					'.$adminView['head']['info'].'
 					<th>'.JText::_('FIELD_LABEL_NAME').'</th>
+					<th>'.JText::_('TEXT_STATUS').'</th>
 					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
 					'.$adminView['head']['actions'].'
 				</tr>
@@ -117,6 +122,7 @@ if($num_rows) : // verifica se existe
 			';
 		endif;
 
+		$status		= $item->access == 0 ? '<span class="base-icon-attention text-live"> '.JText::_('TEXT_PENDING').'</span><div class="small text-muted text-truncate">'.$item->reasonStatus.'</div>' : '<span class="base-icon-ok text-success"> '.JText::_('TEXT_APPROVED').'</span>';
 		$rowState	= $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
@@ -129,7 +135,8 @@ if($num_rows) : // verifica se existe
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
-				<td>'.$img.$item->name.'<br />'.$listFiles.'</td>
+				<td>'.$img.$item->name.'<div class="small text-muted">'.$item->cx_role.' - '.$item->cx_situated.'</td>
+				<td>'.$status.'</td>
 				<td class="d-none d-lg-table-cell">
 					'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'
 					<a href="#" class="base-icon-info-circled setPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top"></a>

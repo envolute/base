@@ -84,6 +84,7 @@ var tmplCSS     = tmpl + '/css';
       core+'/bootstrap/extensions/js/buttons/btn-checkState.js',
       // Form Fields
       core+'/bootstrap/extensions/js/forms/check-autoTab.js',
+      core+'/bootstrap/extensions/js/forms/check-option.js',
       core+'/bootstrap/extensions/js/forms/field-cep.js',
       core+'/bootstrap/extensions/js/forms/field-cpf-cnpj.js',
       core+'/bootstrap/extensions/js/forms/field-date.js',
@@ -107,8 +108,8 @@ var tmplCSS     = tmpl + '/css';
       core+'/bootstrap/extensions/js/forms/input-noPaste.js',
       core+'/bootstrap/extensions/js/forms/input-numeric.js',
       core+'/bootstrap/extensions/js/forms/input-upper.js',
-      core+'/bootstrap/extensions/js/forms/radio-checkOption.js',
       core+'/bootstrap/extensions/js/forms/select-autoTab.js',
+      core+'/bootstrap/extensions/js/forms/select-update.js',
       core+'/bootstrap/extensions/js/forms/toggle-field.js',
       // Definitions
       core+'/bootstrap/extensions/js/formDefinitions.js'
