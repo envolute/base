@@ -555,13 +555,19 @@ header( 'content-type: application/json; charset=utf-8' );
               $elemLabel = $db->loadResult();
             endif;
 
-            // ALTER USER STATE (block)
-            // Bloqueia/desbloqueia o usuário de acordo com o 'state' do contato
-            $query = 'SELECT '. $db->quoteName('user_id') .', '. $db->quoteName('state') .' FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('id') .' IN ('.$ids.')';
+			// DEFINE O ESTADO DOS RELACIONAMENTOS
+            $query = 'SELECT '. $db->quoteName('id') .', '. $db->quoteName('user_id') .', '. $db->quoteName('state') .' FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('id') .' IN ('.$ids.')';
             $db->setQuery($query);
             $uList = $db->loadObjectList();
             foreach ($uList as $usr) {
-              if($usr->user_id != 0) baseUserHelper::stateToJoomlaUser($usr->user_id, $usr->state);
+				// ALTER USER STATE (block)
+	            // Bloqueia/desbloqueia o usuário de acordo com o 'state' do contato
+	            if($usr->user_id != 0) baseUserHelper::stateToJoomlaUser($usr->user_id, $usr->state);
+  				// MOVIMENTAÇÕES FIXAS (PAI)
+				// Bloqueia/desbloqueia as movimentações fixas 'pai'
+				$query = 'UPDATE '. $db->quoteName('#__apcefpb_transactions') .' SET '. $db->quoteName('state') .' = '.$usr->state.' WHERE fixed = 1 AND '. $db->quoteName('client_id') .' = '. $usr->id;
+				$db->setQuery($query);
+				$db->execute();
             }
 
             $data[] = array(

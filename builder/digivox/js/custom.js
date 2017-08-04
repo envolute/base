@@ -68,6 +68,7 @@ jQuery(function() {
 			});
 			jQuery('#toggle-menu').click(function() {
 				jQuery('#mm-navigation, #screen').toggleClass('closed');
+				setChosenWidth();
 			});
 			if(!jQuery('html').hasClass('media-md')) jQuery('#mm-navigation, #screen').addClass('closed');
 			jQuery(window).resize(function() {
@@ -117,4 +118,11 @@ jQuery(function() {
 	});
 	jQuery('#filtro-agenda').removeClass('hide');
 
+});
+
+
+// ON LOAD
+jQuery(window).load(function() {
+	// corrige o tamanho dos selects quando o menu é carregado
+	setChosenWidth();
 });

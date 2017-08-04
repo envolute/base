@@ -104,7 +104,6 @@ header( 'content-type: application/json; charset=utf-8' );
   	$request['usergroup']    = $input->get('usergroup', $_SESSION[$APPTAG.'newUsertype'], 'int');
   	$request['username']     = $input->get('username', '', 'string');
   	$request['password']     = $input->get('password', '', 'string');
-  	$request['password2']    = $input->get('password2', '', 'string');
   	$request['emailConfirm'] = $input->get('emailConfirm', 0, 'int');
   	$request['emailInfo']    = $input->get('emailInfo', '', 'string');
 

@@ -59,8 +59,9 @@ var tmplCSS     = tmpl + '/css';
       // Utilities
       core+'/bootstrap/extensions/js/utilities/elementHeight.js',
       core+'/bootstrap/extensions/js/utilities/imageRetina.js',
-      core+'/bootstrap/extensions/js/utilities/parentWidth.js',
       core+'/bootstrap/extensions/js/utilities/isOnScreen.js',
+      core+'/bootstrap/extensions/js/utilities/parentWidth.js',
+      core+'/bootstrap/extensions/js/utilities/setHidden.js',
       core+'/bootstrap/extensions/js/utilities/setScroll.js',
       core+'/bootstrap/extensions/js/utilities/toggleHidden.js',
       core+'/bootstrap/extensions/js/utilities/toggleIcon.js',

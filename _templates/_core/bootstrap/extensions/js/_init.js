@@ -49,8 +49,8 @@ jQuery(function() {
 		return e[ a+'Width' ];
 	};
 
-  // BREAKPOINTS
-  window._XS_ = 0;
+	// BREAKPOINTS
+	window._XS_ = 0;
 	window._SM_ = 576;
 	window._MD_ = 768;
 	window._LG_ = 992;
