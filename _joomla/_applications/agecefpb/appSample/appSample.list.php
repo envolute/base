@@ -11,15 +11,15 @@ require($PATH_APP_FILE.'.filter.php');
 
 	$query = '
 		SELECT SQL_CALC_FOUND_ROWS
-			T1.id,
-			T2.name type,
-			T1.name,
-			T1.description,
-			T1.created_date,
-			T1.created_by,
-			T1.alter_date,
-			T1.alter_by,
-			T1.state
+			'. $db->quoteName('T1.id') .',
+			'. $db->quoteName('T1.name') .' type,
+			'. $db->quoteName('T1.name') .',
+			'. $db->quoteName('T1.description') .',
+			'. $db->quoteName('T1.created_date') .',
+			'. $db->quoteName('T1.created_by') .',
+			'. $db->quoteName('T1.alter_date') .',
+			'. $db->quoteName('T1.alter_by') .',
+			'. $db->quoteName('T1.state') .'
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
 			LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_types') .' T2
@@ -147,7 +147,7 @@ else : // num_rows = 0
 
 	$html .= '
 		<tr>
-			<td colspan="8">
+			<td colspan="7">
 				<div class="alert alert-warning alert-icon m-0">'.JText::_('MSG_LISTNOREG').'</div>
 			</td>
 		</tr>

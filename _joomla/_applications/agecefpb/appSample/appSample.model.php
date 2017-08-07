@@ -32,6 +32,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	// IMPORTANTE: Carrega o arquivo 'helper' do template
 	JLoader::register('baseHelper', JPATH_CORE.DS.'helpers/base.php');
+    // classes customizadas para usuários Joomla
+    JLoader::register('baseUserHelper',  JPATH_CORE.DS.'helpers/user.php');
 
 	// get current user's data
 	$user		= JFactory::getUser();
@@ -75,11 +77,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$fname		= $input->get('fname', '', 'string');
 			$fileId		= $input->get('fileId', 0, 'int');
 			// image groups
-			$fileGrp	= $_POST[$cfg['fileField'].'Group'];
-			$fileGtp	= $_POST[$cfg['fileField'].'Gtype'];
-			$fileCls	= $_POST[$cfg['fileField'].'Class'];
+			$fileGrp	= isset($_POST[$cfg['fileField'].'Group']) ? $_POST[$cfg['fileField'].'Group'] : '';
+			$fileGtp	= isset($_POST[$cfg['fileField'].'Gtype']) ? $_POST[$cfg['fileField'].'Gtype'] : '';
+			$fileCls	= isset($_POST[$cfg['fileField'].'Class']) ? $_POST[$cfg['fileField'].'Class'] : '';
 			// image description
-			$fileLbl	= $_POST[$cfg['fileField'].'Label'];
+			$fileLbl	= isset($_POST[$cfg['fileField'].'Label']) ? $_POST[$cfg['fileField'].'Label'] : '';
 			// load 'uploader' class
 			JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 		endif;
@@ -112,16 +114,19 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['address_state']		= $input->get('address_state', '', 'string');
 		$request['description']			= $input->get('description', '', 'raw'); // html
 
+		// SAVE CONDITION
+		// Condição para inserção e atualização dos registros
+		$save_condition = ($request['type_id'] > 0 && !empty($request['name']));
+
 		if($id || (!empty($ids) && $ids != 0)) :  //UPDATE OR DELETE
 
-			$num_rows = 0;
+			$exist = 0;
 			if($id) :
 				// GET FORM DATA
-				$query = 'SELECT * FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('id') .' = '. $id;
+				$query	= 'SELECT * FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('id') .' = '. $id;
 				$db->setQuery($query);
-				$db->execute();
-				$num_rows = $db->getNumRows();
-				$list = $db->loadObjectList();
+				$item	= $db->loadObject();
+	    		$exist	= (isset($item->id) && !empty($item->id) && $item->id > 0);
 				// get previous ID
 				$query = 'SELECT MAX(id) FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('id') .' < '. $id;
 				$db->setQuery($query);
@@ -145,73 +150,71 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$exist = $db->loadResult();
 			endif;
 
-			if($num_rows || $exist) : // verifica se existe
+			if($exist) : // verifica se existe
 
 				// GET DATA
-				if($task == 'get' && $list) :
+				if($task == 'get') :
 
-					foreach($list as $item) {
-						$data[] = array(
-							// Default Fields
-							'id'				=> $item->id,
-							'state'				=> $item->state,
-							'prev'				=> $prev,
-							'next'				=> $next,
-							// App Fields
-							'type_id'			=> $item->type_id,
-							'name'				=> $item->name,
-							'email'				=> $item->email,
-							'cpf'				=> $item->cpf,
-							'rg'				=> $item->rg,
-							'rg_orgao'			=> $item->rg_orgao,
-							'gender'			=> $item->gender,
-							'birthday'			=> $item->birthday,
-							'place_birth'		=> $item->place_birth,
-							'marital_status'	=> $item->marital_status,
-							'price'				=> $item->price,
-							'status'			=> $item->status,
-							'status_desc'		=> $item->status_desc,
-							'zip_code'			=> $item->zip_code,
-							'address'			=> $item->address,
-							'address_number'	=> $item->address_number,
-							'address_info'		=> $item->address_info,
-							'address_district'	=> $item->address_district,
-							'address_city'		=> $item->address_city,
-							'address_state'		=> $item->address_state,
-							'description'		=> $item->description,
-							'files'				=> $listFiles
-						);
-					}
+					$data[] = array(
+						// Default Fields
+						'id'				=> $item->id,
+						'state'				=> $item->state,
+						'prev'				=> $prev,
+						'next'				=> $next,
+						// App Fields
+						'type_id'			=> $item->type_id,
+						'name'				=> $item->name,
+						'email'				=> $item->email,
+						'cpf'				=> $item->cpf,
+						'rg'				=> $item->rg,
+						'rg_orgao'			=> $item->rg_orgao,
+						'gender'			=> $item->gender,
+						'birthday'			=> $item->birthday,
+						'place_birth'		=> $item->place_birth,
+						'marital_status'	=> $item->marital_status,
+						'price'				=> $item->price,
+						'status'			=> $item->status,
+						'status_desc'		=> $item->status_desc,
+						'zip_code'			=> $item->zip_code,
+						'address'			=> $item->address,
+						'address_number'	=> $item->address_number,
+						'address_info'		=> $item->address_info,
+						'address_district'	=> $item->address_district,
+						'address_city'		=> $item->address_city,
+						'address_state'		=> $item->address_state,
+						'description'		=> $item->description,
+						'files'				=> $listFiles
+					);
 
 				// UPDATE
-				elseif($task == 'save' && $id) :
+				elseif($task == 'save' && $save_condition && $id) :
 
 					$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
 					$query .=
-					$db->quoteName('type_id')			.'='. $request['type_id'] .','.
-					$db->quoteName('name')				.'='. $db->quote($request['name']) .','.
-					$db->quoteName('email')				.'='. $db->quote($request['email']) .','.
-					$db->quoteName('cpf')				.'='. $db->quote($request['cpf']) .','.
-					$db->quoteName('rg')				.'='. $db->quote($request['rg']) .','.
-					$db->quoteName('rg_orgao')			.'='. $db->quote($request['rg_orgao']) .','.
-					$db->quoteName('gender')			.'='. $request['gender'] .','.
-					$db->quoteName('birthday')			.'='. $db->quote($request['birthday']) .','.
-					$db->quoteName('place_birth')		.'='. $db->quote($request['place_birth']) .','.
-					$db->quoteName('marital_status') 	.'='. $db->quote($request['marital_status']) .','.
-					$db->quoteName('price')				.'='. $db->quote($request['price']) .','.
-					$db->quoteName('status')			.'='. $request['status'] .','.
-					$db->quoteName('status_desc')		.'='. $db->quote($request['status_desc']) .','.
-					$db->quoteName('zip_code')			.'='. $db->quote($request['zip_code']) .','.
-					$db->quoteName('address')			.'='. $db->quote($request['address']) .','.
-					$db->quoteName('address_number')	.'='. $db->quote($request['address_number']) .','.
-					$db->quoteName('address_info')		.'='. $db->quote($request['address_info']) .','.
-					$db->quoteName('address_district')	.'='. $db->quote($request['address_district']) .','.
-					$db->quoteName('address_city')		.'='. $db->quote($request['address_city']) .','.
-					$db->quoteName('address_state')		.'='. $db->quote($request['address_state']) .','.
-					$db->quoteName('description')		.'='. $db->quote($request['description']) .','.
-					$db->quoteName('state')				.'='. $request['state'] .','.
-					$db->quoteName('alter_date')		.'= NOW(),'.
-					$db->quoteName('alter_by')			.'='. $user->id
+						$db->quoteName('type_id')			.'='. $request['type_id'] .','.
+						$db->quoteName('name')				.'='. $db->quote($request['name']) .','.
+						$db->quoteName('email')				.'='. $db->quote($request['email']) .','.
+						$db->quoteName('cpf')				.'='. $db->quote($request['cpf']) .','.
+						$db->quoteName('rg')				.'='. $db->quote($request['rg']) .','.
+						$db->quoteName('rg_orgao')			.'='. $db->quote($request['rg_orgao']) .','.
+						$db->quoteName('gender')			.'='. $request['gender'] .','.
+						$db->quoteName('birthday')			.'='. $db->quote($request['birthday']) .','.
+						$db->quoteName('place_birth')		.'='. $db->quote($request['place_birth']) .','.
+						$db->quoteName('marital_status') 	.'='. $db->quote($request['marital_status']) .','.
+						$db->quoteName('price')				.'='. $db->quote($request['price']) .','.
+						$db->quoteName('status')			.'='. $request['status'] .','.
+						$db->quoteName('status_desc')		.'='. $db->quote($request['status_desc']) .','.
+						$db->quoteName('zip_code')			.'='. $db->quote($request['zip_code']) .','.
+						$db->quoteName('address')			.'='. $db->quote($request['address']) .','.
+						$db->quoteName('address_number')	.'='. $db->quote($request['address_number']) .','.
+						$db->quoteName('address_info')		.'='. $db->quote($request['address_info']) .','.
+						$db->quoteName('address_district')	.'='. $db->quote($request['address_district']) .','.
+						$db->quoteName('address_city')		.'='. $db->quote($request['address_city']) .','.
+						$db->quoteName('address_state')		.'='. $db->quote($request['address_state']) .','.
+						$db->quoteName('description')		.'='. $db->quote($request['description']) .','.
+						$db->quoteName('state')				.'='. $request['state'] .','.
+						$db->quoteName('alter_date')		.'= NOW(),'.
+						$db->quoteName('alter_by')			.'='. $user->id
 					;
 					$query .= ' WHERE '. $db->quoteName('id') .'='. $id;
 
@@ -400,7 +403,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			if($task == 'save') :
 
 				// validation
-				if($request['type_id'] > 0 && !empty($request['name'])) :
+				if($save_condition) :
 
 					// Prepare the insert query
 					$query  = '

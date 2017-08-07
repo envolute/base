@@ -106,7 +106,7 @@ $htmlFilter = '
 			<input type="hidden" name="'.$APPTAG.'_filter" value="1" />
 
 			<div class="row">
-				<div class="col-sm-4">
+				<div class="col-sm-6 col-md-4">
 					<div class="form-group">
 						<label class="label-sm">'.JText::_('FIELD_LABEL_TYPE').'</label>
 						<select name="fType" id="fType" class="form-control form-control-sm set-filter">
@@ -115,7 +115,7 @@ $htmlFilter = '
 						</select>
 					</div>
 				</div>
-				<div class="col-sm-4">
+				<div class="col-sm-6 col-md-2">
 					<div class="form-group">
 						<label class="label-sm">'.JText::_('TEXT_STATE').'</label>
 						<select name="active" id="active" class="form-control form-control-sm set-filter">
@@ -125,7 +125,7 @@ $htmlFilter = '
 						</select>
 					</div>
 				</div>
-				<div class="col-sm-4">
+				<div class="col-sm-6">
 					<div class="form-group">
 						<label class="label-sm text-truncate">'.implode(', ', $sLabel).'</label>
 						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />

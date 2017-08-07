@@ -267,13 +267,60 @@ class baseHelper {
 
 	// MAIL TEMPLATE DEFAULT
 	// template default para envio de e-mails
-	public static function mailTemplateDefault($content, $title = '', $footer = '', $logo = '', $headColor = '#7f8f9a', $textColor = '#555', $bgColor = '#f8f8f8') {
+	// $header / $body / $container são arrays com informações sobre estilo do template
+	// Ex: $header('bg' => '#fff', 'color' => '#444', border => 'border: 1px solid #ddd');
+	public static function mailTemplateDefault($content, $title = '', $footer = '', $logo = '', $box = array(), $head = array(), $body = array()) {
+
+		// Container style
+		$boxBg			= '#f8f8f8';
+		$boxColor		= '#555';
+		$boxBorder		= 'border: 1px solid #ddd';
+		if(count($box)) :
+			$boxBg		= (isset($box['bg']) && !empty($box['bg'])) ? $box['bg'] : $boxBg;
+			$boxColor	= (isset($box['color']) && !empty($box['color'])) ? $box['color'] : $boxColor;
+			if(isset($box['border']) && !empty($box['border'])) :
+				$b = (strpos($box['border'], 'border') === false) ? 'border: ' : '';
+				$boxBorder = $b.$box['border'];
+			else :
+				$boxBorder;
+			endif;
+		endif;
+		// Header style
+		$headBg			= '#fff';
+		$headColor		= '#444';
+		$headBorder		= 'border-bottom: 1px solid #ddd';
+		if(count($head)) :
+			$headBg		= (isset($head['bg']) && !empty($head['bg'])) ? $head['bg'] : $headBg;
+			$headColor	= (isset($head['color']) && !empty($head['color'])) ? $head['color'] : $headColor;
+			if(isset($head['border']) && !empty($head['border'])) :
+				$b = (strpos($head['border'], 'border') === false) ? 'border-bottom: ' : '';
+				$headBorder = $b.$head['border'];
+			else :
+				$headBorder;
+			endif;
+		endif;
+		// Body style
+		$bodyBg			= '#f8f8f8';
+		$bodyColor		= $boxColor;
+		$bodyBorder		= 'border: 1px solid #fff';
+		if(count($body)) :
+			$bodyBg		= (isset($body['bg']) && !empty($body['bg'])) ? $body['bg'] : $bodyBg;
+			$bodyColor	= (isset($body['color']) && !empty($body['color'])) ? $body['color'] : $bodyColor;
+			if(isset($body['border']) && !empty($body['border'])) :
+				$b = (strpos($body['border'], 'border') === false) ? 'border: ' : '';
+				$bodyBorder = $b.$body['border'];
+			else :
+				$bodyBorder;
+			endif;
+		endif;
 		// IMPORTANTE: informar apenas o nome da imagem. Ela deve estar no diretório '/images/template/logos/'
-		$brand = (!empty($logo) && file_exists(_ROOT_.'/images/template/logos/'.$logo)) ? $logo : 'logo-news.png';
-		$html = str_replace('<p>','<p style="margin:0 0 10px">', $content);
+		$brand = ($logo && !empty($logo) && file_exists(_ROOT_.'/images/template/logos/'.$logo)) ? $logo : 'logo-news.png';
+		$html = str_replace('<p>','<p style="margin:0 0 15px">', $content);
+
 		$htmlFooter = !empty($footer) ? '<div style="padding:15px; text-align:center; font-size:11px; color:#aaa;">'.$footer.'</div>' : '';
-		$html = '<div style="max-width:650px; margin:auto; font-family:arial;"><div style="padding:4px; background-color:'.$bgColor.';"><div style="font-size:13px; color:'.$textColor.'; border:1px solid #ddd; box-shadow:0 0 4px rgba(0,0,0,0.1);"><div style="padding:15px; font-size:20px; color:'.$headColor.'; border-bottom:1px solid #ddd; background:#fff;"><table style="width:100%; border-collapse:collapse; border-spacing:0;"><tbody><tr><td style="padding:0; line-height:1;"><img src="'._ROOT_.'/images/template/logos/'.$brand.'" style="vertical-align:bottom;"></td><td style="padding:0; line-height:1; text-align:right;">'.$title.'</td></tr></tbody></table></div><div style="padding:15px; background-color:#f8f8f8; border: 1px solid#fff;">'.$html.'</div></div></div>'.$htmlFooter.'</div>';
+		$html = '<div style="max-width:650px; margin:auto; font-family:arial;"><div style="padding:4px; background-color:'.$boxBg.';"><div style="font-size:13px; color:'.$boxColor.'; '.$boxBorder.'; box-shadow:0 0 4px rgba(0,0,0,0.1);"><div style="padding:15px; font-size:20px; color:'.$headColor.'; '.$headBorder.'; background-color:'.$headBg.';"><table style="width:100%; border-collapse:collapse; border-spacing:0;"><tbody><tr><td style="padding:0; line-height:1;"><img src="'._ROOT_.'/images/template/logos/'.$brand.'" style="vertical-align:bottom;"></td><td style="padding:0; line-height:1; text-align:right;">'.$title.'</td></tr></tbody></table></div><div style="padding:15px; color:'.$bodyColor.'; '.$bodyBorder.'; background-color:'.$bodyBg.';">'.$html.'</div></div></div>'.$htmlFooter.'</div>';
 		return $html;
+
 	}
 
 	// CSV TO ARRAY

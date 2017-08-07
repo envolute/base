@@ -92,12 +92,14 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['relationId']   		= $input->get('relationId', 0, 'int');
 		$request['state']				= $input->get('state', 1, 'int');
 		// app
-		$request['name']				= $input->get('name', '', 'string');
-		$request['description']			= $input->get('description', '', 'string');
+		$request['client_id']			= $input->get('client_id', 0, 'int');
+		$request['plan_id']				= $input->get('plan_id', 0, 'int');
+		$request['phone_number']		= $input->get('phone_number', '', 'string');
+		$request['note']				= $input->get('note', '', 'string');
 
 		// SAVE CONDITION
 		// Condição para inserção e atualização dos registros
-		$save_condition = (!empty($request['name']));
+		$save_condition = ($request['client_id'] != 0 && $request['plan_id'] != 0 && !empty($request['phone_number']));
 
 		if($id || (!empty($ids) && $ids != 0)) :  //UPDATE OR DELETE
 
@@ -143,8 +145,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'prev'				=> $prev,
 						'next'				=> $next,
 						// App Fields
-						'name'				=> $item->name,
-						'description'		=> $item->description
+						'client_id'			=> $item->client_id,
+						'plan_id'			=> $item->plan_id,
+						'phone_number'		=> $item->phone_number,
+						'note'				=> $item->note
 					);
 
 				// UPDATE
@@ -152,8 +156,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 					$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
 					$query .=
-						$db->quoteName('name')				.'='. $db->quote($request['name']) .','.
-						$db->quoteName('description')		.'='. $db->quote($request['description']) .','.
+						$db->quoteName('client_id')			.'='. $request['client_id'] .','.
+						$db->quoteName('plan_id')			.'='. $request['plan_id'] .','.
+						$db->quoteName('phone_number')		.'='. $db->quote($request['phone_number']) .','.
+						$db->quoteName('note')				.'='. $db->quote($request['note']) .','.
 						$db->quoteName('state')				.'='. $request['state'] .','.
 						$db->quoteName('alter_date')		.'= NOW(),'.
 						$db->quoteName('alter_by')			.'='. $user->id
@@ -343,13 +349,17 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					// Prepare the insert query
 					$query  = '
 						INSERT INTO '. $db->quoteName($cfg['mainTable']) .'('.
-							$db->quoteName('name') .','.
-							$db->quoteName('description') .','.
+							$db->quoteName('client_id') .','.
+							$db->quoteName('plan_id') .','.
+							$db->quoteName('phone_number') .','.
+							$db->quoteName('note') .','.
 							$db->quoteName('state') .','.
 							$db->quoteName('created_by')
 						.') VALUES ('.
-							$db->quote($request['name']) .','.
-							$db->quote($request['description']) .','.
+							$request['client_id'] .','.
+							$request['plan_id'] .','.
+							$db->quote($request['phone_number']) .','.
+							$db->quote($request['nome']) .','.
 							$request['state'] .','.
 							$user->id
 						.')

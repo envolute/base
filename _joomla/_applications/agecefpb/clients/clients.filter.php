@@ -10,6 +10,9 @@ $where = '';
 	$active	= $app->input->get('active', 2, 'int');
 	$db->quoteName('T1.state');
 	$where .= ($active == 2) ? $db->quoteName('T1.state').' != '.$active : $db->quoteName('T1.state').' = '.$active;
+	// GENDER -> select
+	$fGender = $app->input->get('fGender', 2, 'int');
+	if($fGender != 2) $where .= ' AND '.$db->quoteName('T1.gender').' = '.$fGender;
 
 	// DATE
 	$dateMin	= $app->input->get('dateMin', '', 'string');
@@ -25,8 +28,16 @@ $where = '';
 	$searchFields = array(
 		'T1.name'				=> 'FIELD_LABEL_NAME',
 		'T1.email'				=> 'E-mail',
+		'T1.cx_email'			=> '',
 		'T1.cpf'				=> 'CPF',
-		'T1.rg'					=> 'RG'
+		'T1.rg'					=> 'RG',
+		'T1.cx_code'			=> 'FIELD_LABEL_CODE',
+		'T1.cx_role'			=> 'FIELD_LABEL_ROLE',
+		'T1.cx_situated'		=> 'FIELD_LABEL_SITUATED',
+		'T1.address'			=> 'FIELD_LABEL_ADDRESS',
+		'T1.address_district'	=> '',
+		'T1.address_city'		=> '',
+		'T1.cep'				=> ''
 	);
 	$i = 0;
 	foreach($searchFields as $key => $value) {
@@ -95,7 +106,7 @@ $htmlFilter = '
 			<input type="hidden" name="'.$APPTAG.'_filter" value="1" />
 
 			<div class="row">
-				<div class="col-sm-4">
+				<div class="col-sm-6 col-md-3 col-lg-2">
 					<div class="form-group">
 						<label class="label-sm">'.JText::_('TEXT_STATE').'</label>
 						<select name="active" id="active" class="form-control form-control-sm set-filter">
@@ -105,7 +116,28 @@ $htmlFilter = '
 						</select>
 					</div>
 				</div>
-				<div class="col-sm-4">
+				<div class="col-sm-6 col-md-3 col-lg-2">
+					<div class="form-group">
+						<label class="label-sm">'.JText::_('FIELD_LABEL_GENDER').'</label>
+						<select name="fGender" id="fGender" class="form-control form-control-sm set-filter">
+							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
+							<option value="1"'.($fGender == 1 ? ' selected' : '').'>'.JText::_('TEXT_MALE').'</option>
+							<option value="0"'.($fGender == 0 ? ' selected' : '').'>'.JText::_('TEXT_FEMALE').'</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-6 col-lg-4">
+					<div class="form-group">
+						<label class="label-sm">'.JText::_('FIELD_LABEL_BIRTHDAY').'</label>
+						<span class="input-group input-group-sm">
+							<span class="input-group-addon strong">'.JText::_('TEXT_FROM').'</span>
+							<input type="text" name="dateMin" value="'.$dateMin.'" class="form-control field-date" data-width="100%" data-convert="true" />
+							<span class="input-group-addon">'.JText::_('TEXT_TO').'</span>
+							<input type="text" name="dateMax" value="'.$dateMax.'" class="form-control field-date" data-width="100%" data-convert="true" />
+						</span>
+					</div>
+				</div>
+				<div class="col-sm-6 col-lg-4">
 					<div class="form-group">
 						<label class="label-sm text-truncate">'.implode(', ', $sLabel).'</label>
 						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />

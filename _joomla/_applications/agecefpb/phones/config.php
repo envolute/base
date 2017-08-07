@@ -4,8 +4,8 @@ defined('_JEXEC') or die;
 require(JPATH_BASE.'/libraries/envolute/_system.vars.php');
 
 // App Define
-$APPNAME  = 'appSampleTypes';
-$MAIN_TB  = '#__base_app_sample_types';
+$APPNAME  = 'phones';
+$MAIN_TB  = '#__agecefpb_phones';
 $APPTAG   = isset(${$APPNAME.'AppTag'}) ? ${$APPNAME.'AppTag'} : $APPNAME;
 $newInstance = ($APPTAG != $APPNAME) ? true : false;
 

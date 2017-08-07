@@ -12,8 +12,12 @@ require($PATH_APP_FILE.'.filter.php');
 	$query = '
 		SELECT SQL_CALC_FOUND_ROWS
 			'. $db->quoteName('T1.id') .',
-			'. $db->quoteName('T1.name') .',
-			'. $db->quoteName('T1.description') .',
+			'. $db->quoteName('T2.name') .' client,
+			'. $db->quoteName('T3.name') .' plan,
+			'. $db->quoteName('T4.name') .' operator,
+			'. $db->quoteName('T3.price') .',
+			'. $db->quoteName('T1.phone_number') .',
+			'. $db->quoteName('T1.note') .',
 			'. $db->quoteName('T1.created_date') .',
 			'. $db->quoteName('T1.created_by') .',
 			'. $db->quoteName('T1.alter_date') .',
@@ -21,6 +25,12 @@ require($PATH_APP_FILE.'.filter.php');
 			'. $db->quoteName('T1.state') .'
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
+			LEFT OUTER JOIN '. $db->quoteName('#__agecefpb_clients') .' T2
+			ON T2.id = T1.client_id
+			LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_plans') .' T3
+			ON T3.id = T1.plan_id
+			LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_plans_operators') .' T4
+			ON T4.id = T3.operator_id
 		WHERE
 			'.$where.$orderList;
 	;
@@ -57,8 +67,9 @@ $html = '
 			<thead>
 				<tr>
 					'.$adminView['head']['info'].'
-					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_NAME'), 'T1.name', $APPTAG).'</th>
-					<th>'.JText::_('FIELD_LABEL_DESCRIPTION').'</th>
+					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_PHONE_NUMBER'), 'T1.name', $APPTAG).'</th>
+					<th>'.JText::_('FIELD_LABEL_PLAN').'</th>
+					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_CLIENT'), 'T2.name', $APPTAG).'</th>
 					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
 					'.$adminView['head']['actions'].'
 				</tr>
@@ -110,6 +121,7 @@ if($num_rows) : // verifica se existe
 			';
 		endif;
 
+		$note = !empty($item->note) ? '<span class="base-icon-info-circled hasTooltip" title="'.$item->note.'"></span> ' : '';
 		$rowState = $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
@@ -122,8 +134,12 @@ if($num_rows) : // verifica se existe
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
-				<td>'.baseHelper::nameFormat($item->name).'</td>
-				<td>'.$item->description.'</td>
+				<td>'.$note.$item->phone_number.'</td>
+				<td>
+					['.baseHelper::nameFormat($item->operator).'] '.baseHelper::nameFormat($item->plan).'
+					<div class="small text-muted">R$'.baseHelper::priceFormat($item->price).'</div>
+				</td>
+				<td>'.baseHelper::nameFormat($item->client).'</td>
 				<td class="d-none d-lg-table-cell">
 					'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'
 					<a href="#" class="base-icon-info-circled setPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top"></a>

@@ -4,8 +4,8 @@ defined('_JEXEC') or die;
 require(JPATH_BASE.'/libraries/envolute/_system.vars.php');
 
 // App Define
-$APPNAME  = 'appSampleTypes';
-$MAIN_TB  = '#__base_app_sample_types';
+$APPNAME  = 'phonesPlans';
+$MAIN_TB  = '#__agecefpb_phones_plans';
 $APPTAG   = isset(${$APPNAME.'AppTag'}) ? ${$APPNAME.'AppTag'} : $APPNAME;
 $newInstance = ($APPTAG != $APPNAME) ? true : false;
 
@@ -83,9 +83,9 @@ $cfg = array();
 
 // date & price convertions
   $cfg['dateConvert']       = false;
-  $cfg['priceDecimal']      = false;
+  $cfg['priceDecimal']      = true;
   $cfg['load_UI']           = false;
-  $cfg['htmlEditor']        = false;
+  $cfg['htmlEditor']        = true;
   $cfg['htmlEditorFull']    = false;
 
 // crud's upload config

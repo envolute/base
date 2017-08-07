@@ -30,10 +30,10 @@ class uploader {
 			$fTemp	= $files["tmp_name"][$i];
 			$fName	= $files["name"][$i];
 			// campos integrados
-			$fGroup	= $fileGrp[$i];
-			$fGtype	= $fileGtp[$i];
-			$fClass	= $fileCls[$i];
-			$fLabel	= $fileLbl[$i];
+			$fGroup	= isset($fileGrp[$i]) ? $fileGrp[$i] : '';
+			$fGtype	= isset($fileGtp[$i]) ? $fileGtp[$i] : '';
+			$fClass	= isset($fileCls[$i]) ? $fileCls[$i] : '';
+			$fLabel	= isset($fileLbl[$i]) ? $fileLbl[$i] : '';
 			// start index counter
 			$sIndex	= (!empty($cfg['indexFileInit']) ? $cfg['indexFileInit'] : 0) - 1;
 

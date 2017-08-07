@@ -2,12 +2,17 @@
 defined('_JEXEC') or die;
 
 // USUÁRIOS SEM CLIENTES ASSOCIADOS
+// IMPORTANTE:
+// 1 - Não lista usuários do grupo 'Desenvolvedor' => '8'
+// 2 - Não lista usuários que já estão associados a um 'client'
 $query = '
 	SELECT T1.id, T1.name, T1.email
 	FROM '. $db->quoteName('#__users') .' T1
-		LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable']) .' T2
+		JOIN '. $db->quoteName('#__user_usergroup_map') .' T2
 		ON T2.user_id = T1.id
-	WHERE T2.name IS NULL
+		LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable']) .' T3
+		ON T3.user_id = T1.id
+	WHERE T2.group_id <> 8 AND T3.name IS NULL
 	ORDER BY T1.name
 ';
 $db->setQuery($query);
@@ -52,8 +57,8 @@ $users = $db->loadObjectList();
 					</div>
 					<div class="col-sm-6 col-lg-4">
 						<div class="form-group field-required">
-							<label>RG</label>
-							<input type="text" name="rg" id="<?php echo $APPTAG?>-rg" class="form-control" />
+							<label class="iconTip hasTooltip" title="<?php echo JText::_('TEXT_ONLY_NUMBERS'); ?>">RG</label>
+							<input type="text" name="rg" id="<?php echo $APPTAG?>-rg" class="form-control numeric" />
 						</div>
 					</div>
 					<div class="col-sm-6 col-lg-4">
@@ -153,7 +158,7 @@ $users = $db->loadObjectList();
 						</div>
 						<div class="col-lg-6">
 							<div class="form-group field-required">
-								<label><?php echo JText::_('FIELD_LABEL_SITUATED'); ?></label>
+								<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_SITUATED_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_SITUATED'); ?></label>
 								<input type="text" name="cx_situated" id="<?php echo $APPTAG?>-cx_situated" class="form-control upper" />
 							</div>
 						</div>
@@ -285,11 +290,11 @@ $users = $db->loadObjectList();
 			<div class="col-md-4 b-left b-dashed">
 				<div class="form-group">
 					<label><?php echo JText::_('FIELD_LABEL_PHONE'); ?> 1</label>
-					<input type="text" name="phone" id="<?php echo $APPTAG?>-phone" class="form-control field-phone" />
+					<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone1" class="form-control field-phone" />
 				</div>
 				<div class="form-group">
 					<label><?php echo JText::_('FIELD_LABEL_PHONE'); ?> 2</label>
-					<input type="text" name="phone" id="<?php echo $APPTAG?>-phone" class="form-control field-phone" />
+					<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone2" class="form-control field-phone" />
 				</div>
 			</div>
 		</div>
@@ -299,19 +304,19 @@ $users = $db->loadObjectList();
 			<div class="col-sm-3">
 				<div class="form-group">
 					<label><?php echo JText::_('FIELD_LABEL_AGENCY'); ?></label>
-					<input type="text" name="agency" id="<?php echo $APPTAG?>-agency" class="form-control length-fixed" data-length="4" maxlength="4" />
+					<input type="text" name="agency" id="<?php echo $APPTAG?>-agency" class="form-control numeric length-fixed" data-length="4" maxlength="4" />
 				</div>
 			</div>
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label><?php echo JText::_('FIELD_LABEL_OPERATION'); ?></label>
-					<input type="text" name="operation" id="<?php echo $APPTAG?>-operation" class="form-control length-fixed" data-length="3" maxlength="3" />
+					<input type="text" name="operation" id="<?php echo $APPTAG?>-operation" class="form-control numeric length-fixed" data-length="3" maxlength="3" />
 				</div>
 			</div>
 			<div class="col-sm-3">
 				<div class="form-group">
-					<label><?php echo JText::_('FIELD_LABEL_ACCOUNT'); ?></label>
-					<input type="text" name="account" id="<?php echo $APPTAG?>-account" class="form-control length-fixed" data-length="10" maxlength="10" />
+					<label class="iconTip hasTooltip" title="<?php echo JText::_('TEXT_ONLY_NUMBERS'); ?>"><?php echo JText::_('FIELD_LABEL_ACCOUNT'); ?></label>
+					<input type="text" name="account" id="<?php echo $APPTAG?>-account" class="form-control numeric length-fixed" data-length="10" maxlength="10" />
 				</div>
 			</div>
 		</div>

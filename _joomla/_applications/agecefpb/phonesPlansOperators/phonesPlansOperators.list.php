@@ -13,7 +13,6 @@ require($PATH_APP_FILE.'.filter.php');
 		SELECT SQL_CALC_FOUND_ROWS
 			'. $db->quoteName('T1.id') .',
 			'. $db->quoteName('T1.name') .',
-			'. $db->quoteName('T1.description') .',
 			'. $db->quoteName('T1.created_date') .',
 			'. $db->quoteName('T1.created_by') .',
 			'. $db->quoteName('T1.alter_date') .',
@@ -58,7 +57,6 @@ $html = '
 				<tr>
 					'.$adminView['head']['info'].'
 					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_NAME'), 'T1.name', $APPTAG).'</th>
-					<th>'.JText::_('FIELD_LABEL_DESCRIPTION').'</th>
 					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
 					'.$adminView['head']['actions'].'
 				</tr>
@@ -122,8 +120,7 @@ if($num_rows) : // verifica se existe
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
-				<td>'.baseHelper::nameFormat($item->name).'</td>
-				<td>'.$item->description.'</td>
+				<td>'.$item->name.'</td>
 				<td class="d-none d-lg-table-cell">
 					'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'
 					<a href="#" class="base-icon-info-circled setPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top"></a>
@@ -137,7 +134,7 @@ else : // num_rows = 0
 
 	$html .= '
 		<tr>
-			<td colspan="7">
+			<td colspan="6">
 				<div class="alert alert-warning alert-icon m-0">'.JText::_('MSG_LISTNOREG').'</div>
 			</td>
 		</tr>

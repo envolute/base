@@ -10,14 +10,23 @@ $where = '';
 	$active	= $app->input->get('active', 2, 'int');
 	$db->quoteName('T1.state');
 	$where .= ($active == 2) ? $db->quoteName('T1.state').' != '.$active : $db->quoteName('T1.state').' = '.$active;
+	// OPERATORS -> select
+	$fOper	= $app->input->get('fOper', 0, 'int');
+	if($fOper != 0) $where .= ' AND '.$db->quoteName('T1.operator_id').' = '.$fOper;
+	// PRICE
+	$priceMin	= $app->input->get('priceMin', '', 'string');
+	$priceMax	= $app->input->get('priceMax', '', 'string');
+	$prmin = !empty($priceMin) ? $priceMin : '0.00';
+	$prmax = (!empty($priceMax) && $priceMax != '0.00') ? $priceMax : '9999999999.99';
+	if(!empty($priceMin) || !empty($priceMax)) $where .= ' AND '.$db->quoteName('T1.price').' BETWEEN '.$prmin.' AND '.$prmax;
 
 	// Search 'Text fields'
 	$search	= $app->input->get('fSearch', '', 'string');
 	$sQuery = ''; // query de busca
 	$sLabel = array(); // label do campo de busca
 	$searchFields = array(
-		'T1.name'				=> 'FIELD_LABEL_NAME',
-		'T1.description'		=> 'FIELD_LABEL_DESCRIPTION'
+		'T1.name'			=> 'FIELD_LABEL_NAME',
+		'T1.description'	=> 'FIELD_LABEL_DESCRIPTION'
 	);
 	$i = 0;
 	foreach($searchFields as $key => $value) {
@@ -33,9 +42,9 @@ $where = '';
 	$ordf	= $app->input->get($APPTAG.'oF', '', 'string'); // campo a ser ordenado
 	$ordt	= $app->input->get($APPTAG.'oT', '', 'string'); // tipo de ordem: 0 = 'ASC' default, 1 = 'DESC'
 
-	$orderDef = ''; // não utilizar vírgula no inicio ou fim
+	$orderDef = 'T1.name'; // não utilizar vírgula no inicio ou fim
 	if(!isset($_SESSION[$APPTAG.'oF'])) : // DEFAULT ORDER
-		$_SESSION[$APPTAG.'oF'] = 'T1.name';
+		$_SESSION[$APPTAG.'oF'] = 'T1.operator_id'; 
 		$_SESSION[$APPTAG.'oT'] = 'ASC';
 	endif;
 	if(!empty($ordf)) :
@@ -53,14 +62,14 @@ $where = '';
 
 // FILTER'S DINAMIC FIELDS
 
-	// types -> select
-	// $flt_type = '';
-	// $query = 'SELECT * FROM '. $db->quoteName($cfg['mainTable'].'_types') .' ORDER BY name';
-	// $db->setQuery($query);
-	// $types = $db->loadObjectList();
-	// foreach ($types as $obj) {
-	// 	$flt_type .= '<option value="'.$obj->id.'"'.($obj->id == $fType ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
-	// }
+	// OPERATORS -> select
+	$flt_oper = '';
+	$query = 'SELECT * FROM '. $db->quoteName($cfg['mainTable'].'_operators') .' ORDER BY name';
+	$db->setQuery($query);
+	$opers = $db->loadObjectList();
+	foreach ($opers as $obj) {
+		$flt_oper .= '<option value="'.$obj->id.'"'.($obj->id == $fOper ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
+	}
 
 // VISIBILITY
 // Elementos visíveis apenas quando uma consulta é realizada
@@ -86,7 +95,16 @@ $htmlFilter = '
 			<input type="hidden" name="'.$APPTAG.'_filter" value="1" />
 
 			<div class="row">
-				<div class="col-sm-6 col-md-3 col-lg-2">
+				<div class="col-sm-6 col-md-3">
+					<div class="form-group">
+						<label class="label-sm">'.JText::_('FIELD_LABEL_OPERATOR').'</label>
+						<select name="fOper" id="fOper" class="form-control form-control-sm set-filter">
+							<option value="0">- '.JText::_('TEXT_SELECT').' -</option>
+							'.$flt_oper.'
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md-2">
 					<div class="form-group">
 						<label class="label-sm">'.JText::_('TEXT_STATE').'</label>
 						<select name="active" id="active" class="form-control form-control-sm set-filter">
@@ -96,7 +114,7 @@ $htmlFilter = '
 						</select>
 					</div>
 				</div>
-				<div class="col-sm">
+				<div class="col-sm-6 col-md col-lg-4">
 					<div class="form-group">
 						<label class="label-sm text-truncate">'.implode(', ', $sLabel).'</label>
 						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />

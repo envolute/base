@@ -25,11 +25,26 @@ require_once ( JPATH_BASE .DS.'libraries'.DS.'joomla'.DS.'factory.php' );
 // não tráz os valores referente a raíz do site. A solução nesse caso, é criar variáveis que tragam
 // o valor relativo à raiz do site. Assim, Caso esse arquivo seja necessário, deve-se usar as variáveis
 // '$_ROOT' e '$_BASE' em substituição de 'JURI::root()' e 'JURI::root(true)' respectivamente.
-$r = strpos(JURI::root(), $baseDir);
-$b = strpos(JURI::root(true), $baseDir);
-$_ROOT = ($r === false) ? JURI::root() : substr(JURI::root(), 0, $r);             // -> {http://.../}
-$_BASE = ($b === false) ? JURI::root(true) : substr(JURI::root(true), 0, $b - 1); // -> {/...}
+// ROOT
+$r = strpos(JURI::root(), $baseDir);					//	Verifica se esta em uma biblioteca
+if($r === false) $r = strpos(JURI::root(), $appsDir);	//	Verifica se esta em uma aplicação
+// remove, da URL, os diretórios do sistema (libs e apps) -> {http://.../}
+$_ROOT = ($r === false) ? JURI::root() : substr(JURI::root(), 0, $r);
+// BASE
+$b = strpos(JURI::root(true), $baseDir);				//	Verifica se esta em uma biblioteca
+if($b === false) $b = strpos(JURI::root(), $appsDir);	//	Verifica se esta em uma aplicação
+// remove, da URL, os diretórios do sistema (libs e apps) -> {/...}
+$_BASE = ($b === false) ? JURI::root(true) : substr(JURI::root(true), 0, $b - 1);
+// CORE (libraries/...)
 $_CORE = $_ROOT.$baseDir.DS;
+// APPs (base-apps/...)
 $_APPS = $_CORE.$appsDir.DS;
+
+// Contants
+if(!defined('_ROOT_')) define('_ROOT_', $_ROOT); //-> http://www.../joomla
+if(!defined('_BASE_')) define('_BASE_', $_BASE); //-> /joomla
+if(!defined('_CORE_')) define('_CORE_', $_CORE);
+if(!defined('_APPS_')) define('_APPS_', $_APPS);
+if(!defined('_TEMPLATE_')) define('_TEMPLATE_', _BASE_.DS.'templates'.DS.'base');
 
 ?>

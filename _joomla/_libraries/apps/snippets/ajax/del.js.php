@@ -37,7 +37,7 @@ window.<?php echo $APPTAG?>_del = function(itemID, isForm) {
             // remove parent field option
             if(res.parentField != '' && res.parentFieldVal != '') {
               jQuery(res.parentField).find('option[value="'+res.parentFieldVal+'"]').remove();
-              jQuery(res.parentField).trigger("chosen:updated").change(); // atualiza o select
+              jQuery(res.parentField).selectUpdate(); // atualiza o select
             }
             <?php echo $APPTAG?>_listReload(false, true, res.ids, <?php echo $APPTAG?>oCHL, <?php echo $APPTAG?>rNID, <?php echo $APPTAG?>rID);
           } else {

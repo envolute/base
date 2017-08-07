@@ -13,7 +13,7 @@ relationId.val('<?php echo $_SESSION[$RTAG.'RelId']?>');
 
 // Reseta o parent
 if(parentFieldId != null) {
-  parentFieldId.val(0).trigger("chosen:updated"); // select
+  parentFieldId.val(0).selectUpdate(); // select
   parentFieldGroup.prop('hidden', false);
 }
 <?php

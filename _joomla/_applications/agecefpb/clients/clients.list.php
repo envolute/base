@@ -11,17 +11,18 @@ require($PATH_APP_FILE.'.filter.php');
 
 	$query = '
 		SELECT SQL_CALC_FOUND_ROWS
-			T1.id,
-			T1.name,
-			T1.cx_role,
-			T1.cx_situated,
-			T1.access,
-			T1.reasonStatus,
-			T1.created_date,
-			T1.created_by,
-			T1.alter_date,
-			T1.alter_by,
-			T1.state
+			'. $db->quoteName('T1.id') .',
+			'. $db->quoteName('T1.name') .',
+			'. $db->quoteName('T2.name') .' user,
+			'. $db->quoteName('T1.cx_role') .',
+			'. $db->quoteName('T1.cx_situated') .',
+			'. $db->quoteName('T1.access') .',
+			'. $db->quoteName('T1.reasonStatus') .',
+			'. $db->quoteName('T1.created_date') .',
+			'. $db->quoteName('T1.created_by') .',
+			'. $db->quoteName('T1.alter_date') .',
+			'. $db->quoteName('T1.alter_by') .',
+			'. $db->quoteName('T1.state') .'
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
 			LEFT OUTER JOIN '. $db->quoteName('#__users') .' T2
@@ -122,7 +123,10 @@ if($num_rows) : // verifica se existe
 			';
 		endif;
 
+
 		$status		= $item->access == 0 ? '<span class="base-icon-attention text-live"> '.JText::_('TEXT_PENDING').'</span><div class="small text-muted text-truncate">'.$item->reasonStatus.'</div>' : '<span class="base-icon-ok text-success"> '.JText::_('TEXT_APPROVED').'</span>';
+		// Check if user exist
+		$status		= (empty($item->user) && $item->access == 1) ? JText::_('TEXT_NO_USER_ASSOC') : $status;
 		$rowState	= $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
@@ -150,7 +154,7 @@ else : // num_rows = 0
 
 	$html .= '
 		<tr>
-			<td colspan="8">
+			<td colspan="7">
 				<div class="alert alert-warning alert-icon m-0">'.JText::_('MSG_LISTNOREG').'</div>
 			</td>
 		</tr>

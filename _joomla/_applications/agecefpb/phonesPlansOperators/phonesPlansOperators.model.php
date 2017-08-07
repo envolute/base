@@ -93,7 +93,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['state']				= $input->get('state', 1, 'int');
 		// app
 		$request['name']				= $input->get('name', '', 'string');
-		$request['description']			= $input->get('description', '', 'string');
 
 		// SAVE CONDITION
 		// Condição para inserção e atualização dos registros
@@ -143,8 +142,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'prev'				=> $prev,
 						'next'				=> $next,
 						// App Fields
-						'name'				=> $item->name,
-						'description'		=> $item->description
+						'name'				=> $item->name
 					);
 
 				// UPDATE
@@ -153,7 +151,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
 					$query .=
 						$db->quoteName('name')				.'='. $db->quote($request['name']) .','.
-						$db->quoteName('description')		.'='. $db->quote($request['description']) .','.
 						$db->quoteName('state')				.'='. $request['state'] .','.
 						$db->quoteName('alter_date')		.'= NOW(),'.
 						$db->quoteName('alter_by')			.'='. $user->id
@@ -344,12 +341,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$query  = '
 						INSERT INTO '. $db->quoteName($cfg['mainTable']) .'('.
 							$db->quoteName('name') .','.
-							$db->quoteName('description') .','.
 							$db->quoteName('state') .','.
 							$db->quoteName('created_by')
 						.') VALUES ('.
 							$db->quote($request['name']) .','.
-							$db->quote($request['description']) .','.
 							$request['state'] .','.
 							$user->id
 						.')

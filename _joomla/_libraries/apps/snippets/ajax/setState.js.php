@@ -38,7 +38,7 @@ window.<?php echo $APPTAG?>_setState = function(itemID, state) {
                 // remove parent field option
                 if(res.parentField != '' && res.parentFieldVal != '') {
                   jQuery(res.parentField).find('option[value="'+res.parentFieldVal+'"]').remove();
-                  jQuery(res.parentField).trigger("chosen:updated").change(); // atualiza o select
+                  jQuery(res.parentField).selectUpdate(); // atualiza o select
                 }
             } else {
               e.removeClass('base-icon-cancel text-danger').addClass('base-icon-ok text-success');
@@ -49,7 +49,7 @@ window.<?php echo $APPTAG?>_setState = function(itemID, state) {
               // add parent field option
               if(res.parentField != '' && res.parentFieldVal != '') {
                 jQuery(res.parentField).append('<option value='+res.parentFieldVal+'>'+res.parentFieldLabel+'</option>');
-                jQuery(res.parentField).val(res.parentFieldVal).trigger("chosen:updated").change(); // atualiza o select
+                jQuery(res.parentField).val(res.parentFieldVal).selectUpdate(); // atualiza o select
               }
             }
           }

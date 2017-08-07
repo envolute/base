@@ -37,7 +37,7 @@ jQuery(function() {
 
 	// PARENT FIELD -> Select
 	// informe, se houver, o campo que representa a chave estrangeira principal
-	var parentFieldId		= null;
+	var parentFieldId		= null; // 'null', caso não exista...
 	var parentFieldGroup	= elementExist(parentFieldId) ? parentFieldId.closest('[class*="col-"]') : null;
 
 	// GROUP RELATION'S BUTTONS -> grupo de botões de relacionamentos no form
@@ -258,16 +258,6 @@ jQuery(function() {
 jQuery(window).load(function() {
 	// Jquery Validation
 	window.<?php echo $APPTAG?>_validator = mainForm_<?php echo $APPTAG?>.validate({
-		rules: {
-			price: {
-				notEqual: "0,00" // only price is required
-			}
-		},
-		messages: {
-			price: {
-				notEqual: "<?php echo JText::_('FIELD_REQUIRED')?>"
-			}
-		},
 		//don't remove this
 		invalidHandler: function(event, validator) {
 			//if there is error,

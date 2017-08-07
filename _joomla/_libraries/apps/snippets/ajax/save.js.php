@@ -52,9 +52,9 @@ window.<?php echo $APPTAG?>_save = function(trigger) {
               // add option if is active (state = 1)
               if(res.parentFieldLabel != '' && res.parentFieldLabel != null) {
                 jQuery(res.parentField).append('<option value='+res.parentFieldVal+'>'+res.parentFieldLabel+'</option>'); // add valor à lista
-                jQuery(res.parentField).val(res.parentFieldVal).trigger("chosen:updated").change(); // atualiza o select
+                jQuery(res.parentField).val(res.parentFieldVal).selectUpdate(); // atualiza o select
               } else {
-                jQuery(res.parentField).trigger("chosen:updated");
+                jQuery(res.parentField).selectUpdate();
               }
             }
 

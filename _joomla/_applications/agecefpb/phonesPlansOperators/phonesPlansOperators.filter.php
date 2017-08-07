@@ -16,8 +16,7 @@ $where = '';
 	$sQuery = ''; // query de busca
 	$sLabel = array(); // label do campo de busca
 	$searchFields = array(
-		'T1.name'				=> 'FIELD_LABEL_NAME',
-		'T1.description'		=> 'FIELD_LABEL_DESCRIPTION'
+		'T1.name'				=> 'FIELD_LABEL_NAME'
 	);
 	$i = 0;
 	foreach($searchFields as $key => $value) {
@@ -86,7 +85,7 @@ $htmlFilter = '
 			<input type="hidden" name="'.$APPTAG.'_filter" value="1" />
 
 			<div class="row">
-				<div class="col-sm-6 col-md-3 col-lg-2">
+				<div class="col-sm-4 col-md-2">
 					<div class="form-group">
 						<label class="label-sm">'.JText::_('TEXT_STATE').'</label>
 						<select name="active" id="active" class="form-control form-control-sm set-filter">
