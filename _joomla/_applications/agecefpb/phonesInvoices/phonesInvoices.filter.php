@@ -10,37 +10,29 @@ $where = '';
 	$active	= $app->input->get('active', 2, 'int');
 	$db->quoteName('T1.state');
 	$where .= ($active == 2) ? $db->quoteName('T1.state').' != '.$active : $db->quoteName('T1.state').' = '.$active;
-	// ACCESS -> select
-	$fAccess = $app->input->get('fAccess', 2, 'int');
-	if($fAccess != 2) $where .= ' AND '.$db->quoteName('T1.access').' = '.$fAccess;
-	// GENDER -> select
-	$fGender = $app->input->get('fGender', 2, 'int');
-	if($fGender != 2) $where .= ' AND '.$db->quoteName('T1.gender').' = '.$fGender;
+	// OPERATORS -> select
+	$fOper	= $app->input->get('fOper', 0, 'int');
+	if($fOper != 0) $where .= ' AND '.$db->quoteName('T1.operator_id').' = '.$fOper;
 
 	// DATE
 	$dateMin	= $app->input->get('dateMin', '', 'string');
 	$dateMax	= $app->input->get('dateMax', '', 'string');
 	$dtmin = !empty($dateMin) ? $dateMin : '0000-00-00';
 	$dtmax = !empty($dateMax) ? $dateMax : '9999-12-31';
-	if(!empty($dateMin) || !empty($dateMax)) $where .= ' AND '.$db->quoteName('T1.created_date').' BETWEEN '.$db->quote($dtmin).' AND '.$db->quote($dtmax);
+	if(!empty($dateMin) || !empty($dateMax)) $where .= ' AND '.$db->quoteName('T1.due_date').' BETWEEN '.$db->quote($dtmin).' AND '.$db->quote($dtmax);
+	// PRICE
+	$priceMin	= $app->input->get('priceMin', '', 'string');
+	$priceMax	= $app->input->get('priceMax', '', 'string');
+	$prmin = !empty($priceMin) ? $priceMin : '0.00';
+	$prmax = (!empty($priceMax) && $priceMax != '0.00') ? $priceMax : '9999999999.99';
+	if(!empty($priceMin) || !empty($priceMax)) $where .= ' AND '.$db->quoteName('T1.tax').' BETWEEN '.$prmin.' AND '.$prmax;
 
 	// Search 'Text fields'
 	$search	= $app->input->get('fSearch', '', 'string');
 	$sQuery = ''; // query de busca
 	$sLabel = array(); // label do campo de busca
 	$searchFields = array(
-		'T1.name'				=> 'FIELD_LABEL_NAME',
-		'T1.email'				=> 'E-mail',
-		'T1.cx_email'			=> '',
-		'T1.cpf'				=> 'CPF',
-		'T1.rg'					=> 'RG',
-		'T1.cx_code'			=> 'FIELD_LABEL_CODE',
-		'T1.cx_role'			=> 'FIELD_LABEL_ROLE',
-		'T1.cx_situated'		=> 'FIELD_LABEL_SITUATED',
-		'T1.address'			=> 'FIELD_LABEL_ADDRESS',
-		'T1.address_district'	=> '',
-		'T1.address_city'		=> '',
-		'T1.cep'				=> ''
+		'T1.note'	=> 'FIELD_LABEL_NOTE'
 	);
 	$i = 0;
 	foreach($searchFields as $key => $value) {
@@ -56,10 +48,10 @@ $where = '';
 	$ordf	= $app->input->get($APPTAG.'oF', '', 'string'); // campo a ser ordenado
 	$ordt	= $app->input->get($APPTAG.'oT', '', 'string'); // tipo de ordem: 0 = 'ASC' default, 1 = 'DESC'
 
-	$orderDef = 'T1.name'; // não utilizar vírgula no inicio ou fim
+	$orderDef = 'T2.name'; // não utilizar vírgula no inicio ou fim
 	if(!isset($_SESSION[$APPTAG.'oF'])) : // DEFAULT ORDER
-		$_SESSION[$APPTAG.'oF'] = 'T1.access';
-		$_SESSION[$APPTAG.'oT'] = 'ASC';
+		$_SESSION[$APPTAG.'oF'] = 'T1.due_date';
+		$_SESSION[$APPTAG.'oT'] = 'DESC';
 	endif;
 	if(!empty($ordf)) :
 		$_SESSION[$APPTAG.'oF'] = $ordf;
@@ -76,14 +68,14 @@ $where = '';
 
 // FILTER'S DINAMIC FIELDS
 
-	// types -> select
-	// $flt_type = '';
-	// $query = 'SELECT * FROM '. $db->quoteName($cfg['mainTable'].'_types') .' ORDER BY name';
-	// $db->setQuery($query);
-	// $types = $db->loadObjectList();
-	// foreach ($types as $obj) {
-	// 	$flt_type .= '<option value="'.$obj->id.'"'.($obj->id == $fType ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
-	// }
+	// OPERATORS -> select
+	$flt_oper = '';
+	$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_phones_plans_operators') .' ORDER BY name';
+	$db->setQuery($query);
+	$opers = $db->loadObjectList();
+	foreach ($opers as $obj) {
+		$flt_oper .= '<option value="'.$obj->id.'"'.($obj->id == $fOper ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
+	}
 
 // VISIBILITY
 // Elementos visíveis apenas quando uma consulta é realizada
@@ -109,7 +101,38 @@ $htmlFilter = '
 			<input type="hidden" name="'.$APPTAG.'_filter" value="1" />
 
 			<div class="row">
-				<div class="col-sm-6 col-md-3 col-lg-2">
+				<div class="col-sm-6 col-md-3">
+					<div class="form-group">
+						<label class="label-sm">'.JText::_('FIELD_LABEL_OPERATOR').'</label>
+						<select name="fOper" id="fOper" class="form-control form-control-sm set-filter">
+							<option value="0">- '.JText::_('TEXT_SELECT').' -</option>
+							'.$flt_oper.'
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-6 col-lg-4 col-xl-3">
+					<div class="form-group">
+						<label class="label-sm">'.JText::_('FIELD_LABEL_DUE_DATE').'</label>
+						<span class="input-group input-group-sm">
+							<span class="input-group-addon strong">'.JText::_('TEXT_FROM').'</span>
+							<input type="text" name="dateMin" value="'.$dateMin.'" class="form-control field-date" data-width="100%" data-convert="true" />
+							<span class="input-group-addon">'.JText::_('TEXT_TO').'</span>
+							<input type="text" name="dateMax" value="'.$dateMax.'" class="form-control field-date" data-width="100%" data-convert="true" />
+						</span>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md-4 col-lg-3">
+					<div class="form-group">
+						<label class="label-sm">'.JText::_('FIELD_LABEL_TAX').'</label>
+						<span class="input-group input-group-sm">
+							<span class="input-group-addon strong">R$</span>
+							<input type="text" name="priceMin" value="'.$priceMin.'" class="form-control field-price" data-width="100%" data-convert="true" />
+							<span class="input-group-addon">'.JText::_('TEXT_TO').'</span>
+							<input type="text" name="priceMax" value="'.$priceMax.'" class="form-control field-price" data-width="100%" data-convert="true" />
+						</span>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md-2">
 					<div class="form-group">
 						<label class="label-sm">'.JText::_('TEXT_STATE').'</label>
 						<select name="active" id="active" class="form-control form-control-sm set-filter">
@@ -119,38 +142,7 @@ $htmlFilter = '
 						</select>
 					</div>
 				</div>
-				<div class="col-sm-6 col-md-3 col-lg-2">
-					<div class="form-group">
-						<label class="label-sm">'.JText::_('TEXT_SITUATION').'</label>
-						<select name="fAccess" id="fAccess" class="form-control form-control-sm set-filter">
-							<option value="2">- '.JText::_('TEXT_ALL_F').' -</option>
-							<option value="0"'.($fAccess == 0 ? ' selected' : '').'>'.JText::_('TEXT_PENDING').'</option>
-							<option value="1"'.($fAccess == 1 ? ' selected' : '').'>'.JText::_('TEXT_APPROVED').'</option>
-						</select>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-3 col-lg-2">
-					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_GENDER').'</label>
-						<select name="fGender" id="fGender" class="form-control form-control-sm set-filter">
-							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
-							<option value="1"'.($fGender == 1 ? ' selected' : '').'>'.JText::_('TEXT_MALE').'</option>
-							<option value="0"'.($fGender == 0 ? ' selected' : '').'>'.JText::_('TEXT_FEMALE').'</option>
-						</select>
-					</div>
-				</div>
-				<div class="col-sm-6 col-lg-4 col-xl-3">
-					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_BIRTHDAY').'</label>
-						<span class="input-group input-group-sm">
-							<span class="input-group-addon strong">'.JText::_('TEXT_FROM').'</span>
-							<input type="text" name="dateMin" value="'.$dateMin.'" class="form-control field-date" data-width="100%" data-convert="true" />
-							<span class="input-group-addon">'.JText::_('TEXT_TO').'</span>
-							<input type="text" name="dateMax" value="'.$dateMax.'" class="form-control field-date" data-width="100%" data-convert="true" />
-						</span>
-					</div>
-				</div>
-				<div class="col-md-6 col-xl-3">
+				<div class="col-sm-6 col-md">
 					<div class="form-group">
 						<label class="label-sm text-truncate">'.implode(', ', $sLabel).'</label>
 						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />

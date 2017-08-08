@@ -302,7 +302,7 @@ jQuery(window).load(function() {
 					<button class="btn btn-sm btn-warning <?php echo $APPTAG?>-btn-action" disabled onclick="<?php echo $APPTAG?>_setState(0, 0)">
 						<span class="base-icon-cancel"></span> <?php echo JText::_('TEXT_INACTIVE'); ?>
 					</button>
-					<button class="btn btn-sm btn-danger <?php echo $APPTAG?>-btn-action" disabled onclick="<?php echo $APPTAG?>_del(0)">
+					<button class="btn btn-sm btn-danger <?php echo $APPTAG?>-btn-action d-none d-sm-inline-block" disabled onclick="<?php echo $APPTAG?>_del(0)">
 						<span class="base-icon-trash"></span> <?php echo JText::_('TEXT_DELETE'); ?>
 					</button>
 				<?php endif; ?>

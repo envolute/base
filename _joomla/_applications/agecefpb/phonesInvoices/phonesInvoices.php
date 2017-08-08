@@ -32,11 +32,14 @@ jQuery(function() {
 	?>
 
 	// APP FIELDS
-	var name				= jQuery('#<?php echo $APPTAG?>-name');
+	var operator_id			= jQuery('#<?php echo $APPTAG?>-operator_id');
+	var due_date			= jQuery('#<?php echo $APPTAG?>-due_date');
+	var tax					= jQuery('#<?php echo $APPTAG?>-tax');
+	var note				= jQuery('#<?php echo $APPTAG?>-note');
 
 	// PARENT FIELD -> Select
 	// informe, se houver, o campo que representa a chave estrangeira principal
-	var parentFieldId		= null; // 'null', caso não exista...
+	var parentFieldId		= operator_id; // 'null', caso não exista...
 	var parentFieldGroup	= elementExist(parentFieldId) ? parentFieldId.closest('[class*="col-"]') : null;
 
 	// GROUP RELATION'S BUTTONS -> grupo de botões de relacionamentos no form
@@ -47,7 +50,7 @@ jQuery(function() {
 
 		// ON FOCUS
 		// campo que recebe o focus no carregamento
-		var firstField		= name;
+		var firstField		= '';
 
 		// ON MODAL OPEN -> Ações quando o modal do form é aberto
 		popup.on('shown.bs.modal', function () {
@@ -88,7 +91,10 @@ jQuery(function() {
 			// App Fields
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
-			name.val('');
+			operator_id.val('0').selectUpdate();
+			due_date.val('');
+			tax.val('');
+			note.val('');
 
 			<?php // Closure Actions
 			require(JPATH_CORE.DS.'apps/snippets/form/formReset.end.js.php');
@@ -209,7 +215,10 @@ jQuery(function() {
 						?>
 
 						// App Fields
-						name.val(item.name);
+						operator_id.val(item.operator_id).selectUpdate();
+						due_date.val(dateFormat(item.due_date));
+						tax.val(item.tax);
+						note.val(item.note);
 
 						<?php // Closure Actions
 						require(JPATH_CORE.DS.'apps/snippets/form/loadEdit.end.js.php');

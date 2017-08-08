@@ -95,7 +95,7 @@ $htmlFilter = '
 						</select>
 					</div>
 				</div>
-				<div class="col-sm">
+				<div class="col-sm-8 col-md-6 col-lg-4">
 					<div class="form-group">
 						<label class="label-sm text-truncate">'.implode(', ', $sLabel).'</label>
 						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />

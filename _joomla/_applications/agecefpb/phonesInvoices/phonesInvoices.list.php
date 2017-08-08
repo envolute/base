@@ -12,7 +12,10 @@ require($PATH_APP_FILE.'.filter.php');
 	$query = '
 		SELECT SQL_CALC_FOUND_ROWS
 			'. $db->quoteName('T1.id') .',
-			'. $db->quoteName('T1.name') .',
+			'. $db->quoteName('T2.name') .' operator,
+			'. $db->quoteName('T1.due_date') .',
+			'. $db->quoteName('T1.tax') .',
+			'. $db->quoteName('T1.note') .',
 			'. $db->quoteName('T1.created_date') .',
 			'. $db->quoteName('T1.created_by') .',
 			'. $db->quoteName('T1.alter_date') .',
@@ -20,6 +23,8 @@ require($PATH_APP_FILE.'.filter.php');
 			'. $db->quoteName('T1.state') .'
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
+			LEFT OUTER JOIN '. $db->quoteName('#__'.$cfg['project'].'_phones_plans_operators') .' T2
+			ON T2.id = T1.operator_id
 		WHERE
 			'.$where.$orderList;
 	;
@@ -56,7 +61,9 @@ $html = '
 			<thead>
 				<tr>
 					'.$adminView['head']['info'].'
-					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_NAME'), 'T1.name', $APPTAG).'</th>
+					<th>'.JText::_('FIELD_LABEL_DUE_DATE').'</th>
+					<th class="d-none d-md-table-cell">'.JText::_('FIELD_LABEL_OPERATOR').'</th>
+					<th>'.JText::_('FIELD_LABEL_TAX').'</th>
 					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
 					'.$adminView['head']['actions'].'
 				</tr>
@@ -82,7 +89,7 @@ if($num_rows) : // verifica se existe
 				if(!empty($files[$item->id][$i]->filename)) :
 					$listFiles .= '
 						<a href="'.JURI::root(true).'/apps/get-file?fn='.base64_encode($files[$item->id][$i]->filename).'&mt='.base64_encode($files[$item->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
-							<span class="base-icon-attach hasTooltip" title="'.$files[$item->id][$i]->filename.'<br />'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"></span>
+							<span class="base-icon-attach hasTooltip" data-animation="false" title="'.$files[$item->id][$i]->filename.'<br />'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"></span>
 						</a>
 					';
 				endif;
@@ -108,6 +115,7 @@ if($num_rows) : // verifica se existe
 			';
 		endif;
 
+		$note = !empty($item->note) ? '<span class="base-icon-info-circled hasTooltip" title="'.$item->note.'"></span> ' : '';
 		$rowState = $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
@@ -120,7 +128,9 @@ if($num_rows) : // verifica se existe
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
-				<td>'.$item->name.'</td>
+				<td>'.$note.baseHelper::dateFormat($item->due_date, 'd F Y').'</td>
+				<td class="d-none d-md-table-cell">'.$item->operator.'</td>
+				<td>'.baseHelper::priceFormat($item->tax).'</td>
 				<td class="d-none d-lg-table-cell">
 					'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'
 					<a href="#" class="base-icon-info-circled setPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top"></a>
@@ -134,7 +144,7 @@ else : // num_rows = 0
 
 	$html .= '
 		<tr>
-			<td colspan="6">
+			<td colspan="8">
 				<div class="alert alert-warning alert-icon m-0">'.JText::_('MSG_LISTNOREG').'</div>
 			</td>
 		</tr>

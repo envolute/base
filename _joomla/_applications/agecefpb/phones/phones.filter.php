@@ -2,8 +2,8 @@
 defined('_JEXEC') or die;
 
 // QUERY FOR LIST
-$where = '1=1';
-/*
+$where = '';
+
 // filter params
 
 	// STATE -> select
@@ -15,7 +15,7 @@ $where = '1=1';
 	if($fPlan != 0) $where .= ' AND '.$db->quoteName('T1.plan_id').' = '.$fPlan;
 	// CLIENTS -> select
 	$fClient	= $app->input->get('fClient', 0, 'int');
-	if($fClient != 0) $where .= ' AND '.$db->quoteName('T1.user_id').' = '.$fClient;
+	if($fClient != 0) $where .= ' AND '.$db->quoteName('T1.client_id').' = '.$fClient;
 
 	// DATE
 	$dateMin	= $app->input->get('dateMin', '', 'string');
@@ -53,7 +53,7 @@ $where = '1=1';
 
 	$orderDef = ''; // não utilizar vírgula no inicio ou fim
 	if(!isset($_SESSION[$APPTAG.'oF'])) : // DEFAULT ORDER
-		$_SESSION[$APPTAG.'oF'] = 'T3.name';
+		$_SESSION[$APPTAG.'oF'] = 'T2.name';
 		$_SESSION[$APPTAG.'oT'] = 'ASC';
 	endif;
 	if(!empty($ordf)) :
@@ -78,7 +78,7 @@ $where = '1=1';
 			'. $db->quoteName('T1.id') .',
 			'. $db->quoteName('T1.name') .',
 			'. $db->quoteName('T2.name') .' operator
-		FROM '. $db->quoteName($cfg['mainTable'].'_plans') .'
+		FROM '. $db->quoteName($cfg['mainTable'].'_plans') .' T1
 			LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_plans_operators') .' T2
 			ON T2.id = T1.operator_id
 		ORDER BY T2.name
@@ -86,12 +86,12 @@ $where = '1=1';
 	$db->setQuery($query);
 	$plans = $db->loadObjectList();
 	foreach ($plans as $obj) {
-		$flt_plan .= '<option value="'.$obj->id.'"'.($obj->id == $fPlan ? ' selected = "selected"' : '').'>['.$obj->operator.'] '.baseHelper::nameFormat($obj->name).'</option>';
+		$flt_plan .= '<option value="'.$obj->id.'"'.($obj->id == $fPlan ? ' selected = "selected"' : '').'>[ '.baseHelper::nameFormat($obj->operator).' ] '.baseHelper::nameFormat($obj->name).'</option>';
 	}
 
 	// Clients -> select
 	$flt_client = '';
-	$query = 'SELECT * FROM '. $db->quoteName('#__agecefpb_clients') .' ORDER BY name';
+	$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_clients') .' ORDER BY name';
 	$db->setQuery($query);
 	$clients = $db->loadObjectList();
 	foreach ($clients as $obj) {
@@ -122,7 +122,7 @@ $htmlFilter = '
 			<input type="hidden" name="'.$APPTAG.'_filter" value="1" />
 
 			<div class="row">
-				<div class="col-sm-6 col-lg-3">
+				<div class="col-sm-6 col-lg-4">
 					<div class="form-group">
 						<label class="label-sm">'.JText::_('FIELD_LABEL_CLIENT').'</label>
 						<select name="fClient" id="fClient" class="form-control form-control-sm set-filter">
@@ -150,7 +150,7 @@ $htmlFilter = '
 						</select>
 					</div>
 				</div>
-				<div class="col-sm-6 col-lg-4">
+				<div class="col-sm-6 col-lg-3">
 					<div class="form-group">
 						<label class="label-sm text-truncate">'.implode(', ', $sLabel).'</label>
 						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />
@@ -171,5 +171,5 @@ $htmlFilter = '
 		</fieldset>
 	</form>
 ';
-*/
+
 ?>

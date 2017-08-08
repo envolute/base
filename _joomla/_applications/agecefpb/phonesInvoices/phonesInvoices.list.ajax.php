@@ -53,37 +53,35 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	$query	= '
 		SELECT
 			'. $db->quoteName('T1.id') .',
-			'. $db->quoteName('T2.name') .' client,
-			'. $db->quoteName('T3.name') .' plan,
-			'. $db->quoteName('T4.name') .' operator,
-			'. $db->quoteName('T3.price') .',
-			'. $db->quoteName('T1.phone_number') .',
+			'. $db->quoteName('T1.due_date') .',
+			'. $db->quoteName('T2.name') .' operator,
 			'. $db->quoteName('T1.state') .'
 	';
 	if(!empty($rID) && $rID !== 0) :
 		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
 			$query .= ' FROM '.
 				$db->quoteName($cfg['mainTable']) .' T1
-				LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_plans') .' T2
-				ON T2.id = T1.plan_id
-				LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_plans_operators') .' T3
-				ON T3.id = T2.operator_id
-				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T4
-				ON '.$db->quoteName('T4.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
+				JOIN '. $db->quoteName('#__'.$cfg['project'].'_phones_plans_operators') .' T2
+				ON '.$db->quoteName('T2.id') .' = T1.operator_id
+				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T3
+				ON '.$db->quoteName('T3.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
 			WHERE '.
-				$db->quoteName('T4.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
+				$db->quoteName('T3.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
 			;
 		else :
 			$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1 WHERE '. $db->quoteName($rNID) .' = '. $rID;
 		endif;
 	else :
-		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1';
+		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
+			JOIN '. $db->quoteName($cfg['mainTable'].'_operators') .' T2
+			ON '.$db->quoteName('T2.id') .' = T1.operator_id
+		';
 		if($oCHL) :
 			$query .= ' WHERE 1=0';
 			$noReg = false;
 		endif;
 	endif;
-	$query	.= ' ORDER BY '. $db->quoteName('id') .' DESC';
+	$query	.= ' ORDER BY '. $db->quoteName('T2.name') .' ASC';
 	try {
 		$db->setQuery($query);
 		$db->execute();
@@ -120,8 +118,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$html .= '
 				<li class="'.$rowState.'">
 					<span class="float-right">'.$btnState.$btnEdit.$btnDelete.'</span>
-					'.baseHelper::nameFormat($item->plan).'
-					<div class="small text-muted"><span class="badge badge-primary">'.baseHelper::nameFormat($item->operator).'</span> R$'.baseHelper::priceFormat($item->price).'</div>
+					<span class="badge badge-primary">'.$item->operator.'</span> - '.baseHelper::dateFormat($item->due_date, 'd F Y').'
 				</li>
 			';
 		}

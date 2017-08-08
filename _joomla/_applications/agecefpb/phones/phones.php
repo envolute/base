@@ -307,7 +307,7 @@ jQuery(window).load(function() {
 					<button class="btn btn-sm btn-warning <?php echo $APPTAG?>-btn-action" disabled onclick="<?php echo $APPTAG?>_setState(0, 0)">
 						<span class="base-icon-cancel"></span> <?php echo JText::_('TEXT_INACTIVE'); ?>
 					</button>
-					<button class="btn btn-sm btn-danger <?php echo $APPTAG?>-btn-action" disabled onclick="<?php echo $APPTAG?>_del(0)">
+					<button class="btn btn-sm btn-danger <?php echo $APPTAG?>-btn-action d-none d-sm-inline-block" disabled onclick="<?php echo $APPTAG?>_del(0)">
 						<span class="base-icon-trash"></span> <?php echo JText::_('TEXT_DELETE'); ?>
 					</button>
 				<?php endif; ?>
@@ -354,14 +354,14 @@ jQuery(window).load(function() {
 						<div class="modal-body">
 							<fieldset>
 								<?php
-								require(JPATH_CORE.DS.'apps/layout/form/toolbar.sm.php');
+								require(JPATH_CORE.DS.'apps/layout/form/toolbar.php');
 								if($newInstance) require($PATH_APP_FILE.'.form.php');
 								else require_once($PATH_APP_FILE.'.form.php');
 								?>
 							</fieldset>
 							<?php require(JPATH_CORE.DS.'apps/layout/form/alert.error.php'); ?>
 						</div>
-						<?php require(JPATH_CORE.DS.'apps/layout/form/modal.footer.sm.php'); ?>
+						<?php require(JPATH_CORE.DS.'apps/layout/form/modal.footer.php'); ?>
 					</form>
 				</div>
 			</div>

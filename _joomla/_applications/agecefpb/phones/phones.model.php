@@ -173,7 +173,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 						// Upload
 						if($cfg['hasUpload'])
-						$fileMsg = uploader::uploadFile($id, $cfg['fileTable'], $_FILES[$cfg['fileField']], $cfg);
+						$fileMsg = uploader::uploadFile($id, $cfg['fileTable'], $_FILES[$cfg['fileField']], $fileGrp, $fileGtp, $fileCls, $fileLbl, $cfg);
 
 						// UPDATE FIELD
 						$element = $elemVal = $elemLabel = '';
@@ -237,9 +237,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							// força a exclusão do(s) relacionamento(s) caso os parâmetros não sejam setados
 							// isso é RECOMENDÁVEL sempre que houver um ou mais relacionamentos
 							// SAMPLES -> remove os registros relacionados aos exemplos
-							$query = 'DELETE FROM '. $db->quoteName('#__base_app_sample') .' WHERE '. $db->quoteName('type_id') .' IN ('.$ids.')';
-							$db->setQuery($query);
-							$db->execute();
+							// $query = 'DELETE FROM '. $db->quoteName('#__'.$cfg['project'].'_app_sample') .' WHERE '. $db->quoteName('type_id') .' IN ('.$ids.')';
+							// $db->setQuery($query);
+							// $db->execute();
 						endif;
 
 						// UPDATE FIELD
@@ -372,7 +372,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$id = $db->insertid();
 						// Upload
 						if($cfg['hasUpload'] && $id)
-						$fileMsg = uploader::uploadFile($id, $cfg['fileTable'], $_FILES[$cfg['fileField']], $cfg);
+						$fileMsg = uploader::uploadFile($id, $cfg['fileTable'], $_FILES[$cfg['fileField']], $fileGrp, $fileGtp, $fileCls, $fileLbl, $cfg);
 
 						// CREATE RELATIONSHIP
 						if(!empty($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelNameId']) && !empty($_SESSION[$RTAG.'AppNameId']) && !empty($request['relationId'])) :

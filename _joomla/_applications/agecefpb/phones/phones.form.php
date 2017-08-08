@@ -4,7 +4,7 @@ defined('_JEXEC') or die;
 // CLIENTS
 $query = '
 	SELECT *
-	FROM '. $db->quoteName('#__agecefpb_clients') .'
+	FROM '. $db->quoteName('#__'.$cfg['project'].'_clients') .'
 	WHERE
 		'. $db->quoteName('state') .' = 1 AND
 		'. $db->quoteName('access') .' = 1
@@ -56,7 +56,7 @@ $plans = $db->loadObjectList();
 					<option value="0">- <?php echo JText::_('TEXT_SELECT'); ?> -</option>
 					<?php
 						foreach ($plans as $obj) {
-							echo '<option value="'.$obj->id.'">['.$obj->operator.'] '.baseHelper::nameFormat($obj->name).'</option>';
+							echo '<option value="'.$obj->id.'">[ '.baseHelper::nameFormat($obj->operator).' ] '.baseHelper::nameFormat($obj->name).'</option>';
 						}
 					?>
 				</select>
@@ -69,7 +69,7 @@ $plans = $db->loadObjectList();
 	</div>
 </div>
 <div class="form-group">
-	<hr />
-	<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_NOTE_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_NOTE'); ?></label>
-	<input type="text" name="note" id="<?php echo $APPTAG?>-note" class="form-control" />
+	<hr class="hr-tag" />
+	<span class="base-icon-info-circled badge badge-warning cursor-help hasTooltip" title="<?php echo JText::_('FIELD_LABEL_NOTE_DESC'); ?>"> <?php echo JText::_('FIELD_LABEL_NOTE'); ?></span>
+	<input type="text" name="note" id="<?php echo $APPTAG?>-note" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_NOTE_DESC'); ?>" />
 </div>

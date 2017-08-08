@@ -42,9 +42,9 @@ $where = '';
 	$ordf	= $app->input->get($APPTAG.'oF', '', 'string'); // campo a ser ordenado
 	$ordt	= $app->input->get($APPTAG.'oT', '', 'string'); // tipo de ordem: 0 = 'ASC' default, 1 = 'DESC'
 
-	$orderDef = 'T1.name'; // não utilizar vírgula no inicio ou fim
+	$orderDef = 'T1.price, T1.name'; // não utilizar vírgula no inicio ou fim
 	if(!isset($_SESSION[$APPTAG.'oF'])) : // DEFAULT ORDER
-		$_SESSION[$APPTAG.'oF'] = 'T1.operator_id'; 
+		$_SESSION[$APPTAG.'oF'] = 'T2.name';
 		$_SESSION[$APPTAG.'oT'] = 'ASC';
 	endif;
 	if(!empty($ordf)) :
@@ -114,7 +114,18 @@ $htmlFilter = '
 						</select>
 					</div>
 				</div>
-				<div class="col-sm-6 col-md col-lg-4">
+				<div class="col-sm-6 col-md-4 col-lg-3">
+					<div class="form-group">
+						<label class="label-sm">'.JText::_('FIELD_LABEL_PRICE').'</label>
+						<span class="input-group input-group-sm">
+							<span class="input-group-addon strong">R$</span>
+							<input type="text" name="priceMin" value="'.$priceMin.'" class="form-control field-price" data-width="100%" data-convert="true" />
+							<span class="input-group-addon">'.JText::_('TEXT_TO').'</span>
+							<input type="text" name="priceMax" value="'.$priceMax.'" class="form-control field-price" data-width="100%" data-convert="true" />
+						</span>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md">
 					<div class="form-group">
 						<label class="label-sm text-truncate">'.implode(', ', $sLabel).'</label>
 						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />
