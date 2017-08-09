@@ -1,28 +1,26 @@
--- SQL PARA CRIAÇÃO DE TABELAS PADRÃO DO SISTEMA
-
--- --------------------------------------------------------
-
 --
--- APP DEFAULT
+-- Estrutura da tabela `cms_agecefpb_phones_plans_operators`
 --
 
-CREATE TABLE IF NOT EXISTS `cms_###_###` (
+CREATE TABLE IF NOT EXISTS `cms_agecefpb_phones_plans_operators` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
   `state` tinyint(4) NOT NULL,
   `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` int(11) NOT NULL,
-  `alter_date` datetime NOT NULL,
+  `alter_date` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
   `alter_by` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- TABELA PADRÃO DE ARQUIVOS
+-- Estrutura da tabela `cms_agecefpb_phones_plans_operators_files`
 --
 
-CREATE TABLE IF NOT EXISTS `cms_###_###` (
+CREATE TABLE IF NOT EXISTS `cms_agecefpb_phones_plans_operators_files` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_parent` int(11) NOT NULL,
   `index` int(11) NOT NULL,
@@ -41,15 +39,3 @@ CREATE TABLE IF NOT EXISTS `cms_###_###` (
   UNIQUE KEY `filename` (`filename`),
   KEY `id_parent` (`id_parent`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- CRIAR VIEW
---
-
-CREATE OR REPLACE VIEW `vw_###` AS
-SELECT ...
-FROM `cms_###_###`
-WHERE ...
-ORDER BY ...;

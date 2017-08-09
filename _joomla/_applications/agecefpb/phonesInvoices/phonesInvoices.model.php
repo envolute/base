@@ -351,8 +351,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$query = 'SELECT COUNT(*) FROM '. $db->quoteName($cfg['mainTable'].'_details') .' WHERE '. $db->quoteName('invoice_id') .' = '.$id;
 						$db->setQuery($query);
 						$exist	= $db->loadResult();
-						// Limpa a fatura
-						// remove, da fatura, os registros anteriores...
+						// Limpa a fatura e o sumário
+						// remove, do detalhamento, os registros anteriores...
 						if($exist) :
 							$query = 'DELETE FROM '. $db->quoteName($cfg['mainTable'].'_details') .' WHERE '. $db->quoteName('invoice_id') .' = '.$id;
 							$db->setQuery($query);
@@ -379,7 +379,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 								$db->quoteName('tipo_imposto') .','.
 								$db->quoteName('descricao') .','.
 								$db->quoteName('cargo') .','.
-								$db->quoteName('create_by')
+								$db->quoteName('created_by')
 							.') VALUES'
 						;
 
@@ -388,7 +388,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							if(!empty($value) && $value != "\n" && $value != "\r") :
 								$q .= $i;
 								$q .= '('.$id.', "';
-								$q .= str_replace(';', '", "', $value);
+									// normaliza valores "string" => "decimal / float"
+									$row = str_replace(';,', ';0.', $row);
+									$row = str_replace(',', '.', $row);
+								$q .= str_replace(';', '", "', $row);
 								$q .= '", '.$user->id.')';
 								$i = ',';
 							endif;
