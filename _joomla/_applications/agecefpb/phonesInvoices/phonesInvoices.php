@@ -93,7 +93,7 @@ jQuery(function() {
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
 			operator_id.val('0').selectUpdate();
 			due_date.val('');
-			tax.val('');
+			tax.val('<?php echo $cfg['serviceTax']?>');
 			note.val('');
 
 			<?php // Closure Actions
@@ -258,6 +258,54 @@ jQuery(function() {
 			?>
 
 		<? endif; ?>
+
+		// FATURA
+		// Roda a fatura a partir do arquivo
+		window.<?php echo $APPTAG?>_invoiceDetails = function(itemID, isForm) {
+			var msg = '<?php echo JText::_('MSG_INVOICECONFIRM'); ?>';
+			if(confirm(msg)) {
+				var dados = cod = '';
+				if(itemID || (isForm && formId.val() != '')) {
+					cod = '&id=' + (itemID ? itemID : formId.val());
+					<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
+					if(isForm) { // delete action from form
+						mainForm.find('.set-success, .set-error').prop('hidden', true);
+					}
+				} else {
+					dados = formList.serialize();
+				}
+				jQuery.ajax({
+				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=invoice"+cod,
+				dataType: 'json',
+				type: 'POST',
+				data:  dados,
+				cache: false,
+				success: function(data){
+					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
+					jQuery.map( data, function( res ) {
+						if(res.status == 1) {
+							if(!itemID) {
+								if(isForm) {
+									<?php // SUCCESS STATUS -> Executa quando houver sucesso na requisição ajax
+									require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxSuccess.js.php');
+									?>
+								}
+							}
+						} else {
+							if(!itemID) mainForm.find('.set-error').prop('hidden', false).text(res.msg);
+						}
+					});
+				},
+				error: function(xhr, status, error) {
+					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
+					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
+					?>
+					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
+				}
+				});
+			}
+			return false;
+		};
 
 }); // CLOSE JQUERY->READY
 

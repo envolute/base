@@ -122,7 +122,7 @@ if($num_rows) : // verifica se existe
 			';
 		endif;
 
-		$note = !empty($item->note) ? '<span class="base-icon-info-circled hasTooltip" title="'.$item->note.'"></span> ' : '';
+		$note = !empty($item->note) ? '<span class="base-icon-info-circled cursor-help hasTooltip" title="'.$item->note.'"></span> ' : '';
 		$rowState = $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);

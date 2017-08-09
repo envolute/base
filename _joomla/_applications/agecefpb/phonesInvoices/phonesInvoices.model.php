@@ -335,6 +335,99 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'uploadError'			=> $fileMsg
 					);
 
+				// CREATE INVOICE DETAILS
+				elseif($task == 'invoice') :
+
+					// Get file data
+					$file = uploader::getFile($cfg['fileTable'], '', $id, 0, $cfg['uploadDir']);
+					$csv = $cfg['uploadDir'].$file['filename'];
+					$delimiter = ';Cargo';
+					$content = explode($delimiter, utf8_encode(file_get_contents($csv)));
+					$line = explode("\n", $content[1]);
+
+					if(count($line)) :
+
+						// Verifica se já existem registros de detalhamento para esta fatura
+						$query = 'SELECT COUNT(*) FROM '. $db->quoteName($cfg['mainTable'].'_details') .' WHERE '. $db->quoteName('invoice_id') .' = '.$id;
+						$db->setQuery($query);
+						$exist	= $db->loadResult();
+						// Limpa a fatura
+						// remove, da fatura, os registros anteriores...
+						if($exist) :
+							$query = 'DELETE FROM '. $db->quoteName($cfg['mainTable'].'_details') .' WHERE '. $db->quoteName('invoice_id') .' = '.$id;
+							$db->setQuery($query);
+							$db->execute();
+						endif;
+
+						$query = '
+							INSERT INTO '. $db->quoteName($cfg['mainTable'].'_details') .'('.
+								$db->quoteName('invoice_id') .','.
+								$db->quoteName('tel') .','.
+								$db->quoteName('secao') .','.
+								$db->quoteName('data') .','.
+								$db->quoteName('hora') .','.
+								$db->quoteName('origem_destino') .','.
+								$db->quoteName('numero') .','.
+								$db->quoteName('duracao') .','.
+								$db->quoteName('tarifa') .','.
+								$db->quoteName('valor') .','.
+								$db->quoteName('valor_cobrado') .','.
+								$db->quoteName('nome') .','.
+								$db->quoteName('cc') .','.
+								$db->quoteName('matricula') .','.
+								$db->quoteName('sub_secao') .','.
+								$db->quoteName('tipo_imposto') .','.
+								$db->quoteName('descricao') .','.
+								$db->quoteName('cargo') .','.
+								$db->quoteName('create_by')
+							.') VALUES'
+						;
+
+						$q = $i = '';
+						foreach($line as $key => $value) {
+							if(!empty($value) && $value != "\n" && $value != "\r") :
+								$q .= $i;
+								$q .= '('.$id.', "';
+								$q .= str_replace(';', '", "', $value);
+								$q .= '", '.$user->id.')';
+								$i = ',';
+							endif;
+						}
+
+						if(!empty($q)) :
+
+							$query = $query.$q;
+
+							try {
+
+								$db->setQuery($query);
+								$db->execute();
+
+								$data[] = array(
+									'status'			=> 1,
+									'msg'				=> JText::_('MSG_INVOICE_CREATED')
+								);
+
+							} catch (RuntimeException $e) {
+
+								$data[] = array(
+									'status'			=> 0,
+									'msg'				=> $e->getMessage()
+								);
+
+							}
+
+						else :
+
+							$data[] = array(
+								'status'			=> 0,
+								'msg'				=> JText::_('MSG_FILE_EMPTY')
+							);
+
+						endif; // and 'query'
+
+					endif; // end 'csv'
+
 				endif; // end task
 
 			endif; // num rows

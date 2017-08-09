@@ -50,7 +50,7 @@ if($hasAdmin) :
 	';
 	$adminView['head']['actions'] = '
 		<th class="text-center d-none d-lg-table-cell d-print-none" width="60">'.baseAppHelper::linkOrder(JText::_('TEXT_ACTIVE'), 'T1.state', $APPTAG).'</th>
-		<th class="text-center d-print-none" width="70">'.JText::_('TEXT_ACTIONS').'</th>
+		<th class="text-center d-print-none" width="100">'.JText::_('TEXT_ACTIONS').'</th>
 	';
 endif;
 
@@ -109,13 +109,14 @@ if($num_rows) : // verifica se existe
 					</a>
 				</td>
 				<td class="text-center d-print-none">
+					<a href="#" class="btn btn-xs btn-outline-primary hasTooltip" title="'.JText::_('TEXT_RUN_INVOICE_DETAILS').'" onclick="'.$APPTAG.'_invoiceDetails('.$item->id.', false)"><span class="base-icon-arrows-cw"></span></a>
 					<a href="#" class="btn btn-xs btn-warning hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil"></span></a>
 					<a href="#" class="btn btn-xs btn-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash"></span></a>
 				</td>
 			';
 		endif;
 
-		$note = !empty($item->note) ? '<span class="base-icon-info-circled hasTooltip" title="'.$item->note.'"></span> ' : '';
+		$note = !empty($item->note) ? '<span class="base-icon-info-circled cursor-help hasTooltip" title="'.$item->note.'"></span> ' : '';
 		$rowState = $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
@@ -128,7 +129,7 @@ if($num_rows) : // verifica se existe
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
-				<td>'.$note.baseHelper::dateFormat($item->due_date, 'd F Y').'</td>
+				<td>'.$note.baseHelper::dateFormat($item->due_date, 'd-m-Y').'</td>
 				<td class="d-none d-md-table-cell">'.$item->operator.'</td>
 				<td>'.baseHelper::priceFormat($item->tax).'</td>
 				<td class="d-none d-lg-table-cell">

@@ -29,6 +29,8 @@ if(!$ajaxRequest && (!isset($_SESSION[$APPTAG.'langDef']) || (isset($_SESSION[$A
 	$_SESSION[$APPTAG.'langDef'] = $lang->getTag(); // define a language
 endif;
 
+$cfg['serviceTax'] = '10,00';
+
 // Crud's permissions
 	$cfg['isPublic']			= false; // Público -> acesso aberto a todos
 	// Restrict Access

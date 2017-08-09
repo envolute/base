@@ -101,7 +101,7 @@ $htmlFilter = '
 			<input type="hidden" name="'.$APPTAG.'_filter" value="1" />
 
 			<div class="row">
-				<div class="col-sm-6 col-md-3">
+				<div class="col-sm-6 col-lg-3 col-xl-4">
 					<div class="form-group">
 						<label class="label-sm">'.JText::_('FIELD_LABEL_OPERATOR').'</label>
 						<select name="fOper" id="fOper" class="form-control form-control-sm set-filter">
@@ -142,7 +142,7 @@ $htmlFilter = '
 						</select>
 					</div>
 				</div>
-				<div class="col-sm-6 col-md">
+				<div class="col-sm-6 col-md d-xl-none">
 					<div class="form-group">
 						<label class="label-sm text-truncate">'.implode(', ', $sLabel).'</label>
 						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />
