@@ -418,7 +418,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 								$data[] = array(
 									'status'			=> 0,
-									'msg'				=> $query.$e->getMessage()
+									'msg'				=> $e->getMessage()
 								);
 
 							}

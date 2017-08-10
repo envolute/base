@@ -43,6 +43,21 @@ class baseHelper {
         	return preg_replace($acentos, array_keys($acentos), htmlentities($str,ENT_NOQUOTES, $enc));
 	}
 
+	// ALPHANUMERICO -> APENAS LETRAS E NÚMEROS
+	public static function alphaNum($str) {
+		return preg_replace("/[^a-zA-Z0-9\s]/", "", trim($str));
+	}
+
+	// ALPHA -> APENAS LETRAS
+	public static function onlyAlpha($str) {
+		return preg_replace("/[^a-zA-Z\s]/", "", trim($str));
+	}
+
+	// NUMERICO -> APENAS NÚMEROS
+	public static function onlyNum($str) {
+		return preg_replace("/[^0-9\s]/", "", trim($str));
+	}
+
 	// FORMATA OS NOMES DE PESSOAS
 	public static function nameFormat($nome,$limite = NULL) {
 		$nome = mb_strtolower($nome, 'UTF-8'); // Converter o nome todo para minúsculo

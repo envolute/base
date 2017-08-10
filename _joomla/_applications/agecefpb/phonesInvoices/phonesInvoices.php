@@ -271,10 +271,10 @@ jQuery(function() {
 				var dados = cod = '';
 				if(itemID || (isForm && formId.val() != '')) {
 					cod = '&id=' + (itemID ? itemID : formId.val());
-					<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
 				} else {
 					dados = formList.serialize();
 				}
+				<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
 				jQuery.ajax({
 				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=invoice"+cod,
 				dataType: 'json',
@@ -285,15 +285,11 @@ jQuery(function() {
 					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
 					jQuery.map( data, function( res ) {
 						if(res.status == 1) {
-							if(!itemID) {
-								if(isForm) {
-									<?php // SUCCESS STATUS -> Executa quando houver sucesso na requisição ajax
-									require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxSuccess.js.php');
-									?>
-								}
-							}
+							<?php // SUCCESS STATUS -> Executa quando houver sucesso na requisição ajax
+							require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxSuccess.js.php');
+							?>
 						} else {
-							if(!itemID) $.baseNotify({ msg: res.msg, type: "danger"});
+							$.baseNotify({ msg: res.msg, type: "danger"});
 						}
 					});
 				},

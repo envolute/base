@@ -127,7 +127,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['operation']			= $input->get('operation', '', 'string');
 	    // user registration action
 	  	$request['access']				= $input->get('access', 0, 'int');
-	    $username						= $request['cx_code'];
+	    $username						= baseHelper::alphaNum($request['cpf']); // apenas letras e números
 	  	$usergroup						= $_SESSION[$APPTAG.'newUsertype'];
 	  	$request['password']			= $input->get('password', '', 'string');
 	  	$request['repassword']			= $input->get('repassword', '', 'string');
