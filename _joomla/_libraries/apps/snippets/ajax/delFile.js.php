@@ -8,7 +8,6 @@ window.<?php echo $APPTAG?>_delFile = function(btn, fileName, itemID) {
     cod 	= '&id=' + formId.val();
     fname	= '&fname=' + fileName;
     <?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
-    mainForm.find('.set-success, .set-error').prop('hidden', true);
     jQuery.ajax({
       url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=delFile"+cod+fname,
       dataType: 'json',
@@ -21,7 +20,7 @@ window.<?php echo $APPTAG?>_delFile = function(btn, fileName, itemID) {
             <?php echo $APPTAG?>_resetFiles(jQuery(btn).closest('.btn-group').next('input:file'), true);
 
             // MENSAGENS: mostra a mensagem de sucesso/erro
-            mainForm.find('.set-success').prop('hidden', false).text(res.msg);
+            $.baseNotify({ msg: res.msg });
 
             <?php // SUCCESS STATUS -> Executa quando houver sucesso na requisição ajax
             require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxSuccess.js.php');
@@ -32,7 +31,7 @@ window.<?php echo $APPTAG?>_delFile = function(btn, fileName, itemID) {
             echo ($cfg['listFull'] ? 'fReload = true;' : $APPTAG.'_listReload(false, false, false, '.$APPTAG.'oCHL, '.$APPTAG.'rNID, '.$APPTAG.'rID);');
             ?>
           } else {
-            mainForm.find('.set-error').prop('hidden', false).text(res.msg);
+            $.baseNotify({ msg: res.msg, type: "danger"});
           }
         });
       },

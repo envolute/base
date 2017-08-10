@@ -13,6 +13,9 @@ $where = '';
 	// ACCESS -> select
 	$fAccess = $app->input->get('fAccess', 2, 'int');
 	if($fAccess != 2) $where .= ' AND '.$db->quoteName('T1.access').' = '.$fAccess;
+	// CAIXA STATUS -> select
+	$fStatus = $app->input->get('fStatus', 2, 'int');
+	if($fStatus != 2) $where .= ' AND '.$db->quoteName('T1.cx_status').' = '.$fStatus;
 	// GENDER -> select
 	$fGender = $app->input->get('fGender', 2, 'int');
 	if($fGender != 2) $where .= ' AND '.$db->quoteName('T1.gender').' = '.$fGender;
@@ -40,7 +43,7 @@ $where = '';
 		'T1.address'			=> 'FIELD_LABEL_ADDRESS',
 		'T1.address_district'	=> '',
 		'T1.address_city'		=> '',
-		'T1.cep'				=> ''
+		'T1.zip_code'			=> ''
 	);
 	$i = 0;
 	foreach($searchFields as $key => $value) {
@@ -131,6 +134,16 @@ $htmlFilter = '
 				</div>
 				<div class="col-sm-6 col-md-3 col-lg-2">
 					<div class="form-group">
+						<label class="label-sm">'.JText::_('TEXT_STATUS_EMPLOYEE').'</label>
+						<select name="fStatus" id="fStatus" class="form-control form-control-sm set-filter">
+							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
+							<option value="0"'.($fStatus == 0 ? ' selected' : '').'>'.JText::_('TEXT_EFFECTIVE').'</option>
+							<option value="1"'.($fStatus == 1 ? ' selected' : '').'>'.JText::_('TEXT_RETIRED').'</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md-3 col-lg-2">
+					<div class="form-group">
 						<label class="label-sm">'.JText::_('FIELD_LABEL_GENDER').'</label>
 						<select name="fGender" id="fGender" class="form-control form-control-sm set-filter">
 							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
@@ -139,7 +152,7 @@ $htmlFilter = '
 						</select>
 					</div>
 				</div>
-				<div class="col-sm-6 col-lg-4 col-xl-3">
+				<div class="col-sm-6 col-lg-4">
 					<div class="form-group">
 						<label class="label-sm">'.JText::_('FIELD_LABEL_BIRTHDAY').'</label>
 						<span class="input-group input-group-sm">

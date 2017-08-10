@@ -10,9 +10,6 @@ window.<?php echo $APPTAG?>_del = function(itemID, isForm) {
 		if(itemID || (isForm && formId.val() != '')) {
 			cod = '&id=' + (itemID ? itemID : formId.val());
 			<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
-			if(isForm) { // delete action from form
-				mainForm.find('.set-success, .set-error').prop('hidden', true);
-			}
 		} else {
 			dados = formList.serialize();
 		}
@@ -28,11 +25,9 @@ window.<?php echo $APPTAG?>_del = function(itemID, isForm) {
 					if(res.status == 3) {
 						if(!itemID) {
 							<?php echo $APPTAG?>_formReset();
-							if(isForm) {
-								<?php // SUCCESS STATUS -> Executa quando houver sucesso na requisição ajax
-								require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxSuccess.js.php');
-								?>
-							}
+							<?php // SUCCESS STATUS -> Executa quando houver sucesso na requisição ajax
+							require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxSuccess.js.php');
+							?>
 						}
 						// remove parent field option
 						if(res.parentField != '' && res.parentFieldVal != '') {
@@ -41,7 +36,7 @@ window.<?php echo $APPTAG?>_del = function(itemID, isForm) {
 						}
 						<?php echo $APPTAG?>_listReload(false, true, res.ids, <?php echo $APPTAG?>oCHL, <?php echo $APPTAG?>rNID, <?php echo $APPTAG?>rID);
 					} else {
-						if(!itemID) mainForm.find('.set-error').prop('hidden', false).text(res.msg);
+						$.baseNotify({ msg: res.msg, type: "danger"});
 					}
 				});
 			},

@@ -105,6 +105,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['birthday']			= $input->get('birthday', '', 'string');
 		$request['marital_status']		= $input->get('marital_status', '', 'string');
 		$request['partner']				= $input->get('partner', '', 'string');
+	  	$request['children']			= $input->get('children', 0, 'int');
+		$request['cx_status']			= $input->get('cx_status', 0, 'int');
 	  	$request['cx_email']			= $input->get('cx_email', '', 'string');
 			// formata o email da caixa
 		    $cx_email = $request['cx_email'];
@@ -224,6 +226,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'birthday'			=> $item->birthday,
 						'marital_status'	=> $item->marital_status,
 						'partner'			=> $item->partner,
+						'children'			=> $item->children,
+						'cx_status'			=> $item->cx_status,
 						// remove '@caixa.gov.br'
 	    				'cx_email'			=> (!empty($item->cx_email) ? substr($item->cx_email, 0, strpos($item->cx_email, '@')) : ''),
 						'cx_code'			=> $item->cx_code,
@@ -260,6 +264,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('birthday')			.'='. $db->quote($request['birthday']) .','.
 						$db->quoteName('marital_status') 	.'='. $db->quote($request['marital_status']) .','.
 						$db->quoteName('partner')			.'='. $db->quote($request['partner']) .','.
+						$db->quoteName('children')			.'='. $request['children'] .','.
+						$db->quoteName('cx_status')			.'='. $request['cx_status'] .','.
 						$db->quoteName('cx_code')			.'='. $db->quote($request['cx_code']) .','.
 						$db->quoteName('cx_email')			.'='. $db->quote($cx_email) .','.
 						$db->quoteName('cx_role')			.'='. $db->quote($request['cx_role']) .','.
@@ -540,6 +546,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('birthday') .','.
 							$db->quoteName('marital_status') .','.
 							$db->quoteName('partner') .','.
+							$db->quoteName('children') .','.
+							$db->quoteName('cx_status') .','.
 							$db->quoteName('cx_email') .','.
 							$db->quoteName('cx_code') .','.
 							$db->quoteName('cx_role') .','.
@@ -570,6 +578,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quote($request['birthday']) .','.
 							$db->quote($request['marital_status']) .','.
 							$db->quote($request['partner']) .','.
+							$request['children'] .','.
+							$request['cx_status'] .','.
 							$db->quote($cx_email) .','.
 							$db->quote($request['cx_code']) .','.
 							$db->quote($request['cx_role']) .','.

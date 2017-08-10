@@ -19,6 +19,5 @@ if(elementExist(firstField)) setTimeout(function() { inputGetFocus(firstField) }
 // remove a paginação do form
 <?php echo $APPTAG?>_formPaginator(0);
 
-// Esconde as mensagens de erro e sucesso 'set-success, set-error'
 // Esconde botão Salvar & Novo e deletar 'btn-FORM-save-new, btn-FORM-delete'
-mainForm.find('.set-success, .set-error, #btn-<?php echo $APPTAG?>-delete').prop('hidden', true);
+mainForm.find('#btn-<?php echo $APPTAG?>-delete').prop('hidden', true);

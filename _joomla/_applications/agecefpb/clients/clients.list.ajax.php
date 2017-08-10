@@ -50,47 +50,29 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	// GET DATA
 	$noReg = true;
-	$query = '
-	SELECT
-		T1.id,
-		T2.name plan,
-		T1.phone_number,
-		T1.operator,
-		T1.description,
-		T1.main,
-		T1.state
-	';
+	$query = 'SELECT *';
 	if(!empty($rID) && $rID !== 0) :
 		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
 			$query .= ' FROM '.
 				$db->quoteName($cfg['mainTable']) .' T1
-				LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_plans') .' T2
-				ON T2.id = T1.plan_id
-				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T3
-				ON '.$db->quoteName('T3.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
+				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T2
+				ON '.$db->quoteName('T2.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
 			WHERE '.
-				$db->quoteName('T3.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
+				$db->quoteName('T2.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
 			;
 		else :
 			$query .= '
-			FROM
-				'. $db->quoteName($cfg['mainTable']) .' T1
-				LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_plans') .' T2
-				ON T2.id = T1.plan_id
+			FROM '. $db->quoteName($cfg['mainTable']) .' T1
 			WHERE '. $db->quoteName($rNID) .' = '. $rID;
 		endif;
 	else :
-		$query .= '
-		FROM
-			'. $db->quoteName($cfg['mainTable']) .' T1
-			LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_plans') .' T2
-			ON T2.id = T1.plan_id';
+		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1';
 		if($oCHL) :
 			$query .= ' WHERE 1=0';
 			$noReg = false;
 		endif;
 	endif;
-	$query .= ' ORDER BY '. $db->quoteName('id') .' DESC';
+	$query .= ' ORDER BY '. $db->quoteName('name') .' ASC';
 	try {
 
 		$db->setQuery($query);
@@ -122,10 +104,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				}
 			endif;
 
-			$main = $item->main == 1 ? ' <span class="base-icon-star text-live cursor-help hasTooltip" data-animation="false" title="'.JText::_('FIELD_LABEL_MAIN').'"></span>' : '';
-			$operator = !empty($item->operator) ? ' <small class="text-muted font-featured cursor-help hasTooltip" data-animation="false" title="'.JText::_('TEXT_OPERATOR').'">('.$item->operator.')</small>' : '';
-			$info = !empty($item->plan) ? '<span class="label label-warning">'.baseHelper::nameFormat($item->plan).'</span> ' : '';
-			$info = !empty($item->description) ? '<br />'.$info.'<small class="text-muted font-featured cursor-help">'.baseHelper::nameFormat($item->description).'</small>' : (!empty($info) ? '<br />'.$info : '');
+			$cx_status	= $item->cx_status == 1 ? '<span class="badge badge-warning">'.JText::_('TEXT_RETIRED').'</span> ' : '';
 			$btnState = $hasAdmin ? '<a href="#" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'"><span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').' hasTooltip" data-animation="false" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'"></span></a> ' : '';
 			$btnEdit = $hasAdmin ? '<a href="#" class="base-icon-pencil text-live hasTooltip" data-animation="false" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"></a> ' : '';
 			$btnDelete = $hasAdmin ? '<a href="#" class="base-icon-trash text-danger hasTooltip" data-animation="false" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"></a>' : '';
@@ -133,7 +112,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$html .= '
 				<li class="'.$rowState.'">
 					<div class="float-right">'.$btnState.$btnEdit.$btnDelete.'</div>
-					'.$plan.$item->phone_number.$main.$operator.$info.'
+					'.baseHelper::nameFormat($item->name).'<div class="small text-muted">'.$cx_status.$item->cx_role.' - '.$item->cx_situated.'
 				</li>
 			';
 		}

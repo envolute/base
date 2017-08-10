@@ -14,6 +14,8 @@ CREATE TABLE IF NOT EXISTS `cms_agecefpb_clients` (
   `birthday` date NOT NULL,
   `marital_status` varchar(15) NOT NULL,
   `partner` varchar(100) NOT NULL,
+  `children` int(11) NOT NULL,
+  `cx_status` tinyint(4) NOT NULL,
   `cx_email` varchar(255) NOT NULL,
   `cx_code` varchar(15) NOT NULL,
   `cx_role` varchar(100) NOT NULL,

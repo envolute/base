@@ -95,6 +95,8 @@ jQuery(function() {
 			due_date.val('');
 			tax.val('<?php echo $cfg['serviceTax']?>');
 			note.val('');
+			// esconde botão de gerar detalhamento
+			setHidden('#<?php echo $APPTAG?>-group-btn-details', true);
 
 			<?php // Closure Actions
 			require(JPATH_CORE.DS.'apps/snippets/form/formReset.end.js.php');
@@ -219,6 +221,8 @@ jQuery(function() {
 						due_date.val(dateFormat(item.due_date));
 						tax.val(item.tax);
 						note.val(item.note);
+						// mostra botão de gerar detalhamento
+						setHidden('#<?php echo $APPTAG?>-group-btn-details', false);
 
 						<?php // Closure Actions
 						require(JPATH_CORE.DS.'apps/snippets/form/loadEdit.end.js.php');
@@ -268,9 +272,6 @@ jQuery(function() {
 				if(itemID || (isForm && formId.val() != '')) {
 					cod = '&id=' + (itemID ? itemID : formId.val());
 					<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
-					if(isForm) { // delete action from form
-						mainForm.find('.set-success, .set-error').prop('hidden', true);
-					}
 				} else {
 					dados = formList.serialize();
 				}
@@ -292,7 +293,7 @@ jQuery(function() {
 								}
 							}
 						} else {
-							if(!itemID) mainForm.find('.set-error').prop('hidden', false).text(res.msg);
+							if(!itemID) $.baseNotify({ msg: res.msg, type: "danger"});
 						}
 					});
 				},

@@ -107,7 +107,7 @@ $_SESSION[$APPTAG.'newUsertype'] = 2; // default 'Associado'
 		$cfg['fileTable']		= $cfg['mainTable'].'_files'; // upload's database table
 		// upload params
 		$cfg['maxFileSize']		= 5242880; // 5MB
-		$cfg['uploadDir']		= JPATH_BASE.'images/apps/'.$APPNAME.'/'; // IMPORTANTE: colocar a barra '/' no fim
+		$cfg['uploadDir']       = JPATH_BASE.DS.'images/apps/'.$APPNAME.'/'; // IMPORTANTE: colocar a barra '/' no fim
 		// file types enabled
 		$cfg['fileTypes']	= array();
 		$cfg['fileTypes']['image'][]	= 'image/png';

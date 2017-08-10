@@ -102,9 +102,26 @@ $users = $db->loadObjectList();
 						</div>
 					</div>
 					<div id="<?php echo $APPTAG?>-group-partner" class="col-12" hidden>
-						<div class="form-group">
-							<label><?php echo JText::_('FIELD_LABEL_PARTNER'); ?></label>
-							<input type="text" name="partner" id="<?php echo $APPTAG?>-partner" class="form-control upper" />
+						<div class="row">
+							<div class="col-lg-8">
+								<div class="form-group">
+									<label><?php echo JText::_('FIELD_LABEL_PARTNER'); ?></label>
+									<input type="text" name="partner" id="<?php echo $APPTAG?>-partner" class="form-control upper" />
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label><?php echo JText::_('FIELD_LABEL_CHILDREN'); ?></label>
+									<select type="text" name="children" id="<?php echo $APPTAG?>-children" class="form-control">
+										<option value="0"><?php echo JText::_('TEXT_SELECT'); ?></option>
+										<?php
+											for($i = 1; $i < 20; $i++) {
+												echo '<option value="'.$i.'">'.$i.'</option>';
+											}
+										?>
+									</select>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -129,7 +146,19 @@ $users = $db->loadObjectList();
 		<div class="row pt-3">
 			<div class="col-lg-6">
 				<fieldset class="fieldset-embed fieldset-sm">
-					<legend><?php echo JText::_('TEXT_DATA_EMPLOYEE'); ?></legend>
+					<legend><?php echo JText::_('TEXT_DATA_EMPLOYEE'); ?></legend><div class="form-group">
+						<label><?php echo JText::_('FIELD_LABEL_STATUS_EMPLOYEE'); ?></label>
+						<span class="btn-group btn-group-justified" data-toggle="buttons">
+							<label class="btn btn-default btn-active-success">
+								<input type="radio" name="cx_status" id="<?php echo $APPTAG?>-cx_status-0" value="0" class="auto-tab" data-target="#<?php echo $APPTAG?>-group-emailCaixa" data-target-display="true" />
+								<?php echo JText::_('TEXT_EFFECTIVE'); ?>
+							</label>
+							<label class="btn btn-default btn-active-warning">
+								<input type="radio" name="cx_status" id="<?php echo $APPTAG?>-cx_status-1" value="1" class="auto-tab" data-target="#<?php echo $APPTAG?>-group-emailCaixa" data-target-display="false" />
+								<?php echo JText::_('TEXT_RETIRED'); ?></span>
+							</label>
+						</span>
+					</div>
 					<div id="<?php echo $APPTAG?>-group-emailCaixa" class="form-group">
 						<label>E-mail Caixa</label>
 						<div class="input-group">
@@ -173,11 +202,13 @@ $users = $db->loadObjectList();
 						<span class="btn-group btn-group-justified" data-toggle="buttons">
 							<label class="btn btn-default btn-active-danger">
 								<input type="radio" name="access" id="<?php echo $APPTAG?>-access-0" value="0" onchange="<?php echo $APPTAG?>_accessForm(0)" class="auto-tab" data-target="#<?php echo $APPTAG?>-statusReason" />
-								<?php echo JText::_('TEXT_PENDING'); ?>
+								<span class="client-no-user"><?php echo JText::_('TEXT_PENDING'); ?></span>
+								<span class="client-is-user" hidden><?php echo JText::_('TEXT_BLOCKED'); ?></span>
 							</label>
 							<label class="btn btn-default btn-active-success">
 								<input type="radio" name="access" id="<?php echo $APPTAG?>-access-1" value="1" onchange="<?php echo $APPTAG?>_accessForm(1)" />
-								<?php echo JText::_('TEXT_APPROVED'); ?>
+								<span class="client-no-user"><?php echo JText::_('TEXT_APPROVED'); ?></span>
+								<span class="client-is-user" hidden><?php echo JText::_('TEXT_ACTIVE'); ?></span>
 							</label>
 						</span>
 						<input type="hidden" name="user_id" id="<?php echo $APPTAG?>-user_id" />

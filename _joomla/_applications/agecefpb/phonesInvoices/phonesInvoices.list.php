@@ -109,8 +109,8 @@ if($num_rows) : // verifica se existe
 					</a>
 				</td>
 				<td class="text-center d-print-none">
-					<a href="#" class="btn btn-xs btn-outline-primary hasTooltip" title="'.JText::_('TEXT_RUN_INVOICE_DETAILS').'" onclick="'.$APPTAG.'_invoiceDetails('.$item->id.', false)"><span class="base-icon-arrows-cw"></span></a>
 					<a href="#" class="btn btn-xs btn-warning hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil"></span></a>
+					<a href="#" class="btn btn-xs btn-outline-primary hasTooltip" title="'.JText::_('TEXT_RUN_INVOICE_DETAILS').'" onclick="'.$APPTAG.'_invoiceDetails('.$item->id.', false)"><span class="base-icon-arrows-cw"></span></a>
 					<a href="#" class="btn btn-xs btn-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash"></span></a>
 				</td>
 			';

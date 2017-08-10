@@ -16,7 +16,6 @@ window.<?php echo $APPTAG?>_save = function(trigger) {
 
     // executando...
     <?php echo $APPTAG?>_formExecute(true, true, true); // inicia o loader
-    mainForm.find('.set-success, .set-error').prop('hidden', true); // esconde as mensagens de 'erro' ou 'sucesso'
 
     jQuery.ajax({
       url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=save&id="+formId.val(),
@@ -71,7 +70,7 @@ window.<?php echo $APPTAG?>_save = function(trigger) {
           } else {
 
             // caso ocorra um erro na ação, mostra a mensagem de erro
-            mainForm.find('.set-error').prop('hidden', false).text(res.msg);
+            $.baseNotify({ msg: res.msg, type: "danger"});
 
             // recarrega os scripts de formulário para os campos
             // necessário após um procedimento ajax que envolve os elementos

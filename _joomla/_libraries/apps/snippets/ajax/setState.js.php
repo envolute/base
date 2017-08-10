@@ -55,7 +55,7 @@ window.<?php echo $APPTAG?>_setState = function(itemID, state) {
           }
           <?php if(!$cfg['listFull']) echo $APPTAG.'_listReload(false, false, false, '.$APPTAG.'oCHL, '.$APPTAG.'rNID, '.$APPTAG.'rID);'; ?>
         } else {
-          if(!itemID) mainForm.find('.set-error').prop('hidden', false).text(res.msg);
+          $.baseNotify({ msg: res.msg, type: "danger"});
         }
       });
     },

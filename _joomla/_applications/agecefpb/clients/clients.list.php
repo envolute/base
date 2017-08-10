@@ -14,6 +14,7 @@ require($PATH_APP_FILE.'.filter.php');
 			'. $db->quoteName('T1.id') .',
 			'. $db->quoteName('T1.name') .',
 			'. $db->quoteName('T2.name') .' user,
+			'. $db->quoteName('T1.cx_status') .',
 			'. $db->quoteName('T1.cx_role') .',
 			'. $db->quoteName('T1.cx_situated') .',
 			'. $db->quoteName('T1.access') .',
@@ -124,9 +125,16 @@ if($num_rows) : // verifica se existe
 		endif;
 
 
-		$status		= $item->access == 0 ? '<span class="base-icon-attention text-live"> '.JText::_('TEXT_PENDING').'</span><div class="small text-muted text-truncate">'.$item->reasonStatus.'</div>' : '<span class="base-icon-ok text-success"> '.JText::_('TEXT_APPROVED').'</span>';
-		// Check if user exist
-		$status		= (empty($item->user) && $item->access == 1) ? JText::_('TEXT_NO_USER_ASSOC') : $status;
+		if($item->access == 0) :
+			// Check if user exist
+			if(empty($item->user)) $status = '<span class="base-icon-attention text-live"> '.JText::_('TEXT_PENDING').'</span>';
+			else $status = '<span class="base-icon-attention text-live"> '.JText::_('TEXT_BLOCKED').'</span><div class="small text-muted text-truncate">'.$item->reasonStatus.'</div>';
+		else :
+			// Check if user exist
+			if(empty($item->user)) $status = '<span class="base-icon-cancel text-danger"> '.JText::_('TEXT_NO_USER_ASSOC').'</span><div class="small text-muted text-truncate">'.JText::_('TEXT_NO_USER_ASSOC_DESC').'</div>';
+			else $status = '<span class="base-icon-ok text-success"> '.JText::_('TEXT_APPROVED').'</span>';
+		endif;
+		$cx_status	= $item->cx_status == 1 ? '<span class="badge badge-warning bg-live text-white text-uppercase">'.JText::_('TEXT_RETIRED').'</span> ' : '';
 		$rowState	= $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
@@ -139,7 +147,7 @@ if($num_rows) : // verifica se existe
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
-				<td>'.$img.$item->name.'<div class="small text-muted">'.$item->cx_role.' - '.$item->cx_situated.'</td>
+				<td>'.$img.$item->name.'<div class="small text-muted">'.$cx_status.$item->cx_role.' - '.$item->cx_situated.'</td>
 				<td>'.$status.'</td>
 				<td class="d-none d-lg-table-cell">
 					'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'

@@ -43,7 +43,9 @@ jQuery(function() {
 	var birthday			= jQuery('#<?php echo $APPTAG?>-birthday');
 	var marital_status		= jQuery('#<?php echo $APPTAG?>-marital_status');
 	var partner				= jQuery('#<?php echo $APPTAG?>-partner');
+	var children			= jQuery('#<?php echo $APPTAG?>-children');
 	// Company data
+	var cx_status			= mainForm.find('input[name=cx_status]:radio'); // status "efetivo/aposentado"
 	var cx_code				= jQuery('#<?php echo $APPTAG?>-cx_code'); // matrícula
 	var cx_email			= jQuery('#<?php echo $APPTAG?>-cx_email');
 	var cx_role				= jQuery('#<?php echo $APPTAG?>-cx_role'); // cargo
@@ -137,6 +139,8 @@ jQuery(function() {
 			birthday.val('');
 			marital_status.val('').selectUpdate(); // select
 			partner.val('');
+			children.val('0').selectUpdate(); // select
+			checkOption(cx_status, 0); // radio
 			cx_code.val('');
 			cx_email.val('');
 			cx_role.val('');
@@ -164,14 +168,16 @@ jQuery(function() {
 
 		// CUSTOM -> Reset Registration Fields
 		window.<?php echo $APPTAG?>_accessForm = function(val) {
+			var isUser = (user_id.val() == 0) ? false : true;
 			newUser.val('0').selectUpdate(); // select
 			password.val('');
 			repassword.val('');
 			emailInfo.val('');
-			checkOption(emailConfirm, (val && user_id.val() != 0 ? 0 : 1));
+			checkOption(emailConfirm, (val && !isUser));
 			jQuery('#accessFields').collapse((val ? 'show' : 'hide'));
 			jQuery('#reasonStatus').collapse((!val ? 'show' : 'hide'));
-			setHidden('.new-user-data', (val && user_id.val() != 0 ? true : false), '.edit-user-data');
+			setHidden('.new-user-data', (val && isUser), '.edit-user-data');
+			setHidden('.client-no-user', isUser, '.client-is-user');
 		};
 
 		// CUSTOM -> Sincroniza com os contatos
@@ -330,6 +336,8 @@ jQuery(function() {
 						if(item.marital_status != '') setHidden('#mstatus_desc-group', true);
 						else setHidden('#mstatus_desc-group', false);
 						partner.val(item.partner);
+						children.val(item.children).selectUpdate(); // select
+						checkOption(cx_status, item.cx_status); // radio
 						cx_code.val(item.cx_code);
 						cx_email.val(item.cx_email);
 						cx_role.val(item.cx_role);

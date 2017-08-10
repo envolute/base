@@ -51,8 +51,10 @@ $operators = $db->loadObjectList();
 		</div>
 	</div>
 </div>
-<hr class="mt-0" />
-<button type="button" class="btn btn-success base-icon-arrows-cw btn-icon" onclick="<?php echo $APPTAG?>_invoiceDetails(0, true)"><?php echo JText::_('TEXT_RUN_INVOICE_DETAILS'); ?></button>
+<div id="<?php echo $APPTAG?>-group-btn-details" class="text-center" hidden>
+	<hr class="mt-0" />
+	<button type="button" class="btn btn-primary base-icon-arrows-cw btn-icon" onclick="<?php echo $APPTAG?>_invoiceDetails(0, true)"><?php echo JText::_('TEXT_RUN_INVOICE_DETAILS'); ?></button>
+</div>
 <div class="form-group">
 	<hr class="hr-tag" />
 	<span class="base-icon-info-circled badge badge-warning cursor-help hasTooltip" title="<?php echo JText::_('FIELD_LABEL_NOTE_DESC'); ?>"> <?php echo JText::_('FIELD_LABEL_NOTE'); ?></span>
