@@ -9,10 +9,10 @@ window.<?php echo $APPTAG?>_del = function(itemID, isForm) {
 		var dados = cod = '';
 		if(itemID || (isForm && formId.val() != '')) {
 			cod = '&id=' + (itemID ? itemID : formId.val());
-			<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
 		} else {
 			dados = formList.serialize();
 		}
+		<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
 		jQuery.ajax({
 			url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=del"+cod,
 			dataType: 'json',

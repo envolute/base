@@ -8,7 +8,6 @@ $where = '';
 
 	// STATE -> select
 	$active	= $app->input->get('active', 2, 'int');
-	$db->quoteName('T1.state');
 	$where .= ($active == 2) ? $db->quoteName('T1.state').' != '.$active : $db->quoteName('T1.state').' = '.$active;
 
 	// Search 'Text fields'
