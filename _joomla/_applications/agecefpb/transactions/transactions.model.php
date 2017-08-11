@@ -70,6 +70,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$listIds    = $input->get($APPTAG.'_ids', array(), 'array');
 		$ids        = (count($listIds) > 0) ? implode($listIds, ',') : $id;
 		$state      = $input->get('st', 2, 'int');
+	    $seq        = $input->get('sq', 0, 'int');
+	    $client     = $input->get('cID', 0, 'int');
 
 		// upload actions
 		$fileMsg 	= '';
@@ -104,7 +106,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	      // data da parcela
 	      $date_installment				= $db->quote($request['date']);
 	  	$request['price']				= $input->get('price', 0.00, 'float');
-	    $request['installment']			= $input->get('installment', 1, 'int');
 	    $request['total']				= $input->get('total', 1, 'int');
 	  	$request['doc_number']			= $input->get('doc_number', '', 'string');
 	  	$request['note']				= $input->get('note', '', 'string');
@@ -820,10 +821,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							SELECT
 								T4.username, T2.due_date as date, SUBSTRING_INDEX((REPLACE(REPLACE(T1.price,',',''),'.','')),'.',1) val, T3.agency agencia, CONCAT(SUBSTRING(CONCAT('000',T3.operation),-3), SUBSTRING(CONCAT('000000000',T3.account),-9)) conta, T4.name nome
 							FROM
-								#__'.$cfg['project'].'_transactions T1
-								JOIN #__'.$cfg['project'].'_invoices AS T2
+								#__".$cfg['project']."_transactions T1
+								JOIN #__".$cfg['project']."_invoices AS T2
 								ON T2.id = T1.invoice_id
-								JOIN #__'.$cfg['project'].'_clients T3
+								JOIN #__".$cfg['project']."_clients T3
 								ON T3.id = T1.client_id
 								JOIN #__users T4
 								ON T4.id = T3.user_id
@@ -845,10 +846,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							SELECT
 								SUBSTRING_INDEX(SUM(REPLACE(REPLACE(T1.price,',','') ,'.','')),'.',1) val, T4.name
 							FROM
-								#__'.$cfg['project'].'_transactions T1
-								JOIN #__'.$cfg['project'].'_invoices AS T2
+								#__".$cfg['project']."_transactions T1
+								JOIN #__".$cfg['project']."_invoices AS T2
 								ON T2.id = T1.invoice_id
-								JOIN #__'.$cfg['project'].'_clients T3
+								JOIN #__".$cfg['project']."_clients T3
 								ON T3.id = T1.client_id
 								JOIN #__users T4
 								ON T4.id = T3.user_id
@@ -867,7 +868,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$result .= setFile($query_tipoZ,NULL,'','');
 					if($result == true) :
 
-						$query = "SELECT CONCAT('".time()."_".$inv."_',DATE_FORMAT(due_date,'%d%m%y'),'_','associado.txt') filename FROM #__'.$cfg['project'].'_invoices WHERE id = ".$inv;
+						$query = "SELECT CONCAT('".time()."_".$inv."_',DATE_FORMAT(due_date,'%d%m%y'),'_','associado.txt') filename FROM #__".$cfg['project']."_invoices WHERE id = ".$inv;
 						$db->setQuery($query);
 						$file = $db->loadResult();
 

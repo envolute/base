@@ -109,9 +109,6 @@ jQuery(function() {
 			setHidden('.<?php echo $APPTAG?>-no-fixed', false);
 			checkOption(isCard, 0);
 			cardLimit.val('');
-			// define o limite e a parcela mínima -> '1'
-			<?php echo $APPTAG?>_setCard(1);
-			total.val(1).selectUpdate(); // select
 			date.val('');
 			price.val('');
 			doc_number.val('');
@@ -188,15 +185,17 @@ jQuery(function() {
 		};
 
 		// CUSTOM -> set card installments
-		window.<?php echo $APPTAG?>_setCard = function(value) {
-			var e = isSet(value) ? value : 1;
+		window.<?php echo $APPTAG?>_setCard = function(card) {
 			total.empty();
-			var limit = isCard.is(':checked') ? 3 : 90;
+			var limit = card ? 3 : 90;
 			for(i = 1; i <= limit; i++) {
 				total.append('<option value="'+i+'">'+i+'</option>');
 			}
-			total.val(e).selectUpdate();
-			price.val('');
+			// O valor só pode ser selecionado na hora de criar a movimentação
+			// O item editado é sempre referente a 1 parcela do total
+			// Dessa forma, o valor, tanto na criação quanto na edição será sempre 1
+			console.log(formId_<?php echo $APPTAG?>);
+			total.val(1).prop('disabled',(formId_<?php echo $APPTAG?>.val() == 0 ? false : true)).selectUpdate(); // select
 		};
 
 	// LIST CONTROLLERS
@@ -280,8 +279,6 @@ jQuery(function() {
 						setHidden('.<?php echo $APPTAG?>-no-fixed', item.fixed);
 						checkOption(isCard, item.isCard);
 						cardLimit.val(item.cardLimit);
-						// define o limite e a quatidade de parcelas
-						<?php echo $APPTAG?>_setCard(item.total);
 						date.val(dateFormat(item.date));
 						price.val(item.price);
 						// oculta os campos não editáveis
@@ -339,7 +336,6 @@ jQuery(function() {
 				type: 'POST',
 				cache: false,
 				success: function(data){
-					<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
 					jQuery.map( data, function( res, i ) {
 						if(res.status != 0) {
 							// remove all options
@@ -391,6 +387,7 @@ jQuery(function() {
 				data:  dados,
 				cache: false,
 				success: function(data){
+					<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
 					jQuery.map( data, function( res ) {
 						if(res.status == 1) <?php echo $APPTAG?>_listReload(true, false);
 						else $.baseNotify({ msg: res.msg, type: "danger" });
@@ -421,6 +418,7 @@ jQuery(function() {
 				data:  dados,
 				cache: false,
 				success: function(data){
+					<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
 					jQuery.map( data, function( res ) {
 						if(res.status == 1) <?php echo $APPTAG?>_listReload(true, false);
 						else $.baseNotify({ msg: res.msg, type: "danger" });
@@ -456,6 +454,7 @@ jQuery(function() {
 				dataType: 'json',
 				cache: false,
 				success: function(data) {
+					<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
 					jQuery.map( data, function( res ) {
 					if(res.status == 1) {
 						var path = '<?php echo JURI::root().'templates/base/source/transactions/transactions.getFile.php?fn='?>'+res.file;
@@ -497,6 +496,7 @@ jQuery(function() {
 				dataType: 'json',
 				cache: false,
 				success: function(data){
+					<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
 					jQuery.map( data, function( res ) {
 						if(res.status == 1) <?php echo $APPTAG?>_listReload(true, false);
 						else $.baseNotify({ msg: res.msg, type: "danger" });

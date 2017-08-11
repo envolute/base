@@ -196,13 +196,13 @@ $where = '';
 	}
 
 	// usergroups -> select
-	// $flt_group = '';
-	// $query = 'SELECT * FROM '. $db->quoteName('#__usergroups') .' WHERE '. $db->quoteName('parent_id') .' = 10 ORDER BY id';
-	// $db->setQuery($query);
-	// $userGrps = $db->loadObjectList();
-	// foreach ($userGrps as $obj) {
-	// 	$flt_group .= '<option value="'.$obj->id.'"'.($obj->id == $fGroup ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->title).'</option>';
-	// }
+	$flt_group = '';
+	$query = 'SELECT * FROM '. $db->quoteName('#__usergroups') .' WHERE '. $db->quoteName('parent_id') .' = 10 ORDER BY id';
+	$db->setQuery($query);
+	$userGrps = $db->loadObjectList();
+	foreach ($userGrps as $obj) {
+		$flt_group .= '<option value="'.$obj->id.'"'.($obj->id == $fGroup ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->title).'</option>';
+	}
 
 // VISIBILITY
 // Elementos visíveis apenas quando uma consulta é realizada
