@@ -65,11 +65,11 @@ $invoices = $db->loadObjectList();
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-4">
+			<div class="col-lg-4 <?php echo $APPTAG?>-no-fixed">
 				<div class="form-group field-required">
 					<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_IS_CARD_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_IS_CARD'); ?></label>
 					<span class="btn-group btn-group-justified" data-toggle="buttons">
-						<label class="btn btn-default btn-active-success">
+						<label class="btn btn-default btn-active-danger">
 							<input type="radio" name="isCard" id="<?php echo $APPTAG?>-isCard-0" value="0" onchange="<?php echo $APPTAG?>_setCard(false)" />
 							<?php echo JText::_('TEXT_NO'); ?>
 						</label>
@@ -109,10 +109,7 @@ $invoices = $db->loadObjectList();
 			</div>
 			<div class="col-6 col-md-4">
 				<div class="form-group field-required">
-					<label class="d-block">
-						<?php echo JText::_('FIELD_LABEL_PRICE'); ?>
-						<small class="base-icon-info-circled text-live float-right mt-1 cursor-help hasTooltip" title="<?php echo JText::_('FIELD_LABEL_PRICE_INSTALLMENT_DESC'); ?>"> <?php echo JText::_('FIELD_LABEL_INSTALLMENT'); ?></small>
-					</label>
+					<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_PRICE_TOTAL_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_PRICE'); ?></label>
 					<span class="input-group">
 						<span class="input-group-addon">R$</span>
 						<input type="text" name="price" id="<?php echo $APPTAG?>-price" class="form-control field-price" data-convert="true" />
@@ -120,10 +117,13 @@ $invoices = $db->loadObjectList();
 					<input type="hidden" name="cardLimit" id="<?php echo $APPTAG?>-cardLimit" />
 				</div>
 			</div>
-			<div class="col-6 col-md-4 <?php echo $APPTAG?>-no-fixed <?php echo $APPTAG?>-no-edit">
+			<div class="col-6 col-md-4 <?php echo $APPTAG?>-no-fixed">
 				<div class="form-group">
 					<label><?php echo JText::_('FIELD_LABEL_INSTALLMENTS'); ?></label>
-					<select name="total" id="<?php echo $APPTAG?>-total" class="form-control"></select>
+					<div class="<?php echo $APPTAG?>-no-edit">
+						<select name="total" id="<?php echo $APPTAG?>-total" class="form-control"></select>
+					</div>
+					<input type="text" name="<?php echo $APPTAG?>-totalDesc" id="<?php echo $APPTAG?>-totalDesc" class="form-control <?php echo $APPTAG?>-only-edit" disabled hidden />
 				</div>
 				<input type="hidden" name="installment" id="<?php echo $APPTAG?>-installment" />
 			</div>

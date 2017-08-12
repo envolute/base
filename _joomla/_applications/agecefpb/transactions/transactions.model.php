@@ -239,6 +239,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				// GET DATA
 				if($task == 'get') :
 
+					$cardLimit = getCardLimit($item->client_id, $cfg);
+
 					$data[] = array(
 						// Default Fields
 						'id'				=> $item->id,
@@ -260,6 +262,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'price_total'		=> $item->price_total,
 						'installment'		=> $item->installment,
 						'total'				=> $item->total,
+						'totalDesc'			=> ($item->total == 1 ? JText::_('TEXT_IN_CASH') : $item->installment.'ª '.JText::_('TEXT_INSTALLMENT')),
 						'doc_number'		=> $item->doc_number,
 						'note'				=> $item->note
 					);
@@ -596,6 +599,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 								$db->execute();
 			                }
 			                $date_installment = 'DATE_ADD('. $db->quote($request['date']) .', INTERVAL '.($i).' MONTH)';
+
 							// Upload
 							if($cfg['hasUpload'] && $id)
 							$fileMsg = uploader::uploadFile($id, $cfg['fileTable'], $_FILES[$cfg['fileField']], $fileGrp, $fileGtp, $fileCls, $fileLbl, $cfg);

@@ -43,6 +43,7 @@ jQuery(function() {
 	var date 				= jQuery('#<?php echo $APPTAG?>-date');
 	var price 				= jQuery('#<?php echo $APPTAG?>-price');
 	var total 				= jQuery('#<?php echo $APPTAG?>-total');
+	var totalDesc 			= jQuery('#<?php echo $APPTAG?>-totalDesc'); // Na edição -> resultado do parcelamento
 	var doc_number			= jQuery('#<?php echo $APPTAG?>-doc_number');
 	var note 				= jQuery('#<?php echo $APPTAG?>-note');
 
@@ -111,6 +112,9 @@ jQuery(function() {
 			cardLimit.val('');
 			date.val('');
 			price.val('');
+			totalDesc.val('');
+			// oculta os campos não editáveis
+			setHidden('.<?php echo $APPTAG?>-no-edit', false, '.<?php echo $APPTAG?>-only-edit');
 			doc_number.val('');
 			note.val('');
 
@@ -194,7 +198,6 @@ jQuery(function() {
 			// O valor só pode ser selecionado na hora de criar a movimentação
 			// O item editado é sempre referente a 1 parcela do total
 			// Dessa forma, o valor, tanto na criação quanto na edição será sempre 1
-			console.log(formId_<?php echo $APPTAG?>);
 			total.val(1).prop('disabled',(formId_<?php echo $APPTAG?>.val() == 0 ? false : true)).selectUpdate(); // select
 		};
 
@@ -281,8 +284,9 @@ jQuery(function() {
 						cardLimit.val(item.cardLimit);
 						date.val(dateFormat(item.date));
 						price.val(item.price);
+						totalDesc.val(item.totalDesc);
 						// oculta os campos não editáveis
-						jQuery('.<?php echo $APPTAG?>-no-edit').addClass('element-invisible');
+						setHidden('.<?php echo $APPTAG?>-no-edit', true, '.<?php echo $APPTAG?>-only-edit');
 						doc_number.val(item.doc_number);
 						note.val(item.note);
 
@@ -515,22 +519,30 @@ jQuery(function() {
 }); // CLOSE JQUERY->READY
 
 jQuery(window).load(function() {
+
+	// custom validation for phone number
+	jQuery.validator.addMethod("validaCardLimit", function(value, element, param) {
+		var v = value.replace(/\./g, '').replace(/\,/g, '.');
+		var p = param.replace(/\./g, '').replace(/\,/g, '.');
+		return this.optional(element) || parseFloat(v) <= parseFloat(p);
+	}, '');
+
 	// Jquery Validation
 	window.<?php echo $APPTAG?>_validator = mainForm_<?php echo $APPTAG?>.validate({
-		// rules: {
-		// 	price: {
-		// 		validaCardLimit: function() {
-		// 			return jQuery('#<?php echo $APPTAG?>-isCard').is(':checked') ? jQuery('#<?php echo $APPTAG?>-cardLimit').val() : '1000000000,00';
-		// 		}
-		// 	}
-		// },
-		// messages: {
-		// 	price: {
-		// 		validaCardLimit: function() {
-		// 			return 'Saldo Insuficiente!<br />Atual: <strong>'+jQuery('#<?php echo $APPTAG?>-cardLimit').val()+'</strong>';
-		// 		}
-		// 	}
-		// },
+		rules: {
+			price: {
+				validaCardLimit: function() {
+					return jQuery('#<?php echo $APPTAG?>-isCard').is(':checked') ? jQuery('#<?php echo $APPTAG?>-cardLimit').val() : '1000000000,00';
+				}
+			}
+		},
+		messages: {
+			price: {
+				validaCardLimit: function() {
+					return '<?php echo JText::_('MSG_VALIDATION_ERROR_CARD_LIMIT')?><strong>'+jQuery('#<?php echo $APPTAG?>-cardLimit').val()+'</strong>';
+				}
+			}
+		},
 		//don't remove this
 		invalidHandler: function(event, validator) {
 			//if there is error,

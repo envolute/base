@@ -10,7 +10,7 @@ jQuery(function() {
 	window.setHidden = function(elem, state, toggleElem) {
 		var e = setElement(elem);
 		var i = isSet(toggleElem) ? setElement(toggleElem) : false;
-		var s = (isSet(state) && !isEmpty(state) && state) ? true : false;
+		var s = (isSet(state) && !isEmpty(state) && state && state != 0) ? true : false;
 		var t = (s ? false : true);
 		// define a propriedade dos elementos setados em 'elem'
 		if(elementExist(e)) e.each(function() { jQuery(this).prop('hidden', s) });

@@ -33,6 +33,10 @@ require($PATH_APP_FILE.'.filter.php');
 			'. $db->quoteName('T1.total') .',
 			'. $db->quoteName('T1.doc_number') .',
 			'. $db->quoteName('T1.note') .',
+			'. $db->quoteName('T1.created_date') .',
+			'. $db->quoteName('T1.created_by') .',
+			'. $db->quoteName('T1.alter_date') .',
+			'. $db->quoteName('T1.alter_by') .',
 			'. $db->quoteName('T1.state') .'
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
@@ -85,9 +89,7 @@ $html = '
 					<th class="d-none d-md-table-cell">'.JText::_('FIELD_LABEL_DESCRIPTION').'</th>
 					<th>'.JText::_('FIELD_LABEL_DATE').'</th>
 					<th>'.JText::_('FIELD_LABEL_PRICE').'</th>
-					<th class="d-none d-md-table-cell">'.JText::_('FIELD_LABEL_INSTALLMENT').'</th>
 					<th class="d-none d-md-table-cell">'.JText::_('FIELD_LABEL_INVOICE').'</th>
-					<th class="d-none d-md-table-cell text-center">'.JText::_('FIELD_LABEL_CARD').'</th>
 					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
 					'.$adminView['head']['actions'].'
 				</tr>
@@ -157,11 +159,11 @@ if($num_rows) : // verifica se existe
 
 			$usergroup = $item->invoiceGroup == 0 ? 'Associados Caixa' : 'Contribuintes';
 			$info = !empty($item->description) ? $item->description : '';
-			$info .= !empty($item->doc_number) ? '<div class="text-xs text-muted font-featured">Item: '.$item->doc_number.'</div>' : '';
-			$dependent = !empty($item->dependent) ? '<div class="small text-muted font-featured">&raquo; <span class="cursor-help hasTooltip" title="'.JText::_('TEXT_TRANSACTION_BY').'">'.baseHelper::nameFormat($item->dependent).'</span></div>' : '';
-			$invoice = $item->invoice_id != 0 ? $usergroup.'<div class="small text-live font-featured">'.baseHelper::dateFormat($item->invoiceDate).'</div>' : '';
+			$info .= !empty($item->doc_number) ? '<div class="text-xs text-muted">Item: '.$item->doc_number.'</div>' : '';
+			$dependent = !empty($item->dependent) ? '<div class="small text-muted">&raquo; <span class="cursor-help hasTooltip" title="'.JText::_('TEXT_TRANSACTION_BY').'">'.baseHelper::nameFormat($item->dependent).'</span></div>' : '';
+			$invoice = $item->invoice_id != 0 ? $usergroup.'<div class="small text-live">'.baseHelper::dateFormat($item->invoiceDate).'</div>' : '';
 			$invoice = $item->fixed == 1 ? '<span class="base-icon-cw text-success cursor-help"></span> '.JText::_('FIELD_LABEL_FIXED') : $invoice;
-			$isCard = $item->isCard == 1 ? '<span class="base-icon-ok text-success cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_IS_CARD').'"></span>' : '';
+			$isCard = $item->isCard == 1 ? '<span class="badge badge-warning text-uppercase cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_IS_CARD').'">'.JText::_('FIELD_LABEL_CARD').'</span>' : '';
 			$note = !empty($item->note) ? '<div class="small text-muted font-featured"><span class="base-icon-info-circled text-live cursor-help hasTooltip" title="Observação"></span> '.$item->note.'</div>' : '';
 			$total = $total + $item->price;
 			$rowState = $item->state == 0 ? 'table-danger' : '';
@@ -180,10 +182,13 @@ if($num_rows) : // verifica se existe
 	  				<td class="d-none d-lg-table-cell">'.baseHelper::nameFormat($item->provider).'</td>
 	  				<td class="d-none d-lg-table-cell">'.$info.'</td>
 	  				<td>'.baseHelper::dateFormat($item->date_installment).'</td>
-	  				<td>'.baseHelper::priceFormat($item->price, false, 'R$ ').'</td>
-	  				<td class="d-none d-lg-table-cell">'.$item->installment.'/'.$item->total.'</td>
+	  				<td>
+						'.baseHelper::priceFormat($item->price, false, 'R$ ').'
+						<div class="small text-muted">
+							('.$item->installment.'/'.$item->total.') '.$isCard.'
+						</div>
+					</td>
 	  				<td class="d-none d-lg-table-cell">'.$invoice.'</td>
-	  				<td class="d-none d-lg-table-cell text-center">'.$isCard.'</td>
 					<td class="d-none d-lg-table-cell">
 						'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'
 						<a href="#" class="base-icon-info-circled setPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top"></a>

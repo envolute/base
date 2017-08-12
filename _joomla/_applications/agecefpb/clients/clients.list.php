@@ -126,9 +126,11 @@ if($num_rows) : // verifica se existe
 
 
 		if($item->access == 0) :
+			$reason = !empty($item->reasonStatus) ? '<div class="small text-muted text-truncate">'.$item->reasonStatus.'</div>' : '';
 			// Check if user exist
 			if(empty($item->user)) $status = '<span class="base-icon-attention text-live"> '.JText::_('TEXT_PENDING').'</span>';
-			else $status = '<span class="base-icon-attention text-live"> '.JText::_('TEXT_BLOCKED').'</span><div class="small text-muted text-truncate">'.$item->reasonStatus.'</div>';
+			else $status = '<span class="base-icon-attention text-live"> '.JText::_('TEXT_BLOCKED').'</span>';
+			$status .= $reason;
 		else :
 			// Check if user exist
 			if(empty($item->user)) $status = '<span class="base-icon-cancel text-danger"> '.JText::_('TEXT_NO_USER_ASSOC').'</span><div class="small text-muted text-truncate">'.JText::_('TEXT_NO_USER_ASSOC_DESC').'</div>';

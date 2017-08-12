@@ -33,6 +33,7 @@ jQuery(function() {
 
 	// APP FIELDS
 	var user_id				= jQuery('#<?php echo $APPTAG?>-user_id');
+	var usergroup 			= jQuery('#<?php echo $APPTAG?>-usergroup');
 	var name 				= jQuery('#<?php echo $APPTAG?>-name');
 	var email				= jQuery('#<?php echo $APPTAG?>-email');
 	var cmail				= jQuery('#<?php echo $APPTAG?>-cmail');
@@ -129,6 +130,7 @@ jQuery(function() {
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
 			user_id.val('');
+			usergroup.val(<?php echo $_SESSION[$APPTAG.'newUsertype']?>);
 			name.val('');
 			email.val('');
 			cmail.val('');
@@ -175,7 +177,7 @@ jQuery(function() {
 			emailInfo.val('');
 			checkOption(emailConfirm, (val && !isUser));
 			jQuery('#accessFields').collapse((val ? 'show' : 'hide'));
-			jQuery('#reasonStatus').collapse((!val ? 'show' : 'hide'));
+			jQuery('#<?php echo $APPTAG?>-reasonStatus-group').collapse((!val ? 'show' : 'hide'));
 			setHidden('.new-user-data', (val && isUser), '.edit-user-data');
 			setHidden('.client-no-user', isUser, '.client-is-user');
 		};
@@ -323,6 +325,7 @@ jQuery(function() {
 
 						// App Fields
 						user_id.val(item.user_id);
+						usergroup.val(item.usergroup);
 						name.val(item.name);
 						email.val(item.email);
 						cmail.val(item.email);
