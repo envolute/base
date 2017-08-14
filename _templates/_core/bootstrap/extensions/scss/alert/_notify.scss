@@ -15,9 +15,9 @@ base-notify-box {
 	right: 0;
 	top: 0;
 	width: 100%;
-	padding: 15px;
-	box-sizing: border-box;
 	max-width: 400px;
+	padding: 0;
+	box-sizing: border-box;
 	overflow: auto;
 	z-index: 9999999999;
 }
@@ -40,6 +40,7 @@ base-notify-box[position='bottom-right'] {
 base-notify {
 	display: block;
 	position: relative;
+	margin: 15px 15px 15px 0;
 	padding-right: ($alert-padding-x * 2)!important;
 	box-shadow: 4px 4px 8px rgba(0,0,0,0.2);
 	opacity: .95;

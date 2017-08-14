@@ -78,6 +78,8 @@ if($hasAdmin) :
 endif;
 
 // VIEW
+$recurr		= ($isFixed == 1) ? true : false;
+$showInv 	= (!$recurr) ? '<th class="d-none d-md-table-cell">'.JText::_('FIELD_LABEL_INVOICE').'</th>' : '';
 $html = '
 	<form id="form-list-'.$APPTAG.'" method="post">
 		<table class="table table-striped table-hover table-condensed">
@@ -89,7 +91,7 @@ $html = '
 					<th class="d-none d-md-table-cell">'.JText::_('FIELD_LABEL_DESCRIPTION').'</th>
 					<th>'.JText::_('FIELD_LABEL_DATE').'</th>
 					<th>'.JText::_('FIELD_LABEL_PRICE').'</th>
-					<th class="d-none d-md-table-cell">'.JText::_('FIELD_LABEL_INVOICE').'</th>
+					'.$showInv.'
 					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
 					'.$adminView['head']['actions'].'
 				</tr>
@@ -162,7 +164,9 @@ if($num_rows) : // verifica se existe
 			$info .= !empty($item->doc_number) ? '<div class="text-xs text-muted">Item: '.$item->doc_number.'</div>' : '';
 			$dependent = !empty($item->dependent) ? '<div class="small text-muted">&raquo; <span class="cursor-help hasTooltip" title="'.JText::_('TEXT_TRANSACTION_BY').'">'.baseHelper::nameFormat($item->dependent).'</span></div>' : '';
 			$invoice = $item->invoice_id != 0 ? $usergroup.'<div class="small text-live">'.baseHelper::dateFormat($item->invoiceDate).'</div>' : '';
-			$invoice = $item->fixed == 1 ? '<span class="base-icon-cw text-success cursor-help"></span> '.JText::_('FIELD_LABEL_FIXED') : $invoice;
+			if(!$recurr) :
+				$invoice = '<td class="d-none d-lg-table-cell">'.$invoice.'</td>';
+			endif;
 			$isCard = $item->isCard == 1 ? '<span class="badge badge-warning text-uppercase cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_IS_CARD').'">'.JText::_('FIELD_LABEL_CARD').'</span>' : '';
 			$note = !empty($item->note) ? '<div class="small text-muted font-featured"><span class="base-icon-info-circled text-live cursor-help hasTooltip" title="Observação"></span> '.$item->note.'</div>' : '';
 			$total = $total + $item->price;
@@ -188,7 +192,7 @@ if($num_rows) : // verifica se existe
 							('.$item->installment.'/'.$item->total.') '.$isCard.'
 						</div>
 					</td>
-	  				<td class="d-none d-lg-table-cell">'.$invoice.'</td>
+					'.$invoice.'
 					<td class="d-none d-lg-table-cell">
 						'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'
 						<a href="#" class="base-icon-info-circled setPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top"></a>

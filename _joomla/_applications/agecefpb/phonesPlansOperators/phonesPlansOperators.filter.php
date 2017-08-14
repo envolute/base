@@ -101,15 +101,19 @@ $htmlFilter = '
 					</div>
 				</div>
 			</div>
-			<div id="base-app-filter-buttons" class="row py-3 b-top align-items-center">
+			<div id="base-app-filter-buttons" class="row pt-3 b-top align-items-center">
 				<div class="col-sm">
-					'.$textResults.'
+					<div class="form-group">
+						'.$textResults.'
+					</div>
 				</div>
 				<div class="col-sm text-right">
-					<button type="submit" class="btn btn-sm btn-primary base-icon-search btn-icon">
-						'.JText::_('TEXT_SEARCH').'
-					</button>
-					'.$btnClearFilter.'
+					<div class="form-group">
+						<button type="submit" class="btn btn-sm btn-primary base-icon-search btn-icon">
+							'.JText::_('TEXT_SEARCH').'
+						</button>
+						'.$btnClearFilter.'
+					</div>
 				</div>
 			</div>
 		</fieldset>

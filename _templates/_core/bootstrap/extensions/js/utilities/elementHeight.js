@@ -17,8 +17,8 @@ jQuery(function() {
 				if(isSet(offset) && !isEmpty(offset) && offset != 0) off = offset;
 				else off = (isSet(obj.data('offset')) && obj.data('offset') != 0) ? obj.data('offset') : 0;
 				// offset id's
-        // Se ambos 'offset' e 'offsetIds' forem informados, o ofsset será o somatório de ambos
-        // Isso pode ser utilizado caso seja necessário adicionar um valor extra ao 'offsetIds'
+				// Se ambos 'offset' e 'offsetIds' forem informados, o ofsset será o somatório de ambos
+				// Isso pode ser utilizado caso seja necessário adicionar um valor extra ao 'offsetIds'
 				if(isSet(offsetIds) && !isEmpty(offsetIds)) offIds = offsetIds;
 				else offIds = (isSet(obj.data('offsetIds')) && !isEmpty(obj.data('offsetIds'))) ? obj.data('offsetIds') : null;
 				if(offIds) {

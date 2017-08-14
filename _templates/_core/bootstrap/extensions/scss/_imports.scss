@@ -18,6 +18,9 @@
 @import "_helpers/utilities";
 
 // EXTENSIONS
+// Alert
+@import "alert/notify";
+// Animation
 @import "animation/load-onView";
 // Buttons
 @import "buttons/btn-default";
@@ -63,7 +66,6 @@
 @import "typography/baseicons/addons";
 // Utilities
 @import "utilities/background";
-@import "utilities/notify";
 @import "utilities/borders";
 @import "utilities/box-shadows";
 @import "utilities/clear";

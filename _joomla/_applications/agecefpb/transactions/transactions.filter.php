@@ -12,94 +12,137 @@ $where = '';
 	// USERGROUP -> select
 	$fGroup	= $app->input->get('fGroup', 0, 'int');
 	if($fGroup != 0) $where .= ' AND '.$db->quoteName('T3.usergroup').' = '.$fGroup;
-	// GROUP -> select
-	$fIgrp	= $app->input->get('fIgrp', 2, 'int');
-	if($fIgrp != 2) $where .= ' AND '.$db->quoteName('T1.invoice_group').' = '.$fIgrp;
 	// FIXED -> select
-	$isFixed	= $app->input->get('isFixed', 9, 'int');
-	$where .= ($isFixed == 9) ? ' AND '.$db->quoteName('T1.fixed').' != 1' : ' AND '.$db->quoteName('T1.fixed').' = '.$isFixed;
-	// IS CARD -> select
-	$fCard	= $app->input->get('fCard', 2, 'int');
-	if($fCard != 2) $where .= ' AND '.$db->quoteName('T1.isCard').' = '.$fCard;
+	$isFixed	= $app->input->get('isFixed', 0, 'int');
+	// IMPORTED -> cópia de uma fixa (importada)
+	$fSType	= $app->input->get('fSType', 1, 'int');
+	if($isFixed == 1) :
+		$where .= ' AND '.$db->quoteName('T1.fixed').' = 1';
+	else :
+		$op = ($fSType == 1) ? ' <> ' : ' = ';
+		$where .= ' AND '.$db->quoteName('T1.fixed').$op.$fSType;
+	endif;
 	// CLIENT -> select
 	$fClient	= $app->input->get('cID', 0, 'int');
 	if($fClient != 0) $where .= ' AND '.$db->quoteName('T3.id').' = '.$fClient;
 	// PROVIDER -> select
 	$fProvider	= $app->input->get('pID', 0, 'int');
 	if($fProvider != 0) $where .= ' AND '.$db->quoteName('T1.provider_id').' = '.$fProvider;
-	// INVOICE -> select
-	$fInv	= $app->input->get('fInv', 0, 'int');
-	if($fInv != 1) : // 1 = sem filtro para faturas, todas as movimentações
 
-		// sem paginação => mostra todos os resultados
-		$_SESSION[$APPTAG.'plim'] = 1;
-		if($fInv == 0) :
+	$invoiceActions = '';
+	// Apenas para movimentações Avulsas/Importadas
+	if($isFixed == 1) :
 
-			$invoiceActions = '
-				<div class="col-sm-10">
-					<div class="form-group">
-						<button type="button" class="btn btn-sm btn-success '.$APPTAG.'-btn-action hasTooltip" title="'.JText::_('TEXT_ADD_TO_INVOICE_DESC').'" disabled data-toggle="modal" data-target="#modal-'.$APPTAG.'-invoice" data-backdrop="static" data-keyboard="false">
-							<span class="base-icon-forward"></span> '.JText::_('TEXT_ADD_TO_INVOICE').'
-						</button>
-						<button type="button" class="btn btn-sm btn-warning '.$APPTAG.'-btn-action hasTooltip" title="'.JText::_('TEXT_ADD_FIXED_DESC').'" data-toggle="modal" data-target="#modal-'.$APPTAG.'-addFixed" data-backdrop="static" data-keyboard="false">
-							<span class="base-icon-download"></span> '.JText::_('TEXT_ADD_FIXED').'
-						</button>
+		// Reseta os campos para movimentações avulsas
+		$fIgrp = $fCard = 2;
+		$fInst = $fInv = 0;
+		// Desabilita os campos das movimentações avulsas
+		$js = '
+			jQuery(function() {
+				jQuery("#fSType, #fInv, #fIgrp, #fCard, input[name=fInst]:radio").prop("disabled", true);
+				jQuery("#fSType, #fInv, #fIgrp, #fCard").selectUpdate();
+			});
+		';
+
+	else :
+
+		// GROUP -> select
+		$fIgrp	= $app->input->get('fIgrp', 2, 'int');
+		if($fIgrp != 2) $where .= ' AND '.$db->quoteName('T1.invoice_group').' = '.$fIgrp;
+		// IS CARD -> select
+		$fCard	= $app->input->get('fCard', 2, 'int');
+		if($fCard != 2) $where .= ' AND '.$db->quoteName('T1.isCard').' = '.$fCard;
+		// INVOICE -> select
+		$fInv	= $app->input->get('fInv', 0, 'int');
+		// [filter] ALL INSTALLMENTS -> opção para visualizar todas as parcelas
+		$fInst	= $app->input->get('fInst', 0, 'int');
+		// Reabilita os campos das movimentações avulsas
+		$js = '
+			jQuery(function() {
+				jQuery("#fSType, #fInv, #fIgrp, #fCard, input[name=fInst]:radio").prop("disabled", false);
+				jQuery("#fSType, #fInv, #fIgrp, #fCard").selectUpdate();
+			});
+		';
+
+		if($fInv != 1) : // 1 = sem filtro para faturas, todas as movimentações
+
+			// sem paginação => mostra todos os resultados
+			$_SESSION[$APPTAG.'plim'] = 1;
+			if($fInv == 0) :
+
+				$invoiceActions = '
+					<div class="col-sm-8">
+						<div class="form-group">
+							<button type="button" class="btn btn-sm btn-success '.$APPTAG.'-btn-action hasTooltip" title="'.JText::_('TEXT_ADD_TO_INVOICE_DESC').'" disabled data-toggle="modal" data-target="#modal-'.$APPTAG.'-invoice" data-backdrop="static" data-keyboard="false">
+								<span class="base-icon-forward"></span> '.JText::_('TEXT_ADD_TO_INVOICE').'
+							</button>
+							<button type="button" class="btn btn-sm btn-warning '.$APPTAG.'-btn-action hasTooltip" title="'.JText::_('TEXT_ADD_FIXED_DESC').'" data-toggle="modal" data-target="#modal-'.$APPTAG.'-addFixed" data-backdrop="static" data-keyboard="false">
+								<span class="base-icon-download"></span> '.JText::_('TEXT_ADD_FIXED').'
+							</button>
+						</div>
 					</div>
-				</div>
-			';
+				';
+
+			else :
+
+				// get sequential number
+				$query = 'SELECT MAX(sequencial) + 1 FROM '. $db->quoteName('#__'.$cfg['project'].'_invoices_debits');
+				$db->setQuery($query);
+				$lastSeq = $db->loadResult();
+				if($lastSeq == 'null') $lastSeq =  0;
+
+				// current invoice's sequential number
+				$query = 'SELECT MAX(sequencial) FROM '. $db->quoteName('#__'.$cfg['project'].'_invoices_debits') .' WHERE invoice_id = '.$fInv;
+				$db->setQuery($query);
+				$currSeq = $db->loadResult();
+				$btnCurrSeq = '';
+				if(!empty($currSeq)) :
+					$btnCurrSeq = '
+						<button type="button" class="btn btn-sm btn-warning '.$APPTAG.'-btn-action hasTooltip" title="'.JText::_('TEXT_GET_SEQUENCIAL_DESC').'" onclick="'.$APPTAG.'_setSequencial('.$currSeq.')">
+							<span class="base-icon-ccw"></span>
+						</button>
+					';
+				endif;
+
+				$invoiceActions = '
+					<div class="col-sm-4 col-md-2">
+						<div class="form-group">
+							<button type="button" class="btn btn-sm btn-danger '.$APPTAG.'-btn-action hasTooltip" title="'.JText::_('TEXT_REMOVE_TO_INVOICE_DESC').'" disabled onclick="'.$APPTAG.'_removeInvoice()">
+								<span class="base-icon-reply"></span> '.JText::_('TEXT_REMOVE_TO_INVOICE').'
+							</button>
+						</div>
+					</div>
+					<div class="col-sm-4 col-md-2">
+						<div class="form-group">
+							<span class="input-group">
+								<input type="text" name="'.$APPTAG.'_seq" id="'.$APPTAG.'-seq" value="'.$lastSeq.'" class="form-control form-control-sm field-number" />
+								<span class="input-group-btn">
+									'.$btnCurrSeq.'
+									<button type="button" class="btn btn-sm btn-success '.$APPTAG.'-btn-action hasTooltip" title="'.JText::_('TEXT_GENERATE_FILE_DESC').'" onclick="'.$APPTAG.'_getInvoiceFile('.$fInv.')">
+										<span class="base-icon-download"></span>
+									</button>
+								</span>
+							</span>
+						</div>
+					</div>
+				';
+
+			endif;
+
+			$where .= ' AND '.$db->quoteName('T1.invoice_id').' = '.$fInv;
 
 		else :
 
-			// get sequential number
-			$query = 'SELECT MAX(sequencial) + 1 FROM '. $db->quoteName('#__'.$cfg['project'].'_invoices_debits');
-			$db->setQuery($query);
-			$lastSeq = $db->loadResult();
-			if($lastSeq == 'null') $lastSeq =  0;
-
-			// current invoice's sequential number
-			$query = 'SELECT MAX(sequencial) FROM '. $db->quoteName('#__'.$cfg['project'].'_invoices_debits') .' WHERE invoice_id = '.$fInv;
-			$db->setQuery($query);
-			$currSeq = $db->loadResult();
-			$btnCurrSeq = '';
-			if(!empty($currSeq)) :
-				$btnCurrSeq = '
-					<button type="button" class="btn btn-sm btn-warning '.$APPTAG.'-btn-action hasTooltip" title="'.JText::_('TEXT_GET_SEQUENCIAL_DESC').'" onclick="'.$APPTAG.'_setSequencial('.$currSeq.')">
-						<span class="base-icon-ccw"></span>
-					</button>
-				';
-			endif;
-
-			$invoiceActions = '
-				<div class="col-sm-4 col-md-2">
-					<div class="form-group">
-						<button type="button" class="btn btn-sm btn-danger '.$APPTAG.'-btn-action hasTooltip" title="'.JText::_('TEXT_REMOVE_TO_INVOICE_DESC').'" disabled onclick="'.$APPTAG.'_removeInvoice()">
-							<span class="base-icon-reply"></span> '.JText::_('TEXT_REMOVE_TO_INVOICE').'
-						</button>
-					</div>
-				</div>
-				<div class="col-sm-4 col-md-2">
-					<div class="form-group">
-						<span class="input-group">
-							<input type="text" name="'.$APPTAG.'_seq" id="'.$APPTAG.'-seq" value="'.$lastSeq.'" class="form-control input-sm field-number" />
-							<span class="input-group-btn">
-								'.$btnCurrSeq.'
-								<button type="button" class="btn btn-sm btn-success '.$APPTAG.'-btn-action hasTooltip" title="'.JText::_('TEXT_GENERATE_FILE_DESC').'" onclick="'.$APPTAG.'_getInvoiceFile('.$fInv.')">
-									<span class="base-icon-download"></span>
-								</button>
-							</span>
-						</span>
-					</div>
-				</div>
-			';
+			// força a paginação para evitar o carregamento de todos as movimentações sem filto
+			$_SESSION[$APPTAG.'plim'] = 50;
 
 		endif;
-		$where .= ' AND '.$db->quoteName('T1.invoice_id').' = '.$fInv;
-	else :
-		// força a paginação para evitar o carregamento de todos as movimentações sem filto
-		$_SESSION[$APPTAG.'plim'] = 50;
+
 	endif;
-	// [filter] ALL INSTALLMENTS -> opção para visualizar todas as parcelas
-	$fInst	= $app->input->get('fInst', 0, 'int');
+
+	// Habilita/desabilita campos das movimentações avulsas
+	$doc->addScriptDeclaration($js);
+
 	// DATE
 	$dateMin	= $app->input->get('dateMin', '', 'string');
 	$dateMax	= $app->input->get('dateMax', '', 'string');
@@ -118,13 +161,11 @@ $where = '';
 	$sQuery = ''; // query de busca
 	$sLabel = array(); // label do campo de busca
 	$searchFields = array(
-		'T1.description'	=> 'FIELD_LABEL_DESCRIPTION',
-		'T2.name'	=> 'FIELD_LABEL_PROVIDER',
-		'T3.name'	=> 'FIELD_LABEL_CLIENT',
-		'T3.code'	=> 'FIELD_LABEL_CODE',
-		'T4.name'	=> 'FIELD_LABEL_DEPENDENT',
-		'T1.doc_number'	=> 'FIELD_LABEL_DOC_NUMBER',
-		'T1.note'	=> ''
+		'T1.description'		=> 'FIELD_LABEL_DESCRIPTION',
+		'T1.doc_number'			=> 'FIELD_LABEL_DOC_NUMBER',
+		'T4.name'				=> 'FIELD_LABEL_DEPENDENT',
+		'T3.code'				=> 'FIELD_LABEL_CODE',
+		'T1.note'				=> ''
 	);
 	$i = 0;
 	foreach($searchFields as $key => $value) {
@@ -229,130 +270,154 @@ $htmlFilter = '
 
 			<div class="row">
 				<div class="col-sm-4">
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label class="label-sm">'.JText::_('TEXT_TRANSACTION_TYPE').'</label>
+								<span class="btn-group btn-group-sm btn-group-justified" data-toggle="buttons">
+									<label class="btn btn-default btn-active-success">
+										<input type="radio" name="isFixed" name="isFixed-0" class="set-filter" value="0"'.($isFixed == 0 ? ' checked' : '').' />
+										'.JText::_('TEXT_SEPARATE').'
+									</label>
+									<label class="btn btn-default btn-active-warning">
+										<input type="radio" name="isFixed" name="isFixed-1" class="set-filter" value="1"'.($isFixed == 1 ? ' checked' : '').' />
+										'.JText::_('TEXT_RECURRENT').'
+									</label>
+								</span>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div id="fSType-group" class="form-group">
+								<label class="label-sm iconTip hasTooltip" title="'.JText::_('TEXT_IMPORTED_TRANSACTIONS_DESC').'">'.JText::_('TEXT_IMPORTED_TRANSACTIONS').'</label>
+								<select name="fSType" id="fSType" class="form-control form-control-sm set-filter">
+									<option value="1">'.JText::_('TEXT_SHOW').'</option>
+									<option value="0"'.($fSType == 0 ? ' selected' : '').'>'.JText::_('TEXT_HIDE').'</option>
+									<option value="2"'.($fSType == 2 ? ' selected' : '').'>'.JText::_('TEXT_ONLY_IMPORTED').'</option>
+								</select>
+							</div>
+						</div>
+					</div>
 					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_CLIENT').'</label>
-						<select name="cID" id="cID" class="form-control input-sm set-filter">
-							<option value="0">- '.JText::_('TEXT_ALL').' -</option>
-							'.$flt_client.'
+						<label class="label-sm">'.JText::_('FIELD_LABEL_INVOICE').'</label>
+						<select name="fInv" id="fInv" class="form-control form-control-sm set-filter" onchange="">
+							<option value="0">- '.JText::_('TEXT_NOT_INVOICED').' -</option>
+							<option value="1"'.($fInv == 1 ? ' selected' : '').'>- '.JText::_('TEXT_ALL_INVOICED').' -</option>
+							'.$flt_invoice.'
 						</select>
+					</div>
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label class="label-sm">'.JText::_('TEXT_INVOICE_GROUP').'</label>
+								<select name="fIgrp" id="fIgrp" class="form-control form-control-sm set-filter">
+									<option value="2">- '.JText::_('TEXT_ALL').' -</option>
+									<option value="0"'.($fIgrp == 0 ? ' selected' : '').'>'.JText::_('TEXT_CLIENT_EFFECTIVE').'</option>
+									<option value="1"'.($fIgrp == 1 ? ' selected' : '').'>'.JText::_('TEXT_CLIENT_CONTRIBUTOR').'</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label class="label-sm">'.JText::_('FIELD_LABEL_INSTALLMENTS').'</label>
+								<span class="btn-group btn-group-sm btn-group-justified" data-toggle="buttons">
+									<label class="btn btn-default btn-active-success">
+										<input type="radio" name="fInst" name="fInst-0" class="set-filter" value="0"'.($fInst == 0 ? ' checked' : '').' disabled />
+										'.JText::_('TEXT_CURRENT').'
+									</label>
+									<label class="btn btn-default btn-active-warning">
+										<input type="radio" name="fInst" name="fInst-1" class="set-filter" value="1"'.($fInst == 1 ? ' checked' : '').' disabled />
+										'.JText::_('TEXT_ALL_F').'
+									</label>
+								</span>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="col-sm-4">
 					<div class="form-group">
 						<label class="label-sm">'.JText::_('FIELD_LABEL_PROVIDER').'</label>
-						<select name="pID" id="pID" class="form-control input-sm set-filter">
+						<select name="pID" id="pID" class="form-control form-control-sm set-filter">
 							<option value="0">- '.JText::_('TEXT_ALL').' -</option>
 							'.$flt_provider.'
 						</select>
 					</div>
-				</div>
-				<div class="col-sm-2">
 					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_USERGROUP').'</label>
-						<select name="fGroup" id="fGroup" class="form-control input-sm set-filter">
+						<label class="label-sm">'.JText::_('FIELD_LABEL_CLIENT').'</label>
+						<select name="cID" id="cID" class="form-control form-control-sm set-filter">
 							<option value="0">- '.JText::_('TEXT_ALL').' -</option>
-							'.$flt_group.'
+							'.$flt_client.'
 						</select>
 					</div>
-				</div>
-				<div class="col-sm-2">
-					<div class="form-group">
-						<label class="label-sm">'.JText::_('TEXT_TYPE').'</label>
-						<select name="isFixed" id="isFixed" class="form-control input-sm set-filter">
-							<option value="9">- '.JText::_('TEXT_ALL').' -</option>
-							<option value="0"'.($isFixed == 0 ? ' selected' : '').'>'.JText::_('TEXT_NORMAL').'</option>
-							<option value="2"'.($isFixed == 2 ? ' selected' : '').'>'.JText::_('FIELD_LABEL_FIXED').'</option>
-							<option value="1"'.($isFixed == 1 ? ' selected' : '').'>'.JText::_('FIELD_LABEL_FIXED_PARENT').'</option>
-						</select>
-					</div>
-				</div>
-				<div class="col-sm-4">
-					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_DUE_DATE').'</label>
-						<span class="input-group">
-              				<span class="input-group-addon strong">'.JText::_('TEXT_FROM').'</span>
-							<input type="text" name="dateMin" value="'.$dateMin.'" class="form-control input-sm field-date" data-width="100%" data-convert="true" />
-							<span class="input-group-addon">'.JText::_('TEXT_TO').'</span>
-							<input type="text" name="dateMax" value="'.$dateMax.'" class="form-control input-sm field-date" data-width="100%" data-convert="true" />
-						</span>
-					</div>
-				</div>
-				<div class="col-sm-4">
-					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_PRICE').'</label>
-						<span class="input-group">
-							<span class="input-group-addon strong">R$</span>
-							<input type="text" name="priceMin" value="'.$priceMin.'" class="form-control input-sm field-price" data-width="100%" data-convert="true" />
-							<span class="input-group-addon">'.JText::_('TEXT_TO').'</span>
-							<input type="text" name="priceMax" value="'.$priceMax.'" class="form-control input-sm field-price" data-width="100%" data-convert="true" />
-						</span>
-					</div>
-				</div>
-				<div class="col-sm-2">
-					<label class="label-sm">'.JText::_('FIELD_LABEL_IS_CARD').'</label>
-					<div class="form-group">
-						<select name="fCard" id="fCard" class="form-control input-sm set-filter">
-							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
-							<option value="1"'.($fCard == 1 ? ' selected' : '').'>'.JText::_('TEXT_YES').'</option>
-							<option value="0"'.($fCard == 0 ? ' selected' : '').'>'.JText::_('TEXT_NO').'</option>
-						</select>
-					</div>
-				</div>
-				<div class="col-sm-2">
-					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_STATE').'</label>
-						<select name="active" id="active" class="form-control input-sm set-filter">
-							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
-							<option value="1"'.($active == 1 ? ' selected' : '').'>'.JText::_('TEXT_ACTIVES').'</option>
-							<option value="0"'.($active == 0 ? ' selected' : '').'>'.JText::_('TEXT_INACTIVES').'</option>
-						</select>
-					</div>
-				</div>
-				<div class="col-sm-4">
-					<label class="label-sm">'.JText::_('FIELD_LABEL_INVOICE').'</label>
-					<div class="form-group">
-						<select name="fInv" id="fInv" class="form-control input-sm set-filter" onchange="">
-						<option value="0">- '.JText::_('TEXT_NOT_INVOICED').' -</option>
-						<option value="1"'.($fInv == 1 ? ' selected' : '').'>- '.JText::_('TEXT_ALL_INVOICED').' -</option>
-							'.$flt_invoice.'
-						</select>
-					</div>
-				</div>
-				<div class="col-sm-2">
-					<div class="form-group">
-						<label class="label-sm">'.JText::_('TEXT_INVOICE_GROUP').'</label>
-						<select name="fIgrp" id="fIgrp" class="form-control input-sm set-filter">
-							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
-							<option value="0"'.($fIgrp == 0 ? ' selected' : '').'>'.JText::_('TEXT_CLIENT_EFFECTIVE').'</option>
-							<option value="1"'.($fIgrp == 1 ? ' selected' : '').'>'.JText::_('TEXT_CLIENT_CONTRIBUTOR').'</option>
-						</select>
-					</div>
-				</div>
-				<div class="col-sm-2">
-					<div class="form-group">
-						<label class="label-sm">'.JText::_('TEXT_INVOICE_GROUP').'</label>
-						<div class="btn-group btn-group-justified" data-toggle="buttons">
-							<label class="btn btn-sm btn-warning btn-active-success set-filter hasTooltip" title="'.JText::_('TEXT_ALL_INSTALLMENTS_DESC').'">
-								<span class="base-icon-cancel btn-icon"></span>
-								<input type="checkbox" name="fInst" value="1"'.($fInst == 1 ? ' checked' : '').' /> '.JText::_('TEXT_ALL_INSTALLMENTS').'
-							</label>
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label class="label-sm">'.JText::_('FIELD_LABEL_USERGROUP').'</label>
+								<select name="fGroup" id="fGroup" class="form-control form-control-sm set-filter">
+									<option value="0">- '.JText::_('TEXT_ALL').' -</option>
+									'.$flt_group.'
+								</select>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label class="label-sm text-truncate">'.implode(', ', $sLabel).'</label>
+								<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />
+							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-6 col-md">
+				<div class="col-sm-4">
 					<div class="form-group">
-						<label class="label-sm text-truncate">'.implode(', ', $sLabel).'</label>
-						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />
+						<label class="label-sm">'.JText::_('FIELD_LABEL_TRANSACTION_DATE').'</label>
+						<span class="input-group input-group-sm">
+              				<span class="input-group-addon strong">'.JText::_('TEXT_FROM').'</span>
+							<input type="text" name="dateMin" value="'.$dateMin.'" class="form-control field-date" data-width="100%" data-convert="true" />
+							<span class="input-group-addon">'.JText::_('TEXT_TO').'</span>
+							<input type="text" name="dateMax" value="'.$dateMax.'" class="form-control field-date" data-width="100%" data-convert="true" />
+						</span>
+					</div>
+					<div class="form-group">
+						<label class="label-sm">'.JText::_('FIELD_LABEL_PRICE').'</label>
+						<span class="input-group input-group-sm">
+							<span class="input-group-addon strong">R$</span>
+							<input type="text" name="priceMin" value="'.$priceMin.'" class="form-control field-price" data-width="100%" data-convert="true" />
+							<span class="input-group-addon">'.JText::_('TEXT_TO').'</span>
+							<input type="text" name="priceMax" value="'.$priceMax.'" class="form-control field-price" data-width="100%" data-convert="true" />
+						</span>
+					</div>
+					<div class="row">
+						<div class="col-sm-6">
+							<label class="label-sm">'.JText::_('FIELD_LABEL_IS_CARD').'</label>
+							<div class="form-group">
+								<select name="fCard" id="fCard" class="form-control form-control-sm set-filter">
+									<option value="2">- '.JText::_('TEXT_ALL').' -</option>
+									<option value="1"'.($fCard == 1 ? ' selected' : '').'>'.JText::_('TEXT_YES').'</option>
+									<option value="0"'.($fCard == 0 ? ' selected' : '').'>'.JText::_('TEXT_NO').'</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label class="label-sm">'.JText::_('TEXT_STATE').'</label>
+								<select name="active" id="active" class="form-control form-control-sm set-filter">
+									<option value="2">- '.JText::_('TEXT_ALL').' -</option>
+									<option value="1"'.($active == 1 ? ' selected' : '').'>'.JText::_('TEXT_ACTIVES').'</option>
+									<option value="0"'.($active == 0 ? ' selected' : '').'>'.JText::_('TEXT_INACTIVES').'</option>
+								</select>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div id="base-app-filter-buttons" class="row py-3 b-top align-items-center">
+			<div id="base-app-filter-buttons" class="row pt-3 b-top align-items-center">
 				'.$invoiceActions.'
 				<div class="col-sm text-right">
-					<button type="submit" class="btn btn-sm btn-primary base-icon-search btn-icon">
-						'.JText::_('TEXT_SEARCH').'
-					</button>
-					'.$btnClearFilter.'
+					<div class="form-group">
+						<button type="submit" class="btn btn-sm btn-primary base-icon-search btn-icon">
+							'.JText::_('TEXT_SEARCH').'
+						</button>
+						'.$btnClearFilter.'
+					</div>
 				</div>
 			</div>
 		</fieldset>

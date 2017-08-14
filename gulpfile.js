@@ -39,6 +39,8 @@ var tmplCSS     = tmpl + '/css';
       core+'/bootstrap/extensions/js/_helpers/collapse.js',
       // Integrations
       core+'/bootstrap/extensions/js/_integrations/mootools.js',
+	  // Alert
+      core+'/bootstrap/extensions/js/alert/notify.js',
       // Browser
       core+'/bootstrap/extensions/js/browser/_ie.init.js',
       core+'/bootstrap/extensions/js/browser/SmoothScroll.js',
@@ -60,7 +62,6 @@ var tmplCSS     = tmpl + '/css';
       core+'/bootstrap/extensions/js/utilities/elementHeight.js',
       core+'/bootstrap/extensions/js/utilities/imageRetina.js',
       core+'/bootstrap/extensions/js/utilities/isOnScreen.js',
-      core+'/bootstrap/extensions/js/utilities/notify.js',
       core+'/bootstrap/extensions/js/utilities/parentWidth.js',
       core+'/bootstrap/extensions/js/utilities/setHidden.js',
       core+'/bootstrap/extensions/js/utilities/setScroll.js',
