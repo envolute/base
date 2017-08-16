@@ -142,7 +142,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			if($rows > 0) :
 
 				// criar a variável $csv
-				$csv = $headRow;
+				$csv = '';
 				// o numero de campos que resultou a consulta, agora servirá para montar um array com os nomes dos campos
 				$names = explode(',', $colNames);
 				// criamos um array associativo
@@ -303,7 +303,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						if(!empty($_SESSION[$RTAG.'FieldUpdated']) && !empty($_SESSION[$RTAG.'TableField'])) :
 							$element = $_SESSION[$RTAG.'FieldUpdated'];
 							$elemVal = $id;
-							$query = 'SELECT '. $db->quoteName($_SESSION[$RTAG.'TableField']) .' FROM '. $db->quoteName($cfg['mainTable']).' WHERE id='.$id.' AND state = 1';
+							$query = 'SELECT '. $db->quoteName($_SESSION[$RTAG.'TableField']) .' FROM '. $db->quoteName($cfg['mainTable']).' WHERE '. $db->quoteName('id') .' = '.$id.' AND state = 1';
 							$db->setQuery($query);
 							$elemLabel = $db->loadResult();
 						endif;
@@ -622,7 +622,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							if(!empty($_SESSION[$RTAG.'FieldUpdated']) && !empty($_SESSION[$RTAG.'TableField'])) :
 								$element = $_SESSION[$RTAG.'FieldUpdated'];
 								$elemVal = $id;
-								$query = 'SELECT '. $db->quoteName($_SESSION[$RTAG.'TableField']) .' FROM '. $db->quoteName($cfg['mainTable']).' WHERE id='.$id.' AND state = 1';
+								$query = 'SELECT '. $db->quoteName($_SESSION[$RTAG.'TableField']) .' FROM '. $db->quoteName($cfg['mainTable']).' WHERE '. $db->quoteName('id') .' = '.$id.' AND state = 1';
 								$db->setQuery($query);
 								$elemLabel = $db->loadResult();
 							endif;
@@ -824,8 +824,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							SELECT
 								T4.username, T2.due_date as date, SUBSTRING_INDEX((REPLACE(REPLACE(T1.price,',',''),'.','')),'.',1) val, T3.agency agencia, CONCAT(SUBSTRING(CONCAT('000',T3.operation),-3), SUBSTRING(CONCAT('000000000',T3.account),-9)) conta, T4.name nome
 							FROM
-								#__".$cfg['project']."_transactions T1
-								JOIN #__".$cfg['project']."_invoices AS T2
+								".$cfg['mainTable']." T1
+								JOIN ".$cfg['mainTable']."_invoices AS T2
 								ON T2.id = T1.invoice_id
 								JOIN #__".$cfg['project']."_clients T3
 								ON T3.id = T1.client_id
@@ -849,8 +849,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							SELECT
 								SUBSTRING_INDEX(SUM(REPLACE(REPLACE(T1.price,',','') ,'.','')),'.',1) val, T4.name
 							FROM
-								#__".$cfg['project']."_transactions T1
-								JOIN #__".$cfg['project']."_invoices AS T2
+								".$cfg['mainTable']." T1
+								JOIN ".$cfg['mainTable']."_invoices AS T2
 								ON T2.id = T1.invoice_id
 								JOIN #__".$cfg['project']."_clients T3
 								ON T3.id = T1.client_id
@@ -862,7 +862,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						) TB
 					";
 					// salva o sequencial utilizado
-					$qSeq = 'INSERT INTO '. $db->quoteName('#__'.$cfg['project'].'_invoices_debits') .' ('.$db->quoteName('invoice_id').', '.$db->quoteName('sequencial').', '.$db->quoteName('created_by').') VALUES ('.$inv.', '.$seq.', '.$user->id.')';
+					$qSeq = 'INSERT INTO '. $db->quoteName($cfg['mainTable'].'_invoices_debits') .' ('.$db->quoteName('invoice_id').', '.$db->quoteName('sequencial').', '.$db->quoteName('created_by').') VALUES ('.$inv.', '.$seq.', '.$user->id.')';
 					$db->setQuery($qSeq);
 					$db->execute();
 
@@ -871,25 +871,38 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$result .= setFile($query_tipoZ,NULL,'','');
 					if($result == true) :
 
-						$query = "SELECT CONCAT('".time()."_".$inv."_',DATE_FORMAT(due_date,'%d%m%y'),'_','associado.txt') filename FROM #__".$cfg['project']."_invoices WHERE id = ".$inv;
+						$query = "SELECT CONCAT('".time()."_".$inv."_',DATE_FORMAT(due_date,'%d%m%y'),'_','associado.txt') filename FROM ".$cfg['mainTable']."_invoices WHERE id = ".$inv;
 						$db->setQuery($query);
 						$file = $db->loadResult();
 
 						$path = JPATH_SITE.'/images/debitos/';
+						// cria o diretório caso não exista
+						if (!is_dir($path)) mkdir($path, 0755, true);
 						$filePath = $path.$file;
 
 						// abrimos um arquivo somente para escrita
 						$fp = fopen($filePath,"w");
-						// escrevemos o conteúdo da variável
-						$fwrite = fwrite($fp,$result);
+						// escrevemos o conteúdo da variável e convertemos para 'ANSI'
+						$fwrite = fwrite($fp, mb_convert_encoding($result, "Windows-1252"));
 						// fechamos o arquivo
 						fclose($fp);
 
-						$data[] = array(
-							'status'		=> 1,
-							'file'			=> $file,
-							'msg'			=> ''
-						);
+						if(file_exists($filePath)) :
+
+							$data[] = array(
+								'status'		=> 1,
+								'file'			=> $file,
+								'msg'			=> ''
+							);
+
+						else :
+
+							$data[] = array(
+								'status'		=> 0,
+								'msg'			=> $filePath
+							);
+
+						endif;
 
 					else :
 

@@ -86,13 +86,13 @@ $where = '';
 			else :
 
 				// get sequential number
-				$query = 'SELECT MAX(sequencial) + 1 FROM '. $db->quoteName('#__'.$cfg['project'].'_invoices_debits');
+				$query = 'SELECT MAX(sequencial) + 1 FROM '. $db->quoteName($cfg['mainTable'].'_invoices_debits');
 				$db->setQuery($query);
 				$lastSeq = $db->loadResult();
 				if($lastSeq == 'null') $lastSeq =  0;
 
 				// current invoice's sequential number
-				$query = 'SELECT MAX(sequencial) FROM '. $db->quoteName('#__'.$cfg['project'].'_invoices_debits') .' WHERE invoice_id = '.$fInv;
+				$query = 'SELECT MAX(sequencial) FROM '. $db->quoteName($cfg['mainTable'].'_invoices_debits') .' WHERE invoice_id = '.$fInv;
 				$db->setQuery($query);
 				$currSeq = $db->loadResult();
 				$btnCurrSeq = '';
@@ -107,8 +107,8 @@ $where = '';
 				$invoiceActions = '
 					<div class="col-sm-4 col-md-2">
 						<div class="form-group">
-							<button type="button" class="btn btn-sm btn-danger '.$APPTAG.'-btn-action hasTooltip" title="'.JText::_('TEXT_REMOVE_TO_INVOICE_DESC').'" disabled onclick="'.$APPTAG.'_removeInvoice()">
-								<span class="base-icon-reply"></span> '.JText::_('TEXT_REMOVE_TO_INVOICE').'
+							<button type="button" class="btn btn-sm btn-block btn-danger '.$APPTAG.'-btn-action hasTooltip" title="'.JText::_('TEXT_REMOVE_TO_INVOICE_DESC').'" disabled onclick="'.$APPTAG.'_removeInvoice()">
+								<span class="base-icon-reply btn-icon"></span> '.JText::_('TEXT_REMOVE_TO_INVOICE').'
 							</button>
 						</div>
 					</div>
@@ -227,7 +227,7 @@ $where = '';
 			IF('. $db->quoteName('T1.group_id') .' = 1, "Contribuintes", "Associados Caixa") grp,
 			'. $db->quoteName('T1.due_date') .'
 		FROM
-			'. $db->quoteName('#__'.$cfg['project'].'_invoices') .' T1
+			'. $db->quoteName($cfg['mainTable'].'_invoices') .' T1
 		WHERE T1.state = 1 ORDER BY T1.due_date DESC, T1.group_id ASC
 	';
 	$db->setQuery($query);

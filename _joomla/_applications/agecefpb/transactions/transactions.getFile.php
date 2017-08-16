@@ -1,9 +1,9 @@
 <?php
 // load Joomla's framework
-require_once('../load.joomla.php');
+require(__DIR__.'/../../libraries/envolute/_init.joomla.php');
+defined('_JEXEC') or die;
 $app = JFactory::getApplication('site');
 
-defined('_JEXEC') or die;
 if(isset($_REQUEST['fn']) && !empty($_REQUEST['fn'])) :
 	$fileName = htmlspecialchars($_REQUEST['fn'], ENT_QUOTES);
 	$filePath = JPATH_SITE.'/images/debitos/'.$fileName;
@@ -13,6 +13,8 @@ if(isset($_REQUEST['fn']) && !empty($_REQUEST['fn'])) :
 		flush();
 		ob_clean();
 		readfile($filePath);
+	else :
+		echo 'Não foi possível localizar o arquivo "'.$filePath.'"!';
 	endif;
 endif;
 exit();

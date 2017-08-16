@@ -137,7 +137,7 @@ jQuery(function() {
 			cpf.val('');
 			rg.val('');
 			rg_orgao.val('');
-			checkOption(gender, 0); // radio
+			checkOption(gender, ''); // radio
 			birthday.val('');
 			marital_status.selectUpdate(''); // select
 			partner.val('');

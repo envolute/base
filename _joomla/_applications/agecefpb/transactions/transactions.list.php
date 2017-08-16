@@ -46,7 +46,7 @@ require($PATH_APP_FILE.'.filter.php');
 			ON T3.id = T1.client_id
 			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_dependents') .' T4
 			ON T4.id = T1.dependent_id
-			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_invoices') .' T5
+			LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_invoices') .' T5
 			ON T5.id = T1.invoice_id
 		WHERE
 			'.$where.$orderList;
@@ -159,11 +159,10 @@ if($num_rows) : // verifica se existe
 				';
 			endif;
 
-			$usergroup = $item->invoiceGroup == 0 ? 'Associados Caixa' : 'Contribuintes';
 			$info = !empty($item->description) ? $item->description : '';
 			$info .= !empty($item->doc_number) ? '<div class="text-xs text-muted">Item: '.$item->doc_number.'</div>' : '';
 			$dependent = !empty($item->dependent) ? '<div class="small text-muted">&raquo; <span class="cursor-help hasTooltip" title="'.JText::_('TEXT_TRANSACTION_BY').'">'.baseHelper::nameFormat($item->dependent).'</span></div>' : '';
-			$invoice = $item->invoice_id != 0 ? $usergroup.'<div class="small text-live">'.baseHelper::dateFormat($item->invoiceDate).'</div>' : '';
+			$invoice = $item->invoice_id != 0 ? JText::_('FIELD_LABEL_GROUP_'.$item->invoiceGroup).'<div class="small text-live">'.baseHelper::dateFormat($item->invoiceDate).'</div>' : '';
 			if(!$recurr) :
 				$invoice = '<td class="d-none d-lg-table-cell">'.$invoice.'</td>';
 			endif;

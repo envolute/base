@@ -15,10 +15,10 @@ $providers = $db->loadObjectList();
 $query = '
 	SELECT
 		'. $db->quoteName('T1.id') .',
-		IF('. $db->quoteName('T1.group_id') .' = 1, "Contribuintes", "Associados Caixa") grp,
+		IF('. $db->quoteName('T1.group_id') .' = 1, "'.JText::_('FIELD_LABEL_GROUP_1').'", "'.JText::_('FIELD_LABEL_GROUP_0').'") grp,
 		'. $db->quoteName('T1.due_date') .'
 	FROM
-		'. $db->quoteName('#__'.$cfg['project'].'_invoices') .' T1
+		'. $db->quoteName($cfg['mainTable'].'_invoices') .' T1
 	WHERE T1.state = 1 ORDER BY T1.due_date DESC, T1.group_id ASC
 ';
 $db->setQuery($query);

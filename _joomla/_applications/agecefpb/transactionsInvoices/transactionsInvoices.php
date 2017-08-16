@@ -32,24 +32,13 @@ jQuery(function() {
 	?>
 
 	// APP FIELDS
-	var provider_id			= jQuery('#<?php echo $APPTAG?>-provider_id');
-	var client_id			= jQuery('#<?php echo $APPTAG?>-client_id');
-	var dependent_id		= jQuery('#<?php echo $APPTAG?>-dependent_id');
-	var invoice_id			= jQuery('#<?php echo $APPTAG?>-invoice_id');
-	var description			= jQuery('#<?php echo $APPTAG?>-description');
-	var fixed				= mainForm.find('input[name=fixed]:radio'); // radio group
-	var isCard 				= mainForm.find('input[name=isCard]:radio'); // radio group
-	var cardLimit			= jQuery('#<?php echo $APPTAG?>-cardLimit');
-	var date 				= jQuery('#<?php echo $APPTAG?>-date');
-	var price 				= jQuery('#<?php echo $APPTAG?>-price');
-	var total 				= jQuery('#<?php echo $APPTAG?>-total');
-	var totalDesc 			= jQuery('#<?php echo $APPTAG?>-totalDesc'); // Na edição -> resultado do parcelamento
-	var doc_number			= jQuery('#<?php echo $APPTAG?>-doc_number');
-	var note 				= jQuery('#<?php echo $APPTAG?>-note');
+	var group_id			= mainForm.find('input[name=group_id]:radio');
+	var due_date			= jQuery('#<?php echo $APPTAG?>-due_date');
+	var note				= jQuery('#<?php echo $APPTAG?>-note');
 
 	// PARENT FIELD -> Select
 	// informe, se houver, o campo que representa a chave estrangeira principal
-	var parentFieldId		= provider_id; // 'null', caso não exista...
+	var parentFieldId		= null; // 'null', caso não exista...
 	var parentFieldGroup	= elementExist(parentFieldId) ? parentFieldId.closest('[class*="col-"]') : null;
 
 	// GROUP RELATION'S BUTTONS -> grupo de botões de relacionamentos no form
@@ -101,21 +90,8 @@ jQuery(function() {
 			// App Fields
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
-			client_id.selectUpdate(0); // select
-			dependent_id.selectUpdate(0); // select
-			invoice_id.selectUpdate(0); // select
-			description.val(''); // select
-			checkOption(fixed, 0);
-			// mostra campos da movimentação normal
-			setHidden('.<?php echo $APPTAG?>-no-fixed', false);
-			checkOption(isCard, 0);
-			cardLimit.val('');
-			date.val('');
-			price.val('');
-			totalDesc.val('');
-			// oculta os campos não editáveis
-			setHidden('.<?php echo $APPTAG?>-no-edit', false, '.<?php echo $APPTAG?>-only-edit');
-			doc_number.val('');
+			checkOption(group_id, 0);
+			due_date.val('');
 			note.val('');
 
 			<?php // Closure Actions
@@ -164,41 +140,6 @@ jQuery(function() {
 			<?php // Default Actions
 			require(JPATH_CORE.DS.'apps/snippets/form/setRelation.def.js.php');
 			?>
-		};
-
-		// CUSTOM -> DEPENDENT lista dependentes de acordo com o associado
-		// DESABILITADO => NÃO HÁ CADASTRO DE DEPENDENTES
-		client_id.on('change', function() {
-			<?php echo $APPTAG?>_getDependentList(jQuery(this).val());
-		});
-
-		// CUSTOM -> edit from select
-		window.<?php echo $APPTAG?>_editInvoice = function() {
-			var itemID = jQuery('#<?php echo $APPTAG?>-invoiceID').val();
-			if(itemID != '' && itemID != 0) transactionsInvoices_loadEditFields(itemID, false, false);
-			else alert('<?php echo JText::_('MSG_SELECT_ITEM_FROM_LIST')?>');
-		};
-
-		// CUSTOM -> DEPENDENT lista dependentes de acordo com o associado
-		window.<?php echo $APPTAG?>_setFixed = function(val) {
-			setHidden('.<?php echo $APPTAG?>-no-fixed', val);
-			if(val == 1) {
-				checkOption(isCard, 0);
-				invoice_id.selectUpdate(0);
-			}
-		};
-
-		// CUSTOM -> set card installments
-		window.<?php echo $APPTAG?>_setCard = function(card) {
-			total.empty();
-			var limit = card ? 3 : 90;
-			for(i = 1; i <= limit; i++) {
-				total.append('<option value="'+i+'">'+i+'</option>');
-			}
-			// O valor só pode ser selecionado na hora de criar a movimentação
-			// O item editado é sempre referente a 1 parcela do total
-			// Dessa forma, o valor, tanto na criação quanto na edição será sempre 1
-			total.prop('disabled',(formId_<?php echo $APPTAG?>.val() == 0 ? false : true)).selectUpdate(1); // select
 		};
 
 	// LIST CONTROLLERS
@@ -272,22 +213,8 @@ jQuery(function() {
 						?>
 
 						// App Fields
-						provider_id.selectUpdate(item.provider_id); // select
-						client_id.selectUpdate(item.client_id); // select
-						<?php echo $APPTAG?>_getDependentList(item.client_id, item.dependent_id);
-						invoice_id.selectUpdate(item.invoice_id); // select
-						description.val(item.description);
-						checkOption(fixed, item.fixed);
-						// esconde campos da movimentação normal
-						setHidden('.<?php echo $APPTAG?>-no-fixed', item.fixed);
-						checkOption(isCard, item.isCard);
-						cardLimit.val(item.cardLimit);
-						date.val(dateFormat(item.date));
-						price.val(item.price);
-						totalDesc.val(item.totalDesc);
-						// oculta os campos não editáveis
-						setHidden('.<?php echo $APPTAG?>-no-edit', true, '.<?php echo $APPTAG?>-only-edit');
-						doc_number.val(item.doc_number);
+						checkOption(group_id, item.group_id);
+						due_date.val(dateFormat(item.due_date));
 						note.val(item.note);
 
 						<?php // Closure Actions
@@ -329,220 +256,11 @@ jQuery(function() {
 
 		<? endif; ?>
 
-		// CUSTOM
-		// DESABILITADO => NÃO HÁ CADASTRO DE DEPENDENTES
-		// Set dependents List
-		// seta a lista de dependentes de acordo com o associado selecionado
-		window.<?php echo $APPTAG?>_getDependentList = function(itemID, id) {
-			jQuery.ajax({
-				url: "<?php echo $URL_APP_FILE ?>.model.php?task=cList&cID="+itemID,
-				dataType: 'json',
-				type: 'POST',
-				cache: false,
-				success: function(data){
-					jQuery.map( data, function( res, i ) {
-						if(res.status != 0) {
-							// remove all options
-							if(i == 0) {
-								dependent_id.find('option').remove();
-								cardLimit.val(res.cardLimit);
-								// init new options list
-								if(res.status == 1) {
-									dependent_id.append('<option value="0">- <?php echo JText::_('TEXT_TRANSACTION_BY_CLIENT'); ?> -</option>');
-								} else {
-									dependent_id.append('<option value="0">- <?php echo JText::_('TEXT_CLIENT_NO_HAVE_DEPENDENT'); ?> -</option>');
-								}
-							}
-							if(res.status == 1) dependent_id.append('<option value="'+res.id+'">'+res.name+'</option>');
-							if(isSet(id) && id) dependent_id.val(id);
-							dependent_id.selectUpdate(); // atualiza o select
-						} else {
-							$.baseNotify({ msg: res.msg, type: "danger"});
-						}
-					});
-				},
-				error: function(xhr, status, error) {
-					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
-					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
-					?>
-				}
-			});
-			return false;
-		};
-
-		// CUSTOM -> atribui a fatura
-		window.<?php echo $APPTAG?>_invoice = function() {
-
-			var formInv = jQuery('#form-<?php echo $APPTAG?>-invoice');
-			var invID = formInv.find('#<?php echo $APPTAG?>-invoiceID').val();
-			if(invID == 0) {
-				alert('<?php echo JText::_('MSG_SELECT_ITEM_FROM_LIST'); ?>');
-				return false;
-			}
-			if(!confirm('<?php echo JText::_('MSG_INVOICED_CONFIRM'); ?>')) return false;
-			<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
-
-			var dados = formList.serialize();
-
-			jQuery.ajax({
-				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=invoice&st="+invID,
-				dataType: 'json',
-				type: 'POST',
-				data:  dados,
-				cache: false,
-				success: function(data){
-					<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
-					jQuery.map( data, function( res ) {
-						if(res.status == 1) <?php echo $APPTAG?>_listReload(true, false);
-						else $.baseNotify({ msg: res.msg, type: "danger" });
-					});
-				},
-				error: function(xhr, status, error) {
-					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
-					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
-					?>
-					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
-				}
-			});
-			return false;
-		};
-
-		// CUSTOM -> remover a fatura
-		window.<?php echo $APPTAG?>_removeInvoice = function() {
-
-			if(!confirm('<?php echo JText::_('MSG_REMOVE_INVOICED_CONFIRM'); ?>')) return false;
-			<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
-
-			var dados = formList.serialize();
-
-			jQuery.ajax({
-				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=removeInvoice",
-				dataType: 'json',
-				type: 'POST',
-				data:  dados,
-				cache: false,
-				success: function(data){
-					<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
-					jQuery.map( data, function( res ) {
-						if(res.status == 1) <?php echo $APPTAG?>_listReload(true, false);
-						else $.baseNotify({ msg: res.msg, type: "danger" });
-					});
-				},
-				error: function(xhr, status, error) {
-					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
-					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
-					?>
-					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
-				}
-			});
-			return false;
-		};
-
-		// CUSTOM -> gera arquivo de débito
-		window.<?php echo $APPTAG?>_getInvoiceFile = function(invID) {
-
-			var seq = formFilter.find('#<?php echo $APPTAG?>-seq').val();
-			if(invID == 0) {
-				$.baseNotify({ msg: '<?php echo JText::_('MSG_INVOICE_NOT_SELECTED'); ?>', type: "danger" });
-				return false;
-			}
-			if(seq == "") {
-				$.baseNotify({ msg: '<?php echo JText::_('MSG_INVOICE_NOT_SEQUENTIAL'); ?>', type: "danger" });
-				return false;
-			}
-			if(!confirm('<?php echo JText::_('MSG_INVOICE_FILE_CONFIRM'); ?>')) return false;
-			<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
-
-			jQuery.ajax({
-				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=invoiceFile&st="+invID+"&sq="+seq,
-				dataType: 'json',
-				cache: false,
-				success: function(data) {
-					<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
-					jQuery.map( data, function( res ) {
-						if(res.status == 1) {
-							var path = "<?php echo $URL_APP_FILE ?>.getFile.php?fn="+res.file;
-							location.href = path;
-						} else {
-							$.baseNotify({ msg: res.msg, type: "danger" });
-						}
-					});
-				},
-				error: function(xhr, status, error) {
-					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
-					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
-					?>
-					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
-				}
-			});
-			return false;
-		};
-
-		// CUSTOM -> seta o sequencial anterior atribuído à fatura
-		window.<?php echo $APPTAG?>_setSequencial = function(val) {
-			formFilter.find('#<?php echo $APPTAG?>-seq').val(val);
-		};
-
-		// CUSTOM -> gera cópia das movimentações fixas sem fatura
-		window.<?php echo $APPTAG?>_addFixed = function() {
-
-			var formFixed = jQuery('#form-<?php echo $APPTAG?>-addFixed');
-			var groupID = formFixed.find('#<?php echo $APPTAG?>-groupID').val();
-			if(groupID == "") {
-				$.baseNotify({ msg: '<?php echo JText::_('MSG_SELECT_ITEM_FROM_LIST'); ?>', type: "danger" });
-				return false;
-			}
-			if(!confirm('<?php echo JText::_('MSG_ADDFIXED_CONFIRM'); ?>')) return false;
-			<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
-
-			jQuery.ajax({
-				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=addFixed&st="+groupID,
-				dataType: 'json',
-				cache: false,
-				success: function(data){
-					<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
-					jQuery.map( data, function( res ) {
-						if(res.status == 1) <?php echo $APPTAG?>_listReload(true, false);
-						else $.baseNotify({ msg: res.msg, type: "danger" });
-					});
-				},
-				error: function(xhr, status, error) {
-					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
-					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
-					?>
-					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
-				}
-			});
-			return false;
-		};
-
 }); // CLOSE JQUERY->READY
 
 jQuery(window).load(function() {
-
-	// custom validation for phone number
-	jQuery.validator.addMethod("validaCardLimit", function(value, element, param) {
-		var v = value.replace(/\./g, '').replace(/\,/g, '.');
-		var p = param.replace(/\./g, '').replace(/\,/g, '.');
-		return this.optional(element) || parseFloat(v) <= parseFloat(p);
-	}, '');
-
 	// Jquery Validation
 	window.<?php echo $APPTAG?>_validator = mainForm_<?php echo $APPTAG?>.validate({
-		rules: {
-			price: {
-				validaCardLimit: function() {
-					return jQuery('#<?php echo $APPTAG?>-isCard').is(':checked') ? jQuery('#<?php echo $APPTAG?>-cardLimit').val() : '1000000000,00';
-				}
-			}
-		},
-		messages: {
-			price: {
-				validaCardLimit: function() {
-					return '<?php echo JText::_('MSG_VALIDATION_ERROR_CARD_LIMIT')?><strong>'+jQuery('#<?php echo $APPTAG?>-cardLimit').val()+'</strong>';
-				}
-			}
-		},
 		//don't remove this
 		invalidHandler: function(event, validator) {
 			//if there is error,
@@ -627,7 +345,7 @@ jQuery(window).load(function() {
 
 	<?php if($hasAdmin) : ?>
 		<div class="modal fade" data-animation="false" id="modal-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-<?php echo $APPTAG?>Label">
-			<div class="modal-dialog modal-lg set-shadow-lg" role="document">
+			<div class="modal-dialog set-shadow-lg" role="document">
 				<div class="modal-content">
 					<form name="form-<?php echo $APPTAG?>" id="form-<?php echo $APPTAG?>" method="post" enctype="multipart/form-data">
 						<?php require(JPATH_CORE.DS.'apps/layout/form/modal.header.php'); ?>
@@ -643,22 +361,6 @@ jQuery(window).load(function() {
 						</div>
 						<?php require(JPATH_CORE.DS.'apps/layout/form/modal.footer.php'); ?>
 					</form>
-				</div>
-			</div>
-		</div>
-
-		<div class="modal fade" id="modal-<?php echo $APPTAG?>-invoice" tabindex="-1" role="dialog" aria-labelledby="modal-<?php echo $APPTAG?>-invoiceLabel">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<?php require($APPTAG.'.invoice.form.php'); ?>
-				</div>
-			</div>
-		</div>
-
-		<div class="modal fade" id="modal-<?php echo $APPTAG?>-addFixed" tabindex="-1" role="dialog" aria-labelledby="modal-<?php echo $APPTAG?>-addFixedLabel">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<?php require($APPTAG.'.addFixed.form.php'); ?>
 				</div>
 			</div>
 		</div>

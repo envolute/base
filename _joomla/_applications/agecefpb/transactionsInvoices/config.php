@@ -7,8 +7,8 @@ require(JPATH_BASE.'/libraries/envolute/_system.vars.php');
 $cfg = array();
 $cfg['project'] = 'agecefpb';
 // App Define
-$APPNAME  = 'transactions';
-$MAIN_TB  = '#__'.$cfg['project'].'_transactions';
+$APPNAME  = 'transactionsInvoices';
+$MAIN_TB  = '#__'.$cfg['project'].'_transactions_invoices';
 $APPTAG   = isset(${$APPNAME.'AppTag'}) ? ${$APPNAME.'AppTag'} : $APPNAME;
 $newInstance = ($APPTAG != $APPNAME) ? true : false;
 
@@ -73,7 +73,7 @@ endif;
 	$cfg['addText']				= true;
 	if(isset(${$APPTAG.'AddText'})) $cfg['addText'] = ${$APPTAG.'AddText'} ? true : false;
 	// show filter opened
-	$cfg['showFilter']			= true;
+	$cfg['showFilter']			= false;
 	// list's elements default
 	$cfg['pagLimit']			= 20;
 
@@ -84,7 +84,7 @@ endif;
 	// date & price convertions
 	$cfg['dateConvert']			= true;
 	$cfg['load_UI']				= $cfg['dateConvert'];
-	$cfg['priceDecimal']		= true;
+	$cfg['priceDecimal']		= false;
 	$cfg['htmlEditor']			= false;
 	$cfg['htmlEditorFull']		= false;
 
@@ -102,7 +102,7 @@ endif;
 		$cfg['fileField']		= 'file'; // upload's field name
 		$cfg['fileTable']		= $cfg['mainTable'].'_files'; // upload's database table
 		// upload params
-		$cfg['maxFileSize']		= 5242880; // 5MB
+		$cfg['maxFileSize']		= 10485760; // 10MB
 		$cfg['uploadDir']       = JPATH_BASE.DS.'images/apps/'.$APPNAME.'/'; // IMPORTANTE: colocar a barra '/' no fim
 		// file types enabled
 		$cfg['fileTypes']	= array();

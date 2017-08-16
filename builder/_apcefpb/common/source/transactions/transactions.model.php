@@ -131,7 +131,7 @@ header( 'content-type: application/json; charset=utf-8' );
       if($rows > 0) :
 
         // criar a variável $csv
-        $csv = $headRow;
+        $csv = '';
         // o numero de campos que resultou a consulta, agora servirá para montar um array com os nomes dos campos
         $names = explode(',', $colNames);
         // criamos um array associativo
