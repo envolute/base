@@ -232,15 +232,14 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$query = 'DELETE FROM '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' WHERE '. $db->quoteName($_SESSION[$RTAG.'AppNameId']) .' IN ('.$ids.')';
 							$db->setQuery($query);
 							$db->execute();
-						else :
-							// FORCE DELETE RELATIONSHIPS
-							// força a exclusão do(s) relacionamento(s) caso os parâmetros não sejam setados
-							// isso é RECOMENDÁVEL sempre que houver um ou mais relacionamentos
-							// SAMPLES -> remove os registros relacionados aos exemplos
-							// $query = 'DELETE FROM '. $db->quoteName('#__'.$cfg['project'].'_app_sample') .' WHERE '. $db->quoteName('type_id') .' IN ('.$ids.')';
-							// $db->setQuery($query);
-							// $db->execute();
 						endif;
+						// FORCE DELETE RELATIONSHIPS
+						// força a exclusão do(s) relacionamento(s) caso os parâmetros não sejam setados
+						// isso é RECOMENDÁVEL sempre que houver um ou mais relacionamentos
+						// SAMPLES -> remove os registros relacionados aos exemplos
+						// $query = 'DELETE FROM '. $db->quoteName('#__'.$cfg['project'].'_app_sample') .' WHERE '. $db->quoteName('type_id') .' IN ('.$ids.')';
+						// $db->setQuery($query);
+						// $db->execute();
 
 						// UPDATE FIELD
 						// executa apenas com valores individuais

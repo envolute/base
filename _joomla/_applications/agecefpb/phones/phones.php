@@ -91,7 +91,7 @@ jQuery(function() {
 			// App Fields
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
-			plan_id.val('0').selectUpdate();
+			plan_id.selectUpdate(0);
 			phone_number.val('');
 			note.val('');
 
@@ -214,8 +214,8 @@ jQuery(function() {
 						?>
 
 						// App Fields
-						client_id.val(item.client_id).selectUpdate();
-						plan_id.val(item.plan_id).selectUpdate();
+						client_id.selectUpdate(item.client_id);
+						plan_id.selectUpdate(item.plan_id);
 						phone_number.val(item.phone_number);
 						note.val(item.note);
 

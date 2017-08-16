@@ -24,7 +24,7 @@ require($PATH_APP_FILE.'.filter.php');
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
 			LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_operators') .' T2
-			ON T2.id = T1.operator_id
+			ON T2.id = T1.operator_id AND T2.state = 1
 		WHERE
 			'.$where.$orderList;
 	;
@@ -115,6 +115,7 @@ if($num_rows) : // verifica se existe
 			';
 		endif;
 
+		$operator = !empty($item->operator) ? $item->operator : '<span class="base-icon-cancel text-danger"></span>';
 		$rowState = $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
@@ -128,7 +129,7 @@ if($num_rows) : // verifica se existe
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
 				<td>'.$item->name.'</td>
-				<td class="d-none d-md-table-cell">'.$item->operator.'</td>
+				<td class="d-none d-md-table-cell">'.$operator.'</td>
 				<td>'.baseHelper::priceFormat($item->price).'</td>
 				<td class="d-none d-lg-table-cell">
 					'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'

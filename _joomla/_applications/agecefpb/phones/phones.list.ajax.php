@@ -64,10 +64,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
 			$query .= ' FROM '.
 				$db->quoteName($cfg['mainTable']) .' T1
-				LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_plans') .' T2
-				ON T2.id = T1.plan_id
-				LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_plans_operators') .' T3
-				ON T3.id = T2.operator_id
+				JOIN '. $db->quoteName($cfg['mainTable'].'_plans') .' T2
+				ON T2.id = T1.plan_id AND T2.state = 1
+				JOIN '. $db->quoteName($cfg['mainTable'].'_plans_operators') .' T3
+				ON T3.id = T2.operator_id AND T3.state = 1
 				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T4
 				ON '.$db->quoteName('T4.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
 			WHERE '.

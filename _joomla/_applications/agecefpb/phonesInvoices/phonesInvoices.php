@@ -91,7 +91,7 @@ jQuery(function() {
 			// App Fields
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
-			operator_id.val('0').selectUpdate();
+			operator_id.selectUpdate(0);
 			due_date.val('');
 			tax.val('<?php echo $cfg['serviceTax']?>');
 			note.val('');
@@ -217,7 +217,7 @@ jQuery(function() {
 						?>
 
 						// App Fields
-						operator_id.val(item.operator_id).selectUpdate();
+						operator_id.selectUpdate(item.operator_id);
 						due_date.val(dateFormat(item.due_date));
 						tax.val(item.tax);
 						note.val(item.note);

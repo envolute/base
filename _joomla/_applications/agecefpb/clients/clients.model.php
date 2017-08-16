@@ -406,15 +406,14 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$query = 'DELETE FROM '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' WHERE '. $db->quoteName($_SESSION[$RTAG.'AppNameId']) .' IN ('.$ids.')';
 							$db->setQuery($query);
 							$db->execute();
-						else :
-							// FORCE DELETE RELATIONSHIPS
-							// força a exclusão do(s) relacionamento(s) caso os parâmetros não sejam setados
-							// isso é RECOMENDÁVEL sempre que houver um ou mais relacionamentos
-							// CLIENTS -> remove os registros relacionados aos clientes
-							// $query = 'DELETE FROM '. $db->quoteName('#__escob_clients') .' WHERE '. $db->quoteName('phone_id') .' IN ('.$ids.')';
-							// $db->setQuery($query);
-							// $db->execute();
 						endif;
+						// FORCE DELETE RELATIONSHIPS
+						// força a exclusão do(s) relacionamento(s) caso os parâmetros não sejam setados
+						// isso é RECOMENDÁVEL sempre que houver um ou mais relacionamentos
+						// MOVIMENTAÇÕES RECORRENTES -> remove os registros relacionados às movimentações recorrentes
+						$query = 'DELETE FROM '. $db->quoteName('#__'.$cfg['project'].'_transactions') .' WHERE '. $db->quoteName('client_id') .' IN ('.$ids.') AND '. $db->quoteName('fixed') .' = 1';
+						$db->setQuery($query);
+						$db->execute();
 
 						// UPDATE FIELD
 						// executa apenas com valores individuais
@@ -472,6 +471,13 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->setQuery($query);
 							$elemLabel = $db->loadResult();
 						endif;
+
+						// ALTER RELATIONSHIPS STATE
+						// Altera o estado dos relacionamentos
+						// MOVIMENTAÇÕES RECORRENTES -> altera o estado relacionado às movimentações recorrentes
+						$query = 'UPDATE '. $db->quoteName('#__'.$cfg['project'].'_transactions') .' SET '. $db->quoteName('state') .' = '.$stateVal.' WHERE '. $db->quoteName('client_id') .' IN ('.$ids.') AND '. $db->quoteName('fixed') .' = 1';
+						$db->setQuery($query);
+						$db->execute();
 
 			            // ALTER USER STATE (block)
 			            // Bloqueia/desbloqueia o usuário de acordo com o 'state' do cliente

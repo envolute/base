@@ -139,9 +139,9 @@ jQuery(function() {
 			rg_orgao.val('');
 			checkOption(gender, 0); // radio
 			birthday.val('');
-			marital_status.val('').selectUpdate(); // select
+			marital_status.selectUpdate(''); // select
 			partner.val('');
-			children.val('0').selectUpdate(); // select
+			children.selectUpdate(0); // select
 			checkOption(cx_status, 0); // radio
 			cx_code.val('');
 			cx_email.val('');
@@ -171,7 +171,7 @@ jQuery(function() {
 		// CUSTOM -> Reset Registration Fields
 		window.<?php echo $APPTAG?>_accessForm = function(val) {
 			var isUser = (user_id.val() == 0) ? false : true;
-			newUser.val('0').selectUpdate(); // select
+			newUser.selectUpdate(0); // select
 			password.val('');
 			repassword.val('');
 			emailInfo.val('');
@@ -334,12 +334,12 @@ jQuery(function() {
 						rg_orgao.val(item.rg_orgao);
 						checkOption(gender, item.gender); // radio
 						birthday.val(dateFormat(item.birthday)); // DATE -> conversão de data
-						marital_status.val(item.marital_status).selectUpdate(); // select
+						marital_status.selectUpdate(item.marital_status, ''); // select
 						// mostra/esconde o campo 'motivo'
 						if(item.marital_status != '') setHidden('#mstatus_desc-group', true);
 						else setHidden('#mstatus_desc-group', false);
 						partner.val(item.partner);
-						children.val(item.children).selectUpdate(); // select
+						children.selectUpdate(item.children); // select
 						checkOption(cx_status, item.cx_status); // radio
 						cx_code.val(item.cx_code);
 						cx_email.val(item.cx_email);

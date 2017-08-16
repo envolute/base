@@ -333,7 +333,7 @@ $htmlFilter = '
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-4">
+				<div class="col-sm-4 b-left">
 					<div class="form-group">
 						<label class="label-sm">'.JText::_('FIELD_LABEL_PROVIDER').'</label>
 						<select name="pID" id="pID" class="form-control form-control-sm set-filter">
@@ -366,7 +366,7 @@ $htmlFilter = '
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-4">
+				<div class="col-sm-4 b-left">
 					<div class="form-group">
 						<label class="label-sm">'.JText::_('FIELD_LABEL_TRANSACTION_DATE').'</label>
 						<span class="input-group input-group-sm">

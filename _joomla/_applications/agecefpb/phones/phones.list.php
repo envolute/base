@@ -26,11 +26,11 @@ require($PATH_APP_FILE.'.filter.php');
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
 			LEFT OUTER JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
-			ON T2.id = T1.client_id
+			ON T2.id = T1.client_id AND T2.state = 1
 			LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_plans') .' T3
-			ON T3.id = T1.plan_id
+			ON T3.id = T1.plan_id AND T3.state = 1
 			LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_plans_operators') .' T4
-			ON T4.id = T3.operator_id
+			ON T4.id = T3.operator_id AND T4.state = 1
 		WHERE
 			'.$where.$orderList;
 	;
@@ -122,6 +122,8 @@ if($num_rows) : // verifica se existe
 			';
 		endif;
 
+		$operator = !empty($item->operator) ? baseHelper::nameFormat($item->operator) : '<span class="base-icon-cancel text-danger"></span>';
+		$plan = !empty($item->plan) ? baseHelper::nameFormat($item->plan).'<div class="small text-muted">R$'.baseHelper::priceFormat($item->price).'</div>' : '<span class="base-icon-cancel text-danger"></span>';
 		$note = !empty($item->note) ? '<span class="base-icon-info-circled cursor-help hasTooltip" title="'.$item->note.'"></span> ' : '';
 		$rowState = $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
@@ -141,10 +143,9 @@ if($num_rows) : // verifica se existe
 						<span class="badge badge-primary">'.$item->operator.'</span> '.baseHelper::nameFormat($item->plan).'
 					</div>
 				</td>
-				<td class="d-none d-lg-table-cell">'.baseHelper::nameFormat($item->operator).'</td>
+				<td class="d-none d-lg-table-cell">'.$operator.'</td>
 				<td class="d-none d-lg-table-cell">
-					'.baseHelper::nameFormat($item->plan).'
-					<div class="small text-muted">R$'.baseHelper::priceFormat($item->price).'</div>
+					'.$plan.'
 				</td>
 				<td>'.baseHelper::nameFormat($item->client).'</td>
 				<td class="d-none d-lg-table-cell">

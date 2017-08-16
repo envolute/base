@@ -101,9 +101,9 @@ jQuery(function() {
 			// App Fields
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
-			client_id.val('0').selectUpdate(); // select
-			dependent_id.val('0').selectUpdate(); // select
-			invoice_id.val('0').selectUpdate(); // select
+			client_id.selectUpdate(0); // select
+			dependent_id.selectUpdate(0); // select
+			invoice_id.selectUpdate(0); // select
 			description.val(''); // select
 			checkOption(fixed, 0);
 			// mostra campos da movimentação normal
@@ -184,7 +184,7 @@ jQuery(function() {
 			setHidden('.<?php echo $APPTAG?>-no-fixed', val);
 			if(val == 1) {
 				checkOption(isCard, 0);
-				invoice_id.val(0).selectUpdate();
+				invoice_id.selectUpdate(0);
 			}
 		};
 
@@ -198,7 +198,7 @@ jQuery(function() {
 			// O valor só pode ser selecionado na hora de criar a movimentação
 			// O item editado é sempre referente a 1 parcela do total
 			// Dessa forma, o valor, tanto na criação quanto na edição será sempre 1
-			total.val(1).prop('disabled',(formId_<?php echo $APPTAG?>.val() == 0 ? false : true)).selectUpdate(); // select
+			total.prop('disabled',(formId_<?php echo $APPTAG?>.val() == 0 ? false : true)).selectUpdate(1); // select
 		};
 
 	// LIST CONTROLLERS
@@ -272,10 +272,10 @@ jQuery(function() {
 						?>
 
 						// App Fields
-						provider_id.val(item.provider_id).selectUpdate(); // select
-						client_id.val(item.client_id).selectUpdate(); // select
+						provider_id.selectUpdate(item.provider_id); // select
+						client_id.selectUpdate(item.client_id); // select
 						<?php echo $APPTAG?>_getDependentList(item.client_id, item.dependent_id);
-						invoice_id.val(item.invoice_id).selectUpdate(); // select
+						invoice_id.selectUpdate(item.invoice_id); // select
 						description.val(item.description);
 						checkOption(fixed, item.fixed);
 						// esconde campos da movimentação normal

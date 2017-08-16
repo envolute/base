@@ -20,8 +20,8 @@ $query = '
 		'. $db->quoteName('T1.name') .',
 		'. $db->quoteName('T2.name') .' operator
 	FROM '. $db->quoteName($cfg['mainTable'].'_plans') .' T1
-		LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_plans_operators') .' T2
-		ON T2.id = T1.operator_id
+		JOIN '. $db->quoteName($cfg['mainTable'].'_plans_operators') .' T2
+		ON T2.id = T1.operator_id AND T2.state = 1
 	WHERE '. $db->quoteName('T1.state') .' = 1
 	ORDER BY T2.name
 ';

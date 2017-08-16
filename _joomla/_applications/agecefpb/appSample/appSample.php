@@ -110,7 +110,7 @@ jQuery(function() {
 			// App Fields
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
-			type_id.val(0).selectUpdate(); // selects;
+			type_id.selectUpdate(0); // selects;
 			name.val('');
 			email.val('');
 			cmail.val('');
@@ -120,7 +120,7 @@ jQuery(function() {
 			checkOption(gender, 0); // radio
 			birthday.val('');
 			place_birth.val('');
-			marital_status.val('').selectUpdate(); // select
+			marital_status.selectUpdate(''); // select
 			price.val('');
 			checkOption(status, 0);
 			status_desc.val('');
@@ -130,7 +130,7 @@ jQuery(function() {
 			address_info.val('');
 			address_district.val('');
 			address_city.val('');
-			address_state.val('PB').selectUpdate(); // select;
+			address_state.selectUpdate('PB', ''); // select;
 			description.val('');
 
 			<?php // Closure Actions
@@ -253,7 +253,7 @@ jQuery(function() {
 						?>
 
 						// App Fields
-						type_id.val(item.type_id).selectUpdate(); // selects;
+						type_id.selectUpdate(item.type_id); // selects;
 						name.val(item.name);
 						email.val(item.email);
 						cmail.val(item.email);
@@ -263,7 +263,7 @@ jQuery(function() {
 						checkOption(gender, item.gender); // radio
 						birthday.val(dateFormat(item.birthday)); // DATE -> conversão de data
 						place_birth.val(item.place_birth);
-						marital_status.val(item.marital_status).selectUpdate(); // select
+						marital_status.selectUpdate(item.marital_status, ''); // select
 						price.val(item.price);
 						checkOption(status, item.status); // radio
 						// mostra/esconde o campo 'motivo'
@@ -276,7 +276,7 @@ jQuery(function() {
 						address_info.val(item.address_info);
 						address_district.val(item.address_district);
 						address_city.val(item.address_city);
-						address_state.val(item.address_state).selectUpdate(); // select;
+						address_state.selectUpdate(item.address_state, ''); // select;
 						description.val(item.description);
 
 						<?php // Closure Actions

@@ -92,7 +92,7 @@ jQuery(function() {
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
 			name.val('');
-			operator_id.val('0').selectUpdate();
+			operator_id.selectUpdate(0); // select
 			price.val('');
 			description.val('');
 
@@ -216,7 +216,7 @@ jQuery(function() {
 
 						// App Fields
 						name.val(item.name);
-						operator_id.val(item.operator_id).selectUpdate();
+						operator_id.selectUpdate(item.operator_id); // select
 						price.val(item.price);
 						description.val(item.description);
 

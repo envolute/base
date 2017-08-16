@@ -63,9 +63,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$query .= ' FROM '.
 				$db->quoteName($cfg['mainTable']) .' T1
 				JOIN '. $db->quoteName($cfg['mainTable'].'_operators') .' T2
-				ON '.$db->quoteName('T2.id') .' = T1.operator_id
+				ON '.$db->quoteName('T2.id') .' = T1.operator_id AND T2.state = 1
 				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T3
-				ON '.$db->quoteName('T3.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
+				ON '.$db->quoteName('T3.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id AND T3.state = 1
 			WHERE '.
 				$db->quoteName('T3.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
 			;
@@ -75,7 +75,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	else :
 		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
 			JOIN '. $db->quoteName($cfg['mainTable'].'_operators') .' T2
-			ON '.$db->quoteName('T2.id') .' = T1.operator_id
+			ON '.$db->quoteName('T2.id') .' = T1.operator_id AND T2.state = 1
 		';
 		if($oCHL) :
 			$query .= ' WHERE 1=0';
