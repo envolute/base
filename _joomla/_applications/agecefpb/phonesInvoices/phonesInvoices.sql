@@ -86,6 +86,7 @@ CREATE TABLE IF NOT EXISTS `cms_agecefpb_phones_invoices_files` (
 CREATE VIEW `vw_agecefpb_phones_invoices_phone_total` AS
 SELECT
 `T1`.`invoice_id`,
+`T2`.`due_date`,
 `T3`.`client_id`,
 `T6`.`user_id`,
 `T6`.`name`,
@@ -97,9 +98,10 @@ SELECT
 `T4`.`name` plan,
 `T5`.`id` operator_id,
 `T5`.`name` operator,
-SUM(`T1`.`valor_cobrado`),
+SUM(`T1`.`valor_cobrado`) AS `valor_cobrado`,
 `T4`.`price` valor_plano,
 `T2`.`tax` taxa_servico,
+(SUM(`T1`.`valor_cobrado`) + `T4`.`price` + `T2`.`tax`) AS `total`,
 `T1`.`created_by`
 FROM `cms_agecefpb_phones_invoices_details` T1
 	LEFT OUTER JOIN `cms_agecefpb_phones_invoices` T2

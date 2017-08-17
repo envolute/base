@@ -71,13 +71,20 @@ $where = '';
 			if($fInv == 0) :
 
 				$invoiceActions = '
-					<div class="col-sm-8">
+					<div class="col-sm-4">
 						<div class="form-group">
 							<button type="button" class="btn btn-sm btn-success '.$APPTAG.'-btn-action hasTooltip" title="'.JText::_('TEXT_ADD_TO_INVOICE_DESC').'" disabled data-toggle="modal" data-target="#modal-'.$APPTAG.'-invoice" data-backdrop="static" data-keyboard="false">
-								<span class="base-icon-forward"></span> '.JText::_('TEXT_ADD_TO_INVOICE').'
+								<span class="base-icon-forward btn-icon"></span> '.JText::_('TEXT_ADD_TO_INVOICE').'
 							</button>
 							<button type="button" class="btn btn-sm btn-warning '.$APPTAG.'-btn-action hasTooltip" title="'.JText::_('TEXT_ADD_FIXED_DESC').'" data-toggle="modal" data-target="#modal-'.$APPTAG.'-addFixed" data-backdrop="static" data-keyboard="false">
-								<span class="base-icon-download"></span> '.JText::_('TEXT_ADD_FIXED').'
+								<span class="base-icon-download btn-icon"></span> '.JText::_('TEXT_ADD_FIXED').'
+							</button>
+						</div>
+					</div>
+					<div class="col-sm-4 b-left">
+						<div class="form-group">
+							<button type="button" class="btn btn-sm btn-info '.$APPTAG.'-btn-action hasTooltip" title="'.JText::_('TEXT_ADD_PHONE_INVOICE_DESC').'" data-toggle="modal" data-target="#modal-'.$APPTAG.'-phoneInvoice" data-backdrop="static" data-keyboard="false">
+								<span class="base-icon-phone btn-icon"></span> '.JText::_('TEXT_ADD_PHONE_INVOICE').'
 							</button>
 						</div>
 					</div>

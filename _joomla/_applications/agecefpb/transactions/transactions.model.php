@@ -922,6 +922,86 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 				endif; // if 'inv' ou 'seq'
 
+			// INVOICE
+			elseif($task == 'phoneInvoice') :
+
+				$query = '
+					INSERT '. $db->quoteName($cfg['mainTable']) .' ('.
+						$db->quoteName('transaction_id') .','.
+						$db->quoteName('parent_id') .','.
+						$db->quoteName('provider_id') .','.
+						$db->quoteName('client_id') .','.
+						$db->quoteName('dependent_id') .','.
+						$db->quoteName('invoice_id') .','.
+						$db->quoteName('invoice_group') .','.
+						$db->quoteName('description') .','.
+						$db->quoteName('fixed') .','.
+						$db->quoteName('isCard') .','.
+						$db->quoteName('date') .','.
+						$db->quoteName('date_installment') .','.
+						$db->quoteName('price') .','.
+						$db->quoteName('price_total') .','.
+						$db->quoteName('installment') .','.
+						$db->quoteName('total') .','.
+						$db->quoteName('doc_number') .','.
+						$db->quoteName('note') .','.
+						$db->quoteName('state') .','.
+						$db->quoteName('created_by')
+					.')
+					SELECT '.
+						'0,'.
+						'0,'.
+						$db->quoteName('operator_id') .','.
+						$db->quoteName('client_id') .','.
+						'0,'.
+						'0,'.
+						'0,'.
+						$db->quote(JText::_('TEXT_MOBILE_PHONE')) .','.
+						'0,'.
+						'0,'.
+						$db->quoteName('due_date') .','.
+						$db->quoteName('due_date') .','.
+						$db->quoteName('total') .','.
+						$db->quoteName('total') .','.
+						'1,'.
+						'1,'.
+						$db->quoteName('tel') .','.
+						$db->quote('') .','.
+						'1,'.
+						$user->id
+					.'
+					FROM '. $db->quoteName('vw_'.$cfg['project'].'_phones_invoices_phone_total') .'
+					WHERE '. $db->quoteName('invoice_id') .' = '.$state.' AND '. $db->quoteName('client_id') .' IS NOT NULL
+				';
+
+				try {
+
+					$db->setQuery($query);
+					$db->execute();
+
+					$data[] = array(
+						'status'			=> 1,
+						'msg'				=> ''
+					);
+
+				} catch (RuntimeException $e) {
+
+					// Error treatment
+					switch($e->getCode()) {
+						case '1062':
+							$sqlErr = JText::_('MSG_SQL_DUPLICATE_PHONE_TRANSACTION');
+							break;
+						default:
+							$sqlErr = 'Erro: '.$e->getCode().'. '.$e->getMessage();
+					}
+
+					$data[] = array(
+						'status'			=> 0,
+						'msg'				=> $sqlErr
+					);
+
+				}
+
 			endif; // end 'task'
 
 		endif; // end 'id'

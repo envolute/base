@@ -516,6 +516,43 @@ jQuery(function() {
 			return false;
 		};
 
+		// CUSTOM -> importa a fatura telefônica
+		window.<?php echo $APPTAG?>_phoneInvoice = function() {
+
+			var formInv = jQuery('#form-<?php echo $APPTAG?>-phoneInvoice');
+			var invID = formInv.find('#<?php echo $APPTAG?>-phoneInvoiceID').val();
+			if(invID == 0) {
+				alert('<?php echo JText::_('MSG_SELECT_ITEM_FROM_LIST'); ?>');
+				return false;
+			}
+			if(!confirm('<?php echo JText::_('MSG_PHONE_INVOICED_CONFIRM'); ?>')) return false;
+			<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
+
+			var dados = formList.serialize();
+
+			jQuery.ajax({
+				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=phoneInvoice&st="+invID,
+				dataType: 'json',
+				type: 'POST',
+				data:  dados,
+				cache: false,
+				success: function(data){
+					<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
+					jQuery.map( data, function( res ) {
+						if(res.status == 1) <?php echo $APPTAG?>_listReload(true, false);
+						else $.baseNotify({ msg: res.msg, type: "danger" });
+					});
+				},
+				error: function(xhr, status, error) {
+					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
+					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
+					?>
+					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
+				}
+			});
+			return false;
+		};
+
 }); // CLOSE JQUERY->READY
 
 jQuery(window).load(function() {
@@ -659,6 +696,14 @@ jQuery(window).load(function() {
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<?php require($APPTAG.'.addFixed.form.php'); ?>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="modal-<?php echo $APPTAG?>-phoneInvoice" tabindex="-1" role="dialog" aria-labelledby="modal-<?php echo $APPTAG?>-phoneInvoiceLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<?php require($APPTAG.'.phoneInvoice.form.php'); ?>
 				</div>
 			</div>
 		</div>
