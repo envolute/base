@@ -69,10 +69,10 @@ $html = '
 			<thead>
 				<tr>
 					'.$adminView['head']['info'].'
-					<th class="d-none d-lg-table-cell">'.$$SETOrder(JText::_('FIELD_LABEL_GROUP'), 'T2.name', $APPTAG).'</th>
-					<th>'.$$SETOrder(JText::_('FIELD_LABEL_NAME'), 'T1.name', $APPTAG).'</th>
+					<th class="d-none d-lg-table-cell">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_GROUP'), 'T2.name', $APPTAG).'</th>
+					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_NAME'), 'T1.name', $APPTAG).'</th>
 					<th class="d-none d-lg-table-cell">'.JText::_('FIELD_LABEL_EMAIL').'</th>
-					<th class="d-none d-lg-table-cell">'.$$SETOrder(JText::_('FIELD_LABEL_BIRTHDAY'), 'T1.birthday', $APPTAG).'</th>
+					<th class="d-none d-lg-table-cell">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_BIRTHDAY'), 'T1.birthday', $APPTAG).'</th>
 					<th>'.JText::_('TEXT_STATUS').'</th>
 					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
 					'.$adminView['head']['actions'].'
@@ -135,17 +135,17 @@ if($num_rows) : // verifica se existe
 
 		$gender = '';
 		if($item->gender > 0) $gender = '<span '.($item->gender == 1 ? 'class="base-icon-male-symbol cursor-help text-primary hasTooltip" title="'.JText::_('FIELD_LABEL_GENDER_MALE').'"' : 'class="base-icon-female-symbol cursor-help text-danger hasTooltip" title="'.JText::_('FIELD_LABEL_GENDER_FEMALE').'"').'"></span> ';
-		$note = !empty($item->note) ? '<span class="base-icon-info-circled cursor-help hasTooltip" title="'.$item->note.'"></span> ';
+		$note = !empty($item->note) ? '<span class="base-icon-info-circled cursor-help hasTooltip" title="'.$item->note.'"></span> ' : '';
 		if($item->access == 0) :
 			$reason = !empty($item->reasonStatus) ? '<div class="small text-muted text-truncate">'.$item->reasonStatus.'</div>' : '';
 			// Check if user exist
-			if(empty($item->user)) $status = '<span class="base-icon-attention text-live"> '.JText::_('TEXT_PENDING').'</span>';
+			if(empty($item->user)) $status = '<span class="base-icon-attention text-live"> '.JText::_('TEXT_NO_ACCESS').'</span>';
 			else $status = '<span class="base-icon-attention text-live"> '.JText::_('TEXT_BLOCKED').'</span>';
 			$status .= $reason;
 		else :
 			// Check if user exist
 			if(empty($item->user)) $status = '<span class="base-icon-cancel text-danger"> '.JText::_('TEXT_NO_USER_ASSOC').'</span><div class="small text-muted text-truncate">'.JText::_('TEXT_NO_USER_ASSOC_DESC').'</div>';
-			else $status = '<span class="base-icon-ok text-success"> '.JText::_('TEXT_APPROVED').'</span>';
+			else $status = '<span class="base-icon-ok text-success"> '.JText::_('TEXT_ALLOWED_ACCESS').'</span>';
 		endif;
 		$rowState	= $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
@@ -177,7 +177,7 @@ else : // num_rows = 0
 
 	$html .= '
 		<tr>
-			<td colspan="7">
+			<td colspan="10">
 				<div class="alert alert-warning alert-icon m-0">'.JText::_('MSG_LISTNOREG').'</div>
 			</td>
 		</tr>

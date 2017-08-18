@@ -28,14 +28,14 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	$input      = $app->input;
 
 	// params requests
-	$APPTAG			= $input->get('aTag', $APPTAG, 'str');
-	$RTAG				= $input->get('rTag', $APPTAG, 'str');
-	$oCHL				= $input->get('oCHL', 0, 'bool');
-	$oCHL				= $_SESSION[$RTAG.'OnlyChildList'] ? $_SESSION[$RTAG.'OnlyChildList'] : $oCHL;
+	$APPTAG		= $input->get('aTag', $APPTAG, 'str');
+	$RTAG		= $input->get('rTag', $APPTAG, 'str');
+	$oCHL		= $input->get('oCHL', 0, 'bool');
+	$oCHL		= $_SESSION[$RTAG.'OnlyChildList'] ? $_SESSION[$RTAG.'OnlyChildList'] : $oCHL;
 	$rNID       = $input->get('rNID', '', 'str');
-	$rNID				= !empty($_SESSION[$RTAG.'RelListNameId']) ? $_SESSION[$RTAG.'RelListNameId'] : $rNID;
+	$rNID		= !empty($_SESSION[$RTAG.'RelListNameId']) ? $_SESSION[$RTAG.'RelListNameId'] : $rNID;
 	$rID      	= $input->get('rID', 0, 'int');
-	$rID				= !empty($_SESSION[$RTAG.'RelListId']) ? $_SESSION[$RTAG.'RelListId'] : $rID;
+	$rID		= !empty($_SESSION[$RTAG.'RelListId']) ? $_SESSION[$RTAG.'RelListId'] : $rID;
 
 	// get current user's data
 	$user = JFactory::getUser();
@@ -61,7 +61,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
 			$query .= ' FROM '.
 				$db->quoteName($cfg['mainTable']) .' T1
-				JOIN '. $db->quoteName($cfg['mainTable'].'_group') .' T2
+				JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
 				ON '.$db->quoteName('T2.id') .' = T1.group_id
 				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T3
 				ON '.$db->quoteName('T3.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
@@ -71,13 +71,13 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		else :
 			$query .= '
 			FROM '. $db->quoteName($cfg['mainTable']) .' T1
-				JOIN '. $db->quoteName($cfg['mainTable'].'_group') .' T2
+				JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
 				ON '.$db->quoteName('T2.id') .' = T1.group_id
 			WHERE '. $db->quoteName($rNID) .' = '. $rID;
 		endif;
 	else :
 		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
-			JOIN '. $db->quoteName($cfg['mainTable'].'_group') .' T2
+			JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
 			ON '.$db->quoteName('T2.id') .' = T1.group_id
 		';
 		if($oCHL) :
@@ -85,7 +85,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$noReg = false;
 		endif;
 	endif;
-	$query .= ' ORDER BY '. $db->quoteName('name') .' ASC';
+	$query .= ' ORDER BY '. $db->quoteName('T1.name') .' ASC';
 	try {
 
 		$db->setQuery($query);

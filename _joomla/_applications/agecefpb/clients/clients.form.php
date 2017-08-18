@@ -256,26 +256,26 @@ $users = $db->loadObjectList();
 	<div class="col-lg-6">
 		<fieldset class="fieldset-embed fieldset-sm pb-0">
 			<legend>
-				<span class="client-no-user"><?php echo JText::_('TEXT_DATA_REGISTRATION'); ?></span>
-				<span class="client-is-user" hidden><?php echo JText::_('TEXT_ACCESS_STATUS'); ?></span>
+				<span class="<?php echo $APPTAG?>-no-user"><?php echo JText::_('TEXT_DATA_REGISTRATION'); ?></span>
+				<span class="<?php echo $APPTAG?>-is-user" hidden><?php echo JText::_('TEXT_ACCESS_STATUS'); ?></span>
 			</legend>
 			<div class="form-group">
 				<span class="btn-group btn-group-justified" data-toggle="buttons">
 					<label class="btn btn-default btn-active-danger">
 						<input type="radio" name="access" id="<?php echo $APPTAG?>-access-0" value="0" onchange="<?php echo $APPTAG?>_accessForm(0)" class="auto-tab" data-target="#<?php echo $APPTAG?>-reasonStatus" />
-						<span class="client-no-user"><?php echo JText::_('TEXT_PENDING'); ?></span>
-						<span class="client-is-user" hidden><?php echo JText::_('TEXT_BLOCKED'); ?></span>
+						<span class="<?php echo $APPTAG?>-no-user"><?php echo JText::_('TEXT_PENDING'); ?></span>
+						<span class="<?php echo $APPTAG?>-is-user" hidden><?php echo JText::_('TEXT_BLOCKED'); ?></span>
 					</label>
 					<label class="btn btn-default btn-active-success">
 						<input type="radio" name="access" id="<?php echo $APPTAG?>-access-1" value="1" onchange="<?php echo $APPTAG?>_accessForm(1)" />
-						<span class="client-no-user"><?php echo JText::_('TEXT_APPROVED'); ?></span>
-						<span class="client-is-user" hidden><?php echo JText::_('TEXT_ACTIVE'); ?></span>
+						<span class="<?php echo $APPTAG?>-no-user"><?php echo JText::_('TEXT_APPROVED'); ?></span>
+						<span class="<?php echo $APPTAG?>-is-user" hidden><?php echo JText::_('TEXT_ACTIVE'); ?></span>
 					</label>
 				</span>
 				<input type="hidden" name="user_id" id="<?php echo $APPTAG?>-user_id" />
 				<input type="hidden" name="usergroup" id="<?php echo $APPTAG?>-usergroup" />
 			</div>
-			<div id="<?php echo $APPTAG?>-reasonStatus-group" class="collapse client-is-user">
+			<div id="<?php echo $APPTAG?>-reasonStatus-group" class="collapse <?php echo $APPTAG?>-is-user">
 				<input type="text" name="reasonStatus" id="<?php echo $APPTAG?>-reasonStatus" class="form-control" maxlength="50" placeholder="<?php echo JText::_('FIELD_LABEL_REASON'); ?>" />
 			</div>
 			<div id="accessFields" class="collapse">

@@ -151,7 +151,7 @@ jQuery(function() {
 			phone1.val('');
 			phone2.val('');
 			note.val('');
-			checkOption(access, 1);
+			checkOption(access, 0);
 			reasonStatus.val('');
 
 			<?php // Closure Actions
@@ -170,10 +170,10 @@ jQuery(function() {
 			repassword.val('');
 			emailInfo.val('');
 			checkOption(emailConfirm, (val && !isUser));
-			jQuery('#accessFields').collapse((val ? 'show' : 'hide'));
+			jQuery('.accessFields').collapse((val ? 'show' : 'hide'));
 			jQuery('#<?php echo $APPTAG?>-reasonStatus-group').collapse((!val ? 'show' : 'hide'));
 			setHidden('.new-user-data', (val && isUser), '.edit-user-data');
-			setHidden('.client-no-user', isUser, '.client-is-user');
+			setHidden('.<?php echo $APPTAG?>-no-user', isUser, '.<?php echo $APPTAG?>-is-user');
 		};
 
 		// CUSTOM -> Sincroniza com os contatos

@@ -70,7 +70,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$noReg = false;
 		endif;
 	endif;
-	$query	.= ' ORDER BY '. $db->quoteName('id') .' DESC';
+	$query	.= ' ORDER BY '. $db->quoteName('T1.name') .' ASC';
 	try {
 		$db->setQuery($query);
 		$db->execute();

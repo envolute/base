@@ -10,13 +10,21 @@ $where = '';
 	$active	= $app->input->get('active', 2, 'int');
 	$where .= ($active == 2) ? $db->quoteName('T1.state').' != '.$active : $db->quoteName('T1.state').' = '.$active;
 
-	// search
+	// Search 'Text fields'
 	$search	= $app->input->get('fSearch', '', 'string');
-	if(!empty($search)) :
-		$where .= ' AND (';
-		$where .= 'LOWER('.$db->quoteName('T1.name').') LIKE LOWER("%'.$search.'%")';
-		$where .= ')';
-	endif;
+	$sQuery = ''; // query de busca
+	$sLabel = array(); // label do campo de busca
+	$searchFields = array(
+		'T1.name'				=> 'FIELD_LABEL_NAME'
+	);
+	$i = 0;
+	foreach($searchFields as $key => $value) {
+		$_OR = ($i > 0) ? ' OR ' : '';
+		$sQuery .= $_OR.'LOWER('.$db->quoteName($key).') LIKE LOWER("%'.$search.'%")';
+		if(!empty($value)) $sLabel[] .= JText::_($value);
+		$i++;
+	}
+	if(!empty($search)) $where .= ' AND ('.$sQuery.')';
 
 // ORDER BY
 
@@ -25,8 +33,8 @@ $where = '';
 
 	$orderDef = ''; // não utilizar vírgula no inicio ou fim
 	if(!isset($_SESSION[$APPTAG.'oF'])) : // DEFAULT ORDER
-			$_SESSION[$APPTAG.'oF'] = 'T1.name';
-			$_SESSION[$APPTAG.'oT'] = 'ASC';
+		$_SESSION[$APPTAG.'oF'] = 'T1.name';
+		$_SESSION[$APPTAG.'oT'] = 'ASC';
 	endif;
 	if(!empty($ordf)) :
 		$_SESSION[$APPTAG.'oF'] = $ordf;
@@ -40,15 +48,34 @@ $where = '';
 	$orderList = !empty($orderList) ? ' ORDER BY '.$orderList : '';
 
 	$SETOrder = $APPTAG.'setOrder';
-	$$SETOrder = function($title, $col, $APPTAG) {
-		$tp = 'ASC';
-		$icon = '';
-		if($col == $_SESSION[$APPTAG.'oF']) :
-			$tp = ($_SESSION[$APPTAG.'oT'] == 'DESC' || empty($_SESSION[$APPTAG.'oT'])) ? 'ASC' : 'DESC';
-			$icon = ' <span class="'.($tp == 'ASC' ? 'base-icon-down-dir' : 'base-icon-up-dir').'"></span>';
-		endif;
-		return '<a href="#" onclick="'.$APPTAG.'_setListOrder(\''.$col.'\', \''.$tp.'\')">'.$title.$icon.'</a>';
-	};
+
+// FILTER'S DINAMIC FIELDS
+
+	// types -> select
+	// $flt_type = '';
+	// $query = 'SELECT * FROM '. $db->quoteName($cfg['mainTable'].'_types') .' ORDER BY name';
+	// $db->setQuery($query);
+	// $types = $db->loadObjectList();
+	// foreach ($types as $obj) {
+	// 	$flt_type .= '<option value="'.$obj->id.'"'.($obj->id == $fType ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
+	// }
+
+// VISIBILITY
+// Elementos visíveis apenas quando uma consulta é realizada
+
+	$hasFilter = $app->input->get($APPTAG.'_filter', 0, 'int');
+	// Estado inicial dos elementos
+	$btnClearFilter		= ''; // botão de resetar
+	$textResults		= ''; // Texto informativo
+	// Filtro ativo
+	if($hasFilter) :
+		$btnClearFilter = '
+			<a href="'.JURI::current().'" class="btn btn-sm btn-danger base-icon-cancel-circled btn-icon">
+				'.JText::_('TEXT_CLEAR').' '.JText::_('TEXT_FILTER').'
+			</a>
+		';
+		$textResults = '<span class="base-icon-down-big text-muted d-none d-sm-inline"> '.JText::_('TEXT_SEARCH_RESULTS').'</span>';
+	endif;
 
 // VIEW
 $htmlFilter = '
@@ -57,28 +84,35 @@ $htmlFilter = '
 			<input type="hidden" name="'.$APPTAG.'_filter" value="1" />
 
 			<div class="row">
-				<div class="col-sm-4 col-sm-offset-4">
+				<div class="col-sm-4 col-md-2">
 					<div class="form-group">
-            <input type="text" name="fSearch" value="'.$search.'" class="form-control input-sm field-search width-full" />
-					</div>
-				</div>
-				<div class="col-sm-2">
-					<div class="form-group">
-						<select name="active" id="active" class="form-control input-sm set-filter">
+						<label class="label-sm">'.JText::_('TEXT_STATE').'</label>
+						<select name="active" id="active" class="form-control form-control-sm set-filter">
 							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
 							<option value="1"'.($active == 1 ? ' selected' : '').'>'.JText::_('TEXT_ACTIVES').'</option>
 							<option value="0"'.($active == 0 ? ' selected' : '').'>'.JText::_('TEXT_INACTIVES').'</option>
 						</select>
 					</div>
 				</div>
-				<div class="col-sm-2">
-					<div class="form-group text-right">
-						<span class="btn-group">
-							<button type="submit" class="btn btn-sm btn-primary">
-                <span class="base-icon-search btn-icon"></span> '.JText::_('TEXT_SEARCH').'
-              </button>
-							<a href="'.JURI::current().'" class="base-icon-cancel-circled btn btn-sm btn-danger hasTooltip" title="'.JText::_('TEXT_CLEAR').' '.JText::_('TEXT_FILTER').'"></a>
-						</span>
+				<div class="col-sm-8 col-md-6 col-lg-4">
+					<div class="form-group">
+						<label class="label-sm text-truncate">'.implode(', ', $sLabel).'</label>
+						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />
+					</div>
+				</div>
+			</div>
+			<div id="base-app-filter-buttons" class="row pt-3 b-top align-items-center">
+				<div class="col-sm">
+					<div class="form-group">
+						'.$textResults.'
+					</div>
+				</div>
+				<div class="col-sm text-right">
+					<div class="form-group">
+						<button type="submit" class="btn btn-sm btn-primary base-icon-search btn-icon">
+							'.JText::_('TEXT_SEARCH').'
+						</button>
+						'.$btnClearFilter.'
 					</div>
 				</div>
 			</div>

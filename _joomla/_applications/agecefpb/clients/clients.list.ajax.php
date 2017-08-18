@@ -28,14 +28,14 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	$input      = $app->input;
 
 	// params requests
-	$APPTAG			= $input->get('aTag', $APPTAG, 'str');
-	$RTAG				= $input->get('rTag', $APPTAG, 'str');
-	$oCHL				= $input->get('oCHL', 0, 'bool');
-	$oCHL				= $_SESSION[$RTAG.'OnlyChildList'] ? $_SESSION[$RTAG.'OnlyChildList'] : $oCHL;
+	$APPTAG		= $input->get('aTag', $APPTAG, 'str');
+	$RTAG		= $input->get('rTag', $APPTAG, 'str');
+	$oCHL		= $input->get('oCHL', 0, 'bool');
+	$oCHL		= $_SESSION[$RTAG.'OnlyChildList'] ? $_SESSION[$RTAG.'OnlyChildList'] : $oCHL;
 	$rNID       = $input->get('rNID', '', 'str');
-	$rNID				= !empty($_SESSION[$RTAG.'RelListNameId']) ? $_SESSION[$RTAG.'RelListNameId'] : $rNID;
+	$rNID		= !empty($_SESSION[$RTAG.'RelListNameId']) ? $_SESSION[$RTAG.'RelListNameId'] : $rNID;
 	$rID      	= $input->get('rID', 0, 'int');
-	$rID				= !empty($_SESSION[$RTAG.'RelListId']) ? $_SESSION[$RTAG.'RelListId'] : $rID;
+	$rID		= !empty($_SESSION[$RTAG.'RelListId']) ? $_SESSION[$RTAG.'RelListId'] : $rID;
 
 	// get current user's data
 	$user = JFactory::getUser();

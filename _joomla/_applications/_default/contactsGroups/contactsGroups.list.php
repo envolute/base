@@ -6,16 +6,17 @@ require($PATH_APP_FILE.'.filter.php');
 
 // LIST
 
-	// pagination var's
-	$limitDef = !isset($_SESSION[$APPTAG.'plim']) ? $cfg['pagLimit'] : $_SESSION[$APPTAG.'plim'];
-	$_SESSION[$APPTAG.'plim']	= $app->input->post->get('list-lim-'.$APPTAG, $limitDef, 'int');
-	$lim	= $app->input->get('limit', ($_SESSION[$APPTAG.'plim'] !== 1 ? $_SESSION[$APPTAG.'plim'] : 10000000), 'int');
-	$lim0	= $app->input->get('limitstart', 0, 'int');
+	// PAGINATION VAR's
+	require(JPATH_CORE.DS.'apps/layout/list/pagination.vars.php');
 
 	$query = '
 		SELECT SQL_CALC_FOUND_ROWS
 			'. $db->quoteName('T1.id') .',
 			'. $db->quoteName('T1.name') .',
+			'. $db->quoteName('T1.created_date') .',
+			'. $db->quoteName('T1.created_by') .',
+			'. $db->quoteName('T1.alter_date') .',
+			'. $db->quoteName('T1.alter_by') .',
 			'. $db->quoteName('T1.state') .'
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
@@ -39,12 +40,12 @@ $adminView = array();
 $adminView['head']['info'] = $adminView['head']['actions'] = '';
 if($hasAdmin) :
 	$adminView['head']['info'] = '
-		<th width="30" class="hidden-print"><input type="checkbox" id="'.$APPTAG.'_checkAll" /></th>
-		<th width="50" class="hidden-print">'.baseAppHelper::linkOrder('#', 'T1.id', $APPTAG).'</th>
+		<th width="30" class="d-print-none"><input type="checkbox" id="'.$APPTAG.'_checkAll" /></th>
+		<th width="50" class="d-none d-lg-table-cell d-print-none">'.baseAppHelper::linkOrder('#', 'T1.id', $APPTAG).'</th>
 	';
 	$adminView['head']['actions'] = '
-		<th class="text-center hidden-print" width="60">'.baseAppHelper::linkOrder(JText::_('TEXT_ACTIVE'), 'T1.state', $APPTAG).'</th>
-		<th class="text-center hidden-print" width="70">'.JText::_('TEXT_ACTIONS').'</th>
+		<th class="text-center d-none d-lg-table-cell d-print-none" width="60">'.baseAppHelper::linkOrder(JText::_('TEXT_ACTIVE'), 'T1.state', $APPTAG).'</th>
+		<th class="text-center d-print-none" width="70">'.JText::_('TEXT_ACTIONS').'</th>
 	';
 endif;
 
@@ -56,6 +57,7 @@ $html = '
 				<tr>
 					'.$adminView['head']['info'].'
 					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_NAME'), 'T1.name', $APPTAG).'</th>
+					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
 					'.$adminView['head']['actions'].'
 				</tr>
 			</thead>
@@ -90,27 +92,39 @@ if($num_rows) : // verifica se existe
 		$adminView['list']['info'] = $adminView['list']['actions'] = '';
 		if($hasAdmin) :
 			$adminView['list']['info'] = '
-				<td class="check-row hidden-print"><input type="checkbox" name="'.$APPTAG.'_ids[]" class="'.$APPTAG.'-chk" value="'.$item->id.'" /></td>
-				<td class="hidden-print">'.$item->id.'</td>
+				<td class="check-row d-print-none"><input type="checkbox" name="'.$APPTAG.'_ids[]" class="'.$APPTAG.'-chk" value="'.$item->id.'" /></td>
+				<td class="d-none d-lg-table-cell d-print-none">'.$item->id.'</td>
 			';
 			$adminView['list']['actions'] = '
-				<td class="text-center hidden-print">
-					<a href="#" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'">
-						<span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').' hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'"></span>
+				<td class="text-center d-none d-lg-table-cell d-print-none">
+					<a href="#" class="hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'">
+						<span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').'"></span>
 					</a>
 				</td>
-				<td class="text-center hidden-print">
-					<a href="#" class="btn btn-xs btn-warning" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil hasTooltip" title="'.JText::_('TEXT_EDIT').'"></span></a>
-					<a href="#" class="btn btn-xs btn-danger" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash hasTooltip" title="'.JText::_('TEXT_DELETE').'"></span></a>
+				<td class="text-center d-print-none">
+					<a href="#" class="btn btn-xs btn-warning hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil"></span></a>
+					<a href="#" class="btn btn-xs btn-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash"></span></a>
 				</td>
 			';
 		endif;
 
 		$rowState = $item->state == 0 ? 'table-danger' : '';
+		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
+		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
+		if($item->alter_date != '0000-00-00 00:00:00') :
+			$regInfo	.= '<hr class=&quot;my-2&quot; />';
+			$regInfo	.= JText::_('TEXT_ALTER_DATE').': '.baseHelper::dateFormat($item->alter_date, 'd/m/Y H:i').'<br />';
+			$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->alter_by)->name);
+		endif;
+		// Resultados
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
 				<td>'.baseHelper::nameFormat($item->name).'</td>
+				<td class="d-none d-lg-table-cell">
+					'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'
+					<a href="#" class="base-icon-info-circled setPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top"></a>
+				</td>
 				'.$adminView['list']['actions'].'
 			</tr>
 		';
@@ -120,7 +134,7 @@ else : // num_rows = 0
 
 	$html .= '
 		<tr>
-			<td colspan="5">
+			<td colspan="6">
 				<div class="alert alert-warning alert-icon m-0">'.JText::_('MSG_LISTNOREG').'</div>
 			</td>
 		</tr>
@@ -136,46 +150,14 @@ $html .= '
 
 if($num_rows) :
 
-	// PAGINAÇÃO
-		// stats
-		$listStart	= $lim0 + 1;
-		$listEnd		= $lim0 + $num_rows;
-	if($found_rows != $num_rows) :
-		$html .= '
-			<div class="base-app-pagination pull-left">
-				'.$pageNav->getListFooter().'
-				<div class="list-stats small text-muted">
-					'.JText::sprintf('LIST_STATS', $listStart, $listEnd, $found_rows).'
-				</div>
-			</div>
-		';
-	endif;
+	// PAGINATION
+	require(JPATH_CORE.DS.'apps/layout/list/pagination.php');
 
-	$html .= '
-		<form id="form-order-'.$APPTAG.'" action="'.$_SERVER['REQUEST_URI'].'" class="pull-right form-inline" method="post">
-			<input type="hidden" name="'.$APPTAG.'oF" id="'.$APPTAG.'oF" value="'.$_SESSION[$APPTAG.'oF'].'" />
-			<input type="hidden" name="'.$APPTAG.'oT" id="'.$APPTAG.'oT" value="'.$_SESSION[$APPTAG.'oT'].'" />
-		</form>
-	';
+	// PAGINATION VAR's
+	require(JPATH_CORE.DS.'apps/layout/list/formOrder.php');
 
-	// ITENS POR PÁGINA
-	// seta o parametro 'start = 0' na URL sempre que o limit for refeito
-	// isso evita erro quando estiver navegando em páginas subjacentes
-	$a = preg_replace("#\?start=.*#", '', $_SERVER['REQUEST_URI']);
-	$a = preg_replace("#&start=.*#", '', $a);
-
-	$html .= '
-		<form id="form-limit-'.$APPTAG.'" action="'.$a.'" class="pull-right form-inline hidden-print" method="post">
-			<label>'.JText::_('LIST_PAGINATION_LIMIT').'</label>
-			<select name="list-lim-'.$APPTAG.'" onchange="'.$APPTAG.'_setListLimit()">
-				<option value="5" '.($_SESSION[$APPTAG.'plim'] === 5 ? 'selected' : '').'>5</option>
-				<option value="20" '.($_SESSION[$APPTAG.'plim'] === 20 ? 'selected' : '').'>20</option>
-				<option value="50" '.($_SESSION[$APPTAG.'plim'] === 50 ? 'selected' : '').'>50</option>
-				<option value="100" '.($_SESSION[$APPTAG.'plim'] === 100 ? 'selected' : '').'>100</option>
-				<option value="1" '.($_SESSION[$APPTAG.'plim'] === 1 ? 'selected' : '').'>Todos</option>
-			</select>
-		</form>
-	';
+	// PAGE LIMIT
+	require(JPATH_CORE.DS.'apps/layout/list/pageLimit.php');
 
 endif;
 
