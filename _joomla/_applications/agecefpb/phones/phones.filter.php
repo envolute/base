@@ -76,16 +76,16 @@ $where = '';
 		SELECT
 			'. $db->quoteName('T1.id') .',
 			'. $db->quoteName('T1.name') .',
-			'. $db->quoteName('T2.name') .' operator
+			'. $db->quoteName('T2.name') .' provider
 		FROM '. $db->quoteName($cfg['mainTable'].'_plans') .' T1
-			LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_plans_operators') .' T2
-			ON T2.id = T1.operator_id
+			LEFT OUTER JOIN '. $db->quoteName('#__'.$cfg['project'].'_providers') .' T2
+			ON T2.id = T1.provider_id
 		ORDER BY T2.name
 	';
 	$db->setQuery($query);
 	$plans = $db->loadObjectList();
 	foreach ($plans as $obj) {
-		$flt_plan .= '<option value="'.$obj->id.'"'.($obj->id == $fPlan ? ' selected = "selected"' : '').'>[ '.baseHelper::nameFormat($obj->operator).' ] '.baseHelper::nameFormat($obj->name).'</option>';
+		$flt_plan .= '<option value="'.$obj->id.'"'.($obj->id == $fPlan ? ' selected = "selected"' : '').'>[ '.baseHelper::nameFormat($obj->provider).' ] '.baseHelper::nameFormat($obj->name).'</option>';
 	}
 
 	// Clients -> select

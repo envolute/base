@@ -7,8 +7,8 @@ require(JPATH_BASE.'/libraries/envolute/_system.vars.php');
 $cfg = array();
 $cfg['project'] = 'agecefpb';
 // App Define
-$APPNAME  = 'phonesPlansOperators';
-$MAIN_TB  = '#__'.$cfg['project'].'_phones_plans_operators';
+$APPNAME  = 'providersGroups';
+$MAIN_TB  = '#__'.$cfg['project'].'_providers_groups';
 $APPTAG   = isset(${$APPNAME.'AppTag'}) ? ${$APPNAME.'AppTag'} : $APPNAME;
 $newInstance = ($APPTAG != $APPNAME) ? true : false;
 
@@ -89,7 +89,7 @@ endif;
 	$cfg['htmlEditorFull']		= false;
 
 	// crud's upload config
-	$cfg['hasUpload']			= true;
+	$cfg['hasUpload']			= false;
 	$cfg['hasUpload'] = isset(${$APPTAG.'hasUpload'}) ? ${$APPTAG.'hasUpload'} : $cfg['hasUpload'];
 	// habilita a adição dinamica de novos campos do tipo 'file'
 	$cfg['dinamicFiles']		= false;

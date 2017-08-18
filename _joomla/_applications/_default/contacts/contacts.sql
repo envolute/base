@@ -1,35 +1,52 @@
 --
--- Estrutura da tabela `cms_agecefpb_phones_plans_operators`
+-- Estrutura da tabela `cms_base_contacts`
 --
 
-CREATE TABLE IF NOT EXISTS `cms_agecefpb_providers` (
+CREATE TABLE IF NOT EXISTS `cms_base_contacts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `group_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `usergroup` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
+  `nickname` varchar(50) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `cnpj` varchar(20) NOT NULL,
-  `insc_municipal` varchar(20) NOT NULL,
-  `insc_estadual` varchar(20) NOT NULL,
-  `due_date` tinyint(4) NOT NULL,
-  `website` varchar(255) NOT NULL,
-  `description` text NOT NULL,
-  `service_desc` text NOT NULL,
+  `cpf` varchar(14) NOT NULL,
+  `rg` varchar(10) NOT NULL,
+  `rg_orgao` varchar(10) NOT NULL,
+  `gender` tinyint(4) NOT NULL,
+  `birthday` date NOT NULL,
+  `occupation` varchar(50) NOT NULL,
+  `marital_status` varchar(15) NOT NULL,
+  `partner` varchar(100) NOT NULL,
+  `children` int(11) NOT NULL,
+  `zip_code` varchar(10) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `address_number` varchar(10) NOT NULL,
+  `address_info` varchar(255) NOT NULL,
+  `address_district` varchar(100) NOT NULL,
+  `address_city` varchar(100) NOT NULL,
+  `address_state` varchar(100) NOT NULL,
+  `phones` varchar(31) NOT NULL,
+  `note` varchar(255) NOT NULL,
+  `access` tinyint(4) NOT NULL,
+  `reasonStatus` varchar(100) NOT NULL,
   `state` tinyint(4) NOT NULL,
   `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` int(11) NOT NULL,
   `alter_date` datetime NOT NULL,
   `alter_by` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `group_id` (`group_id`)
+  KEY `group_id` (`group_id`),
+  KEY `user_id` (`user_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `cms_agecefpb_phones_plans_operators_files`
+-- Estrutura da tabela `cms_base_contacts_files`
 --
 
-CREATE TABLE IF NOT EXISTS `cms_agecefpb_providers_files` (
+CREATE TABLE IF NOT EXISTS `cms_base_contacts_files` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_parent` int(11) NOT NULL,
   `index` int(11) NOT NULL,

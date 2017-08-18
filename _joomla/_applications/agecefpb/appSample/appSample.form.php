@@ -10,27 +10,27 @@ $types = $db->loadObjectList();
 ?>
 
 <!-- Nav tabs -->
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs" id="<?php echo $APPTAG?>Tab" role="tablist">
 	<li class="nav-item">
-		<a class="nav-link active" href="#tab-main" data-toggle="tab" role="tab">Geral</a>
+		<a class="nav-link active" id="<?php echo $APPTAG?>Tab-general" href="#<?php echo $APPTAG?>TabGeneral" data-toggle="tab" role="tab" aria-controls="general" aria-expanded="true">Geral</a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link" href="#tab-address" data-toggle="tab" role="tab">Endereço</a>
+		<a class="nav-link" id="<?php echo $APPTAG?>Tab-address" href="#<?php echo $APPTAG?>TabAddress" data-toggle="tab" role="tab" aria-controls="address">Endereço</a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link" href="#tab-files" data-toggle="tab" role="tab">Arquivos</a>
+		<a class="nav-link" id="<?php echo $APPTAG?>Tab-files" href="#<?php echo $APPTAG?>TabFiles" data-toggle="tab" role="tab" aria-controls="files">Arquivos</a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link" href="#tab-images" data-toggle="tab" role="tab">Imagens</a>
+		<a class="nav-link" id="<?php echo $APPTAG?>Tab-images" href="#<?php echo $APPTAG?>TabImages" data-toggle="tab" role="tab" aria-controls="images">Imagens</a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link" href="#tab-extra-info" data-toggle="tab" role="tab">Informações extra</a>
+		<a class="nav-link" id="<?php echo $APPTAG?>Tab-info" href="#<?php echo $APPTAG?>TabInfo" data-toggle="tab" role="tab" aria-controls="info">Informações extra</a>
 	</li>
 </ul>
 
 <!-- Tab panes -->
-<div class="tab-content">
-	<div class="tab-pane active" id="tab-main" role="tabpanel">
+<div class="tab-content" id="<?php echo $APPTAG?>TabContent">
+	<div class="tab-pane fade show active" id="<?php echo $APPTAG?>TabGeneral" role="tabpanel" aria-labelledby="<?php echo $APPTAG?>Tab-general">
 		<div class="row">
 			<div class="col-lg-9">
 				<div class="form-group field-required">
@@ -171,7 +171,7 @@ $types = $db->loadObjectList();
 			</div>
 		</div>
 	</div>
-	<div class="tab-pane" id="tab-address" role="tabpanel">
+	<div class="tab-pane fade" id="<?php echo $APPTAG?>TabAddress" role="tabpanel" aria-labelledby="<?php echo $APPTAG?>Tab-address">
 		<div class="row">
 			<div class="col-lg-3">
 				<div class="form-group">
@@ -217,7 +217,7 @@ $types = $db->loadObjectList();
 			</div>
 		</div>
 	</div>
-	<div class="tab-pane" id="tab-files" role="tabpanel">
+	<div class="tab-pane fade" id="<?php echo $APPTAG?>TabFiles" role="tabpanel" aria-labelledby="<?php echo $APPTAG?>Tab-files">
 		<div class="row">
 			<div class="col-lg-3">
 				<div class="form-group">
@@ -242,14 +242,14 @@ $types = $db->loadObjectList();
 		<hr />
 		<div id="<?php echo $APPTAG?>-files-group" class="row"></div>
 	</div>
-	<div class="tab-pane" id="tab-images" role="tabpanel">
+	<div class="tab-pane fade" id="<?php echo $APPTAG?>TabImages" role="tabpanel" aria-labelledby="<?php echo $APPTAG?>Tab-images">
 		<button type="button" class="base-icon-plus btn btn-success" onclick="<?php echo $APPTAG?>_setNewFile('#<?php echo $APPTAG?>-images-group', 'image', 'col-md-6 col-lg-3')">
 			<?php echo JText::_('TEXT_ADD'); ?>
 		</button>
 		<hr />
 		<div id="<?php echo $APPTAG?>-images-group" class="row"></div>
 	</div>
-	<div class="tab-pane" id="tab-extra-info" role="tabpanel">
+	<div class="tab-pane fade" id="<?php echo $APPTAG?>TabInfo" role="tabpanel" aria-labelledby="<?php echo $APPTAG?>Tab-info">
 		<div class="row">
 			<div class="col-12">
 				<div class="form-group">

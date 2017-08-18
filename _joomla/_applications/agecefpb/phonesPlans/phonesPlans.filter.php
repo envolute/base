@@ -9,9 +9,9 @@ $where = '';
 	// STATE -> select
 	$active	= $app->input->get('active', 2, 'int');
 	$where .= ($active == 2) ? $db->quoteName('T1.state').' != '.$active : $db->quoteName('T1.state').' = '.$active;
-	// OPERATORS -> select
+	// PROVIDERS -> select
 	$fOper	= $app->input->get('fOper', 0, 'int');
-	if($fOper != 0) $where .= ' AND '.$db->quoteName('T1.operator_id').' = '.$fOper;
+	if($fOper != 0) $where .= ' AND '.$db->quoteName('T1.provider_id').' = '.$fOper;
 	// PRICE
 	$priceMin	= $app->input->get('priceMin', '', 'string');
 	$priceMax	= $app->input->get('priceMax', '', 'string');
@@ -61,9 +61,9 @@ $where = '';
 
 // FILTER'S DINAMIC FIELDS
 
-	// OPERATORS -> select
+	// PROVIDERS -> select
 	$flt_oper = '';
-	$query = 'SELECT * FROM '. $db->quoteName($cfg['mainTable'].'_operators') .' ORDER BY name';
+	$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_providers') .' WHERE '. $db->quoteName('group_id') .' = 2 ORDER BY name';
 	$db->setQuery($query);
 	$opers = $db->loadObjectList();
 	foreach ($opers as $obj) {
@@ -96,7 +96,7 @@ $htmlFilter = '
 			<div class="row">
 				<div class="col-sm-6 col-md-3">
 					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_OPERATOR').'</label>
+						<label class="label-sm">'.JText::_('FIELD_LABEL_PROVIDER').'</label>
 						<select name="fOper" id="fOper" class="form-control form-control-sm set-filter">
 							<option value="0">- '.JText::_('TEXT_SELECT').' -</option>
 							'.$flt_oper.'

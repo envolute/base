@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `cms_agecefpb_clients` (
   `rg_orgao` varchar(10) NOT NULL,
   `gender` tinyint(4) NOT NULL,
   `birthday` date NOT NULL,
-  `marital_status` varchar(15) NOT NULL,
+  `marital_status` tinyint(4) NOT NULL,
   `partner` varchar(100) NOT NULL,
   `children` int(11) NOT NULL,
   `cx_status` tinyint(4) NOT NULL,

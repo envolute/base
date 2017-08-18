@@ -139,7 +139,7 @@ jQuery(function() {
 			rg_orgao.val('');
 			checkOption(gender, ''); // radio
 			birthday.val('');
-			marital_status.selectUpdate(''); // select
+			marital_status.selectUpdate(0); // select
 			partner.val('');
 			children.selectUpdate(0); // select
 			checkOption(cx_status, 0); // radio
@@ -184,16 +184,15 @@ jQuery(function() {
 
 		// CUSTOM -> Sincroniza com os contatos
 		window.<?php echo $APPTAG?>_userSync = function() {
-			toggleLoader(); // start loader
+			<?php echo $APPTAG?>_formExecute(true, true, false); // inicia o loader
 			jQuery.ajax({
 				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=userSync",
 				dataType: 'json',
 				type: 'POST',
 				cache: false,
 				success: function(data) {
+					<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
 					jQuery.map( data, function( res ) {
-						if(res.status == 7) showAlertBalloon('#<?php echo $APPTAG?>-syncAlert');
-						toggleLoader(); // end loader
 						setTimeout(function() {
 							<?php $redir = baseHelper::setUrlParam(JURI::current(), 'sync=1'); ?>
 							window.location.href = "<?php echo $redir?>";
@@ -201,10 +200,10 @@ jQuery(function() {
 					});
 				},
 				error: function(xhr, status, error) {
-					console.log(xhr);
-					console.log(status);
-					console.log(error);
-					toggleLoader(); // end loader
+					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
+					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
+					?>
+					<?php echo $APPTAG?>_formExecute(true, formDisable, false); // encerra o loader
 				}
 			});
 			return false;
@@ -334,10 +333,7 @@ jQuery(function() {
 						rg_orgao.val(item.rg_orgao);
 						checkOption(gender, item.gender); // radio
 						birthday.val(dateFormat(item.birthday)); // DATE -> conversão de data
-						marital_status.selectUpdate(item.marital_status, ''); // select
-						// mostra/esconde o campo 'motivo'
-						if(item.marital_status != '') setHidden('#mstatus_desc-group', true);
-						else setHidden('#mstatus_desc-group', false);
+						marital_status.selectUpdate(item.marital_status); // select
 						partner.val(item.partner);
 						children.selectUpdate(item.children); // select
 						checkOption(cx_status, item.cx_status); // radio

@@ -104,7 +104,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['rg_orgao']			= $input->get('rg_orgao', '', 'string');
 		$request['gender']				= $input->get('gender', 1, 'int');
 		$request['birthday']			= $input->get('birthday', '', 'string');
-		$request['marital_status']		= $input->get('marital_status', '', 'string');
+		$request['marital_status']		= $input->get('marital_status', 0, 'int');
 		$request['partner']				= $input->get('partner', '', 'string');
 	  	$request['children']			= $input->get('children', 0, 'int');
 		$request['cx_status']			= $input->get('cx_status', 0, 'int');
@@ -263,7 +263,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('rg_orgao')			.'='. $db->quote($request['rg_orgao']) .','.
 						$db->quoteName('gender')			.'='. $request['gender'] .','.
 						$db->quoteName('birthday')			.'='. $db->quote($request['birthday']) .','.
-						$db->quoteName('marital_status') 	.'='. $db->quote($request['marital_status']) .','.
+						$db->quoteName('marital_status') 	.'='. $request['marital_status'] .','.
 						$db->quoteName('partner')			.'='. $db->quote($request['partner']) .','.
 						$db->quoteName('children')			.'='. $request['children'] .','.
 						$db->quoteName('cx_status')			.'='. $request['cx_status'] .','.
@@ -474,10 +474,14 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 						// ALTER RELATIONSHIPS STATE
 						// Altera o estado dos relacionamentos
-						// MOVIMENTAÇÕES RECORRENTES -> altera o estado relacionado às movimentações recorrentes
-						$query = 'UPDATE '. $db->quoteName('#__'.$cfg['project'].'_transactions') .' SET '. $db->quoteName('state') .' = '.$stateVal.' WHERE '. $db->quoteName('client_id') .' IN ('.$ids.') AND '. $db->quoteName('fixed') .' = 1';
-						$db->setQuery($query);
-						$db->execute();
+						// MOVIMENTAÇÕES RECORRENTES -> altera o estado das movimentações recorrentes do cliente
+						// IMPORTANTE: Altera apenas quando o cliente é setado como 'inativo'
+						// Isso evita 'reativar' movimentações indevidas quando 'reativar' o cliente
+						if($stateVal == 0)
+							$query = 'UPDATE '. $db->quoteName('#__'.$cfg['project'].'_transactions') .' SET '. $db->quoteName('state') .' = '.$stateVal.' WHERE '. $db->quoteName('client_id') .' IN ('.$ids.') AND '. $db->quoteName('fixed') .' = 1';
+							$db->setQuery($query);
+							$db->execute();
+						endif;
 
 			            // ALTER USER STATE (block)
 			            // Bloqueia/desbloqueia o usuário de acordo com o 'state' do cliente
@@ -595,7 +599,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quote($request['rg_orgao']) .','.
 							$request['gender'] .','.
 							$db->quote($request['birthday']) .','.
-							$db->quote($request['marital_status']) .','.
+							$request['marital_status'] .','.
 							$db->quote($request['partner']) .','.
 							$request['children'] .','.
 							$request['cx_status'] .','.

@@ -339,21 +339,21 @@ jQuery(window).load(function() {
 
 	<?php if($hasAdmin) : ?>
 		<div class="modal fade" data-animation="false" id="modal-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-<?php echo $APPTAG?>Label">
-			<div class="modal-dialog set-shadow-lg" role="document">
+			<div class="modal-dialog modal-sm set-shadow-lg" role="document">
 				<div class="modal-content">
 					<form name="form-<?php echo $APPTAG?>" id="form-<?php echo $APPTAG?>" method="post" enctype="multipart/form-data">
 						<?php require(JPATH_CORE.DS.'apps/layout/form/modal.header.php'); ?>
 						<div class="modal-body">
 							<fieldset>
 								<?php
-								require(JPATH_CORE.DS.'apps/layout/form/toolbar.php');
+								require(JPATH_CORE.DS.'apps/layout/form/toolbar.sm.php');
 								if($newInstance) require($PATH_APP_FILE.'.form.php');
 								else require_once($PATH_APP_FILE.'.form.php');
 								?>
 							</fieldset>
 							<?php require(JPATH_CORE.DS.'apps/layout/form/alert.error.php'); ?>
 						</div>
-						<?php require(JPATH_CORE.DS.'apps/layout/form/modal.footer.php'); ?>
+						<?php require(JPATH_CORE.DS.'apps/layout/form/modal.footer.sm.php'); ?>
 					</form>
 				</div>
 			</div>

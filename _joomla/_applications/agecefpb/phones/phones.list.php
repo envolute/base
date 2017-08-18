@@ -14,7 +14,7 @@ require($PATH_APP_FILE.'.filter.php');
 			'. $db->quoteName('T1.id') .',
 			'. $db->quoteName('T2.name') .' client,
 			'. $db->quoteName('T3.name') .' plan,
-			'. $db->quoteName('T4.name') .' operator,
+			'. $db->quoteName('T4.name') .' provider,
 			'. $db->quoteName('T3.price') .',
 			'. $db->quoteName('T1.phone_number') .',
 			'. $db->quoteName('T1.note') .',
@@ -26,11 +26,11 @@ require($PATH_APP_FILE.'.filter.php');
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
 			LEFT OUTER JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
-			ON T2.id = T1.client_id AND T2.state = 1
+			ON T2.id = T1.client_id
 			LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_plans') .' T3
 			ON T3.id = T1.plan_id AND T3.state = 1
-			LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_plans_operators') .' T4
-			ON T4.id = T3.operator_id AND T4.state = 1
+			LEFT OUTER JOIN '. $db->quoteName('#__'.$cfg['project'].'_providers') .' T4
+			ON T4.id = T3.provider_id AND T4.state = 1
 		WHERE
 			'.$where.$orderList;
 	;
@@ -68,7 +68,7 @@ $html = '
 				<tr>
 					'.$adminView['head']['info'].'
 					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_PHONE_NUMBER'), 'T1.name', $APPTAG).'</th>
-					<th class="d-none d-lg-table-cell">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_OPERATOR'), 'T4.name', $APPTAG).'</th>
+					<th class="d-none d-lg-table-cell">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_PROVIDER'), 'T4.name', $APPTAG).'</th>
 					<th class="d-none d-lg-table-cell">'.JText::_('FIELD_LABEL_PLAN').'</th>
 					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_CLIENT'), 'T2.name', $APPTAG).'</th>
 					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
@@ -122,7 +122,7 @@ if($num_rows) : // verifica se existe
 			';
 		endif;
 
-		$operator = !empty($item->operator) ? baseHelper::nameFormat($item->operator) : '<span class="base-icon-cancel text-danger"></span>';
+		$provider = !empty($item->provider) ? baseHelper::nameFormat($item->provider) : '<span class="base-icon-cancel text-danger"></span>';
 		$plan = !empty($item->plan) ? baseHelper::nameFormat($item->plan).'<div class="small text-muted">R$'.baseHelper::priceFormat($item->price).'</div>' : '<span class="base-icon-cancel text-danger"></span>';
 		$note = !empty($item->note) ? '<span class="base-icon-info-circled cursor-help hasTooltip" title="'.$item->note.'"></span> ' : '';
 		$rowState = $item->state == 0 ? 'table-danger' : '';
@@ -140,10 +140,10 @@ if($num_rows) : // verifica se existe
 				<td>
 					'.$note.$item->phone_number.'
 					<div class="d-lg-none small mt-1">
-						<span class="badge badge-primary">'.$item->operator.'</span> '.baseHelper::nameFormat($item->plan).'
+						<span class="badge badge-primary">'.$item->provider.'</span> '.baseHelper::nameFormat($item->plan).'
 					</div>
 				</td>
-				<td class="d-none d-lg-table-cell">'.$operator.'</td>
+				<td class="d-none d-lg-table-cell">'.$provider.'</td>
 				<td class="d-none d-lg-table-cell">
 					'.$plan.'
 				</td>

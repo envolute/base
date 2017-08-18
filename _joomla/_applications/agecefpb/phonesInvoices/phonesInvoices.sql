@@ -4,7 +4,7 @@
 
 CREATE TABLE IF NOT EXISTS `cms_agecefpb_phones_invoices` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `operator_id` int(11) NOT NULL,
+  `provider_id` int(11) NOT NULL,
   `due_date` date NOT NULL,
   `tax` decimal(10,2) NOT NULL,
   `note` varchar(255) NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `cms_agecefpb_phones_invoices` (
   `alter_date` datetime NOT NULL,
   `alter_by` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `operator_id` (`operator_id`)
+  KEY `provider_id` (`provider_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -83,21 +83,25 @@ CREATE TABLE IF NOT EXISTS `cms_agecefpb_phones_invoices_files` (
 -- View com valor total da fatura por número
 --
 
-CREATE VIEW `vw_agecefpb_phones_invoices_phone_total` AS
+CREATE OR REPLACE VIEW `vw_agecefpb_phones_invoices_phone_total` AS
 SELECT
 `T1`.`invoice_id`,
 `T2`.`due_date`,
 `T3`.`client_id`,
+`T6`.`state` client_state,
 `T6`.`user_id`,
 `T6`.`name`,
 `T6`.`cpf`,
 `T6`.`cx_code`,
 `T3`.`id` phone_id,
+`T3`.`state` phone_state,
 `T1`.`tel`,
 `T4`.`id` plan_id,
+`T4`.`state` plan_state,
 `T4`.`name` plan,
-`T5`.`id` operator_id,
-`T5`.`name` operator,
+`T5`.`id` provider_id,
+`T5`.`state` provider_state,
+`T5`.`name` provider,
 SUM(`T1`.`valor_cobrado`) AS `valor_cobrado`,
 `T4`.`price` valor_plano,
 `T2`.`tax` taxa_servico,
@@ -110,8 +114,8 @@ FROM `cms_agecefpb_phones_invoices_details` T1
 	ON SUBSTRING_INDEX(`T3`.`phone_number`,' ',-1) LIKE SUBSTRING_INDEX(`T1`.`tel`,' ',-1)
 	LEFT OUTER JOIN `cms_agecefpb_phones_plans` T4
 	ON `T4`.`id` = `T3`.`plan_id`
-	LEFT OUTER JOIN `cms_agecefpb_phones_plans_operators` T5
-	ON `T5`.`id` = `T4`.`operator_id`
+	LEFT OUTER JOIN `cms_agecefpb_providers` T5
+	ON `T5`.`id` = `T4`.`provider_id`
 	LEFT OUTER JOIN `cms_agecefpb_clients` T6
 	ON `T6`.`id` = `T3`.`client_id`
 WHERE `T1`.`tel` <> ""
@@ -124,7 +128,7 @@ ORDER BY `T1`.`invoice_id`, `T6`.`name`;
 -- View com um sumário de valores por tipo de serviço 'seção'
 --
 
-CREATE VIEW `vw_agecefpb_phones_invoices_summary` AS
+CREATE OR REPLACE VIEW `vw_agecefpb_phones_invoices_summary` AS
 SELECT `invoice_id`, `tel`, `sub_secao`, `secao`, SUM(`valor_cobrado`),`created_by`
 FROM `cms_agecefpb_phones_invoices_details`
 WHERE `tel` <> ""

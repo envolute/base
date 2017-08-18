@@ -54,7 +54,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		SELECT
 			'. $db->quoteName('T1.id') .',
 			'. $db->quoteName('T1.name') .',
-			'. $db->quoteName('T2.name') .' operator,
+			'. $db->quoteName('T2.name') .' provider,
 			'. $db->quoteName('T1.price') .',
 			'. $db->quoteName('T1.state') .'
 	';
@@ -62,8 +62,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
 			$query .= ' FROM '.
 				$db->quoteName($cfg['mainTable']) .' T1
-				JOIN '. $db->quoteName($cfg['mainTable'].'_operators') .' T2
-				ON '.$db->quoteName('T2.id') .' = T1.operator_id AND T2.state = 1
+				JOIN '. $db->quoteName('#__'.$cfg['project'].'_providers') .' T2
+				ON '.$db->quoteName('T2.id') .' = T1.provider_id AND T2.state = 1
 				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T3
 				ON '.$db->quoteName('T3.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id AND T3.state = 1
 			WHERE '.
@@ -74,8 +74,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		endif;
 	else :
 		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
-			JOIN '. $db->quoteName($cfg['mainTable'].'_operators') .' T2
-			ON '.$db->quoteName('T2.id') .' = T1.operator_id AND T2.state = 1
+			JOIN '. $db->quoteName('#__'.$cfg['project'].'_providers') .' T2
+			ON '.$db->quoteName('T2.id') .' = T1.provider_id AND T2.state = 1
 		';
 		if($oCHL) :
 			$query .= ' WHERE 1=0';
@@ -119,7 +119,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$html .= '
 				<li class="'.$rowState.'">
 					<span class="float-right">'.$btnState.$btnEdit.$btnDelete.'</span>
-					<span class="badge badge-primary">'.$item->operator.'</span> '.baseHelper::nameFormat($item->name).'
+					<span class="badge badge-primary">'.$item->provider.'</span> '.baseHelper::nameFormat($item->name).'
 					<div class="text-sm text-muted mt-1">R$'.baseHelper::priceFormat($item->price).'</div>
 				</li>
 			';

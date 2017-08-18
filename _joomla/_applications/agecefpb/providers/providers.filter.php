@@ -9,13 +9,23 @@ $where = '';
 	// STATE -> select
 	$active	= $app->input->get('active', 2, 'int');
 	$where .= ($active == 2) ? $db->quoteName('T1.state').' != '.$active : $db->quoteName('T1.state').' = '.$active;
+	// GROUPS -> select
+	$fGroup	= $app->input->get('fGroup', 0, 'int');
+	if($fGroup != 0) $where .= ' AND '.$db->quoteName('T1.group_id').' = '.$fGroup;
 
 	// Search 'Text fields'
 	$search	= $app->input->get('fSearch', '', 'string');
 	$sQuery = ''; // query de busca
 	$sLabel = array(); // label do campo de busca
 	$searchFields = array(
-		'T1.name'				=> 'FIELD_LABEL_NAME'
+		'T1.name'				=> 'FIELD_LABEL_NAME',
+		'T1.email'				=> 'FIELD_LABEL_EMAIL',
+		'T1.cnpj'				=> 'CNPJ',
+		'T1.insc_municipal'		=> 'Inscrição Municipal/Estadual',
+		'T1.insc_estadual'		=> '',
+		'T1.website'			=> 'FIELD_LABEL_WEBSITE',
+		'T1.description'		=> 'FIELD_LABEL_DESCRIPTION',
+		'T1.service_desc'		=> ''
 	);
 	$i = 0;
 	foreach($searchFields as $key => $value) {
@@ -51,14 +61,14 @@ $where = '';
 
 // FILTER'S DINAMIC FIELDS
 
-	// types -> select
-	// $flt_type = '';
-	// $query = 'SELECT * FROM '. $db->quoteName($cfg['mainTable'].'_types') .' ORDER BY name';
-	// $db->setQuery($query);
-	// $types = $db->loadObjectList();
-	// foreach ($types as $obj) {
-	// 	$flt_type .= '<option value="'.$obj->id.'"'.($obj->id == $fType ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
-	// }
+	// GROUPS -> select
+	$flt_oper = '';
+	$query = 'SELECT * FROM '. $db->quoteName($cfg['mainTable'].'_groups') .' ORDER BY name';
+	$db->setQuery($query);
+	$groups = $db->loadObjectList();
+	foreach ($groups as $obj) {
+		$flt_group .= '<option value="'.$obj->id.'"'.($obj->id == $fGroup ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
+	}
 
 // VISIBILITY
 // Elementos visíveis apenas quando uma consulta é realizada
@@ -84,6 +94,15 @@ $htmlFilter = '
 			<input type="hidden" name="'.$APPTAG.'_filter" value="1" />
 
 			<div class="row">
+				<div class="col-sm-8 col-lg-3">
+					<div class="form-group">
+						<label class="label-sm">'.JText::_('FIELD_LABEL_GROUP').'</label>
+						<select name="fGroup" id="fGroup" class="form-control form-control-sm set-filter">
+							<option value="0">- '.JText::_('TEXT_SELECT').' -</option>
+							'.$flt_group.'
+						</select>
+					</div>
+				</div>
 				<div class="col-sm-4 col-md-2">
 					<div class="form-group">
 						<label class="label-sm">'.JText::_('TEXT_STATE').'</label>
@@ -94,7 +113,7 @@ $htmlFilter = '
 						</select>
 					</div>
 				</div>
-				<div class="col-sm-8 col-md-6 col-lg-4">
+				<div class="col-sm-4 col-md-6 col-lg">
 					<div class="form-group">
 						<label class="label-sm text-truncate">'.implode(', ', $sLabel).'</label>
 						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />

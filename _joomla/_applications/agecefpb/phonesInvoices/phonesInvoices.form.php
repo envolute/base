@@ -1,28 +1,28 @@
 <?php
 defined('_JEXEC') or die;
 
-// OPERATORS
-$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_phones_plans_operators') .' WHERE '. $db->quoteName('state') .' = 1 ORDER BY name';
+// PROVIDERS
+$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_providers') .' WHERE '. $db->quoteName('group_id') .' = 2 AND '. $db->quoteName('state') .' = 1 ORDER BY name';
 $db->setQuery($query);
-$operators = $db->loadObjectList();
+$providers = $db->loadObjectList();
 
 // FORM
 ?>
 
 <div class="form-group field-required">
-	<label><?php echo JText::_('FIELD_LABEL_OPERATOR'); ?></label>
+	<label><?php echo JText::_('FIELD_LABEL_PROVIDER'); ?></label>
 	<div class="input-group">
-		<select name="operator_id" id="<?php echo $APPTAG?>-operator_id" class="form-control field-id">
+		<select name="provider_id" id="<?php echo $APPTAG?>-provider_id" class="form-control field-id">
 			<option value="0">- <?php echo JText::_('TEXT_SELECT'); ?> -</option>
 			<?php
-				foreach ($operators as $obj) {
+				foreach ($providers as $obj) {
 					echo '<option value="'.$obj->id.'">'.baseHelper::nameFormat($obj->name).'</option>';
 				}
 			?>
 		</select>
 		<span class="input-group-btn">
-			<button type="button" class="base-icon-plus btn btn-success hasTooltip" data-animation="false" title="<?php echo JText::_('TEXT_ADD')?>" data-toggle="modal" data-target="#modal-<?php echo $APPTAG?>Operators" data-backdrop="static" data-keyboard="false"></button>
-			<button type="button" class="base-icon-cog btn btn-primary hasTooltip" data-animation="false" title="<?php echo JText::_('TEXT_EDIT')?>" onclick="<?php echo $APPTAG?>Operators_listReload(false)" data-toggle="modal" data-target="#modal-list-<?php echo $APPTAG?>Operators" data-backdrop="static" data-keyboard="false"></button>
+			<button type="button" class="base-icon-plus btn btn-success hasTooltip" data-animation="false" title="<?php echo JText::_('TEXT_ADD')?>" data-toggle="modal" data-target="#modal-providers" data-backdrop="static" data-keyboard="false"></button>
+			<button type="button" class="base-icon-cog btn btn-primary hasTooltip" data-animation="false" title="<?php echo JText::_('TEXT_EDIT')?>" onclick="providers_listReload(false)" data-toggle="modal" data-target="#modal-list-providers" data-backdrop="static" data-keyboard="false"></button>
 		</span>
 	</div>
 </div>

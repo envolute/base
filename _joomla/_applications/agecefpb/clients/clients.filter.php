@@ -19,12 +19,12 @@ $where = '';
 	$fGender = $app->input->get('fGender', 2, 'int');
 	if($fGender != 2) $where .= ' AND '.$db->quoteName('T1.gender').' = '.$fGender;
 
-	// DATE
+	// BIRTHDAY
 	$dateMin	= $app->input->get('dateMin', '', 'string');
 	$dateMax	= $app->input->get('dateMax', '', 'string');
 	$dtmin = !empty($dateMin) ? $dateMin : '0000-00-00';
 	$dtmax = !empty($dateMax) ? $dateMax : '9999-12-31';
-	if(!empty($dateMin) || !empty($dateMax)) $where .= ' AND '.$db->quoteName('T1.created_date').' BETWEEN '.$db->quote($dtmin).' AND '.$db->quote($dtmax);
+	if(!empty($dateMin) || !empty($dateMax)) $where .= ' AND '.$db->quoteName('T1.birthday').' BETWEEN '.$db->quote($dtmin).' AND '.$db->quote($dtmax);
 
 	// Search 'Text fields'
 	$search	= $app->input->get('fSearch', '', 'string');

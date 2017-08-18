@@ -13,7 +13,7 @@ require($PATH_APP_FILE.'.filter.php');
 		SELECT SQL_CALC_FOUND_ROWS
 			'. $db->quoteName('T1.id') .',
 			'. $db->quoteName('T1.name') .',
-			'. $db->quoteName('T2.name') .' operator,
+			'. $db->quoteName('T2.name') .' provider,
 			'. $db->quoteName('T1.price') .',
 			'. $db->quoteName('T1.description') .',
 			'. $db->quoteName('T1.created_date') .',
@@ -23,8 +23,8 @@ require($PATH_APP_FILE.'.filter.php');
 			'. $db->quoteName('T1.state') .'
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
-			LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_operators') .' T2
-			ON T2.id = T1.operator_id AND T2.state = 1
+			LEFT OUTER JOIN '. $db->quoteName('#__'.$cfg['project'].'_providers') .' T2
+			ON T2.id = T1.provider_id AND T2.state = 1
 		WHERE
 			'.$where.$orderList;
 	;
@@ -62,7 +62,7 @@ $html = '
 				<tr>
 					'.$adminView['head']['info'].'
 					<th>'.JText::_('FIELD_LABEL_NAME').'</th>
-					<th class="d-none d-md-table-cell">'.JText::_('FIELD_LABEL_OPERATOR').'</th>
+					<th class="d-none d-md-table-cell">'.JText::_('FIELD_LABEL_PROVIDER').'</th>
 					<th>'.JText::_('FIELD_LABEL_PRICE').'</th>
 					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
 					'.$adminView['head']['actions'].'
@@ -115,7 +115,7 @@ if($num_rows) : // verifica se existe
 			';
 		endif;
 
-		$operator = !empty($item->operator) ? $item->operator : '<span class="base-icon-cancel text-danger"></span>';
+		$provider = !empty($item->provider) ? $item->provider : '<span class="base-icon-cancel text-danger"></span>';
 		$rowState = $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
@@ -129,7 +129,7 @@ if($num_rows) : // verifica se existe
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
 				<td>'.$item->name.'</td>
-				<td class="d-none d-md-table-cell">'.$operator.'</td>
+				<td class="d-none d-md-table-cell">'.$provider.'</td>
 				<td>'.baseHelper::priceFormat($item->price).'</td>
 				<td class="d-none d-lg-table-cell">
 					'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'

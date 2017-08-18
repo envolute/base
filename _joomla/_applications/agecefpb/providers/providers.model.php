@@ -92,11 +92,20 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['relationId']   		= $input->get('relationId', 0, 'int');
 		$request['state']				= $input->get('state', 1, 'int');
 		// app
+		$request['group_id']			= $input->get('group_id', 0, 'int');
 		$request['name']				= $input->get('name', '', 'string');
+		$request['email']				= $input->get('email', '', 'string');
+		$request['cnpj']				= $input->get('cnpj', '', 'string');
+		$request['insc_municipal']		= $input->get('insc_municipal', '', 'string');
+		$request['insc_estadual']		= $input->get('insc_estadual', '', 'string');
+		$request['due_date']			= $input->get('due_date', 0, 'int');
+		$request['website']				= $input->get('website', '', 'string');
+		$request['description']			= $input->get('description', '', 'raw');
+		$request['service_desc']		= $input->get('service_desc', '', 'raw');
 
 		// SAVE CONDITION
 		// Condição para inserção e atualização dos registros
-		$save_condition = (!empty($request['name']));
+		$save_condition = ($request['group_id'] > 0 && !empty($request['name']));
 
 		if($id || (!empty($ids) && $ids != 0)) :  //UPDATE OR DELETE
 
@@ -142,7 +151,16 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'prev'				=> $prev,
 						'next'				=> $next,
 						// App Fields
+						'group_id'			=> $item->group_id,
 						'name'				=> $item->name,
+						'email'				=> $item->email,
+						'cnpj'				=> $item->cnpj,
+						'insc_municipal'	=> $item->insc_municipal,
+						'insc_estadual'		=> $item->insc_estadual,
+						'due_date'			=> $item->due_date,
+						'website'			=> $item->website,
+						'description'		=> $item->description,
+						'service_desc'		=> $item->service_desc,
 						'files'				=> $listFiles
 					);
 
@@ -151,7 +169,16 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 					$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
 					$query .=
+						$db->quoteName('group_id')			.'='. $request['group_id'] .','.
 						$db->quoteName('name')				.'='. $db->quote($request['name']) .','.
+						$db->quoteName('email')				.'='. $db->quote($request['email']) .','.
+						$db->quoteName('cnpj')				.'='. $db->quote($request['cnpj']) .','.
+						$db->quoteName('insc_municipal')	.'='. $db->quote($request['insc_municipal']) .','.
+						$db->quoteName('insc_estadual')		.'='. $db->quote($request['insc_estadual']) .','.
+						$db->quoteName('due_date')			.'='. $request['due_date'] .','.
+						$db->quoteName('website')			.'='. $db->quote($request['website']) .','.
+						$db->quoteName('description')		.'='. $db->quote($request['description']) .','.
+						$db->quoteName('service_desc')		.'='. $db->quote($request['service_desc']) .','.
 						$db->quoteName('state')				.'='. $request['state'] .','.
 						$db->quoteName('alter_date')		.'= NOW(),'.
 						$db->quoteName('alter_by')			.'='. $user->id
@@ -340,11 +367,29 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					// Prepare the insert query
 					$query  = '
 						INSERT INTO '. $db->quoteName($cfg['mainTable']) .'('.
+							$db->quoteName('group_id') .','.
 							$db->quoteName('name') .','.
+							$db->quoteName('email') .','.
+							$db->quoteName('cnpj') .','.
+							$db->quoteName('insc_municipal') .','.
+							$db->quoteName('insc_estadual') .','.
+							$db->quoteName('due_date') .','.
+							$db->quoteName('website') .','.
+							$db->quoteName('description') .','.
+							$db->quoteName('service_desc') .','.
 							$db->quoteName('state') .','.
 							$db->quoteName('created_by')
 						.') VALUES ('.
+							$request['group_id'] .','.
 							$db->quote($request['name']) .','.
+							$db->quote($request['email']) .','.
+							$db->quote($request['cnpj']) .','.
+							$db->quote($request['insc_municipal']) .','.
+							$db->quote($request['insc_estadual']) .','.
+							$request['due_date'] .','.
+							$db->quote($request['website']) .','.
+							$db->quote($request['description']) .','.
+							$db->quote($request['service_desc']) .','.
 							$request['state'] .','.
 							$user->id
 						.')

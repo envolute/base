@@ -55,7 +55,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			'. $db->quoteName('T1.id') .',
 			'. $db->quoteName('T2.name') .' client,
 			'. $db->quoteName('T3.name') .' plan,
-			'. $db->quoteName('T4.name') .' operator,
+			'. $db->quoteName('T4.name') .' provider,
 			'. $db->quoteName('T3.price') .',
 			'. $db->quoteName('T1.phone_number') .',
 			'. $db->quoteName('T1.state') .'
@@ -66,8 +66,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$db->quoteName($cfg['mainTable']) .' T1
 				JOIN '. $db->quoteName($cfg['mainTable'].'_plans') .' T2
 				ON T2.id = T1.plan_id AND T2.state = 1
-				JOIN '. $db->quoteName($cfg['mainTable'].'_plans_operators') .' T3
-				ON T3.id = T2.operator_id AND T3.state = 1
+				JOIN '. $db->quoteName('#__'.$cfg['project'].'_providers') .' T3
+				ON T3.id = T2.provider_id AND T3.state = 1
 				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T4
 				ON '.$db->quoteName('T4.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
 			WHERE '.
@@ -121,7 +121,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				<li class="'.$rowState.'">
 					<span class="float-right">'.$btnState.$btnEdit.$btnDelete.'</span>
 					'.baseHelper::nameFormat($item->plan).'
-					<div class="small text-muted"><span class="badge badge-primary">'.baseHelper::nameFormat($item->operator).'</span> R$'.baseHelper::priceFormat($item->price).'</div>
+					<div class="small text-muted"><span class="badge badge-primary">'.baseHelper::nameFormat($item->provider).'</span> R$'.baseHelper::priceFormat($item->price).'</div>
 				</li>
 			';
 		}

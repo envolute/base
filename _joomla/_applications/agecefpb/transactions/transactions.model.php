@@ -971,7 +971,17 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$user->id
 					.'
 					FROM '. $db->quoteName('vw_'.$cfg['project'].'_phones_invoices_phone_total') .'
-					WHERE '. $db->quoteName('invoice_id') .' = '.$state.' AND '. $db->quoteName('client_id') .' IS NOT NULL
+					WHERE '.
+						$db->quoteName('invoice_id') .' = '.$state.' AND '.
+						$db->quoteName('client_id') .' IS NOT NULL AND '.
+						$db->quoteName('client_id') .' <> 0 AND '.
+						$db->quoteName('client_state') .' = 1 AND '.
+						$db->quoteName('provider_id') .' IS NOT NULL AND '.
+						$db->quoteName('provider_id') .' <> 0 AND '.
+						$db->quoteName('provider_state') .' = 1 AND '.
+						$db->quoteName('phone_id') .' IS NOT NULL AND '.
+						$db->quoteName('phone_id') .' <> 0 AND '.
+						$db->quoteName('phone_state') .' = 1
 				';
 
 				try {

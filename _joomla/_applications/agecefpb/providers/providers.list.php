@@ -13,6 +13,7 @@ require($PATH_APP_FILE.'.filter.php');
 		SELECT SQL_CALC_FOUND_ROWS
 			'. $db->quoteName('T1.id') .',
 			'. $db->quoteName('T1.name') .',
+			'. $db->quoteName('T2.name') .' grp,
 			'. $db->quoteName('T1.created_date') .',
 			'. $db->quoteName('T1.created_by') .',
 			'. $db->quoteName('T1.alter_date') .',
@@ -20,6 +21,8 @@ require($PATH_APP_FILE.'.filter.php');
 			'. $db->quoteName('T1.state') .'
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
+			LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
+			ON T2.id = T1.group_id AND T2.state = 1
 		WHERE
 			'.$where.$orderList;
 	;
@@ -57,6 +60,7 @@ $html = '
 				<tr>
 					'.$adminView['head']['info'].'
 					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_NAME'), 'T1.name', $APPTAG).'</th>
+					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_GROUP'), 'T2.name', $APPTAG).'</th>
 					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
 					'.$adminView['head']['actions'].'
 				</tr>
@@ -120,7 +124,8 @@ if($num_rows) : // verifica se existe
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
-				<td>'.$item->name.'</td>
+				<td>'.baseHelper::nameFormat($item->name).'</td>
+				<td>'.baseHelper::nameFormat($item->grp).'</td>
 				<td class="d-none d-lg-table-cell">
 					'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'
 					<a href="#" class="base-icon-info-circled setPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top"></a>
@@ -134,7 +139,7 @@ else : // num_rows = 0
 
 	$html .= '
 		<tr>
-			<td colspan="6">
+			<td colspan="7">
 				<div class="alert alert-warning alert-icon m-0">'.JText::_('MSG_LISTNOREG').'</div>
 			</td>
 		</tr>

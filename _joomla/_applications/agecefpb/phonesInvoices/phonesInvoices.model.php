@@ -92,14 +92,14 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['relationId']   		= $input->get('relationId', 0, 'int');
 		$request['state']				= $input->get('state', 1, 'int');
 		// app
-		$request['operator_id']			= $input->get('operator_id', 0, 'int');
+		$request['provider_id']			= $input->get('provider_id', 0, 'int');
 		$request['due_date']			= $input->get('due_date', '', 'string');
 		$request['tax']					= $input->get('tax', 0.00, 'float');
 		$request['note']				= $input->get('note', '', 'string');
 
 		// SAVE CONDITION
 		// Condição para inserção e atualização dos registros
-		$save_condition = (!empty($request['due_date']) && $request['operator_id'] != 0);
+		$save_condition = (!empty($request['due_date']) && $request['provider_id'] != 0);
 
 		if($id || (!empty($ids) && $ids != 0)) :  //UPDATE OR DELETE
 
@@ -145,7 +145,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'prev'				=> $prev,
 						'next'				=> $next,
 						// App Fields
-						'operator_id'		=> $item->operator_id,
+						'provider_id'		=> $item->provider_id,
 						'due_date'			=> $item->due_date,
 						'tax'				=> $item->tax,
 						'note'				=> $item->note,
@@ -157,7 +157,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 					$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
 					$query .=
-						$db->quoteName('operator_id')		.'='. $request['operator_id'] .','.
+						$db->quoteName('provider_id')		.'='. $request['provider_id'] .','.
 						$db->quoteName('due_date')			.'='. $db->quote($request['due_date']) .','.
 						$db->quoteName('tax')				.'='. $db->quote($request['tax']) .','.
 						$db->quoteName('note')				.'='. $db->quote($request['note']) .','.
@@ -455,14 +455,14 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					// Prepare the insert query
 					$query  = '
 						INSERT INTO '. $db->quoteName($cfg['mainTable']) .'('.
-							$db->quoteName('operator_id') .','.
+							$db->quoteName('provider_id') .','.
 							$db->quoteName('due_date') .','.
 							$db->quoteName('tax') .','.
 							$db->quoteName('note') .','.
 							$db->quoteName('state') .','.
 							$db->quoteName('created_by')
 						.') VALUES ('.
-							$request['operator_id'] .','.
+							$request['provider_id'] .','.
 							$db->quote($request['due_date']) .','.
 							$db->quote($request['tax']) .','.
 							$db->quote($request['note']) .','.

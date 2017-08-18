@@ -6,34 +6,32 @@ require($PATH_APP_FILE.'.filter.php');
 
 // LIST
 
-	// pagination var's
-	$limitDef = !isset($_SESSION[$APPTAG.'plim']) ? $cfg['pagLimit'] : $_SESSION[$APPTAG.'plim'];
-	$_SESSION[$APPTAG.'plim']	= $app->input->post->get('list-lim-'.$APPTAG, $limitDef, 'int');
-	$lim	= $app->input->get('limit', ($_SESSION[$APPTAG.'plim'] !== 1 ? $_SESSION[$APPTAG.'plim'] : 10000000), 'int');
-	$lim0	= $app->input->get('limitstart', 0, 'int');
+	// PAGINATION VAR's
+	require(JPATH_CORE.DS.'apps/layout/list/pagination.vars.php');
 
 	$query = '
 		SELECT SQL_CALC_FOUND_ROWS
 			'. $db->quoteName('T1.id') .',
-			'. $db->quoteName('T3.username') .' user,
-			'. $db->quoteName('T2.name') .' grp,
-			'. $db->quoteName('T1.type') .',
-			'. $db->quoteName('T1.gender') .',
 			'. $db->quoteName('T1.name') .',
-			'. $db->quoteName('T1.nickname') .',
+			'. $db->quoteName('T2.name') .' grp,
+			'. $db->quoteName('T3.name') .' user,
+			'. $db->quoteName('T1.gender') .',
 			'. $db->quoteName('T1.email') .',
-			'. $db->quoteName('T1.email_optional') .',
 			'. $db->quoteName('T1.birthday') .',
 			'. $db->quoteName('T1.occupation') .',
-			'. $db->quoteName('T1.description') .',
-			'. $db->quoteName('T1.portfolio') .',
-			'. $db->quoteName('T1.comment') .',
+			'. $db->quoteName('T1.note') .',
+			'. $db->quoteName('T1.access') .',
+			'. $db->quoteName('T1.reasonStatus') .',
+			'. $db->quoteName('T1.created_date') .',
+			'. $db->quoteName('T1.created_by') .',
+			'. $db->quoteName('T1.alter_date') .',
+			'. $db->quoteName('T1.alter_by') .',
 			'. $db->quoteName('T1.state') .'
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
-			LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
+			LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
 			ON T2.id = T1.group_id
-			LEFT JOIN '. $db->quoteName('#__users') .' T3
+			LEFT OUTER JOIN '. $db->quoteName('#__users') .' T3
 			ON T3.id = T1.user_id
 		WHERE
 			'.$where.$orderList;
@@ -55,12 +53,12 @@ $adminView = array();
 $adminView['head']['info'] = $adminView['head']['actions'] = '';
 if($hasAdmin) :
 	$adminView['head']['info'] = '
-		<th width="30" class="hidden-print"><input type="checkbox" id="'.$APPTAG.'_checkAll" /></th>
-		<th width="50" class="hidden-print">'.baseAppHelper::linkOrder('#', 'T1.id', $APPTAG).'</th>
+		<th width="30" class="d-print-none"><input type="checkbox" id="'.$APPTAG.'_checkAll" /></th>
+		<th width="50" class="d-none d-lg-table-cell d-print-none">'.baseAppHelper::linkOrder('#', 'T1.id', $APPTAG).'</th>
 	';
 	$adminView['head']['actions'] = '
-		<th class="text-center hidden-print" width="60">'.baseAppHelper::linkOrder(JText::_('TEXT_ACTIVE'), 'T1.state', $APPTAG).'</th>
-		<th class="text-center hidden-print" width="100">'.JText::_('TEXT_ACTIONS').'</th>
+		<th class="text-center d-none d-lg-table-cell d-print-none" width="60">'.baseAppHelper::linkOrder(JText::_('TEXT_ACTIVE'), 'T1.state', $APPTAG).'</th>
+		<th class="text-center d-print-none" width="70">'.JText::_('TEXT_ACTIONS').'</th>
 	';
 endif;
 
@@ -71,11 +69,12 @@ $html = '
 			<thead>
 				<tr>
 					'.$adminView['head']['info'].'
-					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_GROUP'), 'T2.name', $APPTAG).'</th>
-					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_NAME'), 'T1.name', $APPTAG).'</th>
-					<th>E-mail</th>
-					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_BIRTHDAY'), 'T1.birthday', $APPTAG).'</th>
-					<th>'.JText::_('FIELD_LABEL_USER').'</th>
+					<th class="d-none d-lg-table-cell">'.$$SETOrder(JText::_('FIELD_LABEL_GROUP'), 'T2.name', $APPTAG).'</th>
+					<th>'.$$SETOrder(JText::_('FIELD_LABEL_NAME'), 'T1.name', $APPTAG).'</th>
+					<th class="d-none d-lg-table-cell">'.JText::_('FIELD_LABEL_EMAIL').'</th>
+					<th class="d-none d-lg-table-cell">'.$$SETOrder(JText::_('FIELD_LABEL_BIRTHDAY'), 'T1.birthday', $APPTAG).'</th>
+					<th>'.JText::_('TEXT_STATUS').'</th>
+					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
 					'.$adminView['head']['actions'].'
 				</tr>
 			</thead>
@@ -94,13 +93,20 @@ if($num_rows) : // verifica se existe
 
 		if($cfg['hasUpload']) :
 			JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
-			$files[$item->id] = uploader::getFiles($cfg['fileTable'], $item->id);
+
+			// Imagem Principal -> Primeira imagem (index = 0)
+			$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
+			if(!empty($img)) $img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPNAME.'/'.$img['filename'], 32, 32).'" class="d-none d-md-inline img-fluid rounded-circle float-left mr-2" />';
+
+			// Arquivos -> Grupo de imagens ('#'.$APPTAG.'-files-group')
+			// Obs: para pegar todas as imagens basta remover o 'grupo' ('#'.$APPTAG.'-files-group')
+			$files[$item->id] = uploader::getFiles($cfg['fileTable'], $item->id, '#'.$APPTAG.'-files-group');
 			$listFiles = '';
 			for($i = 0; $i < count($files[$item->id]); $i++) {
 				if(!empty($files[$item->id][$i]->filename)) :
 					$listFiles .= '
 						<a href="'.JURI::root(true).'/apps/get-file?fn='.base64_encode($files[$item->id][$i]->filename).'&mt='.base64_encode($files[$item->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
-							<span class="base-icon-attach hasTooltip" title="'.$files[$item->id][$i]->filename.'<br />'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"></span>
+							<span class="base-icon-attach hasTooltip" data-animation="false" title="'.$files[$item->id][$i]->filename.'<br />'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"></span>
 						</a>
 					';
 				endif;
@@ -110,55 +116,58 @@ if($num_rows) : // verifica se existe
 		$adminView['list']['info'] = $adminView['list']['actions'] = '';
 		if($hasAdmin) :
 			$adminView['list']['info'] = '
-				<td class="check-row hidden-print"><input type="checkbox" name="'.$APPTAG.'_ids[]" class="'.$APPTAG.'-chk" value="'.$item->id.'" /></td>
-				<td class="hidden-print">'.$item->id.'</td>
+				<td class="check-row d-print-none"><input type="checkbox" name="'.$APPTAG.'_ids[]" class="'.$APPTAG.'-chk" value="'.$item->id.'" /></td>
+				<td class="d-none d-lg-table-cell d-print-none">'.$item->id.'</td>
 			';
 			$adminView['list']['actions'] = '
-				<td class="text-center hidden-print">
-					<a href="#" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'">
-						<span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').' hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'"></span>
+				<td class="text-center d-none d-lg-table-cell d-print-none">
+					<a href="#" class="hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'">
+						<span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').'"></span>
 					</a>
 				</td>
-				<td class="text-center hidden-print">
-					<a href="#" class="btn btn-xs btn-success" onclick="contactsaddresses_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-contactsaddresses" data-backdrop="static" data-keyboard="false"><span class="base-icon-location hasTooltip" title="'.JText::_('MSG_INSERT_ADDRESS').'"></span></a>
-					<a href="#" class="btn btn-xs btn-success" onclick="contactsphones_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-contactsphones" data-backdrop="static" data-keyboard="false"><span class="base-icon-phone hasTooltip" title="'.JText::_('MSG_INSERT_PHONE').'"></span></a>
-					<a href="#" class="btn btn-xs btn-success" onclick="contactswebSocials_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-contactswebSocials" data-backdrop="static" data-keyboard="false"><span class="base-icon-chat-empty hasTooltip" title="'.JText::_('MSG_INSERT_SOCIAL').'"></span></a>
-					<a href="#" class="btn btn-xs btn-success" onclick="contactsbanksAccounts_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-contactsbanksAccounts" data-backdrop="static" data-keyboard="false"><span class="base-icon-bank hasTooltip" title="'.JText::_('MSG_INSERT_BANK_ACCOUNT').'"></span></a>
-					<a href="#" class="btn btn-xs btn-warning" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil hasTooltip" title="'.JText::_('TEXT_EDIT').'"></span></a>
-					<a href="#" class="btn btn-xs btn-danger" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash hasTooltip" title="'.JText::_('TEXT_DELETE').'"></span></a>
+				<td class="text-center d-print-none">
+					<a href="#" class="btn btn-xs btn-warning hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil"></span></a>
+					<a href="#" class="btn btn-xs btn-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash"></span></a>
 				</td>
 			';
 		endif;
 
-		$name = !empty($item->nickname) ? $item->nickname : $item->name;
-		if($item->type == 0) $gender = '<span '.($item->gender == 1 ? 'class="base-icon-male-symbol cursor-help text-primary hasTooltip" title="'.JText::_('FIELD_LABEL_GENDER_MALE').'"' : 'class="base-icon-female-symbol cursor-help text-danger hasTooltip" title="'.JText::_('FIELD_LABEL_GENDER_FEMALE').'"').'"></span> ';
-		else $gender = '<span class="base-icon-building text-live hasTooltip" title="'.JText::_('FIELD_LABEL_TYPE_1').'"></span> ';
-		$info = '';
-		if(!empty($item->occupation) || !empty($item->description)) :
-			$info = !empty($item->occupation) ? ' title="'.baseHelper::nameFormat($item->occupation).'"' : '';
-		 	$info .= !empty($item->description) ?  ' data-content="'.$item->description.'"'  : '';
-			$info = '<span class="base-icon-info-circled text-live cursor-help hasPopover" data-placement="top"'.$info.'></span> ';
+
+		$gender = '';
+		if($item->gender > 0) $gender = '<span '.($item->gender == 1 ? 'class="base-icon-male-symbol cursor-help text-primary hasTooltip" title="'.JText::_('FIELD_LABEL_GENDER_MALE').'"' : 'class="base-icon-female-symbol cursor-help text-danger hasTooltip" title="'.JText::_('FIELD_LABEL_GENDER_FEMALE').'"').'"></span> ';
+		$note = !empty($item->note) ? '<span class="base-icon-info-circled cursor-help hasTooltip" title="'.$item->note.'"></span> ';
+		if($item->access == 0) :
+			$reason = !empty($item->reasonStatus) ? '<div class="small text-muted text-truncate">'.$item->reasonStatus.'</div>' : '';
+			// Check if user exist
+			if(empty($item->user)) $status = '<span class="base-icon-attention text-live"> '.JText::_('TEXT_PENDING').'</span>';
+			else $status = '<span class="base-icon-attention text-live"> '.JText::_('TEXT_BLOCKED').'</span>';
+			$status .= $reason;
+		else :
+			// Check if user exist
+			if(empty($item->user)) $status = '<span class="base-icon-cancel text-danger"> '.JText::_('TEXT_NO_USER_ASSOC').'</span><div class="small text-muted text-truncate">'.JText::_('TEXT_NO_USER_ASSOC_DESC').'</div>';
+			else $status = '<span class="base-icon-ok text-success"> '.JText::_('TEXT_APPROVED').'</span>';
 		endif;
-		if($item->portfolio == 1) $info .= '<span class="base-icon-star text-live cursor-help hasPopover" data-placement="top" title="'.JText::_('FIELD_LABEL_PORTFOLIO').'" data-content="<span class=\'font-featured\'>&quot;'.$item->comment.'&quot;</span>"></span> ';
-		$eopt = !empty($item->email_optional) ? '<br /><span class="small font-featured text-muted cursor-help hasTooltip" title="'.JText::_('TEXT_OPTIONAL').'">('.$item->email_optional.')</span>' : '';
-		$rowState = $item->state == 0 ? 'table-danger' : '';
+		$rowState	= $item->state == 0 ? 'table-danger' : '';
+		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
+		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
+		if($item->alter_date != '0000-00-00 00:00:00') :
+			$regInfo	.= '<hr class=&quot;my-2&quot; />';
+			$regInfo	.= JText::_('TEXT_ALTER_DATE').': '.baseHelper::dateFormat($item->alter_date, 'd/m/Y H:i').'<br />';
+			$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->alter_by)->name);
+		endif;
+		// Resultados
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
-				<td>'.baseHelper::nameFormat($item->grp).'</td>
-				<td>
-					'.$gender.baseHelper::nameFormat($name).'<br />
-					'.$info.'
-					<a href="#" class="base-icon-location text-live hasTooltip" onclick="contactsaddresses_listReload(false, false, false, false, false, '.$item->id.')" data-toggle="modal" data-target="#modal-list-contactsaddresses" title="'.JText::_('MSG_VIEW_ADDRESS').'"></a>
-					<a href="#" class="base-icon-phone-squared text-live hasTooltip" onclick="contactsphones_listReload(false, false, false, false, false, '.$item->id.')" data-toggle="modal" data-target="#modal-list-contactsphones" title="'.JText::_('MSG_VIEW_PHONE').'"></a>
-					<a href="#" class="base-icon-chat-empty text-live hasTooltip" onclick="contactswebSocials_listReload(false, false, false, false, false, '.$item->id.')" data-toggle="modal" data-target="#modal-list-contactswebSocials" title="'.JText::_('MSG_VIEW_SOCIAL').'"></a>
-					<a href="#" class="base-icon-bank text-live hasTooltip" onclick="contactsbanksAccounts_listReload(false, false, false, false, false, '.$item->id.')" data-toggle="modal" data-target="#modal-list-contactsbanksAccounts" title="'.JText::_('MSG_VIEW_BANKS_ACCOUNTS').'"></a>
+				<td class="d-none d-lg-table-cell">'.$item->grp.'</td>
+				<td>'.$img.$note.baseHelper::nameFormat($item->name).'<div class="small text-muted">'.$gender.baseHelper::nameFormat($item->occupation).'</td>
+				<td class="d-none d-lg-table-cell">'.$item->email.'</td>
+				<td class="d-none d-lg-table-cell">'.baseHelper::dateFormat($item->birthday).'</td>
+				<td>'.$status.'</td>
+				<td class="d-none d-lg-table-cell">
+					'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'
+					<a href="#" class="base-icon-info-circled setPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top"></a>
 				</td>
-				<td>
-					'.$item->email.$eopt.'
-				</td>
-				<td>'.baseHelper::dateFormat($item->birthday, 'd/m/Y', true, '-').'</td>
-				<td>'.(!empty($item->user) ? $item->user : '-').'</td>
 				'.$adminView['list']['actions'].'
 			</tr>
 		';
@@ -168,7 +177,7 @@ else : // num_rows = 0
 
 	$html .= '
 		<tr>
-			<td colspan="9">
+			<td colspan="7">
 				<div class="alert alert-warning alert-icon m-0">'.JText::_('MSG_LISTNOREG').'</div>
 			</td>
 		</tr>
@@ -184,46 +193,14 @@ $html .= '
 
 if($num_rows) :
 
-	// PAGINAÇÃO
-		// stats
-		$listStart	= $lim0 + 1;
-		$listEnd		= $lim0 + $num_rows;
-	if($found_rows != $num_rows) :
-		$html .= '
-			<div class="base-app-pagination pull-left">
-				'.$pageNav->getListFooter().'
-				<div class="list-stats small text-muted">
-					'.JText::sprintf('LIST_STATS', $listStart, $listEnd, $found_rows).'
-				</div>
-			</div>
-		';
-	endif;
+	// PAGINATION
+	require(JPATH_CORE.DS.'apps/layout/list/pagination.php');
 
-	$html .= '
-		<form id="form-order-'.$APPTAG.'" action="'.$_SERVER['REQUEST_URI'].'" class="pull-right form-inline" method="post">
-			<input type="hidden" name="'.$APPTAG.'oF" id="'.$APPTAG.'oF" value="'.$_SESSION[$APPTAG.'oF'].'" />
-			<input type="hidden" name="'.$APPTAG.'oT" id="'.$APPTAG.'oT" value="'.$_SESSION[$APPTAG.'oT'].'" />
-		</form>
-	';
+	// PAGINATION VAR's
+	require(JPATH_CORE.DS.'apps/layout/list/formOrder.php');
 
-	// ITENS POR PÁGINA
-	// seta o parametro 'start = 0' na URL sempre que o limit for refeito
-	// isso evita erro quando estiver navegando em páginas subjacentes
-	$a = preg_replace("#\?start=.*#", '', $_SERVER['REQUEST_URI']);
-	$a = preg_replace("#&start=.*#", '', $a);
-
-	$html .= '
-		<form id="form-limit-'.$APPTAG.'" action="'.$a.'" class="pull-right form-inline hidden-print" method="post">
-			<label>'.JText::_('LIST_PAGINATION_LIMIT').'</label>
-			<select name="list-lim-'.$APPTAG.'" onchange="'.$APPTAG.'_setListLimit()">
-				<option value="5" '.($_SESSION[$APPTAG.'plim'] === 5 ? 'selected' : '').'>5</option>
-				<option value="20" '.($_SESSION[$APPTAG.'plim'] === 20 ? 'selected' : '').'>20</option>
-				<option value="50" '.($_SESSION[$APPTAG.'plim'] === 50 ? 'selected' : '').'>50</option>
-				<option value="100" '.($_SESSION[$APPTAG.'plim'] === 100 ? 'selected' : '').'>100</option>
-				<option value="1" '.($_SESSION[$APPTAG.'plim'] === 1 ? 'selected' : '').'>Todos</option>
-			</select>
-		</form>
-	';
+	// PAGE LIMIT
+	require(JPATH_CORE.DS.'apps/layout/list/pageLimit.php');
 
 endif;
 

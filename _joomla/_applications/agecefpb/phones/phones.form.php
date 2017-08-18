@@ -18,10 +18,10 @@ $query = '
 	SELECT
 		'. $db->quoteName('T1.id') .',
 		'. $db->quoteName('T1.name') .',
-		'. $db->quoteName('T2.name') .' operator
+		'. $db->quoteName('T2.name') .' provider
 	FROM '. $db->quoteName($cfg['mainTable'].'_plans') .' T1
-		JOIN '. $db->quoteName($cfg['mainTable'].'_plans_operators') .' T2
-		ON T2.id = T1.operator_id AND T2.state = 1
+		JOIN '. $db->quoteName('#__'.$cfg['project'].'_providers') .' T2
+		ON T2.id = T1.provider_id AND T2.state = 1
 	WHERE '. $db->quoteName('T1.state') .' = 1
 	ORDER BY T2.name
 ';
@@ -56,7 +56,7 @@ $plans = $db->loadObjectList();
 					<option value="0">- <?php echo JText::_('TEXT_SELECT'); ?> -</option>
 					<?php
 						foreach ($plans as $obj) {
-							echo '<option value="'.$obj->id.'">[ '.baseHelper::nameFormat($obj->operator).' ] '.baseHelper::nameFormat($obj->name).'</option>';
+							echo '<option value="'.$obj->id.'">[ '.baseHelper::nameFormat($obj->provider).' ] '.baseHelper::nameFormat($obj->name).'</option>';
 						}
 					?>
 				</select>

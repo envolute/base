@@ -93,13 +93,13 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['state']				= $input->get('state', 1, 'int');
 		// app
 		$request['name']				= $input->get('name', '', 'string');
-		$request['operator_id']			= $input->get('operator_id', 0, 'int');
+		$request['provider_id']			= $input->get('provider_id', 0, 'int');
 		$request['price']				= $input->get('price', 0.00, 'float');
 		$request['description']			= $input->get('description', '', 'raw'); // html
 
 		// SAVE CONDITION
 		// Condição para inserção e atualização dos registros
-		$save_condition = (!empty($request['name']) && $request['operator_id'] != 0 && $request['price'] > 0.00);
+		$save_condition = (!empty($request['name']) && $request['provider_id'] != 0 && $request['price'] > 0.00);
 
 		if($id || (!empty($ids) && $ids != 0)) :  //UPDATE OR DELETE
 
@@ -146,7 +146,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'next'				=> $next,
 						// App Fields
 						'name'				=> $item->name,
-						'operator_id'		=> $item->operator_id,
+						'provider_id'		=> $item->provider_id,
 						'price'				=> $item->price,
 						'description'		=> $item->description
 					);
@@ -157,7 +157,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
 					$query .=
 						$db->quoteName('name')				.'='. $db->quote($request['name']) .','.
-						$db->quoteName('operator_id')		.'='. $request['operator_id'] .','.
+						$db->quoteName('provider_id')		.'='. $request['provider_id'] .','.
 						$db->quoteName('price')				.'='. $db->quote($request['price']) .','.
 						$db->quoteName('description')		.'='. $db->quote($request['description']) .','.
 						$db->quoteName('state')				.'='. $request['state'] .','.
@@ -349,14 +349,14 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$query  = '
 						INSERT INTO '. $db->quoteName($cfg['mainTable']) .'('.
 							$db->quoteName('name') .','.
-							$db->quoteName('operator_id') .','.
+							$db->quoteName('provider_id') .','.
 							$db->quoteName('price') .','.
 							$db->quoteName('description') .','.
 							$db->quoteName('state') .','.
 							$db->quoteName('created_by')
 						.') VALUES ('.
 							$db->quote($request['name']) .','.
-							$request['operator_id'] .','.
+							$request['provider_id'] .','.
 							$db->quote($request['price']) .','.
 							$db->quote($request['description']) .','.
 							$request['state'] .','.

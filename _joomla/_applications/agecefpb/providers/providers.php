@@ -32,11 +32,20 @@ jQuery(function() {
 	?>
 
 	// APP FIELDS
+	var group_id			= jQuery('#<?php echo $APPTAG?>-group_id');
 	var name				= jQuery('#<?php echo $APPTAG?>-name');
+	var email				= jQuery('#<?php echo $APPTAG?>-email');
+	var cnpj				= jQuery('#<?php echo $APPTAG?>-cnpj');
+	var insc_municipal		= jQuery('#<?php echo $APPTAG?>-insc_municipal');
+	var insc_estadual		= jQuery('#<?php echo $APPTAG?>-insc_estadual');
+	var due_date			= jQuery('#<?php echo $APPTAG?>-due_date');
+	var website				= jQuery('#<?php echo $APPTAG?>-website');
+	var description			= jQuery('#<?php echo $APPTAG?>-description');
+	var service_desc		= jQuery('#<?php echo $APPTAG?>-service_desc');
 
 	// PARENT FIELD -> Select
 	// informe, se houver, o campo que representa a chave estrangeira principal
-	var parentFieldId		= null; // 'null', caso não exista...
+	var parentFieldId		= group_id; // 'null', caso não exista...
 	var parentFieldGroup	= elementExist(parentFieldId) ? parentFieldId.closest('[class*="col-"]') : null;
 
 	// GROUP RELATION'S BUTTONS -> grupo de botões de relacionamentos no form
@@ -47,7 +56,7 @@ jQuery(function() {
 
 		// ON FOCUS
 		// campo que recebe o focus no carregamento
-		var firstField		= name;
+		var firstField		= '';
 
 		// ON MODAL OPEN -> Ações quando o modal do form é aberto
 		popup.on('shown.bs.modal', function () {
@@ -89,6 +98,14 @@ jQuery(function() {
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
 			name.val('');
+			email.val('');
+			cnpj.val('');
+			insc_municipal.val('');
+			insc_estadual.val('');
+			due_date.selectUpdate(0);
+			website.val('');
+			description.val('');
+			service_desc.val('');
 
 			<?php // Closure Actions
 			require(JPATH_CORE.DS.'apps/snippets/form/formReset.end.js.php');
@@ -210,6 +227,14 @@ jQuery(function() {
 
 						// App Fields
 						name.val(item.name);
+						email.val(item.email);
+						cnpj.val(item.cnpj);
+						insc_municipal.val(item.insc_municipal);
+						insc_estadual.val(item.insc_estadual);
+						due_date.selectUpdate(item.due_date, 0);
+						website.val(item.website);
+						description.val(item.description);
+						service_desc.val(item.service_desc);
 
 						<?php // Closure Actions
 						require(JPATH_CORE.DS.'apps/snippets/form/loadEdit.end.js.php');
@@ -339,7 +364,7 @@ jQuery(window).load(function() {
 
 	<?php if($hasAdmin) : ?>
 		<div class="modal fade" data-animation="false" id="modal-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-<?php echo $APPTAG?>Label">
-			<div class="modal-dialog set-shadow-lg" role="document">
+			<div class="modal-dialog modal-lg set-shadow-lg" role="document">
 				<div class="modal-content">
 					<form name="form-<?php echo $APPTAG?>" id="form-<?php echo $APPTAG?>" method="post" enctype="multipart/form-data">
 						<?php require(JPATH_CORE.DS.'apps/layout/form/modal.header.php'); ?>

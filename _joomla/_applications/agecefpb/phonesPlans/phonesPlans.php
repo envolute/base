@@ -33,7 +33,7 @@ jQuery(function() {
 
 	// APP FIELDS
 	var name				= jQuery('#<?php echo $APPTAG?>-name');
-	var operator_id			= jQuery('#<?php echo $APPTAG?>-operator_id');
+	var provider_id			= jQuery('#<?php echo $APPTAG?>-provider_id');
 	var price				= jQuery('#<?php echo $APPTAG?>-price');
 	var description			= jQuery('#<?php echo $APPTAG?>-description');
 
@@ -92,7 +92,7 @@ jQuery(function() {
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
 			name.val('');
-			operator_id.selectUpdate(0); // select
+			provider_id.selectUpdate(0); // select
 			price.val('');
 			description.val('');
 
@@ -216,7 +216,7 @@ jQuery(function() {
 
 						// App Fields
 						name.val(item.name);
-						operator_id.selectUpdate(item.operator_id); // select
+						provider_id.selectUpdate(item.provider_id); // select
 						price.val(item.price);
 						description.val(item.description);
 

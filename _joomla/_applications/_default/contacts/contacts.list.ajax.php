@@ -3,12 +3,14 @@
 if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQUESTED_WITH"]) == "xmlhttprequest") :
 
 	// load Joomla's framework
+	// _DIR_ => apps/THIS_APP
 	require(__DIR__.'/../../libraries/envolute/_init.joomla.php');
 	$app = JFactory::getApplication('site');
-
 	defined('_JEXEC') or die;
+
 	$ajaxRequest = true;
 	require('config.php');
+
 	// IMPORTANTE: Carrega o arquivo 'helper' do template
 	JLoader::register('baseHelper', JPATH_CORE.DS.'helpers/base.php');
 
@@ -17,8 +19,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	// a language 'default' não é reconhecida. Sendo assim, carrega apenas 'en-GB'
 	// Para possibilitar o carregamento da language 'default' de forma dinâmica,
 	// é necessário passar na sessão ($_SESSION[$APPTAG.'langDef'])
-	if(isset($_SESSION[$APPTAG.'langDef']))
-	$lang->load('base_'.$APPNAME, JPATH_BASE, $_SESSION[$APPTAG.'langDef'], true);
+	if(isset($_SESSION[$APPTAG.'langDef'])) :
+		$lang->load('base_apps', JPATH_BASE, $_SESSION[$APPTAG.'langDef'], true);
+		$lang->load('base_'.$APPNAME, JPATH_BASE, $_SESSION[$APPTAG.'langDef'], true);
+	endif;
 
 	//joomla get request data
 	$input      = $app->input;
@@ -47,56 +51,41 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	// GET DATA
 	$noReg = true;
 	$query = '
-	SELECT
-		'. $db->quoteName('T1.id') .',
-		'. $db->quoteName('T3.username') .' user,
-		'. $db->quoteName('T2.name') .' grp,
-		'. $db->quoteName('T1.type') .',
-		'. $db->quoteName('T1.gender') .',
-		'. $db->quoteName('T1.name') .',
-		'. $db->quoteName('T1.nickname') .',
-		'. $db->quoteName('T1.email') .',
-		'. $db->quoteName('T1.email_optional') .',
-		'. $db->quoteName('T1.birthday') .',
-		'. $db->quoteName('T1.occupation') .',
-		'. $db->quoteName('T1.description') .',
-		'. $db->quoteName('T1.state')
+		SELECT
+			'. $db->quoteName('T1.id') .',
+			'. $db->quoteName('T1.name') .',
+			'. $db->quoteName('T2.name') .' grp,
+			'. $db->quoteName('T1.state')
 	;
 	if(!empty($rID) && $rID !== 0) :
 		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
 			$query .= ' FROM '.
 				$db->quoteName($cfg['mainTable']) .' T1
-				LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
-				ON T2.id = T1.group_id
-				LEFT JOIN '. $db->quoteName('#__users') .' T3
-				ON T3.id = T1.user_id
-				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T4
-				ON '.$db->quoteName('T4.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
+				JOIN '. $db->quoteName($cfg['mainTable'].'_group') .' T2
+				ON '.$db->quoteName('T2.id') .' = T1.group_id
+				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T3
+				ON '.$db->quoteName('T3.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
 			WHERE '.
-				$db->quoteName('T4.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
+				$db->quoteName('T3.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
 			;
 		else :
-			$query .= ' FROM
-				'. $db->quoteName($cfg['mainTable']) .' T1
-				LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
-				ON T2.id = T1.group_id
-				LEFT JOIN '. $db->quoteName('#__users') .' T3
-				ON T3.id = T1.user_id
+			$query .= '
+			FROM '. $db->quoteName($cfg['mainTable']) .' T1
+				JOIN '. $db->quoteName($cfg['mainTable'].'_group') .' T2
+				ON '.$db->quoteName('T2.id') .' = T1.group_id
 			WHERE '. $db->quoteName($rNID) .' = '. $rID;
 		endif;
 	else :
-		$query .= ' FROM
-			'. $db->quoteName($cfg['mainTable']) .' T1
-			LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
-			ON T2.id = T1.group_id
-			LEFT JOIN '. $db->quoteName('#__users') .' T3
-			ON T3.id = T1.user_id';
+		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
+			JOIN '. $db->quoteName($cfg['mainTable'].'_group') .' T2
+			ON '.$db->quoteName('T2.id') .' = T1.group_id
+		';
 		if($oCHL) :
 			$query .= ' WHERE 1=0';
 			$noReg = false;
 		endif;
 	endif;
-	$query .= ' ORDER BY '. $db->quoteName('T1.name') .' ASC';
+	$query .= ' ORDER BY '. $db->quoteName('name') .' ASC';
 	try {
 
 		$db->setQuery($query);
@@ -109,10 +98,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		 return;
 	}
 
-	$html = '<span class="ajax-loader hide"></span>';
-
 	if($num_rows) : // verifica se existe
-		$html .= '<ul class="list list-striped list-hover">';
+		$html .= '<ul class="list-unstyled bordered list-striped list-hover m-0">';
 		foreach($res as $item) {
 
 			if($cfg['hasUpload']) :
@@ -123,30 +110,21 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					if(!empty($files[$item->id][$i]->filename)) :
 						$listFiles .= '
 							<a href="'.$_ROOT.'apps/get-file?fn='.base64_encode($files[$item->id][$i]->filename).'&mt='.base64_encode($files[$item->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
-								<span class="base-icon-attach hasTooltip" title="'.$files[$item->id][$i]->filename.'<br />'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"></span>
+								<span class="base-icon-attach hasTooltip" data-animation="false" title="'.$files[$item->id][$i]->filename.'<br />'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"></span>
 							</a>
 						';
 					endif;
 				}
 			endif;
 
-			$nickname = !empty($item->nickname) ? ' <small class="text-muted font-featured">('.baseHelper::nameFormat($item->nickname).')</small>' : '';
-			if($item->type == 0) $gender = '<span '.($item->gender == 1 ? 'class="base-icon-male-symbol cursor-help text-primary hasTooltip" title="'.JText::_('FIELD_LABEL_GENDER_MALE').'"' : 'class="base-icon-female-symbol cursor-help text-danger hasTooltip" title="'.JText::_('FIELD_LABEL_GENDER_FEMALE').'"').'></span> ';
-			else $gender = '<span class="base-icon-building text-live hasTooltip" title="'.JText::_('FIELD_LABEL_TYPE_1').'"></span> ';
-			$btnState = $hasAdmin ? '<a href="#" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'"><span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').' hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'"></span></a> ' : '';
-			$btnEdit = $hasAdmin ? '<a href="#" class="base-icon-pencil text-live hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"></a> ' : '';
-			$btnDelete = $hasAdmin ? '<a href="#" class="base-icon-trash text-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"></a>' : '';
+			$btnState = $hasAdmin ? '<a href="#" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'"><span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').' hasTooltip" data-animation="false" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'"></span></a> ' : '';
+			$btnEdit = $hasAdmin ? '<a href="#" class="base-icon-pencil text-live hasTooltip" data-animation="false" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"></a> ' : '';
+			$btnDelete = $hasAdmin ? '<a href="#" class="base-icon-trash text-danger hasTooltip" data-animation="false" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"></a>' : '';
 			$rowState = $item->state == 0 ? 'list-danger' : '';
 			$html .= '
 				<li class="'.$rowState.'">
-					<div class="pull-right">'.$btnState.$btnEdit.$btnDelete.'</div>
-					'.$gender.baseHelper::nameFormat($item->name).$nickname.' <small class="text-muted font-featured">('.baseHelper::nameFormat($item->grp).')</small>
-					<div class="small text-muted font-featured">
-					<a href="#" class="base-icon-location text-live hasTooltip" onclick="addresses_listReload(false, false, false, false, false, '.$item->id.')" data-toggle="modal" data-target="#modal-list-addresses" title="'.JText::_('MSG_VIEW_ADDRESS').'"></a>
-					<a href="#" class="base-icon-phone-squared text-live hasTooltip" onclick="phones_listReload(false, false, false, false, false, '.$item->id.')" data-toggle="modal" data-target="#modal-list-phones" title="'.JText::_('MSG_VIEW_PHONE').'"></a>
-					<a href="#" class="base-icon-chat-empty text-live hasTooltip" onclick="webSocials_listReload(false, false, false, false, false, '.$item->id.')" data-toggle="modal" data-target="#modal-list-webSocials" title="'.JText::_('MSG_VIEW_SOCIAL').'"></a>
-					<a href="#" class="base-icon-bank text-live hasTooltip" onclick="banksAccounts_listReload(false, false, false, false, false, '.$item->id.')" data-toggle="modal" data-target="#modal-list-banksAccounts" title="'.JText::_('MSG_VIEW_BANKS_ACCOUNTS').'"></a>
-					</div>
+					<div class="float-right">'.$btnState.$btnEdit.$btnDelete.'</div>
+					'.baseHelper::nameFormat($item->name).'<div class="small text-muted">'.baseHelper::nameFormat($item->grp).'</div>
 				</li>
 			';
 		}

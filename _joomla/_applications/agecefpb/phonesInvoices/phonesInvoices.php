@@ -32,14 +32,14 @@ jQuery(function() {
 	?>
 
 	// APP FIELDS
-	var operator_id			= jQuery('#<?php echo $APPTAG?>-operator_id');
+	var provider_id			= jQuery('#<?php echo $APPTAG?>-provider_id');
 	var due_date			= jQuery('#<?php echo $APPTAG?>-due_date');
 	var tax					= jQuery('#<?php echo $APPTAG?>-tax');
 	var note				= jQuery('#<?php echo $APPTAG?>-note');
 
 	// PARENT FIELD -> Select
 	// informe, se houver, o campo que representa a chave estrangeira principal
-	var parentFieldId		= operator_id; // 'null', caso não exista...
+	var parentFieldId		= provider_id; // 'null', caso não exista...
 	var parentFieldGroup	= elementExist(parentFieldId) ? parentFieldId.closest('[class*="col-"]') : null;
 
 	// GROUP RELATION'S BUTTONS -> grupo de botões de relacionamentos no form
@@ -91,7 +91,7 @@ jQuery(function() {
 			// App Fields
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
-			operator_id.selectUpdate(0);
+			provider_id.selectUpdate(0);
 			due_date.val('');
 			tax.val('<?php echo $cfg['serviceTax']?>');
 			note.val('');
@@ -217,7 +217,7 @@ jQuery(function() {
 						?>
 
 						// App Fields
-						operator_id.selectUpdate(item.operator_id);
+						provider_id.selectUpdate(item.provider_id);
 						due_date.val(dateFormat(item.due_date));
 						tax.val(item.tax);
 						note.val(item.note);

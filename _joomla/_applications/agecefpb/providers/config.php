@@ -85,8 +85,8 @@ endif;
 	$cfg['dateConvert']			= false;
 	$cfg['load_UI']				= $cfg['dateConvert'];
 	$cfg['priceDecimal']		= false;
-	$cfg['htmlEditor']			= false;
-	$cfg['htmlEditorFull']		= false;
+	$cfg['htmlEditor']			= true;
+	$cfg['htmlEditorFull']		= true;
 
 	// crud's upload config
 	$cfg['hasUpload']			= true;

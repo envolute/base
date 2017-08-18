@@ -21,7 +21,6 @@ $users = $db->loadObjectList();
 // FORM
 ?>
 
-<!-- Tab panes -->
 <div class="row">
 	<div class="col-sm-9">
 		<div class="form-group field-required">
@@ -74,15 +73,15 @@ $users = $db->loadObjectList();
 				</div>
 			</div>
 			<div class="col-lg-4">
-				<div class="form-group field-required">
+				<div class="form-group">
 					<label><?php echo JText::_('FIELD_LABEL_MARITAL_STATUS'); ?></label>
 					<select name="marital_status" id="<?php echo $APPTAG?>-marital_status" class="form-control auto-tab" data-target="<?php echo $APPTAG?>-group-partner">
-						<option value="" data-target-display="false"><?php echo JText::_('TEXT_SELECT'); ?></option>
-						<option value="SOLTEIRO" data-target-display="false">Solteiro</option>
-						<option value="CASADO" data-target-display="true">Casado</option>
-						<option value="UNIÃO ESTÁVEL" data-target-display="true">União Estável</option>
-						<option value="DIVORCIADO" data-target-display="false">Divorciado</option>
-						<option value="VIÚVO" data-target-display="false">Viúvo</option>
+						<option value="0" data-target-display="false"><?php echo JText::_('TEXT_SELECT'); ?></option>
+						<option value="1" data-target-display="false"><?php echo JText::_('TEXT_MARITAL_STATUS_1'); ?></option>
+						<option value="2" data-target-display="true"><?php echo JText::_('TEXT_MARITAL_STATUS_2'); ?></option>
+						<option value="3" data-target-display="true"><?php echo JText::_('TEXT_MARITAL_STATUS_3'); ?></option>
+						<option value="4" data-target-display="false"><?php echo JText::_('TEXT_MARITAL_STATUS_4'); ?></option>
+						<option value="5" data-target-display="false"><?php echo JText::_('TEXT_MARITAL_STATUS_5'); ?></option>
 					</select>
 				</div>
 			</div>
