@@ -93,11 +93,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['relationId']			= $input->get('relationId', 0, 'int');
 		$request['state']				= $input->get('state', 1, 'int');
 		// app
-		$request['group_id']			= $input->get('group_id', 0, 'int');
-		$request['newsUser']			= $input->get('newsUser', 0, 'int');
+		$request['newUser']				= $input->get('newUser', 0, 'int');
 		$request['user_id']				= $input->get('user_id', 0, 'int');
 			// Define o usuário
-			$userID							= $request['newsUser'] ? $request['newsUser'] : $request['user_id'];
+			$userID						= $request['newUser'] ? $request['newUser'] : $request['user_id'];
+		$request['group_id']			= $input->get('group_id', 0, 'int');
 		$request['name']				= $input->get('name', '', 'string');
 		$request['nickname']			= $input->get('nickname', '', 'string');
 		$request['email']				= $input->get('email', '', 'string');
@@ -122,8 +122,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	    // user registration action
 	  	$request['access']				= $input->get('access', 0, 'int');
 	    $request['username']			= $input->get('username', '', 'string');
-	  	$request['usergroup']			= $input->get('usergroup', $_SESSION[$APPTAG.'newUsertype'], 'int');
-	  	$request['password']			= $input->get('password', '', 'string');
+		$request['usergroups']			= isset($_POST['usergroups']) ? $_POST['usergroups'] : $_SESSION[$APPTAG.'newUsertype'];
+		$request['password']			= $input->get('password', '', 'string');
 	  	$request['repassword']			= $input->get('repassword', '', 'string');
 	  	$request['emailConfirm']		= $input->get('emailConfirm', 0, 'int');
 	  	$request['emailInfo']			= $input->get('emailInfo', '', 'string');
@@ -152,7 +152,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$item	= $db->loadObject();
 	    		$exist	= (isset($item->id) && !empty($item->id) && $item->id > 0);
 				// CUSTOM -> VERIFY IF IS REGISTERED USER
-				$isUser = $userInfoId = $userInfoBlock = 0;
+				$isUser = $userInfoId = $userInfoBlock = $userGroups = 0;
 				$userInfoName = $userInfoEmail = '';
 				if($item->user_id != 0) :
 					$usr			= baseUserHelper::getUserData($item->user_id);
@@ -193,7 +193,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				if($task == 'get') :
 
 					$itemUID    = ($isUser) ? $userInfoId : 0;
-					$itemName   = ($isUser) ? $userInfoName : $item->name;
+					$itemName   = ($isUser) ? baseHelper::nameFormat($userInfoName) : '';
 					$itemEmail  = ($isUser) ? $userInfoEmail : $item->email;
 					$itemBlock  = ($isUser) ? $userInfoBlock : 1; // inverso do 'access'
 					// Obs: Se 'block' = 1 / 'access' = 0;
@@ -210,8 +210,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						// App Fields
 						'group_id'			=> $item->group_id,
 						'user_id'			=> $itemUID,
-						'usergroup'			=> $item->usergroup,
-						'name'				=> $itemName,
+						'user'				=> $itemName,
+						'name'				=> $item->name,
 						'nickname'			=> $item->nickname,
 						'email'				=> $itemEmail,
 						'cpf'				=> $item->cpf,
@@ -244,7 +244,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$query .=
 						$db->quoteName('group_id')			.'='. $request['group_id'] .','.
 						$db->quoteName('user_id')			.'='. $userID .','.
-						$db->quoteName('usergroup')			.'='. $request['usergroup'] .','.
 						$db->quoteName('name')				.'='. $db->quote($request['name']) .','.
 						$db->quoteName('nickname')			.'='. $db->quote($request['nickname']) .','.
 						$db->quoteName('email')				.'='. $db->quote($request['email']) .','.
@@ -296,28 +295,29 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						// CUSTOM -> user registration
 						// cria o usuário se não existir
 						$userMsg = '';
-						if($request['access'] == 1) :
-							if($userID == 0 && !$isUser) :
+						if($request['access'] == 1 && !$isUser) :
+							// email de confirmação
+							$mailHtml = '';
+							if($request['emailConfirm'] == 1) :
+								// se a senha for gerada pelo sistema, envia a senha. Senão, não envia...
+								$bodyData = empty($request['password']) ? JText::sprintf('MSG_ACTIVATION_EMAIL_PWD', $pwd) : JText::_('MSG_ACTIVATION_EMAIL_NOPWD');
+								$emailInfo = !empty($request['emailInfo']) ? '<p>'.$request['emailInfo'].'</p>' : '';
+								$eBody = JText::sprintf('MSG_ACTIVATION_EMAIL_BODY', baseHelper::nameFormat($request['name']), $domain, $request['email'], $bodyData, $emailInfo);
+								// Email Template
+								$boxStyle	= array('bg' => '#eee', 'color' => '#555', 'border' => '3px solid #303b4d');
+								$headStyle	= array('bg' => '#303b4d', 'color' => '#fff', 'border' => 'none');
+								$bodyStyle	= array('bg' => '#fff');
+								$mailLogo	= 'logo-news.png';
+								$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_ACTIVATION_EMAIL_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle);
+							endif;
+							if($userID == 0) :
 								// define a senha
 								$pwd = ($request['password'] && !empty($request['password'])) ? $request['password'] : baseHelper::randomPassword();
 								// prepara os dados
 								$isBlock = ($request['state'] == 1) ? 0 : 1;
-								// email de confirmação
-								$mailHtml = '';
-								if($request['emailConfirm'] == 1) :
-									// se a senha for gerada pelo sistema, envia a senha. Senão, não envia...
-									$bodyData = empty($request['password']) ? JText::sprintf('MSG_ACTIVATION_EMAIL_PWD', $pwd) : JText::_('MSG_ACTIVATION_EMAIL_NOPWD');
-									$emailInfo = !empty($request['emailInfo']) ? '<p>'.$request['emailInfo'].'</p>' : '';
-									$eBody = JText::sprintf('MSG_ACTIVATION_EMAIL_BODY', baseHelper::nameFormat($request['name']), $domain, $request['email'], $bodyData, $emailInfo);
-									// Email Template
-									$boxStyle	= array('bg' => '#eee', 'color' => '#555', 'border' => '3px solid #303b4d');
-									$headStyle	= array('bg' => '#303b4d', 'color' => '#fff', 'border' => 'none');
-									$bodyStyle	= array('bg' => '#fff');
-									$mailLogo	= 'logo-news.png';
-									$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_ACTIVATION_EMAIL_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle);
-								endif;
 								// cria o usuário
-								$newUserId = baseUserHelper::createJoomlaUser($request['name'], $request['username'], $request['email'], $pwd, $request['usergroup'], $isBlock, $request['emailConfirm'], $mailFrom, $subject, $mailHtml);
+								$newUserId = baseUserHelper::createJoomlaUser($request['name'], $request['username'], $request['email'], $pwd, $request['usergroups'], $isBlock, $request['emailConfirm'], $mailFrom, $subject, $mailHtml);
+								// atribui o usuário ao cliente
 								if(is_int($newUserId) && $newUserId > 0) :
 									$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET user_id = '. $newUserId .' WHERE id = '.$id;
 									$db->setQuery($query);
@@ -326,21 +326,18 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 								else :
 									$userMsg = !is_int($newUserId) ? JText::_($newUserId) : $userMsg = JText::_('MSG_USER_NOT_CREATED');
 								endif;
-								$userMsg = '<br />'.$userMsg;
-							// se existir, atualiza os dados 'name' e 'e-mail' para mantê-los sincronizados
-							elseif($isUser && $userInfoId) :
-								// verifica se ha atualização de senha
-								$newPass  = '';
-								if(!empty($request['password']) && ($request['password'] == $request['repassword'])) :
-									$newPass  = ', password = '. $db->quote(JUserHelper::hashPassword($request['password']));
-								endif;
-								// Atualiza os dados so usuário
-								$query = 'UPDATE '. $db->quoteName('#__users') .' SET name = '. $db->quote($request['name']) .', email = '. $db->quote($request['email']). $newPass .', block = 0 WHERE id = '.$userInfoId;
+							// se for selecionado um usuário já existente, atribui o 'user_id'
+							else :
+								$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET user_id = '. $userID .' WHERE id = '.$id;
 								$db->setQuery($query);
 								$db->execute();
+								if($request['emailConfirm']) baseHelper::sendMail($mailFrom, $request['email'], $subject, $mailHtml);
+								$userMsg = JText::_('MSG_USER_ATTRIBUTED');
 							endif;
+							$userMsg = '<br />'.$userMsg;
+						// permite o bloqueio do acesso
 						elseif($isUser && $userInfoId) :
-							baseUserHelper::stateToJoomlaUser($userInfoId, 0);
+							baseUserHelper::stateToJoomlaUser($userInfoId, $request['access']);
 						endif;
 
 						$data[] = array(
@@ -483,15 +480,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$elemLabel = $db->loadResult();
 						endif;
 
-			            // ALTER USER STATE (block)
-			            // Bloqueia/desbloqueia o usuário de acordo com o 'state' do cliente
-						$query = 'SELECT '. $db->quoteName('user_id') .', '. $db->quoteName('state') .' FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('id') .' IN ('.$ids.')';
-						$db->setQuery($query);
-						$uList = $db->loadObjectList();
-						foreach ($uList as $usr) {
-							if($usr->user_id != 0) baseUserHelper::stateToJoomlaUser($usr->user_id, $usr->state);
-						}
-
 						$data[] = array(
 							'status'			=> 4,
 							'state'				=> $state,
@@ -542,6 +530,30 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'uploadError'			=> $fileMsg
 					);
 
+				// UNLINK USER AND CONTACT
+				elseif($task == 'unlink') :
+
+					$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '. $db->quoteName('user_id') .' = 0, '. $db->quoteName('access') .' = 0 WHERE '. $db->quoteName('id') .' = '.$id;
+
+					try {
+
+						$db->setQuery($query);
+						$db->execute();
+
+						$data[] = array(
+							'status'			=> 1,
+							'msg'				=> JText::_('MSG_USER_UNLINKED')
+						);
+
+					} catch (RuntimeException $e) {
+
+						$data[] = array(
+							'status'			=> 0,
+							'msg'				=> $e->getMessage()
+						);
+
+					}
+
 				endif; // end task
 
 			endif; // num rows
@@ -559,7 +571,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						INSERT INTO '. $db->quoteName($cfg['mainTable']) .'('.
 							$db->quoteName('group_id') .','.
 							$db->quoteName('user_id') .','.
-							$db->quoteName('usergroup') .','.
 							$db->quoteName('name') .','.
 							$db->quoteName('nickname') .','.
 							$db->quoteName('email') .','.
@@ -588,7 +599,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						.') VALUES ('.
 							$request['group_id'] .','.
 							$userID .','.
-							$request['usergroup'] .','.
 							$db->quote($request['name']) .','.
 							$db->quote($request['nickname']) .','.
 							$db->quote($request['email']) .','.
@@ -652,29 +662,30 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						endif;
 
 						// CUSTOM -> user registration
+						// cria o usuário se não existir
 						$userMsg = '';
 						if($request['access'] == 1) :
+							// email de confirmação
+							$mailHtml = '';
+							if($request['emailConfirm'] == 1) :
+								// se a senha for gerada pelo sistema, envia a senha. Senão, não envia...
+								$bodyData = empty($request['password']) ? JText::sprintf('MSG_ACTIVATION_EMAIL_PWD', $pwd) : JText::_('MSG_ACTIVATION_EMAIL_NOPWD');
+								$emailInfo = !empty($request['emailInfo']) ? '<p>'.$request['emailInfo'].'</p>' : '';
+								$eBody = JText::sprintf('MSG_ACTIVATION_EMAIL_BODY', baseHelper::nameFormat($request['name']), $domain, $request['email'], $bodyData, $emailInfo);
+								// Email Template
+								$boxStyle	= array('bg' => '#eee', 'color' => '#555', 'border' => '3px solid #303b4d');
+								$headStyle	= array('bg' => '#303b4d', 'color' => '#fff', 'border' => 'none');
+								$bodyStyle	= array('bg' => '#fff');
+								$mailLogo	= 'logo-news.png';
+								$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_ACTIVATION_EMAIL_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle);
+							endif;
 							if($userID == 0) :
 								// define a senha
 								$pwd = ($request['password'] && !empty($request['password'])) ? $request['password'] : baseHelper::randomPassword();
-								// prepare data
+								// prepara os dados
 								$isBlock = ($request['state'] == 1) ? 0 : 1;
-								// email de confirmação
-								$mailHtml = '';
-								if($request['emailConfirm'] == 1) :
-									// se a senha for gerada pelo sistema, envia a senha. Senão, não envia...
-									$bodyData = empty($request['password']) ? JText::sprintf('MSG_ACTIVATION_EMAIL_PWD', $pwd) : JText::_('MSG_ACTIVATION_EMAIL_NOPWD');
-									$emailInfo = !empty($request['emailInfo']) ? '<p>'.$request['emailInfo'].'</p>' : '';
-									$eBody = JText::sprintf('MSG_ACTIVATION_EMAIL_BODY', baseHelper::nameFormat($request['name']), $domain, $request['email'], $bodyData, $emailInfo);
-									// Email Template
-									$boxStyle	= array('bg' => '#eee', 'color' => '#555', 'border' => '3px solid #303b4d');
-									$headStyle	= array('bg' => '#303b4d', 'color' => '#fff', 'border' => 'none');
-									$bodyStyle	= array('bg' => '#fff');
-									$mailLogo	= 'logo-news.png';
-									$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_ACTIVATION_EMAIL_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle);
-								endif;
 								// cria o usuário
-								$newUserId = baseUserHelper::createJoomlaUser(baseHelper::nameFormat($request['name']), $request['username'], $request['email'], $pwd, $request['usergroup'], $isBlock, $request['emailConfirm'], $mailFrom, $subject, $mailHtml);
+								$newUserId = baseUserHelper::createJoomlaUser($request['name'], $request['username'], $request['email'], $pwd, $request['usergroups'], $isBlock, $request['emailConfirm'], $mailFrom, $subject, $mailHtml);
 								// atribui o usuário ao cliente
 								if(is_int($newUserId) && $newUserId > 0) :
 									$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET user_id = '. $newUserId .' WHERE id = '.$id;
@@ -684,13 +695,15 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 								else :
 									$userMsg = !is_int($newUserId) ? JText::_($newUserId) : $userMsg = JText::_('MSG_USER_NOT_CREATED');
 								endif;
-								$userMsg = '<br />'.$userMsg;
-							// se existir, atualiza os dados 'name' e 'e-mail' para mantê-los sincronizados
+							// se for selecionado um usuário já existente, atribui o 'user_id'
 							else :
-								$query = 'UPDATE '. $db->quoteName('#__users') .' SET name = '. $db->quote($request['name']) .', email = '. $db->quote($request['email']) .' WHERE id = '.$userID;
+								$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET user_id = '. $userID .' WHERE id = '.$id;
 								$db->setQuery($query);
 								$db->execute();
+								if($request['emailConfirm']) baseHelper::sendMail($mailFrom, $request['email'], $subject, $mailHtml);
+								$userMsg = JText::_('MSG_USER_ATTRIBUTED');
 							endif;
+							$userMsg = '<br />'.$userMsg;
 						endif;
 
 						$data[] = array(
@@ -739,13 +752,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$query = '
 					SELECT
 						'. $db->quoteName('T1.id') .',
-						'. $db->quoteName('T1.user_id') .',
-						'. $db->quoteName('T1.name') .' cName,
-						'. $db->quoteName('T1.email') .' cEmail,
-						'. $db->quoteName('T1.state') .' cState,
-						'. $db->quoteName('T2.name') .' uName,
-						'. $db->quoteName('T2.email') .' uEmail,
-						'. $db->quoteName('T2.block') .' uBlock
+						'. $db->quoteName('T2.name') .' uName
 					FROM
 						'. $db->quoteName($cfg['mainTable']).' T1
 						LEFT JOIN '. $db->quoteName('#__users').' T2
@@ -758,21 +765,15 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					// se o nome do usuário vier vazio significa que o usuário não existe
 					if(empty($usr->uName)) :
 						// reseta o user_id
-						$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET user_id = 0, state = 0 WHERE id = '.$usr->id;
-						$db->setQuery($query);
-						$db->execute();
-					// se um dos dados for diferente entre os sistema, atualiza...
-					elseif($usr->cName != $usr->uName || $usr->cEmail != $usr->uEmail) :
-						// verifica se o usuário está bloqueado 'uBlock == 1'
-						$newState = ($usr->uBlock == 1) ? 0 : 1;
-						$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET name = UPPER('. $db->quote($usr->uName) .'), email = '. $db->quote($usr->uEmail) .', state = '. $newState .' WHERE id = '.$usr->id;
+						$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET user_id = 0 WHERE id = '.$usr->id;
 						$db->setQuery($query);
 						$db->execute();
 					endif;
 				}
 
 				$data[] = array(
-					'status' => $query
+					'status'	=> 1,
+					'msg'		=> JText::_('MSG_SYNCHRONIZED')
 				);
 
 			endif; // end 'task'

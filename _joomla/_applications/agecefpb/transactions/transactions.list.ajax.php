@@ -70,7 +70,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$db->quoteName('T3.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
 			;
 		else :
-			$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1 WHERE '. $db->quoteName($rNID) .' = '. $rID;
+			$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
+				JOIN '. $db->quoteName($cfg['mainTable'].'_operators') .' T2
+				ON '.$db->quoteName('T2.id') .' = T1.operator_id
+				WHERE '. $db->quoteName($rNID) .' = '. $rID
+			;
 		endif;
 	else :
 		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
@@ -93,6 +97,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		return;
 	}
 
+	$html = '';
 	if($num_rows) : // verifica se existe
 		$html .= '<ul class="set-list bordered list-striped list-hover">';
 		foreach($res as $item) {

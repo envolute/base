@@ -29,7 +29,7 @@ require($PATH_APP_FILE.'.filter.php');
 			ON T2.id = T1.client_id
 			LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_plans') .' T3
 			ON T3.id = T1.plan_id AND T3.state = 1
-			LEFT OUTER JOIN '. $db->quoteName('#__'.$cfg['project'].'_providers') .' T4
+			LEFT OUTER JOIN '. $db->quoteName('#__base_providers') .' T4
 			ON T4.id = T3.provider_id AND T4.state = 1
 		WHERE
 			'.$where.$orderList;

@@ -63,7 +63,7 @@ $where = '';
 
 	// PROVIDERS -> select
 	$flt_oper = '';
-	$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_providers') .' WHERE '. $db->quoteName('group_id') .' = 2 ORDER BY name';
+	$query = 'SELECT * FROM '. $db->quoteName('#__base_providers') .' WHERE '. $db->quoteName('group_id') .' = 2 ORDER BY name';
 	$db->setQuery($query);
 	$opers = $db->loadObjectList();
 	foreach ($opers as $obj) {

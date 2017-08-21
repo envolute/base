@@ -6,7 +6,7 @@ defined('_JEXEC') or die;
 // 1 - Não lista usuários do grupo 'Desenvolvedor' => '8'
 // 2 - Não lista usuários que já estão associados a um 'client'
 $query = '
-	SELECT T1.id, T1.name, T1.email
+	SELECT DISTINCT(T1.id), T1.name, T1.email
 	FROM '. $db->quoteName('#__users') .' T1
 		JOIN '. $db->quoteName('#__user_usergroup_map') .' T2
 		ON T2.user_id = T1.id

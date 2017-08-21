@@ -338,6 +338,21 @@ class baseHelper {
 
 	}
 
+	// ENVIA UM EMAIL
+	public static function sendMail($mailFrom, $email, $subject, $content) {
+		if(!empty($mailFrom) && !empty($email) && !empty($subject) && !empty($content)) :
+			// Send activation email
+			$mailer = JFactory::getMailer();
+			$mailer->setSender($mailFrom);
+			$mailer->addRecipient($email);
+			$mailer->setSubject($subject);
+			$mailer->setBody($content);
+			$mailer->isHTML();
+			return $mailer->send();
+		endif;
+		return false;
+	}
+
 	// CSV TO ARRAY
 	public static function csvToArray($file, $separator = ';') {
 		if(file_exists($file)) :

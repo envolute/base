@@ -5,10 +5,10 @@ require(JPATH_BASE.'/libraries/envolute/_system.vars.php');
 
 // App Configuration's Vars
 $cfg = array();
-$cfg['project'] = 'agecefpb';
+$cfg['project'] = 'base';
 // App Define
-$APPNAME  = 'providersGroups';
-$MAIN_TB  = '#__'.$cfg['project'].'_providers_groups';
+$APPNAME  = '_providers';
+$MAIN_TB  = '#__'.$cfg['project'].'_providers';
 $APPTAG   = isset(${$APPNAME.'AppTag'}) ? ${$APPNAME.'AppTag'} : $APPNAME;
 $newInstance = ($APPTAG != $APPNAME) ? true : false;
 
@@ -85,11 +85,11 @@ endif;
 	$cfg['dateConvert']			= false;
 	$cfg['load_UI']				= $cfg['dateConvert'];
 	$cfg['priceDecimal']		= false;
-	$cfg['htmlEditor']			= false;
-	$cfg['htmlEditorFull']		= false;
+	$cfg['htmlEditor']			= true;
+	$cfg['htmlEditorFull']		= true;
 
 	// crud's upload config
-	$cfg['hasUpload']			= false;
+	$cfg['hasUpload']			= true;
 	$cfg['hasUpload'] = isset(${$APPTAG.'hasUpload'}) ? ${$APPTAG.'hasUpload'} : $cfg['hasUpload'];
 	// habilita a adição dinamica de novos campos do tipo 'file'
 	$cfg['dinamicFiles']		= false;

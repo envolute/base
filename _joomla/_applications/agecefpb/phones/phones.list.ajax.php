@@ -66,7 +66,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$db->quoteName($cfg['mainTable']) .' T1
 				JOIN '. $db->quoteName($cfg['mainTable'].'_plans') .' T2
 				ON T2.id = T1.plan_id AND T2.state = 1
-				JOIN '. $db->quoteName('#__'.$cfg['project'].'_providers') .' T3
+				JOIN '. $db->quoteName('#__base_providers') .' T3
 				ON T3.id = T2.provider_id AND T3.state = 1
 				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T4
 				ON '.$db->quoteName('T4.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
@@ -74,10 +74,21 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$db->quoteName('T4.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
 			;
 		else :
-			$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1 WHERE '. $db->quoteName($rNID) .' = '. $rID;
+			$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
+				JOIN '. $db->quoteName($cfg['mainTable'].'_plans') .' T2
+				ON T2.id = T1.plan_id AND T2.state = 1
+				JOIN '. $db->quoteName('#__base_providers') .' T3
+				ON T3.id = T2.provider_id AND T3.state = 1
+				WHERE '. $db->quoteName($rNID) .' = '. $rID
+			;
 		endif;
 	else :
-		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1';
+		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
+			JOIN '. $db->quoteName($cfg['mainTable'].'_plans') .' T2
+			ON T2.id = T1.plan_id AND T2.state = 1
+			JOIN '. $db->quoteName('#__base_providers') .' T3
+			ON T3.id = T2.provider_id AND T3.state = 1
+		';
 		if($oCHL) :
 			$query .= ' WHERE 1=0';
 			$noReg = false;
@@ -94,6 +105,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		return;
 	}
 
+	$html = '';
 	if($num_rows) : // verifica se existe
 		$html .= '<ul class="set-list bordered list-striped list-hover">';
 		foreach($res as $item) {

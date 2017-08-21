@@ -14,6 +14,14 @@ require($PATH_APP_FILE.'.filter.php');
 			'. $db->quoteName('T1.id') .',
 			'. $db->quoteName('T1.name') .',
 			'. $db->quoteName('T2.name') .' grp,
+			'. $db->quoteName('T3.name') .' user,
+			'. $db->quoteName('T1.gender') .',
+			'. $db->quoteName('T1.email') .',
+			'. $db->quoteName('T1.birthday') .',
+			'. $db->quoteName('T1.occupation') .',
+			'. $db->quoteName('T1.note') .',
+			'. $db->quoteName('T1.access') .',
+			'. $db->quoteName('T1.reasonStatus') .',
 			'. $db->quoteName('T1.created_date') .',
 			'. $db->quoteName('T1.created_by') .',
 			'. $db->quoteName('T1.alter_date') .',
@@ -22,7 +30,9 @@ require($PATH_APP_FILE.'.filter.php');
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
 			LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
-			ON T2.id = T1.group_id AND T2.state = 1
+			ON T2.id = T1.group_id
+			LEFT OUTER JOIN '. $db->quoteName('#__users') .' T3
+			ON T3.id = T1.user_id
 		WHERE
 			'.$where.$orderList;
 	;
@@ -59,8 +69,9 @@ $html = '
 			<thead>
 				<tr>
 					'.$adminView['head']['info'].'
+					<th class="d-none d-lg-table-cell">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_GROUP'), 'T2.name', $APPTAG).'</th>
 					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_NAME'), 'T1.name', $APPTAG).'</th>
-					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_GROUP'), 'T2.name', $APPTAG).'</th>
+					<th>'.JText::_('TEXT_STATUS').'</th>
 					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
 					'.$adminView['head']['actions'].'
 				</tr>
@@ -80,13 +91,20 @@ if($num_rows) : // verifica se existe
 
 		if($cfg['hasUpload']) :
 			JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
-			$files[$item->id] = uploader::getFiles($cfg['fileTable'], $item->id);
+
+			// Imagem Principal -> Primeira imagem (index = 0)
+			$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
+			if(!empty($img)) $img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPNAME.'/'.$img['filename'], 32, 32).'" class="d-none d-md-inline img-fluid rounded-circle float-left mr-2" />';
+
+			// Arquivos -> Grupo de imagens ('#'.$APPTAG.'-files-group')
+			// Obs: para pegar todas as imagens basta remover o 'grupo' ('#'.$APPTAG.'-files-group')
+			$files[$item->id] = uploader::getFiles($cfg['fileTable'], $item->id, '#'.$APPTAG.'-files-group');
 			$listFiles = '';
 			for($i = 0; $i < count($files[$item->id]); $i++) {
 				if(!empty($files[$item->id][$i]->filename)) :
 					$listFiles .= '
 						<a href="'.JURI::root(true).'/apps/get-file?fn='.base64_encode($files[$item->id][$i]->filename).'&mt='.base64_encode($files[$item->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
-							<span class="base-icon-attach hasTooltip" title="'.$files[$item->id][$i]->filename.'<br />'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"></span>
+							<span class="base-icon-attach hasTooltip" data-animation="false" title="'.$files[$item->id][$i]->filename.'<br />'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"></span>
 						</a>
 					';
 				endif;
@@ -112,7 +130,19 @@ if($num_rows) : // verifica se existe
 			';
 		endif;
 
-		$rowState = $item->state == 0 ? 'table-danger' : '';
+		$note = !empty($item->note) ? '<span class="base-icon-info-circled cursor-help hasTooltip" title="'.$item->note.'"></span> ' : '';
+		if($item->access == 0) :
+			$reason = !empty($item->reasonStatus) ? '<div class="small text-muted text-truncate">'.$item->reasonStatus.'</div>' : '';
+			// Check if user exist
+			if(empty($item->user)) $status = '<span class="base-icon-attention text-live"> '.JText::_('TEXT_NO_ACCESS').'</span>';
+			else $status = '<span class="base-icon-attention text-live"> '.JText::_('TEXT_BLOCKED').'</span>';
+			$status .= $reason;
+		else :
+			// Check if user exist
+			if(empty($item->user)) $status = '<span class="base-icon-cancel text-danger"> '.JText::_('TEXT_NO_USER_ASSOC').'</span><div class="small text-muted text-truncate">'.JText::_('TEXT_NO_USER_ASSOC_DESC').'</div>';
+			else $status = '<span class="base-icon-ok text-success"> '.JText::_('TEXT_ALLOWED_ACCESS').'</span>';
+		endif;
+		$rowState	= $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
 		if($item->alter_date != '0000-00-00 00:00:00') :
@@ -124,8 +154,9 @@ if($num_rows) : // verifica se existe
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
-				<td>'.baseHelper::nameFormat($item->name).'</td>
-				<td>'.baseHelper::nameFormat($item->grp).'</td>
+				<td class="d-none d-lg-table-cell">'.baseHelper::nameFormat($item->grp).'<div class="small text-muted">'.baseHelper::nameFormat($item->occupation).'</td>
+				<td>'.$img.$note.baseHelper::nameFormat($item->name).'<div class="small text-muted">'.$item->email.'</td>
+				<td>'.$status.'</td>
 				<td class="d-none d-lg-table-cell">
 					'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'
 					<a href="#" class="base-icon-info-circled setPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top"></a>
@@ -139,7 +170,7 @@ else : // num_rows = 0
 
 	$html .= '
 		<tr>
-			<td colspan="7">
+			<td colspan="8">
 				<div class="alert alert-warning alert-icon m-0">'.JText::_('MSG_LISTNOREG').'</div>
 			</td>
 		</tr>

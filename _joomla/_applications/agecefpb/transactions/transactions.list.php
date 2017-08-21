@@ -40,7 +40,7 @@ require($PATH_APP_FILE.'.filter.php');
 			'. $db->quoteName('T1.state') .'
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
-			JOIN '. $db->quoteName('#__'.$cfg['project'].'_providers') .' T2
+			JOIN '. $db->quoteName('#__base_providers') .' T2
 			ON T2.id = T1.provider_id
 			JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T3
 			ON T3.id = T1.client_id

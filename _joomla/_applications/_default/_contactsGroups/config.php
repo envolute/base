@@ -7,7 +7,7 @@ require(JPATH_BASE.'/libraries/envolute/_system.vars.php');
 $cfg = array();
 $cfg['project'] = 'base';
 // App Define
-$APPNAME  = 'contactsGroups';
+$APPNAME  = '_contactsGroups';
 $MAIN_TB  = '#__'.$cfg['project'].'_contacts_groups';
 $APPTAG   = isset(${$APPNAME.'AppTag'}) ? ${$APPNAME.'AppTag'} : $APPNAME;
 $newInstance = ($APPTAG != $APPNAME) ? true : false;

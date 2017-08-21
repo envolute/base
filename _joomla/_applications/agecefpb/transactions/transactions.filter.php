@@ -219,7 +219,7 @@ $where = '';
 
 	// providers -> select
 	$flt_provider = '';
-	$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_providers') .' ORDER BY name';
+	$query = 'SELECT * FROM '. $db->quoteName('#__base_providers') .' ORDER BY name';
 	$db->setQuery($query);
 	$providers = $db->loadObjectList();
 	foreach ($providers as $obj) {

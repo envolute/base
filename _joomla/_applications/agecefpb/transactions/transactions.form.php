@@ -7,7 +7,7 @@ $db->setQuery($query);
 $clients = $db->loadObjectList();
 
 // PROVIDERS
-$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_providers') .' WHERE state = 1 ORDER BY name';
+$query = 'SELECT * FROM '. $db->quoteName('#__base_providers') .' WHERE state = 1 ORDER BY name';
 $db->setQuery($query);
 $providers = $db->loadObjectList();
 
@@ -146,7 +146,7 @@ $invoices = $db->loadObjectList();
 				<option value="0"><?php echo JText::_('TEXT_SELECT'); ?></option>
 				<?php
 					foreach ($invoices as $obj) {
-						echo '<option value="'.$obj->id.'">'.baseHelper::getMonthName($obj->month).' de '.$obj->year.' - '.baseHelper::nameFormat($obj->grp).'</option>';
+						echo '<option value="'.$obj->id.'">'.baseHelper::dateFormat($obj->due_date).' - '.baseHelper::nameFormat($obj->grp).'</option>';
 					}
 				?>
 			</select>

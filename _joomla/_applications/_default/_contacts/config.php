@@ -5,10 +5,10 @@ require(JPATH_BASE.'/libraries/envolute/_system.vars.php');
 
 // App Configuration's Vars
 $cfg = array();
-$cfg['project'] = 'agecefpb';
+$cfg['project'] = 'base';
 // App Define
-$APPNAME  = 'providers';
-$MAIN_TB  = '#__'.$cfg['project'].'_providers';
+$APPNAME  = '_contacts';
+$MAIN_TB  = '#__'.$cfg['project'].'_contacts';
 $APPTAG   = isset(${$APPNAME.'AppTag'}) ? ${$APPNAME.'AppTag'} : $APPNAME;
 $newInstance = ($APPTAG != $APPNAME) ? true : false;
 
@@ -28,6 +28,9 @@ if(!$ajaxRequest && (!isset($_SESSION[$APPTAG.'langDef']) || (isset($_SESSION[$A
 	if(isset($_SESSION[$APPTAG.'langDef'])) unset($_SESSION[$APPTAG.'langDef']);
 	$_SESSION[$APPTAG.'langDef'] = $lang->getTag(); // define a language
 endif;
+
+// get user type default in registration
+$_SESSION[$APPTAG.'newUsertype'] = 2; // default 'Associado'
 
 // Crud's permissions
 	$cfg['isPublic']			= false; // Público -> acesso aberto a todos
@@ -82,13 +85,14 @@ endif;
 	$cfg['showFormDesc']		= false;
 
 	// date & price convertions
-	$cfg['dateConvert']			= false;
+	$cfg['dateConvert']			= true;
 	$cfg['load_UI']				= $cfg['dateConvert'];
 	$cfg['priceDecimal']		= false;
-	$cfg['htmlEditor']			= true;
-	$cfg['htmlEditorFull']		= true;
+	$cfg['htmlEditor']			= false;
+	$cfg['htmlEditorFull']		= false;
 
-	// crud's upload config
+// crud's upload config
+
 	$cfg['hasUpload']			= true;
 	$cfg['hasUpload'] = isset(${$APPTAG.'hasUpload'}) ? ${$APPTAG.'hasUpload'} : $cfg['hasUpload'];
 	// habilita a adição dinamica de novos campos do tipo 'file'

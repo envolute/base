@@ -78,7 +78,7 @@ $where = '';
 			'. $db->quoteName('T1.name') .',
 			'. $db->quoteName('T2.name') .' provider
 		FROM '. $db->quoteName($cfg['mainTable'].'_plans') .' T1
-			LEFT OUTER JOIN '. $db->quoteName('#__'.$cfg['project'].'_providers') .' T2
+			LEFT OUTER JOIN '. $db->quoteName('#__base_providers') .' T2
 			ON T2.id = T1.provider_id
 		ORDER BY T2.name
 	';

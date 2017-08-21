@@ -121,21 +121,13 @@ class baseUserHelper {
 			'password2' => $password,
 			'email' => $email,
 			'block' => $block,
-			'groups' => array($usergroup)
+			'groups' => is_array($usergroup) ? $usergroup : array($usergroup)
 		);
 		$newUser = new JUser;
 		if(!$newUser->bind($userData)) return $newUser->getError();
 		if(!$newUser->save()) return $newUser->getError();
-		if($emailConfirm && $mailFrom && $subject && $content) :
-			// Send activation email
-			$mailer = JFactory::getMailer();
-			$mailer->setSender($mailFrom);
-			$mailer->addRecipient($email);
-			$mailer->setSubject($subject);
-			$mailer->setBody($content);
-			$mailer->isHTML();
-			$mailer->send();
-		endif;
+		// Send activation email
+		if($emailConfirm) baseHelper::sendMail($mailFrom, $email, $subject, $content);
 		return $newUser->id;
 	}
 

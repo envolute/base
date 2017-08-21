@@ -25,81 +25,81 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	endif;
 
 	//joomla get request data
-	$input      = $app->input;
+	$input		= $app->input;
 
 	// params requests
 	$APPTAG		= $input->get('aTag', $APPTAG, 'str');
 	$RTAG		= $input->get('rTag', $APPTAG, 'str');
 	$oCHL		= $input->get('oCHL', 0, 'bool');
 	$oCHL		= $_SESSION[$RTAG.'OnlyChildList'] ? $_SESSION[$RTAG.'OnlyChildList'] : $oCHL;
-	$rNID       = $input->get('rNID', '', 'str');
+	$rNID		= $input->get('rNID', '', 'str');
 	$rNID		= !empty($_SESSION[$RTAG.'RelListNameId']) ? $_SESSION[$RTAG.'RelListNameId'] : $rNID;
-	$rID      	= $input->get('rID', 0, 'int');
+	$rID		= $input->get('rID', 0, 'int');
 	$rID		= !empty($_SESSION[$RTAG.'RelListId']) ? $_SESSION[$RTAG.'RelListId'] : $rID;
 
 	// get current user's data
-	$user = JFactory::getUser();
-	$groups = $user->groups;
+	$user		= JFactory::getUser();
+	$groups		= $user->groups;
 
 	// verifica o acesso
-	$hasGroup = array_intersect($groups, $cfg['groupId']['viewer']); // se está na lista de grupos permitidos
-	$hasAdmin = array_intersect($groups, $cfg['groupId']['admin']); // se está na lista de administradores permitidos
+	$hasGroup	= array_intersect($groups, $cfg['groupId']['viewer']); // se está na lista de grupos permitidos
+	$hasAdmin	= array_intersect($groups, $cfg['groupId']['admin']); // se está na lista de administradores permitidos
 
 	// database connect
-	$db = JFactory::getDbo();
+	$db		= JFactory::getDbo();
 
 	// GET DATA
-	$noReg = true;
-	$query = '
+	$noReg	= true;
+	$query	= '
 		SELECT
 			'. $db->quoteName('T1.id') .',
 			'. $db->quoteName('T1.name') .',
 			'. $db->quoteName('T2.name') .' grp,
+			'. $db->quoteName('T2.agreement') .',
 			'. $db->quoteName('T1.state')
 	;
 	if(!empty($rID) && $rID !== 0) :
 		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
 			$query .= ' FROM '.
 				$db->quoteName($cfg['mainTable']) .' T1
-				JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
-				ON '.$db->quoteName('T2.id') .' = T1.group_id
+				LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
+				ON T2.id = T1.group_id AND T2.state = 1
 				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T3
 				ON '.$db->quoteName('T3.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
 			WHERE '.
 				$db->quoteName('T3.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
 			;
 		else :
-			$query .= '
-			FROM '. $db->quoteName($cfg['mainTable']) .' T1
-				JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
-				ON '.$db->quoteName('T2.id') .' = T1.group_id
-			WHERE '. $db->quoteName($rNID) .' = '. $rID;
+			$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
+				LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
+				ON T2.id = T1.group_id AND T2.state = 1
+				WHERE '. $db->quoteName($rNID) .' = '. $rID
+			;
 		endif;
 	else :
 		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
-			JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
-			ON '.$db->quoteName('T2.id') .' = T1.group_id
+			LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
+			ON T2.id = T1.group_id AND T2.state = 1
 		';
 		if($oCHL) :
 			$query .= ' WHERE 1=0';
 			$noReg = false;
 		endif;
 	endif;
-	$query .= ' ORDER BY '. $db->quoteName('T1.name') .' ASC';
+	$query	.= ' ORDER BY '. $db->quoteName('T1.name') .' ASC';
 	try {
-
 		$db->setQuery($query);
 		$db->execute();
 		$num_rows = $db->getNumRows();
 		$res = $db->loadObjectList();
-
 	} catch (RuntimeException $e) {
-		 echo $e->getMessage();
-		 return;
+		echo $e->getMessage();
+		return;
 	}
 
+	$html = '';
 	if($num_rows) : // verifica se existe
-		$html .= '<ul class="list-unstyled bordered list-striped list-hover m-0">';
+		$html .= '<ul class="set-list bordered list-striped list-hover">';
 		foreach($res as $item) {
 
 			if($cfg['hasUpload']) :
@@ -117,14 +117,16 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				}
 			endif;
 
+			$agreement = $item->agreement == 1 ? '<span class="badge badge-warning">'.JText::_('FIELD_LABEL_AGREEMENT').'</span> ' : '';
 			$btnState = $hasAdmin ? '<a href="#" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'"><span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').' hasTooltip" data-animation="false" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'"></span></a> ' : '';
 			$btnEdit = $hasAdmin ? '<a href="#" class="base-icon-pencil text-live hasTooltip" data-animation="false" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"></a> ' : '';
 			$btnDelete = $hasAdmin ? '<a href="#" class="base-icon-trash text-danger hasTooltip" data-animation="false" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"></a>' : '';
 			$rowState = $item->state == 0 ? 'list-danger' : '';
 			$html .= '
 				<li class="'.$rowState.'">
-					<div class="float-right">'.$btnState.$btnEdit.$btnDelete.'</div>
-					'.baseHelper::nameFormat($item->name).'<div class="small text-muted">'.baseHelper::nameFormat($item->grp).'</div>
+					<span class="float-right">'.$btnState.$btnEdit.$btnDelete.'</span>
+					'.baseHelper::nameFormat($item->name).'
+					<div class="small text-muted">'.$agreement.baseHelper::nameFormat($item->grp).'</div>
 				</li>
 			';
 		}

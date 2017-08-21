@@ -13,10 +13,10 @@ $groups = $db->loadObjectList();
 		<a class="nav-link active" id="<?php echo $APPTAG?>Tab-general" data-toggle="tab" href="#<?php echo $APPTAG?>TabGeneral" role="tab" aria-controls="general" aria-expanded="true"><?php echo JText::_('TEXT_GENERAL'); ?></a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link" id="<?php echo $APPTAG?>Tab-description" data-toggle="tab" href="#<?php echo $APPTAG?>TabDesc" role="tab" aria-controls="description"><?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?></a>
+		<a class="nav-link" id="<?php echo $APPTAG?>Tab-description" data-toggle="tab" href="#<?php echo $APPTAG?>TabDesc" role="tab" aria-controls="description"><?php echo JText::_('FIELD_LABEL_ABOUT'); ?></a>
 	</li>
 	<li class="nav-item dropdown">
-		<a class="nav-link" id="<?php echo $APPTAG?>Tab-service" data-toggle="tab" href="#<?php echo $APPTAG?>TabService" role="tab" aria-controls="service"><?php echo JText::_('FIELD_LABEL_SERVICE_DESC'); ?></a>
+		<a class="nav-link" id="<?php echo $APPTAG?>Tab-service" data-toggle="tab" href="#<?php echo $APPTAG?>TabService" role="tab" aria-controls="service"><?php echo JText::_('FIELD_LABEL_SERVICE'); ?></a>
 	</li>
 </ul>
 <div class="tab-content" id="<?php echo $APPTAG?>TabContent">
@@ -28,7 +28,7 @@ $groups = $db->loadObjectList();
 						<div class="form-group field-required">
 							<label><?php echo JText::_('FIELD_LABEL_GROUP'); ?></label>
 							<div class="input-group">
-								<select name="group_id" id="<?php echo $APPTAG?>-group_id" class="form-control field-id auto-tab" data-target="#<?php echo $APPTAG?>-name">
+								<select name="group_id" id="<?php echo $APPTAG?>-group_id" class="form-control field-id">
 									<option value="0">- <?php echo JText::_('TEXT_SELECT'); ?> -</option>
 									<?php
 										foreach ($groups as $obj) {
@@ -43,18 +43,36 @@ $groups = $db->loadObjectList();
 							</div>
 						</div>
 					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_AGREEMENT_DESC')?>"><?php echo JText::_('FIELD_LABEL_AGREEMENT'); ?></label>
+							<span class="btn-group btn-group-justified" data-toggle="buttons">
+								<label class="btn btn-default btn-active-danger">
+									<input type="radio" name="agreement" id="<?php echo $APPTAG?>-agreement-0" value="0" />
+									<?php echo JText::_('TEXT_NO'); ?>
+								</label>
+								<label class="btn btn-default btn-active-success">
+									<input type="radio" name="agreement" id="<?php echo $APPTAG?>-agreement-1" value="1" />
+									<?php echo JText::_('TEXT_YES'); ?>
+								</label>
+							</span>
+						</div>
+					</div>
 					<div class="col-lg-6">
 						<div class="form-group field-required">
 							<label><?php echo JText::_('FIELD_LABEL_NAME'); ?></label>
 							<input type="text" name="name" id="<?php echo $APPTAG?>-name" class="form-control upper" />
 						</div>
 					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label>E-mail</label>
+							<input type="email" name="email" id="<?php echo $APPTAG?>-email" class="form-control field-email" />
+							<input type="hidden" name="cmail" id="<?php echo $APPTAG?>-cmail" />
+						</div>
+					</div>
 				</div>
-				<div class="form-group">
-					<label>E-mail</label>
-					<input type="email" name="email" id="<?php echo $APPTAG?>-email" class="form-control field-email" />
-					<input type="hidden" name="cmail" id="<?php echo $APPTAG?>-cmail" />
-				</div>
+				<hr class="mt-2" />
 				<div class="row">
 					<div class="col-lg-4">
 						<div class="form-group">
@@ -116,11 +134,13 @@ $groups = $db->loadObjectList();
 	</div>
 	<div class="tab-pane fade" id="<?php echo $APPTAG?>TabDesc" role="tabpanel" aria-labelledby="<?php echo $APPTAG?>Tab-description">
 		<div class="form-group">
+			<label class="text-sm"><?php echo JText::_('FIELD_LABEL_ABOUT_DESC')?></label>
 			<textarea name="description" id="<?php echo $APPTAG?>-description" rows="4" class="form-control field-html"></textarea>
 		</div>
 	</div>
 	<div class="tab-pane fade" id="<?php echo $APPTAG?>TabService" role="tabpanel" aria-labelledby="<?php echo $APPTAG?>Tab-service">
 		<div class="form-group">
+			<label class="text-sm"><?php echo JText::_('FIELD_LABEL_SERVICE_DESC')?></label>
 			<textarea name="service_desc" id="<?php echo $APPTAG?>-service_desc" rows="4" class="form-control field-html"></textarea>
 		</div>
 	</div>

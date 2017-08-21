@@ -33,6 +33,7 @@ jQuery(function() {
 
 	// APP FIELDS
 	var group_id			= jQuery('#<?php echo $APPTAG?>-group_id');
+	var agreement			= mainForm.find('input[name=agreement]:radio'); // radio group
 	var name				= jQuery('#<?php echo $APPTAG?>-name');
 	var email				= jQuery('#<?php echo $APPTAG?>-email');
 	var cnpj				= jQuery('#<?php echo $APPTAG?>-cnpj');
@@ -97,6 +98,7 @@ jQuery(function() {
 			// App Fields
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
+			checkOption(agreement, 0); // radio
 			name.val('');
 			email.val('');
 			cnpj.val('');
@@ -226,6 +228,8 @@ jQuery(function() {
 						?>
 
 						// App Fields
+						group_id.selectUpdate(item.group_id);
+						checkOption(agreement, item.agreement); // radio
 						name.val(item.name);
 						email.val(item.email);
 						cnpj.val(item.cnpj);

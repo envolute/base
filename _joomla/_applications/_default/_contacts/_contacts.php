@@ -56,7 +56,7 @@ jQuery(function() {
 	var address_city		= jQuery('#<?php echo $APPTAG?>-address_city');
 	var address_state		= jQuery('#<?php echo $APPTAG?>-address_state');
 	// contact
-	var phone				= jQuery('#<?php echo $APPTAG?>-phone');
+	var phone0				= jQuery('#<?php echo $APPTAG?>-phone0');
 	var phone1				= jQuery('#<?php echo $APPTAG?>-phone1');
 	var phone2				= jQuery('#<?php echo $APPTAG?>-phone2');
 	// extra info
@@ -64,7 +64,7 @@ jQuery(function() {
 	// Joomla Registration
 	var access				= mainForm.find('input[name=access]:radio'); // radio group
 	var newUser				= jQuery('#<?php echo $APPTAG?>-newUser');
-	var usergroup 			= jQuery('#<?php echo $APPTAG?>-usergroup');
+	var usergroups 			= jQuery('#<?php echo $APPTAG?>-usergroups');
 	var username 			= jQuery('#<?php echo $APPTAG?>-username');
 	var password			= jQuery('#<?php echo $APPTAG?>-password');
 	var repassword			= jQuery('#<?php echo $APPTAG?>-repassword');
@@ -147,7 +147,7 @@ jQuery(function() {
 			address_district.val('');
 			address_city.val('');
 			address_state.val('');
-			phone.val('');
+			phone0.val('');
 			phone1.val('');
 			phone2.val('');
 			note.val('');
@@ -161,46 +161,27 @@ jQuery(function() {
 		};
 
 		// CUSTOM -> Reset Registration Fields
-		window.<?php echo $APPTAG?>_accessForm = function(val) {
+		window.<?php echo $APPTAG?>_accessForm = function(allowed) {
 			var isUser = (user_id.val() == 0) ? false : true;
-			newUser.selectUpdate(0); // select
-			usergroup.selectUpdate(<?php echo $_SESSION[$APPTAG.'newUsertype']?>, 0);
+			var hideFields = (allowed) ? false : true;
+			newUser.selectUpdate(user_id.val()); // select
+			usergroups.selectUpdate(<?php echo $_SESSION[$APPTAG.'newUsertype']?>, 0);
 			username.val('');
 			password.val('');
 			repassword.val('');
 			emailInfo.val('');
-			checkOption(emailConfirm, (val && !isUser));
-			jQuery('.accessFields').collapse((val ? 'show' : 'hide'));
-			jQuery('#<?php echo $APPTAG?>-reasonStatus-group').collapse((!val ? 'show' : 'hide'));
-			setHidden('.new-user-data', (val && isUser), '.edit-user-data');
+			// limpa o nome do usuário vinculado ao contato
+			if(!isUser) jQuery('#<?php echo $APPTAG?>_name_linked').empty();
+			// Lista de usuários disponíveis
+			// Caso o acesso seja selecionado, mostra a lista de usuários
+			setHidden('.<?php echo $APPTAG?>-user-fields', (hideFields || isUser));
+			// Labels e campos para usuários e não usuários
 			setHidden('.<?php echo $APPTAG?>-no-user', isUser, '.<?php echo $APPTAG?>-is-user');
-		};
-
-		// CUSTOM -> Sincroniza com os contatos
-		window.<?php echo $APPTAG?>_userSync = function() {
-			<?php echo $APPTAG?>_formExecute(true, true, false); // inicia o loader
-			jQuery.ajax({
-				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=userSync",
-				dataType: 'json',
-				type: 'POST',
-				cache: false,
-				success: function(data) {
-					<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
-					jQuery.map( data, function( res ) {
-						setTimeout(function() {
-							<?php $redir = baseHelper::setUrlParam(JURI::current(), 'sync=1'); ?>
-							window.location.href = "<?php echo $redir?>";
-						}, 1000);
-					});
-				},
-				error: function(xhr, status, error) {
-					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
-					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
-					?>
-					<?php echo $APPTAG?>_formExecute(true, formDisable, false); // encerra o loader
-				}
-			});
-			return false;
+			// Mostra a mensagem de 'usuário vinculado'
+			setHidden('#<?php echo $APPTAG?>-unlink-msg', !isUser);
+			// Mostra o campo 'motivo' caso seja clicado o botão 'Bloquear'
+			// Nesse caso, já deve existir um usuário vinculado
+			setHidden('#<?php echo $APPTAG?>-reasonStatus-group', ((!allowed && !isUser) || allowed));
 		};
 
 		<?php if($cfg['hasUpload']) : ?>
@@ -317,9 +298,9 @@ jQuery(function() {
 						?>
 
 						// App Fields
-						group_id.val(item.group_id);
+						group_id.selectUpdate(item.group_id);
 						user_id.val(item.user_id);
-						usergroup.selectUpdate(item.usergroup); // select
+						usergroups.selectUpdate(item.usergroups); // select
 						name.val(item.name);
 						nickname.val(item.nickname);
 						email.val(item.email);
@@ -341,12 +322,14 @@ jQuery(function() {
 						address_city.val(item.address_city);
 							// phones
 							var p = item.phones.split(",");
-							phone.val(p[0]);
+							phone0.val(p[0]);
 							phone1.val(p[1]);
 							phone2.val(p[2]);
 						note.val(item.note);
 						checkOption(access, item.access);
 						reasonStatus.val(item.reasonStatus);
+						// mostra o nome do usuário vinculado ao contato
+						jQuery('#<?php echo $APPTAG?>_name_linked').text(item.user);
 
 						<?php // Closure Actions
 						require(JPATH_CORE.DS.'apps/snippets/form/loadEdit.end.js.php');
@@ -386,6 +369,70 @@ jQuery(function() {
 			?>
 
 		<? endif; ?>
+
+		// CUSTOM -> Sincroniza com os contatos
+		// Essa sincronização apenas verifica se os usuários atribuídos ainda existem e se estão ativos
+		window.<?php echo $APPTAG?>_userSync = function() {
+			<?php echo $APPTAG?>_formExecute(true, true, false); // inicia o loader
+			jQuery.ajax({
+				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=userSync",
+				dataType: 'json',
+				type: 'POST',
+				cache: false,
+				success: function(data) {
+					<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
+					jQuery.map( data, function( res ) {
+						setTimeout(function() {
+							<?php $redir = baseHelper::setUrlParam(JURI::current(), 'sync=1'); ?>
+							window.location.href = "<?php echo $redir?>";
+						}, 1000);
+					});
+				},
+				error: function(xhr, status, error) {
+					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
+					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
+					?>
+					<?php echo $APPTAG?>_formExecute(true, formDisable, false); // encerra o loader
+				}
+			});
+			return false;
+		};
+
+		window.<?php echo $APPTAG?>_userUnlink = function(itemID) {
+			var msg = '<?php echo JText::_('MSG_UNLINK_CONFIRM'); ?>';
+			if(!confirm(msg)) return false;
+			var cod = '&id='+((isSet(itemID) && itemID > 0) ? itemID : formId_<?php echo $APPTAG?>.val());
+			<?php echo $APPTAG?>_formExecute(true, true, true); // inicia o loader
+			jQuery.ajax({
+				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=unlink"+cod,
+				dataType: 'json',
+				cache: false,
+				success: function(data){
+					<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
+					jQuery.map( data, function( res ) {
+						if(res.status == 1) {
+							user_id.val(0);
+							// Reseta o status de acesso
+							checkOption(access, 0);
+							// mensagem de sucesso
+							$.baseNotify({ msg: res.msg});
+							<?php // recarrega a página quando fechar o form para atualizar a lista
+				            echo ($cfg['listFull'] ? 'fReload = true;' : $APPTAG.'_listReload(false, false, false, '.$APPTAG.'oCHL, '.$APPTAG.'rNID, '.$APPTAG.'rID);');
+				            ?>
+						} else {
+							$.baseNotify({ msg: res.msg, type: "danger"});
+						}
+					});
+				},
+				error: function(xhr, status, error) {
+					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
+					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
+					?>
+					<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
+				}
+			});
+			return false;
+		};
 
 }); // CLOSE JQUERY->READY
 

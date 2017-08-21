@@ -81,6 +81,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		return;
 	}
 
+	$html = '';
 	if($num_rows) : // verifica se existe
 		$html .= '<ul class="set-list bordered list-striped list-hover">';
 		foreach($res as $item) {

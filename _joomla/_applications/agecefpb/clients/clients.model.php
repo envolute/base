@@ -93,10 +93,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['relationId']			= $input->get('relationId', 0, 'int');
 		$request['state']				= $input->get('state', 1, 'int');
 		// app
-		$request['newsUser']			= $input->get('newsUser', 0, 'int');
+		$request['newUser']				= $input->get('newUser', 0, 'int');
 		$request['user_id']				= $input->get('user_id', 0, 'int');
 			// Define o usuário
-			$userID							= $request['newsUser'] ? $request['newsUser'] : $request['user_id'];
+			$userID							= $request['newUser'] ? $request['newUser'] : $request['user_id'];
 		$request['name']				= $input->get('name', '', 'string');
 		$request['email']				= $input->get('email', '', 'string');
 		$request['cpf']					= $input->get('cpf', '', 'string');

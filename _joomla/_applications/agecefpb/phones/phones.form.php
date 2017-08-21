@@ -20,7 +20,7 @@ $query = '
 		'. $db->quoteName('T1.name') .',
 		'. $db->quoteName('T2.name') .' provider
 	FROM '. $db->quoteName($cfg['mainTable'].'_plans') .' T1
-		JOIN '. $db->quoteName('#__'.$cfg['project'].'_providers') .' T2
+		JOIN '. $db->quoteName('#__base_providers') .' T2
 		ON T2.id = T1.provider_id AND T2.state = 1
 	WHERE '. $db->quoteName('T1.state') .' = 1
 	ORDER BY T2.name
