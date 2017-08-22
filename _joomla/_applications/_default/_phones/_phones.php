@@ -32,50 +32,17 @@ jQuery(function() {
 	?>
 
 	// APP FIELDS
-	var group_id			= jQuery('#<?php echo $APPTAG?>-group_id');
-	var user_id				= jQuery('#<?php echo $APPTAG?>-user_id');
-	var name 				= jQuery('#<?php echo $APPTAG?>-name');
-	var nickname			= jQuery('#<?php echo $APPTAG?>-nickname');
-	var email				= jQuery('#<?php echo $APPTAG?>-email');
-	var cmail				= jQuery('#<?php echo $APPTAG?>-cmail');
-	var cpf					= jQuery('#<?php echo $APPTAG?>-cpf');
-	var rg					= jQuery('#<?php echo $APPTAG?>-rg');
-	var rg_orgao			= jQuery('#<?php echo $APPTAG?>-rg_orgao');
-	var gender 				= mainForm.find('input[name=gender]:radio'); // radio group
-	var birthday			= jQuery('#<?php echo $APPTAG?>-birthday');
-	var occupation			= jQuery('#<?php echo $APPTAG?>-occupation');
-	var marital_status		= jQuery('#<?php echo $APPTAG?>-marital_status');
-	var partner				= jQuery('#<?php echo $APPTAG?>-partner');
-	var children			= jQuery('#<?php echo $APPTAG?>-children');
-	// Address
-	var zip_code 			= jQuery('#<?php echo $APPTAG?>-zip_code');
-	var address				= jQuery('#<?php echo $APPTAG?>-address');
-	var address_number		= jQuery('#<?php echo $APPTAG?>-address_number');
-	var address_info		= jQuery('#<?php echo $APPTAG?>-address_info');
-	var address_district	= jQuery('#<?php echo $APPTAG?>-address_district');
-	var address_city		= jQuery('#<?php echo $APPTAG?>-address_city');
-	var address_state		= jQuery('#<?php echo $APPTAG?>-address_state');
-	// contact
-	var phone0				= jQuery('#<?php echo $APPTAG?>-phone0');
-	var phone1				= jQuery('#<?php echo $APPTAG?>-phone1');
-	var phone2				= jQuery('#<?php echo $APPTAG?>-phone2');
-	// extra info
-	var note				= jQuery('#<?php echo $APPTAG?>-note');
-	// Joomla Registration
-	var access				= mainForm.find('input[name=access]:radio'); // radio group
-	var newUser				= jQuery('#<?php echo $APPTAG?>-newUser');
-	var usergroups 			= jQuery('#<?php echo $APPTAG?>-usergroups');
-	var username 			= jQuery('#<?php echo $APPTAG?>-username');
-	var password			= jQuery('#<?php echo $APPTAG?>-password');
-	var repassword			= jQuery('#<?php echo $APPTAG?>-repassword');
-	var emailConfirm		= jQuery('#<?php echo $APPTAG?>-emailConfirm');
-	var emailInfo			= jQuery('#<?php echo $APPTAG?>-emailInfo');
-	var reasonStatus		= jQuery('#<?php echo $APPTAG?>-reasonStatus');
+	var country_code		= jQuery('#<?php echo $APPTAG?>-country_code');
+	var phone_number		= jQuery('#<?php echo $APPTAG?>-phone_number');
+	var operator			= jQuery('#<?php echo $APPTAG?>-operator');
+	var description			= jQuery('#<?php echo $APPTAG?>-description');
+	var main				= jQuery('#<?php echo $APPTAG?>-main');
+	var whatsapp			= jQuery('#<?php echo $APPTAG?>-whatsapp');
 
-	// PARENT FIELD
+	// PARENT FIELD -> Select
 	// informe, se houver, o campo que representa a chave estrangeira principal
-	var parentFieldId		= group_id; // 'null', caso não exista...
-	var parentFieldGroup	= elementExist(parentFieldId) ? parentFieldId.closest('[class*="col"]') : null;
+	var parentFieldId		= null; // 'null', caso não exista...
+	var parentFieldGroup	= elementExist(parentFieldId) ? parentFieldId.closest('[class*="col-"]') : null;
 
 	// GROUP RELATION'S BUTTONS -> grupo de botões de relacionamentos no form
 	var groupRelations		= jQuery('#<?php echo $APPTAG?>-group-relation');
@@ -85,7 +52,7 @@ jQuery(function() {
 
 		// ON FOCUS
 		// campo que recebe o focus no carregamento
-		var firstField		= name;
+		var firstField		= phone_number;
 
 		// ON MODAL OPEN -> Ações quando o modal do form é aberto
 		popup.on('shown.bs.modal', function () {
@@ -114,7 +81,7 @@ jQuery(function() {
 			<?php // Default Actions
 			require(JPATH_CORE.DS.'apps/snippets/form/formExecute.def.js.php');
 			?>
-	 	};
+		};
 
 		// FORM RESET -> Reseta o form e limpa as mensagens de validação
 		window.<?php echo $APPTAG?>_formReset = function() {
@@ -126,63 +93,17 @@ jQuery(function() {
 			// App Fields
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
-			user_id.val('');
-			name.val('');
-			nickname.val('');
-			email.val('');
-			cmail.val('');
-			cpf.val('');
-			rg.val('');
-			rg_orgao.val('');
-			checkOption(gender, ''); // radio
-			birthday.val('');
-			occupation.val('');
-			marital_status.selectUpdate(0); // select
-			partner.val('');
-			children.selectUpdate(0); // select
-			zip_code.val('');
-			address.val('');
-			address_number.val('');
-			address_info.val('');
-			address_district.val('');
-			address_city.val('');
-			address_state.val('');
-			phone0.val('');
-			phone1.val('');
-			phone2.val('');
-			note.val('');
-			checkOption(access, 0);
-			reasonStatus.val('');
+			country_code.val('+55'); // Brasil
+			phone_number.val('');
+			operator.val('');
+			description.val('');
+			checkOption(main, 0); // checkbox
+			checkOption(whatsapp, 0); // checkbox
 
 			<?php // Closure Actions
 			require(JPATH_CORE.DS.'apps/snippets/form/formReset.end.js.php');
 			?>
 
-		};
-
-		// CUSTOM -> Reset Registration Fields
-		window.<?php echo $APPTAG?>_accessForm = function(allowed) {
-			var isUser = (user_id.val() == 0) ? false : true;
-			var hideFields = (allowed) ? false : true;
-			newUser.selectUpdate(user_id.val()); // select
-			usergroups.selectUpdate(<?php echo $_SESSION[$APPTAG.'newUsertype']?>, 0);
-			username.val('');
-			password.val('');
-			repassword.val('');
-			emailInfo.val('');
-			checkOption(emailConfirm, false);
-			// limpa o nome do usuário vinculado ao contato
-			if(!isUser) jQuery('#<?php echo $APPTAG?>_name_linked').empty();
-			// Lista de usuários disponíveis
-			// Caso o acesso seja selecionado, mostra a lista de usuários
-			setHidden('.<?php echo $APPTAG?>-user-fields', (hideFields || isUser));
-			// Labels e campos para usuários e não usuários
-			setHidden('.<?php echo $APPTAG?>-no-user', isUser, '.<?php echo $APPTAG?>-is-user');
-			// Mostra a mensagem de 'usuário vinculado'
-			setHidden('#<?php echo $APPTAG?>-unlink-msg', !isUser);
-			// Mostra o campo 'motivo' caso seja clicado o botão 'Bloquear'
-			// Nesse caso, já deve existir um usuário vinculado
-			setHidden('#<?php echo $APPTAG?>-reasonStatus-group', ((!allowed && !isUser) || allowed));
 		};
 
 		<?php if($cfg['hasUpload']) : ?>
@@ -272,8 +193,7 @@ jQuery(function() {
 		require(JPATH_CORE.DS.'apps/snippets/ajax/listReload.js.php');
 		?>
 
-		// LOAD EDIT
-		// Prepara o formulário para a edição dos dados
+		// Load Edit Data -> Prepara o formulário para a edição dos dados
 		window.<?php echo $APPTAG?>_loadEditFields = function(appID, reload, formDisable) {
 			var id = (appID ? appID : displayId.val());
 			if(isEmpty(id) || id == 0) {
@@ -299,38 +219,12 @@ jQuery(function() {
 						?>
 
 						// App Fields
-						group_id.selectUpdate(item.group_id);
-						user_id.val(item.user_id);
-						usergroups.selectUpdate(item.usergroups); // select
-						name.val(item.name);
-						nickname.val(item.nickname);
-						email.val(item.email);
-						cmail.val(item.email);
-						cpf.val(item.cpf);
-						rg.val(item.rg);
-						rg_orgao.val(item.rg_orgao);
-						checkOption(gender, item.gender); // radio
-						birthday.val(dateFormat(item.birthday)); // DATE -> conversão de data
-						occupation.val(item.occupation);
-						marital_status.selectUpdate(item.marital_status); // select
-						partner.val(item.partner);
-						children.selectUpdate(item.children); // select
-						zip_code.val(item.zip_code);
-						address.val(item.address);
-						address_number.val(item.address_number);
-						address_info.val(item.address_info);
-						address_district.val(item.address_district);
-						address_city.val(item.address_city);
-							// phones
-							var p = item.phones.split(",");
-							phone0.val(p[0]);
-							phone1.val(p[1]);
-							phone2.val(p[2]);
-						note.val(item.note);
-						checkOption(access, item.access);
-						reasonStatus.val(item.reasonStatus);
-						// mostra o nome do usuário vinculado ao contato
-						jQuery('#<?php echo $APPTAG?>_name_linked').text(item.user);
+						country_code.val(item.country_code);
+						phone_number.val(item.phone_number);
+						operator.val(item.operator);
+						description.val(item.description);
+						checkOption(main, item.main); // checkbox
+						checkOption(whatsapp, item.whatsapp); // checkbox
 
 						<?php // Closure Actions
 						require(JPATH_CORE.DS.'apps/snippets/form/loadEdit.end.js.php');
@@ -338,7 +232,7 @@ jQuery(function() {
 
 					});
 					// mostra dos botões 'salvar & novo' e 'delete'
-					setHidden('#btn-<?php echo $APPTAG?>-delete', false);
+					jQuery('#btn-<?php echo $APPTAG?>-delete').prop('hidden', false);
 					// limpa as mensagens de erro de validação
 					<?php echo $APPTAG?>_clearValidation(mainForm);
 				},
@@ -371,109 +265,11 @@ jQuery(function() {
 
 		<? endif; ?>
 
-		// CUSTOM -> Sincroniza com os contatos
-		// Essa sincronização apenas verifica se os usuários atribuídos ainda existem e se estão ativos
-		window.<?php echo $APPTAG?>_userSync = function() {
-			<?php echo $APPTAG?>_formExecute(true, true, false); // inicia o loader
-			jQuery.ajax({
-				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=userSync",
-				dataType: 'json',
-				type: 'POST',
-				cache: false,
-				success: function(data) {
-					<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
-					jQuery.map( data, function( res ) {
-						setTimeout(function() {
-							<?php $redir = baseHelper::setUrlParam(JURI::current(), 'sync=1'); ?>
-							window.location.href = "<?php echo $redir?>";
-						}, 1000);
-					});
-				},
-				error: function(xhr, status, error) {
-					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
-					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
-					?>
-					<?php echo $APPTAG?>_formExecute(true, formDisable, false); // encerra o loader
-				}
-			});
-			return false;
-		};
-
-		window.<?php echo $APPTAG?>_userUnlink = function(itemID) {
-			var msg = '<?php echo JText::_('MSG_UNLINK_CONFIRM'); ?>';
-			if(!confirm(msg)) return false;
-			var cod = '&id='+((isSet(itemID) && itemID > 0) ? itemID : formId_<?php echo $APPTAG?>.val());
-			<?php echo $APPTAG?>_formExecute(true, true, true); // inicia o loader
-			jQuery.ajax({
-				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=unlink"+cod,
-				dataType: 'json',
-				cache: false,
-				success: function(data){
-					<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
-					jQuery.map( data, function( res ) {
-						if(res.status == 1) {
-							user_id.val(0);
-							// Reseta o status de acesso
-							checkOption(access, 0);
-							// mensagem de sucesso
-							$.baseNotify({ msg: res.msg});
-							<?php // recarrega a página quando fechar o form para atualizar a lista
-				            echo ($cfg['listFull'] ? 'fReload = true;' : $APPTAG.'_listReload(false, false, false, '.$APPTAG.'oCHL, '.$APPTAG.'rNID, '.$APPTAG.'rID);');
-				            ?>
-						} else {
-							$.baseNotify({ msg: res.msg, type: "danger"});
-						}
-					});
-				},
-				error: function(xhr, status, error) {
-					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
-					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
-					?>
-					<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
-				}
-			});
-			return false;
-		};
-
 }); // CLOSE JQUERY->READY
 
 jQuery(window).load(function() {
-
-	// JQUERY VALIDATION
+	// Jquery Validation
 	window.<?php echo $APPTAG?>_validator = mainForm_<?php echo $APPTAG?>.validate({
-		rules: {
-			email: {
-				remote: {
-					url: '<?php echo _CORE_?>helpers/users/checkEmail.php',
-					type: 'post',
-					data: {
-						cmail: function() {
-							return jQuery('#<?php echo $APPTAG?>-email').val();
-						},
-						cmail: function() {
-							return jQuery('#<?php echo $APPTAG?>-cmail').val();
-						}
-					}
-				}
-			},
-			password : {
-				minlength : 6
-			},
-			repassword: {
-				equalTo: '#<?php echo $APPTAG?>-password'
-			}
-		},
-		messages: {
-			email: {
-				remote: '<?php echo JText::_('MSG_EMAIL_EXISTS')?>'
-			},
-			username : {
-				remote: '<?php echo JText::_('MSG_USERNAME_EXISTS')?>'
-			},
-			repassword: {
-				equalTo: '<?php echo JText::_('MSG_PASS_NOT_EQUAL')?>'
-			}
-		},
 		//don't remove this
 		invalidHandler: function(event, validator) {
 			//if there is error,
@@ -500,7 +296,7 @@ jQuery(window).load(function() {
 	$tipText = $cfg['addText'] ? '' : $addText;
 	$relAdd	= !empty($_SESSION[$RTAG.'RelTable']) ? $APPTAG.'_setRelation('.$APPTAG.'rID);' : $APPTAG.'_setParent('.$APPTAG.'rID);';
 	$addBtn = '
-		<button class="base-icon-plus btn-add btn btn-sm btn-success hasTooltip" title="'.$tipText.'" onclick="'.$relAdd.'" data-toggle="modal" data-target="#modal-'.$APPTAG.'" data-backdrop="static" data-keyboard="false">
+		<button class="base-icon-plus btn-add btn btn-sm btn-success hasTooltip" data-animation="false" title="'.$tipText.'" onclick="'.$relAdd.'" data-toggle="modal" data-target="#modal-'.$APPTAG.'" data-backdrop="static" data-keyboard="false">
 			'.($cfg['addText'] ? ' <span class="text-add">'.$addText.'</span>': '').'
 		</button>
 	';
@@ -557,8 +353,8 @@ jQuery(window).load(function() {
 	?>
 
 	<?php if($hasAdmin) : ?>
-		<div class="modal fade" id="modal-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-<?php echo $APPTAG?>Label">
-			<div class="modal-dialog modal-lg set-shadow-lg" role="document">
+		<div class="modal fade" data-animation="false" id="modal-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-<?php echo $APPTAG?>Label">
+			<div class="modal-dialog set-shadow-lg" role="document">
 				<div class="modal-content">
 					<form name="form-<?php echo $APPTAG?>" id="form-<?php echo $APPTAG?>" method="post" enctype="multipart/form-data">
 						<?php require(JPATH_CORE.DS.'apps/layout/form/modal.header.php'); ?>

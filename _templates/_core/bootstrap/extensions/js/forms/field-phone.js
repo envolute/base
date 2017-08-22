@@ -25,8 +25,8 @@ jQuery(function() {
         var lg = ed.replace('[','').replace(']','').length;
         var msg1 = '<del>'+pre+'9999-9999</del>';
         var msg2 = pre+'9999-9999';
-        var btnMask = '<span class="input-group-btn"><a class="toggle-mask btn btn-info strong" title="'+msg1+'">#</a></span></div>';
-        var btnUnmask = '<span class="input-group-btn"><a class="toggle-mask btn btn-danger strong" title="'+msg2+'">#</a></span></div>'
+        var btnMask = '<span class="input-group-btn"><a href="javascript:;" class="toggle-mask btn btn-info strong" title="'+msg1+'">#</a></span></div>';
+        var btnUnmask = '<span class="input-group-btn"><a href="javascript:;" class="toggle-mask btn btn-danger strong" title="'+msg2+'">#</a></span></div>'
         // resolve mask nine digits
         var options = {
           greedy: false,
@@ -77,11 +77,11 @@ jQuery(function() {
           obj.next('span').find('.btn').off('click').on('click', function(){
             if(jQuery(this).hasClass('btn-info')) {
               obj.addClass('no-masked').inputmask('remove').focus();
-              jQuery(this).removeClass('btn-info').addClass('btn-danger').attr('data-original-title', msg2).tooltip('fixTitle');
+              jQuery(this).removeClass('btn-info').addClass('btn-danger').attr('data-original-title', msg2).tooltip();
             } else {
               var nMask = (obj.val().replace(/[^0-9]/g, '').length > 10) ? nd : ed; // pega o valor atualizado do campo
               obj.removeClass('no-masked').inputmask(nMask, options).focus();
-              jQuery(this).removeClass('btn-danger').addClass('btn-info').attr('data-original-title', msg1).tooltip('fixTitle');
+              jQuery(this).removeClass('btn-danger').addClass('btn-info').attr('data-original-title', msg1).tooltip();
             }
           });
         } else {

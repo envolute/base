@@ -10,7 +10,7 @@
 
 	// Atribui a cor correta, caso o link esteja dentro de um container com a classe '.btn'
 	@each $color, $value in $theme-colors {
-	  .btn-#{$color} * {
+	  .btn-#{$color} a {
 		  @include color-yiq($value);
 	  }
 	}

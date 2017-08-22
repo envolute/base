@@ -82,7 +82,7 @@ $recurr		= ($isFixed == 1) ? true : false;
 $showInv 	= (!$recurr) ? '<th class="d-none d-md-table-cell">'.JText::_('FIELD_LABEL_INVOICE').'</th>' : '';
 $html = '
 	<form id="form-list-'.$APPTAG.'" method="post">
-		<table class="table table-striped table-hover table-condensed">
+		<table class="table table-striped table-hover table-sm">
 			<thead>
 				<tr>
 					'.$adminView['head']['info'].'

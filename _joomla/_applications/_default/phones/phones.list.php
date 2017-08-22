@@ -66,7 +66,7 @@ endif;
 // VIEW
 $html = '
 	<form id="form-list-'.$APPTAG.'" method="post">
-		<table class="table table-striped table-hover table-condensed">
+		<table class="table table-striped table-hover table-sm">
 			<thead>
 				<tr>
 					'.$adminView['head']['info'].'

@@ -12,16 +12,19 @@ require($PATH_APP_FILE.'.filter.php');
 	$query = '
 		SELECT SQL_CALC_FOUND_ROWS
 			'. $db->quoteName('T1.id') .',
-			'. $db->quoteName('T1.name') .',
+			'. $db->quoteName('T1.country_code') .',
+			'. $db->quoteName('T1.phone_number') .',
+			'. $db->quoteName('T1.operator') .',
+			'. $db->quoteName('T1.description') .',
+			'. $db->quoteName('T1.main') .',
+			'. $db->quoteName('T1.whatsapp') .',
 			'. $db->quoteName('T1.created_date') .',
 			'. $db->quoteName('T1.created_by') .',
 			'. $db->quoteName('T1.alter_date') .',
 			'. $db->quoteName('T1.alter_by') .',
 			'. $db->quoteName('T1.state') .'
-		FROM
-			'. $db->quoteName($cfg['mainTable']) .' T1
-		WHERE
-			'.$where.$orderList;
+		FROM '. $db->quoteName($cfg['mainTable']) .' T1
+		WHERE '.$where.$orderList;
 	;
 	try {
 
@@ -56,7 +59,14 @@ $html = '
 			<thead>
 				<tr>
 					'.$adminView['head']['info'].'
-					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_NAME'), 'T1.name', $APPTAG).'</th>
+					<th width="50" class="text-right">
+						<span class="cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_COUNTRY_CODE_DESC').'">
+							'.JText::_('FIELD_LABEL_COUNTRY_CODE').'
+						</span>
+					</th>
+					<th>'.JText::_('FIELD_LABEL_PHONE_NUMBER').'</th>
+					<th class="d-none d-lg-table-cell">'.baseAppHelper::linkOrder(JText::_('TEXT_OPERATOR'), 'T1.operator', $APPTAG).'</th>
+					<th class="d-none d-lg-table-cell">'.JText::_('FIELD_LABEL_DESCRIPTION').'</th>
 					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
 					'.$adminView['head']['actions'].'
 				</tr>
@@ -82,7 +92,7 @@ if($num_rows) : // verifica se existe
 				if(!empty($files[$item->id][$i]->filename)) :
 					$listFiles .= '
 						<a href="'.JURI::root(true).'/apps/get-file?fn='.base64_encode($files[$item->id][$i]->filename).'&mt='.base64_encode($files[$item->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
-							<span class="base-icon-attach hasTooltip" title="'.$files[$item->id][$i]->filename.'<br />'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"></span>
+							<span class="base-icon-attach hasTooltip" data-animation="false" title="'.$files[$item->id][$i]->filename.'<br />'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"></span>
 						</a>
 					';
 				endif;
@@ -108,6 +118,8 @@ if($num_rows) : // verifica se existe
 			';
 		endif;
 
+		$main = $item->main == 1 ? '<span class="base-icon-star text-live cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_MAIN').'"></span> ' : '';
+		$wapp = $item->whatsapp == 1 ? ' <span class="base-icon-whatsapp text-success cursor-help hasTooltip" title="'.JText::_('TEXT_HAS_WHATSAPP').'"></span>' : '';
 		$rowState = $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
@@ -120,7 +132,13 @@ if($num_rows) : // verifica se existe
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
-				<td>'.baseHelper::nameFormat($item->name).'</td>
+				<td class="text-right">'.$item->country_code.'</td>
+				<td>
+					'.$main.$item->phone_number.$wapp.'
+					<div class="d-lg-none text-sm text-muted">'.baseHelper::nameFormat($item->operator).'</div>
+				</td>
+				<td class="d-none d-lg-table-cell">'.baseHelper::nameFormat($item->operator).'</td>
+				<td class="d-none d-lg-table-cell">'.$item->description.'</td>
 				<td class="d-none d-lg-table-cell">
 					'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'
 					<a href="#" class="base-icon-info-circled setPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top"></a>
@@ -134,7 +152,7 @@ else : // num_rows = 0
 
 	$html .= '
 		<tr>
-			<td colspan="6">
+			<td colspan="9">
 				<div class="alert alert-warning alert-icon m-0">'.JText::_('MSG_LISTNOREG').'</div>
 			</td>
 		</tr>

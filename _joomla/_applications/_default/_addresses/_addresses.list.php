@@ -10,18 +10,9 @@ require($PATH_APP_FILE.'.filter.php');
 	require(JPATH_CORE.DS.'apps/layout/list/pagination.vars.php');
 
 	$query = '
-		SELECT SQL_CALC_FOUND_ROWS
-			'. $db->quoteName('T1.id') .',
-			'. $db->quoteName('T1.name') .',
-			'. $db->quoteName('T1.created_date') .',
-			'. $db->quoteName('T1.created_by') .',
-			'. $db->quoteName('T1.alter_date') .',
-			'. $db->quoteName('T1.alter_by') .',
-			'. $db->quoteName('T1.state') .'
-		FROM
-			'. $db->quoteName($cfg['mainTable']) .' T1
-		WHERE
-			'.$where.$orderList;
+		SELECT SQL_CALC_FOUND_ROWS *
+		FROM '. $db->quoteName($cfg['mainTable']) .' T1
+		WHERE '.$where.$orderList;
 	;
 	try {
 
@@ -56,7 +47,11 @@ $html = '
 			<thead>
 				<tr>
 					'.$adminView['head']['info'].'
-					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_NAME'), 'T1.name', $APPTAG).'</th>
+					<th>'.JText::_('FIELD_LABEL_ADDRESS').'</th>
+					<th class="d-none d-lg-table-cell">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_ADDRESS_DISTRICT'), 'T1.address_district', $APPTAG).'</th>
+					<th class="d-none d-lg-table-cell">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_ADDRESS_CITY'), 'T1.address_city', $APPTAG).'</th>
+					<th class="d-none d-lg-table-cell">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_ADDRESS_STATE'), 'T1.address_state', $APPTAG).'</th>
+					<th class="d-none d-lg-table-cell">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_ADDRESS_COUNTRY'), 'T1.address_country', $APPTAG).'</th>
 					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
 					'.$adminView['head']['actions'].'
 				</tr>
@@ -82,7 +77,7 @@ if($num_rows) : // verifica se existe
 				if(!empty($files[$item->id][$i]->filename)) :
 					$listFiles .= '
 						<a href="'.JURI::root(true).'/apps/get-file?fn='.base64_encode($files[$item->id][$i]->filename).'&mt='.base64_encode($files[$item->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
-							<span class="base-icon-attach hasTooltip" title="'.$files[$item->id][$i]->filename.'<br />'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"></span>
+							<span class="base-icon-attach hasTooltip" data-animation="false" title="'.$files[$item->id][$i]->filename.'<br />'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"></span>
 						</a>
 					';
 				endif;
@@ -108,6 +103,9 @@ if($num_rows) : // verifica se existe
 			';
 		endif;
 
+		$main = $item->main == 1 ? '<span class="base-icon-star text-live cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_MAIN').'"></span> ' : '<span class="badge badge-primary">'.baseHelper::nameFormat($item->description).'</span> ';
+		$info = !empty($item->address_info) ? ', '.$item->address_info : '';
+		$mapa = !empty($item->url_map) ? ' <a href="'.$item->url_map.'" class="badge badge-warning set-modal" data-modal-title="'.JText::_('TEXT_LOCATION').'" data-modal-iframe="true" data-modal-width="95%" data-modal-height="95%">'.JText::_('TEXT_MAP').'</a>' : '';
 		$rowState = $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
@@ -120,7 +118,15 @@ if($num_rows) : // verifica se existe
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
-				<td>'.baseHelper::nameFormat($item->name).'</td>
+				<td>'.$main.baseHelper::nameFormat($item->address).', '.$item->address_number.$info.$mapa.'
+					<div class="d-lg-none text-sm">
+						'.$item->zip_code.' - '.baseHelper::nameFormat($item->address_district).', '.baseHelper::nameFormat($item->address_city).', '.$item->address_state.'
+					</div>
+				</td>
+				<td class="d-none d-lg-table-cell">'.baseHelper::nameFormat($item->address_district).'</td>
+				<td class="d-none d-lg-table-cell">'.baseHelper::nameFormat($item->address_city).'</td>
+				<td class="d-none d-lg-table-cell">'.$item->address_state.'</td>
+				<td class="d-none d-lg-table-cell">'.baseHelper::nameFormat($item->address_country).'</td>
 				<td class="d-none d-lg-table-cell">
 					'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'
 					<a href="#" class="base-icon-info-circled setPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top"></a>
@@ -134,7 +140,7 @@ else : // num_rows = 0
 
 	$html .= '
 		<tr>
-			<td colspan="6">
+			<td colspan="10">
 				<div class="alert alert-warning alert-icon m-0">'.JText::_('MSG_LISTNOREG').'</div>
 			</td>
 		</tr>
