@@ -105,7 +105,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$addressInfo = !empty($item->address_info) ? ', '.$item->address_info : '';
 			$addressNumber = !empty($item->address_number) ? ', '.$item->address_number : '';
 			$addressZip = !empty($item->zip_code) ? $item->zip_code.', ' : '';
-			$addressDistrict = !empty($item->address_district) ? ', '.baseHelper::nameFormat($item->address_district) : '';
+			$addressDistrict = !empty($item->address_district) ? baseHelper::nameFormat($item->address_district) : '';
 			$addressCity = !empty($item->address_city) ? ', '.baseHelper::nameFormat($item->address_city) : '';
 			$addressState = !empty($item->address_state) ? ', '.baseHelper::nameFormat($item->address_state) : '';
 			$addressCountry = !empty($item->address_country) ? ', '.baseHelper::nameFormat($item->address_country) : '';
@@ -116,8 +116,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$html .= '
 				<li class="'.$rowState.'">
 					<span class="float-right">'.$btnState.$btnEdit.$btnDelete.'</span>'.
-					$main.baseHelper::nameFormat($item->address).$addressNumber.$addressInfo.'<br />'.
-					$addressZip.$addressDistrict.$addressCity.$addressState.$addressCountry.'
+					$main.baseHelper::nameFormat($item->address).$addressNumber.$addressInfo.'
+					<div class="text-sm text-muted">'.
+						$addressZip.$addressDistrict.$addressCity.$addressState.$addressCountry.'
+					</div>
 				</li>
 			';
 		}

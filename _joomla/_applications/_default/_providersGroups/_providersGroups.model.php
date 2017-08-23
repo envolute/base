@@ -142,8 +142,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'prev'				=> $prev,
 						'next'				=> $next,
 						// App Fields
-						'name'				=> $item->name,
-						'files'				=> $listFiles
+						'name'				=> $item->name
 					);
 
 				// UPDATE

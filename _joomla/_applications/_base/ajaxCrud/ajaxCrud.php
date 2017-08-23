@@ -844,7 +844,7 @@ jQuery(window).load(function() {
 	$relAdd	= !empty($_SESSION[$RTAG.'RelTable']) ? $APPTAG.'_setRelation('.$APPTAG.'rID);' : $APPTAG.'_setParent('.$APPTAG.'rID);';
 	$addBtn = '
 		<button class="base-icon-plus btn-add btn btn-sm btn-success hasTooltip" data-animation="false" title="'.$tipText.'" onclick="'.$relAdd.'" data-toggle="modal" data-target="#modal-'.$APPTAG.'" data-backdrop="static" data-keyboard="false">
-			'.($cfg['addText'] ? '<span class="text-add">'.$addText.'</span>': '').'
+			'.($cfg['addText'] ? '<span class="text-add"> '.$addText.'</span>': '').'
 		</button>
 	';
 	?>

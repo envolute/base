@@ -50,27 +50,49 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	// GET DATA
 	$noReg	= true;
-	$query	= 'SELECT *';
+	$query	= '
+		SELECT SQL_CALC_FOUND_ROWS
+			'. $db->quoteName('T1.id') .',
+			'. $db->quoteName('T2.name') .' provider,
+			'. $db->quoteName('T3.name') .' contact,
+			'. $db->quoteName('T1.main') .',
+			'. $db->quoteName('T1.department') .',
+			'. $db->quoteName('T1.state')
+	;
 	if(!empty($rID) && $rID !== 0) :
 		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
 			$query .= ' FROM '.
 				$db->quoteName($cfg['mainTable']) .' T1
-				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T2
-				ON '.$db->quoteName('T2.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
+				JOIN '. $db->quoteName('#__'.$cfg['project'].'_providers') .' T2
+				ON T2.id = T1.provider_id
+				JOIN '. $db->quoteName('#__'.$cfg['project'].'_contacts') .' T3
+				ON T3.id = T1.contact_id
+				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T4
+				ON '.$db->quoteName('T4.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
 			WHERE '.
-				$db->quoteName('T2.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
+				$db->quoteName('T4.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
 			;
 		else :
-			$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1 WHERE '. $db->quoteName($rNID) .' = '. $rID;
+			$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
+				JOIN '. $db->quoteName('#__'.$cfg['project'].'_providers') .' T2
+				ON T2.id = T1.provider_id
+				JOIN '. $db->quoteName('#__'.$cfg['project'].'_contacts') .' T3
+				ON T3.id = T1.contact_id
+			WHERE '. $db->quoteName($rNID) .' = '. $rID;
 		endif;
 	else :
-		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1';
+		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
+			JOIN '. $db->quoteName('#__'.$cfg['project'].'_providers') .' T2
+			ON T2.id = T1.provider_id
+			JOIN '. $db->quoteName('#__'.$cfg['project'].'_contacts') .' T3
+			ON T3.id = T1.contact_id
+		';
 		if($oCHL) :
 			$query .= ' WHERE 1=0';
 			$noReg = false;
 		endif;
 	endif;
-	$query	.= ' ORDER BY '. $db->quoteName('id') .' DESC';
+	$query	.= ' ORDER BY '. $db->quoteName('T2.name') .', '. $db->quoteName('T1.main') .' DESC, '. $db->quoteName('T3.name');
 	try {
 		$db->setQuery($query);
 		$db->execute();
@@ -101,10 +123,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				}
 			endif;
 
-			$main = $item->main == 1 ? ' <span class="base-icon-star text-live cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_MAIN').'"></span>' : '';
-			$wapp = $item->whatsapp == 1 ? ' <span class="base-icon-whatsapp text-success cursor-help hasTooltip" title="'.JText::_('TEXT_HAS_WHATSAPP').'"></span>' : '';
-			$operator = !empty($item->operator) ? '<span class="badge badge-primary cursor-help hasTooltip" title="'.JText::_('TEXT_OPERATOR').'">'.$item->operator.'</span> ' : '';
-			$info = !empty($item->description) ? '<small class="text-muted">'.baseHelper::nameFormat($item->description).'</small>' : '';
+			$main = $item->main == 1 ? '<span class="base-icon-star text-live cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_MAIN').'"></span> ' : '';
+			$dept = !empty($item->department) ? '<span class="text-sm text-muted cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_DEPARTMENT').'">'.baseHelper::nameFormat($item->department).'</span> ' : '';
 			$btnState = $hasAdmin ? '<a href="#" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'"><span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').' hasTooltip" data-animation="false" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'"></span></a> ' : '';
 			$btnEdit = $hasAdmin ? '<a href="#" class="base-icon-pencil text-live hasTooltip" data-animation="false" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"></a> ' : '';
 			$btnDelete = $hasAdmin ? '<a href="#" class="base-icon-trash text-danger hasTooltip" data-animation="false" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"></a>' : '';
@@ -112,7 +132,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$html .= '
 				<li class="'.$rowState.'">
 					<span class="float-right">'.$btnState.$btnEdit.$btnDelete.'</span>
-					'.$main.$item->phone_number.$wapp.$operator.'<br />'.$info.'
+					<div class="text-truncate">'.$main.baseHelper::nameFormat($item->contact).'</div>'.$dept.'
 				</li>
 			';
 		}

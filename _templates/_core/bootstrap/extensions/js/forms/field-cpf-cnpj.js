@@ -10,7 +10,6 @@ jQuery(function() {
       var obj = jQuery(this);
       var width = isSet(obj.data('width')) ? obj.data('width') : false;
       if(width) obj.css('width', width);
-      obj.css({'min-width':'9.5em', 'max-width':'100%'});
       // autotab param
       var tab = isSet(autotab) ? autotab : true;
       tab = isSet(obj.data('autotab')) ? obj.data('autotab') : tab;
@@ -51,7 +50,6 @@ jQuery(function() {
       var obj = jQuery(this);
       var width = isSet(obj.data('width')) ? obj.data('width') : false;
       if(width) obj.css('width', width);
-      obj.css({'min-width':'12em', 'max-width':'100%'});
       // autotab param
       var tab = isSet(autotab) ? autotab : true;
       tab = isSet(obj.data('autotab')) ? obj.data('autotab') : tab;

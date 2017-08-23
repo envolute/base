@@ -92,11 +92,14 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['relationId']   		= $input->get('relationId', 0, 'int');
 		$request['state']				= $input->get('state', 1, 'int');
 		// app
-		$request['name']				= $input->get('name', '', 'string');
+	  	$request['provider_id']			= $input->get('provider_id', 0, 'int');
+	  	$request['contact_id']			= $input->get('contact_id', 0, 'int');
+	  	$request['main']				= $input->get('main', 0, 'int');
+	  	$request['department']			= $input->get('department', '', 'str');
 
 		// SAVE CONDITION
 		// Condição para inserção e atualização dos registros
-		$save_condition = (!empty($request['name']));
+		$save_condition = ($request['provider_id'] > 0 && $request['contact_id'] > 0);
 
 		if($id || (!empty($ids) && $ids != 0)) :  //UPDATE OR DELETE
 
@@ -142,7 +145,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'prev'				=> $prev,
 						'next'				=> $next,
 						// App Fields
-						'name'				=> $item->name
+						'provider_id'		=> $item->provider_id,
+	      				'contact_id'		=> $item->contact_id,
+	      				'main'				=> $item->main,
+	      				'department'		=> $item->department
 					);
 
 				// UPDATE
@@ -150,7 +156,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 					$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
 					$query .=
-						$db->quoteName('name')				.'='. $db->quote($request['name']) .','.
+						$db->quoteName('provider_id')		.'='. $request['provider_id'] .','.
+						$db->quoteName('contact_id')		.'='. $request['contact_id'] .','.
+						$db->quoteName('main')				.'='. $request['main'] .','.
+						$db->quoteName('department')		.'='. $db->quote($request['department']) .','.
 						$db->quoteName('state')				.'='. $request['state'] .','.
 						$db->quoteName('alter_date')		.'= NOW(),'.
 						$db->quoteName('alter_by')			.'='. $user->id
@@ -339,11 +348,17 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					// Prepare the insert query
 					$query  = '
 						INSERT INTO '. $db->quoteName($cfg['mainTable']) .'('.
-							$db->quoteName('name') .','.
+							$db->quoteName('provider_id') .','.
+							$db->quoteName('contact_id') .','.
+							$db->quoteName('main') .','.
+							$db->quoteName('department') .','.
 							$db->quoteName('state') .','.
 							$db->quoteName('created_by')
 						.') VALUES ('.
-							$db->quote($request['name']) .','.
+							$request['provider_id'] .','.
+							$request['contact_id'] .','.
+							$request['main'] .','.
+							$db->quote($request['department']) .','.
 							$request['state'] .','.
 							$user->id
 						.')

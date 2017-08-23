@@ -43,7 +43,7 @@ $groups = $db->loadObjectList();
 							</div>
 						</div>
 					</div>
-					<div class="col-sm-6">
+					<div class="col-lg-6">
 						<div class="form-group">
 							<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_AGREEMENT_DESC')?>"><?php echo JText::_('FIELD_LABEL_AGREEMENT'); ?></label>
 							<span class="btn-group btn-group-justified" data-toggle="buttons">
@@ -74,7 +74,7 @@ $groups = $db->loadObjectList();
 				</div>
 				<hr class="mt-2" />
 				<div class="row">
-					<div class="col-lg-4">
+					<div class="col-sm-6 col-lg-4">
 						<div class="form-group">
 							<label>CNPJ</label>
 							<input type="text" name="cnpj" id="<?php echo $APPTAG?>-cnpj" class="form-control field-cnpj" />
@@ -142,6 +142,30 @@ $groups = $db->loadObjectList();
 		<div class="form-group">
 			<label class="text-sm"><?php echo JText::_('FIELD_LABEL_SERVICE_DESC')?></label>
 			<textarea name="service_desc" id="<?php echo $APPTAG?>-service_desc" rows="4" class="form-control field-html"></textarea>
+		</div>
+	</div>
+</div>
+<div id="<?php echo $APPTAG?>-msg-relations" class="alert alert-info base-icon-info-circled">
+	<span class="text-live font-featured"><?php echo JText::_('TEXT_ADDRESSES')?></span>,
+	<span class="text-live font-featured"><?php echo JText::_('TEXT_PHONES')?></span>,
+	<span class="text-live font-featured"><?php echo JText::_('TEXT_BANKS_ACCOUNTS')?></span>,
+	<span class="text-live font-featured"><?php echo JText::_('TEXT_CONTACTS')?></span>
+	<?php echo JText::_('MSG_ADD_AFTER_SAVE')?>
+</div>
+<div id="<?php echo $APPTAG?>-buttons-relations" hidden>
+	<hr />
+	<div class="row">
+		<div class="col-6 col-lg-3 py-1">
+			<button type="button" class="btn btn-primary btn-block base-icon-location btn-icon" onclick="<?php echo $APPTAG?>_viewAddresses()" data-toggle="modal" data-target="#modal-list-_addresses" data-backdrop="static" data-keyboard="false"> <?php echo JText::_('TEXT_ADDRESSES')?></button>
+		</div>
+		<div class="col-6 col-lg-3 py-1">
+			<button type="button" class="btn btn-primary btn-block base-icon-phone btn-icon" onclick="<?php echo $APPTAG?>_viewPhones()" data-toggle="modal" data-target="#modal-list-_phones" data-backdrop="static" data-keyboard="false"> <?php echo JText::_('TEXT_PHONES')?></button>
+		</div>
+		<div class="col-6 col-lg-3 py-1">
+			<button type="button" class="btn btn-primary btn-block base-icon-bank btn-icon" onclick="<?php echo $APPTAG?>_viewBanks()" data-toggle="modal" data-target="#modal-list-_banksAccounts" data-backdrop="static" data-keyboard="false"> <?php echo JText::_('TEXT_BANKS_ACCOUNTS')?></button>
+		</div>
+		<div class="col-6 col-lg-3 py-1">
+			<button type="button" class="btn btn-primary btn-block base-icon-user-add btn-icon" onclick="<?php echo $APPTAG?>_viewContacts()" data-toggle="modal" data-target="#modal-list-_providersContacts" data-backdrop="static" data-keyboard="false"> <?php echo JText::_('TEXT_CONTACTS')?></button>
 		</div>
 	</div>
 </div>

@@ -32,16 +32,16 @@ jQuery(function() {
 	?>
 
 	// APP FIELDS
-	var type_id 			= jQuery('#<?php echo $APPTAG?>-type_id');
-	var user_id 			= jQuery('#<?php echo $APPTAG?>-user_id');
-	var name 					= jQuery('#<?php echo $APPTAG?>-name');
-	var description		= jQuery('#<?php echo $APPTAG?>-description');
-	var access				= mainForm.find('input[name=access]:radio');
+	var bank_id				= jQuery('#<?php echo $APPTAG?>-bank_id');
+	var agency				= jQuery('#<?php echo $APPTAG?>-agency');
+	var account 			= jQuery('#<?php echo $APPTAG?>-account');
+	var operation			= jQuery('#<?php echo $APPTAG?>-operation');
+	var note				= jQuery('#<?php echo $APPTAG?>-note');
 
-	// PARENT FIELD
+	// PARENT FIELD -> Select
 	// informe, se houver, o campo que representa a chave estrangeira principal
-	var parentFieldId			= type_id;
-	var parentFieldGroup	= elementExist(parentFieldId) ? parentFieldId.closest('[class*="col"]') : null;
+	var parentFieldId		= bank_id; // 'null', caso não exista...
+	var parentFieldGroup	= elementExist(parentFieldId) ? parentFieldId.closest('[class*="col-"]') : null;
 
 	// GROUP RELATION'S BUTTONS -> grupo de botões de relacionamentos no form
 	var groupRelations		= jQuery('#<?php echo $APPTAG?>-group-relation');
@@ -51,7 +51,7 @@ jQuery(function() {
 
 		// ON FOCUS
 		// campo que recebe o focus no carregamento
-		var firstField = type_id;
+		var firstField		= '';
 
 		// ON MODAL OPEN -> Ações quando o modal do form é aberto
 		popup.on('shown.bs.modal', function () {
@@ -80,7 +80,7 @@ jQuery(function() {
 			<?php // Default Actions
 			require(JPATH_CORE.DS.'apps/snippets/form/formExecute.def.js.php');
 			?>
-	 	};
+		};
 
 		// FORM RESET -> Reseta o form e limpa as mensagens de validação
 		window.<?php echo $APPTAG?>_formReset = function() {
@@ -92,10 +92,10 @@ jQuery(function() {
 			// App Fields
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
-			user_id.val(0).trigger("chosen:updated"); // selects;
-			name.val('');
-			description.val('');
-			checkOption(access, 0);
+			agency.val('');
+			account.val('');
+			operation.val('');
+			note.val('');
 
 			<?php // Closure Actions
 			require(JPATH_CORE.DS.'apps/snippets/form/formReset.end.js.php');
@@ -141,7 +141,7 @@ jQuery(function() {
 		// SET PARENT -> Seta o valor do elemento pai (foreign key) do relacionamento
 		window.<?php echo $APPTAG?>_setParent = function(id) {
 			<?php // Default Actions
-			require(JPATH_CORE.DS.'apps/snippets/form/setRelation.def.js.php');
+			require(JPATH_CORE.DS.'apps/snippets/form/setParent.def.js.php');
 			?>
 		};
 
@@ -190,8 +190,7 @@ jQuery(function() {
 		require(JPATH_CORE.DS.'apps/snippets/ajax/listReload.js.php');
 		?>
 
-		// LOAD EDIT
-		// Prepara o formulário para a edição dos dados
+		// Load Edit Data -> Prepara o formulário para a edição dos dados
 		window.<?php echo $APPTAG?>_loadEditFields = function(appID, reload, formDisable) {
 			var id = (appID ? appID : displayId.val());
 			if(isEmpty(id) || id == 0) {
@@ -217,11 +216,11 @@ jQuery(function() {
 						?>
 
 						// App Fields
-						type_id.val(item.type_id).trigger("chosen:updated"); // selects;
-						user_id.val(item.user_id).trigger("chosen:updated"); // selects;
-						name.val(item.name);
-						description.val(item.description);
-						checkOption(access, item.access);
+						bank_id.selectUpdate(item.bank_id); // select
+						agency.val(item.agency);
+						account.val(item.account);
+						operation.val(item.operation);
+						note.val(item.note);
 
 						<?php // Closure Actions
 						require(JPATH_CORE.DS.'apps/snippets/form/loadEdit.end.js.php');
@@ -265,17 +264,16 @@ jQuery(function() {
 }); // CLOSE JQUERY->READY
 
 jQuery(window).load(function() {
-
-	// JQUERY VALIDATION
+	// Jquery Validation
 	window.<?php echo $APPTAG?>_validator = mainForm_<?php echo $APPTAG?>.validate({
-	  //don't remove this
-	  invalidHandler: function(event, validator) {
-	    //if there is error,
-	    //set custom preferences
-	  },
-	  submitHandler: function(form){
-	    return false;
-	  }
+		//don't remove this
+		invalidHandler: function(event, validator) {
+			//if there is error,
+			//set custom preferences
+		},
+		submitHandler: function(form){
+			return false;
+		}
 	});
 
 	<?php
@@ -312,7 +310,7 @@ jQuery(window).load(function() {
 					<button class="btn btn-sm btn-warning <?php echo $APPTAG?>-btn-action" disabled onclick="<?php echo $APPTAG?>_setState(0, 0)">
 						<span class="base-icon-cancel"></span> <?php echo JText::_('TEXT_INACTIVE'); ?>
 					</button>
-					<button class="btn btn-sm btn-danger <?php echo $APPTAG?>-btn-action" disabled onclick="<?php echo $APPTAG?>_del(0)">
+					<button class="btn btn-sm btn-danger <?php echo $APPTAG?>-btn-action d-none d-sm-inline-block" disabled onclick="<?php echo $APPTAG?>_del(0)">
 						<span class="base-icon-trash"></span> <?php echo JText::_('TEXT_DELETE'); ?>
 					</button>
 				<?php endif; ?>
@@ -337,7 +335,7 @@ jQuery(window).load(function() {
 			<div class="modal fade" id="modal-list-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-list-<?php echo $APPTAG?>Label">
 				<div class="modal-dialog modal-sm" role="document">
 					<div class="modal-content">
-						<?php require(JPATH_CORE.DS.'apps/layout/form/modal.header.php'); ?>
+						<?php require(JPATH_CORE.DS.'apps/layout/list/modal.header.php'); ?>
 						<div class="modal-body">
 							<?php echo $addBtn.$list; ?>
 						</div>
@@ -352,7 +350,7 @@ jQuery(window).load(function() {
 
 	<?php if($hasAdmin) : ?>
 		<div class="modal fade" data-animation="false" id="modal-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-<?php echo $APPTAG?>Label">
-			<div class="modal-dialog modal-lg set-shadow-lg" role="document">
+			<div class="modal-dialog set-shadow-lg" role="document">
 				<div class="modal-content">
 					<form name="form-<?php echo $APPTAG?>" id="form-<?php echo $APPTAG?>" method="post" enctype="multipart/form-data">
 						<?php require(JPATH_CORE.DS.'apps/layout/form/modal.header.php'); ?>

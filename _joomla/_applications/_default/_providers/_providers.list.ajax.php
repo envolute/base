@@ -125,7 +125,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$html .= '
 				<li class="'.$rowState.'">
 					<span class="float-right">'.$btnState.$btnEdit.$btnDelete.'</span>
-					'.baseHelper::nameFormat($item->name).'
+					<div class="text-truncate">'.baseHelper::nameFormat($item->name).'</div>
 					<div class="small text-muted">'.$agreement.baseHelper::nameFormat($item->grp).'</div>
 				</li>
 			';

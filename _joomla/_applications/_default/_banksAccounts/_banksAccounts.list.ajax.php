@@ -50,27 +50,45 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	// GET DATA
 	$noReg	= true;
-	$query	= 'SELECT *';
+	$query	= '
+		SELECT
+			'. $db->quoteName('T1.id') .',
+			'. $db->quoteName('T2.name') .' bank,
+			'. $db->quoteName('T1.agency') .',
+			'. $db->quoteName('T1.account') .',
+			'. $db->quoteName('T1.operation') .',
+			'. $db->quoteName('T1.note') .',
+			'. $db->quoteName('T1.state') .'
+	';
 	if(!empty($rID) && $rID !== 0) :
 		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
 			$query .= ' FROM '.
 				$db->quoteName($cfg['mainTable']) .' T1
-				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T2
-				ON '.$db->quoteName('T2.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
+				JOIN '. $db->quoteName('#__'.$cfg['project'].'_banks') .' T2
+				ON '.$db->quoteName('T2.id') .' = T1.bank_id AND T2.state = 1
+				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T3
+				ON '.$db->quoteName('T3.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
 			WHERE '.
-				$db->quoteName('T2.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
+				$db->quoteName('T3.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
 			;
 		else :
-			$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1 WHERE '. $db->quoteName($rNID) .' = '. $rID;
+			$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
+				JOIN '. $db->quoteName('#__'.$cfg['project'].'_banks') .' T2
+				ON '.$db->quoteName('T2.id') .' = T1.bank_id AND T2.state = 1
+				WHERE '. $db->quoteName($rNID) .' = '. $rID
+			;
 		endif;
 	else :
-		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1';
+		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
+			JOIN '. $db->quoteName('#__'.$cfg['project'].'_banks') .' T2
+			ON '.$db->quoteName('T2.id') .' = T1.bank_id AND T2.state = 1
+		';
 		if($oCHL) :
 			$query .= ' WHERE 1=0';
 			$noReg = false;
 		endif;
 	endif;
-	$query	.= ' ORDER BY '. $db->quoteName('id') .' DESC';
+	$query	.= ' ORDER BY '. $db->quoteName('T2.name') .' ASC';
 	try {
 		$db->setQuery($query);
 		$db->execute();
@@ -101,10 +119,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				}
 			endif;
 
-			$main = $item->main == 1 ? ' <span class="base-icon-star text-live cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_MAIN').'"></span>' : '';
-			$wapp = $item->whatsapp == 1 ? ' <span class="base-icon-whatsapp text-success cursor-help hasTooltip" title="'.JText::_('TEXT_HAS_WHATSAPP').'"></span>' : '';
-			$operator = !empty($item->operator) ? '<span class="badge badge-primary cursor-help hasTooltip" title="'.JText::_('TEXT_OPERATOR').'">'.$item->operator.'</span> ' : '';
-			$info = !empty($item->description) ? '<small class="text-muted">'.baseHelper::nameFormat($item->description).'</small>' : '';
 			$btnState = $hasAdmin ? '<a href="#" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'"><span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').' hasTooltip" data-animation="false" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'"></span></a> ' : '';
 			$btnEdit = $hasAdmin ? '<a href="#" class="base-icon-pencil text-live hasTooltip" data-animation="false" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"></a> ' : '';
 			$btnDelete = $hasAdmin ? '<a href="#" class="base-icon-trash text-danger hasTooltip" data-animation="false" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"></a>' : '';
@@ -112,7 +126,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$html .= '
 				<li class="'.$rowState.'">
 					<span class="float-right">'.$btnState.$btnEdit.$btnDelete.'</span>
-					'.$main.$item->phone_number.$wapp.$operator.'<br />'.$info.'
+					'.baseHelper::nameFormat($item->bank).'<br />
+					<span class="text-muted text-sm">
+						'.JText::_('FIELD_LABEL_OPERATION_ABBR').': <span class="text-live">'.$item->operation.'</span>
+						'.JText::_('FIELD_LABEL_AGENCY_ABBR').': <span class="text-live">'.$item->agency.'</span>
+						'.JText::_('FIELD_LABEL_ACCOUNT_ABBR').': <span class="text-live">'.$item->account.'</span>
+					</span>
 				</li>
 			';
 		}

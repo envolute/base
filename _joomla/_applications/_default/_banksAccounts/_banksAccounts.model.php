@@ -92,11 +92,15 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['relationId']   		= $input->get('relationId', 0, 'int');
 		$request['state']				= $input->get('state', 1, 'int');
 		// app
-		$request['name']				= $input->get('name', '', 'string');
+		$request['bank_id']				= $input->get('bank_id', 0, 'int');
+	  	$request['agency']				= $input->get('agency', '', 'string');
+	    $request['account']				= $input->get('account', '', 'string');
+	  	$request['operation']			= $input->get('operation', '', 'string');
+	  	$request['note']				= $input->get('note', '', 'string');
 
 		// SAVE CONDITION
 		// Condição para inserção e atualização dos registros
-		$save_condition = (!empty($request['name']));
+		$save_condition = ($request['bank_id'] > 0 && !empty($request['agency']) && !empty($request['account']));
 
 		if($id || (!empty($ids) && $ids != 0)) :  //UPDATE OR DELETE
 
@@ -142,7 +146,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'prev'				=> $prev,
 						'next'				=> $next,
 						// App Fields
-						'name'				=> $item->name
+						'bank_id'			=> $item->bank_id,
+						'agency'			=> $item->agency,
+						'account'			=> $item->account,
+						'operation'			=> $item->operation,
+						'note'				=> $item->note
 					);
 
 				// UPDATE
@@ -150,7 +158,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 					$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
 					$query .=
-						$db->quoteName('name')				.'='. $db->quote($request['name']) .','.
+						$db->quoteName('bank_id')			.'='. $request['bank_id'] .','.
+						$db->quoteName('agency')			.'='. $db->quote($request['agency']) .','.
+						$db->quoteName('account')			.'='. $db->quote($request['account']) .','.
+						$db->quoteName('operation')			.'='. $db->quote($request['operation']) .','.
+						$db->quoteName('note')				.'='. $db->quote($request['note']) .','.
 						$db->quoteName('state')				.'='. $request['state'] .','.
 						$db->quoteName('alter_date')		.'= NOW(),'.
 						$db->quoteName('alter_by')			.'='. $user->id
@@ -339,11 +351,19 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					// Prepare the insert query
 					$query  = '
 						INSERT INTO '. $db->quoteName($cfg['mainTable']) .'('.
-							$db->quoteName('name') .','.
+							$db->quoteName('bank_id') .','.
+							$db->quoteName('agency') .','.
+							$db->quoteName('account') .','.
+							$db->quoteName('operation') .','.
+							$db->quoteName('note') .','.
 							$db->quoteName('state') .','.
 							$db->quoteName('created_by')
 						.') VALUES ('.
-							$db->quote($request['name']) .','.
+							$request['bank_id'] .','.
+							$db->quote($request['agency']) .','.
+							$db->quote($request['account']) .','.
+							$db->quote($request['operation']) .','.
+							$db->quote($request['note']) .','.
 							$request['state'] .','.
 							$user->id
 						.')

@@ -139,7 +139,7 @@ jQuery(function() {
 		// SET PARENT -> Seta o valor do elemento pai (foreign key) do relacionamento
 		window.<?php echo $APPTAG?>_setParent = function(id) {
 			<?php // Default Actions
-			require(JPATH_CORE.DS.'apps/snippets/form/setRelation.def.js.php');
+			require(JPATH_CORE.DS.'apps/snippets/form/setParent.def.js.php');
 			?>
 		};
 
@@ -290,7 +290,7 @@ jQuery(window).load(function() {
 	$relAdd	= !empty($_SESSION[$RTAG.'RelTable']) ? $APPTAG.'_setRelation('.$APPTAG.'rID);' : $APPTAG.'_setParent('.$APPTAG.'rID);';
 	$addBtn = '
 		<button class="base-icon-plus btn-add btn btn-sm btn-success hasTooltip" data-animation="false" title="'.$tipText.'" onclick="'.$relAdd.'" data-toggle="modal" data-target="#modal-'.$APPTAG.'" data-backdrop="static" data-keyboard="false">
-			'.($cfg['addText'] ? ' <span class="text-add">'.$addText.'</span>': '').'
+			'.($cfg['addText'] ? ' <span class="text-add"> '.$addText.'</span>': '').'
 		</button>
 	';
 	?>
@@ -332,7 +332,7 @@ jQuery(window).load(function() {
 			<div class="modal fade" id="modal-list-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-list-<?php echo $APPTAG?>Label">
 				<div class="modal-dialog modal-sm" role="document">
 					<div class="modal-content">
-						<?php require(JPATH_CORE.DS.'apps/layout/form/modal.header.php'); ?>
+						<?php require(JPATH_CORE.DS.'apps/layout/list/modal.header.php'); ?>
 						<div class="modal-body">
 							<?php echo $addBtn.$list; ?>
 						</div>
