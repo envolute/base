@@ -69,9 +69,9 @@
 		// item divisor
 		.nav.menu .nav-child .divider {
 			height: 1px;
-			margin: 1px 0;
+			margin: -1px 0 0;
 			overflow: hidden;
-			background-color: $base-border-color;
+			border-top: 1px solid $base-color-primary-lighter;
 		}
 
 // MAINMENU -> MENU PRINCIPAL

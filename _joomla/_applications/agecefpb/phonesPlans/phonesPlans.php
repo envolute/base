@@ -348,7 +348,7 @@ jQuery(window).load(function() {
 
 	<?php if($hasAdmin) : ?>
 		<div class="modal fade" data-animation="false" id="modal-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-<?php echo $APPTAG?>Label">
-			<div class="modal-dialog set-shadow-lg" role="document">
+			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<form name="form-<?php echo $APPTAG?>" id="form-<?php echo $APPTAG?>" method="post" enctype="multipart/form-data">
 						<?php require(JPATH_CORE.DS.'apps/layout/form/modal.header.php'); ?>

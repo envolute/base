@@ -198,4 +198,8 @@
 					overflow: hidden;
 					z-index: $zindex-chosen;
 				}
-				#{$select-sm} + .chosen-container .chosen-drop { top: 97%; }
+				#{$select-sm} + .chosen-container .chosen-drop {
+					top: 97%;
+					font-size: $font-size-sm;
+				}
+				#{$select-lg} + .chosen-container .chosen-drop { font-size: $font-size-lg; }

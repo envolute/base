@@ -10,9 +10,8 @@ jQuery(function() {
 			input.each(function() { jQuery(this).prop('checked', false); });
 			// seleciona o item com o valor informado
 			if(input.filter('[value="'+value+'"]').length)
-			input.filter('[value="'+value+'"]').prop('checked', true);
-			// Seta o evento change
-			input.trigger('change');
+			input.filter('[value="'+value+'"]').prop('checked', true).trigger('change');
+			else if(input.is(':checkbox')) input.trigger('change');
 			// Se for um botão, seta o estado 'ativo'
 			btnCheckState(input);
 		} else {

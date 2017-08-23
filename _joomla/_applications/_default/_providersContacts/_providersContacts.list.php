@@ -63,8 +63,8 @@ $html = '
 			<thead>
 				<tr>
 					'.$adminView['head']['info'].'
-					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_CONTACT'), 'T3.name', $APPTAG).'</th>
 					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_PROVIDER'), 'T2.name', $APPTAG).'</th>
+					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_CONTACT'), 'T3.name', $APPTAG).'</th>
 					<th class="d-none d-lg-table-cell text-center">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_MAIN'), 'T1.main', $APPTAG).'</th>
 					<th class="d-none d-lg-table-cell">'.JText::_('FIELD_LABEL_DEPARTMENT').'</th>
 					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
@@ -131,13 +131,13 @@ if($num_rows) : // verifica se existe
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
+				<td>'.baseHelper::nameFormat($item->provider).'</td>
 				<td>
 					'.baseHelper::nameFormat($item->contact).'
 					<div class="d-lg-none text-muted text-sm">
 						'.$main.baseHelper::nameFormat($item->department).'
 					</div>
 				</td>
-				<td>'.baseHelper::nameFormat($item->provider).'</td>
 				<td class="d-none d-lg-table-cell text-center">'.$main.'</td>
 				<td class="d-none d-lg-table-cell">'.baseHelper::nameFormat($item->department).'</td>
 				<td class="d-none d-lg-table-cell">
