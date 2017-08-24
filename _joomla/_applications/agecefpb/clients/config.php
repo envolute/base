@@ -32,6 +32,9 @@ endif;
 // get user type default in registration
 $_SESSION[$APPTAG.'newUsertype'] = 2; // default 'Associado'
 
+// get user type default in registration
+$_SESSION[$APPTAG.'cardLimit'] = '300,00'; // default
+
 // Crud's permissions
 	$cfg['isPublic']			= false; // Público -> acesso aberto a todos
 	// Restrict Access

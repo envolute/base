@@ -30,6 +30,8 @@ jQuery(function() {
 	<?php // Default 'JS' Vars
 	require(JPATH_CORE.DS.'apps/snippets/initVars.js.php');
 	?>
+	// CUSTOM
+	var cardPopup			= jQuery('#modal-card-<?php echo $APPTAG?>');
 
 	// APP FIELDS
 	var user_id				= jQuery('#<?php echo $APPTAG?>-user_id');
@@ -60,12 +62,17 @@ jQuery(function() {
 	var address_district	= jQuery('#<?php echo $APPTAG?>-address_district');
 	var address_city		= jQuery('#<?php echo $APPTAG?>-address_city');
 	// contact
+	var phone0				= jQuery('#<?php echo $APPTAG?>-phone0');
 	var phone1				= jQuery('#<?php echo $APPTAG?>-phone1');
 	var phone2				= jQuery('#<?php echo $APPTAG?>-phone2');
 	// Billing data
 	var agency				= jQuery('#<?php echo $APPTAG?>-agency');
 	var account				= jQuery('#<?php echo $APPTAG?>-account');
 	var operation			= jQuery('#<?php echo $APPTAG?>-operation');
+	// Card
+	var toggleName 			= jQuery('#<?php echo $APPTAG?>-toggleName');
+	var name_card 			= jQuery('#<?php echo $APPTAG?>-name_card');
+	var card_limit			= jQuery('#<?php echo $APPTAG?>-card_limit');
 	// Joomla Registration
 	var access				= mainForm.find('input[name=access]:radio'); // radio group
 	var newUser				= jQuery('#<?php echo $APPTAG?>-newUser');
@@ -102,6 +109,12 @@ jQuery(function() {
 			<?php // Default Actions
 			require(JPATH_CORE.DS.'apps/snippets/form/onModalClose.def.js.php');
 			?>
+		});
+
+		// CUSTOM MODAL
+		cardPopup.on('hidden.bs.modal', function () {
+			// limpa a validação quando o formulário é fechado
+			jQuery('#<?php echo $APPTAG?>-card-iframe').attr("src", "");
 		});
 
 		<?php // FORM PAGINATOR -> Implementa os botões de paginação do formulário
@@ -154,11 +167,19 @@ jQuery(function() {
 			address_info.val('');
 			address_district.val('');
 			address_city.val('');
+			phone0.val('');
 			phone1.val('');
 			phone2.val('');
 			agency.val('');
 			account.val('');
 			operation.val('');
+			// CARD
+			checkOption(toggleName, 0);
+			name_card.val('');
+			card_limit.val('<?php echo $_SESSION[$APPTAG.'cardLimit']?>');
+			// esconde o botão para impressão
+			setHidden('#<?php echo $APPTAG?>-group-btnPrint', true);
+			// ACCESS
 			checkOption(access, 0);
 			reasonStatus.val('');
 
@@ -166,47 +187,6 @@ jQuery(function() {
 			require(JPATH_CORE.DS.'apps/snippets/form/formReset.end.js.php');
 			?>
 
-		};
-
-		// CUSTOM -> Reset Registration Fields
-		window.<?php echo $APPTAG?>_accessForm = function(val) {
-			var isUser = (user_id.val() == 0) ? false : true;
-			newUser.selectUpdate(0); // select
-			password.val('');
-			repassword.val('');
-			emailInfo.val('');
-			checkOption(emailConfirm, (val && !isUser));
-			jQuery('#accessFields').collapse((val ? 'show' : 'hide'));
-			jQuery('#<?php echo $APPTAG?>-reasonStatus-group').collapse((!val ? 'show' : 'hide'));
-			setHidden('.new-user-data', (val && isUser), '.edit-user-data');
-			setHidden('.<?php echo $APPTAG?>-no-user', isUser, '.<?php echo $APPTAG?>-is-user');
-		};
-
-		// CUSTOM -> Sincroniza com os contatos
-		window.<?php echo $APPTAG?>_userSync = function() {
-			<?php echo $APPTAG?>_formExecute(true, true, false); // inicia o loader
-			jQuery.ajax({
-				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=userSync",
-				dataType: 'json',
-				type: 'POST',
-				cache: false,
-				success: function(data) {
-					<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
-					jQuery.map( data, function( res ) {
-						setTimeout(function() {
-							<?php $redir = baseHelper::setUrlParam(JURI::current(), 'sync=1'); ?>
-							window.location.href = "<?php echo $redir?>";
-						}, 1000);
-					});
-				},
-				error: function(xhr, status, error) {
-					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
-					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
-					?>
-					<?php echo $APPTAG?>_formExecute(true, formDisable, false); // encerra o loader
-				}
-			});
-			return false;
 		};
 
 		<?php if($cfg['hasUpload']) : ?>
@@ -250,6 +230,30 @@ jQuery(function() {
 			require(JPATH_CORE.DS.'apps/snippets/form/setParent.def.js.php');
 			?>
 		};
+
+		// CUSTOM -> Reset Registration Fields
+		window.<?php echo $APPTAG?>_accessForm = function(val) {
+			var isUser = (user_id.val() == 0) ? false : true;
+			newUser.selectUpdate(0); // select
+			password.val('');
+			repassword.val('');
+			emailInfo.val('');
+			checkOption(emailConfirm, (val && !isUser));
+			jQuery('#accessFields').collapse((val ? 'show' : 'hide'));
+			jQuery('#<?php echo $APPTAG?>-reasonStatus-group').collapse((!val ? 'show' : 'hide'));
+			setHidden('.new-user-data', (val && isUser), '.edit-user-data');
+			setHidden('.<?php echo $APPTAG?>-no-user', isUser, '.<?php echo $APPTAG?>-is-user');
+		};
+
+		// CUSTOM: Print Card
+		window.<?php echo $APPTAG?>_printCard = function(){
+			var urlPrint = '<?php echo JURI::root()?><?php echo $APPTAG?>-print-card?id='+formId.val()+'&tmpl=component';
+			jQuery('#<?php echo $APPTAG?>-card-iframe').attr("src", urlPrint);
+			jQuery("#modal-card-<?php echo $APPTAG?>").modal();
+		}
+		window.<?php echo $APPTAG?>_setPrintCard = function(){
+			document.getElementById("<?php echo $APPTAG?>-card-iframe").contentWindow.print();
+		}
 
 	// LIST CONTROLLERS
 	// ações & métodos controladores da listagem
@@ -350,11 +354,19 @@ jQuery(function() {
 						address_city.val(item.address_city);
 							// phones
 							var p = item.phones.split(",");
-							phone1.val(p[0]);
-							phone2.val(p[1]);
+							phone0.val(p[0]);
+							phone1.val(p[1]);
+							phone2.val(p[2]);
 						agency.val(item.agency);
 						account.val(item.account);
 						operation.val(item.operation);
+						// CARD
+						checkOption(toggleName, (!isEmpty(item.name_card) ? 1 : 0));
+						name_card.val(item.name_card);
+						card_limit.val(item.card_limit);
+						// mostra o botão para impressão
+						setHidden('#<?php echo $APPTAG?>-group-btnPrint', false);
+						// ACCESS
 						checkOption(access, item.access);
 						reasonStatus.val(item.reasonStatus);
 
@@ -396,6 +408,33 @@ jQuery(function() {
 			?>
 
 		<? endif; ?>
+
+		// CUSTOM -> Sincroniza com os contatos
+		window.<?php echo $APPTAG?>_userSync = function() {
+			<?php echo $APPTAG?>_formExecute(true, true, false); // inicia o loader
+			jQuery.ajax({
+				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=userSync",
+				dataType: 'json',
+				type: 'POST',
+				cache: false,
+				success: function(data) {
+					<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
+					jQuery.map( data, function( res ) {
+						setTimeout(function() {
+							<?php $redir = baseHelper::setUrlParam(JURI::current(), 'sync=1'); ?>
+							window.location.href = "<?php echo $redir?>";
+						}, 1000);
+					});
+				},
+				error: function(xhr, status, error) {
+					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
+					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
+					?>
+					<?php echo $APPTAG?>_formExecute(true, formDisable, false); // encerra o loader
+				}
+			});
+			return false;
+		};
 
 }); // CLOSE JQUERY->READY
 
@@ -483,6 +522,9 @@ jQuery(window).load(function() {
 					<button class="btn btn-sm btn-danger <?php echo $APPTAG?>-btn-action d-none d-sm-inline-block" disabled onclick="<?php echo $APPTAG?>_del(0)">
 						<span class="base-icon-trash"></span> <?php echo JText::_('TEXT_DELETE'); ?>
 					</button>
+					<button type="button" class="btn btn-sm btn-success hasTooltip" onclick="<?php echo $APPTAG?>_userSync()" title="<?php echo JText::_('TEXT_USER_SYNC_DESC')?>">
+						<span class="base-icon-arrows-cw"></span> <?php echo JText::_('TEXT_USER_SYNC')?>
+					</button>
 				<?php endif; ?>
 				<button class="btn btn-sm btn-default toggle-state <?php echo ((isset($_GET[$APPTAG.'_filter']) || $cfg['showFilter']) ? 'active' : '')?>" data-toggle="collapse" data-target="<?php echo '#filter-'.$APPTAG?>" aria-expanded="<?php echo ((isset($_GET[$APPTAG.'_filter']) || $cfg['showFilter']) ? 'true' : '')?>" aria-controls="<?php echo 'filter'.$APPTAG?>">
 					<span class="base-icon-filter"></span> <?php echo JText::_('TEXT_FILTER'); ?> <span class="base-icon-sort"></span>
@@ -540,4 +582,16 @@ jQuery(window).load(function() {
 			</div>
 		</div>
 	<?php endif; ?>
+
+	<div class="modal fade" id="modal-card-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-card-<?php echo $APPTAG?>Label">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-body">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<iframe id="<?php echo $APPTAG?>-card-iframe" style="width:325px; height:205px; border:1px dashed #ddd"></iframe>
+    				<button type="button" class="btn btn-lg btn-success m-4 float-right hidden-print" style="height:80px" onclick="<?php echo $APPTAG?>_setPrintCard()"> <?php echo JText::_('TEXT_PRINT'); ?></button>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

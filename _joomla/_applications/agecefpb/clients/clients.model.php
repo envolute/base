@@ -126,6 +126,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['agency']				= $input->get('agency', '', 'string');
 		$request['account']				= $input->get('account', '', 'string');
 		$request['operation']			= $input->get('operation', '', 'string');
+		// CARD
+	    $request['name_card']			= $input->get('name_card', '', 'string');
+	  	$request['card_limit']			= $input->get('card_limit', 0.00, 'float');
 	    // user registration action
 	  	$request['access']				= $input->get('access', 0, 'int');
 	    $username						= baseHelper::alphaNum($request['cpf']); // apenas letras e números
@@ -244,6 +247,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'agency'			=> $item->agency,
 						'account'			=> $item->account,
 						'operation'			=> $item->operation,
+			            'name_card'			=> $item->name_card,
+			            'card_limit'		=> $item->card_limit,
 						'access'			=> ($itemBlock ? 0 : 1),
 						'reasonStatus'		=> $item->reasonStatus,
 						'files'				=> $listFiles
@@ -282,6 +287,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('agency')			.'='. $db->quote($request['agency']) .','.
 						$db->quoteName('account')			.'='. $db->quote($request['account']) .','.
 						$db->quoteName('operation')			.'='. $db->quote($request['operation']) .','.
+						$db->quoteName('name_card')			.'='. $db->quote($request['name_card']) .','.
+						$db->quoteName('card_limit')		.'='. $db->quote($request['card_limit']) .','.
 						$db->quoteName('access')			.'='. $request['access'] .','.
 						$db->quoteName('reasonStatus')		.'='. $db->quote($reason) .','.
 						$db->quoteName('state')				.'='. $request['state'] .','.
@@ -477,7 +484,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						// MOVIMENTAÇÕES RECORRENTES -> altera o estado das movimentações recorrentes do cliente
 						// IMPORTANTE: Altera apenas quando o cliente é setado como 'inativo'
 						// Isso evita 'reativar' movimentações indevidas quando 'reativar' o cliente
-						if($stateVal == 0)
+						if($stateVal == 0) :
 							$query = 'UPDATE '. $db->quoteName('#__'.$cfg['project'].'_transactions') .' SET '. $db->quoteName('state') .' = '.$stateVal.' WHERE '. $db->quoteName('client_id') .' IN ('.$ids.') AND '. $db->quoteName('fixed') .' = 1';
 							$db->setQuery($query);
 							$db->execute();
@@ -585,6 +592,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('agency') .','.
 							$db->quoteName('account') .','.
 							$db->quoteName('operation') .','.
+							$db->quoteName('name_card') .','.
+							$db->quoteName('card_limit') .','.
 							$db->quoteName('access') .','.
 							$db->quoteName('reasonStatus') .','.
 							$db->quoteName('state') .','.
@@ -618,6 +627,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quote($request['agency']) .','.
 							$db->quote($request['account']) .','.
 							$db->quote($request['operation']) .','.
+							$db->quote($request['name_card']) .','.
+							$db->quote($request['card_limit']) .','.
 							$request['access'] .','.
 							$db->quote($reason) .','.
 							$request['state'] .','.
