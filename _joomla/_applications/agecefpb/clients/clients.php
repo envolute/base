@@ -113,7 +113,7 @@ jQuery(function() {
 
 		// CUSTOM MODAL
 		cardPopup.on('hidden.bs.modal', function () {
-			// limpa a validação quando o formulário é fechado
+			// limpa os dados quando o formulário é fechado
 			jQuery('#<?php echo $APPTAG?>-card-iframe').attr("src", "");
 		});
 

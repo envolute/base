@@ -29,10 +29,15 @@ window.<?php echo $APPTAG?>_save = function(trigger) {
 				<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
 				jQuery.map( data, function( res ) {
 					if(res.status > 0) { // se alguma ação for realizada
-						if(res.status == 1 || isSet(trigger)) {
+						if(res.status == 1) {
 							if(isSet(trigger)) {
-								<?php echo $APPTAG?>_formReset();
-								if(trigger == 'close') popup.modal('hide');
+								if(trigger == 'close') {
+									<?php echo $APPTAG?>_formReset();
+									popup.modal('hide');
+								} else if(typeof(trigger) == 'function') {
+									// Caso haja o "reset", deve ser chamado na função "trigger"
+									trigger.call(res.regID);
+								}
 							} else {
 								<?php echo $APPTAG?>_loadEditFields(res.regID, true, false); // recarrega os dados do form
 							}
@@ -55,6 +60,7 @@ window.<?php echo $APPTAG?>_save = function(trigger) {
 						require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxSuccess.js.php');
 						?>
 						<?php // recarrega a página quando fechar o form para atualizar a lista
+						if(isset($cfg['listFull']))
 						echo ($cfg['listFull'] ? 'fReload = true;' : $APPTAG.'_listReload(false, false, false, '.$APPTAG.'oCHL, '.$APPTAG.'rNID, '.$APPTAG.'rID);');
 						?>
 						if(firstField.length) setTimeout(function() { firstField.focus() }, 10); // seta novamente o focus no primeiro campo
