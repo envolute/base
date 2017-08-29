@@ -138,8 +138,8 @@ $htmlFilter = '
 						<label class="label-sm">'.JText::_('FIELD_LABEL_GENDER').'</label>
 						<select name="fGender" id="fGender" class="form-control form-control-sm set-filter">
 							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
-							<option value="1"'.($fGender == 1 ? ' selected' : '').'>'.JText::_('TEXT_MALE').'</option>
-							<option value="0"'.($fGender == 0 ? ' selected' : '').'>'.JText::_('TEXT_FEMALE').'</option>
+							<option value="1"'.($fGender == 1 ? ' selected' : '').'>'.JText::_('TEXT_GENDER_1').'</option>
+							<option value="0"'.($fGender == 0 ? ' selected' : '').'>'.JText::_('TEXT_GENDER_2').'</option>
 						</select>
 					</div>
 				</div>

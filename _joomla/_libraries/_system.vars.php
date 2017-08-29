@@ -2,6 +2,11 @@
 // SYSTEM VARIABLES
 // Variáveis 'globais' definidas para as aplicações do sistema BASE
 // Esse arquivo é carregado no arquivo 'config.php' de cada aplicação
+
+// Definição de datas em português
+setlocale(LC_ALL, "pt_BR", "pt_BR.iso-8859-1", "pt_BR.utf-8", "portuguese");
+date_default_timezone_set('America/Recife');
+
 if(!isset($baseDir)) :
 
 	// 'Base System' Folder Name

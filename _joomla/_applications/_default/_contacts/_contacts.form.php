@@ -86,11 +86,11 @@ $userGrps = $db->loadObjectList();
 							<span class="btn-group btn-group-justified" data-toggle="buttons">
 								<label class="btn btn-default btn-active-success">
 									<input type="radio" name="gender" id="<?php echo $APPTAG?>-male" class="auto-tab" data-target="<?php echo $APPTAG?>-marital_status" value="1" />
-									<?php echo JText::_('TEXT_MALE_ABBR'); ?>
+									<?php echo JText::_('TEXT_GENDER_1_ABBR'); ?>
 								</label>
 								<label class="btn btn-default btn-active-success">
 									<input type="radio" name="gender" id="<?php echo $APPTAG?>-female" class="auto-tab" data-target="<?php echo $APPTAG?>-marital_status" value="2" />
-									<?php echo JText::_('TEXT_FEMALE_ABBR'); ?>
+									<?php echo JText::_('TEXT_GENDER_2_ABBR'); ?>
 								</label>
 							</span>
 						</div>

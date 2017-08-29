@@ -81,7 +81,7 @@ jQuery(function() {
 
 		// ON FOCUS
 		// campo que recebe o focus no carregamento
-		var firstField		= name;
+		var firstField		= '';
 
 		// FORM EXECUTE -> Indicadores de execução do form
 		window.<?php echo $APPTAG?>_formExecute = function(loader, disabled, e) {

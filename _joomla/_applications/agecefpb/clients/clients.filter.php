@@ -16,8 +16,8 @@ $where = '';
 	$fStatus = $app->input->get('fStatus', 2, 'int');
 	if($fStatus != 2) $where .= ' AND '.$db->quoteName('T1.cx_status').' = '.$fStatus;
 	// GENDER -> select
-	$fGender = $app->input->get('fGender', 2, 'int');
-	if($fGender != 2) $where .= ' AND '.$db->quoteName('T1.gender').' = '.$fGender;
+	$fGender = $app->input->get('fGender', 0, 'int');
+	if($fGender > 0) $where .= ' AND '.$db->quoteName('T1.gender').' = '.$fGender;
 
 	// BIRTHDAY
 	$dateMin	= $app->input->get('dateMin', '', 'string');
@@ -136,8 +136,8 @@ $htmlFilter = '
 						<label class="label-sm">'.JText::_('TEXT_STATUS_EMPLOYEE').'</label>
 						<select name="fStatus" id="fStatus" class="form-control form-control-sm set-filter">
 							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
-							<option value="0"'.($fStatus == 0 ? ' selected' : '').'>'.JText::_('TEXT_EFFECTIVE').'</option>
-							<option value="1"'.($fStatus == 1 ? ' selected' : '').'>'.JText::_('TEXT_RETIRED').'</option>
+							<option value="0"'.($fStatus == 0 ? ' selected' : '').'>'.JText::_('TEXT_CX_STATUS_0').'</option>
+							<option value="1"'.($fStatus == 1 ? ' selected' : '').'>'.JText::_('TEXT_CX_STATUS_1').'</option>
 						</select>
 					</div>
 				</div>
@@ -145,9 +145,9 @@ $htmlFilter = '
 					<div class="form-group">
 						<label class="label-sm">'.JText::_('FIELD_LABEL_GENDER').'</label>
 						<select name="fGender" id="fGender" class="form-control form-control-sm set-filter">
-							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
-							<option value="1"'.($fGender == 1 ? ' selected' : '').'>'.JText::_('TEXT_MALE').'</option>
-							<option value="0"'.($fGender == 0 ? ' selected' : '').'>'.JText::_('TEXT_FEMALE').'</option>
+							<option value="0">- '.JText::_('TEXT_ALL').' -</option>
+							<option value="1"'.($fGender == 1 ? ' selected' : '').'>'.JText::_('TEXT_GENDER_1').'</option>
+							<option value="2"'.($fGender == 2 ? ' selected' : '').'>'.JText::_('TEXT_GENDER_2').'</option>
 						</select>
 					</div>
 				</div>

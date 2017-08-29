@@ -37,7 +37,7 @@ $_SESSION[$APPTAG.'newUsertype'] = 2; // default 'Associado'
 $_SESSION[$APPTAG.'cardLimit'] = '300,00'; // default
 
 // form action config
-	$cfg['isEdit']				= isset(${$APPTAG.'isEdit'}) ? ${$APPTAG.'isEdit'} : false;
+	$cfg['isEdit']				= isset(${$APPTAG.'IsEdit'}) ? ${$APPTAG.'IsEdit'} : false;
 
 // Crud's permissions
 	$cfg['isPublic']			= true; // Público -> acesso aberto a todos
