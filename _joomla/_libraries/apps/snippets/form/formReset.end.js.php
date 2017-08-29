@@ -17,6 +17,7 @@ checkOption(state, 1);
 if(elementExist(firstField)) setTimeout(function() { inputGetFocus(firstField) }, 10);
 
 // remove a paginação do form
+if($.fn.<?php echo $APPTAG?>_formPaginator)
 <?php echo $APPTAG?>_formPaginator(0);
 
 // Esconde botão Salvar & Novo e deletar 'btn-FORM-save-new, btn-FORM-delete'

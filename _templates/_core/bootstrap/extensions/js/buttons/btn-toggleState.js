@@ -16,10 +16,10 @@ jQuery(function() {
 		btn.each(function() {
 			var obj = jQuery(this);
 			obj.on('click',function(e) {
-			obj.not(':disabled').not('.disabled').toggleClass('active');
-			// Desativa o botão 'buttonOff'
-			var target = isSet(buttonOff) ? buttonOff : false;
-			target = isSet(obj.data('buttonOff')) ? setElement(obj.data('buttonOff')) : target;
+				obj.not(':disabled').not('.disabled').toggleClass('active');
+				// Desativa o botão 'buttonOff'
+				var target = isSet(buttonOff) ? buttonOff : false;
+				target = isSet(obj.data('buttonOff')) ? setElement(obj.data('buttonOff')) : target;
 				if(target && target.hasClass('active')) {
 					target.removeClass('active');
 					// Caso o 'target' tenha a classe 'toggle-icon'

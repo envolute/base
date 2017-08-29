@@ -89,6 +89,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['state']				= $input->get('state', 1, 'int');
 		// app
 		$request['user_id']				= $input->get('user_id', 0, 'int');
+	  	$request['usergroup']			= $input->get('usergroup', $_SESSION[$APPTAG.'newUsertype'], 'int');
 		$request['name']				= $input->get('name', '', 'string');
 		$request['email']				= $input->get('email', '', 'string');
 		$request['cpf']					= $input->get('cpf', '', 'string');
@@ -218,7 +219,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 					$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
 					$query .=
-						$db->quoteName('user_id')			.'='. $userID .','.
+						$db->quoteName('user_id')			.'='. $request['user_id'] .','.
 						$db->quoteName('usergroup')			.'='. $request['usergroup'] .','.
 						$db->quoteName('name')				.'='. $db->quote($request['name']) .','.
 						$db->quoteName('email')				.'='. $db->quote($request['email']) .','.
@@ -263,11 +264,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 						$data[] = array(
 							'status'			=> 2,
-							'msg'				=> JText::_('MSG_SAVED').$userMsg,
-							'uploadError'		=> $fileMsg,
-							'parentField'		=> $element,
-							'parentFieldVal'	=> $elemVal,
-							'parentFieldLabel'	=> baseHelper::nameFormat($elemLabel)
+							'msg'				=> JText::_('MSG_SAVED'),
+							'uploadError'		=> $fileMsg
 						);
 
 					} catch (RuntimeException $e) {
@@ -367,7 +365,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('state') .','.
 							$db->quoteName('created_by')
 						.') VALUES ('.
-							$userID .','.
+							$request['user_id'] .','.
 							$request['usergroup'] .','.
 							$db->quote($request['name']) .','.
 							$db->quote($request['email']) .','.
@@ -412,7 +410,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 						// CUSTOM -> email notification
 						// email de confirmação
-						$urlViewData = $domain.'/associe-se/ficha?rID='.urlencode(base64_encode($id));
+						$urlViewData = $domain.'associe-se/ficha?rID='.urlencode(base64_encode($id));
 						$eBody = JText::sprintf('MSG_EMAIL_BODY', baseHelper::nameFormat($request['name']), $mailFrom, $urlViewData);
 						// Email Template
 						$boxStyle	= array('bg' => '#eee', 'color' => '#555', 'border' => '3px solid #303b4d');
@@ -420,17 +418,13 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$bodyStyle	= array('bg' => '#fff');
 						$mailLogo	= 'logo-news.png';
 						$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_EMAIL_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle);
-						baseHelper::sendMail($mailFrom, $email, $subject, $mailHtml);
+						$qwe = baseHelper::sendMail($mailFrom, $request['email'], $subject, $mailHtml);
 
 						$data[] = array(
 							'status'			=> 1,
 							'msg'				=> JText::_('MSG_SAVED'),
-							'regID'				=> $id,
-							'encID'				=> urlencode(base64_encode($id)), // ID base64_encode
-							'uploadError'		=> $fileMsg,
-							'parentField'		=> $element,
-							'parentFieldVal'	=> $elemVal,
-							'parentFieldLabel'	=> baseHelper::nameFormat($elemLabel)
+							'regID'				=> urlencode(base64_encode($id)), // ID base64_encode
+							'uploadError'		=> $fileMsg
 						);
 
 					} catch (RuntimeException $e) {
@@ -446,7 +440,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 						$data[] = array(
 							'status'			=> 0,
-							'msg'				=> $sqlErr,
+							'msg'				=> $sqlErr.$query,
 							'uploadError'		=> $fileMsg
 						);
 

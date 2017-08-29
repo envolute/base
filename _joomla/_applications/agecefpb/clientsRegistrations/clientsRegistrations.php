@@ -100,7 +100,7 @@ jQuery(function() {
 			// App Fields
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
-			user_id.val('');
+			user_id.val(0);
 			usergroup.val(<?php echo $_SESSION[$APPTAG.'newUsertype']?>);
 			name.val('');
 			email.val('');
@@ -170,10 +170,11 @@ jQuery(function() {
 		};
 
 		// CONFIRM SUCCESS -> Ação após a confirmação do cadastro
-		window.<?php echo $APPTAG?>_confirmSuccess = function(id) {
+		window.<?php echo $APPTAG?>_confirmSuccess = function(regID) {
 			setHidden('#<?php echo $APPTAG?>-form-ajax', true, '#<?php echo $APPTAG?>-msg-success');
-			var urlPrint = '<?php echo JURI::root()?>/associe-se/ficha?rID='+id+'&tmpl=component';
+			var urlPrint = '<?php echo JURI::root()?>associe-se/ficha?rID='+regID+'&tmpl=modal';
 			jQuery('#<?php echo $APPTAG?>-registration-data').attr("src", urlPrint);
+			scrollTo('#header');
 		};
 
 	// AJAX CONTROLLERS
@@ -270,12 +271,6 @@ jQuery(function() {
 
 		<? endif; ?>
 
-		<?php
-			// LOAD FORM
-			$rID = $app->input->get('rID', 0, 'int');
-			echo $APPTAG.'_loadEditFields = function('.$rID.', true);';
-		?>
-
 }); // CLOSE JQUERY->READY
 
 jQuery(window).load(function() {
@@ -297,8 +292,21 @@ jQuery(window).load(function() {
 					}
 				}
 			},
-			password : {
-				minlength : 6
+			cpf : {
+				remote: {
+					url: '<?php echo _CORE_?>helpers/users/checkUsername.php',
+					type: 'post',
+					data: {
+						username: function() {
+							return jQuery('#<?php echo $APPTAG?>-cpf').val().replace(/[^\d]+/g,'');
+						}
+					}
+				}
+			},
+			partner: {
+				required: function(el) {
+					return jQuery('#<?php echo $APPTAG?>-marital_status option:selected').data('targetDisplay');
+				}
 			},
 			repassword: {
 				equalTo: '#<?php echo $APPTAG?>-password'
@@ -308,7 +316,7 @@ jQuery(window).load(function() {
 			email: {
 				remote: '<?php echo JText::_('MSG_EMAIL_EXISTS')?>'
 			},
-			username : {
+			cpf : {
 				remote: '<?php echo JText::_('MSG_USERNAME_EXISTS')?>'
 			},
 			repassword: {
@@ -331,13 +339,19 @@ jQuery(window).load(function() {
 	require(JPATH_CORE.DS.'apps/snippets/form/validationFile.def.js.php');
 	?>
 
+	<?php
+	// LOAD FORM
+	$rID = ($cfg['isEdit']) ? $app->input->get('rID', 0, 'int') : 0;
+	echo $APPTAG.'_loadEditFields('.$rID.', true);';
+	?>
+
 });
 
 </script>
 
 <div id="<?php echo $APPTAG?>-msg-success" class="clearfix" hidden>
-	<div class="alert alert-success">Sucesso!</div>
-	<button type="button" class="btn btn-lg btn-success base-icon-print btn-icon" onclick=""><?php echo JText::_('TEXT_PRINT_DATA')?></button>
+	<h4 class="alert alert-success base-icon-ok"> <?php echo JText::_('MSG_RESGISTRATION_SUCCESS')?></h4>
+	<?php echo JText::_('MSG_PRINT_DATA')?>
 	<iframe id="<?php echo $APPTAG?>-registration-data" style="width:100%; height:1000px; border:none"></iframe>
 </div>
 <div id="<?php echo $APPTAG?>-form-ajax" class="base-app clearfix">

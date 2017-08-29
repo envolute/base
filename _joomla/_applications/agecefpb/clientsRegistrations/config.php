@@ -6,6 +6,7 @@ require(JPATH_BASE.'/libraries/envolute/_system.vars.php');
 // App Configuration's Vars
 $cfg = array();
 $cfg['project'] = 'agecefpb';
+$cfg['parentApp'] = 'clients';
 // App Define
 $APPNAME  = 'clientsRegistrations';
 $MAIN_TB  = '#__'.$cfg['project'].'_clients';
@@ -40,10 +41,19 @@ $_SESSION[$APPTAG.'cardLimit'] = '300,00'; // default
 
 // Crud's permissions
 	$cfg['isPublic']			= true; // Público -> acesso aberto a todos
+	// Restrict Access
+	// $cfg['groupId']['viewer'][]  = apenas visualiza o componente
+	// $cfg['groupId']['admin'][]   = administra o componente
+	// ----------------------------------------------------
+	$cfg['groupId']['viewer'][]	= 0; // '0' pois não pode ser vazio
+	// acesso liberado sempre
+	$cfg['groupId']['admin'][]	= 6; // Gerente
+	$cfg['groupId']['admin'][]	= 7; // Administrador
+	$cfg['groupId']['admin'][]	= 8; // Desenvolvedor
 
 // crud's name
 	$cfg['APPNAME']				= $APPNAME;
-	$cfg['$APPTAG']				= $APPTAG;
+	$cfg['APPTAG']				= $APPTAG;
 
 // crud's main table
 	$cfg['mainTable']			= $MAIN_TB;
@@ -71,7 +81,7 @@ $_SESSION[$APPTAG.'cardLimit'] = '300,00'; // default
 		$cfg['fileTable']		= $cfg['mainTable'].'_files'; // upload's database table
 		// upload params
 		$cfg['maxFileSize']		= 5242880; // 5MB
-		$cfg['uploadDir']       = JPATH_BASE.DS.'images/apps/'.$APPNAME.'/'; // IMPORTANTE: colocar a barra '/' no fim
+		$cfg['uploadDir']       = JPATH_BASE.DS.'images/apps/'.$cfg['parentApp'].'/'; // IMPORTANTE: colocar a barra '/' no fim
 		// file types enabled
 		$cfg['fileTypes']	= array();
 		$cfg['fileTypes']['image'][]	= 'image/png';
@@ -90,6 +100,14 @@ $_SESSION[$APPTAG.'cardLimit'] = '300,00'; // default
 		$cfg['fileTypes']['file'][]		= 'application/vnd.ms-excel';
 		$cfg['fileTypes']['file'][]		= 'application/x-excel';
 		$cfg['fileTypes']['file'][]		= 'application/x-msexcel';
+	endif;
+
+// crud's relation actions
+
+	if(!$ajaxRequest) :
+		// RELATION TAG
+		// evita o conflito entre sessões de diferentes carregamento do mesmo APP
+		$RTAG = isset(${$APPTAG.'RelTag'}) ? $APPTAG.${$APPTAG.'RelTag'} : $APPTAG;
 	endif;
 
 ?>

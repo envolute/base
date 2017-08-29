@@ -34,7 +34,7 @@ $cfg = array();
 
 // crud's name
   $cfg['APPNAME']           = $APPNAME;
-  $cfg['$APPTAG']           = $APPTAG;
+  $cfg['APPTAG']           = $APPTAG;
 
 // crud's main table
   $cfg['mainTable']         = '#__ajax_crud';

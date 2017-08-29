@@ -50,7 +50,7 @@ $_SESSION[$APPTAG.'cardLimit'] = '300,00'; // default
 
 // crud's name
 	$cfg['APPNAME']				= $APPNAME;
-	$cfg['$APPTAG']				= $APPTAG;
+	$cfg['APPTAG']				= $APPTAG;
 
 // crud's main table
 	$cfg['mainTable']			= $MAIN_TB;

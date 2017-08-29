@@ -28,7 +28,8 @@ window.<?php echo $APPTAG?>_delFile = function(btn, fileName, itemID) {
 
             <?php
             // recarrega a página quando fechar o form para atualizar a lista
-            echo ($cfg['listFull'] ? 'fReload = true;' : $APPTAG.'_listReload(false, false, false, '.$APPTAG.'oCHL, '.$APPTAG.'rNID, '.$APPTAG.'rID);');
+			if(isset($cfg['listFull']))
+			echo ($cfg['listFull'] ? 'fReload = true;' : $APPTAG.'_listReload(false, false, false, '.$APPTAG.'oCHL, '.$APPTAG.'rNID, '.$APPTAG.'rID);');
             ?>
           } else {
             $.baseNotify({ msg: res.msg, type: "danger"});
