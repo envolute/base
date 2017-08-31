@@ -19,6 +19,10 @@ $groups = $user->groups;
 // init general css/js files
 require(JPATH_CORE.DS.'apps/_init.app.php');
 
+// Get request data
+$uID = $app->input->get('uID', 0, 'int');
+$uID = ($hasAdmin && $uID > 0) ? $uID : $user->id;
+
 // DATABASE CONNECT
 $db = JFactory::getDbo();
 
@@ -70,7 +74,7 @@ jQuery(function() {
 	var account				= jQuery('#<?php echo $APPTAG?>-account');
 	var operation			= jQuery('#<?php echo $APPTAG?>-operation');
 
-	var disableEdit = [cpf, rg, rg_orgao, gender, birthday, cx_code, cx_date, agency, account, operation];
+	var disableEdit = [name, cpf, rg, rg_orgao, gender, birthday, cx_code, cx_date, agency, account, operation];
 
 	// PARENT FIELD
 	// informe, se houver, o campo que representa a chave estrangeira principal
@@ -190,8 +194,14 @@ jQuery(function() {
 
 		// EDIT SUCCESS -> Ações após editar um registro
 		window.<?php echo $APPTAG?>_editSuccess = function() {
-			console.log('<?php echo JURI::root()?>user/profile');
-			location.href = '<?php echo JURI::root()?>user/profile';
+			<?php $p = ($uID != $user->id) ? '?uID='.$uID : '' ?>
+			location.href = '<?php echo JURI::root()?>user/profile'.$p;
+		};
+
+		// SELECT USER -> Selecionar um usuário no formulário de edição
+		window.<?php echo $APPTAG?>_selectUser = function(el) {
+			var val = jQuery(el).val();
+			location.href = '<?php echo JURI::current()?>'+((!isEmpty(val) && val != 0) ? '?uID='+val : '');
 		};
 
 	// AJAX CONTROLLERS
@@ -379,7 +389,7 @@ jQuery(window).load(function() {
 	$rID = 0;
 	$showForm = true;
 	if($cfg['isEdit']) :
-		$query = 'SELECT '. $db->quoteName('id') .' FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('user_id') .' = 346'; //. $user->id;
+		$query = 'SELECT '. $db->quoteName('id') .' FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('user_id') .' = '. $uID;
 		$db->setQuery($query);
 		$rID = $db->loadResult();
 		if(!$rID) :
@@ -390,6 +400,7 @@ jQuery(window).load(function() {
 				// Usuários administradores "$hasAdmin" (não associados) só podem
 				// visualizar seus dados ou editar seu perfil, na administração...
 				// => Mostra a mensagem...
+				echo 'console.log("'.$query.'");';
 				echo 'setHidden("#'.$APPTAG.'-is-admin", false, "#'.$APPTAG.'-form-loader");';
 			else :
 				$app->enqueueMessage(JText::_('MSG_NOT_PERMISSION'), 'warning');
@@ -410,6 +421,36 @@ jQuery(window).load(function() {
 });
 
 </script>
+
+<?
+if($hasAdmin) :
+	// CLIENTS
+	$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_clients') .' WHERE user_id <> 0 AND state = 1 ORDER BY name';
+	$db->setQuery($query);
+	$clients = $db->loadObjectList();
+?>
+
+	<div class="row">
+		<div class="col-md-4">
+			<h5 class="text-info"><?php echo JText::_('MSG_ADMIN_EDIT'); ?></h5>
+		</div>
+		<div class="col-md-8">
+			<fieldset class="fieldset-embed fieldset-sm">
+				<legend><?php echo JText::_('FIELD_LABEL_CLIENT_SELECT'); ?></legend>
+				<select name="uID" id="<?php echo $APPTAG?>-uID" onchange="<?php echo $APPTAG?>_selectUser(this)">
+					<option value="0"><?php echo JText::_('TEXT_SELECT')?></option>
+					<?php
+						foreach ($clients as $obj) {
+							echo '<option value="'.$obj->user_id.'"'.($uID == $obj->user_id ? ' selected' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
+						}
+					?>
+				</select>
+			</fieldset>
+		</div>
+	</div>
+	<hr class="mt-0" />
+<?php endif;?>
+
 <div id="<?php echo $APPTAG?>-form-loader" class="text-center">
 	<img src="<?php echo JURI::root()?>templates/base/images/core/loader-active.gif">
 </div>

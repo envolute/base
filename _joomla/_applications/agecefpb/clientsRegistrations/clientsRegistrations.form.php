@@ -9,15 +9,7 @@ defined('_JEXEC') or die;
 <input type="hidden" name="cusername" id="<?php echo $APPTAG?>-cusername" />
 <div class="row">
 	<div class="col-xl-4">
-		<h4 class="text-success">Para solicitar seu cadastro como associado siga os passos abaixo, é simples e rápido!</h4>
-		<hr />
-		<ol class="set-list bordered pl-4">
-			<li>Preencha o formulário</li>
-			<li>Imprima a Ficha Cadastral</li>
-			<li>Assine e envie para a nossa secretaria.</li>
-			<li>Em até 48hs você reberá a confirmação por e-mail.</li>
-		</ol>
-		<div class="alert alert-success text-lives font-featured base-icon-info-circled p-2"> Você pode enviar por e-mail (escaneada) ou em nossa secretaria.</div>
+		<?php echo JText::_('MSG_'.($cfg['isEdit'] ? 'EDIT' : 'REGISTRATION').'_FORM')?>
 	</div>
 	<div class="col-xl-8">
 		<fieldset class="fieldset-embed fieldset-sm pb-0">

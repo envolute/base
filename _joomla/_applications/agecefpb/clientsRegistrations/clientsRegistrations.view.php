@@ -19,6 +19,10 @@ $groups = $user->groups;
 // init general css/js files
 require(JPATH_CORE.DS.'apps/_init.app.php');
 
+// Get request data
+$uID = $app->input->get('uID', 0, 'int');
+$uID = ($hasAdmin && $uID > 0) ? $uID : $user->id;
+
 // Carrega o arquivo de tradução
 // OBS: para arquivos externos com o carregamento do framework '_init.joomla.php' (geralmente em 'ajax')
 // a language 'default' não é reconhecida. Sendo assim, carrega apenas 'en-GB'
@@ -29,16 +33,45 @@ if(isset($_SESSION[$APPTAG.'langDef'])) :
 	$lang->load('base_'.$APPNAME, JPATH_BASE, $_SESSION[$APPTAG.'langDef'], true);
 endif;
 
+if($hasAdmin) :
+	// CLIENTS
+	$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_clients') .' WHERE user_id <> 0 AND state = 1 ORDER BY name';
+	$db->setQuery($query);
+	$clients = $db->loadObjectList();
+?>
+	<script>
+		// SELECT USER -> Selecionar um usuário no formulário de edição
+		window.<?php echo $APPTAG?>_selectUser = function(el) {
+			var val = jQuery(el).val();
+			location.href = '<?php echo JURI::current()?>'+((!isEmpty(val) && val != 0) ? '?uID='+val : '');
+		};
+	</script>
+
+	<fieldset class="fieldset-embed fieldset-sm">
+		<legend><?php echo JText::_('FIELD_LABEL_CLIENT_SELECT'); ?></legend>
+		<div class="row">
+			<div class="col-md-6">
+				<select name="uID" id="<?php echo $APPTAG?>-uID" class="form-control" onchange="<?php echo $APPTAG?>_selectUser(this)">
+					<option value="0"><?php echo JText::_('TEXT_SELECT')?></option>
+					<?php
+						foreach ($clients as $obj) {
+							echo '<option value="'.$obj->user_id.'"'.($uID == $obj->user_id ? ' selected' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
+						}
+					?>
+				</select>
+			</div>
+		</div>
+	</fieldset>
+<?php
+endif;
+
 if(isset($user->id) && $user->id) :
 
 	// DATABASE CONNECT
 	$db = JFactory::getDbo();
 
-	$where = !empty($dOC) ? $db->quoteName('T1.cpf') .' = '. $dOC : '';
-	$where = !empty($rID) ? $db->quoteName('T1.id') .' = '. $rID : $where;
-
 	// GET DATA
-	$query = 'SELECT * FROM '.$db->quoteName($cfg['mainTable']).' T1 WHERE '.$db->quoteName('T1.user_id') .' = 345'; //. $user->id;
+	$query = 'SELECT * FROM '.$db->quoteName($cfg['mainTable']).' T1 WHERE '.$db->quoteName('T1.user_id') .' = '. $uID;
 	try {
 		$db->setQuery($query);
 		$item = $db->loadObject();
@@ -201,8 +234,8 @@ if(isset($user->id) && $user->id) :
 
 <?php
 else :
-	$app->enqueueMessage(JText::_('MSG_NOT_PERMISSION'), 'warning');
-	$app->redirect(JURI::root(true));
-	exit();
+
+	echo '<h4 class="alert alert-warning">'.JText::_('MSG_NOT_PERMISSION').'</h4>';
+
 endif;
 ?>
