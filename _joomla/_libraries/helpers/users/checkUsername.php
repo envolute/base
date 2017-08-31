@@ -17,8 +17,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	$input = $app->input;
 	// fields 'Form' requests
 	$username = $input->get('username', '', 'str');
+	$cusername = $input->get('cusername', '', 'str');
 
-	echo baseUserHelper::checkUsername($username, true) ? 'true' : 'false';
+	echo baseUserHelper::checkUsername($username, $cusername, true) ? 'true' : 'false';
 
 else :
 

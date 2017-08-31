@@ -29,7 +29,7 @@ $users = $db->loadObjectList();
 				<input type="text" name="name" id="<?php echo $APPTAG?>-name" class="form-control upper" />
 				<span class="btn-group input-group-btn" data-toggle="buttons">
 					<label class="btn btn-default btn-active-success hasTooltip" title="<?php echo JText::_('MSG_NAME_CARD'); ?>">
-						<input type="checkbox" name="toggleName" id="<?php echo $APPTAG?>-toggleName" value="1" class="auto-tab" data-target="<?php echo $APPTAG?>-group-nameCard" data-target-display="true" />
+						<input type="checkbox" name="toggleName" id="<?php echo $APPTAG?>-toggleName" value="1" class="no-validate auto-tab" data-target="<?php echo $APPTAG?>-group-nameCard" data-target-display="true" />
 						<span class="base-icon-plus icon-default"></span>
 					</label>
 				</span>

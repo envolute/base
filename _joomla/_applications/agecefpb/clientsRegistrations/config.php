@@ -6,12 +6,15 @@ require(JPATH_BASE.'/libraries/envolute/_system.vars.php');
 // App Configuration's Vars
 $cfg = array();
 $cfg['project'] = 'agecefpb';
-$cfg['parentApp'] = 'clients';
+// Caso essa aplicação utilize dados de outra (PAI).
+// informe o $APPNAME da outra. Senão, deixe em branco...
+$cfg['parent']	= 'clients';
 // App Define
-$APPNAME  = 'clientsRegistrations';
-$MAIN_TB  = '#__'.$cfg['project'].'_clients';
-$APPTAG   = isset(${$APPNAME.'AppTag'}) ? ${$APPNAME.'AppTag'} : $APPNAME;
-$newInstance = ($APPTAG != $APPNAME) ? true : false;
+$APPNAME		= 'clientsRegistrations';
+$APPPATH		= !empty($cfg['parent']) ? $cfg['parent'] : $APPNAME;
+$MAIN_TB		= '#__'.$cfg['project'].'_clients';
+$APPTAG			= isset(${$APPNAME.'AppTag'}) ? ${$APPNAME.'AppTag'} : $APPNAME;
+$newInstance	= ($APPTAG != $APPNAME) ? true : false;
 
 // URL's {http://...}
 $URL_APP        = $_APPS.$APPNAME;
@@ -81,7 +84,7 @@ $_SESSION[$APPTAG.'cardLimit'] = '300,00'; // default
 		$cfg['fileTable']		= $cfg['mainTable'].'_files'; // upload's database table
 		// upload params
 		$cfg['maxFileSize']		= 5242880; // 5MB
-		$cfg['uploadDir']       = JPATH_BASE.DS.'images/apps/'.$cfg['parentApp'].'/'; // IMPORTANTE: colocar a barra '/' no fim
+		$cfg['uploadDir']       = JPATH_BASE.DS.'images/apps/'.$APPPATH.'/'; // IMPORTANTE: colocar a barra '/' no fim
 		// file types enabled
 		$cfg['fileTypes']	= array();
 		$cfg['fileTypes']['image'][]	= 'image/png';

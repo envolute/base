@@ -29,20 +29,18 @@ window.<?php echo $APPTAG?>_save = function(trigger) {
 				<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
 				jQuery.map( data, function( res ) {
 					if(res.status > 0) { // se alguma ação for realizada
-						if(res.status == 1) {
-							if(isSet(trigger)) {
-								if(trigger == 'close') {
-									<?php echo $APPTAG?>_formReset();
-									popup.modal('hide');
-								} else if(typeof(trigger) === 'function') {
-									// Caso haja o "reset", deve ser chamado na função "trigger"
-									trigger(res.regID);
-								}
-							} else {
-								<?php echo $APPTAG?>_loadEditFields(res.regID, true, false); // recarrega os dados do form
+						if(isSet(trigger)) {
+							if(trigger == 'close' || trigger == 'reset') {
+								<?php echo $APPTAG?>_formReset();
+								if(trigger == 'close') popup.modal('hide');
+							} else if(typeof(trigger) === 'function') {
+								// Caso haja o "reset", deve ser chamado na função "trigger"
+								trigger(res.regID);
 							}
-						} else { // 'atualizado'
-							<?php echo $APPTAG?>_loadEditFields(formId.val(), true, false); // recarrega os dados do form
+						} else {
+							// res.status = 1 ? 'novo' : 'atualizado';
+							var resID = (res.status == 1) ? res.regID : formId.val();
+							<?php echo $APPTAG?>_loadEditFields(resID, true, false); // recarrega os dados do form
 						}
 						// Update Parent field
 						if(res.parentField != '' && res.parentFieldVal != '') {

@@ -120,6 +120,14 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['account']				= $input->get('account', '', 'string');
 		$request['operation']			= $input->get('operation', '', 'string');
 
+		// NO EDITABLE DATA
+		function noEditable($col, $val, $quote) {
+			if(!empty($col) && (!empty($val) && $val != 0 && $val != '0.00')) :
+				return "`".$col."` = ". ($quote ? "'".$val."'" : $val) .",";
+			endif;
+			return '';
+		}
+
 	    // CUSTOM -> default vars for registration e-mail
 	    $config			= JFactory::getConfig();
 	    $sitename		= $config->get('sitename');
@@ -149,6 +157,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$userInfo       = $usr['obj'];
 					// $usr['id']      =
 					$userInfoId     = isset($userInfo[0]['id']) ? $userInfo[0]['id'] : 0;
+					$userInfoUser   = isset($userInfo[0]['username']) ? $userInfo[0]['username'] : '';
 					$userInfoName   = isset($userInfo[0]['name']) ? $userInfo[0]['name'] : '';
 					$userInfoEmail  = isset($userInfo[0]['email']) ? $userInfo[0]['email'] : '';
 			        $userInfoBlock  = isset($userInfo[0]['block']) ? $userInfo[0]['block'] : 0;
@@ -167,6 +176,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				if($task == 'get') :
 
 					$itemUID    = ($isUser) ? $userInfoId : 0;
+					$itemUser   = ($isUser) ? $userInfoUser : baseHelper::alphaNum($item->cpf);
 					$itemName   = ($isUser) ? $userInfoName : $item->name;
 					$itemEmail  = ($isUser) ? $userInfoEmail : $item->email;
 					$itemBlock  = ($isUser) ? $userInfoBlock : 1; // inverso do 'access'
@@ -184,6 +194,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						// App Fields
 						'user_id'			=> $itemUID,
 						'usergroup'			=> $item->usergroup,
+						'username'			=> $itemUser,
 						'name'				=> $itemName,
 						'email'				=> $itemEmail,
 						'cpf'				=> $item->cpf,
@@ -218,25 +229,29 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				elseif($task == 'save' && $save_condition && $id) :
 
 					$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
+					// Campos não Editáveis
+					// Alguns campo são editáveis apenas se não estiverem preenchidos
+					// Caso já estejam preenchidos, seus valores não devem ser alterados
+					$query .= noEditable('cpf', $request['cpf'], true);
+					$query .= noEditable('rg', $request['rg'], true);
+					$query .= noEditable('rg_orgao', $request['rg_orgao'], true);
+					$query .= noEditable('gender', $request['gender'], false);
+					$query .= noEditable('birthday', $request['birthday'], true);
+					$query .= noEditable('cx_code', $request['cx_code'], true);
+					$query .= noEditable('cx_date', $request['cx_date'], true);
+					$query .= noEditable('agency', $request['agency'], true);
+					$query .= noEditable('account', $request['account'], true);
+					$query .= noEditable('operation', $request['operation'], true);
 					$query .=
-						$db->quoteName('user_id')			.'='. $request['user_id'] .','.
-						$db->quoteName('usergroup')			.'='. $request['usergroup'] .','.
 						$db->quoteName('name')				.'='. $db->quote($request['name']) .','.
 						$db->quoteName('email')				.'='. $db->quote($request['email']) .','.
-						$db->quoteName('cpf')				.'='. $db->quote($request['cpf']) .','.
-						$db->quoteName('rg')				.'='. $db->quote($request['rg']) .','.
-						$db->quoteName('rg_orgao')			.'='. $db->quote($request['rg_orgao']) .','.
-						$db->quoteName('gender')			.'='. $request['gender'] .','.
-						$db->quoteName('birthday')			.'='. $db->quote($request['birthday']) .','.
 						$db->quoteName('marital_status') 	.'='. $request['marital_status'] .','.
 						$db->quoteName('partner')			.'='. $db->quote($request['partner']) .','.
 						$db->quoteName('children')			.'='. $request['children'] .','.
 						$db->quoteName('cx_status')			.'='. $request['cx_status'] .','.
-						$db->quoteName('cx_code')			.'='. $db->quote($request['cx_code']) .','.
 						$db->quoteName('cx_email')			.'='. $db->quote($cx_email) .','.
 						$db->quoteName('cx_role')			.'='. $db->quote($request['cx_role']) .','.
 						$db->quoteName('cx_situated')		.'='. $db->quote($request['cx_situated']) .','.
-						$db->quoteName('cx_date')			.'='. $db->quote($request['cx_date']) .','.
 						$db->quoteName('zip_code')			.'='. $db->quote($request['zip_code']) .','.
 						$db->quoteName('address')			.'='. $db->quote($request['address']) .','.
 						$db->quoteName('address_number')	.'='. $db->quote($request['address_number']) .','.
@@ -244,9 +259,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('address_district')	.'='. $db->quote($request['address_district']) .','.
 						$db->quoteName('address_city')		.'='. $db->quote($request['address_city']) .','.
 						$db->quoteName('phones')			.'='. $db->quote($request['phones']) .','.
-						$db->quoteName('agency')			.'='. $db->quote($request['agency']) .','.
-						$db->quoteName('account')			.'='. $db->quote($request['account']) .','.
-						$db->quoteName('operation')			.'='. $db->quote($request['operation']) .','.
 						$db->quoteName('state')				.'='. $request['state'] .','.
 						$db->quoteName('alter_date')		.'= NOW(),'.
 						$db->quoteName('alter_by')			.'='. $user->id
@@ -261,6 +273,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						// Upload
 						if($cfg['hasUpload'])
 						$fileMsg = uploader::uploadFile($id, $cfg['fileTable'], $_FILES[$cfg['fileField']], $fileGrp, $fileGtp, $fileCls, $fileLbl, $cfg);
+
+						// Salva na sessão a informação de 'edição' dos dados
+						// Assim é possível saber que os dados foram atualizados
+						// caso haja o redirecionamento para outra página...
+						$_SESSION[$APPTAG.'EditSuccess'] = true;
 
 						$data[] = array(
 							'status'			=> 2,

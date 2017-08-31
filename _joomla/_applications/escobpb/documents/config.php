@@ -104,7 +104,7 @@ $cfg = array();
     $cfg['fileTable']       = $cfg['mainTable'].'_files'; // upload's database table
     // upload params
     $cfg['maxFileSize']     = 10485760; // 10MB
-    $cfg['uploadDir']       = JPATH_BASE.'images/apps/'.$APPNAME.'/'; // IMPORTANTE: colocar a barra '/' no fim
+    $cfg['uploadDir']       = JPATH_BASE.'images/apps/'.$APPPATH.'/'; // IMPORTANTE: colocar a barra '/' no fim
     // file types enabled
     $cfg['fileTypes']       = array();
       $cfg['fileTypes']['image'][] = 'image/png';

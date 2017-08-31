@@ -84,7 +84,7 @@ if($num_rows) : // verifica se existe
 
 			// Imagem Principal -> Primeira imagem (index = 0)
 			$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
-			if(!empty($img)) $img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPNAME.'/'.$img['filename'], 32, 32).'" class="img-fluid rounded-circle float-left mr-2" />';
+			if(!empty($img)) $img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 32, 32).'" class="img-fluid rounded-circle float-left mr-2" />';
 
 			// Arquivos -> Grupo de imagens ('#'.$APPTAG.'-files-group')
 			// Obs: para pegar todas as imagens basta remover o 'grupo' ('#'.$APPTAG.'-files-group')

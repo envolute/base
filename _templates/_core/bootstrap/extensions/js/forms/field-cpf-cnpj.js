@@ -1,88 +1,100 @@
 //JQUERY
 jQuery(function() {
 
-  // CPF
-  window.setCPF = function (input, autotab) {
-    var field = ".field-cpf input, input.field-cpf";
-    input = setElement(input, field);
-    var error = 'CPF INVÁLIDO';
-    input.each(function() {
-      var obj = jQuery(this);
-      var width = isSet(obj.data('width')) ? obj.data('width') : false;
-      if(width) obj.css('width', width);
-      // autotab param
-      var tab = isSet(autotab) ? autotab : true;
-      tab = isSet(obj.data('autotab')) ? obj.data('autotab') : tab;
+	// CPF
+	window.setCPF = function (input, autotab) {
+		var field = ".field-cpf input, input.field-cpf";
+		input = setElement(input, field);
+		var error = 'CPF inv&aacute;lido';
+		input.each(function() {
+		var obj = jQuery(this);
+		var width = isSet(obj.data('width')) ? obj.data('width') : false;
+		if(width) obj.css('width', width);
+		// autotab param
+		var tab = isSet(autotab) ? autotab : true;
+		tab = isSet(obj.data('autotab')) ? obj.data('autotab') : tab;
 
-      obj.inputmask("999.999.999-99", {
-        oncomplete: function(){
-          if(obj.val().replace(/\D/g, "").length > 0 && !isCpfCnpj(obj.val())) {
-            jQuery('.cpf-error').remove();
-            obj.addClass('error').after('<span class="cpf-error error">'+error+'</span>');
-          } else {
-            if(tab) obj.autoTab();
-          }
-        },
-        onKeyDown: function(event, buffer, caretPos, opt){
-          if(obj.val().replace(/[^0-9]/g, '').length < 11) {
-            obj.removeClass('error');
-            obj.next('.error').hide();
-          }
-        }
-      }).on('blur', function(event) {
-        if(obj.val().replace(/\D/g, "").length > 0 && !isCpfCnpj(obj.val())) {
-          jQuery('.cpf-error').remove();
-          obj.addClass('error').after('<span class="cpf-error error">'+error+'</span>');
-          obj.val('');
-        }
-        obj.removeClass('error');
-        obj.next('.error').hide();
-      });
-    });
-  };
+		obj.inputmask("999.999.999-99", {
+			oncomplete: function(){
+				// reseta mensagem de erro
+				obj.next('.cpf-error').remove();
+				if(obj.val().replace(/\D/g, "").length > 0 && !isCpfCnpj(obj.val())) {
+					// mostra mensagem de erro
+					obj.addClass('error').after('<span class="cpf-error error">'+error+'</span>');
+				} else {
+					if(tab) obj.autoTab();
+				}
+			},
+			onKeyDown: function(event, buffer, caretPos, opt){
+				if(obj.val().replace(/[^0-9]/g, '').length < 11) {
+					// remove a mensagem de erro enquanto digita
+					obj.removeClass('error');
+					obj.next('.cpf-error').remove();
+				}
+			}
+			}).on('blur', function(event) {
+				// reseta mensagem de erro
+				obj.next('.cpf-error').remove();
+				if(obj.val().replace(/\D/g, "").length > 0 && !isCpfCnpj(obj.val())) {
+					// mostra mensagem de erro
+					obj.addClass('error').after('<span class="cpf-error error">'+error+'</span>');
+					// limpa o campo para evitar o envio do valor errado
+					// if(obj.val().replace(/\D/g, "").length == 11) obj.val('');
+				} else {
+					obj.removeClass('error');
+				}
+			});
+		});
+	};
 
-  // CNPJ
-  window.setCNPJ = function (input, autotab) {
-    var field = ".field-cnpj input, input.field-cnpj";
-    input = setElement(input, field);
-    var error = 'CNPJ INVÁLIDO!<br />Informe o CNPJ com apenas 14 dígitos.<br />Ignore, se houver, o dígito 0 (zero) inicial';
-    input.each(function() {
-      var obj = jQuery(this);
-      var width = isSet(obj.data('width')) ? obj.data('width') : false;
-      if(width) obj.css('width', width);
-      // autotab param
-      var tab = isSet(autotab) ? autotab : true;
-      tab = isSet(obj.data('autotab')) ? obj.data('autotab') : tab;
+	// CNPJ
+	window.setCNPJ = function (input, autotab) {
+		var field = ".field-cnpj input, input.field-cnpj";
+		input = setElement(input, field);
+		var error = 'CNPJ inv&aacute;lido!<br />Informe o CNPJ com apenas 14 dígitos.<br />Ignore, se houver, o dígito 0 (zero) inicial';
+		input.each(function() {
+			var obj = jQuery(this);
+			var width = isSet(obj.data('width')) ? obj.data('width') : false;
+			if(width) obj.css('width', width);
+			// autotab param
+			var tab = isSet(autotab) ? autotab : true;
+			tab = isSet(obj.data('autotab')) ? obj.data('autotab') : tab;
 
-      obj.inputmask("99.999.999/9999-99", {
-        oncomplete: function(){
-          if(obj.val().replace(/\D/g, "").length > 0 && !isCpfCnpj(obj.val())) {
-            jQuery('.cnpj-error').remove();
-            obj.addClass('error').after('<span class="cnpj-error error">'+error+'</span>');
-          } else {
-            if(tab) obj.autoTab();
-          }
-        },
-        onKeyDown: function(event, buffer, caretPos, opt) {
-          if(obj.val().replace(/[^0-9]/g, '').length < 14) {
-            obj.removeClass('error');
-            obj.next('.error').hide();
-          }
-        }
-      }).on('blur', function(event) {
-        if(obj.val().replace(/\D/g, "").length > 0 && !isCpfCnpj(obj.val())) {
-          jQuery('.cnpj-error').remove();
-          obj.addClass('error').after('<span class="cnpj-error error">'+error+'</span>');
-          obj.val('');
-        }
-        obj.removeClass('error');
-        obj.next('.error').hide();
-      });
-    });
-  };
+			obj.inputmask("99.999.999/9999-99", {
+				oncomplete: function(){
+					// reseta mensagem de erro
+					obj.next('.cpf-error').remove();
+					if(obj.val().replace(/\D/g, "").length > 0 && !isCpfCnpj(obj.val())) {
+						// mostra mensagem de erro
+						obj.addClass('error').after('<span class="cnpj-error error">'+error+'</span>');
+					} else {
+						if(tab) obj.autoTab();
+					}
+				},
+				onKeyDown: function(event, buffer, caretPos, opt) {
+					if(obj.val().replace(/[^0-9]/g, '').length < 14) {
+						// remove a mensagem de erro enquanto digita
+						obj.removeClass('error');
+						obj.next('.cpf-error').hide();
+					}
+				}
+			}).on('blur', function(event) {
+				// reseta mensagem de erro
+				obj.next('.cpf-error').remove();
+				if(obj.val().replace(/\D/g, "").length > 0 && !isCpfCnpj(obj.val())) {
+					// mostra mensagem de erro
+					obj.addClass('error').after('<span class="cnpj-error error">'+error+'</span>');
+					// limpa o campo para evitar o envio do valor errado
+					// if(obj.val().replace(/\D/g, "").length == 14) obj.val('');
+				} else {
+					obj.removeClass('error');
+				}
+			});
+		});
+	};
 
-  // VALIDAÇÃO CPF/CNPJ
-  // Valida o CPF
+	// VALIDAÇÃO CPF/CNPJ
+	// Valida o CPF
 	window.isCpf = function (cpf) {
 		var soma;
 		var resto;
@@ -112,7 +124,7 @@ jQuery(function() {
 
 		return true;
 	}
-  // Valida o CNPJ
+	// Valida o CNPJ
 	window.isCnpj = function (cnpj){
 		if(cnpj == '') return false;
 		if (cnpj.length != 14) return false;
@@ -159,7 +171,7 @@ jQuery(function() {
 
 		return true;
 	}
-  // Define se é um CPF ou CNPJ
+	// Define se é um CPF ou CNPJ
 	window.isCpfCnpj = function (valor) {
 		var retorno = false;
 		var numero  = valor;

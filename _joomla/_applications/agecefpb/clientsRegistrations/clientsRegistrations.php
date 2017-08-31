@@ -34,6 +34,8 @@ jQuery(function() {
 	// APP FIELDS
 	var user_id				= jQuery('#<?php echo $APPTAG?>-user_id');
 	var usergroup 			= jQuery('#<?php echo $APPTAG?>-usergroup');
+	var username 			= jQuery('#<?php echo $APPTAG?>-username');
+	var cusername 			= jQuery('#<?php echo $APPTAG?>-cusername');
 	var name 				= jQuery('#<?php echo $APPTAG?>-name');
 	var email				= jQuery('#<?php echo $APPTAG?>-email');
 	var cmail				= jQuery('#<?php echo $APPTAG?>-cmail');
@@ -67,6 +69,8 @@ jQuery(function() {
 	var agency				= jQuery('#<?php echo $APPTAG?>-agency');
 	var account				= jQuery('#<?php echo $APPTAG?>-account');
 	var operation			= jQuery('#<?php echo $APPTAG?>-operation');
+
+	var disableEdit = [cpf, rg, rg_orgao, gender, birthday, cx_code, cx_date, agency, account, operation];
 
 	// PARENT FIELD
 	// informe, se houver, o campo que representa a chave estrangeira principal
@@ -102,6 +106,8 @@ jQuery(function() {
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
 			user_id.val(0);
 			usergroup.val(<?php echo $_SESSION[$APPTAG.'newUsertype']?>);
+			username.val('');
+			cusername.val('');
 			name.val('');
 			email.val('');
 			cmail.val('');
@@ -131,6 +137,11 @@ jQuery(function() {
 			agency.val('');
 			account.val('');
 			operation.val('');
+
+			// Habilita campos não editaveis
+			for (i = 0; i < disableEdit.length; i++) {
+				<?php echo $APPTAG?>_noEditableField(disableEdit[i]);
+			}
 
 			// Recarrega o form e esconde a mensagem de successo
 			setHidden('#<?php echo $APPTAG?>-form-ajax', false, '#<?php echo $APPTAG?>-msg-success');
@@ -177,12 +188,18 @@ jQuery(function() {
 			scrollTo('#header');
 		};
 
+		// EDIT SUCCESS -> Ações após editar um registro
+		window.<?php echo $APPTAG?>_editSuccess = function() {
+			console.log('<?php echo JURI::root()?>user/profile');
+			location.href = '<?php echo JURI::root()?>user/profile';
+		};
+
 	// AJAX CONTROLLERS
 	// métodos controladores das ações referente ao banco de dados e envio de arquivos
 
 		// LOAD EDIT
 		// Prepara o formulário para a edição dos dados
-		window.<?php echo $APPTAG?>_loadEditFields = function(appID, formDisable) {
+		window.<?php echo $APPTAG?>_loadEditFields = function(appID, reload, formDisable) {
 			var id = appID;
 			if(isEmpty(id) || id == 0) {
 				<?php echo $APPTAG?>_formReset();
@@ -209,6 +226,8 @@ jQuery(function() {
 						// App Fields
 						user_id.val(item.user_id);
 						usergroup.val(item.usergroup);
+						username.val(item.username);
+						cusername.val(item.username);
 						name.val(item.name);
 						email.val(item.email);
 						cmail.val(item.email);
@@ -241,6 +260,11 @@ jQuery(function() {
 						account.val(item.account);
 						operation.val(item.operation);
 
+						// Desabilita campos não editáveis
+						for (i = 0; i < disableEdit.length; i++) {
+							<?php echo $APPTAG?>_noEditableField(disableEdit[i]);
+						}
+
 						<?php // Closure Actions
 						require(JPATH_CORE.DS.'apps/snippets/form/loadEdit.end.js.php');
 						?>
@@ -257,6 +281,15 @@ jQuery(function() {
 					<?php echo $APPTAG?>_formExecute(true, formDisable, false); // encerra o loader
 				}
 			});
+		};
+
+		// NO EDITABLE FIELDS
+		window.<?php echo $APPTAG?>_noEditableField = function(field) {
+			var val = field.val();
+			if(!isEmpty(val) && val != 0) field.prop('disabled', true);
+			else field.prop('disabled', false);
+			// Atualiza se for select 'chosen'
+			if(field.is('select')) field.trigger('chosen:updated');
 		};
 
 		<?php // SAVE -> executa a ação de inserção ou atualização dos dados no banco
@@ -284,9 +317,6 @@ jQuery(window).load(function() {
 					type: 'post',
 					data: {
 						cmail: function() {
-							return jQuery('#<?php echo $APPTAG?>-email').val();
-						},
-						cmail: function() {
 							return jQuery('#<?php echo $APPTAG?>-cmail').val();
 						}
 					}
@@ -299,6 +329,9 @@ jQuery(window).load(function() {
 					data: {
 						username: function() {
 							return jQuery('#<?php echo $APPTAG?>-cpf').val().replace(/[^\d]+/g,'');
+						},
+						cusername: function() {
+							return jQuery('#<?php echo $APPTAG?>-cusername').val();
 						}
 					}
 				}
@@ -340,22 +373,57 @@ jQuery(window).load(function() {
 	?>
 
 	<?php
+	// FORM ACTION DEFINITION
+	// Se for para editar, verifica se existe usuário é um associado
+	// Senão, carrega o formulário em branco...
+	$rID = 0;
+	$showForm = true;
+	if($cfg['isEdit']) :
+		$query = 'SELECT '. $db->quoteName('id') .' FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('user_id') .' = 346'; //. $user->id;
+		$db->setQuery($query);
+		$rID = $db->loadResult();
+		if(!$rID) :
+			// SEM DADOS
+			$showForm = false;
+			if($hasAdmin) :
+				// O perfil é visualizado apenas por associados.
+				// Usuários administradores "$hasAdmin" (não associados) só podem
+				// visualizar seus dados ou editar seu perfil, na administração...
+				// => Mostra a mensagem...
+				echo 'setHidden("#'.$APPTAG.'-is-admin", false, "#'.$APPTAG.'-form-loader");';
+			else :
+				$app->enqueueMessage(JText::_('MSG_NOT_PERMISSION'), 'warning');
+				$app->redirect(JURI::root(true));
+				exit();
+			endif;
+		endif;
+	endif;
 	// LOAD FORM
-	$rID = ($cfg['isEdit']) ? $app->input->get('rID', 0, 'int') : 0;
-	echo $APPTAG.'_loadEditFields('.$rID.', true);';
+	if($showForm) :
+		echo 'setHidden("#'.$APPTAG.'-form-ajax", false, "#'.$APPTAG.'-form-loader");'; // Mostra o formulário
+		echo $APPTAG.'_loadEditFields('.$rID.', true, true);';
+	endif;
 	?>
+
+
 
 });
 
 </script>
-
+<div id="<?php echo $APPTAG?>-form-loader" class="text-center">
+	<img src="<?php echo JURI::root()?>templates/base/images/core/loader-active.gif">
+</div>
+<div id="<?php echo $APPTAG?>-is-admin" class="alert alert-warning base-icon-attention" hidden>
+	 <?php echo JText::_('MSG_IS_ADMIN')?>
+ </div>
 <div id="<?php echo $APPTAG?>-msg-success" class="clearfix" hidden>
 	<h4 class="alert alert-success base-icon-ok"> <?php echo JText::_('MSG_RESGISTRATION_SUCCESS')?></h4>
 	<?php echo JText::_('MSG_PRINT_DATA')?>
 	<iframe id="<?php echo $APPTAG?>-registration-data" style="width:100%; height:1000px; border:none"></iframe>
 </div>
-<div id="<?php echo $APPTAG?>-form-ajax" class="base-app clearfix">
+<div id="<?php echo $APPTAG?>-form-ajax" class="base-app clearfix" hidden>
 	<form name="form-<?php echo $APPTAG?>" id="form-<?php echo $APPTAG?>" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="id" id="<?php echo $APPTAG?>-id" />
 		<?php require_once($PATH_APP_FILE.'.form.php');?>
 	</form>
 </div>

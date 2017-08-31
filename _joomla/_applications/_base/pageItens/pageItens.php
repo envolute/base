@@ -306,7 +306,7 @@ jQuery(function() {
 								path = root + '/apps/get-file?fn='+files[i]['fn']+'&mt='+files[i]['mt']+'&tag=<?php echo base64_encode($APPTAG)?>';
 								html += '	<a href="'+path+'" class="base-icon-attach btn btn-default hasTooltip" data-animation="false" title="<?php echo JText::_('TEXT_DOWNLOAD'); ?><br />'+desc+'"></a>';
 							} else {
-								path = root + '/images/apps/<?php echo $APPNAME?>/'+files[i]['filename'];
+								path = root + '/images/apps/<?php echo $APPPATH?>/'+files[i]['filename'];
 								html += '	<a href="#" class="base-icon-eye btn btn-default hasTooltip" data-animation="false" title="<img src=\''+path+'\' style=\'width:100px;max-height:100px\' /><br />'+desc+'"></a>';
 							}
 							if(!obj.hasClass('required')) { // se for um campo obrigatório não permite a exclusão

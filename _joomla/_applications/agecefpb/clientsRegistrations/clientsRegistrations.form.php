@@ -3,7 +3,10 @@ defined('_JEXEC') or die;
 
 // FORM
 ?>
-
+<input type="hidden" name="user_id" id="<?php echo $APPTAG?>-user_id" />
+<input type="hidden" name="usergroup" id="<?php echo $APPTAG?>-usergroup" />
+<input type="hidden" name="username" id="<?php echo $APPTAG?>-username" />
+<input type="hidden" name="cusername" id="<?php echo $APPTAG?>-cusername" />
 <div class="row">
 	<div class="col-xl-4">
 		<h4 class="text-success">Para solicitar seu cadastro como associado siga os passos abaixo, é simples e rápido!</h4>
@@ -19,8 +22,6 @@ defined('_JEXEC') or die;
 	<div class="col-xl-8">
 		<fieldset class="fieldset-embed fieldset-sm pb-0">
 			<legend><?php echo JText::_('TEXT_DATA_EMPLOYEE'); ?></legend>
-			<input type="hidden" name="user_id" id="<?php echo $APPTAG?>-user_id" />
-			<input type="hidden" name="usergroup" id="<?php echo $APPTAG?>-usergroup" />
 			<div class="row">
 				<div class="col-sm-5 col-md-6">
 					<div class="form-group">
@@ -83,6 +84,7 @@ defined('_JEXEC') or die;
 						<div class="form-group field-required">
 							<label>E-mail</label>
 							<input type="email" name="email" id="<?php echo $APPTAG?>-email" class="form-control field-email" />
+							<input type="hidden" name="cmail" id="<?php echo $APPTAG?>-cmail" />
 						</div>
 					</div>
 				</div>
@@ -265,7 +267,12 @@ defined('_JEXEC') or die;
 		</div>
 		<hr />
 		<div class="form-actions">
-			<button name="btn-<?php echo $APPTAG?>-save" id="btn-<?php echo $APPTAG?>-save" class="btn btn-lg btn-success base-icon-ok btn-icon" onclick="<?php echo $APPTAG?>_save(<?php echo $APPTAG?>_confirmSuccess);"> <?php echo JText::_('TEXT_REGISTER'); ?></button>
+			<?php if($cfg['isEdit']) :?>
+				<button name="btn-<?php echo $APPTAG?>-save" id="btn-<?php echo $APPTAG?>-save" class="btn btn-lg btn-success base-icon-ok btn-icon" onclick="<?php echo $APPTAG?>_save(<?php echo $APPTAG?>_editSuccess);"> <?php echo JText::_('TEXT_SAVE'); ?></button>
+				<button type="button" class="btn btn-lg btn-default base-icon-cancel" onclick="javascript:history.back()"> <?php echo JText::_('TEXT_CANCEL'); ?></button>
+			<?php else :?>
+				<button name="btn-<?php echo $APPTAG?>-save" id="btn-<?php echo $APPTAG?>-save" class="btn btn-lg btn-success base-icon-ok btn-icon" onclick="<?php echo $APPTAG?>_save(<?php echo $APPTAG?>_confirmSuccess);"> <?php echo JText::_('TEXT_REGISTER'); ?></button>
+			<?php endif;?>
 		</div>
 	</div>
 </div>

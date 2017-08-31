@@ -89,8 +89,8 @@ class baseUserHelper {
 	}
 
 	// VERIFICA SE O NOME DE USUÁRIO EXISTE
-	public static function checkUsername($username, $validation) {
-		if(!empty($username)) :
+	public static function checkUsername($username, $cusername, $validation) {
+		if(!empty($username) && $username != $cusername) :
 			// database connect
 			$db = JFactory::getDbo();
 			$query  = 'SELECT COUNT(*) FROM '.$db->quoteName('#__users').' WHERE '.$db->quoteName('username').' = '.$db->quote($username);

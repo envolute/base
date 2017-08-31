@@ -54,7 +54,7 @@ $item = $db->loadObject();
 if(!empty($item->name)) : // verifica se existe
 
 	$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
-	if(!empty($img)) $img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPNAME.'/'.$img['filename'], 300, 400).'" style="float:left; width:68px; height:90px; border:2px solid #f60" />';
+	if(!empty($img)) $img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 300, 400).'" style="float:left; width:68px; height:90px; border:2px solid #f60" />';
 
 	$grp = '<span class="left-space text-upper">'.$item->grp.'</span>';
 	$matricula = '';

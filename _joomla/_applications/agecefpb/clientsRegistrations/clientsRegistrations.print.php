@@ -72,7 +72,7 @@ if(!empty($rID) || !empty($dOC)) :
 			JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 			// Imagem Principal -> Primeira imagem (index = 0)
 			$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
-			if(!empty($img)) $img = '<img src="'.baseHelper::thumbnail('images/apps/'.$cfg['parentApp'].'/'.$img['filename'], 300, 300).'" class="img-fluid b-all b-dashed p-1" />';
+			if(!empty($img)) $img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 300, 300).'" class="img-fluid b-all b-dashed p-1" />';
 			else $img = '<div class="image-file"><div class="image-action"><div class="image-file-label"><span class="base-icon-file-image"></span></div></div></div>';
 		endif;
 

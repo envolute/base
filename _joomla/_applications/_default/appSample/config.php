@@ -7,8 +7,8 @@ require(JPATH_BASE.'/libraries/envolute/_system.vars.php');
 $cfg = array();
 $cfg['project'] = 'base';
 // App Define
-$APPNAME  = 'appSampleTypes';
-$MAIN_TB  = '#__'.$cfg['project'].'_app_sample_types';
+$APPNAME  = 'appSample';
+$MAIN_TB  = '#__'.$cfg['project'].'_app_sample';
 $APPTAG   = isset(${$APPNAME.'AppTag'}) ? ${$APPNAME.'AppTag'} : $APPNAME;
 $newInstance = ($APPTAG != $APPNAME) ? true : false;
 
@@ -82,28 +82,28 @@ endif;
 	$cfg['showFormDesc']		= false;
 
 	// date & price convertions
-	$cfg['dateConvert']			= false;
+	$cfg['dateConvert']			= true;
 	$cfg['load_UI']				= $cfg['dateConvert'];
-	$cfg['priceDecimal']		= false;
-	$cfg['htmlEditor']			= false;
+	$cfg['priceDecimal']		= true;
+	$cfg['htmlEditor']			= true;
 	$cfg['htmlEditorFull']		= false;
 
 	// crud's upload config
-	$cfg['hasUpload']			= false;
+	$cfg['hasUpload']			= true;
 	$cfg['hasUpload'] = isset(${$APPTAG.'hasUpload'}) ? ${$APPTAG.'hasUpload'} : $cfg['hasUpload'];
 	// habilita a adição dinamica de novos campos do tipo 'file'
-	$cfg['dinamicFiles']		= false;
+	$cfg['dinamicFiles']		= true;
 	// valor inicial do index do arquivo... considerando '0' o campo estático
 	// caso exitam outros campos estáticos, o index será igual ao número de itens estáticos
 	// Ex: 4 itens estáticos => $cfg['indexFileInit'] = 4;
-	$cfg['indexFileInit']		= 1;
+	$cfg['indexFileInit']		= 2;
 
 	if($cfg['hasUpload']) :
 		$cfg['fileField']		= 'file'; // upload's field name
 		$cfg['fileTable']		= $cfg['mainTable'].'_files'; // upload's database table
 		// upload params
 		$cfg['maxFileSize']		= 5242880; // 5MB
-		$cfg['uploadDir']       = JPATH_BASE.DS.'images/apps/'.$APPNAME.'/'; // IMPORTANTE: colocar a barra '/' no fim
+		$cfg['uploadDir']       = JPATH_BASE.DS.'images/apps/'.$APPPATH.'/'; // IMPORTANTE: colocar a barra '/' no fim
 		// file types enabled
 		$cfg['fileTypes']	= array();
 		$cfg['fileTypes']['image'][]	= 'image/png';

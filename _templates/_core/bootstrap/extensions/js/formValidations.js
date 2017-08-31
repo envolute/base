@@ -43,15 +43,17 @@ jQuery(function() {
 					// Ex: bootstrap -> (btn-group, ckeckbox), chosen -> (select)
 					baseErrorReplace(error, element);
 				},
-		    highlight: function(element, errorClass, validClass) {
+		    	highlight: function(element, errorClass, validClass) {
 					jQuery(element).addClass(errorClass);
-		      baseErrorCustomFormat(jQuery(element));
-		    },
-		    unhighlight: function(element, errorClass, validClass) {
+		      		baseErrorCustomFormat(jQuery(element));
+		    	},
+		    	unhighlight: function(element, errorClass, validClass) {
 					jQuery(element).removeClass(errorClass);
-		      baseErrorCustomClear(jQuery(element));
-		    },
+			      	baseErrorCustomClear(jQuery(element));
+			    },
 				// IGNORE -> Campo ignorados pela validação
+				// .no-validate:
+				// -> Classe opcional para desabilitar a validação em um campo
 				// .noname:
 				// -> Campos inicialmente sem nome declarado
 				// :hidden:not(input:file):not(select):
@@ -63,7 +65,7 @@ jQuery(function() {
 				// -> Ex: Tabs, Collapse, Divs (não visíveis)...
 				// .chosen-container input:
 				// -> Elementos internos do chosen.
-				ignore: ".noname, :hidden:not(input:file):not(.has-chosen), :hidden :hidden, .chosen-container input"
+				ignore: ".no-validate, .noname, :hidden:not(input:file):not(.has-chosen), :hidden :hidden, .chosen-container input"
 			});
 
 			jQuery.extend(jQuery.validator.messages, {
@@ -117,6 +119,16 @@ jQuery(window).load(function() {
 			var number = value.replace(/[^0-9]/g,'').length >= (isMask ? 10 : 8);
 			return this.optional(element) || number;
 		}, 'N&uacute;mero inv&aacute;lido');
+		// custom validation for CPF
+		jQuery.validator.addMethod("cpf", function(value, element) {
+			var isValid = (value.replace(/\D/g, "").length == 11 && isCpfCnpj(value)) ? true : false;
+			return this.optional(element) || isValid;
+		}, 'CPF inv&aacute;lido');
+		// custom validation for CNPJ
+		jQuery.validator.addMethod("cnpj", function(value, element) {
+			var isValid = (value.replace(/\D/g, "").length == 14 && isCpfCnpj(value)) ? true : false;
+			return this.optional(element) || isValid;
+		}, 'CNPJ inv&aacute;lido');
 		// custom validation for regex expression
 		jQuery.validator.addMethod("regex", function(value, element, regexp) {
 			// Obs: 'regexp' deve ser declarada sem aspas;
@@ -152,6 +164,18 @@ jQuery(window).load(function() {
 							regex: 'Nome de Usu&aacute;rio inv&aacute;lido!'
 						}
 					});
+				});
+			}
+			// CPF
+			if(jQuery('input.field-cpf').length) {
+				jQuery('input.field-cpf').each(function() {
+					jQuery(this).rules('add', { cpf: true });
+				});
+			}
+			// CNPJ
+			if(jQuery('input.field-cnpj').length) {
+				jQuery('input.field-cnpj').each(function() {
+					jQuery(this).rules('add', { cnpj: true });
 				});
 			}
 			// URL

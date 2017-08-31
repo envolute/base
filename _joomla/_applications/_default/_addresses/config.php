@@ -5,12 +5,17 @@ require(JPATH_BASE.'/libraries/envolute/_system.vars.php');
 
 // App Configuration's Vars
 $cfg = array();
-$cfg['project'] = 'base';
+$cfg['project']	= 'base';
+// PARENT APP:
+// Caso essa aplicação utilize dados de outra (PAI).
+// Informe o $APPNAME da outra. Senão, deixe em branco...
+$cfg['parent']	= '';
 // App Define
-$APPNAME  = '_addresses';
-$MAIN_TB  = '#__'.$cfg['project'].'_addresses';
-$APPTAG   = isset(${$APPNAME.'AppTag'}) ? ${$APPNAME.'AppTag'} : $APPNAME;
-$newInstance = ($APPTAG != $APPNAME) ? true : false;
+$APPNAME		= '_addresses';
+$APPPATH		= !empty($cfg['parent']) ? $cfg['parent'] : $APPNAME;
+$MAIN_TB		= '#__'.$cfg['project'].'_addresses';
+$APPTAG			= isset(${$APPNAME.'AppTag'}) ? ${$APPNAME.'AppTag'} : $APPNAME;
+$newInstance	= ($APPTAG != $APPNAME) ? true : false;
 
 // URL's {http://...}
 $URL_APP        = $_APPS.$APPNAME;
@@ -103,7 +108,7 @@ endif;
 		$cfg['fileTable']		= $cfg['mainTable'].'_files'; // upload's database table
 		// upload params
 		$cfg['maxFileSize']		= 5242880; // 5MB
-		$cfg['uploadDir']       = JPATH_BASE.DS.'images/apps/'.$APPNAME.'/'; // IMPORTANTE: colocar a barra '/' no fim
+		$cfg['uploadDir']       = JPATH_BASE.DS.'images/apps/'.$APPPATH.'/'; // IMPORTANTE: colocar a barra '/' no fim
 		// file types enabled
 		$cfg['fileTypes']	= array();
 		$cfg['fileTypes']['image'][]	= 'image/png';

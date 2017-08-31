@@ -449,9 +449,6 @@ jQuery(window).load(function() {
 					type: 'post',
 					data: {
 						cmail: function() {
-							return jQuery('#<?php echo $APPTAG?>-email').val();
-						},
-						cmail: function() {
 							return jQuery('#<?php echo $APPTAG?>-cmail').val();
 						}
 					}
