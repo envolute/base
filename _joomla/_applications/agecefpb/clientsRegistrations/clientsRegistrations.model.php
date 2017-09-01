@@ -137,7 +137,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 		// SAVE CONDITION
 		// Condição para inserção e atualização dos registros
-		$save_condition = (!empty($request['name']) && !empty($request['email']));
+		// Na edição os dados já devem estar preenchidos,
+		// e o nome não é editável, assim, não é enviado na requisição
+		$save_condition = ($id || (!empty($request['name']) && !empty($request['email'])));
 
 		if($id) :  // UPDATE
 
@@ -189,8 +191,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						// Default Fields
 						'id'				=> $item->id,
 						'state'				=> $item->state,
-						'prev'				=> $prev,
-						'next'				=> $next,
 						// App Fields
 						'user_id'			=> $itemUID,
 						'usergroup'			=> $item->usergroup,
@@ -232,6 +232,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					// Campos não Editáveis
 					// Alguns campo são editáveis apenas se não estiverem preenchidos
 					// Caso já estejam preenchidos, seus valores não devem ser alterados
+					$query .= noEditable('name', $request['name'], true);
 					$query .= noEditable('cpf', $request['cpf'], true);
 					$query .= noEditable('rg', $request['rg'], true);
 					$query .= noEditable('rg_orgao', $request['rg_orgao'], true);
@@ -243,7 +244,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$query .= noEditable('account', $request['account'], true);
 					$query .= noEditable('operation', $request['operation'], true);
 					$query .=
-						$db->quoteName('name')				.'='. $db->quote($request['name']) .','.
 						$db->quoteName('email')				.'='. $db->quote($request['email']) .','.
 						$db->quoteName('marital_status') 	.'='. $request['marital_status'] .','.
 						$db->quoteName('partner')			.'='. $db->quote($request['partner']) .','.

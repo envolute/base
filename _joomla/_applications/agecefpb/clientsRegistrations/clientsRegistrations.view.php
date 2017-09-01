@@ -23,6 +23,9 @@ require(JPATH_CORE.DS.'apps/_init.app.php');
 $uID = $app->input->get('uID', 0, 'int');
 $uID = ($hasAdmin && $uID > 0) ? $uID : $user->id;
 
+// LINK TO EDIT
+$urlEdit = JURI::root().'user/edit-profile'.($uID != $user->id ? '?uID='.$uID : '');
+
 // Carrega o arquivo de tradução
 // OBS: para arquivos externos com o carregamento do framework '_init.joomla.php' (geralmente em 'ajax')
 // a language 'default' não é reconhecida. Sendo assim, carrega apenas 'en-GB'
@@ -33,37 +36,8 @@ if(isset($_SESSION[$APPTAG.'langDef'])) :
 	$lang->load('base_'.$APPNAME, JPATH_BASE, $_SESSION[$APPTAG.'langDef'], true);
 endif;
 
-if($hasAdmin) :
-	// CLIENTS
-	$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_clients') .' WHERE user_id <> 0 AND state = 1 ORDER BY name';
-	$db->setQuery($query);
-	$clients = $db->loadObjectList();
-?>
-	<script>
-		// SELECT USER -> Selecionar um usuário no formulário de edição
-		window.<?php echo $APPTAG?>_selectUser = function(el) {
-			var val = jQuery(el).val();
-			location.href = '<?php echo JURI::current()?>'+((!isEmpty(val) && val != 0) ? '?uID='+val : '');
-		};
-	</script>
-
-	<fieldset class="fieldset-embed fieldset-sm">
-		<legend><?php echo JText::_('FIELD_LABEL_CLIENT_SELECT'); ?></legend>
-		<div class="row">
-			<div class="col-md-6">
-				<select name="uID" id="<?php echo $APPTAG?>-uID" class="form-control" onchange="<?php echo $APPTAG?>_selectUser(this)">
-					<option value="0"><?php echo JText::_('TEXT_SELECT')?></option>
-					<?php
-						foreach ($clients as $obj) {
-							echo '<option value="'.$obj->user_id.'"'.($uID == $obj->user_id ? ' selected' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
-						}
-					?>
-				</select>
-			</div>
-		</div>
-	</fieldset>
-<?php
-endif;
+// Admin Actions
+require_once($PATH_APP_FILE.'.admin.php');
 
 if(isset($user->id) && $user->id) :
 
@@ -108,7 +82,10 @@ if(isset($user->id) && $user->id) :
 			<div class="row">
 				<div class="col-md-8">
 					<div class="row">
-						<div class="col-sm-3 mb-4 mb-md-0" style="max-width: 300px">'.$img.'</div>
+						<div class="col-sm-3 mb-4 mb-md-0">
+							<a href="'.$urlEdit.'" class="btn btn-block btn-default b-2 text-live base-icon-pencil float-md-right mb-2"> '.JText::_('TEXT_EDIT').'</a>
+							<div style="max-width: 300px">'.$img.'</div>
+						</div>
 						<div class="col-sm-9">
 							<label class="label-sm">'.JText::_('FIELD_LABEL_NAME').':</label>
 							<p> '.baseHelper::nameFormat($item->name).'</p>
