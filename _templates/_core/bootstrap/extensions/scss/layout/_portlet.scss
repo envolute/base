@@ -20,12 +20,23 @@
 	border-top: $portlet-header-border;
 }
 .portlet > header > .portlet-title {
-	padding-left: map-get($spacers, 2);
+	padding-left: map-get($spacers, 3);
 	margin: 0!important;
 	font-weight: $portlet-header-font-weight;
 	line-height: 1!important;
 }
+.portlet.portlet-sm > header > .portlet-title {
+	padding-left: map-get($spacers, 2);
+}
+.portlet.portlet-sm > header > .btn {
+	padding: $input-btn-padding-y-sm $input-btn-padding-x-sm;
+	font-size: $font-size-sm;
+	line-height: $input-btn-line-height-sm;
+}
 .portlet > .portlet-body {
+	padding: map-get($spacers, 3);
+}
+.portlet.portlet-sm > .portlet-body {
 	padding: map-get($spacers, 2);
 }
 .portlet > header + .portlet-body {

@@ -239,6 +239,25 @@ defined('_JEXEC') or die;
 						</div>
 					</div>
 				</div>
+				<?php if($cfg['isEdit']) :?>
+				<fieldset class="fieldset-embed fieldset-sm pb-0 mt-3 mb-0">
+					<legend><span class="base-icon-lock"></span> <?php echo JText::_('TEXT_CHANGE_PASSWORD'); ?></legend>
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label><?php echo JText::_('FIELD_LABEL_PASSWORD'); ?></label>
+								<input type="password" name="password" id="<?php echo $APPTAG?>-password" class="form-control" />
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label class="iconTip hasTooltip" title="<?php echo JText::_('MSG_REPASSWORD'); ?>"><?php echo JText::_('FIELD_LABEL_REPASSWORD'); ?></label>
+								<input type="password" name="repassword" id="<?php echo $APPTAG?>-repassword" class="form-control" />
+							</div>
+						</div>
+					</div>
+				</fieldset>
+				<?php endif;?>
 			</div>
 			<div class="col-lg-3">
 				<div class="form-group">
@@ -257,7 +276,7 @@ defined('_JEXEC') or die;
 				</div>
 			</div>
 		</div>
-		<hr />
+		<hr class="mt-5" />
 		<div class="form-actions">
 			<?php if($cfg['isEdit']) :?>
 				<button name="btn-<?php echo $APPTAG?>-save" id="btn-<?php echo $APPTAG?>-save" class="btn btn-lg btn-success base-icon-ok btn-icon" onclick="<?php echo $APPTAG?>_save(<?php echo $APPTAG?>_editSuccess);"> <?php echo JText::_('TEXT_SAVE'); ?></button>

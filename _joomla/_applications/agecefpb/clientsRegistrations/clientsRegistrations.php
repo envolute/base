@@ -73,6 +73,9 @@ jQuery(function() {
 	var agency				= jQuery('#<?php echo $APPTAG?>-agency');
 	var account				= jQuery('#<?php echo $APPTAG?>-account');
 	var operation			= jQuery('#<?php echo $APPTAG?>-operation');
+	// User Data
+	var password			= jQuery('#<?php echo $APPTAG?>-password');
+	var repassword			= jQuery('#<?php echo $APPTAG?>-repassword');
 
 	var disableEdit = [name, cpf, rg, rg_orgao, gender, birthday, cx_code, cx_date, agency, account, operation];
 
@@ -141,6 +144,10 @@ jQuery(function() {
 			agency.val('');
 			account.val('');
 			operation.val('');
+			<?php if($cfg['isEdit']) :?>
+			password.val('');
+			repassword.val('');
+			<?php endif;?>
 
 			// Habilita campos não editaveis
 			for (i = 0; i < disableEdit.length; i++) {
@@ -263,6 +270,8 @@ jQuery(function() {
 						agency.val(item.agency);
 						account.val(item.account);
 						operation.val(item.operation);
+						password.val('');
+						repassword.val('');
 
 						// Desabilita campos não editáveis
 						for (i = 0; i < disableEdit.length; i++) {

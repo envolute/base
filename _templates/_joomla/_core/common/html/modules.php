@@ -57,7 +57,7 @@ function modChrome_portlet($module, &$params, &$attribs)
 			<header class="'.$hClass.'">
 				<h6 class="portlet-title">'.$module->title.'</h6>
 				<span class="btn-group">
-					<button type="button" href="#portlet-'.$module->id.'" class="btn btn-sm btn-link toggle-state toggle-icon" data-icon-default="base-icon-down-open" data-icon-active="base-icon-up-open" data-toggle="collapse" aria-expanded="false" aria-controls="portlet'.$module->id.'"></button>
+					<button type="button" href="#portlet-'.$module->id.'" class="btn btn-link toggle-state toggle-icon" data-icon-default="base-icon-down-open" data-icon-active="base-icon-up-open" data-toggle="collapse" aria-expanded="false" aria-controls="portlet'.$module->id.'"></button>
 				</span>
 			</header>
 			';
@@ -90,7 +90,7 @@ function modChrome_card($module, &$params, &$attribs)
 			';
 		endif;
 		echo '
-				<div class="card-block">
+				<div class="card-body">
 					'.$module->content.'
 				</div>
 			</div>
@@ -118,7 +118,7 @@ function modChrome_cardPrimary($module, &$params, &$attribs)
 			';
 		endif;
 		echo '
-				<div class="card-block">
+				<div class="card-body">
 					'.$module->content.'
 				</div>
 			</div>

@@ -119,6 +119,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['agency']				= $input->get('agency', '', 'string');
 		$request['account']				= $input->get('account', '', 'string');
 		$request['operation']			= $input->get('operation', '', 'string');
+	    // user registration action
+	  	$request['password']			= $input->get('password', '', 'string');
+	  	$request['repassword']			= $input->get('repassword', '', 'string');
 
 		// NO EDITABLE DATA
 		function noEditable($col, $val, $quote) {
@@ -273,6 +276,15 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						// Upload
 						if($cfg['hasUpload'])
 						$fileMsg = uploader::uploadFile($id, $cfg['fileTable'], $_FILES[$cfg['fileField']], $fileGrp, $fileGtp, $fileCls, $fileLbl, $cfg);
+
+						// CUSTOM -> alter password
+						// verifica se ha atualização de senha
+						if(!empty($request['password']) && ($request['password'] == $request['repassword'])) :
+							// Atualiza os dados so usuário
+							$query = 'UPDATE '. $db->quoteName('#__users') .' SET '. $db->quoteName('password') .' = '. $db->quote(JUserHelper::hashPassword($request['password'])) .' WHERE id = '.$userInfoId;
+							$db->setQuery($query);
+							$db->execute();
+						endif;
 
 						// Salva na sessão a informação de 'edição' dos dados
 						// Assim é possível saber que os dados foram atualizados
