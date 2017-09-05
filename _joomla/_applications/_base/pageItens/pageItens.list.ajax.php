@@ -103,7 +103,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$element_downloadLabel = !empty($item->element_downloadLabel) ? $item->element_downloadLabel : $_SESSION[$RTAG.'DownloadButtonLabel'];
 							$downloadLink = '
 								<a class="'.$_SESSION[$RTAG.'DownloadButtonClass'].' '.$item->element_downloadClass.'" href="'.$_ROOT.'apps/get-file?fn='.base64_encode($files[$item->id][$i]->filename).'&mt='.base64_encode($files[$item->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
-									<span class="base-icon-download hasTooltip" data-animation="false" title="'.$files[$item->id][$i]->filename.'<br />'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"> '.JText::_($element_downloadLabel).'</span>
+									<span class="base-icon-download hasTooltip" title="'.$files[$item->id][$i]->filename.'<br />'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"> '.JText::_($element_downloadLabel).'</span>
 								</a>
 							';
 							$downloadPath = $_ROOT.'apps/get-file?fn='.base64_encode($files[$item->id][$i]->filename).'&mt='.base64_encode($files[$item->id][$i]->mimetype).'&tag='.base64_encode($APPNAME);
@@ -165,10 +165,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$itemActions = '
 					<div class="'.$APPNAME.'-item-actions pt-2"'.$pos.'">
 						<a href="#" class="btn btn-xs btn-default" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'">
-							<span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').' hasTooltip" data-animation="false" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'"></span>
+							<span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').' hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'"></span>
 						</a>
-						<a href="#" class="btn btn-xs btn-warning" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil hasTooltip" data-animation="false" title="'.JText::_('TEXT_EDIT').'"></span></a>
-						<a href="#" class="btn btn-xs btn-danger" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash hasTooltip" data-animation="false" title="'.JText::_('TEXT_DELETE').'"></span></a>
+						<a href="#" class="btn btn-xs btn-warning" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil hasTooltip" title="'.JText::_('TEXT_EDIT').'"></span></a>
+						<a href="#" class="btn btn-xs btn-danger" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash hasTooltip" title="'.JText::_('TEXT_DELETE').'"></span></a>
 					</div>
 				';
 			endif;

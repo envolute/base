@@ -81,7 +81,7 @@ defined('_JEXEC') or die;
 						</div>
 						<div class="col-sm-4">
 							<div class="form-group">
-								<label class="iconTip hasTooltip" data-animation="false" title="<?php echo JText::_('FIELD_LABEL_TAG_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_TAG'); ?></label>
+								<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_TAG_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_TAG'); ?></label>
 								<input type="text" name="tag" id="<?php echo $APPTAG?>-tag" class="form-control" <?php if(!empty($APPTAG)) echo 'readonly'?> />
 								<input type="hidden" name="ctag" id="<?php echo $APPTAG?>-ctag" />
 							</div>
@@ -93,11 +93,11 @@ defined('_JEXEC') or die;
 						<div class="col-sm-4">
 							<div class="form-group">
 								<span class="btn-group w-full" data-toggle="buttons">
-									<label class="col btn btn-default btn-active-success hasTooltip" data-animation="false" title="<?php echo JText::_('FIELD_LABEL_COVER_TYPE_0_DESC'); ?>">
+									<label class="col btn btn-default btn-active-success hasTooltip" title="<?php echo JText::_('FIELD_LABEL_COVER_TYPE_0_DESC'); ?>">
 										<input type="radio" name="coverType" id="<?php echo $APPTAG?>-coverType-0" value="0" class="auto-tab" data-target="<?php echo $APPTAG?>-cover-0" data-target-display="true" data-target-group="#<?php echo $APPTAG?>-cover-1" />
 										<?php echo JText::_('FIELD_LABEL_COVER_TYPE_0'); ?>
 									</label>
-									<label class="col btn btn-default btn-active-success hasTooltip" data-animation="false" title="<?php echo JText::_('FIELD_LABEL_COVER_TYPE_1_DESC'); ?>">
+									<label class="col btn btn-default btn-active-success hasTooltip" title="<?php echo JText::_('FIELD_LABEL_COVER_TYPE_1_DESC'); ?>">
 										<input type="radio" name="coverType" id="<?php echo $APPTAG?>-coverType-1" value="1" class="auto-tab" data-target="<?php echo $APPTAG?>-cover-1" data-target-display="true" data-target-group="#<?php echo $APPTAG?>-cover-0" />
 										<?php echo JText::_('FIELD_LABEL_COVER_TYPE_1'); ?>
 									</label>
@@ -120,7 +120,7 @@ defined('_JEXEC') or die;
 					<div class="row">
 						<div class="col-sm-2"<?php if($_SESSION[$RTAG.'HideOrderField']) echo ' hidden'; ?>>
 							<div class="form-group">
-								<label class="iconTip hasTooltip" data-animation="false" title="<?php echo JText::_('FIELD_LABEL_ORDER_DESC')?>"><?php echo JText::_('FIELD_LABEL_ORDER')?></label>
+								<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_ORDER_DESC')?>"><?php echo JText::_('FIELD_LABEL_ORDER')?></label>
 								<input type="number" name="ordering" id="<?php echo $APPTAG?>-ordering" class="field-number" size="4" />
 								<input type="hidden" name="cordering" id="<?php echo $APPTAG?>-cordering" />
 							</div>
@@ -219,7 +219,7 @@ defined('_JEXEC') or die;
 									<div class="form-group">
 										<label class="display-block">&#160;</label>
 										<div class="btn-group w-full" data-toggle="buttons">
-											<label class="col btn btn-warning btn-block btn-active-success hasTooltip" data-animation="false" title="<?php echo JText::_('FIELD_LABEL_TARGET_DESC'); ?>">
+											<label class="col btn btn-warning btn-block btn-active-success hasTooltip" title="<?php echo JText::_('FIELD_LABEL_TARGET_DESC'); ?>">
 												<span class="base-icon-cancel btn-icon"></span>
 												<input type="checkbox" name="target" id="<?php echo $APPTAG?>-target" value="1" /> <?php echo JText::_('FIELD_LABEL_TARGET'); ?>
 											</label>

@@ -34,7 +34,7 @@ $types = $db->loadObjectList();
 		<div class="row">
 			<div class="col-lg-9">
 				<div class="form-group field-required">
-					<label class="iconTip hasTooltip" data-animation="false" title="<?php echo JText::_('FIELD_LABEL_TYPE_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_TYPE'); ?></label>
+					<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_TYPE_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_TYPE'); ?></label>
 					<div class="input-group">
 						<select name="type_id" id="<?php echo $APPTAG?>-type_id" class="form-control field-id auto-tab" data-target="#<?php echo $APPTAG?>-name">
 							<option value="0">- <?php echo JText::_('TEXT_SELECT'); ?> -</option>
@@ -45,8 +45,8 @@ $types = $db->loadObjectList();
 							?>
 						</select>
 						<span class="input-group-btn">
-							<button type="button" class="base-icon-plus btn btn-success hasTooltip" data-animation="false" title="<?php echo JText::_('TEXT_ADD')?>" data-toggle="modal" data-target="#modal-<?php echo $APPTAG?>Types" data-backdrop="static" data-keyboard="false"></button>
-							<button type="button" class="base-icon-cog btn btn-primary hasTooltip" data-animation="false" title="<?php echo JText::_('TEXT_EDIT')?>" onclick="<?php echo $APPTAG?>Types_listReload(false)" data-toggle="modal" data-target="#modal-list-<?php echo $APPTAG?>Types" data-backdrop="static" data-keyboard="false"></button>
+							<button type="button" class="base-icon-plus btn btn-success hasTooltip" title="<?php echo JText::_('TEXT_ADD')?>" data-toggle="modal" data-target="#modal-<?php echo $APPTAG?>Types" data-backdrop="static" data-keyboard="false"></button>
+							<button type="button" class="base-icon-cog btn btn-primary hasTooltip" title="<?php echo JText::_('TEXT_EDIT')?>" onclick="<?php echo $APPTAG?>Types_listReload(false)" data-toggle="modal" data-target="#modal-list-<?php echo $APPTAG?>Types" data-backdrop="static" data-keyboard="false"></button>
 						</span>
 					</div>
 				</div>
@@ -224,7 +224,7 @@ $types = $db->loadObjectList();
 					<label><?php echo JText::_('FIELD_LABEL_FILE'); ?></label>
 					<div class="btn-file">
 						<span class="btn-group w-100">
-							<button type="button" class="col base-icon-search btn btn-default btn-active-success file-action text-truncate hasTooltip" data-animation="false" title="<?php echo JText::_('TEXT_FILE_SELECT'); ?>"> <span><?php echo JText::_('TEXT_FILE_SELECT'); ?></span></button>
+							<button type="button" class="col base-icon-search btn btn-default btn-active-success file-action text-truncate hasTooltip" title="<?php echo JText::_('TEXT_FILE_SELECT'); ?>"> <span><?php echo JText::_('TEXT_FILE_SELECT'); ?></span></button>
 						</span>
 						<input type="file" name="file[1]" id="<?php echo $APPTAG?>-file1" class="form-control" hidden />
 					</div>

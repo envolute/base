@@ -427,7 +427,7 @@ jQuery(window).load(function() {
 
 <?php
 // Admin Actions
-require_once($PATH_APP_FILE.'.admin.php');
+require_once(JPATH_APPS.DS.'clients/clients.select.php');
 ?>
 
 <div id="<?php echo $APPTAG?>-form-loader" class="text-center">

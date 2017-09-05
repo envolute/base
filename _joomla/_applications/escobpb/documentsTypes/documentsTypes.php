@@ -297,7 +297,7 @@ jQuery(window).load(function() {
 	$tipText = $cfg['addText'] ? '' : $addText;
 	$relAdd	= !empty($_SESSION[$RTAG.'RelTable']) ? $APPTAG.'_setRelation('.$APPTAG.'rID);' : $APPTAG.'_setParent('.$APPTAG.'rID);';
 	$addBtn = '
-		<button class="base-icon-plus btn-add btn btn-sm btn-success hasTooltip" data-animation="false" title="'.$tipText.'" onclick="'.$relAdd.'" data-toggle="modal" data-target="#modal-'.$APPTAG.'" data-backdrop="static" data-keyboard="false">
+		<button class="base-icon-plus btn-add btn btn-sm btn-success hasTooltip" title="'.$tipText.'" onclick="'.$relAdd.'" data-toggle="modal" data-target="#modal-'.$APPTAG.'" data-backdrop="static" data-keyboard="false">
 			'.($cfg['addText'] ? ' <span class="text-add"> '.$addText.'</span>': '').'
 		</button>
 	';
@@ -354,7 +354,7 @@ jQuery(window).load(function() {
 	?>
 
 	<?php if($hasAdmin) : ?>
-		<div class="modal fade" data-animation="false" id="modal-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-<?php echo $APPTAG?>Label">
+		<div class="modal fade" id="modal-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-<?php echo $APPTAG?>Label">
 			<div class="modal-dialog modal-sm" role="document">
 				<div class="modal-content">
 					<form name="form-<?php echo $APPTAG?>" id="form-<?php echo $APPTAG?>" method="post" enctype="multipart/form-data">

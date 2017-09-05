@@ -123,7 +123,7 @@ $htmlFilter = '
 							<button type="submit" class="btn btn-sm btn-primary">
                 <span class="base-icon-search btn-icon"></span> '.JText::_('TEXT_SEARCH').'
               </button>
-							<a href="'.JURI::current().'" class="base-icon-cancel-circled btn btn-sm btn-danger hasTooltip" data-animation="false" title="'.JText::_('TEXT_CLEAR').' '.JText::_('TEXT_FILTER').'"></a>
+							<a href="'.JURI::current().'" class="base-icon-cancel-circled btn btn-sm btn-danger hasTooltip" title="'.JText::_('TEXT_CLEAR').' '.JText::_('TEXT_FILTER').'"></a>
 						</span>
 					</div>
 				</div>

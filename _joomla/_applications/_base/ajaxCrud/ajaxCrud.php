@@ -243,13 +243,13 @@ jQuery(function() {
 							// gera os links
 							if(files[i]['mimetype'].indexOf('image') == -1) {
 								path = root + '/apps/get-file?fn='+files[i]['fn']+'&mt='+files[i]['mt']+'&tag=<?php echo base64_encode($APPTAG)?>';
-								html += '	<a href="'+path+'" class="base-icon-attach btn btn-default hasTooltip" data-animation="false" title="<?php echo JText::_('TEXT_DOWNLOAD'); ?><br />'+desc+'"></a>';
+								html += '	<a href="'+path+'" class="base-icon-attach btn btn-default hasTooltip" title="<?php echo JText::_('TEXT_DOWNLOAD'); ?><br />'+desc+'"></a>';
 							} else {
 								path = root + '/images/apps/<?php echo $APPPATH?>/'+files[i]['filename'];
-								html += '	<a href="#" class="base-icon-eye btn btn-default hasTooltip" data-animation="false" title="<img src=\''+path+'\' style=\'width:100px;max-height:100px\' /><br />'+desc+'"></a>';
+								html += '	<a href="#" class="base-icon-eye btn btn-default hasTooltip" title="<img src=\''+path+'\' style=\'width:100px;max-height:100px\' /><br />'+desc+'"></a>';
 							}
 							if(!obj.hasClass('required')) { // se for um campo obrigatório não permite a exclusão
-								html += '	<a href="#" class="base-icon-cancel btn btn-danger hasTooltip" data-animation="false" title="<?php echo JText::_('TEXT_DELETE').' '.JText::_('TEXT_FILE'); ?>" onclick="<?php echo $APPTAG?>_delFile(this, \''+files[i]['filename']+'\')"></a>';
+								html += '	<a href="#" class="base-icon-cancel btn btn-danger hasTooltip" title="<?php echo JText::_('TEXT_DELETE').' '.JText::_('TEXT_FILE'); ?>" onclick="<?php echo $APPTAG?>_delFile(this, \''+files[i]['filename']+'\')"></a>';
 							}
 							// atribui os 'botões' ao elemento
 							obj.prev('.btn-group').append(html);
@@ -843,7 +843,7 @@ jQuery(window).load(function() {
 	$tipText = $cfg['addText'] ? '' : $addText;
 	$relAdd	= !empty($_SESSION[$RTAG.'RelTable']) ? $APPTAG.'_setRelation('.$APPTAG.'rID);' : $APPTAG.'_setParent('.$APPTAG.'rID);';
 	$addBtn = '
-		<button class="base-icon-plus btn-add btn btn-sm btn-success hasTooltip" data-animation="false" title="'.$tipText.'" onclick="'.$relAdd.'" data-toggle="modal" data-target="#modal-'.$APPTAG.'" data-backdrop="static" data-keyboard="false">
+		<button class="base-icon-plus btn-add btn btn-sm btn-success hasTooltip" title="'.$tipText.'" onclick="'.$relAdd.'" data-toggle="modal" data-target="#modal-'.$APPTAG.'" data-backdrop="static" data-keyboard="false">
 			'.($cfg['addText'] ? '<span class="text-add"> '.$addText.'</span>': '').'
 		</button>
 	';

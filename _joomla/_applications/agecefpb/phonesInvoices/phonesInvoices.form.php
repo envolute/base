@@ -21,8 +21,8 @@ $providers = $db->loadObjectList();
 			?>
 		</select>
 		<span class="input-group-btn">
-			<button type="button" class="base-icon-plus btn btn-success hasTooltip" data-animation="false" title="<?php echo JText::_('TEXT_ADD')?>" data-toggle="modal" data-target="#modal-providers" data-backdrop="static" data-keyboard="false"></button>
-			<button type="button" class="base-icon-cog btn btn-primary hasTooltip" data-animation="false" title="<?php echo JText::_('TEXT_EDIT')?>" onclick="providers_listReload(false)" data-toggle="modal" data-target="#modal-list-providers" data-backdrop="static" data-keyboard="false"></button>
+			<button type="button" class="base-icon-plus btn btn-success hasTooltip" title="<?php echo JText::_('TEXT_ADD')?>" data-toggle="modal" data-target="#modal-providers" data-backdrop="static" data-keyboard="false"></button>
+			<button type="button" class="base-icon-cog btn btn-primary hasTooltip" title="<?php echo JText::_('TEXT_EDIT')?>" onclick="providers_listReload(false)" data-toggle="modal" data-target="#modal-list-providers" data-backdrop="static" data-keyboard="false"></button>
 		</span>
 	</div>
 </div>
@@ -38,7 +38,7 @@ $providers = $db->loadObjectList();
 			<label><?php echo JText::_('FIELD_LABEL_FILE'); ?></label>
 			<div class="btn-file">
 				<span class="btn-group w-100">
-					<button type="button" class="col base-icon-search btn btn-default btn-active-success file-action text-truncate hasTooltip" data-animation="false" title="<?php echo JText::_('TEXT_FILE_SELECT'); ?>"> <span><?php echo JText::_('TEXT_FILE_SELECT'); ?></span></button>
+					<button type="button" class="col base-icon-search btn btn-default btn-active-success file-action text-truncate hasTooltip" title="<?php echo JText::_('TEXT_FILE_SELECT'); ?>"> <span><?php echo JText::_('TEXT_FILE_SELECT'); ?></span></button>
 				</span>
 				<input type="file" name="file[0]" id="<?php echo $APPTAG?>-file0" class="form-control" hidden />
 			</div>

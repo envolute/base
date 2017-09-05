@@ -122,7 +122,7 @@
 				border-bottom: 1px dashed $gray-300!important;
 			}
 			.nav.menu .nav-child li:last-child > a {
-				border-bottom: none!important;
+				border-bottom-color: transparent!important;
 			}
 			// Efeito hover
 			.mainmenu.nav.menu .nav-child li:not(.active) > a:hover,

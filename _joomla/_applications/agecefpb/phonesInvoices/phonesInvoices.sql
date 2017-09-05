@@ -114,7 +114,7 @@ FROM `cms_agecefpb_phones_invoices_details` T1
 	ON SUBSTRING_INDEX(`T3`.`phone_number`,' ',-1) LIKE SUBSTRING_INDEX(`T1`.`tel`,' ',-1)
 	LEFT OUTER JOIN `cms_agecefpb_phones_plans` T4
 	ON `T4`.`id` = `T3`.`plan_id`
-	LEFT OUTER JOIN `cms_agecefpb_providers` T5
+	LEFT OUTER JOIN `cms_base_providers` T5
 	ON `T5`.`id` = `T4`.`provider_id`
 	LEFT OUTER JOIN `cms_agecefpb_clients` T6
 	ON `T6`.`id` = `T3`.`client_id`

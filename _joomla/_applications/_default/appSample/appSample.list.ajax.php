@@ -116,20 +116,20 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					if(!empty($files[$item->id][$i]->filename)) :
 						$listFiles .= '
 							<a href="'.$_ROOT.'apps/get-file?fn='.base64_encode($files[$item->id][$i]->filename).'&mt='.base64_encode($files[$item->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
-								<span class="base-icon-attach hasTooltip" data-animation="false" title="'.$files[$item->id][$i]->filename.'<br />'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"></span>
+								<span class="base-icon-attach hasTooltip" title="'.$files[$item->id][$i]->filename.'<br />'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"></span>
 							</a>
 						';
 					endif;
 				}
 			endif;
 
-			$main = $item->main == 1 ? ' <span class="base-icon-star text-live cursor-help hasTooltip" data-animation="false" title="'.JText::_('FIELD_LABEL_MAIN').'"></span>' : '';
-			$operator = !empty($item->operator) ? ' <small class="text-muted font-featured cursor-help hasTooltip" data-animation="false" title="'.JText::_('TEXT_OPERATOR').'">('.$item->operator.')</small>' : '';
+			$main = $item->main == 1 ? ' <span class="base-icon-star text-live cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_MAIN').'"></span>' : '';
+			$operator = !empty($item->operator) ? ' <small class="text-muted font-featured cursor-help hasTooltip" title="'.JText::_('TEXT_OPERATOR').'">('.$item->operator.')</small>' : '';
 			$info = !empty($item->plan) ? '<span class="label label-warning">'.baseHelper::nameFormat($item->plan).'</span> ' : '';
 			$info = !empty($item->description) ? '<br />'.$info.'<small class="text-muted font-featured cursor-help">'.baseHelper::nameFormat($item->description).'</small>' : (!empty($info) ? '<br />'.$info : '');
-			$btnState = $hasAdmin ? '<a href="#" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'"><span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').' hasTooltip" data-animation="false" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'"></span></a> ' : '';
-			$btnEdit = $hasAdmin ? '<a href="#" class="base-icon-pencil text-live hasTooltip" data-animation="false" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"></a> ' : '';
-			$btnDelete = $hasAdmin ? '<a href="#" class="base-icon-trash text-danger hasTooltip" data-animation="false" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"></a>' : '';
+			$btnState = $hasAdmin ? '<a href="#" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'"><span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').' hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'"></span></a> ' : '';
+			$btnEdit = $hasAdmin ? '<a href="#" class="base-icon-pencil text-live hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"></a> ' : '';
+			$btnDelete = $hasAdmin ? '<a href="#" class="base-icon-trash text-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"></a>' : '';
 			$rowState = $item->state == 0 ? 'list-danger' : '';
 			$html .= '
 				<li class="'.$rowState.'">

@@ -61,8 +61,8 @@ $plans = $db->loadObjectList();
 					?>
 				</select>
 				<span class="input-group-btn">
-					<button type="button" class="base-icon-plus btn btn-success hasTooltip" data-animation="false" title="<?php echo JText::_('TEXT_ADD')?>" data-toggle="modal" data-target="#modal-<?php echo $APPTAG?>Plans" data-backdrop="static" data-keyboard="false"></button>
-					<button type="button" class="base-icon-cog btn btn-primary hasTooltip" data-animation="false" title="<?php echo JText::_('TEXT_EDIT')?>" onclick="<?php echo $APPTAG?>Plans_listReload(false)" data-toggle="modal" data-target="#modal-list-<?php echo $APPTAG?>Plans" data-backdrop="static" data-keyboard="false"></button>
+					<button type="button" class="base-icon-plus btn btn-success hasTooltip" title="<?php echo JText::_('TEXT_ADD')?>" data-toggle="modal" data-target="#modal-<?php echo $APPTAG?>Plans" data-backdrop="static" data-keyboard="false"></button>
+					<button type="button" class="base-icon-cog btn btn-primary hasTooltip" title="<?php echo JText::_('TEXT_EDIT')?>" onclick="<?php echo $APPTAG?>Plans_listReload(false)" data-toggle="modal" data-target="#modal-list-<?php echo $APPTAG?>Plans" data-backdrop="static" data-keyboard="false"></button>
 				</span>
 			</div>
 		</div>
