@@ -118,7 +118,7 @@ if($pID > 0) :
 		// Imagem Principal -> Primeira imagem (index = 0)
 		JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 		$img = uploader::getFile('#__base_providers_files', '', $phone->providerID, 0, JPATH_BASE.DS.'images/apps/_providers/');
-		if(!empty($img)) $img = '<img src="'.baseHelper::thumbnail('images/apps/_providers/'.$img['filename'], 64, 64).'" class="img-fluid float-left mr-2" />';
+		if(!empty($img)) $img = '<img src="'.JURI::root().'images/apps/_providers/'.$img['filename'].'" style="height:64px;" class="img-fluid float-left mr-2" />';
 
 		// Header
 		$html .= '
@@ -126,7 +126,7 @@ if($pID > 0) :
 				'.$img.'
 				<h4 class="float-right text-right mt-2 mb-0">
 					'.$phone->phone_number.'
-					<div class="text-md text-muted">Plano: '.$phone->plan.'</div>
+					<div class="text-md text-muted">'.JText::_('TEXT_PLAN').': '.$phone->plan.'</div>
 				</h4>
 			</div>
 		';
@@ -174,7 +174,7 @@ if($pID > 0) :
 				$html .= '<ul class="set-list bordered list-lg text-lg">';
 				foreach($res as $item) {
 					// LINK TO INVOICE
-					$urlToInvoiceDetail = JURI::root().'services/mobile/invoiceDetail?invID='.$item->invoice_id.'&pID='.$item->phone_id.($uID != $user->id ? '&uID='.$uID : '');
+					$urlToInvoiceDetail = JURI::root().'services/mobile-invoices/invoice-details?invID='.$item->invoice_id.'&pID='.$item->phone_id.($uID != $user->id ? '&uID='.$uID : '');
 					$html .= '
 						<li>
 							<div class="row">

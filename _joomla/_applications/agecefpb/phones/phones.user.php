@@ -76,7 +76,7 @@ if(isset($user->id) && $user->id) :
 		$html .= '<ul class="set-list bordered list-lg list-striped list-hover">';
 		foreach($res as $item) {
 			// LINK TO INVOICE
-			$urlToInvoice = JURI::root().'services/mobile/invoices?pID='.$item->id.($uID != $user->id ? '&uID='.$uID : '');
+			$urlToInvoice = JURI::root().'services/mobile-invoices?pID='.$item->id.($uID != $user->id ? '&uID='.$uID : '');
 			$html .= '
 				<li>
 					<a href="'.$urlToInvoice.'" class="d-block">
@@ -88,7 +88,7 @@ if(isset($user->id) && $user->id) :
 		}
 		$html .= '</ul>';
 	else :
-		$html = '<p class="base-icon-info-circled alert alert-info m-0"> '.JText::_('MSG_LISTNOREG').'</p>';
+		$html = '<p class="base-icon-info-circled alert alert-warning m-0"> '.JText::_('MSG_NO_PHONES').'</p>';
 	endif;
 
 	echo $html;

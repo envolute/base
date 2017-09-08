@@ -43,12 +43,12 @@ $_SESSION[$APPTAG.'cardLimit'] = '300,00'; // default
 	$cfg['isEdit']				= isset(${$APPTAG.'IsEdit'}) ? ${$APPTAG.'IsEdit'} : false;
 
 // Crud's permissions
-	$cfg['isPublic']			= true; // Público -> acesso aberto a todos
+	$cfg['isPublic']			= false; // Público -> acesso aberto a todos
 	// Restrict Access
 	// $cfg['groupId']['viewer'][]  = apenas visualiza o componente
 	// $cfg['groupId']['admin'][]   = administra o componente
 	// ----------------------------------------------------
-	$cfg['groupId']['viewer'][]	= 0; // '0' pois não pode ser vazio
+	$cfg['groupId']['viewer'][]	= 10; // Associado
 	// acesso liberado sempre
 	$cfg['groupId']['admin'][]	= 6; // Gerente
 	$cfg['groupId']['admin'][]	= 7; // Administrador

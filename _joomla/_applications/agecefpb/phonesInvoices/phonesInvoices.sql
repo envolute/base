@@ -85,28 +85,28 @@ CREATE TABLE IF NOT EXISTS `cms_agecefpb_phones_invoices_files` (
 
 CREATE OR REPLACE VIEW `vw_agecefpb_phones_invoices_phone_total` AS
 SELECT
-`T1`.`invoice_id`,
-`T2`.`due_date`,
-`T3`.`client_id`,
-`T6`.`state` client_state,
-`T6`.`user_id`,
-`T6`.`name`,
-`T6`.`cpf`,
-`T6`.`cx_code`,
-`T3`.`id` phone_id,
-`T3`.`state` phone_state,
-`T1`.`tel`,
-`T4`.`id` plan_id,
-`T4`.`state` plan_state,
-`T4`.`name` plan,
-`T5`.`id` provider_id,
-`T5`.`state` provider_state,
-`T5`.`name` provider,
-SUM(`T1`.`valor_cobrado`) AS `valor_cobrado`,
-`T4`.`price` valor_plano,
-`T2`.`tax` taxa_servico,
-(SUM(`T1`.`valor_cobrado`) + `T4`.`price` + `T2`.`tax`) AS `total`,
-`T1`.`created_by`
+	`T1`.`invoice_id`,
+	`T2`.`due_date`,
+	`T3`.`client_id`,
+	`T6`.`state` client_state,
+	`T6`.`user_id`,
+	`T6`.`name`,
+	`T6`.`cpf`,
+	`T6`.`cx_code`,
+	`T3`.`id` phone_id,
+	`T3`.`state` phone_state,
+	`T1`.`tel`,
+	`T4`.`id` plan_id,
+	`T4`.`state` plan_state,
+	`T4`.`name` plan,
+	`T5`.`id` provider_id,
+	`T5`.`state` provider_state,
+	`T5`.`name` provider,
+	SUM(`T1`.`valor_cobrado`) AS `valor_cobrado`,
+	`T4`.`price` valor_plano,
+	`T2`.`tax` taxa_servico,
+	(SUM(`T1`.`valor_cobrado`) + `T4`.`price` + `T2`.`tax`) AS `total`,
+	`T1`.`created_by`
 FROM `cms_agecefpb_phones_invoices_details` T1
 	LEFT OUTER JOIN `cms_agecefpb_phones_invoices` T2
 	ON `T2`.`id` = `T1`.`invoice_id`
@@ -129,8 +129,19 @@ ORDER BY `T1`.`invoice_id`, `T6`.`name`;
 --
 
 CREATE OR REPLACE VIEW `vw_agecefpb_phones_invoices_summary` AS
-SELECT `invoice_id`, `tel`, `sub_secao`, `secao`, SUM(`valor_cobrado`),`created_by`
-FROM `cms_agecefpb_phones_invoices_details`
+SELECT
+	`T1`.`invoice_id`,
+	`T3`.`id` phone_id,
+	`T1`.`tel`,
+	`T1`.`sub_secao`,
+	`T1`.`secao`,
+	SUM(`T1`.`valor_cobrado`) valor_cobrado,
+	`T1`.`created_by`
+FROM `cms_agecefpb_phones_invoices_details` T1
+	LEFT OUTER JOIN `cms_agecefpb_phones_invoices` T2
+	ON `T2`.`id` = `T1`.`invoice_id`
+	LEFT OUTER JOIN `cms_agecefpb_phones` T3
+	ON SUBSTRING_INDEX(`T3`.`phone_number`,' ',-1) LIKE SUBSTRING_INDEX(`T1`.`tel`,' ',-1)
 WHERE `tel` <> ""
-GROUP BY CONCAT(`tel`, " - ", `secao`)
-ORDER BY `tel`, `sub_secao`;
+GROUP BY CONCAT(`T1`.`tel`, " - ", `T1`.`secao`)
+ORDER BY `T1`.`tel`, `T1`.`sub_secao`;
