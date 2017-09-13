@@ -143,6 +143,13 @@ jQuery(function() {
 			?>
 		};
 
+		// CUSTOM -> edit from select
+		window.<?php echo $APPTAG?>_editContact = function() {
+			var itemID = contact_id.val();
+			if(itemID != '' && itemID != 0) _contacts_loadEditFields(itemID, false, false);
+			else alert('<?php echo JText::_('MSG_SELECT_ITEM_FROM_LIST')?>');
+		};
+
 	// LIST CONTROLLERS
 	// ações & métodos controladores da listagem
 

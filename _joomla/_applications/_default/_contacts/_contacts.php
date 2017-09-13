@@ -154,6 +154,9 @@ jQuery(function() {
 			checkOption(access, 0);
 			reasonStatus.val('');
 
+			// hide relations buttons
+			setHidden('#<?php echo $APPTAG?>-buttons-relations', true, '#<?php echo $APPTAG?>-msg-relations');
+
 			<?php // Closure Actions
 			require(JPATH_CORE.DS.'apps/snippets/form/formReset.end.js.php');
 			?>
@@ -225,6 +228,14 @@ jQuery(function() {
 			<?php // Default Actions
 			require(JPATH_CORE.DS.'apps/snippets/form/setParent.def.js.php');
 			?>
+		};
+
+		// CUSTOM -> view banks accounts list
+		window.<?php echo $APPTAG?>_viewBanks = function() {
+			// _banksAccounts_listReload
+			// A TAG para o relacionamento é '_banksAccountsContacts' pois existem duas instâncias
+			// Uma para 'Providers' e outra para 'Contacts'
+			_banksAccountsContacts_listReload(false, false, false, false, false, formId.val());
 		};
 
 	// LIST CONTROLLERS
@@ -331,6 +342,9 @@ jQuery(function() {
 						reasonStatus.val(item.reasonStatus);
 						// mostra o nome do usuário vinculado ao contato
 						jQuery('#<?php echo $APPTAG?>_name_linked').text(item.user);
+
+						// show relations buttons
+						setHidden('#<?php echo $APPTAG?>-buttons-relations', false, '#<?php echo $APPTAG?>-msg-relations');
 
 						<?php // Closure Actions
 						require(JPATH_CORE.DS.'apps/snippets/form/loadEdit.end.js.php');
@@ -454,6 +468,18 @@ jQuery(window).load(function() {
 							return jQuery('#<?php echo $APPTAG?>-cmail').val();
 						}
 					}
+				},
+				required: function(el) {
+					return (jQuery('#<?php echo $APPTAG?>-access-1').is(':checked'));
+				}
+			},
+			username: {
+				remote: {
+					url: '<?php echo _CORE_?>helpers/users/checkEmail.php',
+					type: 'post'
+				},
+				required: function(el) {
+					return (jQuery('#<?php echo $APPTAG?>-access-1').is(':checked'));
 				}
 			},
 			password : {

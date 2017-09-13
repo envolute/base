@@ -53,10 +53,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	$query	= '
 		SELECT
 			'. $db->quoteName('T1.id') .',
-			'. $db->quoteName('T2.name') .' client,
-			'. $db->quoteName('T3.name') .' plan,
-			'. $db->quoteName('T4.name') .' provider,
-			'. $db->quoteName('T3.price') .',
+			'. $db->quoteName('T2.name') .' plan,
+			'. $db->quoteName('T3.name') .' provider,
+			'. $db->quoteName('T2.price') .',
 			'. $db->quoteName('T1.phone_number') .',
 			'. $db->quoteName('T1.state') .'
 	';

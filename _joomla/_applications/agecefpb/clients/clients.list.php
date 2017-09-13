@@ -53,7 +53,7 @@ if($hasAdmin) :
 	';
 	$adminView['head']['actions'] = '
 		<th class="text-center d-none d-lg-table-cell d-print-none" width="60">'.baseAppHelper::linkOrder(JText::_('TEXT_ACTIVE'), 'T1.state', $APPTAG).'</th>
-		<th class="text-center d-print-none" width="70">'.JText::_('TEXT_ACTIONS').'</th>
+		<th width="100" class="text-center d-print-none">'.JText::_('TEXT_ACTIONS').'</th>
 	';
 endif;
 
@@ -118,6 +118,7 @@ if($num_rows) : // verifica se existe
 					</a>
 				</td>
 				<td class="text-center d-print-none">
+					<a href="#" class="btn btn-xs btn-success hasTooltip" title="'.JText::_('TEXT_PHONES').'" onclick="phones_listReload(false, false, false, true, \'client_id\', '.$item->id.')" data-toggle="modal" data-target="#modal-list-phones"><span class="base-icon-phone"></span></a>
 					<a href="#" class="btn btn-xs btn-warning hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil"></span></a>
 					<a href="#" class="btn btn-xs btn-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash"></span></a>
 				</td>
@@ -136,7 +137,7 @@ if($num_rows) : // verifica se existe
 			if(empty($item->user)) $status = '<span class="base-icon-cancel text-danger"> '.JText::_('TEXT_NO_USER_ASSOC').'</span><div class="small text-muted text-truncate">'.JText::_('TEXT_NO_USER_ASSOC_DESC').'</div>';
 			else $status = '<span class="base-icon-ok text-success"> '.JText::_('TEXT_APPROVED').'</span>';
 		endif;
-		$cx_status	= $item->cx_status == 1 ? '<span class="badge badge-warning bg-live text-white text-uppercase">'.JText::_('TEXT_RETIRED').'</span> ' : '';
+		$cx_status	= $item->cx_status == 1 ? '<span class="badge badge-warning bg-live text-white text-uppercase">'.JText::_('TEXT_CX_STATUS_1').'</span> ' : '';
 		$rowState	= $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);

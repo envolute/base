@@ -19,8 +19,8 @@ $where = '';
 	$fGender = $app->input->get('fGender', 2, 'int');
 	if($fGender != 2) $where .= ' AND '.$db->quoteName('T1.gender').' = '.$fGender;
 	// MARITAL STATUS -> select
-	$fMStatus = $app->input->get('fMStatus', 2, 'int');
-	if($fMStatus > 0) $where .= ' AND '.$db->quoteName('T1.marital_status').' = '.$fMStatus;
+	$fMStatus = $app->input->get('fMStatus', 0, 'int');
+	if($fMStatus != 0) $where .= ' AND '.$db->quoteName('T1.marital_status').' = '.$fMStatus;
 
 	// DATE
 	$dateMin	= $app->input->get('dateMin', '', 'string');

@@ -94,7 +94,7 @@ $users = $db->loadObjectList();
 			</div>
 			<div id="<?php echo $APPTAG?>-group-partner" class="col-12" hidden>
 				<div class="form-group">
-					<label><?php echo JText::_('FIELD_LABEL_PARTNER'); ?></label>
+					<label class="field-required"><?php echo JText::_('FIELD_LABEL_PARTNER'); ?></label>
 					<input type="text" name="partner" id="<?php echo $APPTAG?>-partner" class="form-control upper" />
 				</div>
 			</div>
@@ -234,16 +234,16 @@ $users = $db->loadObjectList();
 			<legend><?php echo JText::_('TEXT_DATA_EMPLOYEE'); ?></legend><div class="form-group">
 				<span class="btn-group btn-group-justified" data-toggle="buttons">
 					<label class="btn btn-default btn-active-success">
-						<input type="radio" name="cx_status" id="<?php echo $APPTAG?>-cx_status-0" value="0" class="auto-tab" data-target="#<?php echo $APPTAG?>-group-emailCaixa" data-target-display="true" />
+						<input type="radio" name="cx_status" id="<?php echo $APPTAG?>-cx_status-0" value="0" class="auto-tab" data-target=".<?php echo $APPTAG?>-group-retired" data-target-display="true" />
 						<?php echo JText::_('TEXT_CX_STATUS_0'); ?>
 					</label>
 					<label class="btn btn-default btn-active-warning">
-						<input type="radio" name="cx_status" id="<?php echo $APPTAG?>-cx_status-1" value="1" class="auto-tab" data-target="#<?php echo $APPTAG?>-group-emailCaixa" data-target-display="false" />
+						<input type="radio" name="cx_status" id="<?php echo $APPTAG?>-cx_status-1" value="1" class="auto-tab" data-target=".<?php echo $APPTAG?>-group-retired" data-target-display="false" />
 						<?php echo JText::_('TEXT_CX_STATUS_1'); ?></span>
 					</label>
 				</span>
 			</div>
-			<div id="<?php echo $APPTAG?>-group-emailCaixa" class="form-group">
+			<div class="form-group <?php echo $APPTAG?>-group-retired">
 				<div class="input-group">
 					<input type="text" name="cx_email" id="<?php echo $APPTAG?>-cx_email" class="form-control" placeholder="E-mail Caixa" />
 					<span class="input-group-addon">@caixa.gov.br</span>
@@ -269,8 +269,8 @@ $users = $db->loadObjectList();
 					</div>
 				</div>
 				<div class="col-lg-6">
-					<div class="form-group field-required">
-						<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_SITUATED_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_SITUATED'); ?></label>
+					<div class="form-group <?php echo $APPTAG?>-group-retired">
+						<label class="field-required iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_SITUATED_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_SITUATED'); ?></label>
 						<input type="text" name="cx_situated" id="<?php echo $APPTAG?>-cx_situated" class="form-control upper" />
 					</div>
 				</div>
@@ -298,6 +298,8 @@ $users = $db->loadObjectList();
 				</span>
 				<input type="hidden" name="user_id" id="<?php echo $APPTAG?>-user_id" />
 				<input type="hidden" name="usergroup" id="<?php echo $APPTAG?>-usergroup" />
+				<input type="hidden" name="username" id="<?php echo $APPTAG?>-username" />
+				<input type="hidden" name="cusername" id="<?php echo $APPTAG?>-cusername" />
 			</div>
 			<div id="<?php echo $APPTAG?>-reasonStatus-group" class="collapse <?php echo $APPTAG?>-is-user">
 				<input type="text" name="reasonStatus" id="<?php echo $APPTAG?>-reasonStatus" class="form-control" maxlength="50" placeholder="<?php echo JText::_('FIELD_LABEL_REASON'); ?>" />

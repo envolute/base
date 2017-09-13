@@ -19,18 +19,18 @@ defined('_JEXEC') or die;
 					<div class="form-group">
 						<span class="btn-group btn-group-justified" data-toggle="buttons">
 							<label class="btn btn-default btn-active-success">
-								<input type="radio" name="cx_status" id="<?php echo $APPTAG?>-cx_status-0" value="0" class="auto-tab" data-target="#<?php echo $APPTAG?>-group-emailCaixa" data-target-display="true" />
+								<input type="radio" name="cx_status" id="<?php echo $APPTAG?>-cx_status-0" value="0" class="auto-tab" data-target=".<?php echo $APPTAG?>-group-retired" data-target-display="true" />
 								<?php echo JText::_('TEXT_CX_STATUS_0'); ?>
 							</label>
 							<label class="btn btn-default btn-active-warning">
-								<input type="radio" name="cx_status" id="<?php echo $APPTAG?>-cx_status-1" value="1" class="auto-tab" data-target="#<?php echo $APPTAG?>-group-emailCaixa" data-target-display="false" />
+								<input type="radio" name="cx_status" id="<?php echo $APPTAG?>-cx_status-1" value="1" class="auto-tab" data-target=".<?php echo $APPTAG?>-group-retired" data-target-display="false" />
 								<?php echo JText::_('TEXT_CX_STATUS_1'); ?></span>
 							</label>
 						</span>
 					</div>
 				</div>
 				<div class="col-sm-7 col-md-6">
-					<div id="<?php echo $APPTAG?>-group-emailCaixa" class="form-group">
+					<div class="form-group <?php echo $APPTAG?>-group-retired">
 						<div class="input-group">
 							<input type="text" name="cx_email" id="<?php echo $APPTAG?>-cx_email" class="form-control" placeholder="E-mail Caixa" />
 							<span class="input-group-addon">@caixa.gov.br</span>
@@ -56,8 +56,8 @@ defined('_JEXEC') or die;
 					</div>
 				</div>
 				<div class="col-sm-6 col-md-3">
-					<div class="form-group field-required">
-						<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_SITUATED_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_SITUATED'); ?></label>
+					<div class="form-group <?php echo $APPTAG?>-group-retired">
+						<label class="field-required iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_SITUATED_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_SITUATED'); ?></label>
 						<input type="text" name="cx_situated" id="<?php echo $APPTAG?>-cx_situated" class="form-control upper" />
 					</div>
 				</div>
@@ -138,7 +138,7 @@ defined('_JEXEC') or die;
 					<div class="col-sm-4">
 						<div class="form-group field-required">
 							<label><?php echo JText::_('FIELD_LABEL_MARITAL_STATUS'); ?></label>
-							<select name="marital_status" id="<?php echo $APPTAG?>-marital_status" class="form-control field-id auto-tab" data-target="<?php echo $APPTAG?>-group-partner">
+							<select name="marital_status" id="<?php echo $APPTAG?>-marital_status" class="form-control field-id auto-tab" data-target="<?php echo $APPTAG?>-group-partner" data-tab-disabled="true">
 								<option value="0" data-target-display="false"><?php echo JText::_('TEXT_SELECT'); ?></option>
 								<option value="1" data-target-display="false"><?php echo JText::_('TEXT_MARITAL_STATUS_1'); ?></option>
 								<option value="2" data-target-display="true"><?php echo JText::_('TEXT_MARITAL_STATUS_2'); ?></option>

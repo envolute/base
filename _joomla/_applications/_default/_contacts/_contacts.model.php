@@ -140,7 +140,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 		// SAVE CONDITION
 		// Condição para inserção e atualização dos registros
-		$save_condition = (!empty($request['name']) && !empty($request['email']));
+		$save_condition = (!empty($request['group_id']) && !empty($request['name']));
 
 		if($id || (!empty($ids) && $ids != 0)) :  //UPDATE OR DELETE
 

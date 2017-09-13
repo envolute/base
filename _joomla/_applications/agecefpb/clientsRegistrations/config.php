@@ -34,7 +34,7 @@ if(!$ajaxRequest && (!isset($_SESSION[$APPTAG.'langDef']) || (isset($_SESSION[$A
 endif;
 
 // get user type default in registration
-$_SESSION[$APPTAG.'newUsertype'] = 2; // default 'Associado'
+$_SESSION[$APPTAG.'newUsertype'] = 10; // default 'Associado'
 
 // get user type default in registration
 $_SESSION[$APPTAG.'cardLimit'] = '300,00'; // default

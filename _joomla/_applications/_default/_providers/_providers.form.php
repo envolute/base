@@ -162,7 +162,7 @@ $groups = $db->loadObjectList();
 			<button type="button" class="btn btn-primary btn-block base-icon-phone btn-icon" onclick="<?php echo $APPTAG?>_viewPhones()" data-toggle="modal" data-target="#modal-list-_phones" data-backdrop="static" data-keyboard="false"> <?php echo JText::_('TEXT_PHONES')?></button>
 		</div>
 		<div class="col-6 col-lg-3 py-1">
-			<button type="button" class="btn btn-primary btn-block base-icon-bank btn-icon" onclick="<?php echo $APPTAG?>_viewBanks()" data-toggle="modal" data-target="#modal-list-_banksAccounts" data-backdrop="static" data-keyboard="false"> <?php echo JText::_('TEXT_BANKS_ACCOUNTS')?></button>
+			<button type="button" class="btn btn-primary btn-block base-icon-bank btn-icon" onclick="<?php echo $APPTAG?>_viewBanks()" data-toggle="modal" data-target="#modal-list-_banksAccountsProviders" data-backdrop="static" data-keyboard="false"> <?php echo JText::_('TEXT_BANKS_ACCOUNTS')?></button>
 		</div>
 		<div class="col-6 col-lg-3 py-1">
 			<button type="button" class="btn btn-primary btn-block base-icon-user-add btn-icon" onclick="<?php echo $APPTAG?>_viewContacts()" data-toggle="modal" data-target="#modal-list-_providersContacts" data-backdrop="static" data-keyboard="false"> <?php echo JText::_('TEXT_CONTACTS')?></button>

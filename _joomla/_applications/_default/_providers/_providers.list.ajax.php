@@ -55,7 +55,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			'. $db->quoteName('T1.id') .',
 			'. $db->quoteName('T1.name') .',
 			'. $db->quoteName('T2.name') .' grp,
-			'. $db->quoteName('T2.agreement') .',
+			'. $db->quoteName('T1.agreement') .',
 			'. $db->quoteName('T1.state')
 	;
 	if(!empty($rID) && $rID !== 0) :

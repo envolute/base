@@ -36,6 +36,8 @@ jQuery(function() {
 	// APP FIELDS
 	var user_id				= jQuery('#<?php echo $APPTAG?>-user_id');
 	var usergroup 			= jQuery('#<?php echo $APPTAG?>-usergroup');
+	var username 			= jQuery('#<?php echo $APPTAG?>-username');
+	var cusername 			= jQuery('#<?php echo $APPTAG?>-cusername');
 	var name 				= jQuery('#<?php echo $APPTAG?>-name');
 	var email				= jQuery('#<?php echo $APPTAG?>-email');
 	var cmail				= jQuery('#<?php echo $APPTAG?>-cmail');
@@ -144,6 +146,8 @@ jQuery(function() {
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
 			user_id.val('');
 			usergroup.val(<?php echo $_SESSION[$APPTAG.'newUsertype']?>);
+			username.val('');
+			cusername.val('');
 			name.val('');
 			email.val('');
 			cmail.val('');
@@ -329,6 +333,8 @@ jQuery(function() {
 						// App Fields
 						user_id.val(item.user_id);
 						usergroup.val(item.usergroup);
+						username.val(item.username);
+						cusername.val(item.username);
 						name.val(item.name);
 						email.val(item.email);
 						cmail.val(item.email);
@@ -454,6 +460,30 @@ jQuery(window).load(function() {
 					}
 				}
 			},
+			cpf : {
+				remote: {
+					url: '<?php echo _CORE_?>helpers/users/checkUsername.php',
+					type: 'post',
+					data: {
+						username: function() {
+							return jQuery('#<?php echo $APPTAG?>-cpf').val().replace(/[^\d]+/g,'');
+						},
+						cusername: function() {
+							return jQuery('#<?php echo $APPTAG?>-cusername').val();
+						}
+					}
+				}
+			},
+			cx_situated: { // lotação (agencia)
+				required: function(el) {
+					return (jQuery('#<?php echo $APPTAG?>-cx_status-0').is(':checked'));
+				}
+			},
+			partner: { // conjuge
+				required: function(el) {
+					return jQuery('#<?php echo $APPTAG?>-marital_status option:selected').data('targetDisplay');
+				}
+			},
 			password : {
 				minlength : 6
 			},
@@ -465,7 +495,7 @@ jQuery(window).load(function() {
 			email: {
 				remote: '<?php echo JText::_('MSG_EMAIL_EXISTS')?>'
 			},
-			username : {
+			cpf : {
 				remote: '<?php echo JText::_('MSG_USERNAME_EXISTS')?>'
 			},
 			repassword: {

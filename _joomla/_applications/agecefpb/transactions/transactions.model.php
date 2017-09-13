@@ -951,7 +951,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					SELECT '.
 						'0,'.
 						'0,'.
-						$db->quoteName('operator_id') .','.
+						$db->quoteName('provider_id') .','.
 						$db->quoteName('client_id') .','.
 						'0,'.
 						'0,'.

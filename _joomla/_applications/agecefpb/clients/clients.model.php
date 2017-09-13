@@ -170,6 +170,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$userInfo       = $usr['obj'];
 					// $usr['id']      =
 					$userInfoId     = isset($userInfo[0]['id']) ? $userInfo[0]['id'] : 0;
+					$userInfoUser   = isset($userInfo[0]['username']) ? $userInfo[0]['username'] : '';
 					$userInfoName   = isset($userInfo[0]['name']) ? $userInfo[0]['name'] : '';
 					$userInfoEmail  = isset($userInfo[0]['email']) ? $userInfo[0]['email'] : '';
 			        $userInfoBlock  = isset($userInfo[0]['block']) ? $userInfo[0]['block'] : 0;
@@ -203,6 +204,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				if($task == 'get') :
 
 					$itemUID    = ($isUser) ? $userInfoId : 0;
+					$itemUser   = ($isUser) ? $userInfoUser : baseHelper::alphaNum($item->cpf);
 					$itemName   = ($isUser) ? $userInfoName : $item->name;
 					$itemEmail  = ($isUser) ? $userInfoEmail : $item->email;
 					$itemBlock  = ($isUser) ? $userInfoBlock : 1; // inverso do 'access'
@@ -220,6 +222,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						// App Fields
 						'user_id'			=> $itemUID,
 						'usergroup'			=> $item->usergroup,
+						'username'			=> $itemUser,
 						'name'				=> $itemName,
 						'email'				=> $itemEmail,
 						'cpf'				=> $item->cpf,
@@ -430,8 +433,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$elemVal = $ids;
 						endif;
 
-			            // DELETE USER REGISTERED
-			            $userMsg = '';
+						// DELETE USER REGISTERED
+			            $query = 'SELECT '. $db->quoteName('user_id') .' FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('id') .' IN ('.$ids.')';
+						$db->setQuery($query);
+						$uList = $db->loadObjectList();
+						$userMsg = '';
 						foreach ($uList as $usr) {
 							if($usr->user_id != 0) {
 								if(baseUserHelper::deleteJoomlaUser($usr->user_id)) $userMsg = JText::_('MSG_USER_DELETED');

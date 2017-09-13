@@ -10,7 +10,12 @@ jQuery(function() {
 		input.each(function() {
 
 			var obj = jQuery(this);
-			var objFocus = setElement((isSet(target) ? target : '#'+obj.data('target').replace('#','')));
+			var Tg = '';
+			if(isSet(obj.data('target')) && !isEmpty(obj.data('target'))) {
+				Tg = obj.data('target');
+				if(Tg.indexOf('#') == -1 && Tg.indexOf('.') == -1) Tg = '#'+Tg;
+			}
+			var objFocus = setElement((isSet(target) ? target : Tg));
 			var objGroup = setElement((isSet(group) ? group : obj.data('targetGroup')));
 
 			obj.change(function() {

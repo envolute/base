@@ -151,7 +151,7 @@ jQuery(function() {
 
 			// Habilita campos não editaveis
 			for (i = 0; i < disableEdit.length; i++) {
-				<?php echo $APPTAG?>_noEditableField(disableEdit[i]);
+				<?php echo $APPTAG?>_noEditableField(disableEdit[i], true);
 			}
 
 			// Recarrega o form e esconde a mensagem de successo
@@ -275,7 +275,7 @@ jQuery(function() {
 
 						// Desabilita campos não editáveis
 						for (i = 0; i < disableEdit.length; i++) {
-							<?php echo $APPTAG?>_noEditableField(disableEdit[i]);
+							<?php echo $APPTAG?>_noEditableField(disableEdit[i], false);
 						}
 
 						<?php // Closure Actions
@@ -297,10 +297,14 @@ jQuery(function() {
 		};
 
 		// NO EDITABLE FIELDS
-		window.<?php echo $APPTAG?>_noEditableField = function(field) {
-			var val = field.val();
-			if(!isEmpty(val) && val != 0) field.prop('disabled', true);
-			else field.prop('disabled', false);
+		window.<?php echo $APPTAG?>_noEditableField = function(field, reset) {
+			if(isSet(reset) && reset) {
+				field.prop('disabled', false);
+			} else {
+				var val = field.val();
+				if(!isEmpty(val) && val != 0) field.prop('disabled', true);
+				else field.prop('disabled', false);
+			}
 			// Atualiza se for select 'chosen'
 			if(field.is('select')) field.trigger('chosen:updated');
 		};
@@ -349,7 +353,12 @@ jQuery(window).load(function() {
 					}
 				}
 			},
-			partner: {
+			cx_situated: { // lotação (agencia)
+				required: function(el) {
+					return (jQuery('#<?php echo $APPTAG?>-cx_status-0').is(':checked'));
+				}
+			},
+			partner: { // conjuge
 				required: function(el) {
 					return jQuery('#<?php echo $APPTAG?>-marital_status option:selected').data('targetDisplay');
 				}
@@ -427,7 +436,7 @@ jQuery(window).load(function() {
 
 <?php
 // Admin Actions
-require_once(JPATH_APPS.DS.'clients/clients.select.php');
+if($cfg['isEdit']) require_once(JPATH_APPS.DS.'clients/clients.select.php');
 ?>
 
 <div id="<?php echo $APPTAG?>-form-loader" class="text-center">

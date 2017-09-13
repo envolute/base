@@ -170,7 +170,10 @@ jQuery(function() {
 		};
 		// CUSTOM -> view banks accounts list
 		window.<?php echo $APPTAG?>_viewBanks = function() {
-			_banksAccounts_listReload(false, false, false, false, false, formId.val());
+			// _banksAccounts_listReload
+			// A TAG para o relacionamento é '_banksAccountsProviders' pois existem duas instâncias
+			// Uma para 'Providers' e outra para 'Contacts'
+			_banksAccountsProviders_listReload(false, false, false, false, false, formId.val());
 		};
 		// CUSTOM -> view contacts list
 		window.<?php echo $APPTAG?>_viewContacts = function() {

@@ -32,7 +32,7 @@
 			</span>
 		</div>
 	</div>
-	<div class="col-sm form-group" hidden>
+	<div class="col-sm form-group d-none d-sm-block">
 		<button type="button" id="btn-<?php echo $APPTAG?>-reset" class="base-icon-ccw btn btn-sm btn-default btn-block">
 			<?php echo JText::_('TEXT_NEW'); ?>
 		</button>
