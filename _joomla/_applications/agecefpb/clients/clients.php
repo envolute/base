@@ -50,7 +50,6 @@ jQuery(function() {
 	var partner				= jQuery('#<?php echo $APPTAG?>-partner');
 	var children			= jQuery('#<?php echo $APPTAG?>-children');
 	// Company data
-	var cx_status			= mainForm.find('input[name=cx_status]:radio'); // status "efetivo/aposentado"
 	var cx_code				= jQuery('#<?php echo $APPTAG?>-cx_code'); // matrícula
 	var cx_email			= jQuery('#<?php echo $APPTAG?>-cx_email');
 	var cx_role				= jQuery('#<?php echo $APPTAG?>-cx_role'); // cargo
@@ -67,6 +66,9 @@ jQuery(function() {
 	var phone0				= jQuery('#<?php echo $APPTAG?>-phone0');
 	var phone1				= jQuery('#<?php echo $APPTAG?>-phone1');
 	var phone2				= jQuery('#<?php echo $APPTAG?>-phone2');
+	var whatsapp0			= jQuery('#<?php echo $APPTAG?>-whatsapp0');
+	var whatsapp1			= jQuery('#<?php echo $APPTAG?>-whatsapp1');
+	var whatsapp2			= jQuery('#<?php echo $APPTAG?>-whatsapp2');
 	// Billing data
 	var agency				= jQuery('#<?php echo $APPTAG?>-agency');
 	var account				= jQuery('#<?php echo $APPTAG?>-account');
@@ -159,7 +161,6 @@ jQuery(function() {
 			marital_status.selectUpdate(0); // select
 			partner.val('');
 			children.selectUpdate(0); // select
-			checkOption(cx_status, 0); // radio
 			cx_code.val('');
 			cx_email.val('');
 			cx_role.val('');
@@ -174,6 +175,9 @@ jQuery(function() {
 			phone0.val('');
 			phone1.val('');
 			phone2.val('');
+			checkOption(whatsapp0, 0);
+			checkOption(whatsapp1, 0);
+			checkOption(whatsapp2, 0);
 			agency.val('');
 			account.val('');
 			operation.val('');
@@ -235,6 +239,20 @@ jQuery(function() {
 			?>
 		};
 
+		// CUSTOM -> Set Type
+		// implementa ações de acordo com o tipo do cliente
+		window.<?php echo $APPTAG?>_setType = function(e){
+			// Associado Efetivo | aposentado
+			if(e == 11 || e == 12) {
+				setHidden('#<?php echo $APPTAG?>-group-caixa', false);
+				// aposentado
+				setHidden('.<?php echo $APPTAG?>-group-only-effective', (e == 12 ? true : false));
+			// Contribuinte
+			} else {
+				setHidden('#<?php echo $APPTAG?>-group-caixa', true);
+			}
+		}
+
 		// CUSTOM -> Reset Registration Fields
 		window.<?php echo $APPTAG?>_accessForm = function(val) {
 			var isUser = (user_id.val() == 0) ? false : true;
@@ -242,7 +260,8 @@ jQuery(function() {
 			password.val('');
 			repassword.val('');
 			emailInfo.val('');
-			checkOption(emailConfirm, (val && !isUser));
+			var mailConfirm = (val && !isUser) ? 1 : 0;
+			checkOption(emailConfirm, mailConfirm);
 			jQuery('#accessFields').collapse((val ? 'show' : 'hide'));
 			jQuery('#<?php echo $APPTAG?>-reasonStatus-group').collapse((!val ? 'show' : 'hide'));
 			setHidden('.new-user-data', (val && isUser), '.edit-user-data');
@@ -346,7 +365,6 @@ jQuery(function() {
 						marital_status.selectUpdate(item.marital_status); // select
 						partner.val(item.partner);
 						children.selectUpdate(item.children); // select
-						checkOption(cx_status, item.cx_status); // radio
 						cx_code.val(item.cx_code);
 						cx_email.val(item.cx_email);
 						cx_role.val(item.cx_role);
@@ -363,6 +381,10 @@ jQuery(function() {
 							phone0.val(p[0]);
 							phone1.val(p[1]);
 							phone2.val(p[2]);
+							var w = item.whatsapp.split(",");
+							checkOption(whatsapp0, w[0]);
+							checkOption(whatsapp1, w[1]);
+							checkOption(whatsapp2, w[2]);
 						agency.val(item.agency);
 						account.val(item.account);
 						operation.val(item.operation);
@@ -427,8 +449,7 @@ jQuery(function() {
 					<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
 					jQuery.map( data, function( res ) {
 						setTimeout(function() {
-							<?php $redir = baseHelper::setUrlParam(JURI::current(), 'sync=1'); ?>
-							window.location.href = "<?php echo $redir?>";
+							window.location.href = "<?php echo JURI::current()?>";
 						}, 1000);
 					});
 				},
@@ -476,7 +497,7 @@ jQuery(window).load(function() {
 			},
 			cx_situated: { // lotação (agencia)
 				required: function(el) {
-					return (jQuery('#<?php echo $APPTAG?>-cx_status-0').is(':checked'));
+					return (jQuery('#<?php echo $APPTAG?>-usergroup option:selected').val() == 11);
 				}
 			},
 			partner: { // conjuge
@@ -558,6 +579,13 @@ jQuery(window).load(function() {
 				</button>
 			<?php endif; ?>
 		</div>
+		<?php
+		// Mensagem de sucesso após a sincronização dos dados
+		if(isset($_SESSION[$APPTAG.'SyncSuccess']) && $_SESSION[$APPTAG.'SyncSuccess']) :
+			echo '<h5 class="alert alert-success base-icon-ok"> '.JText::_('MSG_USER_SYNCHRONIZED').'</h5>';
+			unset($_SESSION[$APPTAG.'SyncSuccess']);
+		endif;
+		?>
 	<?php endif; // showApp ?>
 
 	<?php

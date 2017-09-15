@@ -1,6 +1,11 @@
 <?php
 defined('_JEXEC') or die;
 
+// GRUPOS DE CLIENTES/ASSOCIADOS
+$query = 'SELECT * FROM '. $db->quoteName('#__usergroups') .' WHERE '. $db->quoteName('parent_id') .' = 10 ORDER BY id';
+$db->setQuery($query);
+$userGrps = $db->loadObjectList();
+
 // USUÁRIOS SEM CLIENTES ASSOCIADOS
 // IMPORTANTE:
 // 1 - Não lista usuários do grupo 'Desenvolvedor' => '8'
@@ -22,30 +27,109 @@ $users = $db->loadObjectList();
 ?>
 
 <div class="row">
-	<div class="col-lg-6 b-right b-dashed">
-		<div class="form-group field-required">
-			<label><?php echo JText::_('FIELD_LABEL_NAME'); ?></label>
-			<div class="input-group">
-				<input type="text" name="name" id="<?php echo $APPTAG?>-name" class="form-control upper" />
-				<span class="btn-group input-group-btn" data-toggle="buttons">
-					<label class="btn btn-default btn-active-success hasTooltip" title="<?php echo JText::_('MSG_NAME_CARD'); ?>">
-						<input type="checkbox" name="toggleName" id="<?php echo $APPTAG?>-toggleName" value="1" class="no-validate auto-tab" data-target="<?php echo $APPTAG?>-group-nameCard" data-target-display="true" />
-						<span class="base-icon-plus icon-default"></span>
-					</label>
-				</span>
-			</div>
-		</div>
-		<div id="<?php echo $APPTAG?>-group-nameCard" class="form-group" hidden>
-			<label class="iconTip hasTooltip" title="<?php echo JText::_('MSG_NAME_CARD'); ?>"><?php echo JText::_('FIELD_LABEL_NAME_CARD'); ?></label><br />
-			<input type="text" name="name_card" id="<?php echo $APPTAG?>-name_card" class="form-control upper" maxlength="30" />
-		</div>
-		<div class="form-group field-required">
-			<label>E-mail</label>
-			<input type="email" name="email" id="<?php echo $APPTAG?>-email" class="form-control field-email" />
-			<input type="hidden" name="cmail" id="<?php echo $APPTAG?>-cmail" />
-		</div>
+	<div class="col-lg-9 b-right b-dashed">
 		<div class="row">
-			<div class="col-sm-6">
+			<div class="col-sm-8">
+				<div class="form-group field-required">
+					<label><?php echo JText::_('FIELD_LABEL_NAME'); ?></label>
+					<div class="input-group">
+						<input type="text" name="name" id="<?php echo $APPTAG?>-name" class="form-control upper" />
+						<span class="btn-group input-group-btn" data-toggle="buttons">
+							<label class="btn btn-default btn-active-success hasTooltip" title="<?php echo JText::_('MSG_NAME_CARD'); ?>">
+								<input type="checkbox" name="toggleName" id="<?php echo $APPTAG?>-toggleName" value="1" class="no-validate auto-tab" data-target="<?php echo $APPTAG?>-group-nameCard" data-target-display="true" />
+								<span class="base-icon-plus icon-default"></span>
+							</label>
+						</span>
+					</div>
+				</div>
+				<div id="<?php echo $APPTAG?>-group-nameCard" class="form-group" hidden>
+					<label class="iconTip hasTooltip" title="<?php echo JText::_('MSG_NAME_CARD'); ?>"><?php echo JText::_('FIELD_LABEL_NAME_CARD'); ?></label><br />
+					<input type="text" name="name_card" id="<?php echo $APPTAG?>-name_card" class="form-control upper" maxlength="30" />
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group field-required">
+					<label><?php echo JText::_('TEXT_USER_TYPE'); ?></label>
+					<select name="usergroup" id="<?php echo $APPTAG?>-usergroup" class="form-control field-id" onchange="<?php echo $APPTAG?>_setType(this.value)">
+						<?php
+							foreach ($userGrps as $obj) {
+								echo '<option value="'.$obj->id.'">'.baseHelper::nameFormat($obj->title).'</option>';
+							}
+						?>
+					</select>
+				</div>
+			</div>
+			<div class="col-12">
+				<fieldset id="<?php echo $APPTAG?>-group-caixa" class="fieldset-embed pt-3 px-3 pb-0">
+					<div class="row">
+						<div class="col-md-8 <?php echo $APPTAG?>-group-only-effective">
+							<div class="form-group">
+								<label>E-mail Caixa</label>
+								<div class="input-group">
+									<input type="text" name="cx_email" id="<?php echo $APPTAG?>-cx_email" class="form-control" />
+									<span class="input-group-addon">@caixa.gov.br</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-4">
+							<div class="form-group field-required">
+								<label><?php echo JText::_('FIELD_LABEL_CODE'); ?></label>
+								<input type="text" name="cx_code" id="<?php echo $APPTAG?>-cx_code" class="form-control upper" />
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-4">
+							<div class="form-group field-required">
+								<label><?php echo JText::_('FIELD_LABEL_ADMISSION_DATE'); ?></label>
+								<input type="text" name="cx_date" id="<?php echo $APPTAG?>-cx_date" class="form-control field-date" data-convert="true" />
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-4">
+							<div class="form-group field-required">
+								<label><?php echo JText::_('FIELD_LABEL_ROLE'); ?></label>
+								<input type="text" name="cx_role" id="<?php echo $APPTAG?>-cx_role" class="form-control upper" />
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-4">
+							<div class="form-group <?php echo $APPTAG?>-group-only-effective">
+								<label class="field-required iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_SITUATED_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_SITUATED'); ?></label>
+								<input type="text" name="cx_situated" id="<?php echo $APPTAG?>-cx_situated" class="form-control upper" />
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			<div class="col-sm-8">
+				<div class="form-group field-required">
+					<label>E-mail</label>
+					<input type="email" name="email" id="<?php echo $APPTAG?>-email" class="form-control field-email" />
+					<input type="hidden" name="cmail" id="<?php echo $APPTAG?>-cmail" />
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group field-required">
+					<label><?php echo JText::_('FIELD_LABEL_BIRTHDAY'); ?></label>
+					<input type="text" name="birthday" id="<?php echo $APPTAG?>-birthday" class="form-control field-date birthday" data-convert="true" />
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group field-required">
+					<label>CPF</label>
+					<input type="text" name="cpf" id="<?php echo $APPTAG?>-cpf" class="form-control field-cpf" />
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group field-required">
+					<label class="iconTip hasTooltip" title="<?php echo JText::_('TEXT_ONLY_NUMBERS'); ?>">RG</label>
+					<input type="text" name="rg" id="<?php echo $APPTAG?>-rg" class="form-control numeric" />
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group field-required">
+					<label>RG Orgão</label>
+					<input type="text" name="rg_orgao" id="<?php echo $APPTAG?>-rg_orgao" class="form-control upper" />
+				</div>
+			</div>
+			<div class="col-sm-4">
 				<div class="form-group field-required">
 					<label><?php echo JText::_('FIELD_LABEL_GENDER'); ?></label>
 					<span class="btn-group btn-group-justified" data-toggle="buttons">
@@ -60,13 +144,7 @@ $users = $db->loadObjectList();
 					</span>
 				</div>
 			</div>
-			<div class="col-sm-6">
-				<div class="form-group field-required">
-					<label><?php echo JText::_('FIELD_LABEL_BIRTHDAY'); ?></label>
-					<input type="text" name="birthday" id="<?php echo $APPTAG?>-birthday" class="form-control field-date birthday" data-convert="true" />
-				</div>
-			</div>
-			<div class="col-sm-6">
+			<div class="col-sm-4">
 				<div class="form-group">
 					<label><?php echo JText::_('FIELD_LABEL_CHILDREN'); ?></label>
 					<select type="text" name="children" id="<?php echo $APPTAG?>-children" class="form-control">
@@ -79,7 +157,7 @@ $users = $db->loadObjectList();
 					</select>
 				</div>
 			</div>
-			<div class="col-sm-6">
+			<div class="col-sm-4">
 				<div class="form-group">
 					<label><?php echo JText::_('FIELD_LABEL_MARITAL_STATUS'); ?></label>
 					<select name="marital_status" id="<?php echo $APPTAG?>-marital_status" class="form-control auto-tab" data-target="<?php echo $APPTAG?>-group-partner">
@@ -100,50 +178,24 @@ $users = $db->loadObjectList();
 			</div>
 		</div>
 	</div>
-	<div class="col-lg-6">
-		<div class="row">
-			<div class="col-sm-6 b-right b-dashed">
-				<div class="form-group field-required">
-					<label>CPF</label>
-					<input type="text" name="cpf" id="<?php echo $APPTAG?>-cpf" class="form-control field-cpf" />
-				</div>
-				<div class="form-group field-required">
-					<label class="iconTip hasTooltip" title="<?php echo JText::_('TEXT_ONLY_NUMBERS'); ?>">RG</label>
-					<input type="text" name="rg" id="<?php echo $APPTAG?>-rg" class="form-control numeric" />
-				</div>
-				<div class="form-group field-required">
-					<label>RG Orgão</label>
-					<input type="text" name="rg_orgao" id="<?php echo $APPTAG?>-rg_orgao" class="form-control upper" />
-				</div>
-				<div class="form-group field-required">
-					<label><?php echo JText::_('FIELD_LABEL_CARD_LIMIT'); ?></label>
-					<div class="input-group">
-						<span class="input-group-addon">R$</span>
-						<input type="text" name="card_limit" id="<?php echo $APPTAG?>-card_limit" class="form-control field-price" data-convert="true" />
-						<span class="input-group-addon base-icon-info-circled cursor-help hasPopover" data-placement="top" data-content="<?php echo JText::_('MSG_MEMBERSHIP_BENEFITS_DESC')?>"></span>
+	<div class="col-lg-3">
+		<div class="form-group">
+			<label><?php echo JText::_('FIELD_LABEL_PHOTO'); ?></label>
+			<div class="image-file">
+				<a href="#" class="image-action">
+					<div class="image-file-label">
+						<span class="image-file-off base-icon-file-image"><small>200 x 200</small></span>
+						<span class="image-file-on text-sm base-icon-ok" hidden></span>
+						<span class="image-file-edit base-icon-pencil" hidden></span>
 					</div>
-				</div>
+				</a>
+				<span class="btn-group mt-2"></span>
+				<input type="file" name="file[0]" id="<?php echo $APPTAG?>-file0" class="field-image" hidden />
 			</div>
-			<div class="col-sm-6">
-				<div class="form-group">
-					<label><?php echo JText::_('FIELD_LABEL_PHOTO'); ?></label>
-					<div class="image-file">
-						<a href="#" class="image-action">
-							<div class="image-file-label">
-								<span class="image-file-off base-icon-file-image"><small>200 x 200</small></span>
-								<span class="image-file-on text-sm base-icon-ok" hidden></span>
-								<span class="image-file-edit base-icon-pencil" hidden></span>
-							</div>
-						</a>
-						<span class="btn-group mt-2"></span>
-						<input type="file" name="file[0]" id="<?php echo $APPTAG?>-file0" class="field-image" hidden />
-					</div>
-				</div>
-				<div id="<?php echo $APPTAG?>-group-btnPrint" class="form-group" hidden>
-					<label class="d-block text-center pt-1"><?php echo JText::_('TEXT_CLIENT_CARD'); ?></label>
-					<button type="button" class="btn btn-lg btn-block btn-success base-icon-print btn-icon" onclick="<?php echo $APPTAG?>_printCard()"> <?php echo JText::_('TEXT_PRINT'); ?></button>
-				</div>
-			</div>
+		</div>
+		<div id="<?php echo $APPTAG?>-group-btnPrint" class="form-group" hidden>
+			<label class="d-block text-center pt-1"><?php echo JText::_('TEXT_CLIENT_CARD'); ?></label>
+			<button type="button" class="btn btn-lg btn-block btn-success base-icon-print btn-icon" onclick="<?php echo $APPTAG?>_printCard()"> <?php echo JText::_('TEXT_PRINT'); ?></button>
 		</div>
 	</div>
 </div>
@@ -193,96 +245,88 @@ $users = $db->loadObjectList();
 	<div class="col-md-4 col-lg-3 b-left b-dashed">
 		<div class="form-group">
 			<label><?php echo JText::_('FIELD_LABEL_CELLPHONE'); ?> 1</label>
-			<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone0" class="form-control field-phone" />
+			<div class="input-group">
+				<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone0" class="form-control field-phone" />
+				<span class="input-group-btn btn-group" data-toggle="buttons">
+					<label class="btn btn-outline-success btn-active-success base-icon-whatsapp">
+						<input type="checkbox" class="auto-tab" data-target="<?php echo $APPTAG?>-whatsapp0" data-target-value="1" data-target-value-reset="" />
+					</label>
+					<input type="text" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp0" />
+				</span>
+			</div>
 		</div>
 		<div class="form-group">
 			<label><?php echo JText::_('FIELD_LABEL_CELLPHONE'); ?> 2</label>
-			<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone1" class="form-control field-phone" />
+			<div class="input-group">
+				<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone1" class="form-control field-phone" />
+				<span class="input-group-btn btn-group" data-toggle="buttons">
+					<label class="btn btn-outline-success btn-active-success base-icon-whatsapp">
+						<input type="checkbox" class="auto-tab" data-target="<?php echo $APPTAG?>-whatsapp1" data-target-value="1" data-target-value-reset="" />
+					</label>
+					<input type="text" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp1" />
+				</span>
+			</div>
 		</div>
 		<div class="form-group">
 			<label><?php echo JText::_('FIELD_LABEL_PHONE_FIXED'); ?></label>
-			<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone2" class="form-control field-phone" />
+			<div class="input-group">
+				<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone2" class="form-control field-phone" />
+				<span class="input-group-btn btn-group" data-toggle="buttons">
+					<label class="btn btn-outline-success btn-active-success base-icon-whatsapp">
+						<input type="checkbox" class="auto-tab" data-target="<?php echo $APPTAG?>-whatsapp2" data-target-value="1" data-target-value-reset="" />
+					</label>
+					<input type="text" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp2" />
+				</span>
+			</div>
 		</div>
 	</div>
 </div>
-<hr class="hr-tag" />
-<span class="badge badge-primary"><?php echo JText::_('TEXT_ACCOUNT_DATA'); ?></span>
 <div class="row">
-	<div class="col-sm-3 col-lg-2">
-		<div class="form-group">
-			<label><?php echo JText::_('FIELD_LABEL_AGENCY'); ?></label>
-			<input type="text" name="agency" id="<?php echo $APPTAG?>-agency" class="form-control numeric length-fixed" data-length="4" maxlength="4" />
+	<div class="col-md-9">
+		<hr class="hr-tag" />
+		<span class="badge badge-primary"><?php echo JText::_('TEXT_ACCOUNT_DATA'); ?></span>
+		<div class="row">
+			<div class="col-sm-3 col-lg-2">
+				<div class="form-group">
+					<label><?php echo JText::_('FIELD_LABEL_AGENCY'); ?></label>
+					<input type="text" name="agency" id="<?php echo $APPTAG?>-agency" class="form-control numeric length-fixed" data-length="4" maxlength="4" />
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label><?php echo JText::_('FIELD_LABEL_OPERATION'); ?></label>
+					<input type="text" name="operation" id="<?php echo $APPTAG?>-operation" class="form-control numeric length-fixed" data-length="3" maxlength="3" />
+				</div>
+			</div>
+			<div class="col-sm-4 col-lg-3">
+				<div class="form-group">
+					<label class="iconTip hasTooltip" title="<?php echo JText::_('TEXT_ONLY_NUMBERS'); ?>"><?php echo JText::_('FIELD_LABEL_ACCOUNT'); ?></label>
+					<input type="text" name="account" id="<?php echo $APPTAG?>-account" class="form-control numeric length-fixed" data-length="10" maxlength="10" />
+				</div>
+			</div>
 		</div>
 	</div>
-	<div class="col-sm-2">
-		<div class="form-group">
-			<label><?php echo JText::_('FIELD_LABEL_OPERATION'); ?></label>
-			<input type="text" name="operation" id="<?php echo $APPTAG?>-operation" class="form-control numeric length-fixed" data-length="3" maxlength="3" />
-		</div>
-	</div>
-	<div class="col-sm-4 col-lg-3">
-		<div class="form-group">
-			<label class="iconTip hasTooltip" title="<?php echo JText::_('TEXT_ONLY_NUMBERS'); ?>"><?php echo JText::_('FIELD_LABEL_ACCOUNT'); ?></label>
-			<input type="text" name="account" id="<?php echo $APPTAG?>-account" class="form-control numeric length-fixed" data-length="10" maxlength="10" />
+	<div class="col-md-3">
+		<hr class="hr-tag" />
+		<span class="badge badge-primary"><?php echo JText::_('TEXT_CLIENT_CREDIT_CARD'); ?></span>
+		<div class="form-group field-required">
+			<label><?php echo JText::_('FIELD_LABEL_CARD_LIMIT'); ?></label>
+			<div class="input-group">
+				<span class="input-group-addon">R$</span>
+				<input type="text" name="card_limit" id="<?php echo $APPTAG?>-card_limit" class="form-control field-price" data-convert="true" />
+				<span class="input-group-addon base-icon-info-circled cursor-help hasPopover" data-placement="top" data-content="<?php echo JText::_('MSG_MEMBERSHIP_BENEFITS_DESC')?>"></span>
+			</div>
 		</div>
 	</div>
 </div>
 <hr />
-<div class="row pt-3">
-	<div class="col-lg-6">
-		<fieldset class="fieldset-embed fieldset-sm pb-0">
-			<legend><?php echo JText::_('TEXT_DATA_EMPLOYEE'); ?></legend><div class="form-group">
-				<span class="btn-group btn-group-justified" data-toggle="buttons">
-					<label class="btn btn-default btn-active-success">
-						<input type="radio" name="cx_status" id="<?php echo $APPTAG?>-cx_status-0" value="0" class="auto-tab" data-target=".<?php echo $APPTAG?>-group-retired" data-target-display="true" />
-						<?php echo JText::_('TEXT_CX_STATUS_0'); ?>
-					</label>
-					<label class="btn btn-default btn-active-warning">
-						<input type="radio" name="cx_status" id="<?php echo $APPTAG?>-cx_status-1" value="1" class="auto-tab" data-target=".<?php echo $APPTAG?>-group-retired" data-target-display="false" />
-						<?php echo JText::_('TEXT_CX_STATUS_1'); ?></span>
-					</label>
-				</span>
-			</div>
-			<div class="form-group <?php echo $APPTAG?>-group-retired">
-				<div class="input-group">
-					<input type="text" name="cx_email" id="<?php echo $APPTAG?>-cx_email" class="form-control" placeholder="E-mail Caixa" />
-					<span class="input-group-addon">@caixa.gov.br</span>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-lg-6">
-					<div class="form-group field-required">
-						<label><?php echo JText::_('FIELD_LABEL_CODE'); ?></label>
-						<input type="text" name="cx_code" id="<?php echo $APPTAG?>-cx_code" class="form-control upper" />
-					</div>
-				</div>
-				<div class="col-lg-6">
-					<div class="form-group field-required">
-						<label><?php echo JText::_('FIELD_LABEL_ADMISSION_DATE'); ?></label>
-						<input type="text" name="cx_date" id="<?php echo $APPTAG?>-cx_date" class="form-control field-date" data-convert="true" />
-					</div>
-				</div>
-				<div class="col-lg-6">
-					<div class="form-group field-required">
-						<label><?php echo JText::_('FIELD_LABEL_ROLE'); ?></label>
-						<input type="text" name="cx_role" id="<?php echo $APPTAG?>-cx_role" class="form-control upper" />
-					</div>
-				</div>
-				<div class="col-lg-6">
-					<div class="form-group <?php echo $APPTAG?>-group-retired">
-						<label class="field-required iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_SITUATED_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_SITUATED'); ?></label>
-						<input type="text" name="cx_situated" id="<?php echo $APPTAG?>-cx_situated" class="form-control upper" />
-					</div>
-				</div>
-			</div>
-		</fieldset>
-	</div>
-	<div class="col-lg-6">
-		<fieldset class="fieldset-embed fieldset-sm pb-0">
-			<legend>
-				<span class="<?php echo $APPTAG?>-no-user"><?php echo JText::_('TEXT_DATA_REGISTRATION'); ?></span>
-				<span class="<?php echo $APPTAG?>-is-user" hidden><?php echo JText::_('TEXT_ACCESS_STATUS'); ?></span>
-			</legend>
+<fieldset class="fieldset-embed fieldset-sm pb-0">
+	<legend>
+		<span class="<?php echo $APPTAG?>-no-user"><?php echo JText::_('TEXT_DATA_REGISTRATION'); ?></span>
+		<span class="<?php echo $APPTAG?>-is-user" hidden><?php echo JText::_('TEXT_ACCESS_STATUS'); ?></span>
+	</legend>
+	<div class="row">
+		<div class="col-md-6">
 			<div class="form-group">
 				<span class="btn-group btn-group-justified" data-toggle="buttons">
 					<label class="btn btn-default btn-active-danger">
@@ -297,37 +341,37 @@ $users = $db->loadObjectList();
 					</label>
 				</span>
 				<input type="hidden" name="user_id" id="<?php echo $APPTAG?>-user_id" />
-				<input type="hidden" name="usergroup" id="<?php echo $APPTAG?>-usergroup" />
 				<input type="hidden" name="username" id="<?php echo $APPTAG?>-username" />
 				<input type="hidden" name="cusername" id="<?php echo $APPTAG?>-cusername" />
 			</div>
+		</div>
+		<div class="col-md-6">
 			<div id="<?php echo $APPTAG?>-reasonStatus-group" class="collapse <?php echo $APPTAG?>-is-user">
-				<input type="text" name="reasonStatus" id="<?php echo $APPTAG?>-reasonStatus" class="form-control" maxlength="50" placeholder="<?php echo JText::_('FIELD_LABEL_REASON'); ?>" />
+				<input type="text" name="reasonStatus" id="<?php echo $APPTAG?>-reasonStatus" class="form-control mb-3" maxlength="50" placeholder="<?php echo JText::_('FIELD_LABEL_REASON'); ?>" />
 			</div>
+		</div>
+		<div class="col-12">
 			<div id="accessFields" class="collapse">
+				<hr class="mt-0 new-user-data" hidden />
 				<div class="row">
-					<div class="col-12 new-user-data" hidden>
+					<div class="col-md-6 new-user-data" hidden>
 						<div class="form-group no-margin">
-							<div class="input-group">
-								<select name="newUser" id="<?php echo $APPTAG?>-newUser" class="form-control">
-									<option value="0"><?php echo JText::_('TEXT_NEW').' '.JText::_('TEXT_USER'); ?></option>
-									<?php
-										foreach ($users as $obj) {
-											echo '<option value="'.$obj->id.'" data-name="'.$obj->name.'" data-email="'.$obj->email.'">'.baseHelper::nameFormat($obj->name).'</option>';
-										}
-									?>
-								</select>
-								<span class="input-group-addon hasPopover" title="<?php echo JText::_('FIELD_LABEL_USER_ACCESS'); ?>" data-content="<?php echo JText::_('FIELD_LABEL_USER_ACCESS_DESC'); ?>" data-placement="top">
-									<span class="base-icon-info-circled"></span>
-								</span>
-							</div>
+							<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_USER_ACCESS_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_USER_ACCESS'); ?></label>
+							<select name="newUser" id="<?php echo $APPTAG?>-newUser" class="form-control">
+								<option value="0"><?php echo JText::_('TEXT_NEW').' '.JText::_('TEXT_USER'); ?></option>
+								<?php
+									foreach ($users as $obj) {
+										echo '<option value="'.$obj->id.'" data-name="'.$obj->name.'" data-email="'.$obj->email.'">'.baseHelper::nameFormat($obj->name).'</option>';
+									}
+								?>
+							</select>
 						</div>
 					</div>
 					<div class="col-12 edit-user-data">
 						<hr class="hr-tag" />
 						<span class="badge badge-primary"><?php echo JText::_('TEXT_PASSWORD_RESET'); ?></span>
 					</div>
-					<div class="col-sm-6">
+					<div class="col-sm-3">
 						<div class="form-group">
 							<label class="d-block">
 								<?php echo JText::_('FIELD_LABEL_PASSWORD'); ?>
@@ -341,7 +385,7 @@ $users = $db->loadObjectList();
 							</div>
 						</div>
 					</div>
-					<div class="col-sm-6">
+					<div class="col-sm-3">
 						<div class="form-group">
 							<label class="iconTip hasTooltip" title="<?php echo JText::_('MSG_REPASSWORD'); ?>"><?php echo JText::_('FIELD_LABEL_REPASSWORD'); ?></label>
 							<input type="password" name="repassword" id="<?php echo $APPTAG?>-repassword" class="form-control" />
@@ -360,6 +404,6 @@ $users = $db->loadObjectList();
 					</div>
 				</div>
 			</div>
-		</fieldset>
+		</div>
 	</div>
-</div>
+</fieldset>

@@ -107,7 +107,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['marital_status']		= $input->get('marital_status', 0, 'int');
 		$request['partner']				= $input->get('partner', '', 'string');
 	  	$request['children']			= $input->get('children', 0, 'int');
-		$request['cx_status']			= $input->get('cx_status', 0, 'int');
 	  	$request['cx_email']			= $input->get('cx_email', '', 'string');
 			// formata o email da caixa
 		    $cx_email = $request['cx_email'];
@@ -123,6 +122,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['address_district']	= $input->get('address_district', '', 'string');
 		$request['address_city']		= $input->get('address_city', '', 'string');
 		$request['phones']				= isset($_POST['phone']) ? implode(',', $_POST['phone']) : '';
+	  	$request['whatsapp']			= isset($_POST['whatsapp']) ? implode(',', $_POST['whatsapp']) : '';
 		$request['agency']				= $input->get('agency', '', 'string');
 		$request['account']				= $input->get('account', '', 'string');
 		$request['operation']			= $input->get('operation', '', 'string');
@@ -233,7 +233,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'marital_status'	=> $item->marital_status,
 						'partner'			=> $item->partner,
 						'children'			=> $item->children,
-						'cx_status'			=> $item->cx_status,
 						// remove '@caixa.gov.br'
 	    				'cx_email'			=> (!empty($item->cx_email) ? substr($item->cx_email, 0, strpos($item->cx_email, '@')) : ''),
 						'cx_code'			=> $item->cx_code,
@@ -247,6 +246,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'address_district'	=> $item->address_district,
 						'address_city'		=> $item->address_city,
 						'phones'			=> $item->phones,
+						'whatsapp'			=> $item->whatsapp,
 						'agency'			=> $item->agency,
 						'account'			=> $item->account,
 						'operation'			=> $item->operation,
@@ -274,7 +274,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('marital_status') 	.'='. $request['marital_status'] .','.
 						$db->quoteName('partner')			.'='. $db->quote($request['partner']) .','.
 						$db->quoteName('children')			.'='. $request['children'] .','.
-						$db->quoteName('cx_status')			.'='. $request['cx_status'] .','.
 						$db->quoteName('cx_code')			.'='. $db->quote($request['cx_code']) .','.
 						$db->quoteName('cx_email')			.'='. $db->quote($cx_email) .','.
 						$db->quoteName('cx_role')			.'='. $db->quote($request['cx_role']) .','.
@@ -287,6 +286,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('address_district')	.'='. $db->quote($request['address_district']) .','.
 						$db->quoteName('address_city')		.'='. $db->quote($request['address_city']) .','.
 						$db->quoteName('phones')			.'='. $db->quote($request['phones']) .','.
+						$db->quoteName('whatsapp')			.'='. $db->quote($request['whatsapp']) .','.
 						$db->quoteName('agency')			.'='. $db->quote($request['agency']) .','.
 						$db->quoteName('account')			.'='. $db->quote($request['account']) .','.
 						$db->quoteName('operation')			.'='. $db->quote($request['operation']) .','.
@@ -400,6 +400,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				// DELETE
 				elseif($task == 'del') :
 
+					// Lista os usuários associados aos clientes
+		            $query = 'SELECT '. $db->quoteName('user_id') .' FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('id') .' IN ('.$ids.')';
+					$db->setQuery($query);
+					$uList = $db->loadObjectList();
+
 					$query = 'DELETE FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('id') .' IN ('.$ids.')';
 
 					try {
@@ -417,6 +422,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->setQuery($query);
 							$db->execute();
 						endif;
+
 						// FORCE DELETE RELATIONSHIPS
 						// força a exclusão do(s) relacionamento(s) caso os parâmetros não sejam setados
 						// isso é RECOMENDÁVEL sempre que houver um ou mais relacionamentos
@@ -424,6 +430,13 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$query = 'DELETE FROM '. $db->quoteName('#__'.$cfg['project'].'_transactions') .' WHERE '. $db->quoteName('client_id') .' IN ('.$ids.') AND '. $db->quoteName('fixed') .' = 1';
 						$db->setQuery($query);
 						$db->execute();
+						// USUÁRIOS DE ACESSO
+						$userMsg = '';
+						foreach ($uList as $usr) {
+							if($usr->user_id != 0) {
+								if(baseUserHelper::deleteJoomlaUser($usr->user_id)) $userMsg = JText::_('MSG_USER_DELETED');
+							}
+						}
 
 						// UPDATE FIELD
 						// executa apenas com valores individuais
@@ -432,17 +445,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$element = $_SESSION[$RTAG.'FieldUpdated'];
 							$elemVal = $ids;
 						endif;
-
-						// DELETE USER REGISTERED
-			            $query = 'SELECT '. $db->quoteName('user_id') .' FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('id') .' IN ('.$ids.')';
-						$db->setQuery($query);
-						$uList = $db->loadObjectList();
-						$userMsg = '';
-						foreach ($uList as $usr) {
-							if($usr->user_id != 0) {
-								if(baseUserHelper::deleteJoomlaUser($usr->user_id)) $userMsg = JText::_('MSG_USER_DELETED');
-							}
-						}
 
 						$data[] = array(
 							'status'			=> 3,
@@ -487,22 +489,24 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 						// ALTER RELATIONSHIPS STATE
 						// Altera o estado dos relacionamentos
-						// MOVIMENTAÇÕES RECORRENTES -> altera o estado das movimentações recorrentes do cliente
-						// IMPORTANTE: Altera apenas quando o cliente é setado como 'inativo'
-						// Isso evita 'reativar' movimentações indevidas quando 'reativar' o cliente
-						if($stateVal == 0) :
-							$query = 'UPDATE '. $db->quoteName('#__'.$cfg['project'].'_transactions') .' SET '. $db->quoteName('state') .' = '.$stateVal.' WHERE '. $db->quoteName('client_id') .' IN ('.$ids.') AND '. $db->quoteName('fixed') .' = 1';
-							$db->setQuery($query);
-							$db->execute();
-						endif;
-
-			            // ALTER USER STATE (block)
-			            // Bloqueia/desbloqueia o usuário de acordo com o 'state' do cliente
 						$query = 'SELECT '. $db->quoteName('user_id') .', '. $db->quoteName('state') .' FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('id') .' IN ('.$ids.')';
 						$db->setQuery($query);
 						$uList = $db->loadObjectList();
 						foreach ($uList as $usr) {
+
+							// ALTER USER STATE (block)
+				            // Bloqueia/desbloqueia o usuário de acordo com o 'state' do cliente
 							if($usr->user_id != 0) baseUserHelper::stateToJoomlaUser($usr->user_id, $usr->state);
+
+							// MOVIMENTAÇÕES RECORRENTES -> altera o estado das movimentações recorrentes do cliente
+							// IMPORTANTE: Altera apenas quando o cliente é setado como 'inativo'
+							// Isso evita 'reativar' movimentações indevidas quando 'reativar' o cliente
+							if($usr->state == 0) :
+								$query = 'UPDATE '. $db->quoteName('#__'.$cfg['project'].'_transactions') .' SET '. $db->quoteName('state') .' = 0 WHERE '. $db->quoteName('client_id') .' IN ('.$ids.') AND '. $db->quoteName('fixed') .' = 1';
+								$db->setQuery($query);
+								$db->execute();
+							endif;
+
 						}
 
 						$data[] = array(
@@ -582,7 +586,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('marital_status') .','.
 							$db->quoteName('partner') .','.
 							$db->quoteName('children') .','.
-							$db->quoteName('cx_status') .','.
 							$db->quoteName('cx_email') .','.
 							$db->quoteName('cx_code') .','.
 							$db->quoteName('cx_role') .','.
@@ -595,6 +598,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('address_district') .','.
 							$db->quoteName('address_city') .','.
 							$db->quoteName('phones') .','.
+							$db->quoteName('whatsapp') .','.
 							$db->quoteName('agency') .','.
 							$db->quoteName('account') .','.
 							$db->quoteName('operation') .','.
@@ -617,7 +621,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$request['marital_status'] .','.
 							$db->quote($request['partner']) .','.
 							$request['children'] .','.
-							$request['cx_status'] .','.
 							$db->quote($cx_email) .','.
 							$db->quote($request['cx_code']) .','.
 							$db->quote($request['cx_role']) .','.
@@ -630,6 +633,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quote($request['address_district']) .','.
 							$db->quote($request['address_city']) .','.
 							$db->quote($request['phones']) .','.
+							$db->quote($request['whatsapp']) .','.
 							$db->quote($request['agency']) .','.
 							$db->quote($request['account']) .','.
 							$db->quote($request['operation']) .','.
@@ -783,21 +787,34 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					// se o nome do usuário vier vazio significa que o usuário não existe
 					if(empty($usr->uName)) :
 						// reseta o user_id
-						$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET user_id = 0, state = 0 WHERE id = '.$usr->id;
+						$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET user_id = 0, '.$db->quoteName('access').' = 0 WHERE id = '.$usr->id;
 						$db->setQuery($query);
 						$db->execute();
 					// se um dos dados for diferente entre os sistema, atualiza...
-					elseif($usr->cName != $usr->uName || $usr->cEmail != $usr->uEmail) :
+					else :
+						if($usr->cName != $usr->uName || $usr->cEmail != $usr->uEmail) :
+							// Atualiza os dados do usuário de acesso
+							$block = ($usr->cState == 0) ? ', '.$db->quoteName('block').' = 1' : '';
+							$query = 'UPDATE '. $db->quoteName('#__users') .' SET name = '. $db->quote($usr->cName) .', email = '. $db->quote($usr->cEmail) . $block .' WHERE id = '.$usr->user_id;
+							$db->setQuery($query);
+							$db->execute();
+						endif;
 						// verifica se o usuário está bloqueado 'uBlock == 1'
-						$newState = ($usr->uBlock == 1) ? 0 : 1;
-						$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET name = UPPER('. $db->quote($usr->uName) .'), email = '. $db->quote($usr->uEmail) .', state = '. $newState .' WHERE id = '.$usr->id;
+						// e atualiza o acesso...
+						$access = ($usr->uBlock == 1) ? 0 : 1;
+						$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '.$db->quoteName('access').' = '. $access .' WHERE id = '.$usr->id;
 						$db->setQuery($query);
 						$db->execute();
 					endif;
 				}
 
+				// Salva na sessão a informação de 'sincronização' dos dados
+				// Assim é possível saber que os dados foram sincronizados
+				// caso haja o redirecionamento para outra página...
+				$_SESSION[$APPTAG.'SyncSuccess'] = true;
+
 				$data[] = array(
-					'status' => $query
+					'status' => 1
 				);
 
 			endif; // end 'task'

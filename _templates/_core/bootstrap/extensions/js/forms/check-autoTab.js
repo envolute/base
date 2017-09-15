@@ -23,6 +23,7 @@ jQuery(function() {
 				var disable = obj.data('targetDisabled');
 				var display = obj.data('targetDisplay');
 				var value = obj.data('targetValue');
+				var reset = obj.data('targetValueReset');
 				var newStatus = true;
 
 				// Set disable tab action
@@ -89,7 +90,8 @@ jQuery(function() {
 							// newStatus: (false) habilitado|show / (true) desabilitado|hidden
 							if(elementExist(el) && newStatus && !tabDisabled) inputGetFocus(el);
 							// Set value
-							if(value != null && value != "undefined") el.val(value);
+							if(reset != null && reset != "undefined") el.val(reset);
+							else if(value != null && value != "undefined") el.val(value);
 							// Verifica se é um select 'chosen'
 							if(el.is('select') && el.next('.chosen-container').length) el.trigger("chosen:updated"); // select
 						} else {

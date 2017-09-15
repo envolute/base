@@ -437,7 +437,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						if($cfg['hasUpload'] && $id)
 						$fileMsg = uploader::uploadFile($id, $cfg['fileTable'], $_FILES[$cfg['fileField']], $fileGrp, $fileGtp, $fileCls, $fileLbl, $cfg);
 
-						// CUSTOM -> email notification
+						// CUSTOM -> client email notification
 						// email de confirmação
 						$urlViewData = $domain.'associe-se/ficha?rID='.urlencode(base64_encode($id));
 						$eBody = JText::sprintf('MSG_EMAIL_BODY', baseHelper::nameFormat($request['name']), $mailFrom, $urlViewData);
@@ -447,7 +447,22 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$bodyStyle	= array('bg' => '#fff');
 						$mailLogo	= 'logo-news.png';
 						$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_EMAIL_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle);
-						$qwe = baseHelper::sendMail($mailFrom, $request['email'], $subject, $mailHtml);
+						baseHelper::sendMail($mailFrom, $request['email'], $subject, $mailHtml);
+
+						// CUSTOM -> admin email notification
+						// Get admin's emails
+						$adminGroups = implode(',', $cfg['groupId']['admin']);
+						$admins = baseUserHelper::getAdminData($adminGroups);
+						if($admins) :
+							// email de confirmação
+							$urlViewData = $domain.'apps/clients';
+							$eBody = JText::sprintf('MSG_EMAIL_ADMIN_BODY', baseHelper::nameFormat($request['name']), $urlViewData);
+							// Email Template
+							$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_EMAIL_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle);
+							foreach ($admins as $item) {
+								baseHelper::sendMail($mailFrom, $item->email, $subject, $mailHtml);
+							}
+						endif;
 
 						$data[] = array(
 							'status'			=> 1,

@@ -15,16 +15,23 @@ defined('_JEXEC') or die;// TEMPLATE PARAMS
 include_once('_init.tpl.php');
 
 ?>
-<body class="contentpane component-modal <?php echo $option.$view.$layout.$task.$itemid.$pageclass.$screen.' '. $access; ?>">
+<body class="component-modal <?php echo $option.$view.$layout.$task.$itemid.$pageclass.$screen.' '. $access; ?>">
 
 	<div class="wrapper-modal">
-		<jdoc:include type="message" />
-		<jdoc:include type="component" />
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col">
+					<jdoc:include type="message" />
+					<jdoc:include type="component" />
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<?php
 	// set URL base to javascript files
 	echo '<input type="hidden" id="baseurl" name="baseurl" value="'.$this->baseurl.'" />';
 	?>
+
 </body>
 </html>

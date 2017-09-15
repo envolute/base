@@ -202,7 +202,7 @@ jQuery(function() {
 		// EDIT SUCCESS -> Ações após editar um registro
 		window.<?php echo $APPTAG?>_editSuccess = function() {
 			<?php $p = ($uID != $user->id) ? '?uID='.$uID : '' ?>
-			location.href = '<?php echo JURI::root()?>user/profile<?php echo $p?>';
+			location.href = '<?php echo JURI::root()?>user/client-profile<?php echo $p?>';
 		};
 
 	// AJAX CONTROLLERS

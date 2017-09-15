@@ -14,7 +14,8 @@ require($PATH_APP_FILE.'.filter.php');
 			'. $db->quoteName('T1.id') .',
 			'. $db->quoteName('T1.name') .',
 			'. $db->quoteName('T2.name') .' user,
-			'. $db->quoteName('T1.cx_status') .',
+			'. $db->quoteName('T1.usergroup') .',
+			'. $db->quoteName('T3.title') .' type,
 			'. $db->quoteName('T1.cx_role') .',
 			'. $db->quoteName('T1.cx_situated') .',
 			'. $db->quoteName('T1.access') .',
@@ -28,6 +29,8 @@ require($PATH_APP_FILE.'.filter.php');
 			'. $db->quoteName($cfg['mainTable']) .' T1
 			LEFT OUTER JOIN '. $db->quoteName('#__users') .' T2
 			ON T2.id = T1.user_id
+			LEFT OUTER JOIN '. $db->quoteName('#__usergroups') .' T3
+			ON T3.id = T1.usergroup
 		WHERE
 			'.$where.$orderList;
 	;
@@ -65,6 +68,7 @@ $html = '
 				<tr>
 					'.$adminView['head']['info'].'
 					<th>'.JText::_('FIELD_LABEL_NAME').'</th>
+					<th>'.JText::_('TEXT_TYPE').'</th>
 					<th>'.JText::_('TEXT_STATUS').'</th>
 					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
 					'.$adminView['head']['actions'].'
@@ -137,7 +141,7 @@ if($num_rows) : // verifica se existe
 			if(empty($item->user)) $status = '<span class="base-icon-cancel text-danger"> '.JText::_('TEXT_NO_USER_ASSOC').'</span><div class="small text-muted text-truncate">'.JText::_('TEXT_NO_USER_ASSOC_DESC').'</div>';
 			else $status = '<span class="base-icon-ok text-success"> '.JText::_('TEXT_APPROVED').'</span>';
 		endif;
-		$cx_status	= $item->cx_status == 1 ? '<span class="badge badge-warning bg-live text-white text-uppercase">'.JText::_('TEXT_CX_STATUS_1').'</span> ' : '';
+		$status = $item->state == 0 ? '<span class="base-icon-attention text-live"> '.JText::_('TEXT_BLOCKED').'</span>' : $status;
 		$rowState	= $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
@@ -150,7 +154,8 @@ if($num_rows) : // verifica se existe
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
-				<td>'.$img.$item->name.'<div class="small text-muted">'.$cx_status.$item->cx_role.' - '.$item->cx_situated.'</td>
+				<td>'.$img.$item->name.'<div class="small text-muted">'.$item->cx_role.' - '.$item->cx_situated.'</td>
+				<td>'.$item->type.'</td>
 				<td>'.$status.'</td>
 				<td class="d-none d-lg-table-cell">
 					'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'

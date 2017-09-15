@@ -98,7 +98,7 @@ class baseUserHelper {
 				$db->setQuery($query);
 				$exist = $db->loadResult();
 				$r = ($exist > 0) ? true : false;
-				// para a validação, se o e-mail existe deve retornar 'false'
+				// para a validação, se o usuário existe deve retornar 'false'
 				if($validation) return ($r) ? false : true;
 				else return $r;
 			} catch (RuntimeException $e) {
@@ -153,6 +153,31 @@ class baseUserHelper {
 				return true;
 			endif;
 		}
+		return false;
+	}
+
+	// GET ADMIN USERS
+	public static function getAdminData($groups) {
+		if($groups) :
+			// database connect
+			$db = JFactory::getDbo();
+			$query = '
+				SELECT
+					'. $db->quoteName('id') .',
+					'. $db->quoteName('name') .',
+					'. $db->quoteName('email') .'
+				FROM  '. $db->quoteName('#__users') .' T1
+					JOIN  '. $db->quoteName('#__user_usergroup_map') .' T2
+					ON T1.id = T2.user_id
+				WHERE T2.group_id IN ( '.$groups.' ) AND T1.block = 0
+			';
+			try {
+				$db->setQuery($query);
+				return $db->loadObjectList();
+			} catch (RuntimeException $e) {
+				return false;
+			}
+		endif;
 		return false;
 	}
 

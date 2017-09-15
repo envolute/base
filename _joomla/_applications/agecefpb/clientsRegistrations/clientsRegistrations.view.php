@@ -24,7 +24,7 @@ $uID = $app->input->get('uID', 0, 'int');
 $uID = ($hasAdmin && $uID > 0) ? $uID : $user->id;
 
 // LINK TO EDIT
-$urlEdit = JURI::root().'user/edit-profile'.($uID != $user->id ? '?uID='.$uID : '');
+$urlEdit = JURI::root().'user/edit-client-profile'.($uID != $user->id ? '?uID='.$uID : '');
 
 // Carrega o arquivo de tradução
 // OBS: para arquivos externos com o carregamento do framework '_init.joomla.php' (geralmente em 'ajax')
@@ -79,11 +79,11 @@ if(isset($user->id) && $user->id) :
 		$phones .= !empty($phone[2]) ? (!empty($phones) ? '<br />' : '').'(fixo) '.$phone[2] : '';
 
 		$html .= '
+			<a href="'.$urlEdit.'" class="pos-absolute pos-right-gutter btn btn-default b-2 text-live base-icon-pencil float-md-right mb-2"> '.JText::_('TEXT_EDIT').'</a>
 			<div class="row">
 				<div class="col-md-8">
 					<div class="row">
 						<div class="col-sm-3 mb-4 mb-md-0">
-							<a href="'.$urlEdit.'" class="btn btn-block btn-default b-2 text-live base-icon-pencil float-md-right mb-2"> '.JText::_('TEXT_EDIT').'</a>
 							<div style="max-width: 300px">'.$img.'</div>
 						</div>
 						<div class="col-sm-9">
@@ -191,9 +191,10 @@ if(isset($user->id) && $user->id) :
 			// visualizar seus dados ou editar seu perfil, na administração...
 			echo '<div class="alert alert-warning base-icon-attention"> '.JText::_('MSG_IS_ADMIN').'</div>';
 		else :
-			$app->enqueueMessage(JText::_('MSG_NOT_PERMISSION'), 'warning');
-			$app->redirect(JURI::root(true));
-			exit();
+			// $app->enqueueMessage(JText::_('MSG_NOT_PERMISSION'), 'warning');
+			// $app->redirect(JURI::root(true));
+			// exit();
+			echo $query;
 		endif;
 	endif;
 

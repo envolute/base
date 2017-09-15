@@ -173,7 +173,7 @@ jQuery(function() {
 			password.val('');
 			repassword.val('');
 			emailInfo.val('');
-			checkOption(emailConfirm, false);
+			checkOption(emailConfirm, 0);
 			// limpa o nome do usuário vinculado ao contato
 			if(!isUser) jQuery('#<?php echo $APPTAG?>_name_linked').empty();
 			// Lista de usuários disponíveis

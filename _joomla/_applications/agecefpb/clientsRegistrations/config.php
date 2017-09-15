@@ -34,7 +34,7 @@ if(!$ajaxRequest && (!isset($_SESSION[$APPTAG.'langDef']) || (isset($_SESSION[$A
 endif;
 
 // get user type default in registration
-$_SESSION[$APPTAG.'newUsertype'] = 10; // default 'Associado'
+$_SESSION[$APPTAG.'newUsertype'] = 11; // default 'Associado->efetivo'
 
 // get user type default in registration
 $_SESSION[$APPTAG.'cardLimit'] = '300,00'; // default
@@ -43,12 +43,14 @@ $_SESSION[$APPTAG.'cardLimit'] = '300,00'; // default
 	$cfg['isEdit']				= isset(${$APPTAG.'IsEdit'}) ? ${$APPTAG.'IsEdit'} : false;
 
 // Crud's permissions
-	$cfg['isPublic']			= false; // Público -> acesso aberto a todos
+	$cfg['isPublic']			= $cfg['isEdit'] ? false : true; // Público -> acesso aberto a todos
 	// Restrict Access
 	// $cfg['groupId']['viewer'][]  = apenas visualiza o componente
 	// $cfg['groupId']['admin'][]   = administra o componente
 	// ----------------------------------------------------
-	$cfg['groupId']['viewer'][]	= 10; // Associado
+	$cfg['groupId']['viewer'][]	= 11; // Associado -> Efetivo
+	$cfg['groupId']['viewer'][]	= 12; // Associado -> Aposentado
+	$cfg['groupId']['viewer'][]	= 13; // Associado -> Contribuinte
 	// acesso liberado sempre
 	$cfg['groupId']['admin'][]	= 6; // Gerente
 	$cfg['groupId']['admin'][]	= 7; // Administrador

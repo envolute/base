@@ -47,25 +47,21 @@ if(isset($user->id) && $user->id) :
 	$db = JFactory::getDbo();
 
 	// GET DATA
-	$query = '
-	SELECT
-		'. $db->quoteName('T1.id') .',
-		'. $db->quoteName('T2.name') .' plan,
-		'. $db->quoteName('T4.name') .' provider,
-		'. $db->quoteName('T2.price') .',
-		'. $db->quoteName('T1.phone_number') .',
-		'. $db->quoteName('T1.state') .'
-	FROM '.$db->quoteName($cfg['mainTable']).' T1
-		JOIN '. $db->quoteName($cfg['mainTable'].'_plans') .' T2
-		ON T2.id = T1.plan_id AND T2.state = 1
-		JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T3
-		ON T3.id = T1.client_id AND T3.state = 1
-		JOIN '. $db->quoteName('#__base_providers') .' T4
-		ON T4.id = T2.provider_id AND T4.state = 1
-	WHERE
-		'.$db->quoteName('T3.user_id') .' = '. $uID . ' AND
-		'.$db->quoteName('T1.state') .' = 1
-	';
+	$query	= '
+		SELECT
+			'. $db->quoteName('T1.id') .',
+			'. $db->quoteName('T2.name') .' plan,
+			'. $db->quoteName('T3.name') .' provider,
+			'. $db->quoteName('T1.phone_number') .',
+			'. $db->quoteName('T1.state') .'
+		FROM '.
+			$db->quoteName($cfg['mainTable']) .' T1
+			JOIN '. $db->quoteName($cfg['mainTable'].'_plans') .' T2
+			ON T2.id = T1.plan_id AND T2.state = 1
+			JOIN '. $db->quoteName('#__base_providers') .' T3
+			ON T3.id = T2.provider_id AND T3.state = 1
+		WHERE '. $db->quoteName('T1.client_id') .' = '. $uID
+	;
 	try {
 		$db->setQuery($query);
 		$db->execute();
@@ -78,30 +74,22 @@ if(isset($user->id) && $user->id) :
 
 	$html = '';
 	if($num_rows) : // verifica se existe
-
-		$html .= '<ul class="set-list bordered list-lg list-striped list-hover">';
+		$list = '';
 		foreach($res as $item) {
-			// LINK TO INVOICE
-			$urlToInvoice = JURI::root().'services/mobile-invoices?pID='.$item->id.($uID != $user->id ? '&uID='.$uID : '');
-			$html .= '
+			$list .= '
 				<li>
-					<a href="'.$urlToInvoice.'" class="d-block">
-						<span class="d-inline-block text-muted mb-1 clear"><span class="badge badge-primary">'.$item->provider.'</span> '.baseHelper::nameFormat($item->plan).'</span>
-						<br />'.$item->phone_number.'
-					</a>
+					'.$item->phone_number.'
+					<div class="text-sm text-muted mt-1"><span class="badge badge-primary">'.$item->provider.'</span> '.baseHelper::nameFormat($item->plan).'</div>
 				</li>
 			';
 		}
-		$html .= '</ul>';
+		$html .= '<ul class="set-list bordered list-striped list-hover">'.$list.'</ul>';
 	else :
-		$html = '<p class="base-icon-info-circled alert alert-warning m-0"> '.JText::_('MSG_NO_PHONES').'</p>';
+		$html = '<p class="base-icon-info-circled alert alert-info m-0"> '.JText::_('MSG_LISTNOREG').'</p>';
 	endif;
 
 	echo $html;
 
-	?>
-
-<?php
 else :
 
 	echo '<h4 class="alert alert-warning">'.JText::_('MSG_NOT_PERMISSION').'</h4>';

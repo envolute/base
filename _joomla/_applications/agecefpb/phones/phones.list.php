@@ -18,6 +18,7 @@ require($PATH_APP_FILE.'.filter.php');
 			'. $db->quoteName('T3.price') .',
 			'. $db->quoteName('T1.phone_number') .',
 			'. $db->quoteName('T1.note') .',
+			'. $db->quoteName('T2.state') .' clientState,
 			'. $db->quoteName('T1.created_date') .',
 			'. $db->quoteName('T1.created_by') .',
 			'. $db->quoteName('T1.alter_date') .',
@@ -125,6 +126,8 @@ if($num_rows) : // verifica se existe
 		$provider = !empty($item->provider) ? baseHelper::nameFormat($item->provider) : '<span class="base-icon-cancel text-danger"></span>';
 		$plan = !empty($item->plan) ? baseHelper::nameFormat($item->plan).'<div class="small text-muted">R$'.baseHelper::priceFormat($item->price).'</div>' : '<span class="base-icon-cancel text-danger"></span>';
 		$note = !empty($item->note) ? '<span class="base-icon-info-circled cursor-help hasTooltip" title="'.$item->note.'"></span> ' : '';
+		$client = $item->clientState == 0 ? '<div class="text-danger">'.baseHelper::nameFormat($item->client).'</div><div class="small text-muted base-icon-cancel"> '.JText::_('TEXT_INACTIVE').'</div>' : baseHelper::nameFormat($item->client);
+		$client = !empty($item->client) ? $client : '<span class="base-icon-cancel text-danger"></span>';
 		$rowState = $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
@@ -147,7 +150,7 @@ if($num_rows) : // verifica se existe
 				<td class="d-none d-lg-table-cell">
 					'.$plan.'
 				</td>
-				<td>'.baseHelper::nameFormat($item->client).'</td>
+				<td>'.$client.'</td>
 				<td class="d-none d-lg-table-cell">
 					'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'
 					<a href="#" class="base-icon-info-circled setPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top"></a>

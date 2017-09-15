@@ -10,14 +10,21 @@ $where = '';
 	$active	= $app->input->get('active', 2, 'int');
 	$where .= ($active == 2) ? $db->quoteName('T1.state').' != '.$active : $db->quoteName('T1.state').' = '.$active;
 	// ACCESS -> select
-	$fAccess = $app->input->get('fAccess', 2, 'int');
-	if($fAccess != 2) $where .= ' AND '.$db->quoteName('T1.access').' = '.$fAccess;
-	// CAIXA STATUS -> select
-	$fStatus = $app->input->get('fStatus', 2, 'int');
-	if($fStatus != 2) $where .= ' AND '.$db->quoteName('T1.cx_status').' = '.$fStatus;
+	$fAccess = $app->input->get('fAccess', 9, 'int');
+	if($fAccess != 9 && $fAccess != 2) $where .= ' AND '.$db->quoteName('T1.access').' = '.$fAccess;
+	if($fAccess == 2) $where .= ' AND '.$db->quoteName('T1.access').' = 0 AND '.$db->quoteName('T1.user_id').' != 0';
+	// GROUP -> select
+	$fGroup	= $app->input->get('fGroup', 0, 'int');
+	if($fGroup != 0) $where .= ' AND '.$db->quoteName('T1.usergroup').' = '.$fGroup;
 	// GENDER -> select
 	$fGender = $app->input->get('fGender', 0, 'int');
 	if($fGender > 0) $where .= ' AND '.$db->quoteName('T1.gender').' = '.$fGender;
+	// MARITAL STATUS -> select
+	$fMStatus = $app->input->get('fMStatus', 0, 'int');
+	if($fMStatus != 0) $where .= ' AND '.$db->quoteName('T1.marital_status').' = '.$fMStatus;
+	// CHILDREN -> select
+	$fChild = $app->input->get('fChild', 2, 'int');
+	if($fChild != 2) $where .= ' AND '.$db->quoteName('T1.children').' '.($fChild == 1 ? '<>' : '=').' 0';
 
 	// BIRTHDAY
 	$dateMin	= $app->input->get('dateMin', '', 'string');
@@ -78,14 +85,14 @@ $where = '';
 
 // FILTER'S DINAMIC FIELDS
 
-	// types -> select
-	// $flt_type = '';
-	// $query = 'SELECT * FROM '. $db->quoteName($cfg['mainTable'].'_types') .' ORDER BY name';
-	// $db->setQuery($query);
-	// $types = $db->loadObjectList();
-	// foreach ($types as $obj) {
-	// 	$flt_type .= '<option value="'.$obj->id.'"'.($obj->id == $fType ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
-	// }
+	// usergroups -> select
+	$flt_group = '';
+	$query = 'SELECT * FROM '. $db->quoteName('#__usergroups') .' WHERE '. $db->quoteName('parent_id') .' = 10 ORDER BY id';
+	$db->setQuery($query);
+	$grps = $db->loadObjectList();
+	foreach ($grps as $obj) {
+		$flt_group .= '<option value="'.$obj->id.'"'.($obj->id == $fGroup ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->title).'</option>';
+	}
 
 // VISIBILITY
 // Elementos visíveis apenas quando uma consulta é realizada
@@ -125,19 +132,19 @@ $htmlFilter = '
 					<div class="form-group">
 						<label class="label-sm">'.JText::_('TEXT_SITUATION').'</label>
 						<select name="fAccess" id="fAccess" class="form-control form-control-sm set-filter">
-							<option value="2">- '.JText::_('TEXT_ALL_F').' -</option>
+							<option value="9">- '.JText::_('TEXT_ALL_F').' -</option>
 							<option value="0"'.($fAccess == 0 ? ' selected' : '').'>'.JText::_('TEXT_PENDING').'</option>
 							<option value="1"'.($fAccess == 1 ? ' selected' : '').'>'.JText::_('TEXT_APPROVED').'</option>
+							<option value="2"'.($fAccess == 2 ? ' selected' : '').'>'.JText::_('TEXT_BLOCKED').'</option>
 						</select>
 					</div>
 				</div>
 				<div class="col-sm-6 col-md-3 col-lg-2">
 					<div class="form-group">
-						<label class="label-sm">'.JText::_('TEXT_STATUS_EMPLOYEE').'</label>
-						<select name="fStatus" id="fStatus" class="form-control form-control-sm set-filter">
-							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
-							<option value="0"'.($fStatus == 0 ? ' selected' : '').'>'.JText::_('TEXT_CX_STATUS_0').'</option>
-							<option value="1"'.($fStatus == 1 ? ' selected' : '').'>'.JText::_('TEXT_CX_STATUS_1').'</option>
+						<label class="label-sm">'.JText::_('TEXT_USER_TYPE').'</label>
+						<select name="fGroup" id="fGroup" class="form-control input-sm set-filter">
+							<option value="0">- '.JText::_('FIELD_LABEL_GROUP').' -</option>
+							'.$flt_group.'
 						</select>
 					</div>
 				</div>
@@ -148,6 +155,29 @@ $htmlFilter = '
 							<option value="0">- '.JText::_('TEXT_ALL').' -</option>
 							<option value="1"'.($fGender == 1 ? ' selected' : '').'>'.JText::_('TEXT_GENDER_1').'</option>
 							<option value="2"'.($fGender == 2 ? ' selected' : '').'>'.JText::_('TEXT_GENDER_2').'</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md-3 col-lg-2">
+					<div class="form-group">
+						<label class="label-sm">'.JText::_('FIELD_LABEL_MARITAL_STATUS').'</label>
+						<select name="fMStatus" id="fMStatus" class="form-control form-control-sm set-filter">
+							<option value="0">- '.JText::_('TEXT_ALL').' -</option>
+							<option value="1"'.($fMStatus == 1 ? ' selected' : '').'>'.JText::_('TEXT_MARITAL_STATUS_1').'</option>
+							<option value="2"'.($fMStatus == 2 ? ' selected' : '').'>'.JText::_('TEXT_MARITAL_STATUS_2').'</option>
+							<option value="3"'.($fMStatus == 3 ? ' selected' : '').'>'.JText::_('TEXT_MARITAL_STATUS_3').'</option>
+							<option value="4"'.($fMStatus == 4 ? ' selected' : '').'>'.JText::_('TEXT_MARITAL_STATUS_4').'</option>
+							<option value="5"'.($fMStatus == 5 ? ' selected' : '').'>'.JText::_('TEXT_MARITAL_STATUS_5').'</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md-3 col-lg-2">
+					<div class="form-group">
+						<label class="label-sm">'.JText::_('TEXT_HAS_CHILDREN').'</label>
+						<select name="fChild" id="fChild" class="form-control form-control-sm set-filter">
+							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
+							<option value="1"'.($fChild == 1 ? ' selected' : '').'>'.JText::_('TEXT_YES').'</option>
+							<option value="0"'.($fChild == 0 ? ' selected' : '').'>'.JText::_('TEXT_NO').'</option>
 						</select>
 					</div>
 				</div>
@@ -162,7 +192,7 @@ $htmlFilter = '
 						</span>
 					</div>
 				</div>
-				<div class="col-md-6 col-xl-3">
+				<div class="col-md-6">
 					<div class="form-group">
 						<label class="label-sm text-truncate">'.implode(', ', $sLabel).'</label>
 						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />

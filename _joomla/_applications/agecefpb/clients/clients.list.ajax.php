@@ -50,23 +50,35 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	// GET DATA
 	$noReg = true;
-	$query = 'SELECT *';
+	$query = 'SELECT
+		'. $db->quoteName('T1.id') .',
+		'. $db->quoteName('T1.name') .',
+		'. $db->quoteName('T1.usergroup') .',
+		'. $db->quoteName('T2.title') .' type,
+		'. $db->quoteName('T1.state')
+	;
 	if(!empty($rID) && $rID !== 0) :
 		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
 			$query .= ' FROM '.
 				$db->quoteName($cfg['mainTable']) .' T1
-				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T2
-				ON '.$db->quoteName('T2.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
+				JOIN '. $db->quoteName('#__usergroups') .' T2
+				ON T2.id = T1.usergroup
+				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T3
+				ON '.$db->quoteName('T3.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
 			WHERE '.
-				$db->quoteName('T2.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
+				$db->quoteName('T3.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
 			;
 		else :
 			$query .= '
 			FROM '. $db->quoteName($cfg['mainTable']) .' T1
+				JOIN '. $db->quoteName('#__usergroups') .' T2
+				ON T2.id = T1.usergroup
 			WHERE '. $db->quoteName($rNID) .' = '. $rID;
 		endif;
 	else :
-		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1';
+		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
+			JOIN '. $db->quoteName('#__usergroups') .' T2
+		';
 		if($oCHL) :
 			$query .= ' WHERE 1=0';
 			$noReg = false;
@@ -105,7 +117,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				}
 			endif;
 
-			$cx_status	= $item->cx_status == 1 ? '<span class="badge badge-warning">'.JText::_('TEXT_CX_STATUS_1').'</span> ' : '';
 			$btnState = $hasAdmin ? '<a href="#" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'"><span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').' hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'"></span></a> ' : '';
 			$btnEdit = $hasAdmin ? '<a href="#" class="base-icon-pencil text-live hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"></a> ' : '';
 			$btnDelete = $hasAdmin ? '<a href="#" class="base-icon-trash text-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"></a>' : '';
@@ -113,7 +124,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$html .= '
 				<li class="'.$rowState.'">
 					<div class="float-right">'.$btnState.$btnEdit.$btnDelete.'</div>
-					<div class="text-truncate">'.baseHelper::nameFormat($item->name).'</div><div class="small text-muted">'.$cx_status.$item->cx_role.' - '.$item->cx_situated.'</div>
+					<div class="text-truncate">'.baseHelper::nameFormat($item->name).'</div>
+					<div class="small text-muted">'.$item->type.'</div>
 				</li>
 			';
 		}

@@ -5,9 +5,9 @@ jQuery(function() {
 	// Seleciona a opção (radio) de acordo com o valor informado
 	window.checkOption = function(field, value) {
 		var input = setElement(field);
+		// clear current value
+		input.each(function() { jQuery(this).prop('checked', false); });
 		if(isSet(value)) {
-			// clear current value
-			input.each(function() { jQuery(this).prop('checked', false); });
 			// seleciona o item com o valor informado
 			if(input.filter('[value="'+value+'"]').length)
 			input.filter('[value="'+value+'"]').prop('checked', true).trigger('change');

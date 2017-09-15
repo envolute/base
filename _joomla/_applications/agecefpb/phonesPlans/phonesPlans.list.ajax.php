@@ -124,8 +124,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$html .= '
 				<li class="'.$rowState.'">
 					<span class="float-right">'.$btnState.$btnEdit.$btnDelete.'</span>
-					<span class="badge badge-primary">'.$item->provider.'</span> '.baseHelper::nameFormat($item->name).'
-					<div class="text-sm text-muted mt-1">R$'.baseHelper::priceFormat($item->price).'</div>
+					'.baseHelper::nameFormat($item->name).'
+					<div class="text-sm text-muted mt-1"><span class="badge badge-primary">'.$item->provider.'</span> R$'.baseHelper::priceFormat($item->price).'</div>
 				</li>
 			';
 		}
