@@ -45,7 +45,13 @@ if(isset($user->id) && $user->id) :
 	$db = JFactory::getDbo();
 
 	// GET DATA
-	$query = 'SELECT * FROM '.$db->quoteName($cfg['mainTable']).' T1 WHERE '.$db->quoteName('T1.user_id') .' = '. $uID;
+	$query = '
+		SELECT T1.*, '. $db->quoteName('T2.title') .' type
+		FROM '.$db->quoteName($cfg['mainTable']).' T1
+			LEFT OUTER JOIN '. $db->quoteName('#__usergroups') .' T2
+			ON T2.id = T1.usergroup
+		WHERE '.$db->quoteName('T1.user_id') .' = '. $uID
+	;
 	try {
 		$db->setQuery($query);
 		$item = $db->loadObject();
@@ -79,16 +85,22 @@ if(isset($user->id) && $user->id) :
 		$phones .= !empty($phone[2]) ? (!empty($phones) ? '<br />' : '').'(fixo) '.$phone[2] : '';
 
 		$html .= '
-			<a href="'.$urlEdit.'" class="pos-absolute pos-right-gutter btn btn-default b-2 text-live base-icon-pencil float-md-right mb-2"> '.JText::_('TEXT_EDIT').'</a>
+			<a href="'.$urlEdit.'" class="pos-absolute pos-right-gutter zindex-1 btn btn-default b-2 text-live base-icon-pencil float-md-right mb-2"> '.JText::_('TEXT_EDIT').'</a>
 			<div class="row">
-				<div class="col-md-8">
+				<div class="col-md-2 mb-4 mb-md-0">
+					<div style="max-width: 300px">'.$img.'</div>
+				</div>
+				<div class="col-md-9">
 					<div class="row">
-						<div class="col-sm-3 mb-4 mb-md-0">
-							<div style="max-width: 300px">'.$img.'</div>
-						</div>
-						<div class="col-sm-9">
+						<div class="col-md-8">
 							<label class="label-sm">'.JText::_('FIELD_LABEL_NAME').':</label>
 							<p> '.baseHelper::nameFormat($item->name).'</p>
+						</div>
+						<div class="col-md-4">
+							<label class="label-sm">'.JText::_('TEXT_USER_TYPE').':</label>
+							<p> '.baseHelper::nameFormat($item->type).'</p>
+						</div>
+						<div class="col-md-8">
 							<label class="label-sm">'.JText::_('FIELD_LABEL_EMAIL').':</label>
 							<p>'.$item->email.'</p>
 							<div class="row">
@@ -107,21 +119,21 @@ if(isset($user->id) && $user->id) :
 								'.$partner.'
 							</div>
 						</div>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="row justify-content-end">
-						<div class="col-sm-3 col-md-12">
-							<label class="label-sm">'.JText::_('FIELD_LABEL_BIRTHDAY').':</label>
-							<p>'.baseHelper::dateFormat($item->birthday).'</p>
-						</div>
-						<div class="col-sm-6 col-md-12">
-							<label class="label-sm">CPF:</label>
-							<p>'.$item->cpf.'</p>
-						</div>
-						<div class="col-sm-9 col-md-12">
-							<label class="label-sm">RG:</label>
-							<p>'.$item->rg.' / '.$item->rg_orgao.'</p>
+						<div class="col-md-4">
+							<div class="row">
+								<div class="col-sm-4 col-md-12">
+									<label class="label-sm">'.JText::_('FIELD_LABEL_BIRTHDAY').':</label>
+									<p>'.baseHelper::dateFormat($item->birthday).'</p>
+								</div>
+								<div class="col-sm-4 col-md-12">
+									<label class="label-sm">CPF:</label>
+									<p>'.$item->cpf.'</p>
+								</div>
+								<div class="col-sm-4 col-md-12">
+									<label class="label-sm">RG:</label>
+									<p>'.$item->rg.' / '.$item->rg_orgao.'</p>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -141,37 +153,51 @@ if(isset($user->id) && $user->id) :
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-8">
-					<hr class="hr-tag" />
-					<span class="badge badge-primary">'.JText::_('TEXT_DATA_EMPLOYEE').'</span>
-					<div class="row">
-						<div class="col-sm-5 col-lg-4">
-							<label class="label-sm">'.JText::_('FIELD_LABEL_STATUS_EMPLOYEE').':</label>
-							<p>'.JText::_('TEXT_CX_STATUS_'.$item->cx_status).'</p>
-						</div>
-						<div class="col-sm-7 col-lg-4">
-							<label class="label-sm">'.JText::_('FIELD_LABEL_EMAIL').':</label>
-							<p>'.$item->cx_email.'</p>
-						</div>
-						<div class="col-sm-5 col-lg-4">
-							<label class="label-sm">'.JText::_('FIELD_LABEL_CODE').':</label>
-							<p>'.$item->cx_code.'</p>
-						</div>
-						<div class="col-sm-7 col-lg-4">
-							<label class="label-sm">'.JText::_('FIELD_LABEL_ADMISSION_DATE').':</label>
-							<p>'.baseHelper::dateFormat($item->cx_date).'</p>
-						</div>
-						<div class="col-sm-5 col-lg-4">
-							<label class="label-sm">'.JText::_('FIELD_LABEL_ROLE').':</label>
-							<p>'.$item->cx_role.'</p>
-						</div>
-						<div class="col-sm-7 col-lg-4">
-							<label class="label-sm">'.JText::_('FIELD_LABEL_SITUATED').':</label>
-							<p>'.$item->cx_situated.'</p>
+		';
+		if($item->usergroup != 13) :
+			$html .= '
+					<div class="col-8">
+						<hr class="hr-tag" />
+						<span class="badge badge-primary">'.JText::_('TEXT_DATA_EMPLOYEE').'</span>
+						<div class="row">
+							<div class="col-4">
+								<label class="label-sm">'.JText::_('FIELD_LABEL_STATUS_EMPLOYEE').':</label>
+								<p>'.($item->usergroup == 11 ? JText::_('TEXT_EFFECTIVE') : JText::_('TEXT_RETIRED')).'</p>
+							</div>
+			';
+		endif;
+		if($item->usergroup == 11) :
+			$html .= '
+							<div class="col-4">
+								<label class="label-sm">'.JText::_('FIELD_LABEL_EMAIL').':</label>
+								<p>'.$item->cx_email.'</p>
+							</div>
+							<div class="col-4">
+								<label class="label-sm">'.JText::_('FIELD_LABEL_SITUATED').':</label>
+								<p>'.$item->cx_situated.'</p>
+							</div>
+			';
+		endif;
+		if($item->usergroup != 13) :
+				$html .= '
+							<div class="col-4">
+								<label class="label-sm">'.JText::_('FIELD_LABEL_CODE').':</label>
+								<p>'.$item->cx_code.'</p>
+							</div>
+							<div class="col-4">
+								<label class="label-sm">'.JText::_('FIELD_LABEL_ADMISSION_DATE').':</label>
+								<p>'.baseHelper::dateFormat($item->cx_date).'</p>
+							</div>
+							<div class="col-4">
+								<label class="label-sm">'.JText::_('FIELD_LABEL_ROLE').':</label>
+								<p>'.$item->cx_role.'</p>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col-md-4">
+			';
+		endif;
+		$html .= '
+				<div class="col-'.($item->usergroup == 13 ? 12 : 4).'">
 					<hr class="hr-tag" />
 					<span class="badge badge-primary">'.JText::_('TEXT_ACCOUNT_DATA').'</span>
 					<label class="label-sm">Conta Bancária:</label>

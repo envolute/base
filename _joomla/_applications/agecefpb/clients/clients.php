@@ -67,8 +67,11 @@ jQuery(function() {
 	var phone1				= jQuery('#<?php echo $APPTAG?>-phone1');
 	var phone2				= jQuery('#<?php echo $APPTAG?>-phone2');
 	var whatsapp0			= jQuery('#<?php echo $APPTAG?>-whatsapp0');
+		var wcheck0			= jQuery('#<?php echo $APPTAG?>-wcheck0');
 	var whatsapp1			= jQuery('#<?php echo $APPTAG?>-whatsapp1');
+		var wcheck1			= jQuery('#<?php echo $APPTAG?>-wcheck1');
 	var whatsapp2			= jQuery('#<?php echo $APPTAG?>-whatsapp2');
+		var wcheck2			= jQuery('#<?php echo $APPTAG?>-wcheck2');
 	// Billing data
 	var agency				= jQuery('#<?php echo $APPTAG?>-agency');
 	var account				= jQuery('#<?php echo $APPTAG?>-account');
@@ -147,7 +150,7 @@ jQuery(function() {
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
 			user_id.val('');
-			usergroup.val(<?php echo $_SESSION[$APPTAG.'newUsertype']?>);
+			usergroup.selectUpdate(<?php echo $_SESSION[$APPTAG.'newUsertype']?>);
 			username.val('');
 			cusername.val('');
 			name.val('');
@@ -175,9 +178,12 @@ jQuery(function() {
 			phone0.val('');
 			phone1.val('');
 			phone2.val('');
-			checkOption(whatsapp0, 0);
-			checkOption(whatsapp1, 0);
-			checkOption(whatsapp2, 0);
+			whatsapp0.val('');
+			checkOption(wcheck0, 0);
+			whatsapp1.val('');
+			checkOption(wcheck1, 0);
+			whatsapp2.val('');
+			checkOption(wcheck2, 0);
 			agency.val('');
 			account.val('');
 			operation.val('');
@@ -270,7 +276,7 @@ jQuery(function() {
 
 		// CUSTOM: Print Card
 		window.<?php echo $APPTAG?>_printCard = function(){
-			var urlPrint = '<?php echo JURI::root()?><?php echo $APPTAG?>-print-card?id='+formId.val()+'&tmpl=component';
+			var urlPrint = '<?php echo JURI::root()?>apps/clients/<?php echo $APPTAG?>-card?uID='+formId.val()+'&tmpl=component';
 			jQuery('#<?php echo $APPTAG?>-card-iframe').attr("src", urlPrint);
 			jQuery("#modal-card-<?php echo $APPTAG?>").modal();
 		}
@@ -351,7 +357,7 @@ jQuery(function() {
 
 						// App Fields
 						user_id.val(item.user_id);
-						usergroup.val(item.usergroup);
+						usergroup.selectUpdate(item.usergroup);
 						username.val(item.username);
 						cusername.val(item.username);
 						name.val(item.name);
@@ -382,9 +388,13 @@ jQuery(function() {
 							phone1.val(p[1]);
 							phone2.val(p[2]);
 							var w = item.whatsapp.split(",");
-							checkOption(whatsapp0, w[0]);
-							checkOption(whatsapp1, w[1]);
-							checkOption(whatsapp2, w[2]);
+							console.log(item.whatsapp+' = '+w[0]);
+							whatsapp0.val(w[0]);
+							checkOption(wcheck0, w[0]);
+							whatsapp1.val(w[1]);
+							checkOption(wcheck1, w[1]);
+							whatsapp2.val(w[2]);
+							checkOption(wcheck2, w[2]);
 						agency.val(item.agency);
 						account.val(item.account);
 						operation.val(item.operation);
@@ -639,12 +649,12 @@ jQuery(window).load(function() {
 	<?php endif; ?>
 
 	<div class="modal fade" id="modal-card-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-card-<?php echo $APPTAG?>Label">
-		<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-body">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<iframe id="<?php echo $APPTAG?>-card-iframe" style="width:325px; height:205px; border:1px dashed #ddd"></iframe>
-    				<button type="button" class="btn btn-lg btn-success m-4 float-right hidden-print" style="height:80px" onclick="<?php echo $APPTAG?>_setPrintCard()"> <?php echo JText::_('TEXT_PRINT'); ?></button>
+    				<button type="button" class="btn btn-lg btn-success mx-4 float-right hidden-print" style="height:80px" onclick="<?php echo $APPTAG?>_setPrintCard()"> <?php echo JText::_('TEXT_PRINT'); ?></button>
 				</div>
 			</div>
 		</div>

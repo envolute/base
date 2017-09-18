@@ -51,8 +51,10 @@ if(!empty($rID) || !empty($dOC)) :
 
 	// GET DATA
 	$query = '
-		SELECT *
+		SELECT T1.*, '. $db->quoteName('T2.title') .' type
 		FROM '.$db->quoteName($cfg['mainTable']).' T1
+			LEFT OUTER JOIN '. $db->quoteName('#__usergroups') .' T2
+			ON T2.id = T1.usergroup
 		WHERE '.$where.' AND '.$db->quoteName('T1.user_id') .' = 0 AND '.$db->quoteName('T1.access') .' = 0
 		ORDER BY '.$db->quoteName('T1.id').' DESC
 		LIMIT 1
@@ -94,6 +96,12 @@ if(!empty($rID) || !empty($dOC)) :
 					<div class="col-8">
 						<label class="label-sm">'.JText::_('FIELD_LABEL_NAME').':</label>
 						<p> '.baseHelper::nameFormat($item->name).'</p>
+					</div>
+					<div class="col-4">
+						<label class="label-sm">'.JText::_('TEXT_USER_TYPE').':</label>
+						<p>'.baseHelper::nameFormat($item->type).'</p>
+					</div>
+					<div class="col-8">
 						<label class="label-sm">'.JText::_('FIELD_LABEL_EMAIL').':</label>
 						<p>'.$item->email.'</p>
 						<div class="row">
@@ -136,18 +144,33 @@ if(!empty($rID) || !empty($dOC)) :
 					</div>
 				</div>
 				<div class="row">
+		';
+		if($item->usergroup != 13) :
+			$html .= '
 					<div class="col-8">
 						<hr class="hr-tag" />
 						<span class="badge badge-primary">'.JText::_('TEXT_DATA_EMPLOYEE').'</span>
 						<div class="row">
 							<div class="col-4">
 								<label class="label-sm">'.JText::_('FIELD_LABEL_STATUS_EMPLOYEE').':</label>
-								<p>'.JText::_('TEXT_CX_STATUS_'.$item->cx_status).'</p>
+								<p>'.($item->usergroup == 11 ? JText::_('TEXT_EFFECTIVE') : JText::_('TEXT_RETIRED')).'</p>
 							</div>
+			';
+		endif;
+		if($item->usergroup == 11) :
+			$html .= '
 							<div class="col-4">
 								<label class="label-sm">'.JText::_('FIELD_LABEL_EMAIL').':</label>
 								<p>'.$item->cx_email.'</p>
 							</div>
+							<div class="col-4">
+								<label class="label-sm">'.JText::_('FIELD_LABEL_SITUATED').':</label>
+								<p>'.$item->cx_situated.'</p>
+							</div>
+			';
+		endif;
+		if($item->usergroup != 13) :
+				$html .= '
 							<div class="col-4">
 								<label class="label-sm">'.JText::_('FIELD_LABEL_CODE').':</label>
 								<p>'.$item->cx_code.'</p>
@@ -160,13 +183,12 @@ if(!empty($rID) || !empty($dOC)) :
 								<label class="label-sm">'.JText::_('FIELD_LABEL_ROLE').':</label>
 								<p>'.$item->cx_role.'</p>
 							</div>
-							<div class="col-4">
-								<label class="label-sm">'.JText::_('FIELD_LABEL_SITUATED').':</label>
-								<p>'.$item->cx_situated.'</p>
-							</div>
 						</div>
 					</div>
-					<div class="col-4">
+			';
+		endif;
+		$html .= '
+					<div class="col-'.($item->usergroup == 13 ? 12 : 4).'">
 						<hr class="hr-tag" />
 						<span class="badge badge-primary">'.JText::_('TEXT_ACCOUNT_DATA').'</span>
 						<label class="label-sm">Conta Bancária:</label>

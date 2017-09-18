@@ -34,7 +34,7 @@ jQuery(function() {
 		<div class="col-md-8">
 			<fieldset class="fieldset-embed fieldset-sm">
 				<legend><?php echo JText::_('FIELD_LABEL_CLIENT_SELECT'); ?></legend>
-				<select name="uID" id="<?php echo $APPTAG?>-uID" onchange="<?php echo $APPTAG?>_selectUser(this)">
+				<select name="uID" id="<?php echo $APPTAG?>-uID" class="form-control" onchange="<?php echo $APPTAG?>_selectUser(this)">
 					<option value="0"><?php echo JText::_('TEXT_SELECT')?></option>
 					<?php
 						foreach ($clients as $obj) {

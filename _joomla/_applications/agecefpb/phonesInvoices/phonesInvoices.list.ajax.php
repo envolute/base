@@ -123,13 +123,13 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$html .= '
 				<li class="'.$rowState.'">
 					<span class="float-right">'.$btnState.$btnEdit.$btnDelete.'</span>
-					<span class="badge badge-primary">'.$item->provider.'</span> - '.baseHelper::dateFormat($item->due_date, 'd-m-Y').'
+					<span class="badge badge-primary">'.$item->provider.'</span> - '.baseHelper::dateFormat($item->due_date).'
 				</li>
 			';
 		}
 		$html .= '</ul>';
 	else :
-		if($noReg) $html = '<p class="base-icon-info-circled alert alert-info m-0"> '.JText::_('MSG_LISTNOREG').'</p>';
+		if($noReg) $html = '<p class="base-icon-info-circled alert alert-info m-0"> '.JText::_('MSG_LISTAJAXNOREG').'</p>';
 	endif;
 
 	echo $html;

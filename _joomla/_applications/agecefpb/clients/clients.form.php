@@ -202,7 +202,7 @@ $users = $db->loadObjectList();
 <hr class="hr-tag" />
 <span class="badge badge-primary"><?php echo JText::_('TEXT_CONTACT_DATA'); ?></span>
 <div class="row">
-	<div class="col-md-8 col-lg-9">
+	<div class="col-md-7 col-lg-9">
 		<div class="row">
 			<div class="col-lg-3">
 				<div class="form-group">
@@ -242,16 +242,16 @@ $users = $db->loadObjectList();
 			</div>
 		</div>
 	</div>
-	<div class="col-md-4 col-lg-3 b-left b-dashed">
+	<div class="col-md-5 col-lg-3 b-left b-dashed">
 		<div class="form-group">
 			<label><?php echo JText::_('FIELD_LABEL_CELLPHONE'); ?> 1</label>
 			<div class="input-group">
 				<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone0" class="form-control field-phone" />
 				<span class="input-group-btn btn-group" data-toggle="buttons">
 					<label class="btn btn-outline-success btn-active-success base-icon-whatsapp">
-						<input type="checkbox" class="auto-tab" data-target="<?php echo $APPTAG?>-whatsapp0" data-target-value="1" data-target-value-reset="" />
+						<input type="checkbox" id="<?php echo $APPTAG?>-wcheck0" value="1" class="auto-tab" data-target="<?php echo $APPTAG?>-whatsapp0" data-target-value="1" data-target-value-reset="" />
+						<input type="hidden" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp0" />
 					</label>
-					<input type="text" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp0" />
 				</span>
 			</div>
 		</div>
@@ -261,28 +261,21 @@ $users = $db->loadObjectList();
 				<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone1" class="form-control field-phone" />
 				<span class="input-group-btn btn-group" data-toggle="buttons">
 					<label class="btn btn-outline-success btn-active-success base-icon-whatsapp">
-						<input type="checkbox" class="auto-tab" data-target="<?php echo $APPTAG?>-whatsapp1" data-target-value="1" data-target-value-reset="" />
+						<input type="checkbox" id="<?php echo $APPTAG?>-wcheck1" value="1" class="auto-tab" data-target="<?php echo $APPTAG?>-whatsapp1" data-target-value="1" data-target-value-reset="" />
+						<input type="hidden" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp1" />
 					</label>
-					<input type="text" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp1" />
 				</span>
 			</div>
 		</div>
 		<div class="form-group">
 			<label><?php echo JText::_('FIELD_LABEL_PHONE_FIXED'); ?></label>
-			<div class="input-group">
-				<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone2" class="form-control field-phone" />
-				<span class="input-group-btn btn-group" data-toggle="buttons">
-					<label class="btn btn-outline-success btn-active-success base-icon-whatsapp">
-						<input type="checkbox" class="auto-tab" data-target="<?php echo $APPTAG?>-whatsapp2" data-target-value="1" data-target-value-reset="" />
-					</label>
-					<input type="text" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp2" />
-				</span>
-			</div>
+			<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone2" class="form-control field-phone" />
+			<input type="hidden" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp2" />
 		</div>
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-9">
+	<div class="col-lg-9">
 		<hr class="hr-tag" />
 		<span class="badge badge-primary"><?php echo JText::_('TEXT_ACCOUNT_DATA'); ?></span>
 		<div class="row">
@@ -306,7 +299,7 @@ $users = $db->loadObjectList();
 			</div>
 		</div>
 	</div>
-	<div class="col-md-3">
+	<div class="col-sm-9 col-lg-3">
 		<hr class="hr-tag" />
 		<span class="badge badge-primary"><?php echo JText::_('TEXT_CLIENT_CREDIT_CARD'); ?></span>
 		<div class="form-group field-required">
@@ -354,7 +347,7 @@ $users = $db->loadObjectList();
 			<div id="accessFields" class="collapse">
 				<hr class="mt-0 new-user-data" hidden />
 				<div class="row">
-					<div class="col-md-6 new-user-data" hidden>
+					<div class="col-lg-6 new-user-data" hidden>
 						<div class="form-group no-margin">
 							<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_USER_ACCESS_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_USER_ACCESS'); ?></label>
 							<select name="newUser" id="<?php echo $APPTAG?>-newUser" class="form-control">
@@ -371,7 +364,7 @@ $users = $db->loadObjectList();
 						<hr class="hr-tag" />
 						<span class="badge badge-primary"><?php echo JText::_('TEXT_PASSWORD_RESET'); ?></span>
 					</div>
-					<div class="col-sm-3">
+					<div class="col-sm-6 col-lg-3">
 						<div class="form-group">
 							<label class="d-block">
 								<?php echo JText::_('FIELD_LABEL_PASSWORD'); ?>
@@ -385,7 +378,7 @@ $users = $db->loadObjectList();
 							</div>
 						</div>
 					</div>
-					<div class="col-sm-3">
+					<div class="col-sm-6 col-lg-3">
 						<div class="form-group">
 							<label class="iconTip hasTooltip" title="<?php echo JText::_('MSG_REPASSWORD'); ?>"><?php echo JText::_('FIELD_LABEL_REPASSWORD'); ?></label>
 							<input type="password" name="repassword" id="<?php echo $APPTAG?>-repassword" class="form-control" />

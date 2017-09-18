@@ -100,7 +100,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['marital_status']		= $input->get('marital_status', 0, 'int');
 		$request['partner']				= $input->get('partner', '', 'string');
 	  	$request['children']			= $input->get('children', 0, 'int');
-		$request['cx_status']			= $input->get('cx_status', 0, 'int');
 	  	$request['cx_email']			= $input->get('cx_email', '', 'string');
 			// formata o email da caixa
 		    $cx_email = $request['cx_email'];
@@ -116,6 +115,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['address_district']	= $input->get('address_district', '', 'string');
 		$request['address_city']		= $input->get('address_city', '', 'string');
 		$request['phones']				= isset($_POST['phone']) ? implode(',', $_POST['phone']) : '';
+	  	$request['whatsapp']			= isset($_POST['whatsapp']) ? implode(',', $_POST['whatsapp']) : '';
 		$request['agency']				= $input->get('agency', '', 'string');
 		$request['account']				= $input->get('account', '', 'string');
 		$request['operation']			= $input->get('operation', '', 'string');
@@ -208,7 +208,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'marital_status'	=> $item->marital_status,
 						'partner'			=> $item->partner,
 						'children'			=> $item->children,
-						'cx_status'			=> $item->cx_status,
 						// remove '@caixa.gov.br'
 	    				'cx_email'			=> (!empty($item->cx_email) ? substr($item->cx_email, 0, strpos($item->cx_email, '@')) : ''),
 						'cx_code'			=> $item->cx_code,
@@ -222,6 +221,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'address_district'	=> $item->address_district,
 						'address_city'		=> $item->address_city,
 						'phones'			=> $item->phones,
+						'whatsapp'			=> $item->whatsapp,
 						'agency'			=> $item->agency,
 						'account'			=> $item->account,
 						'operation'			=> $item->operation,
@@ -251,7 +251,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('marital_status') 	.'='. $request['marital_status'] .','.
 						$db->quoteName('partner')			.'='. $db->quote($request['partner']) .','.
 						$db->quoteName('children')			.'='. $request['children'] .','.
-						$db->quoteName('cx_status')			.'='. $request['cx_status'] .','.
 						$db->quoteName('cx_email')			.'='. $db->quote($cx_email) .','.
 						$db->quoteName('cx_role')			.'='. $db->quote($request['cx_role']) .','.
 						$db->quoteName('cx_situated')		.'='. $db->quote($request['cx_situated']) .','.
@@ -262,6 +261,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('address_district')	.'='. $db->quote($request['address_district']) .','.
 						$db->quoteName('address_city')		.'='. $db->quote($request['address_city']) .','.
 						$db->quoteName('phones')			.'='. $db->quote($request['phones']) .','.
+						$db->quoteName('whatsapp')			.'='. $db->quote($request['whatsapp']) .','.
 						$db->quoteName('state')				.'='. $request['state'] .','.
 						$db->quoteName('alter_date')		.'= NOW(),'.
 						$db->quoteName('alter_by')			.'='. $user->id
@@ -374,7 +374,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('marital_status') .','.
 							$db->quoteName('partner') .','.
 							$db->quoteName('children') .','.
-							$db->quoteName('cx_status') .','.
 							$db->quoteName('cx_email') .','.
 							$db->quoteName('cx_code') .','.
 							$db->quoteName('cx_role') .','.
@@ -387,6 +386,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('address_district') .','.
 							$db->quoteName('address_city') .','.
 							$db->quoteName('phones') .','.
+							$db->quoteName('whatsapp') .','.
 							$db->quoteName('agency') .','.
 							$db->quoteName('account') .','.
 							$db->quoteName('operation') .','.
@@ -406,7 +406,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$request['marital_status'] .','.
 							$db->quote($request['partner']) .','.
 							$request['children'] .','.
-							$request['cx_status'] .','.
 							$db->quote($cx_email) .','.
 							$db->quote($request['cx_code']) .','.
 							$db->quote($request['cx_role']) .','.
@@ -419,6 +418,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quote($request['address_district']) .','.
 							$db->quote($request['address_city']) .','.
 							$db->quote($request['phones']) .','.
+							$db->quote($request['whatsapp']) .','.
 							$db->quote($request['agency']) .','.
 							$db->quote($request['account']) .','.
 							$db->quote($request['operation']) .','.

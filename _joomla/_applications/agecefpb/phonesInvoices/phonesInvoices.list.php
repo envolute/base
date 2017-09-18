@@ -129,7 +129,7 @@ if($num_rows) : // verifica se existe
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
-				<td>'.$note.baseHelper::dateFormat($item->due_date, 'd-m-Y').'</td>
+				<td>'.$note.baseHelper::dateFormat($item->due_date).'</td>
 				<td class="d-none d-md-table-cell">'.baseHelper::nameFormat($item->provider).'</td>
 				<td>'.baseHelper::priceFormat($item->tax).'</td>
 				<td class="d-none d-lg-table-cell">

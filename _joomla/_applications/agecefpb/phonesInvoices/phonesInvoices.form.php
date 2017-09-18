@@ -2,7 +2,7 @@
 defined('_JEXEC') or die;
 
 // PROVIDERS
-$query = 'SELECT * FROM '. $db->quoteName('#__base_providers') .' WHERE '. $db->quoteName('group_id') .' = 2 AND '. $db->quoteName('state') .' = 1 ORDER BY name';
+$query = 'SELECT * FROM '. $db->quoteName('#__base_providers') .' WHERE '. $db->quoteName('group_id') .' = 8 AND '. $db->quoteName('state') .' = 1 ORDER BY name';
 $db->setQuery($query);
 $providers = $db->loadObjectList();
 

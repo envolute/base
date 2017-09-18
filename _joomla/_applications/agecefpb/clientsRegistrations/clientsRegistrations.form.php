@@ -4,7 +4,6 @@ defined('_JEXEC') or die;
 // FORM
 ?>
 <input type="hidden" name="user_id" id="<?php echo $APPTAG?>-user_id" />
-<input type="hidden" name="usergroup" id="<?php echo $APPTAG?>-usergroup" />
 <input type="hidden" name="username" id="<?php echo $APPTAG?>-username" />
 <input type="hidden" name="cusername" id="<?php echo $APPTAG?>-cusername" />
 <div class="row">
@@ -12,25 +11,25 @@ defined('_JEXEC') or die;
 		<?php echo JText::_('MSG_'.($cfg['isEdit'] ? 'EDIT' : 'REGISTRATION').'_FORM')?>
 	</div>
 	<div class="col-xl-8">
-		<fieldset class="fieldset-embed fieldset-sm pb-0">
+		<fieldset id="<?php echo $APPTAG?>-group-caixa" class="fieldset-embed fieldset-sm pb-0" hidden>
 			<legend><?php echo JText::_('TEXT_DATA_EMPLOYEE'); ?></legend>
 			<div class="row">
 				<div class="col-sm-5 col-md-6">
 					<div class="form-group">
 						<span class="btn-group btn-group-justified" data-toggle="buttons">
 							<label class="btn btn-default btn-active-success">
-								<input type="radio" name="cx_status" id="<?php echo $APPTAG?>-cx_status-0" value="0" class="auto-tab" data-target=".<?php echo $APPTAG?>-group-retired" data-target-display="true" />
-								<?php echo JText::_('TEXT_CX_STATUS_0'); ?>
+								<input type="radio" name="usergroup" id="<?php echo $APPTAG?>-usergroup-0" value="11" class="auto-tab" data-target=".<?php echo $APPTAG?>-group-only-effective" data-target-display="true" />
+								<?php echo JText::_('TEXT_EFFECTIVE'); ?>
 							</label>
 							<label class="btn btn-default btn-active-warning">
-								<input type="radio" name="cx_status" id="<?php echo $APPTAG?>-cx_status-1" value="1" class="auto-tab" data-target=".<?php echo $APPTAG?>-group-retired" data-target-display="false" />
-								<?php echo JText::_('TEXT_CX_STATUS_1'); ?></span>
+								<input type="radio" name="usergroup" id="<?php echo $APPTAG?>-usergroup-1" value="12" class="auto-tab" data-target=".<?php echo $APPTAG?>-group-only-effective" data-target-display="false" />
+								<?php echo JText::_('TEXT_RETIRED'); ?></span>
 							</label>
 						</span>
 					</div>
 				</div>
 				<div class="col-sm-7 col-md-6">
-					<div class="form-group <?php echo $APPTAG?>-group-retired">
+					<div class="form-group <?php echo $APPTAG?>-group-only-effective">
 						<div class="input-group">
 							<input type="text" name="cx_email" id="<?php echo $APPTAG?>-cx_email" class="form-control" placeholder="E-mail Caixa" />
 							<span class="input-group-addon">@caixa.gov.br</span>
@@ -38,25 +37,25 @@ defined('_JEXEC') or die;
 					</div>
 				</div>
 				<div class="col-sm-6 col-md-3">
-					<div class="form-group field-required">
-						<label><?php echo JText::_('FIELD_LABEL_CODE'); ?></label>
+					<div class="form-group">
+						<label class="field-required"><?php echo JText::_('FIELD_LABEL_CODE'); ?></label>
 						<input type="text" name="cx_code" id="<?php echo $APPTAG?>-cx_code" class="form-control upper" />
 					</div>
 				</div>
 				<div class="col-sm-6 col-md-3">
-					<div class="form-group field-required">
-						<label><?php echo JText::_('FIELD_LABEL_ADMISSION_DATE'); ?></label>
+					<div class="form-group">
+						<label class="field-required"><?php echo JText::_('FIELD_LABEL_ADMISSION_DATE'); ?></label>
 						<input type="text" name="cx_date" id="<?php echo $APPTAG?>-cx_date" class="form-control field-date" data-convert="true" />
 					</div>
 				</div>
 				<div class="col-sm-6 col-md-3">
-					<div class="form-group field-required">
-						<label><?php echo JText::_('FIELD_LABEL_ROLE'); ?></label>
+					<div class="form-group">
+						<label class="field-required"><?php echo JText::_('FIELD_LABEL_ROLE'); ?></label>
 						<input type="text" name="cx_role" id="<?php echo $APPTAG?>-cx_role" class="form-control upper" />
 					</div>
 				</div>
 				<div class="col-sm-6 col-md-3">
-					<div class="form-group <?php echo $APPTAG?>-group-retired">
+					<div class="form-group <?php echo $APPTAG?>-group-only-effective">
 						<label class="field-required iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_SITUATED_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_SITUATED'); ?></label>
 						<input type="text" name="cx_situated" id="<?php echo $APPTAG?>-cx_situated" class="form-control upper" />
 					</div>
@@ -202,18 +201,31 @@ defined('_JEXEC') or die;
 						<div class="form-group field-required">
 							<label><?php echo JText::_('FIELD_LABEL_CELLPHONE'); ?> 1</label>
 							<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone0" class="form-control field-phone" />
+							<span class="input-group-btn btn-group" data-toggle="buttons">
+								<label class="btn btn-outline-success btn-active-success base-icon-whatsapp">
+									<input type="checkbox" id="<?php echo $APPTAG?>-wcheck0" value="1" class="auto-tab" data-target="<?php echo $APPTAG?>-whatsapp0" data-target-value="1" data-target-value-reset="" />
+									<input type="hidden" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp0" />
+								</label>
+							</span>
 						</div>
 					</div>
 					<div class="col-sm-4">
 						<div class="form-group">
 							<label><?php echo JText::_('FIELD_LABEL_CELLPHONE'); ?> 2</label>
 							<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone1" class="form-control field-phone" />
+							<span class="input-group-btn btn-group" data-toggle="buttons">
+								<label class="btn btn-outline-success btn-active-success base-icon-whatsapp">
+									<input type="checkbox" id="<?php echo $APPTAG?>-wcheck1" value="1" class="auto-tab" data-target="<?php echo $APPTAG?>-whatsapp1" data-target-value="1" data-target-value-reset="" />
+									<input type="hidden" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp1" />
+								</label>
+							</span>
 						</div>
 					</div>
 					<div class="col-sm-4">
 						<div class="form-group">
 							<label><?php echo JText::_('FIELD_LABEL_PHONE_FIXED'); ?></label>
 							<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone2" class="form-control field-phone" />
+							<input type="hidden" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp2" />
 						</div>
 					</div>
 				</div>

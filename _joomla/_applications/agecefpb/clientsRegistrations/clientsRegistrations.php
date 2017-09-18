@@ -37,7 +37,7 @@ jQuery(function() {
 
 	// APP FIELDS
 	var user_id				= jQuery('#<?php echo $APPTAG?>-user_id');
-	var usergroup 			= jQuery('#<?php echo $APPTAG?>-usergroup');
+	var usergroup 			= mainForm.find('input[name=usergroup]:radio'); // status "efetivo/aposentado"
 	var username 			= jQuery('#<?php echo $APPTAG?>-username');
 	var cusername 			= jQuery('#<?php echo $APPTAG?>-cusername');
 	var name 				= jQuery('#<?php echo $APPTAG?>-name');
@@ -52,7 +52,6 @@ jQuery(function() {
 	var partner				= jQuery('#<?php echo $APPTAG?>-partner');
 	var children			= jQuery('#<?php echo $APPTAG?>-children');
 	// Company data
-	var cx_status			= mainForm.find('input[name=cx_status]:radio'); // status "efetivo/aposentado"
 	var cx_code				= jQuery('#<?php echo $APPTAG?>-cx_code'); // matrícula
 	var cx_email			= jQuery('#<?php echo $APPTAG?>-cx_email');
 	var cx_role				= jQuery('#<?php echo $APPTAG?>-cx_role'); // cargo
@@ -69,6 +68,12 @@ jQuery(function() {
 	var phone0				= jQuery('#<?php echo $APPTAG?>-phone0');
 	var phone1				= jQuery('#<?php echo $APPTAG?>-phone1');
 	var phone2				= jQuery('#<?php echo $APPTAG?>-phone2');
+	var whatsapp0			= jQuery('#<?php echo $APPTAG?>-whatsapp0');
+		var wcheck0			= jQuery('#<?php echo $APPTAG?>-wcheck0');
+	var whatsapp1			= jQuery('#<?php echo $APPTAG?>-whatsapp1');
+		var wcheck1			= jQuery('#<?php echo $APPTAG?>-wcheck1');
+	var whatsapp2			= jQuery('#<?php echo $APPTAG?>-whatsapp2');
+		var wcheck2			= jQuery('#<?php echo $APPTAG?>-wcheck2');
 	// Billing data
 	var agency				= jQuery('#<?php echo $APPTAG?>-agency');
 	var account				= jQuery('#<?php echo $APPTAG?>-account');
@@ -112,7 +117,7 @@ jQuery(function() {
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
 			user_id.val(0);
-			usergroup.val(<?php echo $_SESSION[$APPTAG.'newUsertype']?>);
+			checkOption(usergroup, <?php echo $_SESSION[$APPTAG.'newUsertype']?>); // radio
 			username.val('');
 			cusername.val('');
 			name.val('');
@@ -126,7 +131,6 @@ jQuery(function() {
 			marital_status.selectUpdate(0); // select
 			partner.val('');
 			children.selectUpdate(0); // select
-			checkOption(cx_status, 0); // radio
 			cx_code.val('');
 			cx_email.val('');
 			cx_role.val('');
@@ -141,6 +145,12 @@ jQuery(function() {
 			phone0.val('');
 			phone1.val('');
 			phone2.val('');
+			whatsapp0.val('');
+			checkOption(wcheck0, 0);
+			whatsapp1.val('');
+			checkOption(wcheck1, 0);
+			whatsapp2.val('');
+			checkOption(wcheck2, 0);
 			agency.val('');
 			account.val('');
 			operation.val('');
@@ -148,6 +158,9 @@ jQuery(function() {
 			password.val('');
 			repassword.val('');
 			<?php endif;?>
+
+			// Mostra os campos para associados efetivos da caixa
+			setHidden('#<?php echo $APPTAG?>-group-caixa', false);
 
 			// Habilita campos não editaveis
 			for (i = 0; i < disableEdit.length; i++) {
@@ -236,7 +249,7 @@ jQuery(function() {
 
 						// App Fields
 						user_id.val(item.user_id);
-						usergroup.val(item.usergroup);
+						checkOption(usergroup, item.usergroup); // radio
 						username.val(item.username);
 						cusername.val(item.username);
 						name.val(item.name);
@@ -250,7 +263,6 @@ jQuery(function() {
 						marital_status.selectUpdate(item.marital_status); // select
 						partner.val(item.partner);
 						children.selectUpdate(item.children); // select
-						checkOption(cx_status, item.cx_status); // radio
 						cx_code.val(item.cx_code);
 						cx_email.val(item.cx_email);
 						cx_role.val(item.cx_role);
@@ -267,11 +279,21 @@ jQuery(function() {
 							phone0.val(p[0]);
 							phone1.val(p[1]);
 							phone2.val(p[2]);
+							var w = item.whatsapp.split(",");
+							whatsapp0.val(w[0]);
+							checkOption(wcheck0, w[0]);
+							whatsapp1.val(w[1]);
+							checkOption(wcheck1, w[1]);
+							whatsapp2.val(w[2]);
+							checkOption(wcheck2, w[2]);
 						agency.val(item.agency);
 						account.val(item.account);
 						operation.val(item.operation);
 						password.val('');
 						repassword.val('');
+
+						// Oculta os campos para associados efetivos da caixa
+						setHidden('#<?php echo $APPTAG?>-group-caixa', (item.usergroup != 11 ? true : false));
 
 						// Desabilita campos não editáveis
 						for (i = 0; i < disableEdit.length; i++) {
@@ -302,7 +324,7 @@ jQuery(function() {
 				field.prop('disabled', false);
 			} else {
 				var val = field.val();
-				if(!isEmpty(val) && val != 0) field.prop('disabled', true);
+				if(!isEmpty(val) && val != 0 && val != '0_/__/____') field.prop('disabled', true);
 				else field.prop('disabled', false);
 			}
 			// Atualiza se for select 'chosen'
@@ -353,9 +375,29 @@ jQuery(window).load(function() {
 					}
 				}
 			},
+			cx_email: { // email caixa
+				required: function(el) {
+					return (jQuery('#<?php echo $APPTAG?>-usergroup option:selected').val() == 11);
+				}
+			},
+			cx_code: { // matrícula caixa
+				required: function(el) {
+					return (jQuery('#<?php echo $APPTAG?>-usergroup option:selected').val() == 11);
+				}
+			},
+			cx_date: { // data de admissão
+				required: function(el) {
+					return (jQuery('#<?php echo $APPTAG?>-usergroup option:selected').val() == 11);
+				}
+			},
+			cx_role: { // cargo/função
+				required: function(el) {
+					return (jQuery('#<?php echo $APPTAG?>-usergroup option:selected').val() == 11);
+				}
+			},
 			cx_situated: { // lotação (agencia)
 				required: function(el) {
-					return (jQuery('#<?php echo $APPTAG?>-cx_status-0').is(':checked'));
+					return (jQuery('#<?php echo $APPTAG?>-usergroup option:selected').val() == 11);
 				}
 			},
 			partner: { // conjuge
