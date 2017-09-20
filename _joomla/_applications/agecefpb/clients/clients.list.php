@@ -68,6 +68,7 @@ $html = '
 				<tr>
 					'.$adminView['head']['info'].'
 					<th>'.JText::_('FIELD_LABEL_NAME').'</th>
+					<th width="30" class="d-none d-lg-table-cell text-center">&#160;</td>
 					<th>'.JText::_('TEXT_TYPE').'</th>
 					<th>'.JText::_('TEXT_STATUS').'</th>
 					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
@@ -129,7 +130,6 @@ if($num_rows) : // verifica se existe
 			';
 		endif;
 
-
 		if($item->access == 0) :
 			$reason = !empty($item->reasonStatus) ? '<div class="small text-muted text-truncate">'.$item->reasonStatus.'</div>' : '';
 			// Check if user exist
@@ -141,6 +141,7 @@ if($num_rows) : // verifica se existe
 			if(empty($item->user)) $status = '<span class="base-icon-cancel text-danger"> '.JText::_('TEXT_NO_USER_ASSOC').'</span><div class="small text-muted text-truncate">'.JText::_('TEXT_NO_USER_ASSOC_DESC').'</div>';
 			else $status = '<span class="base-icon-ok text-success"> '.JText::_('TEXT_APPROVED').'</span>';
 		endif;
+		$urlViewData = JURI::root().'apps/clients/ficha?uID='.$item->id.'&sUD=on';
 		$status = $item->state == 0 ? '<span class="base-icon-attention text-live"> '.JText::_('TEXT_BLOCKED').'</span>' : $status;
 		$rowState	= $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
@@ -155,6 +156,7 @@ if($num_rows) : // verifica se existe
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
 				<td>'.$img.$item->name.'<div class="small text-muted">'.$item->cx_role.' - '.$item->cx_situated.'</td>
+				<td class="d-none d-lg-table-cell text-center"><a href="'.$urlViewData.'" target="_blank" class="base-icon-doc-text hasTooltip" title="'.JText::_('TEXT_VIEW_CLIENT_DATA').'"></a></td>
 				<td>'.$item->type.'</td>
 				<td>'.$status.'</td>
 				<td class="d-none d-lg-table-cell">
@@ -170,7 +172,7 @@ else : // num_rows = 0
 
 	$html .= '
 		<tr>
-			<td colspan="8">
+			<td colspan="9">
 				<div class="alert alert-warning alert-icon m-0">'.JText::_('MSG_LISTNOREG').'</div>
 			</td>
 		</tr>

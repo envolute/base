@@ -198,27 +198,29 @@ defined('_JEXEC') or die;
 				<span class="badge badge-primary"><?php echo JText::_('TEXT_CONTACT_DATA'); ?></span>
 				<div class="row">
 					<div class="col-sm-4">
-						<div class="form-group field-required">
-							<label><?php echo JText::_('FIELD_LABEL_CELLPHONE'); ?> 1</label>
-							<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone0" class="form-control field-phone" />
-							<span class="input-group-btn btn-group" data-toggle="buttons">
-								<label class="btn btn-outline-success btn-active-success base-icon-whatsapp">
-									<input type="checkbox" id="<?php echo $APPTAG?>-wcheck0" value="1" class="auto-tab" data-target="<?php echo $APPTAG?>-whatsapp0" data-target-value="1" data-target-value-reset="" />
+						<div class="form-group">
+							<label class="field-required"><?php echo JText::_('FIELD_LABEL_CELLPHONE'); ?> 1</label>
+							<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone0" class="form-control field-phone input-required mb-1" />
+							<div class="form-check">
+								<label class="form-check-label iconTip hasTooltip" title="<?php echo JText::_('FIELD_HAS_WHATSAPP_DESC') ?>">
+									<input type="checkbox" id="<?php echo $APPTAG?>-wcheck0" value="1" class="form-check-input auto-tab" data-target="<?php echo $APPTAG?>-whatsapp0" data-target-value="1" data-target-value-reset="" />
+									<?php echo JText::_('FIELD_HAS_WHATSAPP') ?>
 									<input type="hidden" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp0" />
 								</label>
-							</span>
+							</div>
 						</div>
 					</div>
 					<div class="col-sm-4">
 						<div class="form-group">
 							<label><?php echo JText::_('FIELD_LABEL_CELLPHONE'); ?> 2</label>
-							<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone1" class="form-control field-phone" />
-							<span class="input-group-btn btn-group" data-toggle="buttons">
-								<label class="btn btn-outline-success btn-active-success base-icon-whatsapp">
-									<input type="checkbox" id="<?php echo $APPTAG?>-wcheck1" value="1" class="auto-tab" data-target="<?php echo $APPTAG?>-whatsapp1" data-target-value="1" data-target-value-reset="" />
+							<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone1" class="form-control field-phone mb-1" />
+							<div class="form-check">
+								<label class="form-check-label iconTip hasTooltip" title="<?php echo JText::_('FIELD_HAS_WHATSAPP_DESC') ?>">
+									<input type="checkbox" id="<?php echo $APPTAG?>-wcheck1" value="1" class="form-check-input auto-tab" data-target="<?php echo $APPTAG?>-whatsapp1" data-target-value="1" data-target-value-reset="" />
+									<?php echo JText::_('FIELD_HAS_WHATSAPP') ?>
 									<input type="hidden" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp1" />
 								</label>
-							</span>
+							</div>
 						</div>
 					</div>
 					<div class="col-sm-4">

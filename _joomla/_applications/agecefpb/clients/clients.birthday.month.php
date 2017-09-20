@@ -4,7 +4,7 @@ $ajaxRequest = false;
 require('config.php');
 
 // ACESSO
-$cfg['isPublic'] = false; // Público -> acesso aberto a todos
+$cfg['isPublic'] = true; // Público -> acesso aberto a todos
 
 // IMPORTANTE: Carrega o arquivo 'helper' do template
 JLoader::register('baseHelper', JPATH_CORE.DS.'helpers/base.php');
@@ -33,7 +33,7 @@ endif;
 $db = JFactory::getDbo();
 
 // GET DATA
-$query = 'SELECT id, name, DAY(birthday) day, DAY(NOW()) today FROM '.$db->quoteName($cfg['mainTable']).' WHERE MONTH(birthday) = MONTH(NOW())';
+$query = 'SELECT *, DAY(birthday) day, DAY(NOW()) today FROM '.$db->quoteName($cfg['mainTable']).' WHERE MONTH(birthday) = MONTH(NOW()) ORDER BY '.$db->quoteName('day').', name';
 try {
 	$db->setQuery($query);
 	$db->execute();
@@ -46,21 +46,25 @@ try {
 
 $html = '';
 if($num_rows) : // verifica se existe
-	$html .= '<ul class="list-unstyled bordered list-striped list-hover m-0">';
+	$html .= '<ul class="list-unstyled bordered list-sm list-striped list-hover m-0">';
 	foreach($res as $item) {
 
 		JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 		// Imagem Principal -> Primeira imagem (index = 0)
 		$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
-		if(!empty($img)) $img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 20, 20).'" class="d-none d-md-inline img-fluid rounded-circle float-left mr-2" />';
+		if(!empty($img)) $img = '<img src=\''.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 64, 64).'\' class=\'img-fluid my-1\' />';
 		$today = ($item->day == $item->today);
-		$rowState = $today ? 'text-success' : '';
+		$info = baseHelper::nameFormat($item->cx_role).'<br />Ag. '.$item->cx_situated;
+		if($item->usergroup == 12) $info = JText::_('TEXT_RETIRED');
+		else if($item->usergroup == 13) $info = JText::_('TEXT_CONTRIBUTOR');
+		if(!empty($img)) $info = $img.'<br />'.$info;
 		$cake = $today ? '<span class="base-icon-birthday text-live"></span> ' : '';
+		$day = $item->day < 10 ? '0'.$item->day : $item->day;
+		$rowState = $today ? 'text-success' : '';
 		$html .= '
 			<li class="'.$rowState.'">
-				<div class="float-right">'.$cake.$item->day.'</div>
-				<div class="text-truncate pr-2">'.$img.baseHelper::nameFormat($item->name).'</div>
-				<div class="small text-muted">'.$item->type.'</div>
+				<div class="float-right">'.$day.'</div>
+				<div class="text-truncate pr-2"><span class="cursor-help hasTooltip" title="'.$info.'">'.$cake.baseHelper::nameFormat($item->name).'</span></div>
 			</li>
 		';
 	}

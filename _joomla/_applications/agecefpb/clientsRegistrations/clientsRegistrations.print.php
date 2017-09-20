@@ -33,21 +33,22 @@ endif;
 $input      = $app->input;
 
 // params requests
-$rID		= $input->get('rID', '', 'str');
-$rID		= is_numeric(base64_decode($rID)) ? base64_decode($rID) : '';
-$dOC		= $input->get('dOC', '', 'str');
-if(empty($rID)) :
-	$dOC		= !empty($dOC) ? base64_decode($dOC) : '';
-	$dOC		= is_numeric(baseHelper::alphaNum($dOC)) ? $dOC : '';
+$sUD		= $input->get('sUD', '', 'str');
+$uID		= $input->get('uID', '', ($sUD == 'on' ? 'int' : 'str'));
+if($sUD == 'on') :
+	$uID	= $input->get('uID', '', 'int');
+else :
+	$uID	= is_numeric(base64_decode($uID)) ? base64_decode($uID) : '';
 endif;
 
-if(!empty($rID) || !empty($dOC)) :
+if(!empty($uID) || !empty($dOC)) :
 
 	// DATABASE CONNECT
 	$db = JFactory::getDbo();
 
-	$where = !empty($dOC) ? $db->quoteName('T1.cpf') .' = '. $dOC : '';
-	$where = !empty($rID) ? $db->quoteName('T1.id') .' = '. $rID : $where;
+	$where = !empty($uID) ? $db->quoteName('T1.id') .' = '. $uID : '';
+	// acesso após a aprovação
+	if($sUD != 'on') $where .= ' AND '.$db->quoteName('T1.user_id') .' = 0 AND '.$db->quoteName('T1.access') .' = 0';
 
 	// GET DATA
 	$query = '
@@ -55,7 +56,7 @@ if(!empty($rID) || !empty($dOC)) :
 		FROM '.$db->quoteName($cfg['mainTable']).' T1
 			LEFT OUTER JOIN '. $db->quoteName('#__usergroups') .' T2
 			ON T2.id = T1.usergroup
-		WHERE '.$where.' AND '.$db->quoteName('T1.user_id') .' = 0 AND '.$db->quoteName('T1.access') .' = 0
+		WHERE '.$where.'
 		ORDER BY '.$db->quoteName('T1.id').' DESC
 		LIMIT 1
 	';
@@ -78,6 +79,15 @@ if(!empty($rID) || !empty($dOC)) :
 			else $img = '<div class="image-file"><div class="image-action"><div class="image-file-label"><span class="base-icon-file-image"></span></div></div></div>';
 		endif;
 
+		$children = '';
+		if($item->children > 0) :
+			$children = '
+				<div class="col-4">
+					<label class="label-sm">'.JText::_('FIELD_LABEL_CHILDREN').':</label>
+					<p>'.$item->children.'</p>
+				</div>
+			';
+		endif;
 		$partner = '';
 		if(!empty($item->partner)) :
 			$partner = '
@@ -113,11 +123,7 @@ if(!empty($rID) || !empty($dOC)) :
 								<label class="label-sm">'.JText::_('FIELD_LABEL_MARITAL_STATUS').':</label>
 								<p>'.JText::_('TEXT_MARITAL_STATUS_'.$item->marital_status).'</p>
 							</div>
-							<div class="col-4">
-								<label class="label-sm">'.JText::_('FIELD_LABEL_CHILDREN').':</label>
-								<p>'.$item->children.'</p>
-							</div>
-							'.$partner.'
+							'.$children.$partner.'
 						</div>
 					</div>
 					<div class="col-4">
@@ -199,19 +205,22 @@ if(!empty($rID) || !empty($dOC)) :
 						</p>
 					</div>
 				</div>
-			</div>
-			<div class="p-3 b-all bg-gray-200 my-5">
-				<span class="base-icon-check mr-1 d-print-none"></span>'.JText::sprintf('MSG_AUTHORIZE', $item->name, $item->cx_code).'
-			</div>
-			<div class="row pt-5">
-				<div class="col-6 text-center">
-					<hr class="mb-2" />'.JText::_('TEXT_SIGNATURE').'
-				</div>
-				<div class="col-6 text-center">
-					<hr class="mb-2" />'.JText::_('TEXT_PLACE_DATE').'
-				</div>
-			</div>
 		';
+		if($item->user_id == 0) :
+			$html .= '
+				<div class="p-3 b-all bg-gray-200 my-5">
+					<span class="base-icon-check mr-1 d-print-none"></span>'.JText::sprintf('MSG_AUTHORIZE', $item->name, $item->cx_code).'
+				</div>
+				<div class="row pt-5">
+					<div class="col-6 text-center">
+						<hr class="mb-2" />'.JText::_('TEXT_SIGNATURE').'
+					</div>
+					<div class="col-6 text-center">
+						<hr class="mb-2" />'.JText::_('TEXT_PLACE_DATE').'
+					</div>
+				</div>
+			';
+		endif;
 	else :
 		$app->enqueueMessage(JText::_('MSG_DATA_NOT_AVAILABLE'), 'warning');
 		$app->redirect(JURI::root(true));
@@ -219,7 +228,6 @@ if(!empty($rID) || !empty($dOC)) :
 	endif;
 
 	?>
-
 	<div class="d-print-none">
 		<button type="button" class="btn btn-lg btn-success base-icon-print btn-icon" onclick="javascript:window.print()"><?php echo JText::_('TEXT_PRINT_DATA')?></button>
 		<hr />

@@ -439,7 +439,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 						// CUSTOM -> client email notification
 						// email de confirmação
-						$urlViewData = $domain.'associe-se/ficha?rID='.urlencode(base64_encode($id));
+						$urlViewData = $domain.'apps/clients/ficha?uID='.urlencode(base64_encode($id));
 						$eBody = JText::sprintf('MSG_EMAIL_BODY', baseHelper::nameFormat($request['name']), $mailFrom, $urlViewData);
 						// Email Template
 						$boxStyle	= array('bg' => '#eee', 'color' => '#555', 'border' => '3px solid #303b4d');

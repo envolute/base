@@ -207,7 +207,7 @@ jQuery(function() {
 		// CONFIRM SUCCESS -> Ação após a confirmação do cadastro
 		window.<?php echo $APPTAG?>_confirmSuccess = function(regID) {
 			setHidden('#<?php echo $APPTAG?>-form-ajax', true, '#<?php echo $APPTAG?>-msg-success');
-			var urlPrint = '<?php echo JURI::root()?>associe-se/ficha?rID='+regID+'&tmpl=modal';
+			var urlPrint = '<?php echo JURI::root()?>apps/clients/ficha?uID='+regID+'&tmpl=modal';
 			jQuery('#<?php echo $APPTAG?>-registration-data').attr("src", urlPrint);
 			scrollTo('#header');
 		};
