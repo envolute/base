@@ -51,5 +51,5 @@ window.<?php echo $APPTAG?>_listReload = function(reload, remove, ids, onlyChild
 };
 <?php
 // init list
-if($cfg['showList'] && !$cfg['listModal'] && !$cfg['listFull']) echo $APPTAG.'_listReload(false, false);';
+if($cfg['showList'] && !$cfg['listModal'] && !$cfg['listFull']) echo $APPTAG.'_listReload(false, false, 0, '.$APPTAG.'oCHL, '.$APPTAG.'rNID, '.$APPTAG.'rID);';
 ?>

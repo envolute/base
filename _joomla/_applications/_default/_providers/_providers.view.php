@@ -101,15 +101,61 @@ if($p != 0) :
 						<div class="col-lg-4">
 		';
 
+						// Contacts
+						$_providersContactsListFull		= false;
+						$_providersContactsAddText		= false;
+						$_providersContactsRelTag		= 'providers';
+						$_providersContactsRelTable		= '#__base_rel_providers_contacts';
+						$_providersContactsAppNameId	= 'contact_id';
+						$_providersContactsRelNameId	= 'provider_id';
+						$_providersContactsRelListNameId= 'provider_id';
+						$_providersContactsRelListId	= $item->id;
+						echo '<div class="pos-relative">';
+							echo '<h5 class="base-icon-user mb-3"> '.JText::_('TEXT_CONTACTS').'</h5>';
+							require(JPATH_APPS.DS.'_providersContacts/_providersContacts.php');
+						echo '</div>';
+
 						// Phones
-						$_phonesListFull	= false;
-						$_phonesAddText		= false;
-						$_phonesRelTag		= 'providers';
-						$_phonesRelTable	= '#__base_rel_providers_phones';
-						$_phonesAppNameId	= 'phone_id';
-						$_phonesRelNameId	= 'provider_id';
-						echo '<h6 class="mb-3">'.JText::_('TEXT_PROVIDER_PHONES').'</h6>';
-						require(JPATH_APPS.DS.'_phones/_phones.php');
+						$_phonesListFull				= false;
+						$_phonesAddText					= false;
+						$_phonesRelTag					= 'providers';
+						$_phonesRelTable				= '#__base_rel_providers_phones';
+						$_phonesAppNameId				= 'phone_id';
+						$_phonesRelNameId				= 'provider_id';
+						$_phonesRelListNameId			= 'provider_id';
+						$_phonesRelListId				= $item->id;
+						echo '<div class="pos-relative">';
+							echo '<h5 class="base-icon-phone-squared mb-3"> '.JText::_('TEXT_PROVIDER_PHONES').'</h5>';
+							require(JPATH_APPS.DS.'_phones/_phones.php');
+						echo '</div>';
+
+						// Addresses
+						$_addressesListFull				= false;
+						$_addressesAddText				= false;
+						$_addressesRelTag				= 'providers';
+						$_addressesRelTable				= '#__base_rel_providers_addresses';
+						$_addressesAppNameId			= 'address_id';
+						$_addressesRelNameId			= 'provider_id';
+						$_addressesRelListNameId		= 'provider_id';
+						$_addressesRelListId			= $item->id;
+						echo '<div class="pos-relative">';
+							echo '<h5 class="base-icon-location mb-3"> '.JText::_('TEXT_ADDRESSES').'</h5>';
+							require(JPATH_APPS.DS.'_addresses/_addresses.php');
+						echo '</div>';
+
+						// Banks Accounts
+						$_banksAccountsListFull			= false;
+						$_banksAccountsAddText			= false;
+						$_banksAccountsRelTag			= 'providers';
+						$_banksAccountsRelTable			= '#__base_rel_providers_banksAccounts';
+						$_banksAccountsAppNameId		= 'bankAccount_id';
+						$_banksAccountsRelNameId		= 'provider_id';
+						$_banksAccountsRelListNameId	= 'provider_id';
+						$_banksAccountsRelListId		= $item->id;
+						echo '<div class="pos-relative">';
+							echo '<h5 class="base-icon-bank mb-3"> '.JText::_('TEXT_ACCOUNTS').'</h5>';
+							require(JPATH_APPS.DS.'_banksAccounts/_banksAccounts.php');
+						echo '</div>';
 
 		echo '
 						</div>
