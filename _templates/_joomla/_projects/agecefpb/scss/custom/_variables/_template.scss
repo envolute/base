@@ -110,11 +110,12 @@
 
 	// page header
 	$page-header-margin-bottom:			.5em;
-	$page-header-padding-bottom:		.5em;
-	$page-header-font-size:				1.3rem;
-	$page-header-line-height:			1.3rem;
+	$page-header-padding-bottom-1:		.3em;
+	$page-header-padding-bottom-2:		.5em;
 	$page-header-border-bottom:			1px solid $base-border-color;
 	$page-header-box-shadow:			none !default;
+	$page-header-h4:					1.3rem;
+	$page-header-h5:					1.15rem;
 
 	// text sizes
 	$base-text-xs:						.8rem;

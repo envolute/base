@@ -100,7 +100,7 @@ $groups = $db->loadObjectList();
 								<?php
 								for($i = 1; $i <= 31; $i++) {
 									$d = $i < 10 ? '0'.$i : $i;
-									echo '<option value="'.$d.'">'.$d.'</option>';
+									echo '<option value="'.$i.'">'.$d.'</option>';
 								}
 								?>
 							</select>

@@ -6,11 +6,23 @@
 		// PAGE HEADER -> header do conteúdo principal
 		.page-header {
 			margin-bottom: $page-header-margin-bottom;
-			padding-bottom: $page-header-padding-bottom;
-			font-size: $page-header-font-size;
-		    line-height: $page-header-line-height;
 			border-bottom: $page-header-border-bottom;
 			box-shadow: $page-header-box-shadow;
+		}
+		h1.page-header,
+		h2.page-header,
+		h3.page-header { padding-bottom: $page-header-padding-bottom-1; }
+		h4.page-header,
+		h5.page-header,
+		h6.page-header { padding-bottom: $page-header-padding-bottom-2; }
+		// default
+		h4.page-header {
+			font-size: $page-header-h4;
+		    line-height: $page-header-h4;
+		}
+		h5.page-header {
+			font-size: $page-header-h5;
+		    line-height: $page-header-h5;
 		}
 
 	// blockquote

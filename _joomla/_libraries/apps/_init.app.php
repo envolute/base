@@ -1,18 +1,17 @@
 <?php
 
 // ACCESS
-if($cfg['isPublic']) :
+// Grupos de acesso declarados
+if(isset($cfg['groupId']) && ($cfg['groupId']['viewer'][0] != 0 || $cfg['groupId']['admin'][0] != 0)) :
+	$viewer = array_merge($cfg['groupId']['viewer'], $cfg['groupId']['admin']);
+	$hasGroup = array_intersect($groups, $viewer); // se está na lista de grupos permitidos
+	$hasAdmin = array_intersect($groups, $cfg['groupId']['admin']); // se está na lista de administradores permitidos
+// Se o acesso não for público e os grupos não forem definidos
+// indica que o acesso é disponível a qualquer grupo restrito
+elseif(!$user->guest) :
 	$hasGroup = $hasAdmin = true;
-else :
-	// se os grupos forem declarados
-	if(isset($cfg['groupId']) && ($cfg['groupId']['viewer'][0] != 0 || $cfg['groupId']['admin'][0] != 0)) :
-		$hasGroup = array_intersect($groups, $cfg['groupId']['viewer']); // se está na lista de grupos permitidos
-		$hasAdmin = array_intersect($groups, $cfg['groupId']['admin']); // se está na lista de administradores permitidos
-	// Se o acesso não for público e os grupos não forem definidos
-	// indica que o acesso é disponível a qualquer grupo restrito
-	elseif(!$user->guest) :
-		$hasGroup = $hasAdmin = true;
-	endif;
+endif;
+if(!$cfg['isPublic']) :
 	if($user->guest) :
 		$app->redirect(JURI::root(true).'/login?return='.urlencode(base64_encode(JURI::current())));
 		exit();
