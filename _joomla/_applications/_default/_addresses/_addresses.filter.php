@@ -27,7 +27,8 @@ $where = '';
 		'T1.address_state'		=> 'FIELD_LABEL_ADDRESS_STATE',
 		'T1.address_country'	=> 'FIELD_LABEL_ADDRESS_COUNTRY',
 		'T1.latitude'			=> 'FIELD_LABEL_ADDRESS_LATITUDE',
-		'T1.longitude'			=> 'FIELD_LABEL_ADDRESS_LONGITUDE'
+		'T1.longitude'			=> 'FIELD_LABEL_ADDRESS_LONGITUDE',
+		'T1.phones'				=> 'FIELD_LABEL_PHONE'
 	);
 	$i = 0;
 	foreach($searchFields as $key => $value) {

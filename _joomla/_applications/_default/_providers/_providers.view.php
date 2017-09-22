@@ -105,11 +105,9 @@ if($p != 0) :
 						$_providersContactsListFull		= false;
 						$_providersContactsAddText		= false;
 						$_providersContactsRelTag		= 'providers';
-						$_providersContactsRelTable		= '#__base_rel_providers_contacts';
-						$_providersContactsAppNameId	= 'contact_id';
-						$_providersContactsRelNameId	= 'provider_id';
 						$_providersContactsRelListNameId= 'provider_id';
 						$_providersContactsRelListId	= $item->id;
+						$_providersContactsOnlyChildList= true;
 						echo '<div class="pos-relative">';
 							echo '<h5 class="base-icon-user mb-3"> '.JText::_('TEXT_CONTACTS').'</h5>';
 							require(JPATH_APPS.DS.'_providersContacts/_providersContacts.php');

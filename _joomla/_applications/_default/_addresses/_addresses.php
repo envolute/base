@@ -46,6 +46,10 @@ jQuery(function() {
 	var latitude			= jQuery('#<?php echo $APPTAG?>-latitude');
 	var longitude			= jQuery('#<?php echo $APPTAG?>-longitude');
 	var url_map				= jQuery('#<?php echo $APPTAG?>-url_map');
+	// phones
+	var phone0				= jQuery('#<?php echo $APPTAG?>-phone0');
+	var phone1				= jQuery('#<?php echo $APPTAG?>-phone1');
+	var phone2				= jQuery('#<?php echo $APPTAG?>-phone2');
 
 	// PARENT FIELD -> Select
 	// informe, se houver, o campo que representa a chave estrangeira principal
@@ -115,6 +119,9 @@ jQuery(function() {
 			latitude.val('');
 			longitude.val('');
 			url_map.val('');
+			phone0.phoneMaskUpdate(''); // toggleMask
+			phone1.phoneMaskUpdate(''); // toggleMask
+			phone2.phoneMaskUpdate(''); // toggleMask
 
 			<?php // Closure Actions
 			require(JPATH_CORE.DS.'apps/snippets/form/formReset.end.js.php');
@@ -250,6 +257,11 @@ jQuery(function() {
 						latitude.val(item.latitude);
 						longitude.val(item.longitude);
 						url_map.val(item.url_map);
+							// phones
+							var p = item.phones.split(",");
+							phone0.phoneMaskUpdate(p[0]); // toggleMask
+							phone1.phoneMaskUpdate(p[1]); // toggleMask
+							phone2.phoneMaskUpdate(p[2]); // toggleMask
 
 						<?php // Closure Actions
 						require(JPATH_CORE.DS.'apps/snippets/form/loadEdit.end.js.php');
@@ -379,7 +391,7 @@ jQuery(window).load(function() {
 
 	<?php if($hasAdmin) : ?>
 		<div class="modal fade" id="modal-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-<?php echo $APPTAG?>Label">
-			<div class="modal-dialog" role="document">
+			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
 					<form name="form-<?php echo $APPTAG?>" id="form-<?php echo $APPTAG?>" method="post" enctype="multipart/form-data">
 						<?php require(JPATH_CORE.DS.'apps/layout/form/modal.header.php'); ?>

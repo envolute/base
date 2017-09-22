@@ -103,9 +103,10 @@ if($num_rows) : // verifica se existe
 			';
 		endif;
 
-		$main = $item->main == 1 ? '<span class="base-icon-star text-live cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_MAIN').'"></span> ' : '<span class="badge badge-primary">'.baseHelper::nameFormat($item->description).'</span> ';
+		$main = ($item->main == 0 && !empty($item->description)) ? '<span class="badge badge-primary mb-1">'.baseHelper::nameFormat($item->description).'</span><br />' : '';
 		$info = !empty($item->address_info) ? ', '.$item->address_info : '';
-		$mapa = !empty($item->url_map) ? ' <a href="'.$item->url_map.'" class="badge badge-warning set-modal" data-modal-title="'.JText::_('TEXT_LOCATION').'" data-modal-iframe="true" data-modal-width="95%" data-modal-height="95%">'.JText::_('TEXT_MAP').'</a>' : '';
+		$mapa = !empty($item->url_map) ? ' <a href="'.$item->url_map.'" class="badge badge-warning set-modal hasTooltip" title="'.JText::_('TEXT_MAP').'" data-modal-title="'.JText::_('TEXT_LOCATION').'" data-modal-iframe="true" data-modal-width="95%" data-modal-height="95%"><span class="base-icon-location"></span></a> ' : '';
+		$phones = !empty($item->phones) ? ' <div class="text-sm mt-2 base-icon-phone-squared"> '.str_replace(',', ', ', $item->phones).'</div>' : '';
 		$rowState = $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
@@ -118,10 +119,12 @@ if($num_rows) : // verifica se existe
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
-				<td>'.$main.baseHelper::nameFormat($item->address).', '.$item->address_number.$info.$mapa.'
-					<div class="d-lg-none text-sm">
+				<td>
+					'.$main.$mapa.baseHelper::nameFormat($item->address).', '.$item->address_number.$info.'
+					<div class="text-sm">
 						'.$item->zip_code.' - '.baseHelper::nameFormat($item->address_district).', '.baseHelper::nameFormat($item->address_city).', '.$item->address_state.'
 					</div>
+					'.$phones.'
 				</td>
 				<td class="d-none d-lg-table-cell">'.baseHelper::nameFormat($item->address_district).'</td>
 				<td class="d-none d-lg-table-cell">'.baseHelper::nameFormat($item->address_city).'</td>

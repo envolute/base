@@ -101,7 +101,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				}
 			endif;
 
-			$main = $item->main == 1 ? '<span class="base-icon-star text-live cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_MAIN').'"></span> ' : '<div class="strong">'.$item->description.'</div>';
+			$main = ($item->main == 0 && !empty($item->description)) ? '<span class="badge badge-primary mb-1">'.baseHelper::nameFormat($item->description).'</span><br />' : '';
 			$addressInfo = !empty($item->address_info) ? ', '.$item->address_info : '';
 			$addressNumber = !empty($item->address_number) ? ', '.$item->address_number : '';
 			$addressZip = !empty($item->zip_code) ? $item->zip_code.', ' : '';
@@ -109,6 +109,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$addressCity = !empty($item->address_city) ? ', '.baseHelper::nameFormat($item->address_city) : '';
 			$addressState = !empty($item->address_state) ? ', '.baseHelper::nameFormat($item->address_state) : '';
 			$addressCountry = !empty($item->address_country) ? ', '.baseHelper::nameFormat($item->address_country) : '';
+			$mapa = !empty($item->url_map) ? ' <a href="'.$item->url_map.'" class="badge badge-warning set-modal" title="'.JText::_('TEXT_MAP').'" data-modal-title="'.JText::_('TEXT_LOCATION').'" data-modal-iframe="true" data-modal-width="95%" data-modal-height="95%"><span class="base-icon-location"></span></a> ' : '';
+			$phones = !empty($item->phones) ? ' <div class="text-sm mt-2 base-icon-phone-squared"> '.str_replace(',', ', ', $item->phones).'</div>' : '';
 			$btnState = $hasAdmin ? '<a href="#" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'"><span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').' hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'"></span></a> ' : '';
 			$btnEdit = $hasAdmin ? '<a href="#" class="base-icon-pencil text-live hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"></a> ' : '';
 			$btnDelete = $hasAdmin ? '<a href="#" class="base-icon-trash text-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"></a>' : '';
@@ -116,10 +118,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$html .= '
 				<li class="'.$rowState.'">
 					<span class="float-right">'.$btnState.$btnEdit.$btnDelete.'</span>'.
-					$main.baseHelper::nameFormat($item->address).$addressNumber.$addressInfo.'
+					$main.$mapa.baseHelper::nameFormat($item->address).$addressNumber.$addressInfo.'
 					<div class="text-sm text-muted">'.
 						$addressZip.$addressDistrict.$addressCity.$addressState.$addressCountry.'
 					</div>
+					'.$phones.'
 				</li>
 			';
 		}

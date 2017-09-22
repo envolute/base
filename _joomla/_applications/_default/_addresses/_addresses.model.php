@@ -105,6 +105,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['latitude']			= $input->get('latitude', '', 'string');
 		$request['longitude']			= $input->get('longitude', '', 'string');
 		$request['url_map']				= $input->get('url_map', '', 'string');
+		$request['phones']				= isset($_POST['phone']) ? implode(',', $_POST['phone']) : '';
 
 		// SAVE CONDITION
 		// Condição para inserção e atualização dos registros
@@ -166,7 +167,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'address_country'	=> $item->address_country,
 						'latitude'			=> $item->latitude,
 						'longitude'			=> $item->longitude,
-						'url_map'			=> $item->url_map
+						'url_map'			=> $item->url_map,
+						'phones'			=> $item->phones
 					);
 
 				// UPDATE
@@ -187,6 +189,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('latitude')			.'='. $db->quote($request['latitude']) .','.
 						$db->quoteName('longitude')			.'='. $db->quote($request['longitude']) .','.
 						$db->quoteName('url_map')			.'='. $db->quote($request['url_map']) .','.
+						$db->quoteName('phones')			.'='. $db->quote($request['phones']) .','.
 						$db->quoteName('state')				.'='. $request['state'] .','.
 						$db->quoteName('alter_date')		.'= NOW(),'.
 						$db->quoteName('alter_by')			.'='. $user->id
@@ -388,6 +391,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('latitude') .','.
 							$db->quoteName('longitude') .','.
 							$db->quoteName('url_map') .','.
+							$db->quoteName('phones') .','.
 							$db->quoteName('state') .','.
 							$db->quoteName('created_by')
 						.') VALUES ('.
@@ -404,6 +408,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quote($request['latitude']) .','.
 							$db->quote($request['longitude']) .','.
 							$db->quote($request['url_map']) .','.
+							$db->quote($request['phones']) .','.
 							$request['state'] .','.
 							$user->id
 						.')

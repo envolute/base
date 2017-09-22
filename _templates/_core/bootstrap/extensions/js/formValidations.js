@@ -115,7 +115,9 @@ jQuery(window).load(function() {
 		}, 'Campo Obrigat&oacute;rio');
 		// custom validation for phone number
 		jQuery.validator.addMethod("phoneNumber", function(value, element) {
-			var isMask = value.indexOf('(') === -1 ? false : true;
+			var hasDDD = (value.indexOf("(") == 0) ? 1 : 0;
+			var hasDiv = (value.indexOf("-") == 9 || value.indexOf("-") == 10) ? 1 : 0;
+			var isMask = (hasDDD && hasDiv) ? true : false;
 			var number = value.replace(/[^0-9]/g,'').length >= (isMask ? 10 : 8);
 			return this.optional(element) || number;
 		}, 'N&uacute;mero inv&aacute;lido');
