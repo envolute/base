@@ -359,16 +359,16 @@ $userGrps = $db->loadObjectList();
 			</div>
 			<div class="col-md-4 col-lg-3 b-left b-dashed">
 				<div class="form-group">
-					<label><?php echo JText::_('FIELD_LABEL_CELLPHONE'); ?> 1</label>
-					<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone0" class="form-control field-phone" />
+					<label><?php echo JText::_('FIELD_LABEL_PHONE'); ?> 1</label>
+					<input type="text" name="phone1" id="<?php echo $APPTAG?>-phone1" class="form-control field-phone" data-toggle-mask="true" />
 				</div>
 				<div class="form-group">
-					<label><?php echo JText::_('FIELD_LABEL_CELLPHONE'); ?> 2</label>
-					<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone1" class="form-control field-phone" />
+					<label><?php echo JText::_('FIELD_LABEL_PHONE'); ?> 2</label>
+					<input type="text" name="phone2" id="<?php echo $APPTAG?>-phone2" class="form-control field-phone" data-toggle-mask="true" />
 				</div>
 				<div class="form-group">
-					<label><?php echo JText::_('FIELD_LABEL_PHONE_FIXED'); ?></label>
-					<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone2" class="form-control field-phone" />
+					<label><?php echo JText::_('FIELD_LABEL_PHONE'); ?> 3</label>
+					<input type="text" name="phone3" id="<?php echo $APPTAG?>-phone3" class="form-control field-phone" data-toggle-mask="true" />
 				</div>
 			</div>
 		</div>

@@ -79,10 +79,9 @@ if(isset($user->id) && $user->id) :
 				</div>
 			';
 		endif;
-		$phone = explode(',', $item->phones);
-		$phones = !empty($phone[0]) ? $phone[0] : '';
-		$phones .= !empty($phone[1]) ? (!empty($phones) ? '<br />' : '').$phone[1] : '';
-		$phones .= !empty($phone[2]) ? (!empty($phones) ? '<br />' : '').'(fixo) '.$phone[2] : '';
+		$phones = !empty($item->phone1) ? $item->phone1 : '';
+		$phones .= !empty($item->phone2) ? (!empty($phones) ? '<br />' : '').$item->phone2 : '';
+		$phones .= !empty($item->phone3) ? (!empty($phones) ? '<br />' : '').'(fixo) '.$item->phone3 : '';
 
 		$html .= '
 			<a href="'.$urlEdit.'" class="pos-absolute pos-right-gutter zindex-1 btn btn-default b-2 text-live base-icon-pencil float-md-right mb-2"> '.JText::_('TEXT_EDIT').'</a>

@@ -110,7 +110,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$addressState = !empty($item->address_state) ? ', '.baseHelper::nameFormat($item->address_state) : '';
 			$addressCountry = !empty($item->address_country) ? ', '.baseHelper::nameFormat($item->address_country) : '';
 			$mapa = !empty($item->url_map) ? ' <a href="'.$item->url_map.'" class="badge badge-warning set-modal" title="'.JText::_('TEXT_MAP').'" data-modal-title="'.JText::_('TEXT_LOCATION').'" data-modal-iframe="true" data-modal-width="95%" data-modal-height="95%"><span class="base-icon-location"></span></a> ' : '';
-			$phones = !empty($item->phones) ? ' <div class="text-sm mt-2 base-icon-phone-squared"> '.str_replace(',', ', ', $item->phones).'</div>' : '';
+			$phones = array();
+			if(!empty($item->phone1)) $phones[] = $item->phone1;
+			if(!empty($item->phone2)) $phones[] = $item->phone2;
+			if(!empty($item->phone3)) $phones[] = $item->phone3;
+			if(!empty($item->phone4)) $phones[] = $item->phone4;
+			$listPhones = !empty($item->phone1) ? ' <div class="text-sm mt-2 base-icon-phone-squared"> '.implode(', ', $phones).'</div>' : '';
 			$btnState = $hasAdmin ? '<a href="#" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'"><span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').' hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'"></span></a> ' : '';
 			$btnEdit = $hasAdmin ? '<a href="#" class="base-icon-pencil text-live hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"></a> ' : '';
 			$btnDelete = $hasAdmin ? '<a href="#" class="base-icon-trash text-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"></a>' : '';
@@ -122,7 +127,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					<div class="text-sm text-muted">'.
 						$addressZip.$addressDistrict.$addressCity.$addressState.$addressCountry.'
 					</div>
-					'.$phones.'
+					'.$listPhones.'
 				</li>
 			';
 		}

@@ -106,7 +106,12 @@ if($num_rows) : // verifica se existe
 		$main = ($item->main == 0 && !empty($item->description)) ? '<span class="badge badge-primary mb-1">'.baseHelper::nameFormat($item->description).'</span><br />' : '';
 		$info = !empty($item->address_info) ? ', '.$item->address_info : '';
 		$mapa = !empty($item->url_map) ? ' <a href="'.$item->url_map.'" class="badge badge-warning set-modal hasTooltip" title="'.JText::_('TEXT_MAP').'" data-modal-title="'.JText::_('TEXT_LOCATION').'" data-modal-iframe="true" data-modal-width="95%" data-modal-height="95%"><span class="base-icon-location"></span></a> ' : '';
-		$phones = !empty($item->phones) ? ' <div class="text-sm mt-2 base-icon-phone-squared"> '.str_replace(',', ', ', $item->phones).'</div>' : '';
+		$phones = array();
+		if(!empty($item->phone1)) $phones[] = $item->phone1;
+		if(!empty($item->phone2)) $phones[] = $item->phone2;
+		if(!empty($item->phone3)) $phones[] = $item->phone3;
+		if(!empty($item->phone4)) $phones[] = $item->phone4;
+		$listPhones = !empty($item->phone1) ? ' <div class="text-sm mt-2 base-icon-phone-squared"> '.implode(', ', $phones).'</div>' : '';
 		$rowState = $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
@@ -124,7 +129,7 @@ if($num_rows) : // verifica se existe
 					<div class="text-sm">
 						'.$item->zip_code.' - '.baseHelper::nameFormat($item->address_district).', '.baseHelper::nameFormat($item->address_city).', '.$item->address_state.'
 					</div>
-					'.$phones.'
+					'.$listPhones.'
 				</td>
 				<td class="d-none d-lg-table-cell">'.baseHelper::nameFormat($item->address_district).'</td>
 				<td class="d-none d-lg-table-cell">'.baseHelper::nameFormat($item->address_city).'</td>

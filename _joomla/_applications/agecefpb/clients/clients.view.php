@@ -83,6 +83,13 @@ if(!empty($item->name)) : // verifica se existe
 		';
 	endif;
 
+	$phones = array();
+	if(!empty($item->phone1)) $phones[] = $item->phone1;
+	if(!empty($item->phone2)) $phones[] = $item->phone2;
+	if(!empty($item->phone3)) $phones[] = $item->phone3;
+	if(!empty($item->phone4)) $phones[] = $item->phone4;
+	$listPhones = !empty($item->phone1) ? ' <div class="text-sm mt-2 base-icon-phone-squared"> '.implode(', ', $phones).'</div>' : '';
+
 	$html .= '
 		<div class="row">
 			<div class="col-sm-3">'.$img.'</div>
@@ -119,7 +126,7 @@ if(!empty($item->name)) : // verifica se existe
 							</div>
 							<div class="col-sm-4">
 								<label class="label-sm">Telefone(s):</label>
-								<p>'.$item->phones.'</p>
+								<p>'.$listPhones.'</p>
 							</div>
 						</div>
 						<hr />

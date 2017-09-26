@@ -64,16 +64,13 @@ jQuery(function() {
 	var address_info		= jQuery('#<?php echo $APPTAG?>-address_info');
 	var address_district	= jQuery('#<?php echo $APPTAG?>-address_district');
 	var address_city		= jQuery('#<?php echo $APPTAG?>-address_city');
-	// contact
-	var phone0				= jQuery('#<?php echo $APPTAG?>-phone0');
+	// phones
 	var phone1				= jQuery('#<?php echo $APPTAG?>-phone1');
 	var phone2				= jQuery('#<?php echo $APPTAG?>-phone2');
-	var whatsapp0			= jQuery('#<?php echo $APPTAG?>-whatsapp0');
-		var wcheck0			= jQuery('#<?php echo $APPTAG?>-wcheck0');
+	var phone3				= jQuery('#<?php echo $APPTAG?>-phone3');
 	var whatsapp1			= jQuery('#<?php echo $APPTAG?>-whatsapp1');
-		var wcheck1			= jQuery('#<?php echo $APPTAG?>-wcheck1');
 	var whatsapp2			= jQuery('#<?php echo $APPTAG?>-whatsapp2');
-		var wcheck2			= jQuery('#<?php echo $APPTAG?>-wcheck2');
+	var whatsapp3			= jQuery('#<?php echo $APPTAG?>-whatsapp3');
 	// Billing data
 	var agency				= jQuery('#<?php echo $APPTAG?>-agency');
 	var account				= jQuery('#<?php echo $APPTAG?>-account');
@@ -142,15 +139,12 @@ jQuery(function() {
 			address_info.val('');
 			address_district.val('');
 			address_city.val('');
-			phone0.val('');
-			phone1.val('');
-			phone2.val('');
-			whatsapp0.val('');
-			checkOption(wcheck0, 0);
-			whatsapp1.val('');
-			checkOption(wcheck1, 0);
-			whatsapp2.val('');
-			checkOption(wcheck2, 0);
+			phone1.phoneMaskUpdate(''); // toggleMask
+			phone2.phoneMaskUpdate(''); // toggleMask
+			phone3.phoneMaskUpdate(''); // toggleMask
+			checkOption(whatsapp1, 0);
+			checkOption(whatsapp2, 0);
+			checkOption(whatsapp3, 0);
 			agency.val('');
 			account.val('');
 			operation.val('');
@@ -274,18 +268,12 @@ jQuery(function() {
 						address_info.val(item.address_info);
 						address_district.val(item.address_district);
 						address_city.val(item.address_city);
-							// phones
-							var p = item.phones.split(",");
-							phone0.val(p[0]);
-							phone1.val(p[1]);
-							phone2.val(p[2]);
-							var w = item.whatsapp.split(",");
-							whatsapp0.val(w[0]);
-							checkOption(wcheck0, w[0]);
-							whatsapp1.val(w[1]);
-							checkOption(wcheck1, w[1]);
-							whatsapp2.val(w[2]);
-							checkOption(wcheck2, w[2]);
+						phone1.phoneMaskUpdate(item.phone1); // toggleMask
+						phone2.phoneMaskUpdate(item.phone2); // toggleMask
+						phone3.phoneMaskUpdate(item.phone3); // toggleMask
+						checkOption(whatsapp1, item.whatsapp1);
+						checkOption(whatsapp2, item.whatsapp2);
+						checkOption(whatsapp3, item.whatsapp3);
 						agency.val(item.agency);
 						account.val(item.account);
 						operation.val(item.operation);

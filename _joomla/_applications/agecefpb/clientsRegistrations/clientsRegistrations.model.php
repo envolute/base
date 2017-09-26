@@ -114,8 +114,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['address_info']		= $input->get('address_info', '', 'string');
 		$request['address_district']	= $input->get('address_district', '', 'string');
 		$request['address_city']		= $input->get('address_city', '', 'string');
-		$request['phones']				= isset($_POST['phone']) ? implode(',', $_POST['phone']) : '';
-	  	$request['whatsapp']			= isset($_POST['whatsapp']) ? implode(',', $_POST['whatsapp']) : '';
+		$request['phone1']				= $input->get('phone1', '', 'string');
+		$request['phone2']				= $input->get('phone2', '', 'string');
+		$request['phone3']				= $input->get('phone3', '', 'string');
+	  	$request['whatsapp1']			= $input->get('whatsapp1', 0, 'int');
+	  	$request['whatsapp2']			= $input->get('whatsapp2', 0, 'int');
+	  	$request['whatsapp3']			= $input->get('whatsapp3', 0, 'int');
 		$request['agency']				= $input->get('agency', '', 'string');
 		$request['account']				= $input->get('account', '', 'string');
 		$request['operation']			= $input->get('operation', '', 'string');
@@ -220,8 +224,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'address_info'		=> $item->address_info,
 						'address_district'	=> $item->address_district,
 						'address_city'		=> $item->address_city,
-						'phones'			=> $item->phones,
-						'whatsapp'			=> $item->whatsapp,
+						'phone1'			=> $item->phone1,
+						'phone2'			=> $item->phone2,
+						'phone3'			=> $item->phone3,
+						'whatsapp1'			=> $item->whatsapp1,
+						'whatsapp2'			=> $item->whatsapp2,
+						'whatsapp3'			=> $item->whatsapp3,
 						'agency'			=> $item->agency,
 						'account'			=> $item->account,
 						'operation'			=> $item->operation,
@@ -260,8 +268,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('address_info')		.'='. $db->quote($request['address_info']) .','.
 						$db->quoteName('address_district')	.'='. $db->quote($request['address_district']) .','.
 						$db->quoteName('address_city')		.'='. $db->quote($request['address_city']) .','.
-						$db->quoteName('phones')			.'='. $db->quote($request['phones']) .','.
-						$db->quoteName('whatsapp')			.'='. $db->quote($request['whatsapp']) .','.
+						$db->quoteName('phone1')			.'='. $db->quote($request['phone1']) .','.
+						$db->quoteName('phone2')			.'='. $db->quote($request['phone2']) .','.
+						$db->quoteName('phone3')			.'='. $db->quote($request['phone3']) .','.
+						$db->quoteName('whatsapp1')			.'='. $request['whatsapp1'] .','.
+						$db->quoteName('whatsapp2')			.'='. $request['whatsapp2'] .','.
+						$db->quoteName('whatsapp3')			.'='. $request['whatsapp3'] .','.
 						$db->quoteName('state')				.'='. $request['state'] .','.
 						$db->quoteName('alter_date')		.'= NOW(),'.
 						$db->quoteName('alter_by')			.'='. $user->id
@@ -385,8 +397,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('address_info') .','.
 							$db->quoteName('address_district') .','.
 							$db->quoteName('address_city') .','.
-							$db->quoteName('phones') .','.
-							$db->quoteName('whatsapp') .','.
+							$db->quoteName('phone1') .','.
+							$db->quoteName('phone2') .','.
+							$db->quoteName('phone3') .','.
+							$db->quoteName('whatsapp1') .','.
+							$db->quoteName('whatsapp2') .','.
+							$db->quoteName('whatsapp3') .','.
 							$db->quoteName('agency') .','.
 							$db->quoteName('account') .','.
 							$db->quoteName('operation') .','.
@@ -417,8 +433,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quote($request['address_info']) .','.
 							$db->quote($request['address_district']) .','.
 							$db->quote($request['address_city']) .','.
-							$db->quote($request['phones']) .','.
-							$db->quote($request['whatsapp']) .','.
+							$db->quote($request['phone1']) .','.
+							$db->quote($request['phone2']) .','.
+							$db->quote($request['phone3']) .','.
+							$request['whatsapp1'] .','.
+							$request['whatsapp2'] .','.
+							$request['whatsapp3'] .','.
 							$db->quote($request['agency']) .','.
 							$db->quote($request['account']) .','.
 							$db->quote($request['operation']) .','.

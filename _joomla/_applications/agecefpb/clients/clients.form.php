@@ -246,11 +246,10 @@ $users = $db->loadObjectList();
 		<div class="form-group">
 			<label><?php echo JText::_('FIELD_LABEL_CELLPHONE'); ?> 1</label>
 			<div class="input-group">
-				<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone0" class="form-control field-phone" />
+				<input type="text" name="phone1" id="<?php echo $APPTAG?>-phone1" class="form-control field-phone" />
 				<span class="input-group-btn btn-group" data-toggle="buttons">
 					<label class="btn btn-outline-success btn-active-success base-icon-whatsapp">
-						<input type="checkbox" id="<?php echo $APPTAG?>-wcheck0" value="1" class="auto-tab" data-target="<?php echo $APPTAG?>-whatsapp0" data-target-value="1" data-target-value-reset="" />
-						<input type="hidden" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp0" />
+						<input type="checkbox" name="whatsapp1" id="<?php echo $APPTAG?>-whatsapp1" value="1" />
 					</label>
 				</span>
 			</div>
@@ -258,19 +257,18 @@ $users = $db->loadObjectList();
 		<div class="form-group">
 			<label><?php echo JText::_('FIELD_LABEL_CELLPHONE'); ?> 2</label>
 			<div class="input-group">
-				<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone1" class="form-control field-phone" />
+				<input type="text" name="phone2" id="<?php echo $APPTAG?>-phone2" class="form-control field-phone" />
 				<span class="input-group-btn btn-group" data-toggle="buttons">
 					<label class="btn btn-outline-success btn-active-success base-icon-whatsapp">
-						<input type="checkbox" id="<?php echo $APPTAG?>-wcheck1" value="1" class="auto-tab" data-target="<?php echo $APPTAG?>-whatsapp1" data-target-value="1" data-target-value-reset="" />
-						<input type="hidden" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp1" />
+						<input type="checkbox" name="whatsapp2" id="<?php echo $APPTAG?>-whatsapp2" value="1" />
 					</label>
 				</span>
 			</div>
 		</div>
 		<div class="form-group">
 			<label><?php echo JText::_('FIELD_LABEL_PHONE_FIXED'); ?></label>
-			<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone2" class="form-control field-phone" />
-			<input type="hidden" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp2" />
+			<input type="text" name="phone3" id="<?php echo $APPTAG?>-phone3" class="form-control field-phone" />
+			<input type="hidden" name="whatsapp3" id="<?php echo $APPTAG?>-whatsapp3" value="0" />
 		</div>
 	</div>
 </div>

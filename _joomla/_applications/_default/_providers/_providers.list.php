@@ -61,6 +61,7 @@ $html = '
 				<tr>
 					'.$adminView['head']['info'].'
 					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_NAME'), 'T1.name', $APPTAG).'</th>
+					<th width="30" class="d-none d-lg-table-cell text-center">&#160;</td>
 					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_GROUP'), 'T2.name', $APPTAG).'</th>
 					<th width="100" class="text-center">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_AGREEMENT'), 'T1.agreement', $APPTAG).'</th>
 					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
@@ -123,11 +124,13 @@ if($num_rows) : // verifica se existe
 			$regInfo	.= JText::_('TEXT_ALTER_DATE').': '.baseHelper::dateFormat($item->alter_date, 'd/m/Y H:i').'<br />';
 			$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->alter_by)->name);
 		endif;
+		$urlViewData = JURI::root().'apps/providers/profile?p='.$item->id;
 		// Resultados
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
 				<td>'.baseHelper::nameFormat($item->name).'</td>
+				<td class="d-none d-lg-table-cell text-center"><a href="'.$urlViewData.'" target="_blank" class="base-icon-doc-text hasTooltip" title="'.JText::_('TEXT_VIEW_CLIENT_DATA').'"></a></td>
 				<td>'.baseHelper::nameFormat($item->grp).'</td>
 				<td class="text-center">'.$agreement.'</td>
 				<td class="d-none d-lg-table-cell">

@@ -5,7 +5,21 @@ jQuery(function() {
 	// Formatação para número de telefones
 	var field_setPhone 	= ".field-phone input, input.field-phone";
 
-	window.setPhone = function (input, prefix, toggleMask) {
+	// TRANSLATE
+	var jsLang = {
+		'pt-BR': {
+			'CLICK_TO_ADD_MASK': 'Clique para adicionar<br />a máscara',
+			'CLICK_TO_REM_MASK': 'Clique para desabilitar<br />a máscara',
+			'MSG_NUMBER_FORMAT': 'Formato incorreto!<br />O número deve ter no máximo 11 digitos'
+		},
+		'en-GB': {
+			'CLICK_TO_ADD_MASK': 'Click to add mask',
+			'CLICK_TO_REM_MASK': 'Click to disable the mask',
+			'MSG_NUMBER_FORMAT': 'Wrong format! The number must not exceed 11 digits'
+		}
+	};
+
+	window.setPhone = function (input, prefix, toggleMask, lang) {
 		input = setElement(input, field_setPhone);
 		var ph = ' '; // placeholder
 		//var width_noMask = '15em';
@@ -33,10 +47,16 @@ jQuery(function() {
 						},
 						onKeyDown: function(event, buffer, caretPos, opt){
 							if(buffer[lg-5] == '-' && buffer[lg-1] == ph) obj.inputmask(ed, options);
+						},
+						isComplete: function(buffer, opts) {
+							if(buffer[lg-5] == '-' && buffer[lg-1] == ph) obj.inputmask(ed, options);
 						}
 					}
-					var msg1 = '<del>'+pre+'9999-9999</del>';
-					var msg2 = pre+'9999-9999';
+					// Language param
+					var l = isSet(lang) ? lang : 'pt-BR';
+					l = isSet(obj.data('lang')) ? obj.data('lang') : l;
+					var msg1 = JSText_('CLICK_TO_REM_MASK', l, jsLang)+'<br /><del>'+pre+'9999-9999</del>';
+					var msg2 = JSText_('CLICK_TO_ADD_MASK', l, jsLang)+'<br />'+pre+'9999-9999';
 				// TOGGLE BUTTONS
 				var btnMask = '<span class="input-group-btn"><a href="javascript:;" class="toggle-mask btn btn-info strong" title="'+msg1+'">#</a></span></div>';
 				var btnUnmask = '<span class="input-group-btn"><a href="javascript:;" class="toggle-mask btn btn-danger strong" title="'+msg2+'">#</a></span></div>'
@@ -46,6 +66,7 @@ jQuery(function() {
 				var tm = isSet(toggleMask) ? toggleMask : false;
 				tm = isSet(obj.data('toggleMask')) ? obj.data('toggleMask') : tm;
 				// if togglemask option is true
+				var mask = setPhoneMask(obj.val(), ed, nd);
 				if(tm == true) {
 					// clear object -> evita botões aninhados
 					var h = obj.closest('.input-group');
@@ -53,8 +74,6 @@ jQuery(function() {
 					// create button for toggle mask
 					obj.wrap('<div class="input-group" style="width:'+width+'; min-width:12em; max-width:100%;"></div>');
 					obj.css({'width':'100%'});
-					var mask = setPhoneMask(obj.val(), ed, nd);
-					//se o campo não estiver preenchido
 					if(mask) {
 						// carrega a máscara
 						obj.inputmask(mask, options);
@@ -70,13 +89,25 @@ jQuery(function() {
 					jQuery('.toggle-mask').tooltip({container: 'body', html: true});
 
 					obj.next('span').find('.btn').off('click').on('click', function(){
-						if(jQuery(this).hasClass('btn-info')) {
-							obj.addClass('no-masked').inputmask('remove').focus();
-							jQuery(this).removeClass('btn-info').addClass('btn-danger').attr('data-original-title', msg2).tooltip();
+						var b = jQuery(this);
+						if(b.hasClass('btn-info')) {
+							var cVal = obj.val();
+							obj.addClass('no-masked').inputmask('remove').val(cVal).focus();
+							b.removeClass('btn-info').addClass('btn-danger').attr('data-original-title', msg2).tooltip();
 						} else {
-							var nMask = (obj.val().replace(/[^0-9]/g, '').length > 10) ? nd : ed; // pega o valor atualizado do campo
-							obj.removeClass('no-masked').inputmask(nMask, options).focus();
-							jQuery(this).removeClass('btn-danger').addClass('btn-info').attr('data-original-title', msg1).tooltip();
+							var nMask = _reMask(obj.val(), ed, nd); // pega o valor atualizado do campo
+							if(nMask) {
+								// prepara o valor para receber a máscara removendo possíveis formatos válidos
+								var nV = obj.val().replace(/[^0-9a-zA-Z]/g, '');
+								obj.removeClass('no-masked'); //.inputmask(nMask, options);
+								setTimeout(function() {
+									obj.inputmask(nMask, options);
+									obj.val(nV).focus();
+									b.removeClass('btn-danger').addClass('btn-info').attr('data-original-title', msg1).tooltip();
+								}, 50);
+							} else {
+								$.baseNotify({ msg: JSText_('MSG_NUMBER_FORMAT', l, jsLang), type: "danger"});
+							}
 						}
 					});
 				} else {
@@ -84,11 +115,11 @@ jQuery(function() {
 				}
 				// seta a mascara no evento 'paste' e 'change'
 				obj.on('paste change', function(event) {
-					var el = jQuery(this);
-					el.removeClass('error');
-					// setPhone(jQuery(this), toggleMask);
-					el.phoneMaskUpdate(el.val());
-					// el.focus();
+					// setTimeout(function() {
+						var el = jQuery(this);
+						el.removeClass('error');
+						el.phoneMaskUpdate(el.val());
+					// }, 100);
 				});
 			});
 		}
@@ -103,6 +134,17 @@ jQuery(function() {
 			var hasDDD = (val.indexOf("(") == 0) ? 1 : 0;
 			var hasDiv = (val.indexOf("-") == 9 || val.indexOf("-") == 10) ? 1 : 0;
 			return (hasDDD && hasDiv && mask) ? mask : 0;
+		}
+		return ed;
+	};
+
+	window._reMask = function (val, ed, nd) {
+		if(!isEmpty(val)) {
+			var mask = 0;
+			// valida pelo tamanho da string
+			if(val.replace(/[^0-9a-zA-Z]/g, '').length == 11) mask = nd;
+			else if(val.replace(/[^0-9a-zA-Z]/g, '').length < 11) mask = ed;
+			return (mask) ? mask : 0;
 		}
 		return ed;
 	};

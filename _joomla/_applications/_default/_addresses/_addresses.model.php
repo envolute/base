@@ -105,7 +105,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['latitude']			= $input->get('latitude', '', 'string');
 		$request['longitude']			= $input->get('longitude', '', 'string');
 		$request['url_map']				= $input->get('url_map', '', 'string');
-		$request['phones']				= isset($_POST['phone']) ? implode(',', $_POST['phone']) : '';
+		$request['phone1']				= $input->get('phone1', '', 'string');
+		$request['phone2']				= $input->get('phone2', '', 'string');
+		$request['phone3']				= $input->get('phone3', '', 'string');
+		$request['phone4']				= $input->get('phone4', '', 'string');
 
 		// SAVE CONDITION
 		// Condição para inserção e atualização dos registros
@@ -168,7 +171,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'latitude'			=> $item->latitude,
 						'longitude'			=> $item->longitude,
 						'url_map'			=> $item->url_map,
-						'phones'			=> $item->phones
+						'phone1'			=> $item->phone1,
+						'phone2'			=> $item->phone2,
+						'phone3'			=> $item->phone3,
+						'phone4'			=> $item->phone4
 					);
 
 				// UPDATE
@@ -189,7 +195,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('latitude')			.'='. $db->quote($request['latitude']) .','.
 						$db->quoteName('longitude')			.'='. $db->quote($request['longitude']) .','.
 						$db->quoteName('url_map')			.'='. $db->quote($request['url_map']) .','.
-						$db->quoteName('phones')			.'='. $db->quote($request['phones']) .','.
+						$db->quoteName('phone1')			.'='. $db->quote($request['phone1']) .','.
+						$db->quoteName('phone2')			.'='. $db->quote($request['phone2']) .','.
+						$db->quoteName('phone3')			.'='. $db->quote($request['phone3']) .','.
+						$db->quoteName('phone4')			.'='. $db->quote($request['phone4']) .','.
 						$db->quoteName('state')				.'='. $request['state'] .','.
 						$db->quoteName('alter_date')		.'= NOW(),'.
 						$db->quoteName('alter_by')			.'='. $user->id
@@ -391,7 +400,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('latitude') .','.
 							$db->quoteName('longitude') .','.
 							$db->quoteName('url_map') .','.
-							$db->quoteName('phones') .','.
+							$db->quoteName('phone1') .','.
+							$db->quoteName('phone2') .','.
+							$db->quoteName('phone3') .','.
+							$db->quoteName('phone4') .','.
 							$db->quoteName('state') .','.
 							$db->quoteName('created_by')
 						.') VALUES ('.
@@ -408,7 +420,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quote($request['latitude']) .','.
 							$db->quote($request['longitude']) .','.
 							$db->quote($request['url_map']) .','.
-							$db->quote($request['phones']) .','.
+							$db->quote($request['phone1']) .','.
+							$db->quote($request['phone2']) .','.
+							$db->quote($request['phone3']) .','.
+							$db->quote($request['phone4']) .','.
 							$request['state'] .','.
 							$user->id
 						.')

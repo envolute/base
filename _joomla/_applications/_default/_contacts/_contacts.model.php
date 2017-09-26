@@ -117,7 +117,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['address_district']	= $input->get('address_district', '', 'string');
 		$request['address_city']		= $input->get('address_city', '', 'string');
 		$request['address_state']		= $input->get('address_state', '', 'string');
-		$request['phones']				= isset($_POST['phone']) ? implode(',', $_POST['phone']) : '';
+		$request['phone1']				= $input->get('phone1', '', 'string');
+		$request['phone2']				= $input->get('phone2', '', 'string');
+		$request['phone3']				= $input->get('phone3', '', 'string');
 		$request['note']				= $input->get('note', '', 'string');
 	    // user registration action
 	  	$request['access']				= $input->get('access', 0, 'int');
@@ -230,7 +232,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'address_district'	=> $item->address_district,
 						'address_city'		=> $item->address_city,
 						'address_state'		=> $item->address_state,
-						'phones'			=> $item->phones,
+						'phone1'			=> $item->phone1,
+						'phone2'			=> $item->phone2,
+						'phone3'			=> $item->phone3,
 						'note'				=> $item->note,
 						'access'			=> ($itemBlock ? 0 : 1),
 						'reasonStatus'		=> $item->reasonStatus,
@@ -263,7 +267,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('address_district')	.'='. $db->quote($request['address_district']) .','.
 						$db->quoteName('address_city')		.'='. $db->quote($request['address_city']) .','.
 						$db->quoteName('address_state')		.'='. $db->quote($request['address_state']) .','.
-						$db->quoteName('phones')			.'='. $db->quote($request['phones']) .','.
+						$db->quoteName('phone1')			.'='. $db->quote($request['phone1']) .','.
+						$db->quoteName('phone2')			.'='. $db->quote($request['phone2']) .','.
+						$db->quoteName('phone3')			.'='. $db->quote($request['phone3']) .','.
 						$db->quoteName('note')				.'='. $db->quote($request['note']) .','.
 						$db->quoteName('access')			.'='. $request['access'] .','.
 						$db->quoteName('reasonStatus')		.'='. $db->quote($reason) .','.
@@ -590,7 +596,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('address_district') .','.
 							$db->quoteName('address_city') .','.
 							$db->quoteName('address_state') .','.
-							$db->quoteName('phones') .','.
+							$db->quoteName('phone1') .','.
+							$db->quoteName('phone2') .','.
+							$db->quoteName('phone3') .','.
 							$db->quoteName('note') .','.
 							$db->quoteName('access') .','.
 							$db->quoteName('reasonStatus') .','.
@@ -618,7 +626,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quote($request['address_district']) .','.
 							$db->quote($request['address_city']) .','.
 							$db->quote($request['address_state']) .','.
-							$db->quote($request['phones']) .','.
+							$db->quote($request['phone1']) .','.
+							$db->quote($request['phone2']) .','.
+							$db->quote($request['phone3']) .','.
 							$db->quote($request['note']) .','.
 							$request['access'] .','.
 							$db->quote($reason) .','.

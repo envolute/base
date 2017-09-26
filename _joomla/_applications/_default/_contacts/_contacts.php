@@ -55,10 +55,10 @@ jQuery(function() {
 	var address_district	= jQuery('#<?php echo $APPTAG?>-address_district');
 	var address_city		= jQuery('#<?php echo $APPTAG?>-address_city');
 	var address_state		= jQuery('#<?php echo $APPTAG?>-address_state');
-	// contact
-	var phone0				= jQuery('#<?php echo $APPTAG?>-phone0');
+	// phones
 	var phone1				= jQuery('#<?php echo $APPTAG?>-phone1');
 	var phone2				= jQuery('#<?php echo $APPTAG?>-phone2');
+	var phone3				= jQuery('#<?php echo $APPTAG?>-phone3');
 	// extra info
 	var note				= jQuery('#<?php echo $APPTAG?>-note');
 	// Joomla Registration
@@ -147,9 +147,9 @@ jQuery(function() {
 			address_district.val('');
 			address_city.val('');
 			address_state.val('');
-			phone0.val('');
-			phone1.val('');
-			phone2.val('');
+			phone1.phoneMaskUpdate(''); // toggleMask
+			phone2.phoneMaskUpdate(''); // toggleMask
+			phone3.phoneMaskUpdate(''); // toggleMask
 			note.val('');
 			checkOption(access, 0);
 			reasonStatus.val('');
@@ -332,11 +332,9 @@ jQuery(function() {
 						address_info.val(item.address_info);
 						address_district.val(item.address_district);
 						address_city.val(item.address_city);
-							// phones
-							var p = item.phones.split(",");
-							phone0.val(p[0]);
-							phone1.val(p[1]);
-							phone2.val(p[2]);
+						phone1.phoneMaskUpdate(item.phone1); // toggleMask
+						phone2.phoneMaskUpdate(item.phone2); // toggleMask
+						phone3.phoneMaskUpdate(item.phone3); // toggleMask
 						note.val(item.note);
 						checkOption(access, item.access);
 						reasonStatus.val(item.reasonStatus);

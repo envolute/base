@@ -74,13 +74,6 @@ if($p != 0) :
 		$agree	= $item->agreement == 1 ? '<span class="badge badge-success float-right">'.JText::_('FIELD_LABEL_AGREEMENT').'</span>' : '';
 		// Web
 		$web	= (!empty($site) || !empty($email)) ? '<div class="text-md text-muted mt-2">'.$site.$email.'</div>' : '';
-		// description
-		$info = '';
-		if(!empty($item->description)) $info .= $item->description.'<hr />';
-		if(!empty($item->service_desc)) :
-			$info .= '<h5 class="mt-4">'.JText::_('FIELD_LABEL_SERVICE').'</h5>';
-			$info .= $item->service_desc;
-		endif;
 
 		echo '
 			<div class="row">
@@ -96,6 +89,32 @@ if($p != 0) :
 					<div class="row">
 						<div class="col-lg-8">
 							'.$info.'
+		';
+
+							// description
+							if(!empty($item->description)) echo $item->description.'<hr />';
+
+							// Addresses
+							$_addressesListFull				= false;
+							$_addressesAddText				= false;
+							$_addressesRelTag				= 'providers';
+							$_addressesRelTable				= '#__base_rel_providers_addresses';
+							$_addressesAppNameId			= 'address_id';
+							$_addressesRelNameId			= 'provider_id';
+							$_addressesRelListNameId		= 'provider_id';
+							$_addressesRelListId			= $item->id;
+							echo '<div class="pos-relative">';
+								echo '<h5 class="base-icon-location mb-3"> '.JText::_('TEXT_ADDRESSES').'</h5>';
+								require(JPATH_APPS.DS.'_addresses/_addresses.php');
+							echo '</div>';
+
+							// Termos da parceria
+							if(!empty($item->service_desc)) :
+								echo '<h4 class="mt-4 page-header base-icon-doc-text"> '.JText::_('FIELD_LABEL_SERVICE').'</h4>';
+								echo $item->service_desc;
+							endif;
+
+		echo '
 							<hr class="d-sm-none" />
 						</div>
 						<div class="col-lg-4">
@@ -125,20 +144,6 @@ if($p != 0) :
 						echo '<div class="pos-relative">';
 							echo '<h5 class="base-icon-phone-squared mb-3"> '.JText::_('TEXT_PROVIDER_PHONES').'</h5>';
 							require(JPATH_APPS.DS.'_phones/_phones.php');
-						echo '</div>';
-
-						// Addresses
-						$_addressesListFull				= false;
-						$_addressesAddText				= false;
-						$_addressesRelTag				= 'providers';
-						$_addressesRelTable				= '#__base_rel_providers_addresses';
-						$_addressesAppNameId			= 'address_id';
-						$_addressesRelNameId			= 'provider_id';
-						$_addressesRelListNameId		= 'provider_id';
-						$_addressesRelListId			= $item->id;
-						echo '<div class="pos-relative">';
-							echo '<h5 class="base-icon-location mb-3"> '.JText::_('TEXT_ADDRESSES').'</h5>';
-							require(JPATH_APPS.DS.'_addresses/_addresses.php');
 						echo '</div>';
 
 						// Banks Accounts

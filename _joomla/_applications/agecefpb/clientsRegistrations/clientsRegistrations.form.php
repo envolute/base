@@ -200,12 +200,11 @@ defined('_JEXEC') or die;
 					<div class="col-sm-4">
 						<div class="form-group">
 							<label class="field-required"><?php echo JText::_('FIELD_LABEL_CELLPHONE'); ?> 1</label>
-							<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone0" class="form-control field-phone input-required mb-1" />
+							<input type="text" name="phone1" id="<?php echo $APPTAG?>-phone1" class="form-control field-phone input-required mb-1" />
 							<div class="form-check">
 								<label class="form-check-label iconTip hasTooltip" title="<?php echo JText::_('FIELD_HAS_WHATSAPP_DESC') ?>">
-									<input type="checkbox" id="<?php echo $APPTAG?>-wcheck0" value="1" class="form-check-input auto-tab" data-target="<?php echo $APPTAG?>-whatsapp0" data-target-value="1" data-target-value-reset="" />
+									<input type="checkbox" name="whatsapp1" id="<?php echo $APPTAG?>-whatsapp1" value="1" class="form-check-input" />
 									<?php echo JText::_('FIELD_HAS_WHATSAPP') ?>
-									<input type="hidden" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp0" />
 								</label>
 							</div>
 						</div>
@@ -213,12 +212,11 @@ defined('_JEXEC') or die;
 					<div class="col-sm-4">
 						<div class="form-group">
 							<label><?php echo JText::_('FIELD_LABEL_CELLPHONE'); ?> 2</label>
-							<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone1" class="form-control field-phone mb-1" />
+							<input type="text" name="phone2" id="<?php echo $APPTAG?>-phone2" class="form-control field-phone mb-1" />
 							<div class="form-check">
 								<label class="form-check-label iconTip hasTooltip" title="<?php echo JText::_('FIELD_HAS_WHATSAPP_DESC') ?>">
-									<input type="checkbox" id="<?php echo $APPTAG?>-wcheck1" value="1" class="form-check-input auto-tab" data-target="<?php echo $APPTAG?>-whatsapp1" data-target-value="1" data-target-value-reset="" />
+									<input type="checkbox" name="whatsapp2" id="<?php echo $APPTAG?>-whatsapp2" value="1" class="form-check-input" />
 									<?php echo JText::_('FIELD_HAS_WHATSAPP') ?>
-									<input type="hidden" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp1" />
 								</label>
 							</div>
 						</div>
@@ -226,8 +224,8 @@ defined('_JEXEC') or die;
 					<div class="col-sm-4">
 						<div class="form-group">
 							<label><?php echo JText::_('FIELD_LABEL_PHONE_FIXED'); ?></label>
-							<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone2" class="form-control field-phone" />
-							<input type="hidden" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp2" />
+							<input type="text" name="phone3" id="<?php echo $APPTAG?>-phone3" class="form-control field-phone" />
+							<input type="hidden" name="whatsapp3" id="<?php echo $APPTAG?>-whatsapp3" value="0" />
 						</div>
 					</div>
 				</div>

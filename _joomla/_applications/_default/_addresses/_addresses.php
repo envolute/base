@@ -47,9 +47,10 @@ jQuery(function() {
 	var longitude			= jQuery('#<?php echo $APPTAG?>-longitude');
 	var url_map				= jQuery('#<?php echo $APPTAG?>-url_map');
 	// phones
-	var phone0				= jQuery('#<?php echo $APPTAG?>-phone0');
 	var phone1				= jQuery('#<?php echo $APPTAG?>-phone1');
 	var phone2				= jQuery('#<?php echo $APPTAG?>-phone2');
+	var phone3				= jQuery('#<?php echo $APPTAG?>-phone3');
+	var phone4				= jQuery('#<?php echo $APPTAG?>-phone4');
 
 	// PARENT FIELD -> Select
 	// informe, se houver, o campo que representa a chave estrangeira principal
@@ -119,9 +120,10 @@ jQuery(function() {
 			latitude.val('');
 			longitude.val('');
 			url_map.val('');
-			phone0.phoneMaskUpdate(''); // toggleMask
 			phone1.phoneMaskUpdate(''); // toggleMask
 			phone2.phoneMaskUpdate(''); // toggleMask
+			phone3.phoneMaskUpdate(''); // toggleMask
+			phone4.phoneMaskUpdate(''); // toggleMask
 
 			<?php // Closure Actions
 			require(JPATH_CORE.DS.'apps/snippets/form/formReset.end.js.php');
@@ -257,11 +259,10 @@ jQuery(function() {
 						latitude.val(item.latitude);
 						longitude.val(item.longitude);
 						url_map.val(item.url_map);
-							// phones
-							var p = item.phones.split(",");
-							phone0.phoneMaskUpdate(p[0]); // toggleMask
-							phone1.phoneMaskUpdate(p[1]); // toggleMask
-							phone2.phoneMaskUpdate(p[2]); // toggleMask
+						phone1.phoneMaskUpdate(item.phone1); // toggleMask
+						phone2.phoneMaskUpdate(item.phone2); // toggleMask
+						phone3.phoneMaskUpdate(item.phone3); // toggleMask
+						phone4.phoneMaskUpdate(item.phone4); // toggleMask
 
 						<?php // Closure Actions
 						require(JPATH_CORE.DS.'apps/snippets/form/loadEdit.end.js.php');

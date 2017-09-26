@@ -49,6 +49,16 @@ jQuery(function() {
 		return e[ a+'Width' ];
 	};
 
+	// Tradução
+	// text => A váriável a ser traduzida 'TEXT_LABEL'
+	// lang => language (default is 'pt-BR')
+	// arr  => Objeto com as variáveis e valores das traduções (default is 'jsLang')
+	window.JSText_ = function (text, lang, obj) {
+		var l = isSet(lang) ? lang : 'pt-BR';
+		var a = isSet(obj) ? obj : jsLang;
+		return isSet(a[l][text]) ? a[l][text] : text;
+	};
+
 	// BREAKPOINTS
 	window._XS_ = 0;
 	window._SM_ = 576;

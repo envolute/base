@@ -115,21 +115,27 @@ defined('_JEXEC') or die;
 		<hr class="d-lg-none" />
 		<div class="row">
 			<div class="col-sm-6 col-lg-12">
-				<div class="form-group field-required">
+				<div class="form-group">
 					<label><?php echo JText::_('FIELD_LABEL_PHONE'); ?> 1</label>
-					<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone0" class="form-control field-phone" data-toggle-mask="true" />
+					<input type="text" name="phone1" id="<?php echo $APPTAG?>-phone1" class="form-control field-phone" data-toggle-mask="true" />
 				</div>
 			</div>
 			<div class="col-sm-6 col-lg-12">
 				<div class="form-group">
 					<label><?php echo JText::_('FIELD_LABEL_PHONE'); ?> 2</label>
-					<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone1" class="form-control field-phone" data-toggle-mask="true" />
+					<input type="text" name="phone2" id="<?php echo $APPTAG?>-phone2" class="form-control field-phone" data-toggle-mask="true" />
 				</div>
 			</div>
 			<div class="col-sm-6 col-lg-12">
 				<div class="form-group">
 					<label><?php echo JText::_('FIELD_LABEL_PHONE'); ?> 3</label>
-					<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone2" class="form-control field-phone" data-toggle-mask="true" />
+					<input type="text" name="phone3" id="<?php echo $APPTAG?>-phone3" class="form-control field-phone" data-toggle-mask="true" />
+				</div>
+			</div>
+			<div class="col-sm-6 col-lg-12">
+				<div class="form-group">
+					<label><?php echo JText::_('FIELD_LABEL_PHONE'); ?> 4</label>
+					<input type="text" name="phone4" id="<?php echo $APPTAG?>-phone4" class="form-control field-phone" data-toggle-mask="true" />
 				</div>
 			</div>
 		</div>

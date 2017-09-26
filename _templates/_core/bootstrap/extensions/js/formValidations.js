@@ -118,7 +118,8 @@ jQuery(window).load(function() {
 			var hasDDD = (value.indexOf("(") == 0) ? 1 : 0;
 			var hasDiv = (value.indexOf("-") == 9 || value.indexOf("-") == 10) ? 1 : 0;
 			var isMask = (hasDDD && hasDiv) ? true : false;
-			var number = value.replace(/[^0-9]/g,'').length >= (isMask ? 10 : 8);
+			var number = true;
+			if(isMask) number = value.replace(/[^0-9]/g,'').length >= 10;
 			return this.optional(element) || number;
 		}, 'N&uacute;mero inv&aacute;lido');
 		// custom validation for CPF
