@@ -39,6 +39,8 @@ var tmplCSS     = tmpl + '/css';
       core+'/bootstrap/extensions/js/_helpers/collapse.js',
       // Integrations
       core+'/bootstrap/extensions/js/_integrations/mootools.js',
+	  // Alert
+      core+'/bootstrap/extensions/js/alert/notify.js',
       // Browser
       core+'/bootstrap/extensions/js/browser/_ie.init.js',
       core+'/bootstrap/extensions/js/browser/SmoothScroll.js',
@@ -46,7 +48,6 @@ var tmplCSS     = tmpl + '/css';
       core+'/bootstrap/extensions/js/buttons/btn-rippleEffect.js',
       core+'/bootstrap/extensions/js/buttons/btn-toggleState.js',
       // Layout
-      core+'/bootstrap/extensions/js/layout/alertBalloon.js',
       core+'/bootstrap/extensions/js/layout/loader.js',
       core+'/bootstrap/extensions/js/layout/loadOnView.js',
       core+'/bootstrap/extensions/js/layout/libs/affix.js',
@@ -59,8 +60,9 @@ var tmplCSS     = tmpl + '/css';
       // Utilities
       core+'/bootstrap/extensions/js/utilities/elementHeight.js',
       core+'/bootstrap/extensions/js/utilities/imageRetina.js',
-      core+'/bootstrap/extensions/js/utilities/parentWidth.js',
       core+'/bootstrap/extensions/js/utilities/isOnScreen.js',
+      core+'/bootstrap/extensions/js/utilities/parentWidth.js',
+      core+'/bootstrap/extensions/js/utilities/setHidden.js',
       core+'/bootstrap/extensions/js/utilities/setScroll.js',
       core+'/bootstrap/extensions/js/utilities/toggleHidden.js',
       core+'/bootstrap/extensions/js/utilities/toggleIcon.js',
@@ -81,13 +83,15 @@ var tmplCSS     = tmpl + '/css';
       core+'/bootstrap/extensions/js/forms/libs/jquery.price_format.min.js', // Formats the price in text fields
       // Buttons
       core+'/bootstrap/extensions/js/buttons/btn-checkState.js',
-      core+'/bootstrap/extensions/js/buttons/btn-fileAction.js',
       // Form Fields
       core+'/bootstrap/extensions/js/forms/check-autoTab.js',
+      core+'/bootstrap/extensions/js/forms/check-option.js',
       core+'/bootstrap/extensions/js/forms/field-cep.js',
       core+'/bootstrap/extensions/js/forms/field-cpf-cnpj.js',
       core+'/bootstrap/extensions/js/forms/field-date.js',
       core+'/bootstrap/extensions/js/forms/field-editor.js',
+      core+'/bootstrap/extensions/js/forms/field-fileAction.js',
+      core+'/bootstrap/extensions/js/forms/field-image.js',
       core+'/bootstrap/extensions/js/forms/field-ip.js',
       core+'/bootstrap/extensions/js/forms/field-phone.js',
       core+'/bootstrap/extensions/js/forms/field-price.js',
@@ -105,8 +109,8 @@ var tmplCSS     = tmpl + '/css';
       core+'/bootstrap/extensions/js/forms/input-noPaste.js',
       core+'/bootstrap/extensions/js/forms/input-numeric.js',
       core+'/bootstrap/extensions/js/forms/input-upper.js',
-      core+'/bootstrap/extensions/js/forms/radio-checkOption.js',
       core+'/bootstrap/extensions/js/forms/select-autoTab.js',
+      core+'/bootstrap/extensions/js/forms/select-update.js',
       core+'/bootstrap/extensions/js/forms/toggle-field.js',
       // Definitions
       core+'/bootstrap/extensions/js/formDefinitions.js'

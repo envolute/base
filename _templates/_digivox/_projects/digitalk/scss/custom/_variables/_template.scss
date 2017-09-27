@@ -2,40 +2,40 @@
 
 // Options
 
-	$base-font-size-root:				14px; // Tamanho 'raíz' da fonte, atribuida ao elemento '<html>'
+	$base-font-size-root:				13px; // Tamanho 'raíz' da fonte, atribuida ao elemento '<html>'
 	$base-break-up:						'.media-md'; // ponto de quebra do layout para o modo 'desktop'
 	$base-break-down:					'html:not(.media-md)'; // ponto de quebra do layout para o modo 'mobile'
-	$base-enable-rounded:				false;
+	$base-enable-rounded:				true;
 
 // COLORS
 
 	//-> gray
 	$base-gray-100:						#f8f9fa !default;
-	$base-gray-200:						#e9ecef !default;
+	$base-gray-200:						#E8EDF2 !default; // bg
 	$base-gray-300:						#dee2e6 !default;
-	$base-gray-400:						#ced4da !default;
+	$base-gray-400:						#C0C9D5 !default; // text, lines
 	$base-gray-500:						#adb5bd !default;
-	$base-gray-600:						#868e96 !default;
-	$base-gray-700:						#495057 !default;
-	$base-gray-800:						#343a40 !default;
-	$base-gray-900:						#212529 !default;
+	$base-gray-600:						#536876 !default; // text, lines
+	$base-gray-700:						#334d5f !default;
+	$base-gray-800:						#203442 !default; // bg
+	$base-gray-900:						#141F27 !default; // text, lines
 	// colors
 	$base-blue:							#007bff !default;
 	$base-indigo:						#6610f2 !default;
 	$base-purple:						#6f42c1 !default;
 	$base-pink:							#e83e8c !default;
-	$base-red:							#dc3545 !default;
+	$base-red:							#FF6059 !default;
 	$base-orange:						#fd7e14 !default;
 	$base-yellow:						#ffc107 !default;
-	$base-green:						#28a745 !default;
+	$base-green:						#2ACB42 !default;
 	$base-teal:							#20c997 !default;
 	$base-cyan:							#17a2b8 !default;
 	// theme
-	$base-color-primary:				#5F7599;
-	$base-color-primary-dark:			mix(black, $base-color-primary, 15%);
+	$base-color-primary:				#2EABFF;
+	$base-color-primary-dark:			mix(black, $base-color-primary, 20%);
 	$base-color-primary-darker:			mix(black, $base-color-primary, 50%);
 	$base-color-primary-darkest:		mix(black, $base-color-primary, 70%);
-	$base-color-primary-light:			mix(white, $base-color-primary, 15%);
+	$base-color-primary-light:			mix(white, $base-color-primary, 20%);
 	$base-color-primary-lighter:		mix(white, $base-color-primary, 50%);
 	$base-color-primary-lightest:		mix(white, $base-color-primary, 70%);
 	$base-color-live:					$base-orange;

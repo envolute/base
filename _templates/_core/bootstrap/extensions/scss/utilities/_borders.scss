@@ -13,13 +13,13 @@
 .b-dotted { border-style: dotted!important; }
 .b-dashed { border-style: dashed!important; }
 // default -> width 1
-.b-all, .b-1 { border-width: 1px!important; }
+.b-all { border-width: 1px!important; }
 .b-y { border-top-width: 1px!important; border-bottom-width: 1px!important; }
 .b-x { border-left-width: 1px!important; border-right-width: 1px!important; }
-.b-top, .b-top-1 { border-top-width: 1px!important; }
-.b-bottom, .b-bottom-1 { border-bottom-width: 1px!important; }
-.b-right, .b-right-1 { border-right-width: 1px!important; }
-.b-left, .b-left-1 { border-left-width: 1px!important; }
+.b-top { border-top-width: 1px!important; }
+.b-bottom { border-bottom-width: 1px!important; }
+.b-right { border-right-width: 1px!important; }
+.b-left { border-left-width: 1px!important; }
 // width 2
 .b-2 { border-width: 2px!important; }
 .b-top-2 { border-top-width: 2px!important; }
@@ -37,9 +37,9 @@
 
 	// default addon's
 	.b-inherit { border-color: inherit!important; } // utiliza a cor de texto do container
-	.b-color { border-color: $base-border-color!important; }
-	.b-color-dark { border-color: $base-border-color-dark!important; }
-	.b-color-light { border-color: $base-border-color-light!important; }
+	.b-default { border-color: $base-border-color!important; }
+	.b-default-light { border-color: $base-border-color-light!important; }
+	.b-default-dark { border-color: $base-border-color-dark!important; }
 	// theme
 	// -> bootstrap já disponibiliza bordas nas cores do tema
 	.b-primary { border-color: $base-color-primary!important; }
@@ -49,6 +49,14 @@
 	.b-primary-light { border-color: $base-color-primary-light!important; }
 	.b-primary-lighter { border-color: $base-color-primary-lighter!important; }
 	.b-primary-lightest { border-color: $base-color-primary-lightest!important; }
+	.b-light { border-color: theme-color('light')!important; }
+	.b-dark { border-color: theme-color('dark')!important; }
+	// contextual
+	.b-secondary { border-color: theme-color('secondary')!important; }
+	.b-success { border-color: theme-color('success')!important; }
+	.b-info { border-color: theme-color('info')!important; }
+	.b-warning { border-color: theme-color('warning')!important; }
+	.b-danger { border-color: theme-color('danger')!important; }
 	.b-live { border-color: $base-color-live!important; }
 	// gray
 	.b-white { border-color: $white!important; }

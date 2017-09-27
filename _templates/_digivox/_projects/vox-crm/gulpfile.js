@@ -41,7 +41,6 @@ var tmplCSS     = tmpl + '/css';
       // Buttons
       core+'/bootstrap/extensions/js/buttons/btn-rippleEffect.js',
       // Layout
-      core+'/bootstrap/extensions/js/layout/alertBalloon.js',
       core+'/bootstrap/extensions/js/layout/loader.js',
       core+'/bootstrap/extensions/js/layout/loadOnView.js',
       core+'/bootstrap/extensions/js/layout/libs/affix.js',

@@ -21,15 +21,21 @@
 	.bg-gray-800 { background-color: $gray-800; }
 	.bg-gray-900 { background-color: $gray-900; }
 	.bg-black { background-color: $black; }
-	.bg-black-10 { background-color: rgba(black, .1); }
-	.bg-black-20 { background-color: rgba(black, .2); }
-	.bg-black-30 { background-color: rgba(black, .3); }
-	.bg-black-40 { background-color: rgba(black, .4); }
-	.bg-black-50 { background-color: rgba(black, .5); }
-	.bg-black-60 { background-color: rgba(black, .6); }
-	.bg-black-70 { background-color: rgba(black, .7); }
-	.bg-black-80 { background-color: rgba(black, .8); }
-	.bg-black-90 { background-color: rgba(black, .9); }
+	// background opacity
+		// dark
+		.bg-dark-opacity-15 { background-color: rgba($bg-dark-opacity, .15); }
+		.bg-dark-opacity-30 { background-color: rgba($bg-dark-opacity, .30); }
+		.bg-dark-opacity-45 { background-color: rgba($bg-dark-opacity, .45); }
+		.bg-dark-opacity-60 { background-color: rgba($bg-dark-opacity, .60); }
+		.bg-dark-opacity-75 { background-color: rgba($bg-dark-opacity, .75); }
+		.bg-dark-opacity-90 { background-color: rgba($bg-dark-opacity, .90); }
+		// light
+		.bg-light-opacity-15 { background-color: rgba($bg-light-opacity, .15); }
+		.bg-light-opacity-30 { background-color: rgba($bg-light-opacity, .30); }
+		.bg-light-opacity-45 { background-color: rgba($bg-light-opacity, .45); }
+		.bg-light-opacity-60 { background-color: rgba($bg-light-opacity, .60); }
+		.bg-light-opacity-75 { background-color: rgba($bg-light-opacity, .75); }
+		.bg-light-opacity-90 { background-color: rgba($bg-light-opacity, .90); }
 	// colors options
 	.bg-blue { background-color: $blue; }
 	.bg-indigo { background-color: $indigo; }

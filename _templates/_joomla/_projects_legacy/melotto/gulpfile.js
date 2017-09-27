@@ -28,93 +28,98 @@ var tmplCSS     = tmpl + '/css';
     ];
     // Bootstrap Extensions
     var bootstrapExtJs = [
-      core+'/bootstrap/extensions/js/_init.js',
-      // Helpers
-      core+'/bootstrap/extensions/js/_helpers/responsive.js',
-      core+'/bootstrap/extensions/js/_helpers/modal.js',
-      core+'/bootstrap/extensions/js/_helpers/setTips.js',
-      core+'/bootstrap/extensions/js/_helpers/collapse.js',
-      // Integrations
-      core+'/bootstrap/extensions/js/_integrations/mootools.js',
-      // Browser
-      core+'/bootstrap/extensions/js/browser/_ie.init.js',
-      core+'/bootstrap/extensions/js/browser/SmoothScroll.js',
-      // Buttons
-      core+'/bootstrap/extensions/js/buttons/btn-rippleEffect.js',
-      // Layout
-      core+'/bootstrap/extensions/js/layout/alertBalloon.js',
-      core+'/bootstrap/extensions/js/layout/loader.js',
-      core+'/bootstrap/extensions/js/layout/loadOnView.js',
-      core+'/bootstrap/extensions/js/layout/libs/affix.js',
-      core+'/bootstrap/extensions/js/layout/libs/affix.remove.js',
-      // Navs
-      core+'/bootstrap/extensions/js/navs/navMenu.js',
-      // Typography
-      core+'/bootstrap/extensions/js/typography/fontSize.js',
-      core+'/bootstrap/extensions/js/typography/linkActions.js',
-      // Utilities
-      core+'/bootstrap/extensions/js/utilities/elementHeight.js',
-      core+'/bootstrap/extensions/js/utilities/parentWidth.js',
-      core+'/bootstrap/extensions/js/utilities/isOnScreen.js',
-      core+'/bootstrap/extensions/js/utilities/setScroll.js',
-      core+'/bootstrap/extensions/js/utilities/toggleHidden.js',
-      core+'/bootstrap/extensions/js/utilities/toggleIcon.js',
-      core+'/bootstrap/extensions/js/utilities/libs/jquery.actual.js',
-      // Default Libs
-        // chosen
-        core+'/bootstrap/extensions/js/forms/select-chosen.js',
-        common+'/libs/forms/chosen/chosen.jquery.min.js', // Formats the fields of type 'select'
-        // fluid embed videos
-        common+'/libs/content/fitvids/jquery.fitvids.js',
-      // Definitions
-      core+'/bootstrap/extensions/js/coreDefinitions.js'
-    ];
-    var formsJs = [
-      // Libs
-      core+'/bootstrap/extensions/js/forms/libs/jquery.autotab-1.1b.js', // Auto tab functionality
-      core+'/bootstrap/extensions/js/forms/libs/jquery.inputmask.bundle.js', // Plugin for masks in text fields
-      core+'/bootstrap/extensions/js/forms/libs/jquery.price_format.min.js', // Formats the price in text fields
-      // Buttons
-      core+'/bootstrap/extensions/js/buttons/btn-checkState.js',
-      core+'/bootstrap/extensions/js/buttons/btn-fileAction.js',
-      core+'/bootstrap/extensions/js/buttons/btn-toggleState.js',
-      // Form Fields
-      core+'/bootstrap/extensions/js/forms/check-autoTab.js',
-      core+'/bootstrap/extensions/js/forms/field-cep.js',
-      core+'/bootstrap/extensions/js/forms/field-cpf-cnpj.js',
-      core+'/bootstrap/extensions/js/forms/field-date.js',
-      core+'/bootstrap/extensions/js/forms/field-editor.js',
-      core+'/bootstrap/extensions/js/forms/field-ip.js',
-      core+'/bootstrap/extensions/js/forms/field-phone.js',
-      core+'/bootstrap/extensions/js/forms/field-price.js',
-      core+'/bootstrap/extensions/js/forms/field-required.js',
-      core+'/bootstrap/extensions/js/forms/field-selectToselect.js',
-      core+'/bootstrap/extensions/js/forms/field-time.js',
-      core+'/bootstrap/extensions/js/forms/input-alphanum.js',
-      core+'/bootstrap/extensions/js/forms/input-fixedLength.js',
-      core+'/bootstrap/extensions/js/forms/input-getFocus.js',
-      core+'/bootstrap/extensions/js/forms/input-lower.js',
-      core+'/bootstrap/extensions/js/forms/input-noAccents.js',
-      core+'/bootstrap/extensions/js/forms/input-noBlankSpace.js',
-      core+'/bootstrap/extensions/js/forms/input-noDrop.js',
-      core+'/bootstrap/extensions/js/forms/input-noNumber.js',
-      core+'/bootstrap/extensions/js/forms/input-noPaste.js',
-      core+'/bootstrap/extensions/js/forms/input-numeric.js',
-      core+'/bootstrap/extensions/js/forms/input-upper.js',
-      core+'/bootstrap/extensions/js/forms/radio-checkOption.js',
-      core+'/bootstrap/extensions/js/forms/select-autoTab.js',
-      core+'/bootstrap/extensions/js/forms/toggle-field.js',
-      // Definitions
-      core+'/bootstrap/extensions/js/formDefinitions.js'
-    ];
-    var validateJs = [
-      core+'/bootstrap/extensions/js/forms/libs/jquery-validation/jquery.validate.min.js', // jQuery validation plugin
-      core+'/bootstrap/extensions/js/forms/libs/jquery-validation/additional-methods.min.js', // jQuery validation plugin addon
-      core+'/bootstrap/extensions/js/formValidations.js' // Customizations for validation
-    ];
-    var customJs = [
-      site+'/js/default.js' // Specific customizations from project
-    ];
+		core+'/bootstrap/extensions/js/_init.js',
+        // Helpers
+        core+'/bootstrap/extensions/js/_helpers/responsive.js',
+        core+'/bootstrap/extensions/js/_helpers/modal.js',
+        core+'/bootstrap/extensions/js/_helpers/setTips.js',
+        core+'/bootstrap/extensions/js/_helpers/collapse.js',
+        // Integrations
+        core+'/bootstrap/extensions/js/_integrations/mootools.js',
+  	  // Alert
+        core+'/bootstrap/extensions/js/alert/notify.js',
+        // Browser
+        core+'/bootstrap/extensions/js/browser/_ie.init.js',
+        core+'/bootstrap/extensions/js/browser/SmoothScroll.js',
+        // Buttons
+        core+'/bootstrap/extensions/js/buttons/btn-rippleEffect.js',
+        core+'/bootstrap/extensions/js/buttons/btn-toggleState.js',
+        // Layout
+        core+'/bootstrap/extensions/js/layout/loader.js',
+        core+'/bootstrap/extensions/js/layout/loadOnView.js',
+        core+'/bootstrap/extensions/js/layout/libs/affix.js',
+        core+'/bootstrap/extensions/js/layout/libs/affix.remove.js',
+        // Navs
+        core+'/bootstrap/extensions/js/navs/navMenu.js',
+        // Typography
+        core+'/bootstrap/extensions/js/typography/fontSize.js',
+        core+'/bootstrap/extensions/js/typography/linkActions.js',
+        // Utilities
+        core+'/bootstrap/extensions/js/utilities/elementHeight.js',
+        core+'/bootstrap/extensions/js/utilities/imageRetina.js',
+        core+'/bootstrap/extensions/js/utilities/isOnScreen.js',
+        core+'/bootstrap/extensions/js/utilities/parentWidth.js',
+        core+'/bootstrap/extensions/js/utilities/setHidden.js',
+        core+'/bootstrap/extensions/js/utilities/setScroll.js',
+        core+'/bootstrap/extensions/js/utilities/toggleHidden.js',
+        core+'/bootstrap/extensions/js/utilities/toggleIcon.js',
+        core+'/bootstrap/extensions/js/utilities/libs/jquery.actual.js',
+        // Default Libs
+          // chosen
+          core+'/bootstrap/extensions/js/forms/select-chosen.js',
+          common+'/libs/forms/chosen/chosen.jquery.min.js', // Formats the fields of type 'select'
+          // fluid embed videos
+          common+'/libs/content/fitvids/jquery.fitvids.js',
+        // Definitions
+        core+'/bootstrap/extensions/js/coreDefinitions.js'
+      ];
+      var formsJs = [
+        // Libs
+        core+'/bootstrap/extensions/js/forms/libs/jquery.autotab-1.1b.js', // Auto tab functionality
+        core+'/bootstrap/extensions/js/forms/libs/jquery.inputmask.bundle.js', // Plugin for masks in text fields
+        core+'/bootstrap/extensions/js/forms/libs/jquery.price_format.min.js', // Formats the price in text fields
+        // Buttons
+        core+'/bootstrap/extensions/js/buttons/btn-checkState.js',
+        // Form Fields
+        core+'/bootstrap/extensions/js/forms/check-autoTab.js',
+        core+'/bootstrap/extensions/js/forms/check-option.js',
+        core+'/bootstrap/extensions/js/forms/field-cep.js',
+        core+'/bootstrap/extensions/js/forms/field-cpf-cnpj.js',
+        core+'/bootstrap/extensions/js/forms/field-date.js',
+        core+'/bootstrap/extensions/js/forms/field-editor.js',
+        core+'/bootstrap/extensions/js/forms/field-fileAction.js',
+        core+'/bootstrap/extensions/js/forms/field-image.js',
+        core+'/bootstrap/extensions/js/forms/field-ip.js',
+        core+'/bootstrap/extensions/js/forms/field-phone.js',
+        core+'/bootstrap/extensions/js/forms/field-price.js',
+        core+'/bootstrap/extensions/js/forms/field-required.js',
+        core+'/bootstrap/extensions/js/forms/field-selectToselect.js',
+        core+'/bootstrap/extensions/js/forms/field-time.js',
+        core+'/bootstrap/extensions/js/forms/input-alphanum.js',
+        core+'/bootstrap/extensions/js/forms/input-fixedLength.js',
+        core+'/bootstrap/extensions/js/forms/input-getFocus.js',
+        core+'/bootstrap/extensions/js/forms/input-lower.js',
+        core+'/bootstrap/extensions/js/forms/input-noAccents.js',
+        core+'/bootstrap/extensions/js/forms/input-noBlankSpace.js',
+        core+'/bootstrap/extensions/js/forms/input-noDrop.js',
+        core+'/bootstrap/extensions/js/forms/input-noNumber.js',
+        core+'/bootstrap/extensions/js/forms/input-noPaste.js',
+        core+'/bootstrap/extensions/js/forms/input-numeric.js',
+        core+'/bootstrap/extensions/js/forms/input-upper.js',
+        core+'/bootstrap/extensions/js/forms/select-autoTab.js',
+        core+'/bootstrap/extensions/js/forms/select-update.js',
+        core+'/bootstrap/extensions/js/forms/toggle-field.js',
+        // Definitions
+        core+'/bootstrap/extensions/js/formDefinitions.js'
+      ];
+      var validateJs = [
+        core+'/bootstrap/extensions/js/forms/libs/jquery-validation/jquery.validate.min.js', // jQuery validation plugin
+        core+'/bootstrap/extensions/js/forms/libs/jquery-validation/additional-methods.min.js', // jQuery validation plugin addon
+        core+'/bootstrap/extensions/js/formValidations.js' // Customizations for validation
+      ];
+      var customJs = [
+        site+'/js/default.js' // Specific customizations from project
+      ];
 
 // FILES DEFINITIONS -----------------------------
   // JS files
@@ -161,7 +166,7 @@ var del           = require('del');
           .pipe(uglify())
           .pipe(gulp.dest(tmplJS))
     });
-
+/*
   // CSS -----------------------------
     // style.css
     gulp.task('style.css', function() {
@@ -198,7 +203,7 @@ var del           = require('del');
           .pipe(autoprefixer({browsers: ['last 1 version']}))
           .pipe(gulp.dest(tmplCSS))
     });
-
+*/
   // COPY TEMPLATE LIBS
     // CORE
     gulp.task('build-common', function() {
@@ -223,8 +228,8 @@ gulp.task('_reset', function() { del(tmplClean) });
 // Builder JS
 gulp.task('builder-js', ['default.js', 'forms.js', 'validate.js']);
 // Builder CSS
-gulp.task('builder-css', ['style.css', 'style.basic.css', 'style.ie.css', 'style.print.css', 'style.app.css']);
+// gulp.task('builder-css', ['style.css', 'style.basic.css', 'style.ie.css', 'style.print.css', 'style.app.css']);
 // Builder Template
-gulp.task('_builder-core', ['build-common', 'cms-build-common', 'site-build-common', 'builder-js', 'builder-css']);
+gulp.task('_builder-core', ['build-common', 'cms-build-common', 'site-build-common', 'builder-js']);
 gulp.task('_builder-tmpl', ['site-build-common']);
 gulp.task('_builder', ['_builder-core', '_builder-tmpl']);

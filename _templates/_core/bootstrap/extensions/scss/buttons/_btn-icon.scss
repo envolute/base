@@ -23,10 +23,6 @@
 		margin: (-$input-btn-padding-y-lg) $input-btn-padding-x-lg (-$input-btn-padding-y-lg) (-$input-btn-padding-x-lg);
 	}
 	// Contextual colors
-	.btn-default .btn-icon,
-	.btn-default.btn-icon::before {
-		border-right: 1px solid $base-border-color;
-	}
 	.btn-primary .btn-icon,
 	.btn-primary.btn-icon::before {
 		color: theme-color("primary");
@@ -56,6 +52,10 @@
 	.btn-danger.btn-icon::before {
 		color: theme-color("danger");
 		@include base-color-yiq(theme-color("danger"), 'background-color');
+	} // outline
+	.btn-outline-primary .btn-icon,
+	.btn-outline-primary.btn-icon::before {
+		border-right: 1px solid theme-color("primary");
 	}
 	.btn-dark .btn-icon,
 	.btn-dark.btn-icon::before {
@@ -67,3 +67,8 @@
 		color: theme-color("light");
 		@include base-color-yiq(theme-color("light"), 'background-color');
 	}
+	// outline
+   [class*="btn-outline-"] .btn-icon,
+   [class*="btn-outline-"].btn-icon::before {
+	   border-right: 1px solid;
+   }

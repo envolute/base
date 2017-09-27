@@ -21,7 +21,6 @@ jQuery(document).ready(function() {
 		// Forms
 		setChosenDefault();
 		// Layout
-		setAlertBalloon();
 		loadOnView();
 		// Navs
 		navMenu();
