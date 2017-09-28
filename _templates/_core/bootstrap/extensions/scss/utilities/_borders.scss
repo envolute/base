@@ -5,25 +5,25 @@
 // Obs: para remover bordas utilize as classes default do bootstrap
 // -> b-0, b-top-0, b-right-0, b-bottom-0, b-left-0
 // default -> width 1
-.b-all { border: 1px solid!important; }
-.b-y { border-top: 1px solid!important; border-bottom: 1px solid!important; }
-.b-x { border-right: 1px solid!important; border-left: 1px solid!important; }
-.b-top { border-top: 1px solid!important; }
-.b-bottom { border-bottom: 1px solid!important; }
-.b-right { border-right: 1px solid!important; }
-.b-left { border-left: 1px solid!important; }
+.b-all { border-width: 1px!important; }
+.b-y { border-top-width: 1px!important; border-bottom-width: 1px!important; }
+.b-x { border-right-width: 1px!important; border-left-width: 1px!important; }
+.b-top { border-top-width: 1px!important; }
+.b-bottom { border-bottom-width: 1px!important; }
+.b-right { border-right-width: 1px!important; }
+.b-left { border-left-width: 1px!important; }
 // width 2
-.b-all-2 { border: 2px solid!important; }
-.b-top-2 { border-top: 2px solid!important; }
-.b-bottom-2 { border-bottom: 2px solid!important; }
-.b-right-2 { border-right: 2px solid!important; }
-.b-left-2 { border-left: 2px solid!important; }
+.b-all-2 { border-width: 2px!important; }
+.b-top-2 { border-top-width: 2px!important; }
+.b-bottom-2 { border-bottom-width: 2px!important; }
+.b-right-2 { border-right-width: 2px!important; }
+.b-left-2 { border-left-width: 2px!important; }
 // width 3
-.b-all-3 { border: 3px solid!important; }
-.b-top-3 { border-top: 3px solid!important; }
-.b-bottom-3 { border-bottom: 3px solid!important; }
-.b-right-3 { border-right: 3px solid!important; }
-.b-left-3 { border-left: 3px solid!important; }
+.b-all-3 { border-width: 3px!important; }
+.b-top-3 { border-top-width: 3px!important; }
+.b-bottom-3 { border-bottom-width: 3px!important; }
+.b-right-3 { border-right-width: 3px!important; }
+.b-left-3 { border-left-width: 3px!important; }
 
 // Border color default
 [class^="b-all"], [class*=" b-all"] { border-color: $base-border-color; }
@@ -37,6 +37,12 @@
 
 // STYLE
 
+	// solid "default"
+	[class^="b-all"], [class*=" b-all"] { border-style: solid; }
+	.b-y, [class^="b-top"], [class*=" b-top"] { border-top-style: solid; }
+	.b-y, [class^="b-bottom"], [class*=" b-bottom"] { border-bottom-style: solid; }
+	.b-x, [class^="b-right"], [class*=" b-right"] { border-right-style: solid; }
+	.b-x, [class^="b-left"], [class*=" b-left"] { border-left-style: solid; }
 	// dotted
 	[class^="b-all"].b-dotted, [class*=" b-all"].b-dotted { border-style: dotted!important; }
 	.b-y.b-dotted, [class^="b-top"].b-dotted, [class*=" b-top"].b-dotted { border-top-style: dotted!important; }
