@@ -41,7 +41,7 @@
 	$base-color-live:					$base-orange;
 	$base-color-white:					#fff;
 	// bg 'gray' default
-	$base-bg-muted:						$base-gray-100;
+	$base-bg-muted:						$base-gray-200;
 	// bg opacity
 	$bg-dark-opacity:					black;
 	$bg-light-opacity:					white;
@@ -172,6 +172,23 @@
 
  	$base-table-line-height:			1.25 !default;
 
+// BUTTONS
+
+	// floating action
+	$base-btn-fab-size:					2.8rem !default;
+	$base-btn-fab-size-xs:				1.8rem !default;
+	$base-btn-fab-size-sm:				2.35rem !default;
+	$base-btn-fab-size-lg:				3.5rem !default;
+
+	// btn link bordered
+	$btn-link-bordered:					1px solid !default;
+	$btn-link-bordered-lg:				2px !default;
+
+	// btn raised
+	$base-btn-raised:					1px 1px 2px rgba(0,0,0,0.3), 2px 2px 8px rgba(0,0,0,0.2) !default;
+	$base-btn-raised-hover:				2px 2px 4px rgba(0,0,0,0.3), 3px 3px 9px rgba(0,0,0,0.3) !default;
+	$base-btn-raised-lg:				1px 1px 4px rgba(0,0,0,0.2), 4px 4px 8px rgba(0,0,0,0.2), 5px 5px 10px rgba(0,0,0,0.2) !default;
+
 // FORMS
 
 	// fieldset
@@ -234,6 +251,15 @@
 	$nav-stacked-child-border:			1px solid $base-border-color;
 	$nav-stacked-child-bg:				transparent;
 	$nav-stacked-child-item-padding:	$nav-stacked-main-item-padding !default;
+
+	// nav-dark
+	$base-nav-dark-color:				$base-gray-300 !default;
+	$base-nav-dark-bg:					$base-gray-800 !default;
+	$base-nav-dark-link-color:			$base-gray-100 !default;
+	$base-nav-dark-link-color-active:	$base-gray-100 !default;
+	$base-nav-dark-link-color-hover:	white !default;
+	$base-nav-dark-link-bg-active:		rgba(0, 0, 0, 0.4) !default;
+	$base-nav-dark-link-bg-hover:		rgba(0, 0, 0, 0.2) !default;
 
 // PORTLET
 

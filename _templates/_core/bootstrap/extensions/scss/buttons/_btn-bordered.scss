@@ -1,0 +1,8 @@
+// BTN LINK BORDERED
+// Opção de botão com borda inferior
+.btn-link.bordered {
+	border-bottom: $btn-link-bordered
+}
+.btn-link.btn-lg.bordered {
+	border-bottom-width: $btn-link-bordered-lg;
+}

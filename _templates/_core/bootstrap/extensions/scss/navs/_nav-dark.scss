@@ -1,0 +1,18 @@
+// NAV DARK
+// Customização para elementos 'Navs' com fundo escuro
+.nav.nav-dark {
+	color: $base-nav-dark-color;
+	background-color: $base-nav-dark-bg;
+}
+.nav.nav-dark a.nav-link {
+	color: $base-nav-dark-link-color;
+}
+.nav.nav-dark a.nav-link.active {
+	color: $base-nav-dark-link-color-active;
+	background-color: $base-nav-dark-link-bg-active;
+}
+.nav.nav-dark a.nav-link:not(.active):hover,
+.nav.nav-dark a.nav-link:not(.active):focus {
+	color: $base-nav-dark-link-color-hover;
+	background-color: $base-nav-dark-link-bg-hover;
+}

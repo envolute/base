@@ -1,0 +1,14 @@
+// BTN RAISED
+// Botão com aspecto elevado (efeito de sombra)
+.btn-raised,
+.btn-raised:active {
+	box-shadow: $base-btn-raised;
+}
+.btn-raised:hover,
+.btn-raised:focus {
+	box-shadow: $base-btn-raised-hover;
+}
+.btn-raised-lg,
+.btn-raised.active {
+	box-shadow: $base-btn-raised-lg;
+}

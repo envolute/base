@@ -4,39 +4,55 @@
 // das larguras das bordas...
 // Obs: para remover bordas utilize as classes default do bootstrap
 // -> b-0, b-top-0, b-right-0, b-bottom-0, b-left-0
-
-// Borders Addon's
-[class^="b-"], [class*=" b-"] {
-	border: 0 solid $base-border-color;
-}
-// border type
-.b-dotted { border-style: dotted!important; }
-.b-dashed { border-style: dashed!important; }
 // default -> width 1
-.b-all { border-width: 1px!important; }
-.b-y { border-top-width: 1px!important; border-bottom-width: 1px!important; }
-.b-x { border-left-width: 1px!important; border-right-width: 1px!important; }
-.b-top { border-top-width: 1px!important; }
-.b-bottom { border-bottom-width: 1px!important; }
-.b-right { border-right-width: 1px!important; }
-.b-left { border-left-width: 1px!important; }
+.b-all { border: 1px solid!important; }
+.b-y { border-top: 1px solid!important; border-bottom: 1px solid!important; }
+.b-x { border-right: 1px solid!important; border-left: 1px solid!important; }
+.b-top { border-top: 1px solid!important; }
+.b-bottom { border-bottom: 1px solid!important; }
+.b-right { border-right: 1px solid!important; }
+.b-left { border-left: 1px solid!important; }
 // width 2
-.b-2 { border-width: 2px!important; }
-.b-top-2 { border-top-width: 2px!important; }
-.b-bottom-2 { border-bottom-width: 2px!important; }
-.b-right-2 { border-right-width: 2px!important; }
-.b-left-2 { border-left-width: 2px!important; }
+.b-all-2 { border: 2px solid!important; }
+.b-top-2 { border-top: 2px solid!important; }
+.b-bottom-2 { border-bottom: 2px solid!important; }
+.b-right-2 { border-right: 2px solid!important; }
+.b-left-2 { border-left: 2px solid!important; }
 // width 3
-.b-3 { border-width: 3px!important; }
-.b-top-3 { border-top-width: 3px!important; }
-.b-bottom-3 { border-bottom-width: 3px!important; }
-.b-right-3 { border-right-width: 3px!important; }
-.b-left-3 { border-left-width: 3px!important; }
+.b-all-3 { border: 3px solid!important; }
+.b-top-3 { border-top: 3px solid!important; }
+.b-bottom-3 { border-bottom: 3px solid!important; }
+.b-right-3 { border-right: 3px solid!important; }
+.b-left-3 { border-left: 3px solid!important; }
+
+// Border color default
+[class^="b-all"], [class*=" b-all"] { border-color: $base-border-color; }
+.b-y, [class^="b-top"], [class*=" b-top"] { border-top-color: $base-border-color; }
+.b-y, [class^="b-bottom"], [class*=" b-bottom"] { border-bottom-color: $base-border-color; }
+.b-x, [class^="b-right"], [class*=" b-right"] { border-right-color: $base-border-color; }
+.b-x, [class^="b-left"], [class*=" b-left"] { border-left-color: $base-border-color; }
+	// Importante: Pode acontecer do elemento já ter borda, e a cor ser sobrescrita pela cor padrão
+	// Dessa forma, utilizar essa classe para manter a cor de borda do elemento
+	.b-inherit { border-color: inherit; } // utiliza a cor de texto do container
+
+// STYLE
+
+	// dotted
+	[class^="b-all"].b-dotted, [class*=" b-all"].b-dotted { border-style: dotted!important; }
+	.b-y.b-dotted, [class^="b-top"].b-dotted, [class*=" b-top"].b-dotted { border-top-style: dotted!important; }
+	.b-y.b-dotted, [class^="b-bottom"].b-dotted, [class*=" b-bottom"].b-dotted { border-bottom-style: dotted!important; }
+	.b-x.b-dotted, [class^="b-right"].b-dotted, [class*=" b-right"].b-dotted { border-right-style: dotted!important; }
+	.b-x.b-dotted, [class^="b-left"].b-dotted, [class*=" b-left"].b-dotted { border-left-style: dotted!important; }
+	// dashed
+	[class^="b-all"].b-dashed, [class*=" b-all"].b-dashed { border-style: dashed!important; }
+	.b-y.b-dashed, [class^="b-top"].b-dashed, [class*=" b-top"].b-dashed { border-top-style: dashed!important; }
+	.b-y.b-dashed, [class^="b-bottom"].b-dashed, [class*=" b-bottom"].b-dashed { border-bottom-style: dashed!important; }
+	.b-x.b-dashed, [class^="b-right"].b-dashed, [class*=" b-right"].b-dashed { border-right-style: dashed!important; }
+	.b-x.b-dashed, [class^="b-left"].b-dashed, [class*=" b-left"].b-dashed { border-left-style: dashed!important; }
 
 // COLOR
 
 	// default addon's
-	.b-inherit { border-color: inherit!important; } // utiliza a cor de texto do container
 	.b-default { border-color: $base-border-color!important; }
 	.b-default-light { border-color: $base-border-color-light!important; }
 	.b-default-dark { border-color: $base-border-color-dark!important; }

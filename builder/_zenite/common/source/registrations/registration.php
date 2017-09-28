@@ -716,7 +716,7 @@ else :
               <div class="base-icon-attention alert alert-warning top-space"> Inscrições esgotadas para esse evento!</div>
             <?php endif; ?>
           <?php else : ?>
-            <div class="base-icon-attention alert alert-warning top-space"> Inscrições encerradas para esse evento!</div>
+            <div class="base-icon-attention alert alert-warning top-space"> Por favor, selecione o evento!</div>
           <?php endif; ?>
         </form>
       </div>
