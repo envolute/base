@@ -107,7 +107,7 @@ endif;
 		$cfg['fileField']		= 'file'; // upload's field name
 		$cfg['fileTable']		= $cfg['mainTable'].'_files'; // upload's database table
 		// upload params
-		$cfg['maxFileSize']		= 5242880; // 5MB
+		$cfg['maxFileSize']		= 10485760; // 10MB
 		$cfg['uploadDir']       = JPATH_BASE.DS.'images/apps/'.$APPPATH.'/'; // IMPORTANTE: colocar a barra '/' no fim
 		// file types enabled
 		$cfg['fileTypes']	= array();

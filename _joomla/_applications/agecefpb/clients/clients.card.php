@@ -82,7 +82,7 @@ if(!empty($item->name)) : // verifica se existe
 			<div style="text-align:right;">Cód. <strong>'.$item->code.'</strong>'.$grp.'</div>
 			'.$matricula.'
 		</div>
-		<script>jQuery(window).load(function() { print() });</script>
+		<script>jQuery(window).on('load', function() { print() });</script>
 	';
 else :
 	$html = '<p class="alert alert-info alert-icon no-margin">'.JText::_('MSG_EMPTY_CARD').'</p>';

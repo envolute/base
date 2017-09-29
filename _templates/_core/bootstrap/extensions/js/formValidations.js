@@ -101,7 +101,7 @@ jQuery(function() {
 });
 
 // DEFAULT VALIDATIONS FOR ALL FORMS
-jQuery(window).load(function() {
+jQuery(window).on('load', function() {
 
 	window.setDefaultValidationFields = function() {
 

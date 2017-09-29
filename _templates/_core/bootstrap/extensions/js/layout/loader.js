@@ -30,7 +30,7 @@ jQuery(function() {
 });
 
 // Esconde o loader após o carregamento da página
-jQuery(window).load(function() {
+jQuery(window).on('load', function() {
 	if(jQuery('body').hasClass('preloader')) {
 		setTimeout(function() {
 			jQuery('body').removeClass('preloader'); // mostra o conteúdo

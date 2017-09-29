@@ -4168,7 +4168,7 @@ Content...
 
 <script>
 	// LOCAL FORM VALIDATIONS
-	jQuery(window).load( function() {
+	jQuery(window).on('load',  function() {
 
 		// form validations
 		jQuery("#form-validator").validate({

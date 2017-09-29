@@ -38,7 +38,7 @@ $app = JFactory::getApplication();
 		';
 		if(count($toplist) == 1) $carousel = '';
 		$script = '
-		jQuery(window).load(function(){
+		jQuery(window).on('load', function(){
 			// pega a largura do container
 			var cW'.$module->id.' = jQuery("#allmode-slider-brands-'.$module->id.'").closest(".slider-brands").width();
 			// "maxSlides" é definido pela quantidade de "TOP Items" do módulo

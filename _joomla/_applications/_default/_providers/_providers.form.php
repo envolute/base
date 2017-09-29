@@ -143,6 +143,19 @@ $groups = $db->loadObjectList();
 			<label class="text-sm"><?php echo JText::_('FIELD_LABEL_SERVICE_DESC')?></label>
 			<textarea name="service_desc" id="<?php echo $APPTAG?>-service_desc" rows="4" class="form-control field-html"></textarea>
 		</div>
+		<div class="row">
+			<div class="col-lg-4">
+				<div class="form-group">
+					<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_DOC_DESC')?>"><?php echo JText::_('FIELD_LABEL_DOC'); ?></label>
+					<div class="btn-file">
+						<span class="btn-group w-100">
+							<button type="button" class="col base-icon-search btn btn-default btn-active-success file-action text-truncate hasTooltip" title="<?php echo JText::_('TEXT_FILE_SELECT'); ?>"> <span><?php echo JText::_('TEXT_FILE_SELECT'); ?></span></button>
+						</span>
+						<input type="file" name="file[1]" id="<?php echo $APPTAG?>-file1" class="form-control" hidden />
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 <div id="<?php echo $APPTAG?>-msg-relations" class="alert alert-info base-icon-info-circled">

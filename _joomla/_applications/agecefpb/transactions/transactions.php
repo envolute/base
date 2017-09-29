@@ -555,7 +555,7 @@ jQuery(function() {
 
 }); // CLOSE JQUERY->READY
 
-jQuery(window).load(function() {
+jQuery(window).on('load', function() {
 
 	// custom validation for phone number
 	jQuery.validator.addMethod("validaCardLimit", function(value, element, param) {

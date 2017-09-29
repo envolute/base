@@ -20,6 +20,6 @@ jQuery(function() {
 
 // CHAMADA GERAL DAS CUSTOMIZAÇÕES DE FORMULÁRIO
 // -----------------------------------------------------------------------------------
-jQuery(window).load(function() {
+jQuery(window).on('load', function() {
 	customFormDefinitions();
 });

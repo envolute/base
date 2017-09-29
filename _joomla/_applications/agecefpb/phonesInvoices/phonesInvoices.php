@@ -306,7 +306,7 @@ jQuery(function() {
 
 }); // CLOSE JQUERY->READY
 
-jQuery(window).load(function() {
+jQuery(window).on('load', function() {
 	// Jquery Validation
 	window.<?php echo $APPTAG?>_validator = mainForm_<?php echo $APPTAG?>.validate({
 		//don't remove this

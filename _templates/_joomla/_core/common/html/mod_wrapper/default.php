@@ -54,7 +54,7 @@ if ($h) :
 
 			}
 			// redimensiona os iframes após a página ser carregada
-			jQuery(window).load(function(){
+			jQuery(window).on('load', function(){
 				var iframe = jQuery('#<?php echo $id?>');
 				iframeHeight(iframe);
 				iframe.on("load", function () {

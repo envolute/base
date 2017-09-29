@@ -161,6 +161,6 @@ jQuery(function() {
 
 // CHAMADA GERAL DAS PREDEFINIÇÕES DE FORMULÁRIO
 // -----------------------------------------------------------------------------------
-jQuery(window).load(function() {
+jQuery(window).on('load', function() {
 	setFormDefinitions();
 });

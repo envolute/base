@@ -121,7 +121,7 @@ if($p != 0) :
 
 		if($num_rows) : // verifica se existe
 			$rel .= '<h6 class="page-header mb-0 base-icon-location"> '.JText::_('TEXT_ADDRESSES').'</h6>';
-			$rel .= '<ul class="set-list bordered list-striped list-hover mb-4">';
+			$rel .= '<ul class="set-list bordered mb-4">';
 			foreach($res as $obj) {
 
 				$main = $obj->main == 1 ? '<span class="base-icon-star text-live cursor-help hasTooltip" title="'.JText::_('TEXT_ADDRESS_MAIN').'"></span> ' : '<div class="font-weight-bold">'.baseHelper::nameFormat($obj->description).'</div>';
@@ -131,13 +131,22 @@ if($p != 0) :
 				$addressDistrict = !empty($obj->address_district) ? baseHelper::nameFormat($obj->address_district) : '';
 				$addressCity = !empty($obj->address_city) ? ', '.baseHelper::nameFormat($obj->address_city) : '';
 				$addressState = !empty($obj->address_state) ? ', '.baseHelper::nameFormat($obj->address_state) : '';
+				$addressCountry = !empty($obj->address_country) ? ', '.baseHelper::nameFormat($obj->address_country) : '';
+				$mapa = !empty($obj->url_map) ? ' <a href="'.$obj->url_map.'" class="badge badge-warning set-modal" title="'.JText::_('TEXT_MAP').'" data-modal-title="'.JText::_('TEXT_LOCATION').'" data-modal-iframe="true" data-modal-width="95%" data-modal-height="95%"><span class="base-icon-location"></span></a> ' : '';
+				$phones = array();
+				if(!empty($obj->phone1)) $phones[] = $obj->phone1;
+				if(!empty($obj->phone2)) $phones[] = $obj->phone2;
+				if(!empty($obj->phone3)) $phones[] = $obj->phone3;
+				if(!empty($obj->phone4)) $phones[] = $obj->phone4;
+				$listPhones = !empty($obj->phone1) ? ' <div class="text-sm mt-2 base-icon-phone-squared"> '.implode(', ', $phones).'</div>' : '';
 
 				$rel .= '
 					<li>
 						'.$main.baseHelper::nameFormat($obj->address).$addressNumber.$addressInfo.'
 						<div class="text-sm text-muted">'.
-							$addressZip.$addressDistrict.$addressCity.$addressState.'
+							$addressZip.$addressDistrict.$addressCity.$addressState.$addressCountry.$mapa.'
 						</div>
+						'.$listPhones.'
 					</li>
 				';
 			}
