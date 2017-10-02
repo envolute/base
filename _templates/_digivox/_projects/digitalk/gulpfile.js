@@ -26,7 +26,7 @@ var tmplCSS     = tmpl + '/css';
 	// Não utilizar o arquivo 'bootstrap.min.js' (minified), pois o mesmo
 	// quebra algumas funcionalidades como 'collapse'...
     var bootstrapJs = [
-      core+'/bootstrap/js/bootstrap.js' // Bootstrap functionalities
+      core+'/bootstrap/js/_bootstrap.js' // Bootstrap functionalities
     ];
     // Bootstrap Extensions
     var bootstrapExtJs = [

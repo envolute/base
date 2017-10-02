@@ -24,7 +24,7 @@ $groups = $user->groups;
 require(JPATH_CORE.DS.'apps/_init.app.php');
 
 // Get request data
-$p = $app->input->get('p', 0, 'int');
+$pID = $app->input->get('pID', 0, 'int');
 
 // Carrega o arquivo de tradução
 // OBS: para arquivos externos com o carregamento do framework '_init.joomla.php' (geralmente em 'ajax')
@@ -36,7 +36,7 @@ if(isset($_SESSION[$APPTAG.'langDef'])) :
 	$lang->load('base_'.$APPNAME, JPATH_BASE, $_SESSION[$APPTAG.'langDef'], true);
 endif;
 
-if($p != 0) :
+if($pID != 0) :
 
 	// DATABASE CONNECT
 	$db = JFactory::getDbo();
@@ -51,7 +51,7 @@ if($p != 0) :
 			JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
 			ON T2.id = T1.group_id AND T2.state = 1
 		WHERE
-			'. $db->quoteName('T1.id') .' = '. $p .' AND
+			'. $db->quoteName('T1.id') .' = '. $pID .' AND
 			'. $db->quoteName('T1.agreement') .' = 1
 	';
 	try {
@@ -65,16 +65,13 @@ if($p != 0) :
 	$provider = '';
 	if(!empty($item->name)) : // verifica se existe
 
-		// RELATIONS
-		$rel = '';
-
 		// Telefones
 		$query	= '
 			SELECT *
 			FROM '.$db->quoteName('#__'.$cfg['project'].'_phones') .' T1
 				JOIN '. $db->quoteName('#__'.$cfg['project'].'_rel_providers_phones') .' T2
 				ON '.$db->quoteName('T2.phone_id') .' = T1.id
-			WHERE '.$db->quoteName('T2.provider_id') .' = '. $p .'
+			WHERE '.$db->quoteName('T2.provider_id') .' = '. $pID .'
 			ORDER BY '.$db->quoteName('T1.main') .' DESC
 		';
 		try {
@@ -87,16 +84,19 @@ if($p != 0) :
 			return;
 		}
 
+		$mainPhones = '';
 		if($num_rows) : // verifica se existe
-			$rel .= '<h6 class="page-header mb-0 base-icon-phone-squared"> '.JText::_('TEXT_PROVIDER_PHONES').'</h6>';
-			$rel .= '<ul class="set-list bordered list-striped list-hover mb-4">';
+			$mainPhones .= '<h6 class="page-header mb-3 base-icon-phone-squared"> '.JText::_('TEXT_PROVIDER_PHONES').'</h6>';
+			$mainPhones .= '<ul class="set-list mb-4">';
 			foreach($res as $obj) {
+				$oper = !empty($obj->operator) ? ' <span class="badge badge-info">'.$obj->operator.'</span> ' : '';
 				$wapp = $obj->whatsapp == 1 ? ' <span class="base-icon-whatsapp text-success cursor-help hasTooltip" title="'.JText::_('TEXT_HAS_WHATSAPP').'"></span>' : '';
-				$rel .= '
-					<li>'.$obj->phone_number.$wapp.'</li>
+				$desc = !empty($obj->description) ? '<p class="pt-1">'.$obj->description.'</p>' : '';
+				$mainPhones .= '
+					<li><strong>'.$obj->phone_number.'</strong>'.$oper.$wapp.$desc.'</li>
 				';
 			}
-			$rel .= '</ul>';
+			$mainPhones .= '</ul>';
 			unset($obj); // reseta as informações contidas em item
 		endif;
 
@@ -106,7 +106,7 @@ if($p != 0) :
 			FROM '.$db->quoteName('#__'.$cfg['project'].'_addresses') .' T1
 				JOIN '. $db->quoteName('#__'.$cfg['project'].'_rel_providers_addresses') .' T2
 				ON '.$db->quoteName('T2.address_id') .' = T1.id
-			WHERE '.$db->quoteName('T2.provider_id') .' = '. $p .'
+			WHERE '.$db->quoteName('T2.provider_id') .' = '. $pID .'
 			ORDER BY '.$db->quoteName('T1.main') .' DESC
 		';
 		try {
@@ -119,9 +119,10 @@ if($p != 0) :
 			return;
 		}
 
+		$addresses = '';
 		if($num_rows) : // verifica se existe
-			$rel .= '<h6 class="page-header mb-0 base-icon-location"> '.JText::_('TEXT_ADDRESSES').'</h6>';
-			$rel .= '<ul class="set-list bordered mb-4">';
+			$addresses .= '<h6 class="page-header mb-3 base-icon-location"> '.JText::_('TEXT_ADDRESSES').'</h6>';
+			$addresses .= '<ul class="set-list list-lg bordered mb-4">';
 			foreach($res as $obj) {
 
 				$main = $obj->main == 1 ? '<span class="base-icon-star text-live cursor-help hasTooltip" title="'.JText::_('TEXT_ADDRESS_MAIN').'"></span> ' : '<div class="font-weight-bold">'.baseHelper::nameFormat($obj->description).'</div>';
@@ -140,7 +141,7 @@ if($p != 0) :
 				if(!empty($obj->phone4)) $phones[] = $obj->phone4;
 				$listPhones = !empty($obj->phone1) ? ' <div class="text-sm mt-2 base-icon-phone-squared"> '.implode(', ', $phones).'</div>' : '';
 
-				$rel .= '
+				$addresses .= '
 					<li>
 						'.$main.baseHelper::nameFormat($obj->address).$addressNumber.$addressInfo.'
 						<div class="text-sm text-muted">'.
@@ -150,61 +151,106 @@ if($p != 0) :
 					</li>
 				';
 			}
-			$rel .= '</ul>';
+			$addresses .= '</ul>';
 			unset($obj); // reseta as informações contidas em item
 		endif;
 
 		JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 		// Imagem Principal -> Primeira imagem (index = 0)
 		$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
-		if(!empty($img)) $img = '<img src=\''.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 200, 200).'\' class=\'img-fluid float-sm-left mb-4\' />';
+		if(!empty($img)) $img = '<img src=\''.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 300, 300).'\' class=\'img-fluid mb-4\' />';
 
 		$site	= !empty($item->website) ? '<a href="'.$item->website.'" class="new-window" target="_blank">'.$item->website.'</a>' : '';
-		$cnpj	= !empty($item->cnpj) ? '<label class="label-sm mt-3">CNPJ</label>'.$item->cnpj : '';
+		$cnpj	= !empty($item->cnpj) ? '<label class="label-sm">CNPJ</label>'.$item->cnpj : '';
 		$agree	= $item->agreement == 1 ? '<span class="badge badge-success float-right">'.JText::_('FIELD_LABEL_AGREEMENT').'</span>' : '';
 		// Web
 		$web	= !empty($site) ? '<div class="text-md text-muted mt-2">'.$site.'</div>' : '';
 
 		$provider .= '
+			<a href="'.$urlToList.'" class="btn btn-default base-icon-left-big"> '.JText::_('TEXT_AGREEMENTS').'</a>
+			<hr class="mt-2" />
 			<div class="row">
-				<div class="col-sm-4 col-md-3 col-xl-2 text-center text-sm-left">
+				<div class="col-md-3 text-center text-sm-left">
 					'.$img.'
-					<div>'.$cnpj.'</div>
-					<hr class="d-sm-none" />
+					<div class="clear">'.$cnpj.'</div>
+					<hr class="d-md-none" />
 				</div>
-				<div class="col-sm-8 col-md-9 col-xl-10">
+				<div class="col-md-9">
 		';
 		$provider .= '
-			<h2 class="page-header mt-0">
-				'.baseHelper::nameFormat($item->name).$agree.$web.'
+			<div class="small text-muted">'.$item->grp.'</div>
+			<h2 class="mt-0 mb-3">
+				'.baseHelper::nameFormat($item->name).'
 			</h2>
+			<div class="small text-muted">'.$web.'</div>
+			<hr class="mt-2" />
 		';
-		$info = '';
-		if(!empty($item->description)) $info .= $item->description.'<hr />';
-		if(!empty($item->service_desc)) :
-			$info .= '<h5 class="mt-4">'.JText::_('FIELD_LABEL_SERVICE').'</h5>';
-			$info .= $item->service_desc;
-		endif;
 
+		// DESCRIPTION
+		if(!empty($item->description)) $provider .= $item->description.'<hr />';
 
-		if(!empty($rel)) :
+		// TAB => INFORMATIONS
+		if(!empty($mainPhones) || !empty($addresses) || !empty($item->service_desc)) :
 			$provider .= '
-				<div class="row">
-					<div class="col-lg-8">
-						'.$info.'
-						<hr class="d-sm-none" />
-					</div>
-					<div class="col-lg-4">'.$rel.'</div>
-				</div>
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs" id="'.$APPTAG.'TabInfo" role="tablist">
 			';
-		else :
-			$provider .= $info;
+			$active	= ' active';
+			$show	= ' show '.$active;
+			if(!empty($item->service_desc)) :
+				$provider .= '
+					<li class="nav-item">
+						<a class="nav-link'.$active.'" id="'.$APPTAG.'TabView-service" href="#'.$APPTAG.'TabViewService" data-toggle="tab" role="tab" aria-controls="service">
+							<span class="base-icon-doc-text"></span> '.JText::_('FIELD_LABEL_SERVICE').'
+						</a>
+					</li>
+				';
+				$active = '';
+			endif;
+			if(!empty($mainPhones) || !empty($addresses)) :
+				$provider .= '
+					<li class="nav-item">
+						<a class="nav-link'.$active.'" id="'.$APPTAG.'TabView-address" href="#'.$APPTAG.'TabViewAddress" data-toggle="tab" role="tab" aria-controls="address" aria-expanded="true">
+							<span class="base-icon-location"></span> '.JText::_('TEXT_LOCATION_CONTACT').'
+						</a>
+					</li>
+				';
+				$active = '';
+			endif;
+			$provider .= '
+				</ul>
+				<!-- Tab panes -->
+				<div class="tab-content" id="'.$APPTAG.'TabContent">
+			';
+			if(!empty($item->service_desc)) :
+				$provider .= '
+					<div class="tab-pane fade'.$show.'" id="'.$APPTAG.'TabViewService" role="tabpanel" aria-labelledby="'.$APPTAG.'TabView-service">
+						'.$item->service_desc.'
+					</div>
+				';
+				$show = '';
+			endif;
+			if(!empty($mainPhones) || !empty($addresses)) :
+				$provider .= '
+					<div class="tab-pane fade'.$show.'" id="'.$APPTAG.'TabViewAddress" role="tabpanel" aria-labelledby="'.$APPTAG.'TabView-address">
+						<div class="row">
+				';
+				if(!empty($addresses)) $provider .= '<div class="col-md-7">'.$addresses.'</div>';
+				if(!empty($mainPhones)) $provider .= '<div class="col-md">'.$mainPhones.'</div>';
+				$provider .= '
+						</div>
+					</div>
+				';
+				$show = '';
+			endif;
+			$provider .= '</div>';
 		endif;
 
 		$provider .= '
 				</div>
 			</div>
 		';
+
 	else :
 		$provider = '<p class="base-icon-info-circled alert alert-info m-0"> '.JText::_('MSG_ITEM_NOT_AVAILABLE').'</p>';
 	endif;

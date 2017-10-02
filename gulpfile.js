@@ -2,18 +2,17 @@
 var gulp = require('gulp');
 
 // Define Project Name
-var project     = 'agecefpb';
+var project     = 'digitalk';
 
 // Define base folders
 var builder     = '_templates';
 var core        = builder + '/_core';
-var cms         = builder + '/_joomla';
-var projects    = cms + '/_projects';
+var client      = builder + '/_digivox';
+var projects    = client + '/_projects';
 // DEFINE PROJECT SITE: enter project folder
 var site        = projects + '/' + project;
 // ------------------------------------
 var common      = core + '/common';
-var commonCms   = cms + '/_core/common';
 var commonSite  = site + '/common';
 var tmpl        = 'template';
 var tmplJS      = tmpl + '/js';
@@ -27,7 +26,7 @@ var tmplCSS     = tmpl + '/css';
 	// Não utilizar o arquivo 'bootstrap.min.js' (minified), pois o mesmo
 	// quebra algumas funcionalidades como 'collapse'...
     var bootstrapJs = [
-      core+'/bootstrap/js/bootstrap.js' // Bootstrap functionalities
+      core+'/bootstrap/js/_bootstrap.js' // Bootstrap functionalities
     ];
     // Bootstrap Extensions
     var bootstrapExtJs = [
@@ -129,10 +128,8 @@ var tmplCSS     = tmpl + '/css';
   var defaultJs   = bootstrapJs.concat(bootstrapExtJs, customJs);
   // CSS files
   var styleCss    = site+'/scss/style.scss'; // General css stylesheet
-  var appCss      = site+'/scss/style.app.scss'; // General css stylesheet
   var printCss    = site+'/scss/style.print.scss'; // Stylesheet for printing
   var ieCss       = site+'/scss/style.ie.scss'; // Specific style sheet for IE
-  var basicCss    = site+'/scss/style.basic.scss'; // Stylesheet to be used in text editors
 
 // Include plugins
 var concat        = require('gulp-concat');
@@ -178,13 +175,6 @@ var del           = require('del');
           .pipe(autoprefixer({browsers: ['last 1 version']}))
           .pipe(gulp.dest(tmplCSS))
     });
-    // style.basic.css
-    gulp.task('style.basic.css', function() {
-        gulp.src(basicCss)
-          .pipe(sass({outputStyle: 'compressed', precision: 10}))
-          .pipe(autoprefixer({browsers: ['last 1 version']}))
-          .pipe(gulp.dest(tmplCSS))
-    });
     // style.ie.css
     gulp.task('style.ie.css', function() {
         gulp.src(ieCss)
@@ -199,23 +189,11 @@ var del           = require('del');
           .pipe(autoprefixer({browsers: ['last 1 version']}))
           .pipe(gulp.dest(tmplCSS))
     });
-    // style.app.css
-    gulp.task('style.app.css', function() {
-        gulp.src(appCss)
-          .pipe(sass({outputStyle: 'compressed', precision: 10}))
-          .pipe(autoprefixer({browsers: ['last 1 version']}))
-          .pipe(gulp.dest(tmplCSS))
-    });
 
   // COPY TEMPLATE LIBS
     // CORE
     gulp.task('build-common', function() {
       return gulp.src(common+'/**/*', {base: common})
-      .pipe(gulp.dest(tmpl))
-    });
-    // BASE
-    gulp.task('cms-build-common', function() {
-      return gulp.src(commonCms+'/**/*', {base: commonCms})
       .pipe(gulp.dest(tmpl))
     });
     // SITE
@@ -231,8 +209,8 @@ gulp.task('_reset', function() { del(tmplClean) });
 // Builder JS
 gulp.task('builder-js', ['default.js', 'forms.js', 'validate.js']);
 // Builder CSS
-gulp.task('builder-css', ['style.css', 'style.basic.css', 'style.ie.css', 'style.print.css', 'style.app.css']);
+gulp.task('builder-css', ['style.css', 'style.ie.css', 'style.print.css']);
 // Builder Template
-gulp.task('_builder-core', ['builder-css', 'builder-js', 'build-common', 'cms-build-common', 'site-build-common']);
+gulp.task('_builder-core', ['builder-css', 'builder-js', 'build-common', 'site-build-common']);
 gulp.task('_builder-tmpl', ['site-build-common']);
 gulp.task('_builder', ['_builder-core', '_builder-tmpl']);
