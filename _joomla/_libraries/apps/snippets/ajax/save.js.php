@@ -58,8 +58,16 @@ window.<?php echo $APPTAG?>_save = function(trigger) {
 						require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxSuccess.js.php');
 						?>
 						<?php // recarrega a página quando fechar o form para atualizar a lista
-						if(isset($cfg['listFull']))
-						echo ($cfg['listFull'] ? 'fReload = true;' : $APPTAG.'_listReload(false, false, false, '.$APPTAG.'oCHL, '.$APPTAG.'rNID, '.$APPTAG.'rID);');
+						if(isset($cfg['listFull']) || isset($cfg['itemView'])) :
+							if(!$cfg['listFull'] && !$cfg['itemView']) :
+								echo $APPTAG.'_listReload(false, false, false, '.$APPTAG.'oCHL, '.$APPTAG.'rNID, '.$APPTAG.'rID);';
+							else :
+								echo '
+								fReload = true;
+								pReload = res.regID;
+								';
+							endif;
+						endif;
 						?>
 						if(firstField.length) setTimeout(function() { firstField.focus() }, 10); // seta novamente o focus no primeiro campo
 

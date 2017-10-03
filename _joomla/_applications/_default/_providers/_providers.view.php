@@ -28,7 +28,7 @@ $groups = $user->groups;
 require(JPATH_CORE.DS.'apps/_init.app.php');
 
 // Get request data
-$pID = $app->input->get('pID', 0, 'int');
+$regID = $app->input->get('regID', 0, 'int');
 
 // Carrega o arquivo de tradução
 // OBS: para arquivos externos com o carregamento do framework '_init.joomla.php' (geralmente em 'ajax')
@@ -43,7 +43,7 @@ endif;
 // Admin Actions
 require_once('_providers.select.php');
 
-if($pID != 0) :
+if($regID != 0) :
 
 	// DATABASE CONNECT
 	$db = JFactory::getDbo();
@@ -57,7 +57,7 @@ if($pID != 0) :
 			$db->quoteName($cfg['mainTable']) .' T1
 			JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
 			ON T2.id = T1.group_id AND T2.state = 1
-		WHERE '. $db->quoteName('T1.id') .' = '. $pID
+		WHERE '. $db->quoteName('T1.id') .' = '. $regID
 	;
 	try {
 		$db->setQuery($query);
@@ -73,7 +73,7 @@ if($pID != 0) :
 		JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 		// Imagem Principal -> (index = 0)
 		$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
-		if(!empty($img)) $img = '<img src=\''.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 200, 200).'\' class=\'img-fluid\' />';
+		if(!empty($img)) $img = '<img src="images/apps/'.$APPPATH.'/'.$img['filename'].'" class="w-100 img-fluid b-all p-1" />';
 
 		// Contrato -> (index = 1)
 		$doc = uploader::getFile($cfg['fileTable'], '', $item->id, 1, $cfg['uploadDir']);

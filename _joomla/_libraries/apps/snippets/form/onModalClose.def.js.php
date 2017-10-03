@@ -18,5 +18,5 @@ if(parentFieldId != null) {
 }
 <?php
 // recarrega a listagem
-if($cfg['listFull']) echo $APPTAG.'_listReload(fReload, false);';
+if($cfg['itemView'] || $cfg['listFull']) echo $APPTAG.'_listReload(fReload, false);';
 ?>

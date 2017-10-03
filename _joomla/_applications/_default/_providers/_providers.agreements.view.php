@@ -26,6 +26,9 @@ require(JPATH_CORE.DS.'apps/_init.app.php');
 // Get request data
 $pID = $app->input->get('pID', 0, 'int');
 
+// list view
+$urlToList = JURI::root().'apps/providers/agreements';
+
 // Carrega o arquivo de tradução
 // OBS: para arquivos externos com o carregamento do framework '_init.joomla.php' (geralmente em 'ajax')
 // a language 'default' não é reconhecida. Sendo assim, carrega apenas 'en-GB'
@@ -45,14 +48,15 @@ if($pID != 0) :
 	$query	= '
 		SELECT
 			T1.*,
-			'. $db->quoteName('T2.name') .' grp
+			'. $db->quoteName('T2.name') .' group_name
 		FROM '.
 			$db->quoteName($cfg['mainTable']) .' T1
 			JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
 			ON T2.id = T1.group_id AND T2.state = 1
 		WHERE
 			'. $db->quoteName('T1.id') .' = '. $pID .' AND
-			'. $db->quoteName('T1.agreement') .' = 1
+			'. $db->quoteName('T1.agreement') .' = 1 AND
+			'. $db->quoteName('T1.state') .' = 1
 	';
 	try {
 		$db->setQuery($query);
@@ -125,7 +129,7 @@ if($pID != 0) :
 			$addresses .= '<ul class="set-list list-lg bordered mb-4">';
 			foreach($res as $obj) {
 
-				$main = $obj->main == 1 ? '<span class="base-icon-star text-live cursor-help hasTooltip" title="'.JText::_('TEXT_ADDRESS_MAIN').'"></span> ' : '<div class="font-weight-bold">'.baseHelper::nameFormat($obj->description).'</div>';
+				$main = $obj->main == 1 ? '<span class="base-icon-star text-live cursor-help hasTooltip" title="'.JText::_('TEXT_ADDRESS_MAIN').'"></span> ' : '<h6 class="font-weight-bold mb-1">'.baseHelper::nameFormat($obj->description).'</h6>';
 				$addressInfo = !empty($obj->address_info) ? ', '.$obj->address_info : '';
 				$addressNumber = !empty($obj->address_number) ? ', '.$obj->address_number : '';
 				$addressZip = !empty($obj->zip_code) ? $obj->zip_code.', ' : '';
@@ -158,7 +162,7 @@ if($pID != 0) :
 		JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 		// Imagem Principal -> Primeira imagem (index = 0)
 		$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
-		if(!empty($img)) $img = '<img src=\''.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 300, 300).'\' class=\'img-fluid mb-4\' />';
+		if(!empty($img)) $img = '<img src="images/apps/'.$APPPATH.'/'.$img['filename'].'" class="w-100 img-fluid b-all p-1" />';
 
 		$site	= !empty($item->website) ? '<a href="'.$item->website.'" class="new-window" target="_blank">'.$item->website.'</a>' : '';
 		$cnpj	= !empty($item->cnpj) ? '<label class="label-sm">CNPJ</label>'.$item->cnpj : '';
@@ -167,8 +171,6 @@ if($pID != 0) :
 		$web	= !empty($site) ? '<div class="text-md text-muted mt-2">'.$site.'</div>' : '';
 
 		$provider .= '
-			<a href="'.$urlToList.'" class="btn btn-default base-icon-left-big"> '.JText::_('TEXT_AGREEMENTS').'</a>
-			<hr class="mt-2" />
 			<div class="row">
 				<div class="col-md-3 text-center text-sm-left">
 					'.$img.'
@@ -178,22 +180,25 @@ if($pID != 0) :
 				<div class="col-md-9">
 		';
 		$provider .= '
-			<div class="small text-muted">'.$item->grp.'</div>
-			<h2 class="mt-0 mb-3">
+			<ul class="set-list inline bordered list-trim b-bottom b-dotted text-muted small mb-2 pb-1">
+				<li><a href="'.$urlToList.'" class="text-uppercase">'.JText::_('TEXT_AGREEMENTS').'</a></li>
+				<li><a href="'.$urlToList.'?gID='.$item->group_id.'">'.$item->group_name.'</a></li>
+			</ul>
+			<h1 class="mt-0 mb-3">
 				'.baseHelper::nameFormat($item->name).'
-			</h2>
+			</h1>
 			<div class="small text-muted">'.$web.'</div>
 			<hr class="mt-2" />
 		';
 
 		// DESCRIPTION
-		if(!empty($item->description)) $provider .= $item->description.'<hr />';
+		if(!empty($item->description)) $provider .= $item->description;
 
 		// TAB => INFORMATIONS
 		if(!empty($mainPhones) || !empty($addresses) || !empty($item->service_desc)) :
 			$provider .= '
 				<!-- Nav tabs -->
-				<ul class="nav nav-tabs" id="'.$APPTAG.'TabInfo" role="tablist">
+				<ul class="nav nav-tabs mt-3" id="'.$APPTAG.'TabInfo" role="tablist">
 			';
 			$active	= ' active';
 			$show	= ' show '.$active;
