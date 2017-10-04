@@ -61,26 +61,44 @@ $cfg['serviceTax'] = '10,00';
 	// show app (Add Button & List)
 	$cfg['showApp']				= true;
 	if(isset(${$APPTAG.'ShowApp'})) $cfg['showApp'] = ${$APPTAG.'ShowApp'} ? true : false;
-	// show/hidden list
-	$cfg['showList']			= true;
-	if(isset(${$APPTAG.'Showlist'})) $cfg['showList'] = ${$APPTAG.'Showlist'} ? true : false;
-	// list modal
-	$cfg['listModal']			= false;
-	if(isset(${$APPTAG.'ListModal'})) $cfg['listModal'] = ${$APPTAG.'ListModal'} ? true : false;
-	// list type
-	$cfg['listFull']			= true;
-	if(isset(${$APPTAG.'ListFull'})) $cfg['listFull'] = ${$APPTAG.'ListFull'} ? true : false;
-	// toolbar position
-	$cfg['staticToolbar']		= false;
-	if(isset(${$APPTAG.'StaticToolbar'})) $cfg['staticToolbar'] = ${$APPTAG.'StaticToolbar'} ? true : false;
-	// show/hidden 'add' button
-	$cfg['showAddBtn']			= true;
-	if(isset(${$APPTAG.'ShowAddBtn'})) $cfg['showAddBtn'] = ${$APPTAG.'ShowAddBtn'} ? true : false;
-	// hidden button 'add' text
-	$cfg['addText']				= true;
-	if(isset(${$APPTAG.'AddText'})) $cfg['addText'] = ${$APPTAG.'AddText'} ? true : false;
-	// show filter opened
-	$cfg['showFilter']			= false;
+	// item view
+	$cfg['itemView']			= false;
+	if(isset(${$APPTAG.'ItemView'})) $cfg['itemView'] = ${$APPTAG.'ItemView'} ? true : false;
+
+	if($cfg['itemView']) :
+		// A view Desabilita a listagem
+		$cfg['showList']		= false;
+		$cfg['listModal']		= false;
+		$cfg['listFull']		= false;
+		$cfg['staticToolbar']	= false;
+		$cfg['showAddBtn']		= false;
+		$cfg['addText']			= false;
+		$cfg['showFilter']		= false;
+	else :
+		// show/hidden list
+		$cfg['showList']			= true;
+		if(isset(${$APPTAG.'Showlist'})) $cfg['showList'] = ${$APPTAG.'Showlist'} ? true : false;
+		// list modal
+		$cfg['listModal']			= false;
+		if(isset(${$APPTAG.'ListModal'})) $cfg['listModal'] = ${$APPTAG.'ListModal'} ? true : false;
+		// list type
+		$cfg['listFull']			= true;
+		if(isset(${$APPTAG.'ListFull'})) $cfg['listFull'] = ${$APPTAG.'ListFull'} ? true : false;
+		// toolbar position
+		$cfg['staticToolbar']		= false;
+		if(isset(${$APPTAG.'StaticToolbar'})) $cfg['staticToolbar'] = ${$APPTAG.'StaticToolbar'} ? true : false;
+		// show/hidden 'add' button
+		$cfg['showAddBtn']			= true;
+		if(isset(${$APPTAG.'ShowAddBtn'})) $cfg['showAddBtn'] = ${$APPTAG.'ShowAddBtn'} ? true : false;
+		// hidden button 'add' text
+		$cfg['addText']				= true;
+		if(isset(${$APPTAG.'AddText'})) $cfg['addText'] = ${$APPTAG.'AddText'} ? true : false;
+		// button 'add' css class
+		$cfg['addClass']			= '';
+		if(isset(${$APPTAG.'AddClass'})) $cfg['addClass'] = ${$APPTAG.'AddClass'};
+		// show filter opened
+		$cfg['showFilter']			= false;
+	endif;
 	// list's elements default
 	$cfg['pagLimit']			= 20;
 

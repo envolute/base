@@ -101,7 +101,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				}
 			endif;
 
-			$main = ($item->main == 0 && !empty($item->description)) ? '<span class="badge badge-primary mb-1">'.baseHelper::nameFormat($item->description).'</span><br />' : '';
+			$main = ($item->main == 0 && !empty($item->description)) ? '<div class="font-weight-bold mb-1">'.baseHelper::nameFormat($item->description).'</div>' : '';
 			$addressInfo = !empty($item->address_info) ? ', '.$item->address_info : '';
 			$addressNumber = !empty($item->address_number) ? ', '.$item->address_number : '';
 			$addressZip = !empty($item->zip_code) ? $item->zip_code.', ' : '';

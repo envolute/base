@@ -4,7 +4,7 @@
 ?>
 window.<?php echo $APPTAG?>_listReload = function(reload, remove, ids, onlyChilds, relNameId, relId) {
 	<?php if($cfg['itemView']) : ?>
-		location.href = '<?php echo JURI::current()?>?regID='+pReload;
+		if(reload) location.href = '<?php echo JURI::current()?>?vID='+pReload;
 	<?php else : ?>
 		<?php if(!$cfg['showList']) echo 'return;' ?>
 		<?php if($cfg['listFull']) : ?>

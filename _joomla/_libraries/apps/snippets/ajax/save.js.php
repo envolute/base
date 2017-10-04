@@ -29,19 +29,22 @@ window.<?php echo $APPTAG?>_save = function(trigger) {
 				<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
 				jQuery.map( data, function( res ) {
 					if(res.status > 0) { // se alguma ação for realizada
+
+						// res.status = 1 ? 'novo' : 'atualizado';
+						var resID = (res.status == 1) ? res.regID : formId.val();
+
 						if(isSet(trigger)) {
 							if(trigger == 'close' || trigger == 'reset') {
 								<?php echo $APPTAG?>_formReset();
 								if(trigger == 'close') popup.modal('hide');
 							} else if(typeof(trigger) === 'function') {
 								// Caso haja o "reset", deve ser chamado na função "trigger"
-								trigger(res.regID);
+								trigger(resID);
 							}
 						} else {
-							// res.status = 1 ? 'novo' : 'atualizado';
-							var resID = (res.status == 1) ? res.regID : formId.val();
 							<?php echo $APPTAG?>_loadEditFields(resID, true, false); // recarrega os dados do form
 						}
+
 						// Update Parent field
 						if(res.parentField != '' && res.parentFieldVal != '') {
 							// remove if option exist
@@ -54,6 +57,7 @@ window.<?php echo $APPTAG?>_save = function(trigger) {
 								jQuery(res.parentField).selectUpdate();
 							}
 						}
+
 						<?php // SUCCESS STATUS -> Executa quando houver sucesso na requisição ajax
 						require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxSuccess.js.php');
 						?>
@@ -63,8 +67,8 @@ window.<?php echo $APPTAG?>_save = function(trigger) {
 								echo $APPTAG.'_listReload(false, false, false, '.$APPTAG.'oCHL, '.$APPTAG.'rNID, '.$APPTAG.'rID);';
 							else :
 								echo '
-								fReload = true;
-								pReload = res.regID;
+									fReload = true;
+									pReload = resID;
 								';
 							endif;
 						endif;

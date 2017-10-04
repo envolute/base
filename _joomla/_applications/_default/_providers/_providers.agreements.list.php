@@ -86,6 +86,15 @@ try {
 	return;
 }
 
+$btnReset = '';
+if($gID) :
+	$btnReset = '
+		<span class="input-group-btn">
+			<a href="'.JURI::current().'" class="btn btn-danger base-icon-cancel hasTooltip" title="'.JText::_('TEXT_SHOW_ALL').'"></a>
+		</span>
+	';
+endif;
+
 $html = '
 	<script>
 	jQuery(function() {
@@ -104,6 +113,7 @@ $html = '
 				<option value="0">- '.JText::_('TEXT_ALL_GROUPS').' -</option>
 				'.$grplist.'
 			</select>
+			'.$btnReset.'
 		</div>
 	</div>
 ';
@@ -116,10 +126,11 @@ if($num_rows) : // verifica se existe
 		// Imagem Principal -> Primeira imagem (index = 0)
 		$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
 		if(!empty($img)) $img = '<img src=\''.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 150, 150).'\' class=\'img-fluid mb-3 mx-auto\' />';
+		else $img = '<div class="image-file mb-3 mx-auto" style="width:150px;"><div class="image-action"><div class="image-file-label"><span class="base-icon-file-image"></span></div></div></div>';
 
 		$html .= '
-			<div class="col-md-4 col-xl-3 text-center my-4">
-				<a href="'.$urlToView.'?pID='.$item->id.'">
+			<div class="agreements-item col-md-4 col-xl-3 text-center my-4">
+				<a href="'.$urlToView.'?vID='.$item->id.'">
 					'.$img.'
 					<h5>'.baseHelper::nameFormat($item->name).'</h5>
 				</a>

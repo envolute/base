@@ -28,7 +28,7 @@ $groups = $user->groups;
 require(JPATH_CORE.DS.'apps/_init.app.php');
 
 // Get request data
-$regID = $app->input->get('regID', 0, 'int');
+$vID = $app->input->get('vID', 0, 'int'); // VIEW 'ID'
 
 // Carrega o arquivo de tradução
 // OBS: para arquivos externos com o carregamento do framework '_init.joomla.php' (geralmente em 'ajax')
@@ -43,7 +43,7 @@ endif;
 // Admin Actions
 require_once('_providers.select.php');
 
-if($regID != 0) :
+if($vID != 0) :
 
 	// DATABASE CONNECT
 	$db = JFactory::getDbo();
@@ -57,7 +57,7 @@ if($regID != 0) :
 			$db->quoteName($cfg['mainTable']) .' T1
 			JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
 			ON T2.id = T1.group_id AND T2.state = 1
-		WHERE '. $db->quoteName('T1.id') .' = '. $regID
+		WHERE '. $db->quoteName('T1.id') .' = '. $vID
 	;
 	try {
 		$db->setQuery($query);
@@ -74,6 +74,7 @@ if($regID != 0) :
 		// Imagem Principal -> (index = 0)
 		$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
 		if(!empty($img)) $img = '<img src="images/apps/'.$APPPATH.'/'.$img['filename'].'" class="w-100 img-fluid b-all p-1" />';
+		else $img = '<div class="image-file"><div class="image-action"><div class="image-file-label"><span class="base-icon-file-image"><small>'.JText::_('TEXT_NO_IMAGE').'</small></span></div></div></div>';
 
 		// Contrato -> (index = 1)
 		$doc = uploader::getFile($cfg['fileTable'], '', $item->id, 1, $cfg['uploadDir']);
@@ -85,7 +86,7 @@ if($regID != 0) :
 			';
 		endif;
 
-		$site	= !empty($item->website) ? '<a href="'.$item->website.'" class="mr-3 new-window" target="_blank">'.$item->website.'</a>' : '';
+		$site	= !empty($item->website) ? '<a href="'.$item->website.'" class="new-window" target="_blank">'.$item->website.'</a>' : '';
 		$email	= !empty($item->email) ? '<a href="mailto:'.$item->email.'" class="mr-3">'.$item->email.'</a>' : '';
 		$cnpj	= !empty($item->cnpj) ? '<label class="label-sm mt-3">CNPJ</label>'.$item->cnpj : '';
 		$insM	= !empty($item->insc_municipal) ? '<label class="label-sm mt-3">Inscrição Municipal</label>'.$item->insc_municipal : '';
@@ -94,11 +95,17 @@ if($regID != 0) :
 		$docs	= !empty($doc) ? '<hr />'.$doc : '';
 		$agree	= $item->agreement == 1 ? '<span class="text-success text-uppercase"><span class="base-icon-ok"></span> '.JText::_('FIELD_LABEL_AGREEMENT').'</span>' : '';
 		// Web
-		$web	= (!empty($site) || !empty($email)) ? '<div class="text-md text-muted mt-2">'.$site.$email.'</div>' : '';
+		$web	= '';
+		if(!empty($site) || !empty($email)) :
+			$web .= '<ul class="set-list inline bordered list-trim text-md text-muted mt-2">';
+			if(!empty($site)) $web .= '<li>'.$site.'</li>';
+			if(!empty($email)) $web .= '<li>'.$email.'</li>';
+			$web .= '</ul>';
+		endif;
 
 		echo '
 			<div class="row">
-				<div class="col-sm-4 col-md-3 col-xl-2">
+				<div class="col-sm-4 col-md-3 col-xl-2 d-none d-sm-block">
 					'.$img.'
 					<div>'.$cnpj.$insM.$insE.$date.$docs.'</div>
 					<hr class="d-sm-none" />
@@ -113,18 +120,18 @@ if($regID != 0) :
 						'.baseHelper::nameFormat($item->name).'
 					</h2>
 					<div class="small text-muted">'.$web.'</div>
-					<hr class="mt-2" />
+					<hr />
 					<div class="row">
 						<div class="col-lg-8">
 							'.$info.'
 		';
 
 							// description
-							if(!empty($item->description)) echo $item->description.'<hr />';
+							if(!empty($item->description)) echo $item->description;
 
 		echo '
 							<!-- Nav tabs -->
-							<ul class="nav nav-tabs" id="'.$MAINTAG.'TabInfo" role="tablist">
+							<ul class="nav nav-tabs mt-3" id="'.$MAINTAG.'TabInfo" role="tablist">
 								<li class="nav-item">
 									<a class="nav-link active" id="'.$MAINTAG.'TabView-address" href="#'.$MAINTAG.'TabViewAddress" data-toggle="tab" role="tab" aria-controls="address" aria-expanded="true">
 										<span class="base-icon-location"></span> '.JText::_('TEXT_ADDRESSES').'
@@ -151,8 +158,9 @@ if($regID != 0) :
 									$_addressesRelNameId			= 'provider_id';
 									$_addressesRelListNameId		= 'provider_id';
 									$_addressesRelListId			= $item->id;
-									echo '	<a href="#" class="btn btn-xs btn-success mb-2 base-icon-plus" onclick="_addresses_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-_addresses" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_INSERT_ADDRESS').'</a>';
+
 									require(JPATH_APPS.DS.'_addresses/_addresses.php');
+									echo '	<a href="#" class="btn btn-sm btn-success base-icon-plus" onclick="_addresses_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-_addresses" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_INSERT_ADDRESS').'</a>';
 		echo '
 								</div>
 								<div class="tab-pane fade" id="'.$MAINTAG.'TabViewService" role="tabpanel" aria-labelledby="'.$MAINTAG.'TabView-service">
@@ -234,7 +242,7 @@ if($regID != 0) :
 
 else :
 
-	echo '<h4 class="alert alert-warning">'.JText::_('MSG_NOT_PROVIDER_SELECTED').'</h4>';
+	echo '<h4 class="alert alert-warning">'.JText::_('MSG_NO_ITEM_SELECTED').'</h4>';
 
 endif;
 ?>

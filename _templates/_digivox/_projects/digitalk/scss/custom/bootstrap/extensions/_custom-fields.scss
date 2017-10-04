@@ -3,7 +3,7 @@
 
 	// FIELD IMAGE FILE
 	.image-file .image-action {
-		border: 2px dashed $base-border-color;
+		border: $base-field-search-icon dashed $base-border-color;
 	}
     .image-file .image-action.active {
 		border-color: theme-color("success");

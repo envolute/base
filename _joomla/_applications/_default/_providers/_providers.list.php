@@ -124,7 +124,7 @@ if($num_rows) : // verifica se existe
 			$regInfo	.= JText::_('TEXT_ALTER_DATE').': '.baseHelper::dateFormat($item->alter_date, 'd/m/Y H:i').'<br />';
 			$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->alter_by)->name);
 		endif;
-		$urlViewData = JURI::root().'apps/providers/profile?pID='.$item->id;
+		$urlViewData = JURI::root().'apps/providers/view?vID='.$item->id;
 		// Resultados
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">

@@ -122,10 +122,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$btnEdit = $hasAdmin ? '<a href="#" class="base-icon-pencil text-live hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"></a> ' : '';
 			$btnDelete = $hasAdmin ? '<a href="#" class="base-icon-trash text-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"></a>' : '';
 			$rowState = $item->state == 0 ? 'list-danger' : '';
+			$urlViewData = JURI::root().'apps/providers/view?vID='.$item->id;
+			// Resultados
 			$html .= '
 				<li class="'.$rowState.'">
 					<span class="float-right">'.$btnState.$btnEdit.$btnDelete.'</span>
-					<div class="text-truncate">'.baseHelper::nameFormat($item->name).'</div>
+					<div class="text-truncate"><a href="'.$urlViewData.'" class="new-window" target="_blank">'.baseHelper::nameFormat($item->name).'</a></div>
 					<div class="small text-muted">'.$agreement.baseHelper::nameFormat($item->grp).'</div>
 				</li>
 			';

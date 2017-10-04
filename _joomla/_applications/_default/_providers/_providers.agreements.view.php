@@ -24,7 +24,7 @@ $groups = $user->groups;
 require(JPATH_CORE.DS.'apps/_init.app.php');
 
 // Get request data
-$pID = $app->input->get('pID', 0, 'int');
+$vID = $app->input->get('vID', 0, 'int'); // VIEW 'ID'
 
 // list view
 $urlToList = JURI::root().'apps/providers/agreements';
@@ -39,7 +39,7 @@ if(isset($_SESSION[$APPTAG.'langDef'])) :
 	$lang->load('base_'.$APPNAME, JPATH_BASE, $_SESSION[$APPTAG.'langDef'], true);
 endif;
 
-if($pID != 0) :
+if($vID != 0) :
 
 	// DATABASE CONNECT
 	$db = JFactory::getDbo();
@@ -54,7 +54,7 @@ if($pID != 0) :
 			JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
 			ON T2.id = T1.group_id AND T2.state = 1
 		WHERE
-			'. $db->quoteName('T1.id') .' = '. $pID .' AND
+			'. $db->quoteName('T1.id') .' = '. $vID .' AND
 			'. $db->quoteName('T1.agreement') .' = 1 AND
 			'. $db->quoteName('T1.state') .' = 1
 	';
@@ -75,7 +75,7 @@ if($pID != 0) :
 			FROM '.$db->quoteName('#__'.$cfg['project'].'_phones') .' T1
 				JOIN '. $db->quoteName('#__'.$cfg['project'].'_rel_providers_phones') .' T2
 				ON '.$db->quoteName('T2.phone_id') .' = T1.id
-			WHERE '.$db->quoteName('T2.provider_id') .' = '. $pID .'
+			WHERE '.$db->quoteName('T2.provider_id') .' = '. $vID .'
 			ORDER BY '.$db->quoteName('T1.main') .' DESC
 		';
 		try {
@@ -110,7 +110,7 @@ if($pID != 0) :
 			FROM '.$db->quoteName('#__'.$cfg['project'].'_addresses') .' T1
 				JOIN '. $db->quoteName('#__'.$cfg['project'].'_rel_providers_addresses') .' T2
 				ON '.$db->quoteName('T2.address_id') .' = T1.id
-			WHERE '.$db->quoteName('T2.provider_id') .' = '. $pID .'
+			WHERE '.$db->quoteName('T2.provider_id') .' = '. $vID .'
 			ORDER BY '.$db->quoteName('T1.main') .' DESC
 		';
 		try {
@@ -162,46 +162,47 @@ if($pID != 0) :
 		JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 		// Imagem Principal -> Primeira imagem (index = 0)
 		$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
-		if(!empty($img)) $img = '<img src="images/apps/'.$APPPATH.'/'.$img['filename'].'" class="w-100 img-fluid b-all p-1" />';
+		if(!empty($img)) $img = '<img src="images/apps/'.$APPPATH.'/'.$img['filename'].'" class="w-100 img-fluid b-all bg-white p-1" />';
 
-		$site	= !empty($item->website) ? '<a href="'.$item->website.'" class="new-window" target="_blank">'.$item->website.'</a>' : '';
-		$cnpj	= !empty($item->cnpj) ? '<label class="label-sm">CNPJ</label>'.$item->cnpj : '';
+		$site	= !empty($item->website) ? '<a href="'.$item->website.'" class="new-window base-icon-globe" target="_blank"> '.JText::_('FIELD_LABEL_WEBSITE').'</a>' : '';
+		$logo	= '';
+		if(!empty($img)) :
+			$logo .= '<div class="col d-none d-sm-block pr-0" style="flex: 0 0 120px;">';
+			if(!empty($item->website)) $logo .= '<a href="'.$item->website.'" target="_blank">';
+			$logo .= $img;
+			if(!empty($item->website)) $logo .= '</a>';
+			$logo .= '</div>';
+		endif;
 		$agree	= $item->agreement == 1 ? '<span class="badge badge-success float-right">'.JText::_('FIELD_LABEL_AGREEMENT').'</span>' : '';
-		// Web
-		$web	= !empty($site) ? '<div class="text-md text-muted mt-2">'.$site.'</div>' : '';
+		// DESCRIPTION
+		$description = !empty($item->description) ? $item->description : '';
 
 		$provider .= '
-			<div class="row">
-				<div class="col-md-3 text-center text-sm-left">
-					'.$img.'
-					<div class="clear">'.$cnpj.'</div>
-					<hr class="d-md-none" />
-				</div>
-				<div class="col-md-9">
-		';
-		$provider .= '
-			<ul class="set-list inline bordered list-trim b-bottom b-dotted text-muted small mb-2 pb-1">
-				<li><a href="'.$urlToList.'" class="text-uppercase">'.JText::_('TEXT_AGREEMENTS').'</a></li>
+			<ul class="set-list inline bordered list-trim b-bottom b-dotted text-muted small mb-3 pb-2">
+				<li><a href="'.$urlToList.'" class="text-uppercase base-icon-reply"> '.JText::_('TEXT_AGREEMENTS').'</a></li>
 				<li><a href="'.$urlToList.'?gID='.$item->group_id.'">'.$item->group_name.'</a></li>
 			</ul>
-			<h1 class="mt-0 mb-3">
-				'.baseHelper::nameFormat($item->name).'
-			</h1>
-			<div class="small text-muted">'.$web.'</div>
-			<hr class="mt-2" />
+			<div id="agreement-header" class="row">
+				'.$logo.'
+				<div class="col">
+					<h1 class="mt-0">
+						'.baseHelper::nameFormat($item->name).'
+					</h1>
+					'.$description.'
+				</div>
+			</div>
 		';
 
-		// DESCRIPTION
-		if(!empty($item->description)) $provider .= $item->description;
-
 		// TAB => INFORMATIONS
-		if(!empty($mainPhones) || !empty($addresses) || !empty($item->service_desc)) :
+		if(!empty($site) || !empty($mainPhones) || !empty($addresses) || !empty($item->service_desc)) :
 			$provider .= '
+				<hr />
 				<!-- Nav tabs -->
 				<ul class="nav nav-tabs mt-3" id="'.$APPTAG.'TabInfo" role="tablist">
 			';
 			$active	= ' active';
 			$show	= ' show '.$active;
+			// TABS
 			if(!empty($item->service_desc)) :
 				$provider .= '
 					<li class="nav-item">
@@ -222,11 +223,15 @@ if($pID != 0) :
 				';
 				$active = '';
 			endif;
+			if(!empty($site)) $provider .= '<li class="nav-item d-none d-sm-block">'.$site.'</li>';
+
 			$provider .= '
 				</ul>
 				<!-- Tab panes -->
 				<div class="tab-content" id="'.$APPTAG.'TabContent">
 			';
+
+			// TABS CONTENT
 			if(!empty($item->service_desc)) :
 				$provider .= '
 					<div class="tab-pane fade'.$show.'" id="'.$APPTAG.'TabViewService" role="tabpanel" aria-labelledby="'.$APPTAG.'TabView-service">
@@ -250,11 +255,6 @@ if($pID != 0) :
 			endif;
 			$provider .= '</div>';
 		endif;
-
-		$provider .= '
-				</div>
-			</div>
-		';
 
 	else :
 		$provider = '<p class="base-icon-info-circled alert alert-info m-0"> '.JText::_('MSG_ITEM_NOT_AVAILABLE').'</p>';

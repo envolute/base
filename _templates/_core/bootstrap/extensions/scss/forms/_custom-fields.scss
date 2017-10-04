@@ -17,7 +17,7 @@
 		position: relative;
 		display: block;
 		width: 100%;
-		padding-top: 100%; // mantém o aspect 1:1 => "quadrado" (altura = largura)
+		padding-top: calc(100% - (#{$base-field-image-border} * 2)); // mantém o aspect 1:1 => "quadrado" (altura = largura)
 		overflow: hidden;
 	}
 	.image-file .image-file-label {
