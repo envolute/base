@@ -79,14 +79,14 @@ if(isset($user->id) && $user->id) :
 	$html = '';
 	if($num_rows) : // verifica se existe
 
-		$html .= '<ul class="set-list bordered list-lg list-striped list-hover">';
+		$html .= '<ul class="set-list bordered list-trim">';
 		foreach($res as $item) {
 			// LINK TO INVOICE
 			$urlToInvoice = JURI::root().'services/mobile-invoices?pID='.$item->id.($uID != $user->id ? '&uID='.$uID : '');
 			$html .= '
 				<li>
 					<a href="'.$urlToInvoice.'" class="d-block">
-						<span class="d-inline-block text-muted mb-1 clear"><span class="badge badge-primary">'.$item->provider.'</span> '.baseHelper::nameFormat($item->plan).'</span>
+						<span class="d-inline-block text-muted my-2 clear"><span class="badge badge-primary">'.$item->provider.'</span> '.baseHelper::nameFormat($item->plan).'</span>
 						<br />'.$item->phone_number.'
 					</a>
 				</li>

@@ -130,7 +130,7 @@ if($num_rows) : // verifica se existe
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
 				<td>'.baseHelper::nameFormat($item->name).'</td>
-				<td class="d-none d-lg-table-cell text-center"><a href="'.$urlViewData.'" target="_blank" class="base-icon-doc-text hasTooltip" title="'.JText::_('TEXT_VIEW_CLIENT_DATA').'"></a></td>
+				<td class="d-none d-lg-table-cell text-center"><a href="'.$urlViewData.'" target="_blank" class="base-icon-doc-text hasTooltip" title="'.JText::_('TEXT_VIEW_DATA').'"></a></td>
 				<td>'.baseHelper::nameFormat($item->grp).'</td>
 				<td class="text-center">'.$agreement.'</td>
 				<td class="d-none d-lg-table-cell">

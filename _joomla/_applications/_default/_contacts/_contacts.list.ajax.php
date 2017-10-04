@@ -100,7 +100,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	$html = '';
 	if($num_rows) : // verifica se existe
-		$html .= '<ul class="list-unstyled bordered list-striped list-hover m-0">';
+		$html .= '<ul class="set-list bordered">';
 		foreach($res as $item) {
 
 			if($cfg['hasUpload']) :
@@ -122,10 +122,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$btnEdit = $hasAdmin ? '<a href="#" class="base-icon-pencil text-live hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"></a> ' : '';
 			$btnDelete = $hasAdmin ? '<a href="#" class="base-icon-trash text-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"></a>' : '';
 			$rowState = $item->state == 0 ? 'list-danger' : '';
+			$urlViewData = $_ROOT.'apps/contacts/view?vID='.$item->id;
+			// Resultados
 			$html .= '
 				<li class="'.$rowState.'">
 					<div class="float-right">'.$btnState.$btnEdit.$btnDelete.'</div>
-					<div class="text-truncate">'.baseHelper::nameFormat($item->name).'</div><div class="small text-muted">'.baseHelper::nameFormat($item->grp).'</div>
+					<div class="text-truncate"><a href="'.$urlViewData.'" class="new-window" target="_blank">'.baseHelper::nameFormat($item->name).'</a></div><div class="small text-muted">'.baseHelper::nameFormat($item->grp).'</div>
 				</li>
 			';
 		}

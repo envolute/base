@@ -48,6 +48,11 @@ window.<?php echo $APPTAG?>_listReload = function(reload, remove, ids, onlyChild
 					// é necessário recarrega o DOM para atribuir o JS default à esses elementos
 					setCoreDefinitions(); // core
 					setCustomDefinitions(); // custom
+					// Reload Modal 'Regular Labs'
+					setTimeout(function() {
+						console.log(1);
+						RegularLabsModals.init();
+					}, 2000);
 				}
 			});
 		<?php endif; ?>

@@ -99,7 +99,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	$html = '';
 	if($num_rows) : // verifica se existe
-		$html .= '<ul class="set-list bordered list-striped list-hover">';
+		$html .= '<ul class="set-list bordered">';
 		foreach($res as $item) {
 
 			if($cfg['hasUpload']) :
@@ -122,7 +122,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$btnEdit = $hasAdmin ? '<a href="#" class="base-icon-pencil text-live hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"></a> ' : '';
 			$btnDelete = $hasAdmin ? '<a href="#" class="base-icon-trash text-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"></a>' : '';
 			$rowState = $item->state == 0 ? 'list-danger' : '';
-			$urlViewData = JURI::root().'apps/providers/view?vID='.$item->id;
+			$urlViewData = $_ROOT.'apps/providers/view?vID='.$item->id;
 			// Resultados
 			$html .= '
 				<li class="'.$rowState.'">

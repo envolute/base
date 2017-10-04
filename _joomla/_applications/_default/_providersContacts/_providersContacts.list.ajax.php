@@ -53,6 +53,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	$query	= '
 		SELECT SQL_CALC_FOUND_ROWS
 			'. $db->quoteName('T1.id') .',
+			'. $db->quoteName('T1.provider_id') .',
+			'. $db->quoteName('T1.contact_id') .',
 			'. $db->quoteName('T2.name') .' provider,
 			'. $db->quoteName('T3.name') .' contact,
 			'. $db->quoteName('T1.main') .',
@@ -105,7 +107,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	$html = '';
 	if($num_rows) : // verifica se existe
-		$html .= '<ul class="set-list bordered list-striped list-hover">';
+		$html .= '<ul class="set-list bordered">';
 		foreach($res as $item) {
 
 			if($cfg['hasUpload']) :
@@ -129,10 +131,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$btnEdit = $hasAdmin ? '<a href="#" class="base-icon-pencil text-live hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"></a> ' : '';
 			$btnDelete = $hasAdmin ? '<a href="#" class="base-icon-trash text-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"></a>' : '';
 			$rowState = $item->state == 0 ? 'list-danger' : '';
+			$urlViewData = $_ROOT.'apps/contacts/view?vID='.$item->contact_id;
+			// Resultados
 			$html .= '
 				<li class="'.$rowState.'">
 					<span class="float-right">'.$btnState.$btnEdit.$btnDelete.'</span>
-					<div class="text-truncate">'.$main.baseHelper::nameFormat($item->contact).'</div>'.$dept.'
+					<div class="text-truncate"><a href="'.$urlViewData.'" class="set-modal" data-modal-iframe="true" data-modal-title="Detalhes do Contato" data-modal-width="95%" data-modal-height="95%">'.$main.baseHelper::nameFormat($item->contact).'</a></div>'.$dept.'
 				</li>
 			';
 		}

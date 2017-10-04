@@ -121,6 +121,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['address_info']		= $input->get('address_info', '', 'string');
 		$request['address_district']	= $input->get('address_district', '', 'string');
 		$request['address_city']		= $input->get('address_city', '', 'string');
+		$request['address_state']		= $input->get('address_state', 'PB', 'string');
+		$request['address_country']		= $input->get('address_country', 'BRASIL', 'string');
 		$request['phone1']				= $input->get('phone1', '', 'string');
 		$request['phone2']				= $input->get('phone2', '', 'string');
 		$request['phone3']				= $input->get('phone3', '', 'string');
@@ -249,6 +251,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'address_info'		=> $item->address_info,
 						'address_district'	=> $item->address_district,
 						'address_city'		=> $item->address_city,
+						'address_state'		=> $item->address_state,
+						'address_country'	=> $item->address_country,
 						'phone1'			=> $item->phone1,
 						'phone2'			=> $item->phone2,
 						'phone3'			=> $item->phone3,
@@ -293,6 +297,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('address_info')		.'='. $db->quote($request['address_info']) .','.
 						$db->quoteName('address_district')	.'='. $db->quote($request['address_district']) .','.
 						$db->quoteName('address_city')		.'='. $db->quote($request['address_city']) .','.
+						$db->quoteName('address_state')		.'='. $db->quote($request['address_state']) .','.
+						$db->quoteName('address_country')	.'='. $db->quote($request['address_country']) .','.
 						$db->quoteName('phone1')			.'='. $db->quote($request['phone1']) .','.
 						$db->quoteName('phone2')			.'='. $db->quote($request['phone2']) .','.
 						$db->quoteName('phone3')			.'='. $db->quote($request['phone3']) .','.
@@ -609,6 +615,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('address_info') .','.
 							$db->quoteName('address_district') .','.
 							$db->quoteName('address_city') .','.
+							$db->quoteName('address_state') .','.
+							$db->quoteName('address_country') .','.
 							$db->quoteName('phone1') .','.
 							$db->quoteName('phone2') .','.
 							$db->quoteName('phone3') .','.
@@ -648,6 +656,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quote($request['address_info']) .','.
 							$db->quote($request['address_district']) .','.
 							$db->quote($request['address_city']) .','.
+							$db->quote($request['address_state']) .','.
+							$db->quote($request['address_country']) .','.
 							$db->quote($request['phone1']) .','.
 							$db->quote($request['phone2']) .','.
 							$db->quote($request['phone3']) .','.

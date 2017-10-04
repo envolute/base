@@ -96,6 +96,15 @@ if(!empty($uID) || !empty($dOC)) :
 				</div>
 			';
 		endif;
+		// Address
+		$addressInfo = !empty($item->address_info) ? ', '.$item->address_info : '';
+		$addressNumber = !empty($item->address_number) ? ', '.$item->address_number : '';
+		$addressZip = !empty($item->zip_code) ? $item->zip_code.', ' : '';
+		$addressDistrict = !empty($item->address_district) ? baseHelper::nameFormat($item->address_district) : '';
+		$addressCity = !empty($item->address_city) ? ', '.baseHelper::nameFormat($item->address_city) : '';
+		$addressState = !empty($item->address_state) ? ', '.baseHelper::nameFormat($item->address_state) : '';
+		$addressCountry = !empty($item->address_country) ? ', '.baseHelper::nameFormat($item->address_country) : '';
+		// Phones
 		$phones = !empty($item->phone1) ? $item->phone1 : '';
 		$phones .= !empty($item->phone2) ? (!empty($phones) ? '<br />' : '').$item->phone2 : '';
 		$phones .= !empty($item->phone3) ? (!empty($phones) ? '<br />' : '').'(fixo) '.$item->phone3 : '';
@@ -139,8 +148,8 @@ if(!empty($uID) || !empty($dOC)) :
 					<div class="col-8">
 						<label class="label-sm">'.JText::_('FIELD_LABEL_ADDRESS').':</label>
 						<p>
-							'.baseHelper::nameFormat($item->address).', '.$item->address_number.(!empty($item->address_info) ? ', '.$item->address_info : '').'<br />
-							'.(!empty($item->zip_code) ? $item->zip_code.', ' : '').baseHelper::nameFormat($item->address_district).', '.baseHelper::nameFormat($item->address_city).'
+							'.baseHelper::nameFormat($item->address).$addressNumber.$addressInfo.'<br />
+							'.$addressZip.$addressDistrict.$addressCity.$addressState.$addressCountry.'
 						</p>
 					</div>
 					<div class="col-4">

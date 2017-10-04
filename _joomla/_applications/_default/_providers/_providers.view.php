@@ -80,56 +80,59 @@ if($vID != 0) :
 		$doc = uploader::getFile($cfg['fileTable'], '', $item->id, 1, $cfg['uploadDir']);
 		if(!empty($doc)) :
 			$doc = '
-				<a href="'.JURI::root(true).'/apps/get-file?fn='.base64_encode($doc['filename']).'&mt='.base64_encode($doc['mimetype']).'&tag='.base64_encode($APPNAME).'">
-					<span class="base-icon-attach hasTooltip" title="'.$doc['filename'].'<br />'.((int)($doc['filesize'] / 1024)).'kb"> '.JText::_('FIELD_LABEL_DOC').'</span>
+				<a class="nav-link" href="'.JURI::root(true).'/apps/get-file?fn='.base64_encode($doc['filename']).'&mt='.base64_encode($doc['mimetype']).'&tag='.base64_encode($APPNAME).'">
+					<span class="base-icon-doc-text hasTooltip" title="'.$doc['filename'].'<br />'.((int)($doc['filesize'] / 1024)).'kb"> '.JText::_('FIELD_LABEL_DOC').'</span>
 				</a>
 			';
 		endif;
 
-		$site	= !empty($item->website) ? '<a href="'.$item->website.'" class="new-window" target="_blank">'.$item->website.'</a>' : '';
-		$email	= !empty($item->email) ? '<a href="mailto:'.$item->email.'" class="mr-3">'.$item->email.'</a>' : '';
-		$cnpj	= !empty($item->cnpj) ? '<label class="label-sm mt-3">CNPJ</label>'.$item->cnpj : '';
-		$insM	= !empty($item->insc_municipal) ? '<label class="label-sm mt-3">Inscrição Municipal</label>'.$item->insc_municipal : '';
-		$insE	= !empty($item->insc_estadual) ? '<label class="label-sm mt-3">Inscrição Estadual</label>'.$item->insc_estadual : '';
-		$date	= $item->due_date != 0 ? '<label class="label-sm mt-3">'.JText::_('FIELD_LABEL_DUE_DATE').'</label>'.($item->due_date < 10 ? '0' : '').$item->due_date : '';
-		$docs	= !empty($doc) ? '<hr />'.$doc : '';
+		$site	= !empty($item->website) ? '<label class="label-sm">'.JText::_('FIELD_LABEL_WEBSITE').'</label><p class="text-truncate"><a href="'.$item->website.'" class="new-window" target="_blank">'.$item->website.'</a></p>' : '';
+		$email	= !empty($item->email) ? '<label class="label-sm">'.JText::_('FIELD_LABEL_EMAIL').'</label><p class="text-truncate"><a href="mailto:'.$item->email.'" class="mr-3">'.$item->email.'</a></p>' : '';
+		$cnpj	= !empty($item->cnpj) ? '<label class="label-sm">CNPJ</label><p>'.$item->cnpj.'</p>' : '';
+		$insM	= !empty($item->insc_municipal) ? '<label class="label-sm">Inscrição Municipal</label><p>'.$item->insc_municipal.'</p>' : '';
+		$insE	= !empty($item->insc_estadual) ? '<label class="label-sm">Inscrição Estadual</label><p>'.$item->insc_estadual.'</p>' : '';
+		$date	= $item->due_date != 0 ? '<label class="label-sm">'.JText::_('FIELD_LABEL_DUE_DATE').'</label><p>'.($item->due_date < 10 ? '0' : '').$item->due_date.'</p>' : '';
 		$agree	= $item->agreement == 1 ? '<span class="text-success text-uppercase"><span class="base-icon-ok"></span> '.JText::_('FIELD_LABEL_AGREEMENT').'</span>' : '';
-		// Web
-		$web	= '';
-		if(!empty($site) || !empty($email)) :
-			$web .= '<ul class="set-list inline bordered list-trim text-md text-muted mt-2">';
-			if(!empty($site)) $web .= '<li>'.$site.'</li>';
-			if(!empty($email)) $web .= '<li>'.$email.'</li>';
-			$web .= '</ul>';
-		endif;
+
+		// contrato
+		$docs = !empty($doc) ? '<li class="nav-item">'.$doc.'</li>' : '';
+
+		$info1 = '';
+		if(!empty($site))	$info1 .= $site;
+		if(!empty($email))	$info1 .= $email;
+		if(!empty($date))	$info1 .= $date;
+		if(!empty($info1))	$info1 = '<div class="col-sm-8">'.$info1.'</div>';
+
+		$info2 = '';
+		if(!empty($cnpj))	$info2 .= $cnpj;
+		if(!empty($insM))	$info2 .= $insM;
+		if(!empty($insE))	$info2 .= $insE;
+		if(!empty($info2))	$info2 = '<div class="col-sm">'.$info2.'</div>';
+
+		// Info Container
+		if(!empty($info1) || !empty($info2)) $info = '<div class="row">'.$info1.$info2.'</div>';
+
+		// description
+		$description = !empty($item->description) ? '<div id="'.$MAINTAG.'-desc">'.$item->description.'</div>' : '';
 
 		echo '
 			<div class="row">
-				<div class="col-sm-4 col-md-3 col-xl-2 d-none d-sm-block">
+				<div class="col-sm-2 col-md-3 col-xl-2 d-none d-sm-block">
 					'.$img.'
-					<div>'.$cnpj.$insM.$insE.$date.$docs.'</div>
-					<hr class="d-sm-none" />
 				</div>
-				<div class="col-sm-8 col-md-9 col-xl-10">
-					<a href="#" class="btn btn-sm btn-warning base-icon-pencil float-right" onclick="'.$MAINTAG.'_loadEditFields('.$item->id.', false, false)"> '.JText::_('TEXT_EDIT').'</a>
-					<ul class="set-list inline bordered list-trim text-muted small mb-1">
+				<div class="col">
+					<ul class="set-list inline bordered list-trim text-muted small mb-2 pb-1 b-bottom b-dotted">
 						<li>'.$agree.'</li>
 						<li>'.$item->grp.'</li>
 					</ul>
-					<h2 class="mt-0 mb-3">
+					<h1 class="mt-0">
 						'.baseHelper::nameFormat($item->name).'
-					</h2>
-					<div class="small text-muted">'.$web.'</div>
-					<hr />
+					</h1>
+					'.$description.'
+					<hr class="mt-2" />
 					<div class="row">
 						<div class="col-lg-8">
 							'.$info.'
-		';
-
-							// description
-							if(!empty($item->description)) echo $item->description;
-
-		echo '
 							<!-- Nav tabs -->
 							<ul class="nav nav-tabs mt-3" id="'.$MAINTAG.'TabInfo" role="tablist">
 								<li class="nav-item">
@@ -139,9 +142,10 @@ if($vID != 0) :
 								</li>
 								<li class="nav-item">
 									<a class="nav-link" id="'.$MAINTAG.'TabView-service" href="#'.$MAINTAG.'TabViewService" data-toggle="tab" role="tab" aria-controls="service">
-										<span class="base-icon-doc-text"></span> '.JText::_('FIELD_LABEL_SERVICE').'
+										<span class="base-icon-info-circled"></span> '.JText::_('FIELD_LABEL_SERVICE').'
 									</a>
 								</li>
+								'.$docs.'
 							</ul>
 
 							<!-- Tab panes -->
@@ -175,7 +179,7 @@ if($vID != 0) :
 							</div>
 							<hr class="d-sm-none" />
 						</div>
-						<div class="col-lg-4 b-left">
+						<div class="col-lg-4">
 		';
 
 							// Contacts
@@ -187,7 +191,7 @@ if($vID != 0) :
 							$_providersContactsRelListId	= $item->id;
 							$_providersContactsOnlyChildList= true;
 							echo '
-								<h6 class="page-header base-icon-user mb-0">
+								<h6 class="page-header base-icon-user">
 									'.JText::_('TEXT_CONTACTS').'
 									<a href="#" class="btn btn-xs btn-success float-right" onclick="_providersContacts_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-_providersContacts" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_CONTACT').'"></span></a>
 								</h6>
@@ -205,7 +209,7 @@ if($vID != 0) :
 							$_phonesRelListNameId			= 'provider_id';
 							$_phonesRelListId				= $item->id;
 							echo '
-								<h6 class="page-header base-icon-phone-squared mb-0">
+								<h6 class="page-header base-icon-phone-squared pt-2">
 									'.JText::_('TEXT_PROVIDER_PHONES').'
 									<a href="#" class="btn btn-xs btn-success float-right" onclick="_phones_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-_phones" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_PHONE').'"></span></a>
 								</h6>
@@ -223,8 +227,8 @@ if($vID != 0) :
 							$_banksAccountsRelListNameId	= 'provider_id';
 							$_banksAccountsRelListId		= $item->id;
 							echo '
-								<h6 class="page-header base-icon-bank mb-0">
-									'.JText::_('TEXT_ACCOUNTS').'
+								<h6 class="page-header base-icon-bank pt-2">
+									'.JText::_('TEXT_BANKS_ACCOUNTS').'
 									<a href="#" class="btn btn-xs btn-success float-right" onclick="_banksAccounts_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-_banksAccounts" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_BANK_ACCOUNT').'"></span></a>
 								</h6>
 							';

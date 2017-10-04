@@ -27,7 +27,7 @@ require(JPATH_CORE.DS.'apps/_init.app.php');
 $vID = $app->input->get('vID', 0, 'int'); // VIEW 'ID'
 
 // list view
-$urlToList = JURI::root().'apps/providers/agreements';
+$urlToList = JURI::root().'apps/'.$APPNAME.'/agreements';
 
 // Carrega o arquivo de tradução
 // OBS: para arquivos externos com o carregamento do framework '_init.joomla.php' (geralmente em 'ajax')

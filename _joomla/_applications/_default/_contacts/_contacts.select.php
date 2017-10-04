@@ -4,10 +4,10 @@ if($hasAdmin) :
 	// database connect
 	$db = JFactory::getDbo();
 
-	// CLIENTS
-	$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_clients') .' WHERE user_id <> 0 AND state = 1 ORDER BY name';
+	// CONTACTS
+	$query = 'SELECT * FROM '. $db->quoteName($cfg['mainTable']) .' WHERE state = 1 ORDER BY name';
 	$db->setQuery($query);
-	$clients = $db->loadObjectList();
+	$contacts = $db->loadObjectList();
 
 ?>
 
@@ -26,7 +26,7 @@ if($hasAdmin) :
 			<select name="vID" id="<?php echo $APPTAG?>-vID" class="form-control" onchange="<?php echo $APPTAG?>_selectItem(this)">
 				<option value="0">- <?php echo JText::_('TEXT_SELECT')?> -</option>
 				<?php
-					foreach ($clients as $obj) {
+					foreach ($contacts as $obj) {
 						echo '<option value="'.$obj->id.'"'.($vID == $obj->id ? ' selected' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
 					}
 				?>
@@ -39,7 +39,7 @@ if($hasAdmin) :
 			</span>
 		</div>
 		<div class="btn-group float-right d-none d-md-flex">
-			<a href="<?php echo JURI::root()?>apps/clients" class="btn btn-default base-icon-cog"><span class="d-none d-lg-inline"> <?php echo JText::_('LIST_TITLE')?></span></a>
+			<a href="<?php echo JURI::root()?>apps/contacts" class="btn btn-default base-icon-cog"><span class="d-none d-lg-inline"> <?php echo JText::_('LIST_TITLE')?></span></a>
 			<button class="btn btn-default base-icon-print" onclick="javascript:print()"></button>
 		</div>
 	</div>

@@ -193,6 +193,8 @@ defined('_JEXEC') or die;
 							<input type="text" name="address_city" id="<?php echo $APPTAG?>-address_city" class="form-control upper" />
 						</div>
 					</div>
+					<input type="hidden" name="address_state" id="<?php echo $APPTAG?>-address_state" />
+					<input type="hidden" name="address_country" id="<?php echo $APPTAG?>-address_country" />
 				</div>
 				<hr class="hr-tag" />
 				<span class="badge badge-primary"><?php echo JText::_('TEXT_CONTACT_DATA'); ?></span>

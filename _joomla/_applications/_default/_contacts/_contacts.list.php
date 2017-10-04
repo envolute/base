@@ -71,6 +71,7 @@ $html = '
 					'.$adminView['head']['info'].'
 					<th class="d-none d-lg-table-cell">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_GROUP'), 'T2.name', $APPTAG).'</th>
 					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_NAME'), 'T1.name', $APPTAG).'</th>
+					<th width="30" class="d-none d-lg-table-cell text-center">&#160;</td>
 					<th>'.JText::_('TEXT_STATUS').'</th>
 					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
 					'.$adminView['head']['actions'].'
@@ -142,6 +143,7 @@ if($num_rows) : // verifica se existe
 			if(empty($item->user)) $status = '<span class="base-icon-cancel text-danger"> '.JText::_('TEXT_NO_USER_ASSOC').'</span><div class="small text-muted text-truncate">'.JText::_('TEXT_NO_USER_ASSOC_DESC').'</div>';
 			else $status = '<span class="base-icon-ok text-success"> '.JText::_('TEXT_ALLOWED_ACCESS').'</span>';
 		endif;
+		$urlViewData = JURI::root().'apps/contacts/view?vID='.$item->id;
 		$rowState	= $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
@@ -156,6 +158,7 @@ if($num_rows) : // verifica se existe
 				'.$adminView['list']['info'].'
 				<td class="d-none d-lg-table-cell">'.baseHelper::nameFormat($item->grp).'<div class="small text-muted">'.baseHelper::nameFormat($item->occupation).'</td>
 				<td>'.$img.$note.baseHelper::nameFormat($item->name).'<div class="small text-muted">'.$item->email.'</td>
+				<td class="d-none d-lg-table-cell text-center"><a href="'.$urlViewData.'" target="_blank" class="base-icon-doc-text hasTooltip" title="'.JText::_('TEXT_VIEW_DATA').'"></a></td>
 				<td>'.$status.'</td>
 				<td class="d-none d-lg-table-cell">
 					'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'

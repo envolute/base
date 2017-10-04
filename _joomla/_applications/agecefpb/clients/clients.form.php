@@ -240,6 +240,18 @@ $users = $db->loadObjectList();
 					<input type="text" name="address_city" id="<?php echo $APPTAG?>-address_city" class="form-control upper" />
 				</div>
 			</div>
+			<div class="col-lg-6">
+				<div class="form-group">
+					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_STATE'); ?></label>
+					<input type="text" name="address_state" id="<?php echo $APPTAG?>-address_state" class="form-control upper" />
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="form-group">
+					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_COUNTRY'); ?></label>
+					<input type="text" name="address_country" id="<?php echo $APPTAG?>-address_country" class="form-control upper" />
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="col-md-5 col-lg-3 b-left b-dashed">

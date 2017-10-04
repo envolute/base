@@ -55,6 +55,7 @@ jQuery(function() {
 	var address_district	= jQuery('#<?php echo $APPTAG?>-address_district');
 	var address_city		= jQuery('#<?php echo $APPTAG?>-address_city');
 	var address_state		= jQuery('#<?php echo $APPTAG?>-address_state');
+	var address_country		= jQuery('#<?php echo $APPTAG?>-address_country');
 	// phones
 	var phone1				= jQuery('#<?php echo $APPTAG?>-phone1');
 	var phone2				= jQuery('#<?php echo $APPTAG?>-phone2');
@@ -147,6 +148,7 @@ jQuery(function() {
 			address_district.val('');
 			address_city.val('');
 			address_state.val('');
+			address_country.val('');
 			phone1.phoneMaskUpdate(''); // toggleMask
 			phone2.phoneMaskUpdate(''); // toggleMask
 			phone3.phoneMaskUpdate(''); // toggleMask
@@ -332,6 +334,8 @@ jQuery(function() {
 						address_info.val(item.address_info);
 						address_district.val(item.address_district);
 						address_city.val(item.address_city);
+						address_state.val(item.address_state);
+						address_country.val(item.address_country);
 						phone1.phoneMaskUpdate(item.phone1); // toggleMask
 						phone2.phoneMaskUpdate(item.phone2); // toggleMask
 						phone3.phoneMaskUpdate(item.phone3); // toggleMask

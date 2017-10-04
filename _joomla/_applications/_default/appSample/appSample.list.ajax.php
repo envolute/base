@@ -105,7 +105,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	$html = '';
 	if($num_rows) : // verifica se existe
-		$html .= '<ul class="list-unstyled bordered list-striped list-hover m-0">';
+		$html .= '<ul class="set-list bordered">';
 		foreach($res as $item) {
 
 			if($cfg['hasUpload']) :

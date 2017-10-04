@@ -83,7 +83,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	$html = '';
 	if($num_rows) : // verifica se existe
-		$html .= '<ul class="set-list bordered list-striped list-hover">';
+		$html .= '<ul class="set-list bordered">';
 		foreach($res as $item) {
 
 			if($cfg['hasUpload']) :

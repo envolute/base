@@ -156,7 +156,7 @@ if($num_rows) : // verifica se existe
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
 				<td>'.$img.$item->name.'<div class="small text-muted">'.$item->cx_role.' - '.$item->cx_situated.'</td>
-				<td class="d-none d-lg-table-cell text-center"><a href="'.$urlViewData.'" target="_blank" class="base-icon-doc-text hasTooltip" title="'.JText::_('TEXT_VIEW_CLIENT_DATA').'"></a></td>
+				<td class="d-none d-lg-table-cell text-center"><a href="'.$urlViewData.'" target="_blank" class="base-icon-doc-text hasTooltip" title="'.JText::_('TEXT_VIEW_DATA').'"></a></td>
 				<td>'.$item->type.'</td>
 				<td>'.$status.'</td>
 				<td class="d-none d-lg-table-cell">

@@ -41,7 +41,7 @@ if(isset($_SESSION[$MAINTAG.'langDef'])) :
 endif;
 
 // Admin Actions
-require_once('clients.select.php');
+require_once('_contacts.select.php');
 
 if($vID != 0) :
 
@@ -52,11 +52,11 @@ if($vID != 0) :
 	$query = '
 		SELECT
 			T1.*,
-			'. $db->quoteName('T2.title') .' type
+			'. $db->quoteName('T2.name') .' group_name
 		FROM
 			'.$db->quoteName($cfg['mainTable']).' T1
-			LEFT OUTER JOIN '. $db->quoteName('#__usergroups') .' T2
-			ON T2.id = T1.usergroup
+			LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
+			ON T2.id = T1.group_id
 		WHERE '.$db->quoteName('T1.id') .' = '. $vID
 	;
 	try {
@@ -67,7 +67,6 @@ if($vID != 0) :
 		return;
 	}
 
-	$html = '';
 	if(!empty($item->name)) : // verifica se existe
 
 		if($cfg['hasUpload']) :
@@ -78,14 +77,6 @@ if($vID != 0) :
 			else $img = '<div class="image-file"><div class="image-action"><div class="image-file-label"><span class="base-icon-file-image"></span></div></div></div>';
 		endif;
 
-		$partner = '';
-		if(!empty($item->partner)) :
-			$partner = '
-				<div class="col">
-					<label class="label-sm">'.JText::_('FIELD_LABEL_PARTNER').':</label><p>'.baseHelper::nameFormat($item->partner).'</p>
-				</div>
-			';
-		endif;
 		// Address
 		$addressInfo = !empty($item->address_info) ? ', '.$item->address_info : '';
 		$addressNumber = !empty($item->address_number) ? ', '.$item->address_number : '';
@@ -99,55 +90,89 @@ if($vID != 0) :
 		$phones .= !empty($item->phone2) ? (!empty($phones) ? '<br />' : '').$item->phone2 : '';
 		$phones .= !empty($item->phone3) ? (!empty($phones) ? '<br />' : '').'(fixo) '.$item->phone3 : '';
 
-		$html .= '
-			<div class="row">
-				<div class="col-sm-4 col-md-2 mb-4 mb-md-0">
-					<div style="max-width: 300px">'.$img.'</div>
-				</div>
-				<div class="col-sm-8 col-md-6">
-					<label class="label-sm">'.JText::_('FIELD_LABEL_NAME').':</label>
-					<p> '.baseHelper::nameFormat($item->name).'</p>
+		// Email, profissão
+		$info1 = '';
+		if(!empty($item->email)) :
+			$info1 .= '
+				<div class="col-sm-8">
 					<label class="label-sm">'.JText::_('FIELD_LABEL_EMAIL').':</label>
 					<p>'.$item->email.'</p>
-					<div class="row">
-						<div class="col-4">
-							<label class="label-sm">'.JText::_('FIELD_LABEL_GENDER').':</label>
-							<p>'.JText::_('TEXT_GENDER_'.$item->gender).'</p>
-						</div>
-						<div class="col-4">
-							<label class="label-sm">'.JText::_('FIELD_LABEL_MARITAL_STATUS').':</label>
-							<p>'.JText::_('TEXT_MARITAL_STATUS_'.$item->marital_status).'</p>
-						</div>
-						<div class="col-4">
-							<label class="label-sm">'.JText::_('FIELD_LABEL_CHILDREN').':</label>
-							<p>'.$item->children.'</p>
-						</div>
-						'.$partner.'
-					</div>
 				</div>
-				<div class="col-md-4">
-					<div class="row">
-						<div class="col-6 col-sm-4 col-md-12">
-							<label class="label-sm">'.JText::_('TEXT_USER_TYPE').':</label>
-							<p> '.baseHelper::nameFormat($item->type).'</p>
-						</div>
-						<div class="col-6 col-sm-4 col-md-12">
-							<label class="label-sm">'.JText::_('FIELD_LABEL_BIRTHDAY').':</label>
-							<p>'.baseHelper::dateFormat($item->birthday).'</p>
-						</div>
-						<div class="col-6 col-sm-4 col-md-12">
-							<label class="label-sm">CPF:</label>
-							<p>'.$item->cpf.'</p>
-						</div>
-						<div class="col-6 col-sm-4 col-md-12">
-							<label class="label-sm">RG:</label>
-							<p>'.$item->rg.' / '.$item->rg_orgao.'</p>
-						</div>
-					</div>
+			';
+		endif;
+		if(!empty($item->occupation)) :
+			$info1 .= '
+				<div class="col">
+					<label class="label-sm">'.JText::_('FIELD_LABEL_OCCUPATION').':</label>
+					<p> '.baseHelper::nameFormat($item->occupation).'</p>
 				</div>
-			</div>
-			<hr />
-			<div class="row">
+			';
+		endif;
+		if(!empty($info1)) $info1 = '<div class="row">'.$info1.'</div>';
+
+		// Birthday, CPF, RG, gênero, estado civil, filhos, conjuge
+		$info2 = '';
+		if(!empty($item->birthday) && $item->birthday != '0000-00-00') :
+			$info2 .= '
+				<div class="col-6 col-sm-4">
+					<label class="label-sm">'.JText::_('FIELD_LABEL_BIRTHDAY').':</label>
+					<p>'.baseHelper::dateFormat($item->birthday).'</p>
+				</div>
+			';
+		endif;
+		if(!empty($item->cpf)) :
+			$info2 .= '
+				<div class="col-6 col-sm-4">
+					<label class="label-sm">CPF:</label>
+					<p>'.$item->cpf.'</p>
+				</div>
+			';
+		endif;
+		if(!empty($item->rg)) :
+			$info2 .= '
+				<div class="col-6 col-sm-4">
+					<label class="label-sm">RG:</label>
+					<p>'.$item->rg.' / '.$item->rg_orgao.'</p>
+				</div>
+			';
+		endif;
+		if($item->gender > 0) :
+			$info2 .= '
+				<div class="col-6 col-sm-4">
+					<label class="label-sm">'.JText::_('FIELD_LABEL_GENDER').':</label>
+					<p>'.JText::_('TEXT_GENDER_'.$item->gender).'</p>
+				</div>
+			';
+		endif;
+		if($item->marital_status > 0) :
+			$info2 .= '
+				<div class="col-6 col-sm-4">
+					<label class="label-sm">'.JText::_('FIELD_LABEL_MARITAL_STATUS').':</label>
+					<p>'.JText::_('TEXT_MARITAL_STATUS_'.$item->marital_status).'</p>
+				</div>
+			';
+		endif;
+		if($item->children > 0) :
+			$info2 .= '
+				<div class="col-6 col-sm-4">
+					<label class="label-sm">'.JText::_('FIELD_LABEL_CHILDREN').':</label>
+					<p>'.$item->children.'</p>
+				</div>
+			';
+		endif;
+		if(!empty($item->partner)) :
+			$info2 .= '
+				<div class="col-12">
+					<label class="label-sm">'.JText::_('FIELD_LABEL_PARTNER').':</label><p>'.baseHelper::nameFormat($item->partner).'</p>
+				</div>
+			';
+		endif;
+		if(!empty($info2)) $info2 = '<div class="row">'.$info2.'</div>';
+
+		// Endereço, telefones
+		$info3 = '';
+		if(!empty($item->address)) :
+			$info3 .= '
 				<div class="col-md-8">
 					<label class="label-sm">'.JText::_('FIELD_LABEL_ADDRESS').':</label>
 					<p>
@@ -155,70 +180,66 @@ if($vID != 0) :
 						'.$addressZip.$addressDistrict.$addressCity.$addressState.$addressCountry.'
 					</p>
 				</div>
+			';
+		endif;
+		if(!empty($phones)) :
+			$info3 .= '
 				<div class="col-md">
 					<label class="label-sm">'.JText::_('FIELD_LABEL_PHONE').'(s):</label>
 					<p>'.$phones.'</p>
 				</div>
-			</div>
+			';
+		endif;
+		if(!empty($info3)) $info3 = '<hr /><div class="row">'.$info3.'</div>';
+
+		echo '
 			<div class="row">
-		';
-		if($item->usergroup != 13) :
-			$html .= '
-					<div class="col-md-8">
-						<hr class="hr-tag" />
-						<span class="badge badge-primary">'.JText::_('TEXT_DATA_EMPLOYEE').'</span>
-						<div class="row">
-							<div class="col-sm-4">
-								<label class="label-sm">'.JText::_('FIELD_LABEL_STATUS_EMPLOYEE').':</label>
-								<p>'.($item->usergroup == 11 ? JText::_('TEXT_EFFECTIVE') : JText::_('TEXT_RETIRED')).'</p>
+				<div class="col-lg-9">
+					<div class="row">
+						<div class="col-4 col-sm-2 mb-4 mb-md-0">
+							<div style="max-width: 300px">'.$img.'</div>
+						</div>
+						<div class="col-sm">
+							<div class="row">
+								<div class="col-md-8">
+									<label class="label-sm">'.JText::_('FIELD_LABEL_NAME').':</label>
+									<p> '.baseHelper::nameFormat($item->name).'</p>
+								</div>
+								<div class="col-md-4">
+									<label class="label-sm">'.JText::_('FIELD_LABEL_GROUP').':</label>
+									<p> '.baseHelper::nameFormat($item->group_name).'</p>
+								</div>
 							</div>
-			';
-		endif;
-		if($item->usergroup == 11) :
-			$html .= '
-							<div class="col-sm-6 col-md-4">
-								<label class="label-sm">'.JText::_('FIELD_LABEL_EMAIL').':</label>
-								<p>'.$item->cx_email.'</p>
-							</div>
-							<div class="col-6 col-sm-4">
-								<label class="label-sm">'.JText::_('FIELD_LABEL_SITUATED').':</label>
-								<p>'.$item->cx_situated.'</p>
-							</div>
-			';
-		endif;
-		if($item->usergroup != 13) :
-				$html .= '
-							<div class="col-6 col-md-4">
-								<label class="label-sm">'.JText::_('FIELD_LABEL_CODE').':</label>
-								<p>'.$item->cx_code.'</p>
-							</div>
-							<div class="col-6 col-sm-4">
-								<label class="label-sm">'.JText::_('FIELD_LABEL_ADMISSION_DATE').':</label>
-								<p>'.baseHelper::dateFormat($item->cx_date).'</p>
-							</div>
-							<div class="col-6 col-sm-4">
-								<label class="label-sm">'.JText::_('FIELD_LABEL_ROLE').':</label>
-								<p>'.$item->cx_role.'</p>
-							</div>
+							'.$info1.$info2.$info3.'
 						</div>
 					</div>
-			';
-		endif;
-		$html .= '
+				</div>
 				<div class="col">
-					<hr class="hr-tag" />
-					<span class="badge badge-primary">'.JText::_('TEXT_ACCOUNT_DATA').'</span>
-					<label class="label-sm">Conta Bancária:</label>
-					<p>
-						'.JText::_('FIELD_LABEL_AGENCY').': <strong>'.$item->agency.'</strong><br />
-						'.JText::_('FIELD_LABEL_ACCOUNT').': <strong>'.$item->account.'</strong><br />
-						'.JText::_('FIELD_LABEL_OPERATION').': <strong>'.$item->operation.'</strong>
-					</p>
+					<hr class="d-md-none my-2" />
+		';
+
+					// Banks Accounts
+					$_banksAccountsListFull			= false;
+					$_banksAccountsAddText			= false;
+					$_banksAccountsShowAddBtn		= false;
+					$_banksAccountsRelTag			= 'contacts';
+					$_banksAccountsRelTable			= '#__base_rel_contacts_banksAccounts';
+					$_banksAccountsAppNameId		= 'bankAccount_id';
+					$_banksAccountsRelNameId		= 'contact_id';
+					$_banksAccountsRelListNameId	= 'contact_id';
+					$_banksAccountsRelListId		= $item->id;
+					echo '
+						<h6 class="page-header base-icon-bank">
+							'.JText::_('TEXT_BANKS_ACCOUNTS').'
+							<a href="#" class="btn btn-xs btn-success float-right" onclick="_banksAccounts_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-_banksAccounts" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_BANK_ACCOUNT').'"></span></a>
+						</h6>
+					';
+					require(JPATH_APPS.DS.'_banksAccounts/_banksAccounts.php');
+
+		echo '
 				</div>
 			</div>
 		';
-
-		echo $html;
 
 	else :
 		echo '<p class="base-icon-info-circled alert alert-info m-0"> '.JText::_('MSG_ITEM_NOT_AVAILABLE').'</p>';
