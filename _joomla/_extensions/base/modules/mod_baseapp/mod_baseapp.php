@@ -44,6 +44,7 @@ defined('_JEXEC') or die;
 		$appTag = ${$app.'AppTag'};
 		${$appTag.'RelTag'} = $params->get('relTag');
 		// LIST
+		${$appTag.'ItemView'} = $params->get('itemView');
 		${$appTag.'ShowApp'} = $params->get('showApp');
 		${$appTag.'ShowList'} = $params->get('showList');
 		${$appTag.'ListModal'} = $params->get('listModal');
@@ -51,6 +52,7 @@ defined('_JEXEC') or die;
 		${$appTag.'StaticToolbar'} = $params->get('staticToolbar');
 		${$appTag.'ShowAddBtn'} = $params->get('showAddBtn');
 		${$appTag.'AddText'} = $params->get('addText');
+		${$appTag.'AddClass'} = $params->get('addClass');
 		${$appTag.'hasUpload'} = $params->get('hasUpload');
 		${$appTag.'RelTag'} = $params->get('relTag');
 		${$appTag.'RelTable'} = $params->get('relTable');

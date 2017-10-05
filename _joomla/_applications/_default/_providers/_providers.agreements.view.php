@@ -264,7 +264,7 @@ if($vID != 0) :
 
 else :
 
-	echo '<h4 class="alert alert-warning">'.JText::_('MSG_NOT_PROVIDER_SELECTED').'</h4>';
+	echo '<h4 class="alert alert-warning">'.JText::_('MSG_NO_ITEM_SELECTED').'</h4>';
 
 endif;
 ?>

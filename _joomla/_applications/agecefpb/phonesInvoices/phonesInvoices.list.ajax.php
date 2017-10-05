@@ -14,16 +14,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	// IMPORTANTE: Carrega o arquivo 'helper' do template
 	JLoader::register('baseHelper', JPATH_CORE.DS.'helpers/base.php');
 
-	// Carrega o arquivo de tradução
-	// OBS: para arquivos externos com o carregamento do framework '_init.joomla.php' (geralmente em 'ajax')
-	// a language 'default' não é reconhecida. Sendo assim, carrega apenas 'en-GB'
-	// Para possibilitar o carregamento da language 'default' de forma dinâmica,
-	// é necessário passar na sessão ($_SESSION[$APPTAG.'langDef'])
-	if(isset($_SESSION[$APPTAG.'langDef'])) :
-		$lang->load('base_apps', JPATH_BASE, $_SESSION[$APPTAG.'langDef'], true);
-		$lang->load('base_'.$APPNAME, JPATH_BASE, $_SESSION[$APPTAG.'langDef'], true);
-	endif;
-
 	//joomla get request data
 	$input		= $app->input;
 
@@ -36,6 +26,16 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	$rNID		= !empty($_SESSION[$RTAG.'RelListNameId']) ? $_SESSION[$RTAG.'RelListNameId'] : $rNID;
 	$rID		= $input->get('rID', 0, 'int');
 	$rID		= !empty($_SESSION[$RTAG.'RelListId']) ? $_SESSION[$RTAG.'RelListId'] : $rID;
+
+	// Carrega o arquivo de tradução
+	// OBS: para arquivos externos com o carregamento do framework '_init.joomla.php' (geralmente em 'ajax')
+	// a language 'default' não é reconhecida. Sendo assim, carrega apenas 'en-GB'
+	// Para possibilitar o carregamento da language 'default' de forma dinâmica,
+	// é necessário passar na sessão ($_SESSION[$APPTAG.'langDef'])
+	if(isset($_SESSION[$APPTAG.'langDef'])) :
+		$lang->load('base_apps', JPATH_BASE, $_SESSION[$APPTAG.'langDef'], true);
+		$lang->load('base_'.$APPNAME, JPATH_BASE, $_SESSION[$APPTAG.'langDef'], true);
+	endif;
 
 	// get current user's data
 	$user		= JFactory::getUser();

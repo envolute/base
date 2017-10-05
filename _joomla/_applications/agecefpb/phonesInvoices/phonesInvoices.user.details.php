@@ -40,7 +40,7 @@ $uID = ($hasAdmin && $uID > 0) ? $uID : $user->id;
 $urlToInvoices = JURI::root().'services/mobile-invoices?pID='.$pID.($uID != $user->id ? '&uID='.$uID : '');
 
 // Admin Actions
-require_once(JPATH_APPS.DS.'clients/clients.select.php');
+require_once(JPATH_APPS.DS.'clients/clients.select.user.php');
 
 $redir = false;
 if($pID > 0) :

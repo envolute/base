@@ -184,14 +184,16 @@ $userGrps = $db->loadObjectList();
 			<span class="text-live font-featured"><?php echo JText::_('TEXT_BANKS_ACCOUNTS')?></span>
 			<?php echo JText::_('MSG_ADD_AFTER_SAVE')?>
 		</div>
-		<div id="<?php echo $APPTAG?>-buttons-relations" hidden>
-			<hr />
-			<div class="row">
-				<div class="col-6 col-lg-3 py-1">
-					<button type="button" class="btn btn-primary btn-block base-icon-bank btn-icon" onclick="<?php echo $APPTAG?>_viewBanks()" data-toggle="modal" data-target="#modal-list-_banksAccountsContacts" data-backdrop="static" data-keyboard="false"> <?php echo JText::_('TEXT_BANKS_ACCOUNTS')?></button>
+		<?php if(!$cfg['itemView']) :?>
+			<div id="<?php echo $APPTAG?>-buttons-relations" hidden>
+				<hr />
+				<div class="row">
+					<div class="col-6 col-lg-3 py-1">
+						<button type="button" class="btn btn-primary btn-block base-icon-bank btn-icon" onclick="<?php echo $APPTAG?>_viewBanks()" data-toggle="modal" data-target="#modal-list-_banksAccountsContacts" data-backdrop="static" data-keyboard="false"> <?php echo JText::_('TEXT_BANKS_ACCOUNTS')?></button>
+					</div>
 				</div>
 			</div>
-		</div>
+		<?php endif;?>
 		<hr class="hr-tag" />
 		<span class="badge badge-primary"><?php echo JText::_('TEXT_ACCESS_STATUS'); ?></span>
 		<div class="row pt-2">

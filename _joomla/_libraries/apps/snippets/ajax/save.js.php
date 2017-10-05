@@ -47,15 +47,22 @@ window.<?php echo $APPTAG?>_save = function(trigger) {
 
 						// Update Parent field
 						if(res.parentField != '' && res.parentFieldVal != '') {
-							// remove if option exist
-							if(jQuery(res.parentField).find('option[value="'+res.parentFieldVal+'"]').length) jQuery(res.parentField).find('option[value="'+res.parentFieldVal+'"]').remove();
-							// add option if is active (state = 1)
-							if(res.parentFieldLabel != '' && res.parentFieldLabel != null) {
-								jQuery(res.parentField).append('<option value='+res.parentFieldVal+'>'+res.parentFieldLabel+'</option>'); // add valor à lista
-								jQuery(res.parentField).val(res.parentFieldVal).selectUpdate(); // atualiza o select
-							} else {
-								jQuery(res.parentField).selectUpdate();
-							}
+							jQuery(res.parentField).each(function() {
+								var obj = jQuery(this);
+								// remove if option exist
+								if(obj.find('option[value="'+res.parentFieldVal+'"]').length) jQuery(res.parentField).find('option[value="'+res.parentFieldVal+'"]').remove();
+								// add option if is active (state = 1)
+								if(res.parentFieldLabel != '' && res.parentFieldLabel != null) {
+									obj.append('<option value='+res.parentFieldVal+'>'+res.parentFieldLabel+'</option>'); // add valor à lista
+									// Atribui o valor ao campo apenas se o mesmo estiver visível...
+									// Assim, evita selecionar o campo em outras 'Apps' que não estiverem sendo editadas
+									// Obs: o valor é adicionado as outras 'Apps', mas não selecionado!
+									var fieldVal = obj.parent().is(':visible') ? res.parentFieldVal : 0;
+									obj.selectUpdate(fieldVal); // atualiza o select
+								} else {
+									obj.selectUpdate();
+								}
+							});
 						}
 
 						<?php // SUCCESS STATUS -> Executa quando houver sucesso na requisição ajax

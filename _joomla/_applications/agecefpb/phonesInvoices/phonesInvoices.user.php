@@ -37,7 +37,7 @@ $uID = $app->input->get('uID', 0, 'int'); // user ID
 $uID = ($hasAdmin && $uID > 0) ? $uID : $user->id;
 
 // Admin Actions
-require_once(JPATH_APPS.DS.'clients/clients.select.php');
+require_once(JPATH_APPS.DS.'clients/clients.select.user.php');
 
 if($pID > 0) :
 

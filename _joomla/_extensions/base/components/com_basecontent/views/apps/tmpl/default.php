@@ -29,6 +29,7 @@ defined('_JEXEC') or die;
 		${$this->app.'AppTag'} = $this->appTag;
 		${$this->appTag.'RelTag'} = $this->relTag;
 		// LIST
+		${$this->appTag.'ItemView'} = $this->itemView;
 		${$this->appTag.'ShowApp'} = $this->showApp;
 		${$this->appTag.'ShowList'} = $this->showList;
 		${$this->appTag.'ListModal'} = $this->listModal;
@@ -36,6 +37,7 @@ defined('_JEXEC') or die;
 		${$this->appTag.'StaticToolbar'} = $this->staticToolbar;
 		${$this->appTag.'ShowAddBtn'} = $this->showAddBtn;
 		${$this->appTag.'AddText'} = $this->addText;
+		${$this->appTag.'AddClass'} = $this->addClass;
 		${$this->appTag.'hasUpload'} = $this->hasUpload;
 		${$this->appTag.'RelTag'} = $this->relTag;
 		${$this->appTag.'RelTable'} = $this->relTable;

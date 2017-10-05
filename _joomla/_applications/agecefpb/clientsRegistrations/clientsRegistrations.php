@@ -472,7 +472,7 @@ jQuery(window).on('load', function() {
 
 <?php
 // Admin Actions
-if($cfg['isEdit']) require_once(JPATH_APPS.DS.'clients/clients.select.admin.php');
+if($cfg['isEdit']) require_once(JPATH_APPS.DS.'clients/clients.select.user.php');
 ?>
 
 <div id="<?php echo $APPTAG?>-form-loader" class="text-center">

@@ -37,7 +37,7 @@ if(isset($_SESSION[$APPTAG.'langDef'])) :
 endif;
 
 // Admin Actions
-require_once(JPATH_APPS.DS.'clients/clients.select.admin.php');
+require_once(JPATH_APPS.DS.'clients/clients.select.user.php');
 
 if(isset($user->id) && $user->id) :
 

@@ -52,6 +52,7 @@ class BaseContentViewApps extends JViewLegacy {
 		$this->assignRef('params', $params);
 		$this->app = $params->get('app');
 		$this->appTag = $params->get('appTag', $this->app);
+		$this->itemView = $params->get('itemView');
 		$this->showApp = $params->get('showApp');
 		$this->showList = $params->get('showList');
 		$this->listModal = $params->get('listModal');
@@ -59,6 +60,7 @@ class BaseContentViewApps extends JViewLegacy {
 		$this->staticToolbar = $params->get('staticToolbar');
 		$this->showAddBtn = $params->get('showAddBtn');
 		$this->addText = $params->get('addText');
+		$this->addClass = $params->get('addClass');
 		$this->hasUpload = $params->get('hasUpload');
 		$this->relTag = $params->get('relTag');
 		$this->relTable = $params->get('relTable');

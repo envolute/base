@@ -30,44 +30,50 @@
 						label="MOD_BASEAPP_APP_VIEW_LABEL"
 				/>
 
-				<field name="showApp" type="radio" class="btn-group" label="MOD_BASEAPP_SHOW_APP_LABEL" description="MOD_BASEAPP_SHOW_APP_DESC">
-					<option value="0">JNO</option>
+				<field name="itemView" type="radio" class="btn-group" label="MOD_BASEAPP_ITEM_VIEW_LABEL" description="MOD_BASEAPP_ITEM_VIEW_DESC">
 					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+					<option value="">JGLOBAL_USE_GLOBAL</option>
+				</field>
+				<field name="showApp" type="radio" class="btn-group" label="MOD_BASEAPP_SHOW_APP_LABEL" description="MOD_BASEAPP_SHOW_APP_DESC">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
 					<option value="">JGLOBAL_USE_GLOBAL</option>
 				</field>
 				<field name="showList" type="radio" class="btn-group" label="MOD_BASEAPP_SHOW_LIST_LABEL" description="MOD_BASEAPP_SHOW_LIST_DESC">
-					<option value="0">JNO</option>
 					<option value="1">JYES</option>
+					<option value="0">JNO</option>
 					<option value="">JGLOBAL_USE_GLOBAL</option>
 				</field>
 				<field name="listModal" type="radio" class="btn-group" label="MOD_BASEAPP_LIST_MODAL_LABEL" description="MOD_BASEAPP_LIST_MODAL_DESC">
-					<option value="0">JNO</option>
 					<option value="1">JYES</option>
+					<option value="0">JNO</option>
 					<option value="">JGLOBAL_USE_GLOBAL</option>
 				</field>
 				<field name="listFull" type="radio" class="btn-group" label="MOD_BASEAPP_LIST_FULL_LABEL" description="MOD_BASEAPP_LIST_FULL_DESC">
-					<option value="0">JNO</option>
 					<option value="1">JYES</option>
+					<option value="0">JNO</option>
 					<option value="">JGLOBAL_USE_GLOBAL</option>
 				</field>
 				<field name="staticToolbar" type="radio" class="btn-group" label="MOD_BASEAPP_STATIC_TOOLBAR_LABEL" description="MOD_BASEAPP_STATIC_TOOLBAR_DESC">
-					<option value="0">MOD_BASEAPP_STATIC_TOOLBAR_INTEGRATE</option>
 					<option value="1">MOD_BASEAPP_STATIC_TOOLBAR_NATURAL</option>
+					<option value="0">MOD_BASEAPP_STATIC_TOOLBAR_INTEGRATE</option>
 					<option value="">JGLOBAL_USE_GLOBAL</option>
 				</field>
 				<field name="showAddBtn" type="radio" class="btn-group" label="MOD_BASEAPP_SHOW_ADDBTN_LABEL" description="MOD_BASEAPP_SHOW_ADDBTN_DESC">
-					<option value="0">JNO</option>
 					<option value="1">JYES</option>
+					<option value="0">JNO</option>
 					<option value="">JGLOBAL_USE_GLOBAL</option>
 				</field>
 				<field name="addText" type="radio" class="btn-group" label="MOD_BASEAPP_ADD_TEXT_LABEL" description="MOD_BASEAPP_ADD_TEXT_DESC">
-					<option value="0">JNO</option>
 					<option value="1">JYES</option>
+					<option value="0">JNO</option>
 					<option value="">JGLOBAL_USE_GLOBAL</option>
 				</field>
+				<field name="addClass" type="text" filter="string" class="input-xxlarge" default="" label="MOD_BASEAPP_ADD_CLASS_LABEL" description="MOD_BASEAPP_ADD_CLASS_DESC" />
 				<field name="hasUpload" type="radio" class="btn-group" label="MOD_BASEAPP_HAS_UPLOAD_LABEL" description="MOD_BASEAPP_HAS_UPLOAD_DESC">
-					<option value="0">JNO</option>
 					<option value="1">JYES</option>
+					<option value="0">JNO</option>
 					<option value="">JGLOBAL_USE_GLOBAL</option>
 				</field>
 
@@ -85,21 +91,21 @@
 				<field name="relListNameId" type="text" filter="string" default="" label="MOD_BASEAPP_REL_LIST_NAMEID_LABEL" description="MOD_BASEAPP_REL_LIST_NAMEID_DESC" />
 				<field name="relListId" type="text" filter="string" default="" label="MOD_BASEAPP_REL_LISTID_LABEL" description="MOD_BASEAPP_REL_LISTID_DESC" />
 				<field name="onlyChildList" type="radio" class="btn-group" label="MOD_BASEAPP_REL_LIST_ONLYCHILD_LABEL" description="MOD_BASEAPP_REL_LIST_ONLYCHILD_DESC">
-					<option value="0">JNO</option>
 					<option value="1">JYES</option>
+					<option value="0">JNO</option>
 					<option value="">JGLOBAL_USE_GLOBAL</option>
 				</field>
 				<field name="relationField" type="spacer" class="text"
 						label="MOD_BASEAPP_RELATION_FIELD_LABEL"
 				/>
-				<field name="fieldUpdated" type="text" filter="string" default="" label="MOD_BASEAPP_FIELD_UPDATE_LABEL" description="MOD_BASEAPP_FIELD_UPDATE_DESC" />
+				<field name="fieldUpdated" type="text" filter="string" class="input-xxlarge" default="" label="MOD_BASEAPP_FIELD_UPDATE_LABEL" description="MOD_BASEAPP_FIELD_UPDATE_DESC" />
 				<field name="tableField" type="text" filter="string" default="" label="MOD_BASEAPP_TABLE_FIELD_LABEL" description="MOD_BASEAPP_TABLE_FIELD_DESC" />
 				<field name="foreignKey" type="spacer" class="text"
 						label="MOD_BASEAPP_FOREIGN_KEY_LABEL"
 				/>
 				<field name="hideParentField" type="radio" class="btn-group" label="MOD_BASEAPP_HIDE_PARENT_LABEL" description="MOD_BASEAPP_HIDE_PARENT_DESC">
-					<option value="0">JNO</option>
 					<option value="1">JYES</option>
+					<option value="0">JNO</option>
 					<option value="">JGLOBAL_USE_GLOBAL</option>
 				</field>
 
