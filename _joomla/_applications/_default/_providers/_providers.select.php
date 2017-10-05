@@ -26,8 +26,10 @@ if($hasAdmin) :
 			<select name="vID" id="<?php echo $APPTAG?>-vID" class="form-control" onchange="<?php echo $APPTAG?>_selectItem(this)">
 				<option value="0">- <?php echo JText::_('TEXT_SELECT')?> -</option>
 				<?php
+					$providerName = '';
 					foreach ($providers as $obj) {
 						echo '<option value="'.$obj->id.'"'.($vID == $obj->id ? ' selected' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
+						if($vID == $obj->id) $providerName = baseHelper::nameFormat($obj->name);
 					}
 				?>
 			</select>

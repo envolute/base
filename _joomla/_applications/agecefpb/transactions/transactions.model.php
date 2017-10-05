@@ -934,6 +934,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('dependent_id') .','.
 						$db->quoteName('invoice_id') .','.
 						$db->quoteName('invoice_group') .','.
+						$db->quoteName('phoneInvoice_id') .','.
+						$db->quoteName('phone_id') .','.
 						$db->quoteName('description') .','.
 						$db->quoteName('fixed') .','.
 						$db->quoteName('isCard') .','.
@@ -956,6 +958,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'0,'.
 						'0,'.
 						'0,'.
+						$state .','.
+						$db->quoteName('phone_id') .','.
 						$db->quote(JText::_('TEXT_MOBILE_PHONE')) .','.
 						'0,'.
 						'0,'.

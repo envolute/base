@@ -6,7 +6,13 @@
 defined('_JEXEC') or die;
 $ajaxRequest = false;
 require('config.php');
-$cfg['isPublic'] = false; // Público -> acesso aberto a todos
+
+// ACESSO: Libera o acesso aos clients
+// Atribui aos clientes o perfil de visualizador só para esse código
+unset($cfg['groupId']['viewer']); // Limpa os valores padrão
+$cfg['groupId']['viewer'][]	= 11; // Associado -> Efetivo
+$cfg['groupId']['viewer'][]	= 12; // Associado -> Aposentado
+$cfg['groupId']['viewer'][]	= 13; // Associado -> Contribuinte
 
 // IMPORTANTE: Carrega o arquivo 'helper' do template
 JLoader::register('baseHelper', JPATH_CORE.DS.'helpers/base.php');
@@ -37,7 +43,7 @@ $pID = $app->input->get('pID', 0, 'int'); // phone ID
 $uID = $app->input->get('uID', 0, 'int'); // user ID
 $uID = ($hasAdmin && $uID > 0) ? $uID : $user->id;
 // LINK TO INVOICE
-$urlToInvoices = JURI::root().'services/mobile-invoices?pID='.$pID.($uID != $user->id ? '&uID='.$uID : '');
+$urlToInvoices = JURI::root().'apps/clients/phonesinvoices?pID='.$pID.($uID != $user->id ? '&uID='.$uID : '');
 
 // Admin Actions
 require_once(JPATH_APPS.DS.'clients/clients.select.user.php');
@@ -99,6 +105,18 @@ if($pID > 0) :
 		$invoice = $db->loadObject();
 
 		if(!empty($invoice->invoice_id)) :
+
+			// verifica o faturamento
+			$invoiced = '';
+			if(!empty($invoice->invoice)) :
+				$invoiced = '
+					<br />
+					<a href="'.JURI::root().'apps/clients/invoices/details?invID='.$invoice->invoice.($uID != $user->id ? '&uID='.$uID : '').'" class="text-success text-md new-window hasTooltip" title="'.JText::_('MSG_INVOICED').'" target="_blank">
+						'.JText::_('TEXT_INVOICED').'
+					</a>
+				';
+			endif;
+
 			// GET INVOICE DETAILS DATA
 			$query = '
 				SELECT * FROM '.$db->quoteName('vw_'.$cfg['project'].'_phones_invoices_summary').'
@@ -167,7 +185,7 @@ if($pID > 0) :
 					<hr class="b-top-2 border-primary" />
 					<div class="row text-lg">
 						<div class="col-6">'.JText::_('TEXT_TOTAL').'</div>
-						<div class="col-6 text-right">R$ '.baseHelper::priceFormat($invoice->total).'</div>
+						<div class="col-6 text-right">R$ '.baseHelper::priceFormat($invoice->total).$invoiced.'</div>
 					</div>
 				';
 			endif;
@@ -195,7 +213,7 @@ endif;
 if($redir) :
 	// redireciona para a listagem de faturas
 	$app->enqueueMessage(JText::_('MSG_NO_INVOICE'), 'warning');
-	$app->redirect(JURI::root(true).'/services/mobile-invoices?pID='.$pID.'&uID='.$uID);
+	$app->redirect(JURI::root(true).'/apps/clients/phonesinvoices?pID='.$pID.($uID != $user->id ? '&uID='.$uID : ''));
 	exit();
 endif;
 ?>

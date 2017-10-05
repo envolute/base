@@ -6,7 +6,13 @@
 defined('_JEXEC') or die;
 $ajaxRequest = false;
 require('config.php');
-$cfg['isPublic'] = false; // Público -> acesso aberto a todos
+
+// ACESSO: Libera o acesso aos clients
+// Atribui aos clientes o perfil de visualizador só para esse código
+unset($cfg['groupId']['viewer']); // Limpa os valores padrão
+$cfg['groupId']['viewer'][]	= 11; // Associado -> Efetivo
+$cfg['groupId']['viewer'][]	= 12; // Associado -> Aposentado
+$cfg['groupId']['viewer'][]	= 13; // Associado -> Contribuinte
 
 // IMPORTANTE: Carrega o arquivo 'helper' do template
 JLoader::register('baseHelper', JPATH_CORE.DS.'helpers/base.php');
@@ -27,8 +33,8 @@ require(JPATH_CORE.DS.'apps/_init.app.php');
 // Para possibilitar o carregamento da language 'default' de forma dinâmica,
 // é necessário passar na sessão ($_SESSION[$APPTAG.'langDef'])
 if(isset($_SESSION[$APPTAG.'langDef'])) :
-$lang->load('base_apps', JPATH_BASE, $_SESSION[$APPTAG.'langDef'], true);
-$lang->load('base_'.$APPNAME, JPATH_BASE, $_SESSION[$APPTAG.'langDef'], true);
+	$lang->load('base_apps', JPATH_BASE, $_SESSION[$APPTAG.'langDef'], true);
+	$lang->load('base_'.$APPNAME, JPATH_BASE, $_SESSION[$APPTAG.'langDef'], true);
 endif;
 
 // Get request data
@@ -174,16 +180,29 @@ if($pID > 0) :
 				$html .= '<ul class="set-list bordered list-lg text-lg">';
 				foreach($res as $item) {
 					// LINK TO INVOICE
-					$urlToInvoiceDetail = JURI::root().'services/mobile-invoices/invoice-details?invID='.$item->invoice_id.'&pID='.$item->phone_id.($uID != $user->id ? '&uID='.$uID : '');
+					$urlToInvoiceDetail = JURI::root().'apps/clients/phonesinvoices/details?invID='.$item->invoice_id.'&pID='.$item->phone_id.($uID != $user->id ? '&uID='.$uID : '');
+					$invoiced = '';
+					if(!empty($item->invoice)) :
+						$invoiced = '
+							<br />
+							<a href="'.JURI::root().'apps/clients/invoices/details?invID='.$item->invoice.($uID != $user->id ? '&uID='.$uID : '').'" class="text-success text-md new-window hasTooltip" title="'.JText::_('MSG_INVOICED').'" target="_blank"> 
+								'.JText::_('TEXT_INVOICED').'
+							</a>
+						';
+					endif;
+
 					$html .= '
 						<li>
 							<div class="row">
 								<div class="col-6">
-									<span class="base-icon-calendar"></span>
-									<a href="'.$urlToInvoiceDetail.'">'.baseHelper::dateFormat($item->due_date).'</span></a>
+								<a href="'.$urlToInvoiceDetail.'">
+									'.baseHelper::getMonthName($item->due_month).'
+									<div class="base-icon-calendar small text-muted"> '.baseHelper::dateFormat($item->due_date).'</div>
+								</a>
 								</div>
 								<div class="col-6 text-right">
 									<a href="'.$urlToInvoiceDetail.'">R$ '.baseHelper::priceFormat($item->total).'</a>
+									'.$invoiced.'
 								</div>
 							</a>
 						</li>

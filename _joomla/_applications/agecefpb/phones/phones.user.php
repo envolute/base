@@ -82,7 +82,7 @@ if(isset($user->id) && $user->id) :
 		$html .= '<ul class="set-list bordered list-trim">';
 		foreach($res as $item) {
 			// LINK TO INVOICE
-			$urlToInvoice = JURI::root().'services/mobile-invoices?pID='.$item->id.($uID != $user->id ? '&uID='.$uID : '');
+			$urlToInvoice = JURI::root().'apps/clients/phonesinvoices?pID='.$item->id.($uID != $user->id ? '&uID='.$uID : '');
 			$html .= '
 				<li>
 					<a href="'.$urlToInvoice.'" class="d-block">

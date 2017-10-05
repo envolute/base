@@ -11,33 +11,13 @@ require($PATH_APP_FILE.'.filter.php');
 
 	$query = '
 		SELECT SQL_CALC_FOUND_ROWS
-			'. $db->quoteName('T1.id') .',
-			'. $db->quoteName('T1.parent_id') .',
-			'. $db->quoteName('T1.provider_id') .',
-			'. $db->quoteName('T1.client_id') .',
-			'. $db->quoteName('T1.dependent_id') .',
+			T1.*,
 			'. $db->quoteName('T2.name') .' provider,
 			'. $db->quoteName('T3.name') .' client,
+			'. $db->quoteName('T3.user_id') .',
 			'. $db->quoteName('T4.name') .' dependent,
-			'. $db->quoteName('T1.invoice_id') .',
 			'. $db->quoteName('T5.group_id') .' invoiceGroup,
-			'. $db->quoteName('T5.due_date') .' invoiceDate,
-			'. $db->quoteName('T1.description') .',
-			'. $db->quoteName('T1.fixed') .',
-			'. $db->quoteName('T1.isCard') .',
-			'. $db->quoteName('T1.date') .',
-			'. $db->quoteName('T1.date_installment') .',
-			'. $db->quoteName('T1.price') .',
-			'. $db->quoteName('T1.price_total') .',
-			'. $db->quoteName('T1.installment') .',
-			'. $db->quoteName('T1.total') .',
-			'. $db->quoteName('T1.doc_number') .',
-			'. $db->quoteName('T1.note') .',
-			'. $db->quoteName('T1.created_date') .',
-			'. $db->quoteName('T1.created_by') .',
-			'. $db->quoteName('T1.alter_date') .',
-			'. $db->quoteName('T1.alter_by') .',
-			'. $db->quoteName('T1.state') .'
+			'. $db->quoteName('T5.due_date') .' invoiceDate
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
 			JOIN '. $db->quoteName('#__base_providers') .' T2
@@ -159,10 +139,13 @@ if($num_rows) : // verifica se existe
 				';
 			endif;
 
-			$info = !empty($item->description) ? $item->description : '';
+			$urlToInvoice = JURI::root().'apps/clients/invoices/details?invID='.$item->invoice_id.($item->user_id != $user->id ? '&uID='.$item->user_id : '');
+			$urlToPhoneInvoice = JURI::root().'apps/clients/phonesinvoices/details?invID='.$item->phoneInvoice_id.'&pID='.$item->phone_id.($item->user_id != $user->id ? '&uID='.$item->user_id : '');
+			$desc = !empty($item->phoneInvoice_id) ? '<a href="'.$urlToPhoneInvoice.'" class="new-window" target="_blank">'.$item->description.'</a>' : $item->description;
+			$info = !empty($desc) ? $desc : '';
 			$info .= !empty($item->doc_number) ? '<div class="text-xs text-muted">Item: '.$item->doc_number.'</div>' : '';
 			$dependent = !empty($item->dependent) ? '<div class="small text-muted">&raquo; <span class="cursor-help hasTooltip" title="'.JText::_('TEXT_TRANSACTION_BY').'">'.baseHelper::nameFormat($item->dependent).'</span></div>' : '';
-			$invoice = $item->invoice_id != 0 ? JText::_('FIELD_LABEL_GROUP_'.$item->invoiceGroup).'<div class="small text-live">'.baseHelper::dateFormat($item->invoiceDate).'</div>' : '';
+			$invoice = !empty($item->invoice_id) ? '<a href="'.$urlToInvoice.'" class="new-window" target="_blank">'.JText::_('FIELD_LABEL_GROUP_'.$item->invoiceGroup).'</a><div class="small text-live">'.baseHelper::dateFormat($item->invoiceDate).'</div>' : '';
 			if(!$recurr) :
 				$invoice = '<td class="d-none d-lg-table-cell">'.$invoice.'</td>';
 			endif;
