@@ -48,7 +48,7 @@ echo '<div id="clients-list-birthday">';
 
 $birth = $month = $modal = '';
 if($num_rows) : // verifica se existe
-	$list =
+
 	$birth .= '<ul class="set-list bordered b-bottom mb-2">';
 	$month .= '<ul class="set-list bordered list-trim">';
 	$count = 0;

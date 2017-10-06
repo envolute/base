@@ -180,7 +180,7 @@ $userGrps = $db->loadObjectList();
 				</div>
 			</div>
 		</div>
-		<div id="<?php echo $APPTAG?>-msg-relations" class="alert alert-info base-icon-info-circled">
+		<div id="<?php echo $APPTAG?>-msg-relations" class="alert alert-info base-icon-info-circled"> 
 			<span class="text-live font-featured"><?php echo JText::_('TEXT_BANKS_ACCOUNTS')?></span>
 			<?php echo JText::_('MSG_ADD_AFTER_SAVE')?>
 		</div>

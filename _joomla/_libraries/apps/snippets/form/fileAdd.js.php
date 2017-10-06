@@ -20,7 +20,7 @@ window.<?php echo $APPTAG?>_setNewFile = function(fGroup, fGtype, fClass, fLabel
 		fileField += '<div class="image-file">';
 		fileField += '	<a href="#" class="image-action">';
 		fileField += '		<div class="image-file-label">';
-		fileField += '			<span class="image-file-off base-icon-file-image"><small>200 x 200</small></span>';
+		fileField += '			<span class="image-file-off base-icon-file-image"></span>';
 		fileField += '			<span class="image-file-on text-sm base-icon-ok" hidden></span>';
 		fileField += '			<span class="image-file-edit base-icon-pencil" hidden></span>';
 		fileField += '		</div>';

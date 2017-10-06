@@ -115,11 +115,11 @@ endif;
 	$cfg['hasUpload']			= true;
 	$cfg['hasUpload'] = isset(${$APPTAG.'hasUpload'}) ? ${$APPTAG.'hasUpload'} : $cfg['hasUpload'];
 	// habilita a adição dinamica de novos campos do tipo 'file'
-	$cfg['dinamicFiles']		= false;
+	$cfg['dinamicFiles']		= true;
 	// valor inicial do index do arquivo... considerando '0' o campo estático
 	// caso exitam outros campos estáticos, o index será igual ao número de itens estáticos
 	// Ex: 4 itens estáticos => $cfg['indexFileInit'] = 4;
-	$cfg['indexFileInit']		= 1;
+	$cfg['indexFileInit']		= 4;
 
 	if($cfg['hasUpload']) :
 		$cfg['fileField']		= 'file'; // upload's field name

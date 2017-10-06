@@ -243,7 +243,7 @@ $types = $db->loadObjectList();
 		<div id="<?php echo $APPTAG?>-files-group" class="row"></div>
 	</div>
 	<div class="tab-pane fade" id="<?php echo $APPTAG?>TabImages" role="tabpanel" aria-labelledby="<?php echo $APPTAG?>Tab-images">
-		<button type="button" class="base-icon-plus btn btn-success" onclick="<?php echo $APPTAG?>_setNewFile('#<?php echo $APPTAG?>-images-group', 'image', 'col-md-6 col-lg-3')">
+		<button type="button" class="base-icon-plus btn btn-success" onclick="<?php echo $APPTAG?>_setNewFile('#<?php echo $APPTAG?>-images-group', 'image', 'col-md-6 col-lg-3 mb-3')">
 			<?php echo JText::_('TEXT_ADD'); ?>
 		</button>
 		<hr />

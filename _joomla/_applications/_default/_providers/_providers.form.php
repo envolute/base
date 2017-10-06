@@ -15,8 +15,11 @@ $groups = $db->loadObjectList();
 	<li class="nav-item">
 		<a class="nav-link" id="<?php echo $APPTAG?>Tab-description" data-toggle="tab" href="#<?php echo $APPTAG?>TabDesc" role="tab" aria-controls="description"><?php echo JText::_('FIELD_LABEL_ABOUT'); ?></a>
 	</li>
-	<li class="nav-item dropdown">
+	<li class="nav-item">
 		<a class="nav-link" id="<?php echo $APPTAG?>Tab-service" data-toggle="tab" href="#<?php echo $APPTAG?>TabService" role="tab" aria-controls="service"><?php echo JText::_('FIELD_LABEL_SERVICE'); ?></a>
+	</li>
+	<li class="nav-item">
+		<a class="nav-link" id="<?php echo $APPTAG?>Tab-images" data-toggle="tab" href="#<?php echo $APPTAG?>TabImages" role="tab" aria-controls="images"><?php echo JText::_('FIELD_LABEL_IMAGES'); ?></a>
 	</li>
 </ul>
 <div class="tab-content" id="<?php echo $APPTAG?>TabContent">
@@ -154,6 +157,35 @@ $groups = $db->loadObjectList();
 						<input type="file" name="file[1]" id="<?php echo $APPTAG?>-file1" class="form-control" hidden />
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tab-pane fade" id="<?php echo $APPTAG?>TabImages" role="tabpanel" aria-labelledby="<?php echo $APPTAG?>Tab-images">
+		<div class="row">
+			<div class="col-sm-3">
+				<div class="form-group">
+					<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_IMAGE_BANNER_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_IMAGE_BANNER'); ?></label>
+					<div class="image-file">
+						<a href="#" class="image-action">
+							<div class="image-file-label">
+								<span class="image-file-off base-icon-file-image"></span>
+								<span class="image-file-on text-sm base-icon-ok" hidden></span>
+								<span class="image-file-edit base-icon-pencil" hidden></span>
+							</div>
+						</a>
+						<span class="btn-group mt-2"></span>
+						<input type="file" name="file[2]" id="<?php echo $APPTAG?>-file2" class="field-image" hidden />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-9 b-left">
+				<h4><?php echo JText::_('FIELD_LABEL_IMAGE_DIRECTORY'); ?></h4>
+				<p class="text-muted text-sm lh-1-3"><?php echo JText::_('FIELD_LABEL_IMAGE_DIRECTORY_DESC'); ?></p>
+				<button type="button" class="base-icon-plus btn btn-success" onclick="<?php echo $APPTAG?>_setNewFile('#<?php echo $APPTAG?>-images-group', 'image', 'col-sm-6 col-lg-4 mb-3')">
+					<?php echo JText::_('TEXT_ADD'); ?>
+				</button>
+				<hr />
+				<div id="<?php echo $APPTAG?>-images-group" class="row"></div>
 			</div>
 		</div>
 	</div>
