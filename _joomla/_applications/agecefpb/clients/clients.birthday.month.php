@@ -46,7 +46,7 @@ try {
 
 $html = '';
 if($num_rows) : // verifica se existe
-	$html .= '<ul class="list-unstyled bordered list-sm list-striped list-hover m-0">';
+	$html .= '<ul class="set-list bordered list-sm b-bottom mb-2">';
 	foreach($res as $item) {
 
 		JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');

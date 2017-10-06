@@ -125,7 +125,7 @@ if($num_rows) : // verifica se existe
 		JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 		// Imagem Principal -> Primeira imagem (index = 0)
 		$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
-		if(!empty($img)) $img = '<img src=\''.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 150, 150).'\' class=\'img-fluid mb-3 mx-auto\' />';
+		if(!empty($img)) $img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 150, 150).'" class="img-fluid mb-3 mx-auto" />';
 		else $img = '<div class="image-file mb-3 mx-auto" style="width:150px;"><div class="image-action"><div class="image-file-label"><span class="base-icon-file-image"></span></div></div></div>';
 
 		$html .= '
