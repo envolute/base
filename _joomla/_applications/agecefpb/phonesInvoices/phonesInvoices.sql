@@ -105,7 +105,7 @@ SELECT
 	`T5`.`id` provider_id,
 	`T5`.`state` provider_state,
 	`T5`.`name` provider,
-	IF(`T7`.`invoice_id` IS NULL, 0, `T7`.`id`) invoice,
+	IF(`T7`.`invoice_id` IS NULL, 0, `T7`.`invoice_id`) invoice,
 	SUM(`T1`.`valor_cobrado`) AS `valor_cobrado`,
 	`T4`.`price` valor_plano,
 	`T2`.`tax` taxa_servico,
@@ -123,7 +123,7 @@ FROM `cms_agecefpb_phones_invoices_details` T1
 	LEFT OUTER JOIN `cms_agecefpb_clients` T6
 	ON `T6`.`id` = `T3`.`client_id`
 	LEFT OUTER JOIN `cms_agecefpb_transactions` T7
-	ON `T7`.`phoneInvoice_id` = `T1`.`invoice_id`
+	ON `T7`.`phone_id` = `T3`.`id`
 WHERE `T1`.`tel` <> ""
 GROUP BY `T1`.`tel`
 ORDER BY `T1`.`invoice_id`, `T6`.`name`;

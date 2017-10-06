@@ -45,9 +45,6 @@ $uID = ($hasAdmin && $uID > 0) ? $uID : $user->id;
 // LINK TO INVOICE
 $urlToInvoices = JURI::root().'apps/clients/phonesinvoices?pID='.$pID.($uID != $user->id ? '&uID='.$uID : '');
 
-// Admin Actions
-require_once(JPATH_APPS.DS.'clients/clients.select.user.php');
-
 $redir = false;
 if($pID > 0) :
 
@@ -110,10 +107,11 @@ if($pID > 0) :
 			$invoiced = '';
 			if(!empty($invoice->invoice)) :
 				$invoiced = '
-					<br />
-					<a href="'.JURI::root().'apps/clients/invoices/details?invID='.$invoice->invoice.($uID != $user->id ? '&uID='.$uID : '').'" class="text-success text-md new-window hasTooltip" title="'.JText::_('MSG_INVOICED').'" target="_blank">
-						'.JText::_('TEXT_INVOICED').'
-					</a>
+					<div class="lh-1">
+						<a href="'.JURI::root().'apps/clients/invoices/details?invID='.$invoice->invoice.($uID != $user->id ? '&uID='.$uID : '').'" class="text-success text-md new-window hasTooltip" title="'.JText::_('MSG_INVOICED').'" target="_blank">
+							'.JText::_('TEXT_INVOICED').'
+						</a>
+					</div>
 				';
 			endif;
 
@@ -138,7 +136,7 @@ if($pID > 0) :
 				$html .= '
 					<hr class="mt-0 mb-2" />
 					<div class="text-lg b-bottom b-dashed pb-2 mb-4">
-						<a href="'.$urlToInvoices.'" class="base-icon-left-big hidden-print"> '.JText::_('TEXT_RETURN_TO_INVOICES').'</a>
+						<a href="'.$urlToInvoices.'" class="base-icon-left-big hidden-print"><span class="d-none d-sm-inline"> '.JText::_('TEXT_RETURN_TO_INVOICES').'</span></a>
 						<span class="d-print-inline"> '.JText::_('TEXT_COVENANT').'</span>
 						<span class="float-right">'.JText::_('FIELD_LABEL_DUE_DATE').': '.baseHelper::dateFormat($invoice->due_date).'</span>
 					</div>
@@ -183,9 +181,9 @@ if($pID > 0) :
 						</li>
 					</ul>
 					<hr class="b-top-2 border-primary" />
-					<div class="row text-lg">
+					<div class="row text-xl">
 						<div class="col-6">'.JText::_('TEXT_TOTAL').'</div>
-						<div class="col-6 text-right">R$ '.baseHelper::priceFormat($invoice->total).$invoiced.'</div>
+						<div class="col-6 text-right text-live"><small class="text-muted">R$</small> '.baseHelper::priceFormat($invoice->total).$invoiced.'</div>
 					</div>
 				';
 			endif;
