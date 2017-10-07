@@ -41,7 +41,7 @@ if($hasAdmin) :
 			</span>
 		</div>
 		<div class="btn-group float-right d-none d-md-flex">
-			<a href="<?php echo JURI::root()?>apps/providers" class="btn btn-default base-icon-cog"><span class="d-none d-lg-inline"> <?php echo JText::_('LIST_TITLE')?></span></a>
+			<a href="<?php echo JURI::root()?>apps/base-providers" class="btn btn-default base-icon-cog"><span class="d-none d-lg-inline"> <?php echo JText::_('LIST_TITLE')?></span></a>
 			<button class="btn btn-default base-icon-print" onclick="javascript:print()"></button>
 		</div>
 	</div>

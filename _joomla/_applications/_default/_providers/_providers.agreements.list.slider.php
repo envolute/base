@@ -42,26 +42,6 @@ endif;
 // DATABASE CONNECT
 $db = JFactory::getDbo();
 
-// FILTER
-$filter = !empty($gID) ? $db->quoteName('T1.group_id') .' = '. $gID . ' AND ' : '';
-
-// GROUPS
-$query = '
-	SELECT
-		DISTINCT(T1.group_id) id, T2.name
-	FROM
-		'. $db->quoteName($cfg['mainTable']) .' T1
-		JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
-		ON T2.id = T1.group_id
-	 ORDER BY T2.name
-';
-$db->setQuery($query);
-$groups = $db->loadObjectList();
-$grplist = '';
-foreach ($groups as $obj) {
-	$grplist .= '<option value="'.$obj->id.'"'.($gID == $obj->id ? ' selected' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
-}
-
 // GET DATA
 $query	= '
 	SELECT
@@ -72,7 +52,6 @@ $query	= '
 		JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
 		ON T2.id = T1.group_id AND T2.state = 1
 	WHERE
-		'. $filter .'
 		'. $db->quoteName('T1.agreement') .' = 1 AND
 		'. $db->quoteName('T1.state') .' = 1
 ';
@@ -86,40 +65,8 @@ try {
 	return;
 }
 
-$btnReset = '';
-if($gID) :
-	$btnReset = '
-		<span class="input-group-btn">
-			<a href="'.JURI::current().'" class="btn btn-danger base-icon-cancel hasTooltip" title="'.JText::_('TEXT_SHOW_ALL').'"></a>
-		</span>
-	';
-endif;
-
-$html = '
-	<script>
-	jQuery(function() {
-		// SELECT USER -> Selecionar um usuário no formulário de edição
-		window.'.$APPTAG.'_selectGroup = function(el) {
-			var val = jQuery(el).val();
-			location.href = "'.JURI::current().'"+((!isEmpty(val) && val != 0) ? "?gID="+val : "");
-		};
-	});
-	</script>
-
-	<div id="agreements-filter" class="hidden-print my-3">
-		<div class="input-group mx-auto mw-100" style="width:400px;">
-			<span class="input-group-addon base-icon-filter cursor-help hasTooltip" title="'.JText::_('TEXT_FILTER_TO_GROUP').'"></span>
-			<select name="pID" id="'.$APPTAG.'-pID" class="form-control" onchange="'.$APPTAG.'_selectGroup(this)">
-				<option value="0">- '.JText::_('TEXT_ALL_GROUPS').' -</option>
-				'.$grplist.'
-			</select>
-			'.$btnReset.'
-		</div>
-	</div>
-';
-
 if($num_rows) : // verifica se existe
-	$html .= '<div id="agreements-list" class="row pt-4">';
+
 	foreach($res as $item) {
 
 		JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
@@ -129,17 +76,17 @@ if($num_rows) : // verifica se existe
 		else $img = '<div class="image-file mb-3 mx-auto" style="width:150px;"><div class="image-action"><div class="image-file-label"><span class="base-icon-file-image"></span></div></div></div>';
 
 		$html .= '
-			<div class="agreements-item col-md-4 col-xl-3 text-center my-4">
-				<a href="'.$urlToView.'?vID='.$item->id.'">
-					'.$img.'
-					<h5>'.baseHelper::nameFormat($item->name).'</h5>
-				</a>
-			</div>
+			<li class="agreements-brand clearfix">
+				<figure class="img-fluid">
+					<a href="'.$urlToView.'?vID='.$item->id.'">
+						'.$img.'
+						<figcaption>'.baseHelper::nameFormat($item->name).'</figcaption>
+					</a>
+				</figure>
+			</li>
 		';
 	}
-	$html .= '</div>';
-else :
-	$html = '<p class="base-icon-info-circled alert alert-warning m-0"> '.JText::_('MSG_LISTNOREG').'</p>';
+
 endif;
 
 echo $html;
