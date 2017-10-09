@@ -42,6 +42,17 @@ endif;
 // DATABASE CONNECT
 $db = JFactory::getDbo();
 
+// PARAMS FROM MODULE
+$itemsTotal		= $items_total; // Total de itens carregados
+$itemsIds		= $items_ids; // Ids dos itens que devem ser visualizados
+$itemsOrder		= $items_order; // ordem dos itens
+$imgWidth		= $image_width; // largura da imagem
+$imgHeight		= $image_height; // altura da imagem
+
+$where	= !empty($itemsids) ? ' AND '. $db->quoteName('T1.id') .' IN ('.$itemsids.')' : '';
+$order	= !empty($itemsOrder) ? ' ORDER BY '. $itemsOrder : '';
+$limit	= !empty($itemstotal) ? ' LIMIT '. $itemstotal : '';
+
 // GET DATA
 $query	= '
 	SELECT
@@ -54,6 +65,7 @@ $query	= '
 	WHERE
 		'. $db->quoteName('T1.agreement') .' = 1 AND
 		'. $db->quoteName('T1.state') .' = 1
+		'.$where.$order.$limit.'
 ';
 try {
 	$db->setQuery($query);
@@ -70,21 +82,25 @@ if($num_rows) : // verifica se existe
 	foreach($res as $item) {
 
 		JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
-		// Imagem Principal -> Primeira imagem (index = 0)
-		$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
-		if(!empty($img)) $img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 150, 150).'" class="img-fluid mb-3 mx-auto" />';
-		else $img = '<div class="image-file mb-3 mx-auto" style="width:150px;"><div class="image-action"><div class="image-file-label"><span class="base-icon-file-image"></span></div></div></div>';
+		// Banner Principal (index = 2)
+		$img = uploader::getFile($cfg['fileTable'], '', $item->id, 2, $cfg['uploadDir']);
+		if(!empty($img)) :
 
-		$html .= '
-			<li class="agreements-brand clearfix">
-				<figure class="img-fluid">
-					<a href="'.$urlToView.'?vID='.$item->id.'">
-						'.$img.'
-						<figcaption>'.baseHelper::nameFormat($item->name).'</figcaption>
-					</a>
-				</figure>
-			</li>
-		';
+			$path = 'images/apps/'.$APPPATH.'/'.$img['filename'];
+			if(!empty($imgWidth) && !empty($imgHeight)) $path = baseHelper::thumbnail($urlImg, $imgWidth, $imgHeight);
+			$img = '<img src="'.$path.'" class="img-fluid mx-auto" />';
+
+			$html .= '
+				<li class="agreements-brand clearfix">
+					<figure class="img-fluid">
+						<a href="'.$urlToView.'?vID='.$item->id.'">
+							'.$img.'
+						</a>
+					</figure>
+				</li>
+			';
+
+		endif;
 	}
 
 endif;

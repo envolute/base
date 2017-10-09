@@ -23,7 +23,13 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic" label="MOD_BASESLIDER_CONFIG">
-				<field name="phpFile" type="text" filter="string" default="" label="MOD_BASESLIDER_PHP_FILE_LABEL" description="MOD_BASESLIDER_PHP_FILE_DESC" />
+				
+				<field name="phpFile" type="text" filter="string" class="input-xxlarge" default="" label="MOD_BASESLIDER_PHP_FILE_LABEL" description="MOD_BASESLIDER_PHP_FILE_DESC" />
+				<field name="items_total" type="text" filter="int" default="" label="MOD_BASESLIDER_ITEMS_TOTAL_LABEL" description="MOD_BASESLIDER_ITEMS_TOTAL_DESC" />
+				<field name="items_ids" type="text" filter="string" default="" label="MOD_BASESLIDER_ITEMS_IDS_LABEL" description="MOD_BASESLIDER_ITEMS_IDS_DESC" />
+				<field name="items_order" type="text" filter="string" default="" label="MOD_BASESLIDER_ITEMS_ORDER_LABEL" description="MOD_BASESLIDER_ITEMS_ORDER_DESC" />
+				<field name="image_width" type="text" filter="int" default="" label="MOD_BASESLIDER_IMAGE_WIDTH_LABEL" description="MOD_BASESLIDER_IMAGE_WIDTH_DESC" />
+				<field name="image_height" type="text" filter="int" default="" label="MOD_BASESLIDER_IMAGE_HEIGHT_LABEL" description="MOD_BASESLIDER_IMAGE_HEIGHT_DESC" />
 
 				<field name="slider" type="spacer" class="text" label="MOD_BASESLIDER_LABEL" />
 
@@ -32,41 +38,11 @@
 					class="btn-group"
 					label="MOD_BASESLIDER_MODE_LABEL"
 					description="MOD_BASESLIDER_MODE_DESC"
-					default="fade"
+					default="horizontal"
 				>
 					<option value="fade">Fade</option>
 					<option value="horizontal">Horizontal</option>
 					<option value="vertical">Vertical</option>
-				</field>
-
-				<field name="slide_fullScreen"
-					type="radio"
-					class="btn-group"
-					label="MOD_BASESLIDER_FULLSCREEN_LABEL"
-					description="MOD_BASESLIDER_FULLSCREEN_DESC"
-					default="0"
-				>
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-
-				<field name="slide_minHeight" type="text" filter="string" default="" label="MOD_BASESLIDER_MIN_HEIGHT" description="MOD_BASESLIDER_MIN_HEIGHT_DESC" />
-				<field name="slide_fullHeight" type="text" filter="string" default="" label="MOD_BASESLIDER_FULL_HEIGHT" description="MOD_BASESLIDER_FULL_HEIGHT_DESC" />
-				<field name="slide_minSlides" type="text" filter="int" default="1" label="MOD_BASESLIDER_MIN_SLIDES" description="MOD_BASESLIDER_MIN_SLIDES_DESC" />
-				<field name="slide_maxSlides" type="text" filter="int" default="1" label="MOD_BASESLIDER_MAX_SLIDES" description="MOD_BASESLIDER_MAX_SLIDES_DESC" />
-				<field name="slide_slideWidth" type="text" filter="int" default="0" label="MOD_BASESLIDER_WIDTH" description="MOD_BASESLIDER_WIDTH_DESC" />
-				<field name="slide_slideMargin" type="text" filter="int" default="0" label="MOD_BASESLIDER_MARGIN" description="MOD_BASESLIDER_MARGIN_DESC" />
-				<field name="slide_moveSlides" type="text" filter="int" default="0" label="MOD_BASESLIDER_MOVE_SLIDES" description="MOD_BASESLIDER_MOVE_SLIDES_DESC" />
-
-				<field name="slide_adaptiveHeight"
-					type="radio"
-					class="btn-group"
-					label="MOD_BASESLIDER_ADAPTIVE_HEIGHT_LABEL"
-					description="MOD_BASESLIDER_ADAPTIVE_HEIGHT_DESC"
-					default="0"
-				>
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
 				</field>
 
 				<field name="slide_loop"
@@ -91,23 +67,12 @@
 					<option value="1">JYES</option>
 				</field>
 
-				<field name="slide_caption"
-					type="radio"
-					class="btn-group"
-					label="MOD_BASESLIDER_CAPTION_LABEL"
-					description="MOD_BASESLIDER_CAPTION_DESC"
-					default="0"
-				>
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-
 				<field name="slide_nav"
 					type="radio"
 					class="btn-group"
 					label="MOD_BASESLIDER_NAV_LABEL"
 					description="MOD_BASESLIDER_NAV_DESC"
-					default="0"
+					default="1"
 				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
@@ -118,7 +83,7 @@
 					class="btn-group"
 					label="MOD_BASESLIDER_PAGER_LABEL"
 					description="MOD_BASESLIDER_PAGER_DESC"
-					default="1"
+					default="0"
 				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
@@ -149,18 +114,52 @@
 				<field name="slide_pause" type="text" class="input-small"
 					label="MOD_BASESLIDER_PAUSE_LABEL"
 					description="MOD_BASESLIDER_PAUSE_DESC"
-					default="7000" />
+					default="10000" />
 
-				<field name="slide_removeContainer"
+				<field name="slide_caption"
 					type="radio"
 					class="btn-group"
-					label="MOD_BASESLIDER_REMOVE_CONTAINER_LABEL"
-					description="MOD_BASESLIDER_REMOVE_CONTAINER_DESC"
+					label="MOD_BASESLIDER_CAPTION_LABEL"
+					description="MOD_BASESLIDER_CAPTION_DESC"
 					default="0"
 				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
+
+				<field name="slide_adaptiveHeight"
+					type="radio"
+					class="btn-group"
+					label="MOD_BASESLIDER_ADAPTIVE_HEIGHT_LABEL"
+					description="MOD_BASESLIDER_ADAPTIVE_HEIGHT_DESC"
+					default="0"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field name="slide_noContainer"
+					type="radio"
+					class="btn-group"
+					label="MOD_BASESLIDER_REMOVE_CONTAINER_LABEL"
+					description="MOD_BASESLIDER_REMOVE_CONTAINER_DESC"
+					default="1"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field name="slide_id" type="text" filter="string" default="" label="MOD_BASESLIDER_ID_LABEL" description="MOD_BASESLIDER_ID_DESC" />
+				<field name="slide_class" type="text" filter="string" class="input-xxlarge" default="" label="MOD_BASESLIDER_CLASS_LABEL" description="MOD_BASESLIDER_CLASS_DESC" />
+
+				<field name="carousel" type="spacer" class="text" label="MOD_BASESLIDER_CAROUSEL_LABEL" description="MOD_BASESLIDER_CAROUSEL_DESC" />
+
+				<field name="slide_minSlides" type="text" filter="int" default="1" label="MOD_BASESLIDER_MIN_SLIDES" description="MOD_BASESLIDER_MIN_SLIDES_DESC" />
+				<field name="slide_maxSlides" type="text" filter="int" default="1" label="MOD_BASESLIDER_MAX_SLIDES" description="MOD_BASESLIDER_MAX_SLIDES_DESC" />
+				<field name="slide_slideMargin" type="text" filter="int" default="0" label="MOD_BASESLIDER_MARGIN" description="MOD_BASESLIDER_MARGIN_DESC" />
+				<field name="slide_moveSlides" type="text" filter="int" default="0" label="MOD_BASESLIDER_MOVE_SLIDES" description="MOD_BASESLIDER_MOVE_SLIDES_DESC" />
+				<field name="slide_slideWidth" type="text" filter="int" default="0" label="MOD_BASESLIDER_SLIDE_WIDTH" description="MOD_BASESLIDER_SLIDE_WIDTH_DESC" />
+
 			</fieldset>
 			<fieldset name="MOD_BASESLIDER_CODE">
 				<field name="code" type="textarea" filter="raw" class="input-xxlarge" rows="10" label="MOD_BASESLIDER_CODE_LABEL" description="MOD_BASESLIDER_CODE_DESC" />

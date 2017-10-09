@@ -17,10 +17,16 @@ $file = $params->get('phpFile');
 if(!empty($file) && file_exists($file)) :
 
 	// PARAMS
-	$slider_fullScreen = $params->get('slide_fullScreen', 0); // slider FullScreen
-	$slider_minHeight = $params->get('slide_minHeight', '0'); // altura do slider 'FullScreen'
-	$slider_fullHeight = $params->get('slide_fullHeight', '100vh'); // altura do slider 'FullScreen'
-	$slider_RemoveContainer = $params->get('slide_removeContainer', 0); // remover container do slider
+	$slide_noContainer = $params->get('slide_noContainer', 1); // remover container do bxslider
+	$slide_id = $params->get('slide_id'); // propriedade ID do container do bxslider
+	$slide_class = $params->get('slide_class'); // classe CSS do container do bxslider
+
+	// App
+	$items_total = $params->get('items_total', 'int'); // Total de itens carregados
+	$items_ids = $params->get('items_ids'); // Ids dos itens que devem ser visualizados
+	$items_order = $params->get('items_order'); // ordem dos itens
+	$image_width = $params->get('image_width', 'int'); // Largura da imagem
+	$image_height = $params->get('image_height', 'int'); // Altura da imagem
 
 	// Opções do slide
 	$mode = $params->get('slide_mode', 'horizontal');
@@ -33,12 +39,16 @@ if(!empty($file) && file_exists($file)) :
 	$autoHover = $params->get('slide_autoHover', 1) ? 'true' : 'false';
 	$loop = $params->get('slide_loop', 1) ? 'true' : 'false';
 	$adaptiveHeight = $params->get('slide_adaptiveHeight', 0) ? 'true' : 'false';
-	// carrousel
+	// Carrossel
 	$minSlides = $params->get('slide_minSlides', 1);
 	$maxSlides = $params->get('slide_maxSlides', 1);
-	$slideWidth = $params->get('slide_slideWidth', 0);
-	$slideMargin = $params->get('slide_slideMargin', 15);
+	$slideMargin = $params->get('slide_slideMargin', 0);
 	$moveSlides = $params->get('slide_moveSlides', 0);
+	$slideWidth = $params->get('slide_slideWidth', 0);
+	// Full Screen
+	${$pageItensAppTag.'Slider_fullScreen'} = $params->get('slide_fullScreen', 0); // slider FullScreen
+	${$pageItensAppTag.'Slider_fullHeight'} = $params->get('slide_fullHeight', '100vh'); // altura do slider 'FullScreen'
+	${$pageItensAppTag.'Slider_minHeight'} = $params->get('slide_minHeight', '0'); // altura do slider 'FullScreen'
 
 	$doc = JFactory::getDocument();
 
@@ -57,47 +67,70 @@ if(!empty($file) && file_exists($file)) :
 	$doc->addScript(JURI::root().'templates/base/libs/content/bxslider/jquery.bxslider.min.js');
 
 	// esconde imagens no carregamento
-	$doc->addStyleDeclaration('#mod-base-slider-item-'.$module->id.' > li:not(:first-child) { position: absolute; top: 0; visibility: hidden; }');
+	$doc->addStyleDeclaration('#mod-base-bxslider-'.$module->id.' > li:not(:first-child) { position: absolute; top: 0; visibility: hidden; }');
 
+	// propriedade ID do container
+	$propID = !empty($slide_id) ? str_replace('#', '', $slide_id) : 'mod-base-slider-'.$module->id;
+	// $slider => Nome da função de carregamento do slider
+	// Utiliza o ID para gerar um nome de função 'fixo'. Isso possibilita que uma aplicação
+	// possa utilizar a função sem depender do ID do módulo, que é variável em cada projeto...
+	$slider = str_replace('-', '', $propID);
+	// Carousel
+	// Opções que implementam o formato de carousel
+	$carousel = '';
+	if($minSlides > 1 || $maxSlides > 1) :
+		$carousel = '
+			minSlides: '.$minSlides.',
+			maxSlides: '.$maxSlides.',
+			slideMargin: '.$slideMargin.',
+			moveSlides: '.$moveSlides.',
+		';
+	endif;
 	// CHAMADA DO SLIDER
 	// w => pega a largura atual do container
 	// sWidth => Define a largura do item "slideWidth"
 	$script = '
 		jQuery(window).on("load", function(){
 
-			var w = jQuery("#mod-base-slider-'.$module->id.'").width();
+			var w = jQuery("#'.$propID.'").width();
 			var sWidth = (w / '.$maxSlides.') - '.$slideMargin.';
 
-			jQuery("#mod-base-slider-item-'.$module->id.'").bxSlider({
-				mode:"'.$mode.'",
-				autoHover: '.$autoHover.',
-				captions: '.$captions.',
-				auto: '.$auto.',
-				pause: '.$pause.',
-				autoControls: '.$autocontrols.',
-				controls: '.$controls.',
-				pager: '.$pager.',
-				infiniteLoop: '.$loop.',
-				minSlides: '.$minSlides.',
-				maxSlides: '.$maxSlides.',
-				slideWidth: sWidth,
-				slideMargin: '.$slideMargin.',
-				moveSlides: '.$moveSlides.',
-				adaptiveHeight: '.$adaptiveHeight.',
-				onSliderLoad:function(currentIndex){
-					// mostra as imagens após o carregamento do plugin
-					jQuery("#mod-base-slider-item-'.$module->id.' img").attr("title","");
-					jQuery("#mod-base-slider-item-'.$module->id.' > li:not(:first-child)").css("visibility", "visible");
-				}
-			});
+			window.'.$slider.' = function() {
+				baseBxSlider'.$module->id.' = jQuery("#mod-base-bxslider-'.$module->id.'").bxSlider({
+					mode:"'.$mode.'",
+					autoHover: '.$autoHover.',
+					captions: '.$captions.',
+					auto: '.$auto.',
+					pause: '.$pause.',
+					autoControls: '.$autocontrols.',
+					controls: '.$controls.',
+					pager: '.$pager.',
+					infiniteLoop: '.$loop.',
+					slideWidth: '.($slideWidth == 0 ? 'sWidth' : $slideWidth).',
+					adaptiveHeight: '.$adaptiveHeight.',
+					'.$carousel.'
+					onSliderLoad:function(currentIndex) {
+						// mostra as imagens após o carregamento do plugin
+						jQuery("#mod-base-bxslider-'.$module->id.' img").attr("title","");
+						jQuery("#mod-base-bxslider-'.$module->id.' > li:not(:first-child)").css("visibility", "visible");
+					}
+				});
+			};
+
+			'.$slider.'();
 
 		});
 	';
 	$doc->addScriptDeclaration($script);
 
+	$class = $slide_noContainer ? 'no-container' : '';
+	$class .= !empty($class) ? ' ' : '';
+	$class .= !empty($slide_class) ? $slide_class : '';
+	$class = !empty($class) ? ' class="'.$class.'"' : '';
+
 	echo '
-		<div id="mod-base-slider-'.$module->id.'">
-			<ul id="mod-base-slider-item-'.$module->id.'" class="bxslider">
+		<div id="'.$propID.'"'.$class.'>
+			<ul id="mod-base-bxslider-'.$module->id.'" class="bxslider">
 	';
 			// INCLUDE
 			if(strpos($file, 'http') === false) :
