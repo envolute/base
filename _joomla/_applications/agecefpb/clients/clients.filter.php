@@ -145,7 +145,7 @@ $htmlFilter = '
 				<div class="col-sm-6 col-md-3 col-lg-2">
 					<div class="form-group">
 						<label class="label-sm">'.JText::_('TEXT_USER_TYPE').'</label>
-						<select name="fGroup" id="fGroup" class="form-control input-sm set-filter">
+						<select name="fGroup" id="fGroup" class="form-control form-control set-filter">
 							<option value="0">- '.JText::_('FIELD_LABEL_GROUP').' -</option>
 							'.$flt_group.'
 						</select>

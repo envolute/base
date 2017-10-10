@@ -1,9 +1,15 @@
 <?php
 defined('_JEXEC') or die;
+
+// usergroups -> select
+$group = '';
+$query = 'SELECT * FROM '. $db->quoteName('#__usergroups') .' WHERE '. $db->quoteName('parent_id') .' = 10 ORDER BY id';
+$db->setQuery($query);
+$userGrps = $db->loadObjectList();
 ?>
 
 <div class="modal-header">
-	<h5 class="modal-title"><?php echo JText::_('FORM_INVOICED_TITLE'); ?></h5>
+	<h5 class="modal-title"><?php echo JText::_('TEXT_ADD_FIXED'); ?></h5>
 	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 </div>
 <div class="modal-body">
@@ -11,18 +17,25 @@ defined('_JEXEC') or die;
 		<div class="row">
 			<div class="col-sm-8">
 				<div class="form-group">
-					<select name="groupID" id="<?php echo $APPTAG?>-groupID" class="form-control">
-						<option value="">- <?php echo JText::_('TEXT_INVOICE_GROUP')?> -</option>
-						<option value="0"><?php echo JText::_('TEXT_CLIENT_EFFECTIVE')?></option>
-						<option value="1"><?php echo JText::_('TEXT_CLIENT_CONTRIBUTOR')?></option>
-					</select>
+					<label class="font-weight-bold field-required"><?php echo JText::_('TEXT_SELECT_GROUP'); ?></label>
+					<?php
+					foreach ($userGrps as $obj) {
+						echo '
+							<div class="form-check">
+								<label class="form-check-label">
+									<input name="'.$APPTAG.'GroupID" class="form-check-input" type="checkbox" value="'.$obj->id.'" /> '.baseHelper::nameFormat($obj->title).'
+								</label>
+							</div>
+						';
+					}
+					?>
 				</div>
 			</div>
 			<div class="col-sm-4 text-right">
 				<div class="form-group">
 					<button type="button" name="btn-<?php echo $APPTAG?>-add-fixed" id="btn-<?php echo $APPTAG?>-add-fixed" class="btn btn-block btn-success" onclick="<?php echo $APPTAG?>_addFixed()">
 						<span class="base-icon-plus btn-icon"></span>
-						<?php echo JText::_('TEXT_ADD_FIXED'); ?>
+						<?php echo JText::_('TEXT_IMPORT'); ?>
 					</button>
 				</div>
 			</div>

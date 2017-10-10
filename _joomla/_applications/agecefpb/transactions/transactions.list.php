@@ -16,8 +16,8 @@ require($PATH_APP_FILE.'.filter.php');
 			'. $db->quoteName('T3.name') .' client,
 			'. $db->quoteName('T3.user_id') .',
 			'. $db->quoteName('T4.name') .' dependent,
-			'. $db->quoteName('T5.group_id') .' invoiceGroup,
-			'. $db->quoteName('T5.due_date') .' invoiceDate
+			'. $db->quoteName('T5.due_date') .' invoiceDate,
+			IF(`T5`.`custom_desc` <> "", `T5`.`custom_desc`, `T5`.`description`) invoice_desc
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
 			JOIN '. $db->quoteName('#__base_providers') .' T2
@@ -87,12 +87,12 @@ if($num_rows) : // verifica se existe
 	$found_rows = $db->loadResult();
 	$pageNav = new JPagination($found_rows , $lim0, $lim );
 
-	$currID = 1;
+	$tIDS = array();
 	$total  = 0;
 	foreach($res as $item) {
 
 		// MOSTRA APENAS A PRÓXIMA PARCELA EM ABERTO
-		if($item->parent_id != $currID || $fInst == 1) :
+		if(!in_array($item->transaction_id, $tIDS) || $fInst == 1) :
 
 			if($cfg['hasUpload']) :
 				JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
@@ -118,7 +118,6 @@ if($num_rows) : // verifica se existe
 						<input type="hidden" name="'.$APPTAG.'_provider_id[]" value="'.$item->provider_id.'" />
 						<input type="hidden" name="'.$APPTAG.'_client_id[]" value="'.$item->client_id.'" />
 						<input type="hidden" name="'.$APPTAG.'_dependent_id[]" value="'.$item->dependent_id.'" />
-						<input type="hidden" name="'.$APPTAG.'_invoice_group[]" value="'.$item->invoiceGroup.'" />
 						<input type="hidden" name="'.$APPTAG.'_description[]" value="'.$item->description.'" />
 						<input type="hidden" name="'.$APPTAG.'_fixed[]" value="'.$item->fixed.'" />
 						<input type="hidden" name="'.$APPTAG.'_date[]" value="'.$item->date.'" />
@@ -145,7 +144,7 @@ if($num_rows) : // verifica se existe
 			$info = !empty($desc) ? $desc : '';
 			$info .= !empty($item->doc_number) ? '<div class="text-xs text-muted">Item: '.$item->doc_number.'</div>' : '';
 			$dependent = !empty($item->dependent) ? '<div class="small text-muted">&raquo; <span class="cursor-help hasTooltip" title="'.JText::_('TEXT_TRANSACTION_BY').'">'.baseHelper::nameFormat($item->dependent).'</span></div>' : '';
-			$invoice = !empty($item->invoice_id) ? '<a href="'.$urlToInvoice.'" class="new-window" target="_blank">'.JText::_('FIELD_LABEL_GROUP_'.$item->invoiceGroup).'</a><div class="small text-live">'.baseHelper::dateFormat($item->invoiceDate).'</div>' : '';
+			$invoice = !empty($item->invoice_id) ? '<a href="'.$urlToInvoice.'" class="new-window" target="_blank">'.$item->invoice_desc.'</a><div class="small text-live">'.baseHelper::dateFormat($item->invoiceDate).'</div>' : '';
 			if(!$recurr) :
 				$invoice = '<td class="d-none d-lg-table-cell">'.$invoice.'</td>';
 			endif;
@@ -183,8 +182,10 @@ if($num_rows) : // verifica se existe
 				</tr>
 			';
 
+			// Se for uma parcela,
+			if(!empty($item->transaction_id)) $tIDS[] = $item->transaction_id;
+
 		endif;
-	    $currID = $item->id;
 
 	}
 

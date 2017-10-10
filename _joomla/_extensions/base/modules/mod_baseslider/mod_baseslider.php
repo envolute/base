@@ -17,34 +17,40 @@ $file = $params->get('phpFile');
 if(!empty($file) && file_exists($file)) :
 
 	// PARAMS
-	$slide_noContainer = $params->get('slide_noContainer', 1); // remover container do bxslider
-	$slide_id = $params->get('slide_id'); // propriedade ID do container do bxslider
-	$slide_class = $params->get('slide_class'); // classe CSS do container do bxslider
+	$slide_noContainer	= $params->get('slide_noContainer', 1); // remover container do bxslider
+	$slide_id			= $params->get('slide_id'); // propriedade ID do container do bxslider
+	$slide_class		= $params->get('slide_class'); // classe CSS do container do bxslider
 
 	// App
-	$items_total = $params->get('items_total', 'int'); // Total de itens carregados
-	$items_ids = $params->get('items_ids'); // Ids dos itens que devem ser visualizados
-	$items_order = $params->get('items_order'); // ordem dos itens
-	$image_width = $params->get('image_width', 'int'); // Largura da imagem
-	$image_height = $params->get('image_height', 'int'); // Altura da imagem
+	$items_total		= $params->get('items_total', '', 'int'); // Total de itens carregados
+	$items_ids			= $params->get('items_ids'); // Ids dos itens que devem ser visualizados
+	$categ_ids			= $params->get('categ_ids'); // Ids das categorias dos itens que devem ser visualizados
+	$items_order		= $params->get('items_order'); // ordem dos itens
+	$image_width		= $params->get('image_width', '', 'int'); // Largura da imagem
+	$image_height		= $params->get('image_height', '', 'int'); // Altura da imagem
+	$show_title			= $params->get('show_title', 0); // mostrar o título/nome do item
+	$show_categ			= $params->get('show_categ', 0); // mostrar a categoria/grupo do item
+	$show_desc			= $params->get('show_desc', 0); // mostrar a descrição do item
+	$show_user			= $params->get('show_user', 0); // mostrar o usuário/autor do item
+	$show_value			= $params->get('show_value', 0); // mostrar o valor do item
 
 	// Opções do slide
-	$mode = $params->get('slide_mode', 'horizontal');
-	$captions = $params->get('slide_caption', 0) ? 'true' : 'false';
-	$auto = $params->get('slide_auto', 1) ? 'true' : 'false';
-	$pause = $params->get('slide_pause', 10000);
-	$autocontrols = $params->get('slide_controls', 0) ? 'true' : 'false';
-	$controls = $params->get('slide_nav', 1) ? 'true' : 'false';
-	$pager = $params->get('slide_pager', 0) ? 'true' : 'false';
-	$autoHover = $params->get('slide_autoHover', 1) ? 'true' : 'false';
-	$loop = $params->get('slide_loop', 1) ? 'true' : 'false';
-	$adaptiveHeight = $params->get('slide_adaptiveHeight', 0) ? 'true' : 'false';
+	$mode				= $params->get('slide_mode', 'horizontal');
+	$captions			= $params->get('slide_caption', 0) ? 'true' : 'false';
+	$auto				= $params->get('slide_auto', 1) ? 'true' : 'false';
+	$pause				= $params->get('slide_pause', 10000);
+	$autocontrols		= $params->get('slide_controls', 0) ? 'true' : 'false';
+	$controls			= $params->get('slide_nav', 1) ? 'true' : 'false';
+	$pager				= $params->get('slide_pager', 0) ? 'true' : 'false';
+	$autoHover			= $params->get('slide_autoHover', 1) ? 'true' : 'false';
+	$loop				= $params->get('slide_loop', 1) ? 'true' : 'false';
+	$adaptiveHeight		= $params->get('slide_adaptiveHeight', 0) ? 'true' : 'false';
 	// Carrossel
-	$minSlides = $params->get('slide_minSlides', 1);
-	$maxSlides = $params->get('slide_maxSlides', 1);
-	$slideMargin = $params->get('slide_slideMargin', 0);
-	$moveSlides = $params->get('slide_moveSlides', 0);
-	$slideWidth = $params->get('slide_slideWidth', 0);
+	$minSlides			= $params->get('slide_minSlides', 1);
+	$maxSlides			= $params->get('slide_maxSlides', 1);
+	$slideMargin		= $params->get('slide_slideMargin', 0);
+	$moveSlides			= $params->get('slide_moveSlides', 0);
+	$slideWidth			= $params->get('slide_slideWidth', 0);
 	// Full Screen
 	${$pageItensAppTag.'Slider_fullScreen'} = $params->get('slide_fullScreen', 0); // slider FullScreen
 	${$pageItensAppTag.'Slider_fullHeight'} = $params->get('slide_fullHeight', '100vh'); // altura do slider 'FullScreen'

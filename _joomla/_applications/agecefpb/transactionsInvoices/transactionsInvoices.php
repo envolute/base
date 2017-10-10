@@ -32,8 +32,9 @@ jQuery(function() {
 	?>
 
 	// APP FIELDS
-	var group_id			= mainForm.find('input[name=group_id]:radio');
 	var due_date			= jQuery('#<?php echo $APPTAG?>-due_date');
+	var description			= jQuery('#<?php echo $APPTAG?>-description');
+	var custom_desc			= jQuery('#<?php echo $APPTAG?>-custom_desc');
 	var note				= jQuery('#<?php echo $APPTAG?>-note');
 
 	// PARENT FIELD -> Select
@@ -90,8 +91,9 @@ jQuery(function() {
 			// App Fields
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
-			checkOption(group_id, 0);
 			due_date.val('');
+			description.selectUpdate('<?php echo $preDesc[0]?>');
+			custom_desc.val('');
 			note.val('');
 
 			<?php // Closure Actions
@@ -213,8 +215,9 @@ jQuery(function() {
 						?>
 
 						// App Fields
-						checkOption(group_id, item.group_id);
 						due_date.val(dateFormat(item.due_date));
+						description.selectUpdate(item.description);
+						custom_desc.val(item.custom_desc);
 						note.val(item.note);
 
 						<?php // Closure Actions
@@ -261,6 +264,13 @@ jQuery(function() {
 jQuery(window).on('load', function() {
 	// Jquery Validation
 	window.<?php echo $APPTAG?>_validator = mainForm_<?php echo $APPTAG?>.validate({
+		rules: {
+			custom_desc: { // descrição customizada
+				required: function(el) {
+					return (jQuery('#<?php echo $APPTAG?>-description option:selected').val() == 0);
+				}
+			}
+		},
 		//don't remove this
 		invalidHandler: function(event, validator) {
 			//if there is error,

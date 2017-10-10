@@ -124,7 +124,7 @@ if($uID > 0) :
 			foreach($res as $item) {
 				// LINK TO INVOICE
 				$urlToInvoiceDetail = JURI::root().'apps/clients/invoices/details?invID='.$item->invoice_id.($uID != $user->id ? '&uID='.$uID : '');
-				$unpaid = ($item->unpaid == 1) ? ' - <span class="base-icon-attention text-danger cursor-help hasTooltip" title="'.$item->reason.'"> '.JText::_('TEXT_UNPAID').'</span>' : '';
+				$unpaid = ($item->unpaid == 1) ? ' - <span class="base-icon-attention text-danger text-sm align-middle cursor-help hasTooltip" title="'.$item->reason.'"> '.JText::_('TEXT_UNPAID').'</span>' : '';
 				$status = ($item->unpaid == 1) ? ' class="text-danger"' : '';
 				$html .= '
 					<li>
@@ -132,9 +132,9 @@ if($uID > 0) :
 							<div class="col-6">
 								<a'.$status.' href="'.$urlToInvoiceDetail.'">
 									'.baseHelper::getMonthName($item->due_month).'
+									'.$unpaid.'
 									<div class="base-icon-calendar small text-muted">
-										'.baseHelper::dateFormat($item->due_date).'
-										'.$unpaid.'
+										'.baseHelper::dateFormat($item->due_date).' - '.$item->invoice_desc.'
 									</div>
 								</a>
 							</div>

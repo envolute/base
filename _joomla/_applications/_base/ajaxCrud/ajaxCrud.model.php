@@ -82,7 +82,7 @@ header( 'content-type: application/json; charset=utf-8' );
   	$request['name']         = $input->get('name', '', 'string');
   	$request['date']         = $input->get('date', '', 'string');
   	$request['type']         = $input->get('type', 0, 'int');
-  	$request['price']        = $input->get('price', 0.00, 'float');
+  	$request['price']        = $input->get('price'); // não usar 'float' devido ao setLocale(pt-BR) que altera '.' por ','
   	$request['description']  = $input->get('description', '', 'string');
   	$request['check']        = $input->get('check', 0, 'int');
 

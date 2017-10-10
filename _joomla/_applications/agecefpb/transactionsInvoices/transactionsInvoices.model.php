@@ -92,8 +92,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['relationId']   		= $input->get('relationId', 0, 'int');
 		$request['state']				= $input->get('state', 1, 'int');
 		// app
-		$request['group_id']			= $input->get('group_id', 0, 'int');
 		$request['due_date']			= $input->get('due_date', '', 'string');
+		$request['description']			= $input->get('description', '', 'string');
+		$request['custom_desc']			= $input->get('custom_desc', '', 'string');
+		$customDesc = ($request['description'] == '0') ? $request['custom_desc'] : '';
 		$request['note']				= $input->get('note', '', 'string');
 
 		// SAVE CONDITION
@@ -144,8 +146,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'prev'				=> $prev,
 						'next'				=> $next,
 						// App Fields
-						'group_id'			=> $item->group_id,
 						'due_date'			=> $item->due_date,
+						'description'		=> $item->description,
+						'custom_desc'		=> $item->custom_desc,
 						'note'				=> $item->note
 					);
 
@@ -154,8 +157,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 					$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
 					$query .=
-						$db->quoteName('group_id')		.'='. $request['group_id'] .','.
 						$db->quoteName('due_date')		.'='. $db->quote($request['due_date']) .','.
+						$db->quoteName('description')	.'='. $db->quote($request['description']) .','.
+						$db->quoteName('custom_desc')	.'='. $db->quote($customDesc) .','.
 						$db->quoteName('note')			.'='. $db->quote($request['note']) .','.
 						$db->quoteName('state')			.'='. $request['state'] .','.
 						$db->quoteName('alter_date')	.'= NOW(),'.
@@ -179,7 +183,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$elemVal = $id;
 							// CUSTOM
 							// $query = 'SELECT '. $db->quoteName($_SESSION[$RTAG.'TableField']) .' FROM '. $db->quoteName($cfg['mainTable']).' WHERE '. $db->quoteName('id') .' = '.$id.' AND state = 1';
-							$query = 'SELECT CONCAT(DATE_FORMAT('.$db->quoteName('due_date').', "%d/%m/%Y"), " - ", IF('.$db->quoteName('group_id').' = 1, "'.JText::_('FIELD_LABEL_GROUP_1').'", "'.JText::_('FIELD_LABEL_GROUP_0').'")) FROM '. $db->quoteName($cfg['mainTable']).' WHERE id='.$id.' AND state = 1';
+							$query = 'SELECT CONCAT(DATE_FORMAT('.$db->quoteName('due_date').', "%d/%m/%Y"), " - ", IF('.$db->quoteName('custom_desc').' <> "", '.$db->quoteName('custom_desc').', '.$db->quoteName('description').')) FROM '. $db->quoteName($cfg['mainTable']).' WHERE id='.$id.' AND state = 1';
 							$db->setQuery($query);
 							$elemLabel = $db->loadResult();
 						endif;
@@ -286,7 +290,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$elemVal = $ids;
 							// CUSTOM
 							// $query = 'SELECT '. $db->quoteName($_SESSION[$RTAG.'TableField']) .' FROM '. $db->quoteName($cfg['mainTable']).' WHERE '. $db->quoteName('id') .' = '.$ids;
-							$query = 'SELECT CONCAT(DATE_FORMAT('.$db->quoteName('due_date').', "%d/%m/%Y"), " - ", IF('.$db->quoteName('group_id').' = 1, "'.JText::_('FIELD_LABEL_GROUP_1').'", "'.JText::_('FIELD_LABEL_GROUP_0').'")) FROM '. $db->quoteName($cfg['mainTable']).' WHERE id = '.$ids;
+							$query = 'SELECT CONCAT(DATE_FORMAT('.$db->quoteName('due_date').', "%d/%m/%Y"), " - ", IF('.$db->quoteName('custom_desc').' <> "", '.$db->quoteName('custom_desc').', '.$db->quoteName('description').')) FROM '. $db->quoteName($cfg['mainTable']).' WHERE id = '.$ids;
 							$db->setQuery($query);
 							$elemLabel = $db->loadResult();
 						endif;
@@ -349,14 +353,16 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					// Prepare the insert query
 					$query  = '
 						INSERT INTO '. $db->quoteName($cfg['mainTable']) .'('.
-							$db->quoteName('group_id') .','.
 							$db->quoteName('due_date') .','.
+							$db->quoteName('description') .','.
+							$db->quoteName('custom_desc') .','.
 							$db->quoteName('note') .','.
 							$db->quoteName('state') .','.
 							$db->quoteName('created_by')
 						.') VALUES ('.
-							$request['group_id'] .','.
 							$db->quote($request['due_date']) .','.
+							$db->quote($request['description']) .','.
+							$db->quote($customDesc) .','.
 							$db->quote($request['note']) .','.
 							$request['state'] .','.
 							$user->id
@@ -393,7 +399,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$elemVal = $id;
 							// CUSTOM
 							// $query = 'SELECT '. $db->quoteName($_SESSION[$RTAG.'TableField']) .' FROM '. $db->quoteName($cfg['mainTable']).' WHERE '. $db->quoteName('id') .' = '.$id.' AND state = 1';
-							$query = 'SELECT CONCAT(DATE_FORMAT('.$db->quoteName('due_date').', "%d/%m/%Y"), " - ", IF('.$db->quoteName('group_id').' = 1, "'.JText::_('FIELD_LABEL_GROUP_1').'", "'.JText::_('FIELD_LABEL_GROUP_0').'")) FROM '. $db->quoteName($cfg['mainTable']).' WHERE id='.$id.' AND state = 1';
+							$query = 'SELECT CONCAT(DATE_FORMAT('.$db->quoteName('due_date').', "%d/%m/%Y"), " - ", IF('.$db->quoteName('custom_desc').' <> "", '.$db->quoteName('custom_desc').', '.$db->quoteName('description').')) FROM '. $db->quoteName($cfg['mainTable']).' WHERE id='.$id.' AND state = 1';
 							$db->setQuery($query);
 							$elemLabel = $db->loadResult();
 						endif;

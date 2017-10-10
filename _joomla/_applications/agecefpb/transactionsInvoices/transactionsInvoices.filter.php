@@ -9,9 +9,6 @@ $where = '';
 	// STATE -> select
 	$active	= $app->input->get('active', 2, 'int');
 	$where .= ($active == 2) ? $db->quoteName('T1.state').' != '.$active : $db->quoteName('T1.state').' = '.$active;
-	// OPERATORS -> select
-	$fGroup	= $app->input->get('fGroup', 2, 'int');
-	if($fGroup < 2) $where .= ' AND '.$db->quoteName('T1.group_id').' = '.$fGroup;
 
 	// DATE
 	$dateMin	= $app->input->get('dateMin', '', 'string');
@@ -25,7 +22,9 @@ $where = '';
 	$sQuery = ''; // query de busca
 	$sLabel = array(); // label do campo de busca
 	$searchFields = array(
-		'T1.note'	=> 'FIELD_LABEL_NOTE'
+		'T1.description'	=> 'FIELD_LABEL_DESCRIPTION',
+		'T1.custom_desc'	=> '',
+		'T1.note'			=> 'FIELD_LABEL_NOTE',
 	);
 	$i = 0;
 	foreach($searchFields as $key => $value) {
@@ -41,7 +40,7 @@ $where = '';
 	$ordf	= $app->input->get($APPTAG.'oF', '', 'string'); // campo a ser ordenado
 	$ordt	= $app->input->get($APPTAG.'oT', '', 'string'); // tipo de ordem: 0 = 'ASC' default, 1 = 'DESC'
 
-	$orderDef = 'T1.group_id'; // não utilizar vírgula no inicio ou fim
+	$orderDef = 'T1.description ASC, T1.custom_desc ASC'; // não utilizar vírgula no inicio ou fim
 	if(!isset($_SESSION[$APPTAG.'oF'])) : // DEFAULT ORDER
 		$_SESSION[$APPTAG.'oF'] = 'T1.due_date';
 		$_SESSION[$APPTAG.'oT'] = 'DESC';
@@ -89,16 +88,6 @@ $htmlFilter = '
 			<div class="row">
 				<div class="col-sm-6 col-lg-4 col-xl-3">
 					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_GROUP').'</label>
-						<select name="fGroup" id="fGroup" class="form-control input-sm set-filter">
-							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
-							<option value="0"'.($fGroup == '0' ? ' selected = "selected"' : '').'>'.JText::_('FIELD_LABEL_GROUP_0').'</option>
-							<option value="1"'.($fGroup == '1' ? ' selected = "selected"' : '').'>'.JText::_('FIELD_LABEL_GROUP_1').'</option>
-						</select>
-					</div>
-				</div>
-				<div class="col-sm-6 col-lg-4 col-xl-3">
-					<div class="form-group">
 						<label class="label-sm">'.JText::_('FIELD_LABEL_DUE_DATE').'</label>
 						<span class="input-group input-group-sm">
 							<span class="input-group-addon strong">'.JText::_('TEXT_FROM').'</span>
@@ -118,7 +107,7 @@ $htmlFilter = '
 						</select>
 					</div>
 				</div>
-				<div class="col-sm-6 col-md d-xl-none">
+				<div class="col-12 col-md">
 					<div class="form-group">
 						<label class="label-sm text-truncate">'.implode(', ', $sLabel).'</label>
 						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />

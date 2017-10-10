@@ -486,9 +486,12 @@ jQuery(function() {
 		// CUSTOM -> gera cópia das movimentações fixas sem fatura
 		window.<?php echo $APPTAG?>_addFixed = function() {
 
-			var formFixed = jQuery('#form-<?php echo $APPTAG?>-addFixed');
-			var groupID = formFixed.find('#<?php echo $APPTAG?>-groupID').val();
-			if(groupID == "") {
+			var formFixed	= jQuery('#form-<?php echo $APPTAG?>-addFixed');
+			var groupIDs	= [];
+			formFixed.find('input[name=<?php echo $APPTAG?>GroupID]:checked').map(function() {
+				groupIDs.push(jQuery(this).val());
+			});
+			if(groupIDs == "") {
 				$.baseNotify({ msg: '<?php echo JText::_('MSG_SELECT_ITEM_FROM_LIST'); ?>', type: "danger" });
 				return false;
 			}
@@ -496,7 +499,7 @@ jQuery(function() {
 			<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
 
 			jQuery.ajax({
-				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=addFixed&st="+groupID,
+				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=addFixed&arr="+groupIDs,
 				dataType: 'json',
 				cache: false,
 				success: function(data){

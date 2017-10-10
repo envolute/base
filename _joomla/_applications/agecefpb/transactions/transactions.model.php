@@ -71,7 +71,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$ids        = (count($listIds) > 0) ? implode($listIds, ',') : $id;
 		$state      = $input->get('st', 2, 'int');
 	    $seq        = $input->get('sq', 0, 'int');
-	    $client     = $input->get('cID', 0, 'int');
+	    $client		= $input->get('cID', 0, 'int');
+		$arr		= $input->get('arr', array(), 'array');
+		$arrIds		= (count($arr) > 0) ? implode($arr, ',') : '';
 
 		// upload actions
 		$fileMsg 	= '';
@@ -105,7 +107,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	  	$request['date']				= $input->get('date', '', 'string');
 	      // data da parcela
 	      $date_installment				= $db->quote($request['date']);
-	  	$request['price']				= $input->get('price', 0.00, 'float');
+	  	$request['price']				= $input->get('price'); // não usar 'float' devido ao setLocale(pt-BR) que altera '.' por ','
 	    $request['total']				= $input->get('total', 1, 'int');
 	  	$request['doc_number']			= $input->get('doc_number', '', 'string');
 	  	$request['note']				= $input->get('note', '', 'string');
@@ -525,16 +527,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				// validation
 				if($save_condition) :
 
-					// USERGROUP
-		            // 11 -> 'efetivo' -> 0 (sócio efetivo)
-		            // 12 -> 'aposentado' -> 0 (sócio efetivo)
-		            // 13 -> 'contribuinte' -> 1 (contribuinte)
-		            $query = 'SELECT '. $db->quoteName('usergroup') .' FROM '. $db->quoteName('#__'.$cfg['project'].'_clients').' WHERE '. $db->quoteName('id').' = '.$request['client_id'];
-		            $db->setQuery($query);
-		            $grp = $db->loadResult();
-
-		            $invGroup = ($grp == 13) ? 1 : 0;
-
 		            for($i = 1; $i <= $request['total']; $i++) {
 
 						// Prepare the insert query
@@ -546,7 +538,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 								$db->quoteName('client_id') .','.
 								$db->quoteName('dependent_id') .','.
 								$db->quoteName('invoice_id') .','.
-								$db->quoteName('invoice_group') .','.
 								$db->quoteName('description') .','.
 								$db->quoteName('fixed') .','.
 								$db->quoteName('isCard') .','.
@@ -567,7 +558,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 								$request['client_id'] .','.
 								$request['dependent_id'] .','.
 								$request['invoice_id'] .','.
-								$invGroup .','.
 								$db->quote($request['description']) .','.
 								$request['fixed'] .','.
 								$request['isCard'] .','.
@@ -718,81 +708,91 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			// CUSTOM -> ADD FIXED
 			elseif($task == 'addFixed') :
 
-				$query = '
-					INSERT INTO '. $db->quoteName($cfg['mainTable']) .' ('.
-						$db->quoteName('transaction_id') .','.
-						$db->quoteName('parent_id') .','.
-						$db->quoteName('provider_id') .','.
-						$db->quoteName('client_id') .','.
-						$db->quoteName('dependent_id') .','.
-						$db->quoteName('invoice_group') .','.
-						$db->quoteName('description') .','.
-						$db->quoteName('fixed') .','.
-						$db->quoteName('date') .','.
-						$db->quoteName('date_installment') .','.
-						$db->quoteName('price') .','.
-						$db->quoteName('price_total') .','.
-						$db->quoteName('installment') .','.
-						$db->quoteName('total') .','.
-						$db->quoteName('doc_number') .','.
-						$db->quoteName('note') .','.
-						$db->quoteName('state') .','.
-						$db->quoteName('created_by')
-					.')
-					SELECT '.
-						$db->quoteName('T1.transaction_id') .','.
-						$db->quoteName('T1.parent_id') .','.
-						$db->quoteName('T1.provider_id') .','.
-						$db->quoteName('T1.client_id') .','.
-						$db->quoteName('T1.dependent_id') .','.
-						$db->quoteName('T1.invoice_group') .','.
-						$db->quoteName('T1.description') .',
-						2,'.
-						$db->quoteName('T1.date') .',
-						CURDATE(),'.
-						$db->quoteName('T1.price') .','.
-						$db->quoteName('T1.price_total') .',
-						1,
-						1,'.
-						$db->quoteName('T1.doc_number') .','.
-						$db->quoteName('T1.note') .',
-						1,'.
-						$user->id
-					.' FROM '. $db->quoteName($cfg['mainTable']) .' T1
-						JOIN '. $db->quoteName('#__base_providers') .' T2
-						ON T2.id = T1.provider_id
-						JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T3
-						ON T3.id = T1.client_id
-					WHERE T1.fixed = 1 AND T1.state = 1 AND T3.state = 1 AND T1.invoice_group = '.$state.'
-					ORDER BY T1.id
-				';
+				// Importa movimentações por grupo
+				if(!empty($arrIds)) :
 
-				try {
-					$db->setQuery($query);
-					$db->execute();
+					$query = '
+						INSERT INTO '. $db->quoteName($cfg['mainTable']) .' ('.
+							$db->quoteName('transaction_id') .','.
+							$db->quoteName('parent_id') .','.
+							$db->quoteName('provider_id') .','.
+							$db->quoteName('client_id') .','.
+							$db->quoteName('dependent_id') .','.
+							$db->quoteName('description') .','.
+							$db->quoteName('fixed') .','.
+							$db->quoteName('date') .','.
+							$db->quoteName('date_installment') .','.
+							$db->quoteName('price') .','.
+							$db->quoteName('price_total') .','.
+							$db->quoteName('installment') .','.
+							$db->quoteName('total') .','.
+							$db->quoteName('doc_number') .','.
+							$db->quoteName('note') .','.
+							$db->quoteName('state') .','.
+							$db->quoteName('created_by')
+						.')
+						SELECT '.
+							$db->quoteName('T1.transaction_id') .','.
+							$db->quoteName('T1.parent_id') .','.
+							$db->quoteName('T1.provider_id') .','.
+							$db->quoteName('T1.client_id') .','.
+							$db->quoteName('T1.dependent_id') .','.
+							$db->quoteName('T1.description') .',
+							2,'.
+							$db->quoteName('T1.date') .',
+							CURDATE(),'.
+							$db->quoteName('T1.price') .','.
+							$db->quoteName('T1.price_total') .',
+							1,
+							1,'.
+							$db->quoteName('T1.doc_number') .','.
+							$db->quoteName('T1.note') .',
+							1,'.
+							$user->id
+						.' FROM '. $db->quoteName($cfg['mainTable']) .' T1
+							JOIN '. $db->quoteName('#__base_providers') .' T2
+							ON T2.id = T1.provider_id
+							JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T3
+							ON T3.id = T1.client_id
+						WHERE T1.fixed = 1 AND T1.state = 1 AND T3.state = 1 AND T3.usergroup IN ('.$arrIds.')
+						ORDER BY T1.id
+					';
 
-					$data[] = array(
-						'status'			=> 1,
-						'msg'				=> ''
-					);
+					try {
+						$db->setQuery($query);
+						$db->execute();
 
-				} catch (RuntimeException $e) {
+						$data[] = array(
+							'status'			=> 1,
+							'msg'				=> ''
+						);
 
-					// Error treatment
-					switch($e->getCode()) {
-						case '1062':
-							$sqlErr = JText::_('MSG_SQL_DUPLICATE_FIXED');
-							break;
-						default:
-							$sqlErr = 'Erro: '.$e->getCode().'. '.$e->getMessage();
+					} catch (RuntimeException $e) {
+
+						// Error treatment
+						switch($e->getCode()) {
+							case '1062':
+								$sqlErr = JText::_('MSG_SQL_DUPLICATE_FIXED');
+								break;
+							default:
+								$sqlErr = 'Erro: '.$e->getCode().'. '.$e->getMessage();
+						}
+
+						$data[] = array(
+							'status'			=> 0,
+							'msg'				=> $sqlErr
+						);
+
 					}
+
+				else :
 
 					$data[] = array(
 						'status'			=> 0,
-						'msg'				=> $sqlErr
+						'msg'				=> JText::_('MSG_SELECT_GROUP')
 					);
 
-				}
+				endif;
 
 			// CUSTOM -> GENERATE CSV FILE FOR DEBITS
 			elseif($task == 'invoiceFile') :
@@ -933,7 +933,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('client_id') .','.
 						$db->quoteName('dependent_id') .','.
 						$db->quoteName('invoice_id') .','.
-						$db->quoteName('invoice_group') .','.
 						$db->quoteName('phoneInvoice_id') .','.
 						$db->quoteName('phone_id') .','.
 						$db->quoteName('description') .','.
@@ -955,7 +954,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'0,'.
 						$db->quoteName('provider_id') .','.
 						$db->quoteName('client_id') .','.
-						'0,'.
 						'0,'.
 						'0,'.
 						$state .','.

@@ -50,7 +50,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	// GET DATA
 	$noReg	= true;
-	$query	= 'SELECT *';
+	$query	= '
+		SELECT
+			T1.*,
+			IF(`T1`.`custom_desc` <> "", `T1`.`custom_desc`, `T1`.`description`) invoice_desc
+	';
 	if(!empty($rID) && $rID !== 0) :
 		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
 			$query .= ' FROM '.
@@ -70,7 +74,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$noReg = false;
 		endif;
 	endif;
-	$query	.= ' ORDER BY '. $db->quoteName('T1.due_date') .' DESC, '. $db->quoteName('T1.group_id') .' ASC';
+	$query	.= ' ORDER BY '. $db->quoteName('T1.due_date') .' DESC, '. $db->quoteName('T1.description') .' ASC';
 	try {
 		$db->setQuery($query);
 		$db->execute();
@@ -108,7 +112,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$html .= '
 				<li class="'.$rowState.'">
 					<span class="float-right">'.$btnState.$btnEdit.$btnDelete.'</span>
-					<span class="badge badge-primary">'.JText::_('FIELD_LABEL_GROUP_'.$item->group_id).'</span> - '.baseHelper::dateFormat($item->due_date, 'd-m-Y').'
+					<span class="badge badge-primary">'baseHelper::dateFormat($item->due_date, 'd-m-Y').' - '.$item->invoice_desc.'
 				</li>
 			';
 		}

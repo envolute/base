@@ -54,6 +54,10 @@ endif;
 // crud's main table
 	$cfg['mainTable']			= $MAIN_TB;
 
+// Predefined Description
+// Obs: o primeiro item será o item padrão
+	$preDesc[]					= JText::_('DESC_MONTHLY_BILL');
+
 // view
 
 	// show app (Add Button & List)

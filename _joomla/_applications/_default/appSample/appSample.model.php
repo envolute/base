@@ -102,7 +102,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['birthday']			= $input->get('birthday', '', 'string');
 		$request['place_birth']			= $input->get('place_birth', '', 'string');
 		$request['marital_status']		= $input->get('marital_status', '', 'string');
-		$request['price']				= $input->get('price', 0.00, 'float');
+		$request['price']				= $input->get('price'); // não usar 'float' devido ao setLocale(pt-BR) que altera '.' por ','
 		$request['status']				= $input->get('status', 1, 'int');
 		$request['status_desc']			= $input->get('status_desc', '', 'string');
 		$request['zip_code']			= $input->get('zip_code', '', 'string');

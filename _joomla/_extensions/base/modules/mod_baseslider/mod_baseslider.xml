@@ -23,15 +23,73 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic" label="MOD_BASESLIDER_CONFIG">
-				
-				<field name="phpFile" type="text" filter="string" class="input-xxlarge" default="" label="MOD_BASESLIDER_PHP_FILE_LABEL" description="MOD_BASESLIDER_PHP_FILE_DESC" />
-				<field name="items_total" type="text" filter="int" default="" label="MOD_BASESLIDER_ITEMS_TOTAL_LABEL" description="MOD_BASESLIDER_ITEMS_TOTAL_DESC" />
-				<field name="items_ids" type="text" filter="string" default="" label="MOD_BASESLIDER_ITEMS_IDS_LABEL" description="MOD_BASESLIDER_ITEMS_IDS_DESC" />
-				<field name="items_order" type="text" filter="string" default="" label="MOD_BASESLIDER_ITEMS_ORDER_LABEL" description="MOD_BASESLIDER_ITEMS_ORDER_DESC" />
-				<field name="image_width" type="text" filter="int" default="" label="MOD_BASESLIDER_IMAGE_WIDTH_LABEL" description="MOD_BASESLIDER_IMAGE_WIDTH_DESC" />
-				<field name="image_height" type="text" filter="int" default="" label="MOD_BASESLIDER_IMAGE_HEIGHT_LABEL" description="MOD_BASESLIDER_IMAGE_HEIGHT_DESC" />
 
-				<field name="slider" type="spacer" class="text" label="MOD_BASESLIDER_LABEL" />
+				<field name="phpFile" type="text" filter="string" class="input-xxlarge" default="" label="MOD_BASESLIDER_PHP_FILE_LABEL" description="MOD_BASESLIDER_PHP_FILE_DESC" />
+
+				<field name="items" type="spacer" class="text" label="MOD_BASESLIDER_CONFIG_LABEL" />
+
+				<field name="items_total" type="text" filter="int" class="input-small" default="" label="MOD_BASESLIDER_ITEMS_TOTAL_LABEL" description="MOD_BASESLIDER_ITEMS_TOTAL_DESC" />
+				<field name="items_ids" type="text" filter="string" class="input-small" default="" label="MOD_BASESLIDER_ITEMS_IDS_LABEL" description="MOD_BASESLIDER_ITEMS_IDS_DESC" />
+				<field name="items_order" type="text" filter="string" class="input-small" default="" label="MOD_BASESLIDER_ITEMS_ORDER_LABEL" description="MOD_BASESLIDER_ITEMS_ORDER_DESC" />
+				<field name="image_width" type="text" filter="int" class="input-small" default="" label="MOD_BASESLIDER_IMAGE_WIDTH_LABEL" description="MOD_BASESLIDER_IMAGE_WIDTH_DESC" />
+				<field name="image_height" type="text" filter="int" class="input-small" default="" label="MOD_BASESLIDER_IMAGE_HEIGHT_LABEL" description="MOD_BASESLIDER_IMAGE_HEIGHT_DESC" />
+
+				<field name="show_title"
+					type="radio"
+					class="btn-group"
+					label="MOD_BASESLIDER_SHOW_TITLE_LABEL"
+					description="MOD_BASESLIDER_SHOW_TITLE_DESC"
+					default="0"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field name="show_categ"
+					type="radio"
+					class="btn-group"
+					label="MOD_BASESLIDER_SHOW_CATEG_LABEL"
+					description="MOD_BASESLIDER_SHOW_CATEG_DESC"
+					default="0"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field name="show_desc"
+					type="radio"
+					class="btn-group"
+					label="MOD_BASESLIDER_SHOW_DESC_LABEL"
+					description="MOD_BASESLIDER_SHOW_DESC_DESC"
+					default="0"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field name="show_user"
+					type="radio"
+					class="btn-group"
+					label="MOD_BASESLIDER_SHOW_USER_LABEL"
+					description="MOD_BASESLIDER_SHOW_USER_DESC"
+					default="0"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field name="show_value"
+					type="radio"
+					class="btn-group"
+					label="MOD_BASESLIDER_SHOW_VALUE_LABEL"
+					description="MOD_BASESLIDER_SHOW_VALUE_DESC"
+					default="0"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field name="slider" type="spacer" class="text" label="MOD_BASESLIDER_SLIDER_LABEL" />
 
 				<field name="slide_mode"
 					type="radio"

@@ -94,7 +94,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		// app
 		$request['name']				= $input->get('name', '', 'string');
 		$request['provider_id']			= $input->get('provider_id', 0, 'int');
-		$request['price']				= $input->get('price', 0.00, 'float');
+		$request['price']				= $input->get('price'); // não usar 'float' devido ao setLocale(pt-BR) que altera '.' por ','
 		$request['description']			= $input->get('description', '', 'raw'); // html
 
 		// SAVE CONDITION

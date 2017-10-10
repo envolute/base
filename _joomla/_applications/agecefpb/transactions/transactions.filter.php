@@ -46,9 +46,6 @@ $where = '';
 
 	else :
 
-		// GROUP -> select
-		$fIgrp	= $app->input->get('fIgrp', 2, 'int');
-		if($fIgrp != 2) $where .= ' AND '.$db->quoteName('T1.invoice_group').' = '.$fIgrp;
 		// IS CARD -> select
 		$fCard	= $app->input->get('fCard', 2, 'int');
 		if($fCard != 2) $where .= ' AND '.$db->quoteName('T1.isCard').' = '.$fCard;
@@ -188,7 +185,7 @@ $where = '';
 	$ordf	= $app->input->get($APPTAG.'oF', '', 'string'); // campo a ser ordenado
 	$ordt	= $app->input->get($APPTAG.'oT', '', 'string'); // tipo de ordem: 0 = 'ASC' default, 1 = 'DESC'
 
-	$orderDef = 'T1.parent_id'; // não utilizar vírgula no inicio ou fim
+	$orderDef = 'T1.transaction_id, T1.parent_id'; // não utilizar vírgula no inicio ou fim
 	if(!isset($_SESSION[$APPTAG.'oF'])) : // DEFAULT ORDER
 		$_SESSION[$APPTAG.'oF'] = 'T3.name';
 		$_SESSION[$APPTAG.'oT'] = 'ASC';
@@ -231,16 +228,17 @@ $where = '';
 	$query = '
 		SELECT
 			'. $db->quoteName('T1.id') .',
-			IF('. $db->quoteName('T1.group_id') .' = 1, "Contribuintes", "Associados Caixa") grp,
-			'. $db->quoteName('T1.due_date') .'
+			'. $db->quoteName('T1.due_date') .',
+			IF(`T1`.`custom_desc` <> "", `T1`.`custom_desc`, `T1`.`description`) invoice_desc
 		FROM
 			'. $db->quoteName($cfg['mainTable'].'_invoices') .' T1
-		WHERE T1.state = 1 ORDER BY T1.due_date DESC, T1.group_id ASC
+		WHERE T1.state = 1 ORDER BY T1.due_date DESC, T1.description ASC, T1.custom_desc ASC
 	';
 	$db->setQuery($query);
 	$invoices = $db->loadObjectList();
 	foreach ($invoices as $obj) {
-		$flt_invoice .= '<option value="'.$obj->id.'"'.($obj->id == $fInv ? ' selected = "selected"' : '').'>'.baseHelper::dateFormat($obj->due_date).' - '.baseHelper::nameFormat($obj->grp).'</option>';
+		$desc = ' - '.baseHelper::nameFormat($obj->invoice_desc, 20);
+		$flt_invoice .= '<option value="'.$obj->id.'"'.($obj->id == $fInv ? ' selected = "selected"' : '').'>'.baseHelper::dateFormat($obj->due_date).$desc.'</option>';
 	}
 
 	// usergroups -> select
@@ -278,7 +276,7 @@ $htmlFilter = '
 			<div class="row">
 				<div class="col-sm-4">
 					<div class="row">
-						<div class="col-sm-6">
+						<div class="col-12">
 							<div class="form-group">
 								<label class="label-sm">'.JText::_('TEXT_TRANSACTION_TYPE').'</label>
 								<span class="btn-group btn-group-sm btn-group-justified" data-toggle="buttons">
@@ -303,6 +301,21 @@ $htmlFilter = '
 								</select>
 							</div>
 						</div>
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label class="label-sm">'.JText::_('FIELD_LABEL_INSTALLMENTS').'</label>
+								<span class="btn-group btn-group-sm btn-group-justified" data-toggle="buttons">
+									<label class="btn btn-default btn-active-success">
+										<input type="radio" name="fInst" name="fInst-0" class="set-filter" value="0"'.($fInst == 0 ? ' checked' : '').' />
+										'.JText::_('TEXT_CURRENT').'
+									</label>
+									<label class="btn btn-default btn-active-warning">
+										<input type="radio" name="fInst" name="fInst-1" class="set-filter" value="1"'.($fInst == 1 ? ' checked' : '').' />
+										'.JText::_('TEXT_ALL_F').'
+									</label>
+								</span>
+							</div>
+						</div>
 					</div>
 					<div class="form-group">
 						<label class="label-sm">'.JText::_('FIELD_LABEL_INVOICE').'</label>
@@ -311,33 +324,6 @@ $htmlFilter = '
 							<option value="1"'.($fInv == 1 ? ' selected' : '').'>- '.JText::_('TEXT_ALL_INVOICED').' -</option>
 							'.$flt_invoice.'
 						</select>
-					</div>
-					<div class="row">
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label class="label-sm">'.JText::_('TEXT_INVOICE_GROUP').'</label>
-								<select name="fIgrp" id="fIgrp" class="form-control form-control-sm set-filter">
-									<option value="2">- '.JText::_('TEXT_ALL').' -</option>
-									<option value="0"'.($fIgrp == 0 ? ' selected' : '').'>'.JText::_('TEXT_CLIENT_EFFECTIVE').'</option>
-									<option value="1"'.($fIgrp == 1 ? ' selected' : '').'>'.JText::_('TEXT_CLIENT_CONTRIBUTOR').'</option>
-								</select>
-							</div>
-						</div>
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label class="label-sm">'.JText::_('FIELD_LABEL_INSTALLMENTS').'</label>
-								<span class="btn-group btn-group-sm btn-group-justified" data-toggle="buttons">
-									<label class="btn btn-default btn-active-success">
-										<input type="radio" name="fInst" name="fInst-0" class="set-filter" value="0"'.($fInst == 0 ? ' checked' : '').' disabled />
-										'.JText::_('TEXT_CURRENT').'
-									</label>
-									<label class="btn btn-default btn-active-warning">
-										<input type="radio" name="fInst" name="fInst-1" class="set-filter" value="1"'.($fInst == 1 ? ' checked' : '').' disabled />
-										'.JText::_('TEXT_ALL_F').'
-									</label>
-								</span>
-							</div>
-						</div>
 					</div>
 				</div>
 				<div class="col-sm-4 b-left">

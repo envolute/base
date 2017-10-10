@@ -4,11 +4,11 @@ defined('_JEXEC') or die;
 $query = '
 	SELECT
 		'. $db->quoteName('T1.id') .',
-		IF('. $db->quoteName('T1.group_id') .' = 1, "'.JText::_('FIELD_LABEL_GROUP_1').'", "'.JText::_('FIELD_LABEL_GROUP_0').'") grp,
-		'. $db->quoteName('T1.due_date') .'
+		'. $db->quoteName('T1.due_date') .',
+		IF(`T1`.`custom_desc` <> "", `T1`.`custom_desc`, `T1`.`description`) invoice_desc
 	FROM
 		'. $db->quoteName($cfg['mainTable'].'_invoices') .' T1
-	WHERE T1.state = 1 ORDER BY T1.due_date DESC, T1.group_id ASC
+	WHERE T1.state = 1 ORDER BY T1.due_date DESC, T1.description ASC, T1.custom_desc ASC
 ';
 $db->setQuery($query);
 $invoices = $db->loadObjectList();
@@ -21,14 +21,15 @@ $invoices = $db->loadObjectList();
 <div class="modal-body">
 	<fieldset id="form-<?php echo $APPTAG?>-invoice" method="post">
 		<div class="row">
-			<div class="col-sm-8">
+			<div class="col-sm-9">
 				<div class="form-group">
 					<div class="input-group">
 						<select name="invoiceID" id="<?php echo $APPTAG?>-invoiceID" class="form-control">
 							<option value="0">- <?php echo JText::_('TEXT_SELECT_INVOICE'); ?> -</option>
 							<?php
 								foreach ($invoices as $obj) {
-									echo '<option value="'.$obj->id.'">'.baseHelper::dateFormat($obj->due_date).' - '.baseHelper::nameFormat($obj->grp).'</option>';
+									$desc = ' - '.baseHelper::nameFormat($obj->invoice_desc, 20);
+									echo '<option value="'.$obj->id.'">'.baseHelper::dateFormat($obj->due_date).$desc.'</option>';
 								}
 							?>
 						</select>
@@ -39,10 +40,10 @@ $invoices = $db->loadObjectList();
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-4 text-right">
+			<div class="col-sm-3 text-right">
 				<div class="form-group">
 					<button type="button" name="btn-<?php echo $APPTAG?>-invoice-add" id="btn-<?php echo $APPTAG?>-invoice-add" class="btn btn-block btn-success" onclick="<?php echo $APPTAG?>_invoice()">
-						<?php echo JText::_('TEXT_ADD_TO_INVOICE'); ?>
+						<?php echo JText::_('TEXT_TO_ASSIGN'); ?>
 					</button>
 				</div>
 			</div>

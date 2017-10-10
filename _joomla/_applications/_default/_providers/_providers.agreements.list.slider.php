@@ -43,15 +43,22 @@ endif;
 $db = JFactory::getDbo();
 
 // PARAMS FROM MODULE
-$itemsTotal		= $items_total; // Total de itens carregados
-$itemsIds		= $items_ids; // Ids dos itens que devem ser visualizados
-$itemsOrder		= $items_order; // ordem dos itens
-$imgWidth		= $image_width; // largura da imagem
-$imgHeight		= $image_height; // altura da imagem
+$itemsTotal		= $items_total;		// Total de itens carregados
+$itemsIds		= $items_ids;		// Ids dos itens que devem ser visualizados
+$categIds		= $categ_ids;		// Ids das categorias dos itens que devem ser visualizados
+$itemsOrder		= $items_order;		// ordem dos itens
+$imgWidth		= $image_width;		// largura da imagem
+$imgHeight		= $image_height;	// altura da imagem
+$showTitle		= $show_title;		// mostrar o título/nome do item
+$showCateg		= $show_categ;		// mostrar a categoria/grupo do item
+$showDesc		= $show_desc;		// mostrar a descrição do item
+$showUser		= $show_user;		// mostrar o usuário/autor do item
+$showValue		= $show_value;		// mostrar o valor do item
 
-$where	= !empty($itemsids) ? ' AND '. $db->quoteName('T1.id') .' IN ('.$itemsids.')' : '';
+$where	= !empty($itemsIds) ? ' AND '. $db->quoteName('T1.id') .' IN ('.$itemsIds.')' : '';
+$where	.= !empty($categIds) ? ' AND '. $db->quoteName('T2.id') .' IN ('.$categIds.')' : '';
 $order	= !empty($itemsOrder) ? ' ORDER BY '. $itemsOrder : '';
-$limit	= !empty($itemstotal) ? ' LIMIT '. $itemstotal : '';
+$limit	= !empty($itemsTotal) ? ' LIMIT '. $itemsTotal : '';
 
 // GET DATA
 $query	= '
@@ -86,9 +93,12 @@ if($num_rows) : // verifica se existe
 		$img = uploader::getFile($cfg['fileTable'], '', $item->id, 2, $cfg['uploadDir']);
 		if(!empty($img)) :
 
+			// Imagem
 			$path = 'images/apps/'.$APPPATH.'/'.$img['filename'];
-			if(!empty($imgWidth) && !empty($imgHeight)) $path = baseHelper::thumbnail($urlImg, $imgWidth, $imgHeight);
+			if(!empty($imgWidth) && !empty($imgHeight)) $path = baseHelper::thumbnail($path, $imgWidth, $imgHeight);
 			$img = '<img src="'.$path.'" class="img-fluid mx-auto" />';
+			// Título
+			$title = $showTitle ? '<figcaption>'.$item->name.'</figcaption>' : '';
 
 			$html .= '
 				<li class="agreements-brand clearfix">
@@ -96,6 +106,7 @@ if($num_rows) : // verifica se existe
 						<a href="'.$urlToView.'?vID='.$item->id.'">
 							'.$img.'
 						</a>
+						'.$title.'
 					</figure>
 				</li>
 			';

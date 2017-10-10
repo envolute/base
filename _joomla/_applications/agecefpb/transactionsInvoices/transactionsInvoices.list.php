@@ -12,8 +12,8 @@ require($PATH_APP_FILE.'.filter.php');
 	$query = '
 		SELECT SQL_CALC_FOUND_ROWS
 			'. $db->quoteName('T1.id') .',
-			'. $db->quoteName('T1.group_id') .',
 			'. $db->quoteName('T1.due_date') .',
+			IF(`T1`.`custom_desc` <> "", `T1`.`custom_desc`, `T1`.`description`) invoice_desc,
 			'. $db->quoteName('T1.note') .',
 			'. $db->quoteName('T1.created_date') .',
 			'. $db->quoteName('T1.created_by') .',
@@ -59,7 +59,7 @@ $html = '
 				<tr>
 					'.$adminView['head']['info'].'
 					<th width="120">'.JText::_('FIELD_LABEL_DUE_DATE').'</th>
-					<th class="d-none d-md-table-cell">'.JText::_('FIELD_LABEL_GROUP').'</th>
+					<th class="d-none d-md-table-cell">'.JText::_('FIELD_LABEL_DESCRIPTION').'</th>
 					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
 					'.$adminView['head']['actions'].'
 				</tr>
@@ -125,7 +125,7 @@ if($num_rows) : // verifica se existe
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
 				<td>'.$note.baseHelper::dateFormat($item->due_date, 'd-m-Y').'</td>
-				<td class="d-none d-md-table-cell">'.JText::_('FIELD_LABEL_GROUP_'.$item->group_id).'</td>
+				<td class="d-none d-md-table-cell">'.$item->invoice_desc.'</td>
 				<td class="d-none d-lg-table-cell">
 					'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'
 					<a href="#" class="base-icon-info-circled setPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top"></a>

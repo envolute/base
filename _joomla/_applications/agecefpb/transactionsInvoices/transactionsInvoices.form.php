@@ -6,25 +6,29 @@ defined('_JEXEC') or die;
 
 
 <div class="row">
-	<div class="col-sm-6 col-lg-8">
-		<div class="form-group field-required">
-			<label><?php echo JText::_('FIELD_LABEL_GROUP'); ?></label>
-			<span class="btn-group btn-group-justified" data-toggle="buttons">
-				<label class="btn btn-default btn-active-success">
-					<input type="radio" name="group_id" id="<?php echo $APPTAG?>-group_id-0" value="0" class="auto-tab" data-target="#<?php echo $APPTAG?>-due_date" />
-					<?php echo JText::_('FIELD_LABEL_GROUP_0'); ?>
-				</label>
-				<label class="btn btn-default btn-active-success">
-					<input type="radio" name="group_id" id="<?php echo $APPTAG?>-group_id-1" value="1" class="auto-tab" data-target="#<?php echo $APPTAG?>-due_date" />
-					<?php echo JText::_('FIELD_LABEL_GROUP_1'); ?>
-				</label>
-			</span>
-		</div>
-	</div>
 	<div class="col-sm-6 col-lg-4">
 		<div class="form-group field-required">
 			<label><?php echo JText::_('FIELD_LABEL_DUE_DATE'); ?></label>
 			<input type="text" name="due_date" id="<?php echo $APPTAG?>-due_date" class="form-control field-date" data-convert="true" />
+		</div>
+	</div>
+	<div class="col-sm-6 col-lg-8">
+		<div class="form-group field-required">
+			<label><?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?></label>
+			<select name="description" id="<?php echo $APPTAG?>-description" class="form-control auto-tab" data-target="#<?php echo $APPTAG?>-group-desc">
+				<!-- <option value="" data-target-display="false">- <?php echo JText::_('TEXT_SELECT'); ?> -</option> -->
+				<?php
+				for($i = 0; $i < count($preDesc); $i++) {
+					echo '<option value="'.$preDesc[$i].'" data-target-display="false">'.$preDesc[$i].'</option>';
+				}
+				?>
+				<option value="0" data-target-display="true"><?php echo JText::_('TEXT_OTHER'); ?></option>
+			</select>
+		</div>
+	</div>
+	<div id="<?php echo $APPTAG?>-group-desc" class="col-lg-8 ml-lg-auto" hidden>
+		<div class="form-group">
+			<input type="text" name="custom_desc" id="<?php echo $APPTAG?>-custom_desc" class="form-control" maxlength="30" placeholder="<?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?>" />
 		</div>
 	</div>
 </div>

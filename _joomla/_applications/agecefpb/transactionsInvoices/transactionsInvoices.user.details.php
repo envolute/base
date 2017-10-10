@@ -61,7 +61,7 @@ if($invID > 0) :
 	if(!empty($invoice->invoice_id)) :
 
 		// Invoice Status
-		$unpaid = ($invoice->unpaid == 1) ? '<div class="base-icon-attention text-danger"> '.JText::_('TEXT_UNPAID').(!empty($invoice->reason) ? '<span class="text-muted"> - '.$invoice->reason.'</span>' : '').'</div>' : '';
+		$unpaid = ($invoice->unpaid == 1) ? ' <div class="base-icon-attention text-danger text-sm"> '.JText::_('TEXT_UNPAID').(!empty($invoice->reason) ? '<span class="text-muted"> - '.$invoice->reason.'</span>' : '').'</div>' : '';
 
 		// GET INVOICE DETAILS DATA
 		$query = '
@@ -85,9 +85,9 @@ if($invID > 0) :
 				<div class="row pb-2">
 					<div class="col-md">
 						<h2 class="m-0">'.JText::_('TEXT_CLIENT_INVOICE').'</h2>
-						'.$unpaid.'
+						<div class="text-muted">'.$invoice->invoice_desc.$unpaid.'</div>
 					</div>
-					<div class="col-md text-muted text-md-right pt-2">
+					<div class="col-md align-self-center text-muted text-md-right pt-2">
 						<h6 class="m-0">
 							'.$invoice->client_name.'
 							<div class="small">'.$invoice->client_number.'</div>

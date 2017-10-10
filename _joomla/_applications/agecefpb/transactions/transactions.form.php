@@ -15,11 +15,11 @@ $providers = $db->loadObjectList();
 $query = '
 	SELECT
 		'. $db->quoteName('T1.id') .',
-		IF('. $db->quoteName('T1.group_id') .' = 1, "'.JText::_('FIELD_LABEL_GROUP_1').'", "'.JText::_('FIELD_LABEL_GROUP_0').'") grp,
-		'. $db->quoteName('T1.due_date') .'
+		'. $db->quoteName('T1.due_date') .',
+		IF(`T1`.`custom_desc` <> "", `T1`.`custom_desc`, `T1`.`description`) invoice_desc
 	FROM
 		'. $db->quoteName($cfg['mainTable'].'_invoices') .' T1
-	WHERE T1.state = 1 ORDER BY T1.due_date DESC, T1.group_id ASC
+	WHERE T1.state = 1 ORDER BY T1.due_date DESC, T1.description ASC, T1.custom_desc ASC
 ';
 $db->setQuery($query);
 $invoices = $db->loadObjectList();
@@ -146,7 +146,8 @@ $invoices = $db->loadObjectList();
 				<option value="0"><?php echo JText::_('TEXT_SELECT'); ?></option>
 				<?php
 					foreach ($invoices as $obj) {
-						echo '<option value="'.$obj->id.'">'.baseHelper::dateFormat($obj->due_date).' - '.baseHelper::nameFormat($obj->grp).'</option>';
+						$desc = ' - '.baseHelper::nameFormat($obj->invoice_desc, 20);
+						echo '<option value="'.$obj->id.'">'.baseHelper::dateFormat($obj->due_date).$desc.'</option>';
 					}
 				?>
 			</select>
