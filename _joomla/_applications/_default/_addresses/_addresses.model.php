@@ -187,7 +187,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('zip_code')			.'='. $db->quote($request['zip_code']) .','.
 						$db->quoteName('address')			.'='. $db->quote($request['address']) .','.
 						$db->quoteName('address_number')	.'='. $db->quote($request['address_number']) .','.
-						$db->quoteName('address_info')		.'='. $db->quote($request['address_info	']) .','.
+						$db->quoteName('address_info')		.'='. $db->quote($request['address_info']) .','.
 						$db->quoteName('address_district')	.'='. $db->quote($request['address_district']) .','.
 						$db->quoteName('address_city')		.'='. $db->quote($request['address_city']) .','.
 						$db->quoteName('address_state')		.'='. $db->quote($request['address_state']) .','.

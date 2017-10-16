@@ -51,10 +51,6 @@ if(!empty($file) && file_exists($file)) :
 	$slideMargin		= $params->get('slide_slideMargin', 0);
 	$moveSlides			= $params->get('slide_moveSlides', 0);
 	$slideWidth			= $params->get('slide_slideWidth', 0);
-	// Full Screen
-	${$pageItensAppTag.'Slider_fullScreen'} = $params->get('slide_fullScreen', 0); // slider FullScreen
-	${$pageItensAppTag.'Slider_fullHeight'} = $params->get('slide_fullHeight', '100vh'); // altura do slider 'FullScreen'
-	${$pageItensAppTag.'Slider_minHeight'} = $params->get('slide_minHeight', '0'); // altura do slider 'FullScreen'
 
 	$doc = JFactory::getDocument();
 
@@ -142,7 +138,7 @@ if(!empty($file) && file_exists($file)) :
 			if(strpos($file, 'http') === false) :
 				require(JPATH_BASE.'/'.$file);
 			else :
-				echo '<p class="alert alert-danger">'.Jtext::_('MOD_BASEAPP_INCLUDE_ALERT').'</p>';
+				echo '<p class="alert alert-danger">'.Jtext::_('MOD_BASESLIDER_INCLUDE_ALERT').'</p>';
 			endif;
 	echo '
 			</ul>

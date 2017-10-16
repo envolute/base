@@ -44,6 +44,7 @@ jQuery(function() {
 	var email				= jQuery('#<?php echo $APPTAG?>-email');
 	var cmail				= jQuery('#<?php echo $APPTAG?>-cmail');
 	var cpf					= jQuery('#<?php echo $APPTAG?>-cpf');
+	var ccpf				= jQuery('#<?php echo $APPTAG?>-ccpf');
 	var rg					= jQuery('#<?php echo $APPTAG?>-rg');
 	var rg_orgao			= jQuery('#<?php echo $APPTAG?>-rg_orgao');
 	var gender 				= mainForm.find('input[name=gender]:radio'); // radio group
@@ -74,6 +75,7 @@ jQuery(function() {
 	var whatsapp2			= jQuery('#<?php echo $APPTAG?>-whatsapp2');
 	var whatsapp3			= jQuery('#<?php echo $APPTAG?>-whatsapp3');
 	// Billing data
+	var enable_debit		= jQuery('#<?php echo $APPTAG?>-enable_debit');
 	var agency				= jQuery('#<?php echo $APPTAG?>-agency');
 	var account				= jQuery('#<?php echo $APPTAG?>-account');
 	var operation			= jQuery('#<?php echo $APPTAG?>-operation');
@@ -123,6 +125,7 @@ jQuery(function() {
 			email.val('');
 			cmail.val('');
 			cpf.val('');
+			ccpf.val('');
 			rg.val('');
 			rg_orgao.val('');
 			checkOption(gender, ''); // radio
@@ -149,6 +152,7 @@ jQuery(function() {
 			checkOption(whatsapp1, 0);
 			checkOption(whatsapp2, 0);
 			checkOption(whatsapp3, 0);
+			checkOption(enable_debit, 0);
 			agency.val('');
 			account.val('');
 			operation.val('');
@@ -254,6 +258,7 @@ jQuery(function() {
 						email.val(item.email);
 						cmail.val(item.email);
 						cpf.val(item.cpf);
+						ccpf.val(item.cpf);
 						rg.val(item.rg);
 						rg_orgao.val(item.rg_orgao);
 						checkOption(gender, item.gender); // radio
@@ -280,6 +285,7 @@ jQuery(function() {
 						checkOption(whatsapp1, item.whatsapp1);
 						checkOption(whatsapp2, item.whatsapp2);
 						checkOption(whatsapp3, item.whatsapp3);
+						checkOption(enable_debit, item.enable_debit);
 						agency.val(item.agency);
 						account.val(item.account);
 						operation.val(item.operation);
@@ -357,14 +363,23 @@ jQuery(window).on('load', function() {
 			},
 			cpf : {
 				remote: {
-					url: '<?php echo _CORE_?>helpers/users/checkUsername.php',
+					url: '<?php echo _CORE_?>helpers/users/checkField.php',
 					type: 'post',
 					data: {
-						username: function() {
-							return jQuery('#<?php echo $APPTAG?>-cpf').val().replace(/[^\d]+/g,'');
+						dbTable: function() {
+							return '<?php echo $cfg['mainTable']?>';
 						},
-						cusername: function() {
-							return jQuery('#<?php echo $APPTAG?>-cusername').val();
+						dbField: function() {
+							return 'cpf';
+						},
+						val: function() {
+							return jQuery('#<?php echo $APPTAG?>-cpf').val();
+						},
+						cval: function() {
+							return jQuery('#<?php echo $APPTAG?>-ccpf').val();
+						},
+						valida: function() {
+							return 1;
 						}
 					}
 				}
@@ -397,6 +412,21 @@ jQuery(window).on('load', function() {
 			partner: { // conjuge
 				required: function(el) {
 					return jQuery('#<?php echo $APPTAG?>-marital_status option:selected').data('targetDisplay');
+				}
+			},
+			agency: { // Conta => agencia
+				required: function(el) {
+					return (jQuery('#<?php echo $APPTAG?>-enable_debit').is(':checked'));
+				}
+			},
+			account: { // Conta => número da conta
+				required: function(el) {
+					return (jQuery('#<?php echo $APPTAG?>-enable_debit').is(':checked'));
+				}
+			},
+			operation: { // Conta => operação
+				required: function(el) {
+					return (jQuery('#<?php echo $APPTAG?>-enable_debit').is(':checked'));
 				}
 			},
 			repassword: {

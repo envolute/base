@@ -78,6 +78,7 @@ if($invID > 0) :
 			return;
 		}
 
+		$html = '';
 		if($num_rows) : // verifica se existe
 
 			// Header

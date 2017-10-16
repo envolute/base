@@ -74,6 +74,7 @@ $_SESSION[$APPTAG.'newUsertype'] = 2; // default 'Associado'
 		$cfg['staticToolbar']	= false;
 		$cfg['showAddBtn']		= false;
 		$cfg['addText']			= false;
+		$cfg['addClass']		= false;
 		$cfg['showFilter']		= false;
 	else :
 		// show/hidden list

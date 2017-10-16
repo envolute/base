@@ -74,18 +74,15 @@ class baseUserHelper {
 			try {
 				$db->setQuery($query);
 				$exist = $db->loadResult();
-				$r = ($exist > 0) ? true : false;
-				// para a validação, se o e-mail existe deve retornar 'false'
-				if($validation) return ($r) ? false : true;
-				else return $r;
+				$r = $exist ? true : false;
+				// para a validação, se o email existe deve retornar 'false'
+				if($validation) $r = $exist ? false : true;
+				return $r;
 			} catch (RuntimeException $e) {
-				if($validation) return true;
-				else return false;
+				error_log('Erro: '.$e->getCode().'. '.$e->getMessage());
 			}
-		else :
-			if($validation) return true;
-			else return false;
 		endif; // end 'id'
+		return $validation ? true : false;
 	}
 
 	// VERIFICA SE O NOME DE USUÁRIO EXISTE
@@ -97,18 +94,15 @@ class baseUserHelper {
 			try {
 				$db->setQuery($query);
 				$exist = $db->loadResult();
-				$r = ($exist > 0) ? true : false;
+				$r = $exist ? true : false;
 				// para a validação, se o usuário existe deve retornar 'false'
-				if($validation) return ($r) ? false : true;
-				else return $r;
+				if($validation) $r = $exist ? false : true;
+				return $r;
 			} catch (RuntimeException $e) {
-				if($validation) return true;
-				else return false;
+				error_log('Erro: '.$e->getCode().'. '.$e->getMessage());
 			}
-		else :
-			if($validation) return true;
-			else return false;
 		endif; // end 'id'
+		return $validation ? true : false;
 	}
 
 	// CRIA UM NOVO USUÁRIO

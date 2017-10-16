@@ -84,6 +84,7 @@ try {
 	return;
 }
 
+$html = '';
 if($num_rows) : // verifica se existe
 
 	foreach($res as $item) {

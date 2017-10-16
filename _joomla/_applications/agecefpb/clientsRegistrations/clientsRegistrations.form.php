@@ -84,6 +84,7 @@ defined('_JEXEC') or die;
 						<div class="form-group field-required">
 							<label>CPF</label>
 							<input type="text" name="cpf" id="<?php echo $APPTAG?>-cpf" class="form-control field-cpf" />
+							<input type="hidden" name="ccpf" id="<?php echo $APPTAG?>-ccpf" />
 						</div>
 					</div>
 					<div class="col-sm-4">
@@ -234,7 +235,7 @@ defined('_JEXEC') or die;
 				<hr class="hr-tag" />
 				<span class="badge badge-primary"><?php echo JText::_('TEXT_ACCOUNT_DATA'); ?></span>
 				<div class="row">
-					<div class="col-sm-3 col-lg-2">
+					<div class="col-sm-3">
 						<div class="form-group field-required">
 							<label><?php echo JText::_('FIELD_LABEL_AGENCY'); ?></label>
 							<input type="text" name="agency" id="<?php echo $APPTAG?>-agency" class="form-control numeric length-fixed" data-length="4" maxlength="4" />
@@ -246,31 +247,41 @@ defined('_JEXEC') or die;
 							<input type="text" name="operation" id="<?php echo $APPTAG?>-operation" class="form-control numeric length-fixed" data-length="3" maxlength="3" />
 						</div>
 					</div>
-					<div class="col-sm-4 col-lg-3">
+					<div class="col-sm-5">
 						<div class="form-group field-required">
 							<label class="iconTip hasTooltip" title="<?php echo JText::_('TEXT_ONLY_NUMBERS'); ?>"><?php echo JText::_('FIELD_LABEL_ACCOUNT'); ?></label>
 							<input type="text" name="account" id="<?php echo $APPTAG?>-account" class="form-control numeric length-fixed" data-length="10" maxlength="10" />
 						</div>
 					</div>
 				</div>
-				<?php if($cfg['isEdit']) :?>
-				<fieldset class="fieldset-embed fieldset-sm pb-0 mt-3 mb-0">
-					<legend><span class="base-icon-lock"></span> <?php echo JText::_('TEXT_CHANGE_PASSWORD'); ?></legend>
-					<div class="row">
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label><?php echo JText::_('FIELD_LABEL_PASSWORD'); ?></label>
-								<input type="password" name="password" id="<?php echo $APPTAG?>-password" class="form-control" />
-							</div>
-						</div>
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label class="iconTip hasTooltip" title="<?php echo JText::_('MSG_REPASSWORD'); ?>"><?php echo JText::_('FIELD_LABEL_REPASSWORD'); ?></label>
-								<input type="password" name="repassword" id="<?php echo $APPTAG?>-repassword" class="form-control" />
-							</div>
+				<?php if(!$cfg['isEdit']) :?>
+					<div class="form-group field-required">
+						<label><?php echo JText::_('TEXT_DEBIT_AUTHORIZATION'); ?></label>
+						<div class="form-check b-all p-2 bg-light m-0">
+							<label class="form-check-label">
+								<input type="checkbox" name="enable_debit" id="<?php echo $APPTAG?>-enable_debit" value="1" class="form-check-input" />
+								<?php echo JText::sprintf('MSG_AUTHORIZE_REGISTRATION'); ?>
+							</label>
 						</div>
 					</div>
-				</fieldset>
+				<?php else :?>
+					<fieldset class="fieldset-embed fieldset-sm pb-0 mt-3 mb-0">
+						<legend><span class="base-icon-lock"></span> <?php echo JText::_('TEXT_CHANGE_PASSWORD'); ?></legend>
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label><?php echo JText::_('FIELD_LABEL_PASSWORD'); ?></label>
+									<input type="password" name="password" id="<?php echo $APPTAG?>-password" class="form-control" />
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="iconTip hasTooltip" title="<?php echo JText::_('MSG_REPASSWORD'); ?>"><?php echo JText::_('FIELD_LABEL_REPASSWORD'); ?></label>
+									<input type="password" name="repassword" id="<?php echo $APPTAG?>-repassword" class="form-control" />
+								</div>
+							</div>
+						</div>
+					</fieldset>
 				<?php endif;?>
 			</div>
 			<div class="col-lg-3">

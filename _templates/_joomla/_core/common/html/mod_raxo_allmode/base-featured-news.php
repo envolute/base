@@ -34,7 +34,7 @@ $app = JFactory::getApplication();
 				// esconde imagens no carregamento
 				$doc->addStyleDeclaration('.allmode-slider-'.$module->id.' > li:not(:first-child) { position: absolute; top: 0; visibility: hidden; }');
 				$script = '
-				jQuery(window).on('load', function(){
+				jQuery(window).on("load", function(){
 					jQuery(".allmode-slider-'.$module->id.'").bxSlider({
 						mode: "horizontal",
 						autoHover: true,

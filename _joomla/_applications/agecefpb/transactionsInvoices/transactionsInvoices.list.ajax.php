@@ -112,7 +112,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$html .= '
 				<li class="'.$rowState.'">
 					<span class="float-right">'.$btnState.$btnEdit.$btnDelete.'</span>
-					<span class="badge badge-primary">'baseHelper::dateFormat($item->due_date, 'd-m-Y').' - '.$item->invoice_desc.'
+					<span class="badge badge-primary">'.baseHelper::dateFormat($item->due_date, 'd-m-Y').' - '.$item->invoice_desc.'
 				</li>
 			';
 		}

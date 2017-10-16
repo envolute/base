@@ -168,7 +168,7 @@ $where = '';
 		'T1.description'		=> 'FIELD_LABEL_DESCRIPTION',
 		'T1.doc_number'			=> 'FIELD_LABEL_DOC_NUMBER',
 		'T4.name'				=> 'FIELD_LABEL_DEPENDENT',
-		'T3.code'				=> 'FIELD_LABEL_CODE',
+		'T6.username'			=> '',
 		'T1.note'				=> ''
 	);
 	$i = 0;

@@ -45,7 +45,7 @@ $query = '
 	SELECT
 	  '. $db->quoteName('T1.id') .',
 	  '. $db->quoteName('T1.name') .',
-	  '. $db->quoteName('T1.name_card') .',
+	  '. $db->quoteName('T1.card_name') .',
 	  '. $db->quoteName('T1.cx_code') .',
 	  '. $db->quoteName('T3.username') .' code,
 	  '. $db->quoteName('T2.title') .' grp
@@ -78,7 +78,7 @@ if(!empty($item->name)) : // verifica se existe
 	$html = '
 		<div id="'.$APPTAG.'-card" style="padding:20px 0 0 1px; font-size:11px;">
 			'.$img.'
-			<div style="padding:65px 0 0; text-align:right;">'.(!empty($item->name_card) ? $item->name_card : $item->name).'</div>
+			<div style="padding:65px 0 0; text-align:right;">'.(!empty($item->card_name) ? $item-> : $item->name).'</div>
 			<div style="text-align:right;">Cód. <strong>'.$item->code.'</strong>'.$grp.'</div>
 			'.$matricula.'
 		</div>

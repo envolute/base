@@ -11,20 +11,10 @@ require($PATH_APP_FILE.'.filter.php');
 
 	$query = '
 		SELECT SQL_CALC_FOUND_ROWS
-			'. $db->quoteName('T1.id') .',
-			'. $db->quoteName('T1.name') .',
+			T1.*,
+			IF(T1.agency <> "" AND T1.account <> "" AND T1.operation <> "", 1, 0) account_info,
 			'. $db->quoteName('T2.name') .' user,
-			'. $db->quoteName('T1.usergroup') .',
-			'. $db->quoteName('T3.title') .' type,
-			'. $db->quoteName('T1.cx_role') .',
-			'. $db->quoteName('T1.cx_situated') .',
-			'. $db->quoteName('T1.access') .',
-			'. $db->quoteName('T1.reasonStatus') .',
-			'. $db->quoteName('T1.created_date') .',
-			'. $db->quoteName('T1.created_by') .',
-			'. $db->quoteName('T1.alter_date') .',
-			'. $db->quoteName('T1.alter_by') .',
-			'. $db->quoteName('T1.state') .'
+			'. $db->quoteName('T3.title') .' type
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
 			LEFT OUTER JOIN '. $db->quoteName('#__users') .' T2
@@ -70,6 +60,9 @@ $html = '
 					<th>'.JText::_('FIELD_LABEL_NAME').'</th>
 					<th width="30" class="d-none d-lg-table-cell text-center">&#160;</td>
 					<th>'.JText::_('TEXT_TYPE').'</th>
+					<th width="50" class="d-none d-lg-table-cell text-center">
+						<span class="cursor-help hasTooltip" title="'.JText::_('TEXT_LIST_ENABLED_DEBIT').'">'.JText::_('TEXT_DEBIT').'</span>
+					</td>
 					<th>'.JText::_('TEXT_STATUS').'</th>
 					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
 					'.$adminView['head']['actions'].'
@@ -141,6 +134,16 @@ if($num_rows) : // verifica se existe
 			if(empty($item->user)) $status = '<span class="base-icon-cancel text-danger"> '.JText::_('TEXT_NO_USER_ASSOC').'</span><div class="small text-muted text-truncate">'.JText::_('TEXT_NO_USER_ASSOC_DESC').'</div>';
 			else $status = '<span class="base-icon-ok text-success"> '.JText::_('TEXT_APPROVED').'</span>';
 		endif;
+		$debit = 'ok text-success';
+		$debitMsg = 'TEXT_DEBIT_ACTIVE';
+		if($item->enable_debit == 0) :
+			$debit = 'cancel text-danger';
+			$debitMsg = 'TEXT_DEBIT_NOT_ENABLE';
+		elseif($item->account_info == 0) :
+			$debit = 'cancel text-live';
+			$debitMsg = 'TEXT_INCOMPLETE_ACCOUNT_INFORMATION';
+		endif;
+		$debit = '<span class="base-icon-'.$debit.' cursor-help hasTooltip" title="'.JText::_($debitMsg).'"></span>';
 		$urlViewData = JURI::root().'apps/clients/view?vID='.$item->id;
 		$status = $item->state == 0 ? '<span class="base-icon-attention text-live"> '.JText::_('TEXT_BLOCKED').'</span>' : $status;
 		$rowState	= $item->state == 0 ? 'table-danger' : '';
@@ -158,6 +161,7 @@ if($num_rows) : // verifica se existe
 				<td>'.$img.$item->name.'<div class="small text-muted">'.$item->cx_role.' - '.$item->cx_situated.'</td>
 				<td class="d-none d-lg-table-cell text-center"><a href="'.$urlViewData.'" target="_blank" class="base-icon-doc-text hasTooltip" title="'.JText::_('TEXT_VIEW_DATA').'"></a></td>
 				<td>'.$item->type.'</td>
+				<td class="d-none d-lg-table-cell text-center">'.$debit.'</td>
 				<td>'.$status.'</td>
 				<td class="d-none d-lg-table-cell">
 					'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'

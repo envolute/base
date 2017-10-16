@@ -74,7 +74,7 @@ if($num_rows) : // verifica se existe
 	$headStyle	= array('bg' => '#303b4d', 'color' => '#fff', 'border' => 'none');
 	$bodyStyle	= array('bg' => '#fff');
 	$mailLogo	= 'logo-news.png';
-	$SendTo = $sendNo = '';
+	$sendTo = $sendNo = '';
 	foreach($res as $item) {
 
 		$eBody		= JText::sprintf('MSG_EMAIL_BIRTHDAY_BODY', baseHelper::nameFormat($item->name), $mailFrom);

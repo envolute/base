@@ -87,6 +87,66 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 		endif;
 
+		// CUSTOM -> Client Code
+		// Code Validate - valida o nome de usuário, verifica se existe...
+		function codeValidate($code, $cfg) {
+			if(!empty($code)) :
+				// database connect
+				$db = JFactory::getDbo();
+				// verifica se já existe um usuário com o código
+				$query = 'SELECT COUNT(*) FROM '. $db->quoteName('#__users') .' WHERE `username` = '.$code;
+				$db->setQuery($query);
+				$exist = $db->loadResult();
+				if($exist) return false;
+			endif;
+			return true;
+		}
+		// Get Code - Gera o código a partir do valor definido ou da tabela de incremento
+		function getCode($code, $cfg) {
+			if(!empty($code)) :
+				// verifica se existe
+				// se já existir, incrementa o código até um que ainda não exista...
+				if(!codeValidate($code, $cfg)) $code = codeValidate($code + 1, $cfg);
+				return $code;
+			endif;
+			return false;
+		}
+		// Get Client Code - Pega o novo nome de usuário
+		// O código pode ser passado diretamente (ex: CPF) ou através da tabela de incremento
+		function getClientCode($cfg, $code = '') {
+			if(!empty($code)) :
+				return $code;
+			else :
+				// database connect
+				$db = JFactory::getDbo();
+				// SELECT 'CLIENT CODE'
+				$query = 'SELECT '. $db->quoteName('code').' FROM '. $db->quoteName($cfg['mainTable'].'_code');
+				if($db->setQuery($query)) $code = $db->loadResult();
+				$code = getCode($code, $cfg);
+				return $code;
+			endif;
+		}
+		// Set Code - Gera o nome de usuário a partir de um incremento
+		function setClientCode($clientID, $userID, $code, $cfg) {
+			// database connect
+			$db = JFactory::getDbo();
+			// atualiza o cliente
+			$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '. $db->quoteName('user_id').' = '.$db->quote($userID).' WHERE `id` = '.$clientID;
+			$db->setQuery($query);
+   			$db->execute();
+			// atualiza o usuário
+			$query = 'UPDATE '. $db->quoteName('#__users') .' SET '. $db->quoteName('username').' = '.$db->quote($code).' WHERE `id` = '.$userID;
+			$db->setQuery($query);
+   			$db->execute();
+			// incrementa o código
+			$query = 'UPDATE '. $db->quoteName($cfg['mainTable'].'_code') .' SET '. $db->quoteName('code').' = '.($code + 1);
+			if($db->setQuery($query)) :
+	   			$db->execute();
+				return true;
+			endif;
+			return false;
+		}
+
 		// fields 'Form' requests
 		$request						= array();
 		// default
@@ -95,8 +155,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		// app
 		$request['newUser']				= $input->get('newUser', 0, 'int');
 		$request['user_id']				= $input->get('user_id', 0, 'int');
-			// Define o usuário
-			$userID							= $request['newUser'] ? $request['newUser'] : $request['user_id'];
 		$request['name']				= $input->get('name', '', 'string');
 		$request['email']				= $input->get('email', '', 'string');
 		$request['cpf']					= $input->get('cpf', '', 'string');
@@ -129,16 +187,21 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	  	$request['whatsapp1']			= $input->get('whatsapp1', 0, 'int');
 	  	$request['whatsapp2']			= $input->get('whatsapp2', 0, 'int');
 	  	$request['whatsapp3']			= $input->get('whatsapp3', 0, 'int');
+	  	$request['enable_debit']		= $input->get('enable_debit', 1, 'int');
 		$request['agency']				= $input->get('agency', '', 'string');
 		$request['account']				= $input->get('account', '', 'string');
 		$request['operation']			= $input->get('operation', '', 'string');
 		// CARD
-	    $request['name_card']			= $input->get('name_card', '', 'string');
+		$request['card_name']			= $input->get('card_name', '', 'string');
 	  	$request['card_limit']			= $input->get('card_limit', 0.00, 'float');
 	    // user registration action
 	  	$request['access']				= $input->get('access', 0, 'int');
-	    $username						= baseHelper::alphaNum($request['cpf']); // apenas letras e números
-	  	$request['usergroup']			= $input->get('usergroup', $_SESSION[$APPTAG.'newUsertype'], 'int');
+			// USERNAME
+			$request['username']		= baseHelper::alphaNum($request['cpf']);
+			$code = getClientCode($cfg, $request['username']);
+			$length = (strlen($code) > 6) ? 11 : 6;
+			$username = baseHelper::lengthFixed($code, $length);
+	    $request['usergroup']			= $input->get('usergroup', $_SESSION[$APPTAG.'newUsertype'], 'int');
 	  	$request['password']			= $input->get('password', '', 'string');
 	  	$request['repassword']			= $input->get('repassword', '', 'string');
 	  	$request['emailConfirm']		= $input->get('emailConfirm', 0, 'int');
@@ -259,10 +322,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'whatsapp1'			=> $item->whatsapp1,
 						'whatsapp2'			=> $item->whatsapp2,
 						'whatsapp3'			=> $item->whatsapp3,
+						'enable_debit'		=> $item->enable_debit,
 						'agency'			=> $item->agency,
 						'account'			=> $item->account,
 						'operation'			=> $item->operation,
-			            'name_card'			=> $item->name_card,
+			            'card_name'			=> $item->card_name,
 			            'card_limit'		=> $item->card_limit,
 						'access'			=> ($itemBlock ? 0 : 1),
 						'reasonStatus'		=> $item->reasonStatus,
@@ -274,7 +338,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 					$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
 					$query .=
-						$db->quoteName('user_id')			.'='. $userID .','.
+						$db->quoteName('user_id')			.'='. $request['user_id'] .','.
 						$db->quoteName('usergroup')			.'='. $request['usergroup'] .','.
 						$db->quoteName('name')				.'='. $db->quote($request['name']) .','.
 						$db->quoteName('email')				.'='. $db->quote($request['email']) .','.
@@ -305,10 +369,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('whatsapp1')			.'='. $request['whatsapp1'] .','.
 						$db->quoteName('whatsapp2')			.'='. $request['whatsapp2'] .','.
 						$db->quoteName('whatsapp3')			.'='. $request['whatsapp3'] .','.
+						$db->quoteName('enable_debit')		.'='. $request['enable_debit'] .','.
 						$db->quoteName('agency')			.'='. $db->quote($request['agency']) .','.
 						$db->quoteName('account')			.'='. $db->quote($request['account']) .','.
 						$db->quoteName('operation')			.'='. $db->quote($request['operation']) .','.
-						$db->quoteName('name_card')			.'='. $db->quote($request['name_card']) .','.
+						$db->quoteName('card_name')			.'='. $db->quote($request['card_name']) .','.
 						$db->quoteName('card_limit')		.'='. $db->quote($request['card_limit']) .','.
 						$db->quoteName('access')			.'='. $request['access'] .','.
 						$db->quoteName('reasonStatus')		.'='. $db->quote($reason) .','.
@@ -341,7 +406,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						// cria o usuário se não existir
 						$userMsg = '';
 						if($request['access'] == 1) :
-							if($userID == 0 && !$isUser) :
+							if($request['user_id'] == 0 && $request['newUser'] == 0 && !$isUser) :
 								// define a senha
 								$pwd = ($request['password'] && !empty($request['password'])) ? $request['password'] : baseHelper::randomPassword();
 								// prepara os dados
@@ -366,22 +431,36 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 									$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET user_id = '. $newUserId .' WHERE id = '.$id;
 									$db->setQuery($query);
 									$db->execute();
+									setClientCode($id, $newUserId, $username, $cfg);
 									$userMsg = JText::_('MSG_USER_CREATED');
 								else :
-									$userMsg = !is_int($newUserId) ? JText::_($newUserId) : $userMsg = JText::_('MSG_USER_NOT_CREATED');
+									$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '.$db->quoteName('access').' = 0 WHERE id = '.$id;
+									$db->setQuery($query);
+									$db->execute();
+									$userMsg = JText::_('MSG_USER_NOT_CREATED');
+									if(!is_int($newUserId)) $userMsg .= ': '.JText::_($newUserId);
 								endif;
 								$userMsg = '<br />'.$userMsg;
 							// se existir, atualiza os dados 'name' e 'e-mail' para mantê-los sincronizados
-							elseif($isUser && $userInfoId) :
+							elseif(($request['newUser'] != 0 && !$isUser) || ($isUser && $userInfoId)) :
 								// verifica se ha atualização de senha
 								$newPass  = '';
 								if(!empty($request['password']) && ($request['password'] == $request['repassword'])) :
 									$newPass  = ', password = '. $db->quote(JUserHelper::hashPassword($request['password']));
 								endif;
-								// Atualiza os dados so usuário
+								// Atualiza os dados do usuário
 								$query = 'UPDATE '. $db->quoteName('#__users') .' SET name = '. $db->quote($request['name']) .', email = '. $db->quote($request['email']). $newPass .', block = 0 WHERE id = '.$userInfoId;
 								$db->setQuery($query);
 								$db->execute();
+								// Atribui o usuário ao cliente
+								// Obs: atribui o 'username' do cliente ao usuário para manter o padrão. Para isso,
+								// Utiliza "$request['username']" ao invés de "$username", porque "$username" passa por validação
+								// e como o usuário já existe, caso já esteja no padrão, não passará na validação, pois já existirá
+								// Um exemplo disso é quando for utilizado o 'CPF' como nome de usuário
+								if($request['newUser'] != 0) :
+									setClientCode($id, $request['newUser'], $request['username'], $cfg);
+									$userMsg = '<br />'.JText::_('MSG_USER_CREATED');
+								endif;
 							endif;
 						elseif($isUser && $userInfoId) :
 							baseUserHelper::stateToJoomlaUser($userInfoId, 0);
@@ -592,7 +671,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					// Prepare the insert query
 					$query  = '
 						INSERT INTO '. $db->quoteName($cfg['mainTable']) .'('.
-							$db->quoteName('user_id') .','.
 							$db->quoteName('usergroup') .','.
 							$db->quoteName('name') .','.
 							$db->quoteName('email') .','.
@@ -623,17 +701,17 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('whatsapp1') .','.
 							$db->quoteName('whatsapp2') .','.
 							$db->quoteName('whatsapp3') .','.
+							$db->quoteName('enable_debit') .','.
 							$db->quoteName('agency') .','.
 							$db->quoteName('account') .','.
 							$db->quoteName('operation') .','.
-							$db->quoteName('name_card') .','.
+							$db->quoteName('card_name') .','.
 							$db->quoteName('card_limit') .','.
 							$db->quoteName('access') .','.
 							$db->quoteName('reasonStatus') .','.
 							$db->quoteName('state') .','.
 							$db->quoteName('created_by')
 						.') VALUES ('.
-							$userID .','.
 							$request['usergroup'] .','.
 							$db->quote($request['name']) .','.
 							$db->quote($request['email']) .','.
@@ -664,10 +742,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$request['whatsapp1'] .','.
 							$request['whatsapp2'] .','.
 							$request['whatsapp3'] .','.
+							$request['enable_debit'] .','.
 							$db->quote($request['agency']) .','.
 							$db->quote($request['account']) .','.
 							$db->quote($request['operation']) .','.
-							$db->quote($request['name_card']) .','.
+							$db->quote($request['card_name']) .','.
 							$db->quote($request['card_limit']) .','.
 							$request['access'] .','.
 							$db->quote($reason) .','.
@@ -713,7 +792,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						// CUSTOM -> user registration
 						$userMsg = '';
 						if($request['access'] == 1) :
-							if($userID == 0) :
+							if($request['user_id'] == 0 && $request['newUser'] == 0) :
 								// define a senha
 								$pwd = ($request['password'] && !empty($request['password'])) ? $request['password'] : baseHelper::randomPassword();
 								// prepare data
@@ -739,16 +818,34 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 									$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET user_id = '. $newUserId .' WHERE id = '.$id;
 									$db->setQuery($query);
 									$db->execute();
+									setClientCode($id, $newUserId, $username, $cfg);
 									$userMsg = JText::_('MSG_USER_CREATED');
 								else :
-									$userMsg = !is_int($newUserId) ? JText::_($newUserId) : $userMsg = JText::_('MSG_USER_NOT_CREATED');
+									$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '.$db->quoteName('access').' = 0 WHERE id = '.$id;
+									$db->setQuery($query);
+									$db->execute();
+									$userMsg = JText::_('MSG_USER_NOT_CREATED').' = '.$request['newUser'];
+									if(!is_int($newUserId)) $userMsg .= ': '.JText::_($newUserId);
 								endif;
 								$userMsg = '<br />'.$userMsg;
 							// se existir, atualiza os dados 'name' e 'e-mail' para mantê-los sincronizados
-							else :
-								$query = 'UPDATE '. $db->quoteName('#__users') .' SET name = '. $db->quote($request['name']) .', email = '. $db->quote($request['email']) .' WHERE id = '.$userID;
+							elseif($request['newUser'] != 0) :
+								// verifica se ha atualização de senha
+								$newPass  = '';
+								if(!empty($request['password']) && ($request['password'] == $request['repassword'])) :
+									$newPass  = ', password = '. $db->quote(JUserHelper::hashPassword($request['password']));
+								endif;
+								// Atualiza os dados do usuário
+								$query = 'UPDATE '. $db->quoteName('#__users') .' SET name = '. $db->quote($request['name']) .', email = '. $db->quote($request['email']). $newPass .', block = 0 WHERE id = '.$request['newUser'];
 								$db->setQuery($query);
 								$db->execute();
+								// Atribui o usuário ao cliente
+								// Obs: atribui o 'username' do cliente ao usuário para manter o padrão. Para isso,
+								// Utiliza "$request['username']" ao invés de "$username", porque "$username" passa por validação
+								// e como o usuário já existe, caso já esteja no padrão, não passará na validação, pois já existirá
+								// Um exemplo disso é quando for utilizado o 'CPF' como nome de usuário
+								setClientCode($id, $request['newUser'], $request['username'], $cfg);
+								$userMsg = '<br />'.JText::_('MSG_USER_CREATED');
 							endif;
 						endif;
 

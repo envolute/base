@@ -122,6 +122,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	  	$request['whatsapp1']			= $input->get('whatsapp1', 0, 'int');
 	  	$request['whatsapp2']			= $input->get('whatsapp2', 0, 'int');
 	  	$request['whatsapp3']			= $input->get('whatsapp3', 0, 'int');
+	  	$request['enable_debit']		= $input->get('enable_debit', 1, 'int');
 		$request['agency']				= $input->get('agency', '', 'string');
 		$request['account']				= $input->get('account', '', 'string');
 		$request['operation']			= $input->get('operation', '', 'string');
@@ -234,6 +235,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'whatsapp1'			=> $item->whatsapp1,
 						'whatsapp2'			=> $item->whatsapp2,
 						'whatsapp3'			=> $item->whatsapp3,
+						'enable_debit'		=> $item->enable_debit,
 						'agency'			=> $item->agency,
 						'account'			=> $item->account,
 						'operation'			=> $item->operation,
@@ -255,6 +257,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$query .= noEditable('birthday', $request['birthday'], true);
 					$query .= noEditable('cx_code', $request['cx_code'], true);
 					$query .= noEditable('cx_date', $request['cx_date'], true);
+					$query .= noEditable('enable_debit', $request['enable_debit'], true);
 					$query .= noEditable('agency', $request['agency'], true);
 					$query .= noEditable('account', $request['account'], true);
 					$query .= noEditable('operation', $request['operation'], true);
@@ -411,6 +414,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('whatsapp1') .','.
 							$db->quoteName('whatsapp2') .','.
 							$db->quoteName('whatsapp3') .','.
+							$db->quoteName('enable_debit') .','.
 							$db->quoteName('agency') .','.
 							$db->quoteName('account') .','.
 							$db->quoteName('operation') .','.
@@ -449,6 +453,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$request['whatsapp1'] .','.
 							$request['whatsapp2'] .','.
 							$request['whatsapp3'] .','.
+							$request['enable_debit'] .','.
 							$db->quote($request['agency']) .','.
 							$db->quote($request['account']) .','.
 							$db->quote($request['operation']) .','.

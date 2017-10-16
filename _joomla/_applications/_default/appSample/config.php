@@ -66,6 +66,7 @@ endif;
 		$cfg['staticToolbar']	= false;
 		$cfg['showAddBtn']		= false;
 		$cfg['addText']			= false;
+		$cfg['addClass']		= false;
 		$cfg['showFilter']		= false;
 	else :
 		// show/hidden list

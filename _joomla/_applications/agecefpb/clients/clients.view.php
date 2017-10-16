@@ -52,6 +52,7 @@ if($vID != 0) :
 	$query = '
 		SELECT
 			T1.*,
+			IF(T1.agency <> "" AND T1.account <> "" AND T1.operation <> "", 1, 0) account_info,
 			'. $db->quoteName('T2.title') .' type
 		FROM
 			'.$db->quoteName($cfg['mainTable']).' T1
@@ -204,16 +205,38 @@ if($vID != 0) :
 					</div>
 			';
 		endif;
+
+		// DADOS DE COBRANÇA
+		$accountData = '
+			<label class="label-sm">Conta Bancária:</label>
+			<p>
+				'.JText::_('FIELD_LABEL_AGENCY').': <strong>'.$item->agency.'</strong><br />
+				'.JText::_('FIELD_LABEL_ACCOUNT').': <strong>'.$item->account.'</strong><br />
+				'.JText::_('FIELD_LABEL_OPERATION').': <strong>'.$item->operation.'</strong>
+			</p>
+		';
+		if($item->enable_debit == 1 && !empty($item->agency) && !empty($item->account) && !empty($item->operation)) :
+			$debit = '
+				<div class="mb-2"><span class="base-icon-ok-circled text-success"> '.JText::_('TEXT_DEBIT_ACTIVE').'</span></div>
+				'.$accountData
+			;
+		else :
+			if($item->enable_debit == 0) :
+				$debitMsg = 'TEXT_DEBIT_NOT_ENABLE';
+				$accountData = '';
+			elseif($item->account_info == 0) :
+				$debitMsg = 'TEXT_INCOMPLETE_ACCOUNT_INFORMATION';
+			endif;
+			$debit = '
+				<div class="mb-2"><span class="base-icon-cancel-circled text-danger"> '.JText::_($debitMsg).'</span></div>
+				'.$accountData
+			;
+		endif;
 		$html .= '
 				<div class="col">
 					<hr class="hr-tag" />
-					<span class="badge badge-primary">'.JText::_('TEXT_ACCOUNT_DATA').'</span>
-					<label class="label-sm">Conta Bancária:</label>
-					<p>
-						'.JText::_('FIELD_LABEL_AGENCY').': <strong>'.$item->agency.'</strong><br />
-						'.JText::_('FIELD_LABEL_ACCOUNT').': <strong>'.$item->account.'</strong><br />
-						'.JText::_('FIELD_LABEL_OPERATION').': <strong>'.$item->operation.'</strong>
-					</p>
+					<span class="badge badge-primary">'.JText::_('TEXT_PAYMENT_DATA').'</span>
+					'.$debit.'
 				</div>
 			</div>
 		';

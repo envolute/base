@@ -161,7 +161,7 @@ jQuery(function() {
 			var ed = pre+'9999-9999[9]'; // eight digits
 			var nd = pre+'9999[9]-9999'; // nine digits
 		// SET VALUE AND FORMAT
-		if(isSet(val)) {
+		if(isSet(val) && !isEmpty(val)) {
 			// SET MASK
 			if(setPhoneMask(val, ed, nd)) {
 				// se a máscara estiver desabilitada, seta o click no botão

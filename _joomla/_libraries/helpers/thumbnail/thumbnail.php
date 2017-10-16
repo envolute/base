@@ -17,6 +17,7 @@ $sHeight = isset($_GET['maxh']) ? (int)$_GET['maxh'] : 0;
 $eWidth = isset($_GET['w']) ? (int)$_GET["w"] : 0;
 $eHeight = isset($_GET['h']) ? (int)$_GET["h"] : 0;
 
+$sType = '';
 if($sWidth && $sHeight) $sType = 'scale';
 if($eWidth && $eHeight) $sType = 'exact';
 
@@ -34,9 +35,8 @@ if(file_exists($image)) :
 		$origW = $sz[0];
 		$origH = $sz[1];
 
-		// indica a largura como medida principal
-		$setW = false;
-
+		$width = $origW;
+		$height = $origH;
 		if ($sType == 'scale') :
 
 			$width = $sWidth;

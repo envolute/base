@@ -13,6 +13,11 @@ $where = '';
 	$fAccess = $app->input->get('fAccess', 9, 'int');
 	if($fAccess != 9 && $fAccess != 2) $where .= ' AND '.$db->quoteName('T1.access').' = '.$fAccess;
 	if($fAccess == 2) $where .= ' AND '.$db->quoteName('T1.access').' = 0 AND '.$db->quoteName('T1.user_id').' != 0';
+	// DEBIT -> select
+	$fDebt = $app->input->get('fDebt', 0, 'int');
+	if($fDebt == 1) $where .= ' AND '.$db->quoteName('T1.enable_debit').' = 1 AND '.$db->quoteName('agency').' <> "" AND '.$db->quoteName('account').' <> "" AND '.$db->quoteName('operation').' <> ""';
+	if($fDebt == 2) $where .= ' AND '.$db->quoteName('T1.enable_debit').' = 0';
+	if($fDebt == 3) $where .= ' AND ('.$db->quoteName('agency').' = "" || '.$db->quoteName('account').' = "" || '.$db->quoteName('operation').' = "")';
 	// GROUP -> select
 	$fGroup	= $app->input->get('fGroup', 0, 'int');
 	if($fGroup != 0) $where .= ' AND '.$db->quoteName('T1.usergroup').' = '.$fGroup;
@@ -25,7 +30,6 @@ $where = '';
 	// CHILDREN -> select
 	$fChild = $app->input->get('fChild', 2, 'int');
 	if($fChild != 2) $where .= ' AND '.$db->quoteName('T1.children').' '.($fChild == 1 ? '<>' : '=').' 0';
-
 	// BIRTHDAY
 	$dateMin	= $app->input->get('dateMin', '', 'string');
 	$dateMax	= $app->input->get('dateMax', '', 'string');
@@ -145,9 +149,20 @@ $htmlFilter = '
 				<div class="col-sm-6 col-md-3 col-lg-2">
 					<div class="form-group">
 						<label class="label-sm">'.JText::_('TEXT_USER_TYPE').'</label>
-						<select name="fGroup" id="fGroup" class="form-control form-control set-filter">
+						<select name="fGroup" id="fGroup" class="form-control form-control-sm set-filter">
 							<option value="0">- '.JText::_('FIELD_LABEL_GROUP').' -</option>
 							'.$flt_group.'
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md-3 col-lg-2">
+					<div class="form-group">
+						<label class="label-sm">'.JText::_('FIELD_LABEL_DEBIT').'</label>
+						<select name="fDebt" id="fDebt" class="form-control form-control-sm set-filter">
+							<option value="0">- '.JText::_('TEXT_ALL_F').' -</option>
+							<option value="1"'.($fDebt == 1 ? ' selected' : '').'>'.JText::_('TEXT_DEBIT_ACTIVE').'</option>
+							<option value="2"'.($fDebt == 2 ? ' selected' : '').'>'.JText::_('TEXT_DEBIT_NOT_ENABLE').'</option>
+							<option value="3"'.($fDebt == 3 ? ' selected' : '').'>'.JText::_('TEXT_INCOMPLETE_DATA').'</option>
 						</select>
 					</div>
 				</div>

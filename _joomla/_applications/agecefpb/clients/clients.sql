@@ -68,3 +68,21 @@ CREATE TABLE IF NOT EXISTS `cms_agecefpb_clients_files` (
   UNIQUE KEY `filename` (`filename`),
   KEY `id_parent` (`id_parent`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `cms_agecefpb_clients_code`
+--
+
+CREATE TABLE IF NOT EXISTS `cms_agecefpb_clients_code` (
+  `code` int(11) NOT NULL,
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `cms_agecefpb_clients_code`
+--
+
+INSERT INTO `cms_agecefpb_clients_code` (`code`, `date`) VALUES
+(100, '2017-10-10 00:00:00');
