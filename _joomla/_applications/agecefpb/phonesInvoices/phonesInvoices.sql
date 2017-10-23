@@ -16,8 +16,8 @@ CREATE TABLE IF NOT EXISTS `cms_agecefpb_phones_invoices` (
   `alter_date` datetime NOT NULL,
   `alter_by` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `provider_id` (`provider_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+  KEY `operator_id` (`provider_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -45,11 +45,15 @@ CREATE TABLE IF NOT EXISTS `cms_agecefpb_phones_invoices_details` (
   `tipo_imposto` varchar(100) NOT NULL,
   `descricao` varchar(100) NOT NULL,
   `cargo` varchar(100) NOT NULL,
+  `nome_local_origem` varchar(100) NOT NULL,
+  `nome_local_destino` varchar(100) NOT NULL,
+  `codigo_local_origem` varchar(20) NOT NULL,
+  `codigo_local_destino` varchar(20) NOT NULL,
   `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `invoice_id` (`invoice_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COMMENT='Detalhamento da Fatura Telefônica';
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Detalhamento da Fatura Telefônica';
 
 -- --------------------------------------------------------
 
@@ -75,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `cms_agecefpb_phones_invoices_files` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `filename` (`filename`),
   KEY `id_parent` (`id_parent`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -85,45 +89,57 @@ CREATE TABLE IF NOT EXISTS `cms_agecefpb_phones_invoices_files` (
 
 CREATE OR REPLACE VIEW `vw_agecefpb_phones_invoices_phone_total` AS
 SELECT
-	`T1`.`invoice_id`,
-	`T2`.`due_date`,
-	DAY(`T2`.`due_date`) due_day,
-	MONTH(`T2`.`due_date`) due_month,
-	YEAR(`T2`.`due_date`) due_year,
-	`T3`.`client_id`,
-	`T6`.`state` client_state,
-	`T6`.`user_id`,
-	`T6`.`name`,
-	`T6`.`cpf`,
-	`T6`.`cx_code`,
-	`T3`.`id` phone_id,
-	`T3`.`state` phone_state,
-	`T1`.`tel`,
-	`T4`.`id` plan_id,
-	`T4`.`state` plan_state,
-	`T4`.`name` plan,
-	`T5`.`id` provider_id,
-	`T5`.`state` provider_state,
-	`T5`.`name` provider,
-	IF(`T7`.`invoice_id` IS NULL, 0, `T7`.`invoice_id`) invoice,
+	`T1`.`invoice_id` AS `invoice_id`,
+	`T2`.`due_date` AS `due_date`,
+	DAY(`T2`.`due_date`) AS `due_day`,
+	MONTH(`T2`.`due_date`) AS `due_month`,
+	YEAR(`T2`.`due_date`) AS `due_year`,
+	`T3`.`client_id` AS `client_id`,
+	`T6`.`state` AS `client_state`,
+	`T6`.`user_id` AS `user_id`,
+	`T6`.`name` AS `name`,
+	`T6`.`cpf` AS `cpf`,
+	`T6`.`cx_code` AS `cx_code`,
+	`T3`.`id` AS `phone_id`,
+	`T3`.`state` AS `phone_state`,
+	`T1`.`tel` AS `tel`,
+	`T4`.`id` AS `plan_id`,
+	`T4`.`state` AS `plan_state`,
+	`T4`.`name` AS `plan`,
+	`T5`.`id` AS `provider_id`,
+	`T5`.`state` AS `provider_state`,
+	`T5`.`name` AS `provider`,
+	IF(ISNULL(`T7`.`invoice_id`),0,`T7`.`invoice_id`) AS `invoice`,
 	SUM(`T1`.`valor_cobrado`) AS `valor_cobrado`,
-	`T4`.`price` valor_plano,
-	`T2`.`tax` taxa_servico,
-	(SUM(`T1`.`valor_cobrado`) + `T4`.`price` + `T2`.`tax`) AS `total`,
-	`T1`.`created_by`
-FROM `cms_agecefpb_phones_invoices_details` T1
-	LEFT OUTER JOIN `cms_agecefpb_phones_invoices` T2
-	ON `T2`.`id` = `T1`.`invoice_id`
-	LEFT OUTER JOIN `cms_agecefpb_phones` T3
-	ON SUBSTRING_INDEX(`T3`.`phone_number`,' ',-1) LIKE SUBSTRING_INDEX(`T1`.`tel`,' ',-1)
-	LEFT OUTER JOIN `cms_agecefpb_phones_plans` T4
-	ON `T4`.`id` = `T3`.`plan_id`
-	LEFT OUTER JOIN `cms_base_providers` T5
-	ON `T5`.`id` = `T4`.`provider_id`
-	LEFT OUTER JOIN `cms_agecefpb_clients` T6
-	ON `T6`.`id` = `T3`.`client_id`
-	LEFT OUTER JOIN `cms_agecefpb_transactions` T7
-	ON `T7`.`phone_id` = `T3`.`id`
+	`T4`.`price` AS `valor_plano`,
+	`T2`.`tax` AS `taxa_servico`,
+	((SUM(`T1`.`valor_cobrado`) + `T4`.`price`) + `T2`.`tax`) AS `total`,
+	`T1`.`created_by` AS `created_by`
+FROM
+(
+	(
+		(
+			(
+				(
+					(`cms_agecefpb_phones_invoices_details` `T1`
+						left join `cms_agecefpb_phones_invoices` `T2`
+						on((`T2`.`id` = `T1`.`invoice_id`))
+					)
+				 	left join `cms_agecefpb_phones` `T3`
+					on((substring_index(`T3`.`phone_number`,' ',-(1)) like substring_index(`T1`.`tel`,' ',-(1))))
+				)
+				left join `cms_agecefpb_phones_plans` `T4`
+				on((`T4`.`id` = `T3`.`plan_id`))
+			)
+			left join `cms_base_providers` `T5`
+			on((`T5`.`id` = `T4`.`provider_id`))
+		)
+		left join `cms_agecefpb_clients` `T6`
+		on((`T6`.`id` = `T3`.`client_id`))
+	)
+	left join `cms_agecefpb_transactions` `T7`
+	on((`T7`.`phone_id` = `T3`.`id`))
+)
 WHERE `T1`.`tel` <> ""
 GROUP BY `T1`.`tel`
 ORDER BY `T1`.`invoice_id`, `T6`.`name`;
@@ -136,18 +152,24 @@ ORDER BY `T1`.`invoice_id`, `T6`.`name`;
 
 CREATE OR REPLACE VIEW `vw_agecefpb_phones_invoices_summary` AS
 SELECT
-	`T1`.`invoice_id`,
-	`T3`.`id` phone_id,
-	`T1`.`tel`,
-	`T1`.`sub_secao`,
-	`T1`.`secao`,
-	SUM(`T1`.`valor_cobrado`) valor_cobrado,
-	`T1`.`created_by`
-FROM `cms_agecefpb_phones_invoices_details` T1
-	LEFT OUTER JOIN `cms_agecefpb_phones_invoices` T2
-	ON `T2`.`id` = `T1`.`invoice_id`
-	LEFT OUTER JOIN `cms_agecefpb_phones` T3
-	ON SUBSTRING_INDEX(`T3`.`phone_number`,' ',-1) LIKE SUBSTRING_INDEX(`T1`.`tel`,' ',-1)
+	`T1`.`invoice_id` AS `invoice_id`,
+	`T3`.`id` AS `phone_id`,
+	`T1`.`tel` AS `tel`,
+	`T1`.`sub_secao` AS `sub_secao`,
+	`T1`.`secao` AS `secao`,
+	SUM(`T1`.`valor_cobrado`) AS `valor_cobrado`,
+	`T1`.`created_by` AS `created_by`
+FROM
+(
+	(`cms_agecefpb_phones_invoices_details` `T1`
+		left join `cms_agecefpb_phones_invoices` `T2`
+		on((`T2`.`id` = `T1`.`invoice_id`))
+	)
+	left join `cms_agecefpb_phones` `T3`
+	on(
+		(substring_index(`T3`.`phone_number`,' ',-(1)) like substring_index(`T1`.`tel`,' ',-(1)))
+	)
+)
 WHERE `tel` <> ""
 GROUP BY CONCAT(`T1`.`tel`, " - ", `T1`.`secao`)
 ORDER BY `T1`.`tel`, `T1`.`sub_secao`;

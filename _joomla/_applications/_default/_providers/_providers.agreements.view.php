@@ -69,14 +69,14 @@ if($vID != 0) :
 	$provider = '';
 	if(!empty($item->name)) : // verifica se existe
 
-		// Telefones
+		// Call Centers
 		$query	= '
 			SELECT *
-			FROM '.$db->quoteName('#__'.$cfg['project'].'_phones') .' T1
-				JOIN '. $db->quoteName('#__'.$cfg['project'].'_rel_providers_phones') .' T2
-				ON '.$db->quoteName('T2.phone_id') .' = T1.id
+			FROM '.$db->quoteName('#__'.$cfg['project'].'_callCenters') .' T1
+				JOIN '. $db->quoteName('#__'.$cfg['project'].'_rel_providers_callCenters') .' T2
+				ON '.$db->quoteName('T2.callCenter_id') .' = T1.id
 			WHERE '.$db->quoteName('T2.provider_id') .' = '. $vID .'
-			ORDER BY '.$db->quoteName('T1.main') .' DESC
+			ORDER BY '.$db->quoteName('T1.id') .' ASC
 		';
 		try {
 			$db->setQuery($query);
@@ -88,30 +88,67 @@ if($vID != 0) :
 			return;
 		}
 
-		$mainPhones = '';
+		$callCenters = '';
 		if($num_rows) : // verifica se existe
-			$mainPhones .= '<h6 class="page-header mb-3 base-icon-phone-squared"> '.JText::_('TEXT_PROVIDER_PHONES').'</h6>';
-			$mainPhones .= '<ul class="set-list mb-4">';
+			$callCenters .= '<h6 class="page-header mb-3 base-icon-phone-squared"> '.JText::_('TEXT_PROVIDER_CALL_CENTERS').'</h6>';
+			$callCenters .= '<ul class="set-list list-lg list-trim mb-4">';
 			foreach($res as $obj) {
-				$oper = !empty($obj->operator) ? ' <span class="badge badge-info">'.$obj->operator.'</span> ' : '';
-				$wapp = $obj->whatsapp == 1 ? ' <span class="base-icon-whatsapp text-success cursor-help hasTooltip" title="'.JText::_('TEXT_HAS_WHATSAPP').'"></span>' : '';
-				$desc = !empty($obj->description) ? '<p class="pt-1">'.$obj->description.'</p>' : '';
-				$mainPhones .= '
-					<li><strong>'.$obj->phone_number.'</strong>'.$oper.$wapp.$desc.'</li>
+				// Phones
+				$ph = explode(';', $obj->phone);
+				$wp = explode(';', $obj->whatsapp);
+				$pd = explode(';', $obj->phone_desc);
+				$phones = '';
+				for($i = 0; $i < count($ph); $i++) {
+					$whapps = $wp[$i] == 1 ? ' <span class="base-icon-whatsapp text-success cursor-help hasTooltip" title="'.JText::_('TEXT_HAS_WHATSAPP').'"></span>' : '';
+					$phDesc = !empty($pd[$i]) ? '<div class="small text-muted pb-1">'.$pd[$i].'</div>' : '';
+					$phones .= '<div class="pb-1">'.$ph[$i].$whapps.$phDesc.'</div>';
+				}
+				// Emails
+				$em = explode(';', $obj->email);
+				$emails = '';
+				for($i = 0; $i < count($em); $i++) {
+					$emails .= !empty($em[$i]) ? '<div class="pb-1">'.$em[$i].'</div>' : '';
+				}
+				// Chats
+				$cName = explode(';', $obj->chat_name);
+				$cUser = explode(';', $obj->chat_user);
+				$chats = '';
+				for($i = 0; $i < count($em); $i++) {
+					if(!empty($cName[$i])) $chats .= '<div class="pb-1"><strong>'.$cName[$i].'</strong>: '.$cUser[$i].'</div>';
+				}
+				// Weblinks
+				$wTxt = explode(';', $obj->weblink_text);
+				$wUrl = explode(';', $obj->weblink_url);
+				$links = '';
+				for($i = 0; $i < count($em); $i++) {
+					$text = !empty($wTxt[$i]) ? $wTxt[$i] : $wUrl[$i];
+					$links .= '
+						<div class="pb-1">
+							<a href="'.$wUrl[$i].'" target="_blank">'.$text.'</a>
+						</div>
+					';
+				}
+				// Extra info
+				$info = !empty($obj->extra_info) ? '<div class="pt-1">'.$obj->extra_info.'</div>' : '';
+				// Título
+				$title = '';
+				if($obj->showTitle == 1) $title = '<h6 class="font-weight-bold mb-2">'.$obj->title.'</h6>';
+				$callCenters .= '
+					<li>'.$title.$phones.$emails.$chats.$links.$info.'</li>
 				';
 			}
-			$mainPhones .= '</ul>';
+			$callCenters .= '</ul>';
 			unset($obj); // reseta as informações contidas em item
 		endif;
 
-		// Endereços
+		// Localidades
 		$query	= '
 			SELECT T1.*
-			FROM '.$db->quoteName('#__'.$cfg['project'].'_addresses') .' T1
-				JOIN '. $db->quoteName('#__'.$cfg['project'].'_rel_providers_addresses') .' T2
-				ON '.$db->quoteName('T2.address_id') .' = T1.id
-			WHERE '.$db->quoteName('T2.provider_id') .' = '. $vID .'
-			ORDER BY '.$db->quoteName('T1.main') .' DESC
+			FROM '.$db->quoteName('#__'.$cfg['project'].'_locations') .' T1
+				JOIN '. $db->quoteName('#__'.$cfg['project'].'_rel_providers_locations') .' T2
+				ON '.$db->quoteName('T2.location_id') .' = T1.id
+			WHERE '.$db->quoteName('T2.provider_id') .' = '. $vID .' AND '.$db->quoteName('T1.isPublic') .' = 1
+			ORDER BY '.$db->quoteName('T1.id') .' ASC
 		';
 		try {
 			$db->setQuery($query);
@@ -123,39 +160,32 @@ if($vID != 0) :
 			return;
 		}
 
-		$addresses = '';
+		$locations = '';
 		if($num_rows) : // verifica se existe
-			$addresses .= '<h6 class="page-header mb-3 base-icon-location"> '.JText::_('TEXT_ADDRESSES').'</h6>';
-			$addresses .= '<ul class="set-list list-lg bordered mb-4">';
+			$locations .= '<h6 class="page-header mb-3 base-icon-location"> '.JText::_('TEXT_LOCATIONS').'</h6>';
+			$locations .= '<ul class="set-list list-lg list-trim bordered mb-4">';
 			foreach($res as $obj) {
 
-				$main = $obj->main == 1 ? '<span class="base-icon-star text-live cursor-help hasTooltip" title="'.JText::_('TEXT_ADDRESS_MAIN').'"></span> ' : '<h6 class="font-weight-bold mb-1">'.baseHelper::nameFormat($obj->description).'</h6>';
+				$title = !empty($obj->title) ? '<h6 class="strong mb-1">'.$lock.baseHelper::nameFormat($obj->title).'</h6>' : $lock;
 				$addressInfo = !empty($obj->address_info) ? ', '.$obj->address_info : '';
 				$addressNumber = !empty($obj->address_number) ? ', '.$obj->address_number : '';
 				$addressZip = !empty($obj->zip_code) ? $obj->zip_code.', ' : '';
 				$addressDistrict = !empty($obj->address_district) ? baseHelper::nameFormat($obj->address_district) : '';
 				$addressCity = !empty($obj->address_city) ? ', '.baseHelper::nameFormat($obj->address_city) : '';
-				$addressState = !empty($obj->address_state) ? ', '.baseHelper::nameFormat($obj->address_state) : '';
-				$addressCountry = !empty($obj->address_country) ? ', '.baseHelper::nameFormat($obj->address_country) : '';
+				$addressState = !empty($obj->address_state) ? ', '.($_SESSION[$RTAG.'OnlyBR'] ? $obj->address_state : baseHelper::nameFormat($obj->address_state)) : '';
+				$addressCountry = (!empty($obj->address_country) && !$_SESSION[$RTAG.'OnlyBR']) ? ', '.baseHelper::nameFormat($obj->address_country) : '';
 				$mapa = !empty($obj->url_map) ? ' <a href="'.$obj->url_map.'" class="badge badge-warning set-modal" title="'.JText::_('TEXT_MAP').'" data-modal-title="'.JText::_('TEXT_LOCATION').'" data-modal-iframe="true" data-modal-width="95%" data-modal-height="95%"><span class="base-icon-location"></span></a> ' : '';
-				$phones = array();
-				if(!empty($obj->phone1)) $phones[] = $obj->phone1;
-				if(!empty($obj->phone2)) $phones[] = $obj->phone2;
-				if(!empty($obj->phone3)) $phones[] = $obj->phone3;
-				if(!empty($obj->phone4)) $phones[] = $obj->phone4;
-				$listPhones = !empty($obj->phone1) ? ' <div class="text-sm mt-2 base-icon-phone-squared"> '.implode(', ', $phones).'</div>' : '';
+				$extra = !empty($obj->extra_info) ? ' <div class="location-extra-info text-sm"> '.$obj->extra_info.'</div>' : '';
 
-				$addresses .= '
+				$locations .= '
 					<li>
-						'.$main.baseHelper::nameFormat($obj->address).$addressNumber.$addressInfo.'
-						<div class="text-sm text-muted">'.
-							$addressZip.$addressDistrict.$addressCity.$addressState.$addressCountry.$mapa.'
-						</div>
-						'.$listPhones.'
+						'.$title.$mapa.baseHelper::nameFormat($obj->address).$addressNumber.$addressInfo.'
+						<br />'.
+						$addressZip.$addressDistrict.$addressCity.$addressState.$addressCountry.$extra.'
 					</li>
 				';
 			}
-			$addresses .= '</ul>';
+			$locations .= '</ul>';
 			unset($obj); // reseta as informações contidas em item
 		endif;
 
@@ -194,7 +224,7 @@ if($vID != 0) :
 		';
 
 		// TAB => INFORMATIONS
-		if(!empty($site) || !empty($mainPhones) || !empty($addresses) || !empty($item->service_desc)) :
+		if(!empty($site) || !empty($callCenters) || !empty($locations) || !empty($item->service_desc)) :
 			$provider .= '
 				<hr />
 				<!-- Nav tabs -->
@@ -213,10 +243,10 @@ if($vID != 0) :
 				';
 				$active = '';
 			endif;
-			if(!empty($mainPhones) || !empty($addresses)) :
+			if(!empty($callCenters) || !empty($locations)) :
 				$provider .= '
 					<li class="nav-item">
-						<a class="nav-link'.$active.'" id="'.$APPTAG.'TabView-address" href="#'.$APPTAG.'TabViewAddress" data-toggle="tab" role="tab" aria-controls="address" aria-expanded="true">
+						<a class="nav-link'.$active.'" id="'.$APPTAG.'TabView-location" href="#'.$APPTAG.'TabViewLocation" data-toggle="tab" role="tab" aria-controls="location" aria-expanded="true">
 							<span class="base-icon-location"></span> '.JText::_('TEXT_LOCATION_CONTACT').'
 						</a>
 					</li>
@@ -240,13 +270,13 @@ if($vID != 0) :
 				';
 				$show = '';
 			endif;
-			if(!empty($mainPhones) || !empty($addresses)) :
+			if(!empty($callCenters) || !empty($locations)) :
 				$provider .= '
-					<div class="tab-pane fade'.$show.'" id="'.$APPTAG.'TabViewAddress" role="tabpanel" aria-labelledby="'.$APPTAG.'TabView-address">
+					<div class="tab-pane fade'.$show.'" id="'.$APPTAG.'TabViewLocation" role="tabpanel" aria-labelledby="'.$APPTAG.'TabView-location">
 						<div class="row">
 				';
-				if(!empty($addresses)) $provider .= '<div class="col-md-7">'.$addresses.'</div>';
-				if(!empty($mainPhones)) $provider .= '<div class="col-md">'.$mainPhones.'</div>';
+				if(!empty($locations)) $provider .= '<div class="col-md-7">'.$locations.'</div>';
+				if(!empty($callCenters)) $provider .= '<div class="col-md">'.$callCenters.'</div>';
 				$provider .= '
 						</div>
 					</div>

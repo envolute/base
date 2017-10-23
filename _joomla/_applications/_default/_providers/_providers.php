@@ -35,6 +35,7 @@ jQuery(function() {
 	var group_id			= jQuery('#<?php echo $APPTAG?>-group_id');
 	var agreement			= mainForm.find('input[name=agreement]:radio'); // radio group
 	var name				= jQuery('#<?php echo $APPTAG?>-name');
+	var company_name		= jQuery('#<?php echo $APPTAG?>-company_name');
 	var email				= jQuery('#<?php echo $APPTAG?>-email');
 	var cnpj				= jQuery('#<?php echo $APPTAG?>-cnpj');
 	var insc_municipal		= jQuery('#<?php echo $APPTAG?>-insc_municipal');
@@ -100,6 +101,7 @@ jQuery(function() {
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
 			checkOption(agreement, 0); // radio
 			name.val('');
+			company_name.val('');
 			email.val('');
 			cnpj.val('');
 			insc_municipal.val('');
@@ -160,13 +162,13 @@ jQuery(function() {
 			?>
 		};
 
-		// CUSTOM -> view addresses list
-		window.<?php echo $APPTAG?>_viewAddresses = function() {
-			_addresses_listReload(false, false, false, false, false, formId.val());
+		// CUSTOM -> view locations list
+		window.<?php echo $APPTAG?>_viewLocations = function() {
+			_locations_listReload(false, false, false, false, false, formId.val());
 		};
-		// CUSTOM -> view phones list
-		window.<?php echo $APPTAG?>_viewPhones = function() {
-			_phones_listReload(false, false, false, false, false, formId.val());
+		// CUSTOM -> view call centers list
+		window.<?php echo $APPTAG?>_viewCallCenters = function() {
+			_callCenters_listReload(false, false, false, false, false, formId.val());
 		};
 		// CUSTOM -> view banks accounts list
 		window.<?php echo $APPTAG?>_viewBanks = function() {
@@ -254,6 +256,7 @@ jQuery(function() {
 						group_id.selectUpdate(item.group_id);
 						checkOption(agreement, item.agreement); // radio
 						name.val(item.name);
+						company_name.val(item.company_name);
 						email.val(item.email);
 						cnpj.val(item.cnpj);
 						insc_municipal.val(item.insc_municipal);

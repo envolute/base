@@ -78,7 +78,7 @@
 // TYPOGRAPHY
 
 	// fonts
-	$base-fonts-local:					false; // false -> google fonts, true -> fonts locais
+	$base-fonts-local:					true; // false -> google fonts, true -> fonts locais
 	$base-fonts:						'Roboto|Roboto+Condensed|Droid+Serif:400,400italic';
 	// font-primary
 	$base-font-primary:					'Roboto' !default;

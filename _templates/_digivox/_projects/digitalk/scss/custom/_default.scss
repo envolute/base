@@ -44,69 +44,70 @@
 		// .media-lg #wrapper { width: 992px; }
 		// .media-xl #wrapper { width: 1200px; }
 
-	// HEADER
+	// SIDEBAR
 
-		#header { }
+		#sidebar { }
 
-		#header-row-1 {
-			box-shadow: 1px 1px 8px 1px rgba(0,0,0,0.15), 1px 1px 1px rgba(0,0,0,0.4);
+		#sidebar-profile-data > img {
+			width: 84px;
+			height: 84px;
+		}
+		#sidebar-profile-data > h5 {
+			vertical-align: middle;
+		}
+		#sidebar-chat-list {
+			overflow-y: auto;
 		}
 
-		#header-row-2 {
-		    box-shadow: 0 2px 6px rgba(0,0,0,0.15), 0 1px 2px rgba(0,0,0,0.3);
-		}
+	// CONTENT -> área total do conteúdo incluindo as laterais
 
-		// Logo
-		#header #logo-header {
-		    position: absolute;
-		    top: 0px;
-		    display: block;
-		    width: 100px;
-		    height: 90px;
-			text-align: center;
-		    border-radius: 0 0 10px 10px;
-		    background: $base-color-primary-darker;
-		    box-shadow: 2px 2px 3px rgba(0,0,0,0.2), 0px 2px 2px rgba(0,0,0,0.3);
-		    z-index: 3;
-		}
-		#header #logo-header img {
-			width: 90px;
-			margin-top: 7px;
-		}
-		html.media-md #header #logo-header {
-		    width: 120px;
-		}
-		html.media-md #header #logo-header img {
-			width: 100px;
-			margin-top: -5px;
-		}
+		#content { }
 
+			.content-actions {
+				position: fixed;
+				width: 75%;
+			}
+			#bottom-actions.content-actions { bottom: 0; }
 
-	// SECTION-TOP
+			.content-actions > .row > .input-group {
+				margin:-1px 0;
+			}
 
-		#section-top {
+			.content-actions .btn {
+				min-width:60px;
+				height:60px;
+			}
 
-		}
+			#content section {
+				margin-top: 59px;
+			}
 
-	// FULL-CONTENT -> área total do conteúdo incluindo as laterais
+				#content section .stage-links {
+					width: 60px;
+					float: right;
+				}
+				#content section .stage {
+					overflow-y: auto;
+				}
+				#content section .stage-links + .stage {
+					width: calc(100% - 60px);
+				}
 
-		#full-content {
-			padding: $grid-gutter-width 0;
-		}
+					// AVATARS
+					#content .stage-links .avatar {
+						width: 42px;
+						height: 42px;
+					}
+					#content .chat .avatar {
+						width: 48px;
+						height: 48px;
+					}
 
-	// SECTION BOTTOM
+			#bottom-actions.content-actions .input-chat {
+				flex: 1 1 auto;
+				width: 1%;
+			}
 
-		#section-bottom {
-
-		}
-		#{$base-break-down} #section-bottom { text-align: center; }
-
-	// FOOTER
-
-		#footer {
-
-		}
-		#{$base-break-down}  #footer { text-align: center; }
 
 	// SCROLLTOTOP
 

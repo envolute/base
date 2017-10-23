@@ -86,6 +86,7 @@ if($vID != 0) :
 			';
 		endif;
 
+		$razao	= !empty($item->company_name) ? '<label class="label-sm">'.JText::_('FIELD_LABEL_COMPANY_NAME').'</label><p class="text-truncate">'.baseHelper::nameFormat($item->company_name).'</p>' : '';
 		$site	= !empty($item->website) ? '<label class="label-sm">'.JText::_('FIELD_LABEL_WEBSITE').'</label><p class="text-truncate"><a href="'.$item->website.'" class="new-window" target="_blank">'.$item->website.'</a></p>' : '';
 		$email	= !empty($item->email) ? '<label class="label-sm">'.JText::_('FIELD_LABEL_EMAIL').'</label><p class="text-truncate"><a href="mailto:'.$item->email.'" class="mr-3">'.$item->email.'</a></p>' : '';
 		$cnpj	= !empty($item->cnpj) ? '<label class="label-sm">CNPJ</label><p>'.$item->cnpj.'</p>' : '';
@@ -98,6 +99,7 @@ if($vID != 0) :
 		$docs = !empty($doc) ? '<li class="nav-item">'.$doc.'</li>' : '';
 
 		$info1 = '';
+		if(!empty($site))	$info1 .= $razao;
 		if(!empty($site))	$info1 .= $site;
 		if(!empty($email))	$info1 .= $email;
 		if(!empty($date))	$info1 .= $date;
@@ -136,8 +138,8 @@ if($vID != 0) :
 							<!-- Nav tabs -->
 							<ul class="nav nav-tabs mt-3" id="'.$MAINTAG.'TabInfo" role="tablist">
 								<li class="nav-item">
-									<a class="nav-link active" id="'.$MAINTAG.'TabView-address" href="#'.$MAINTAG.'TabViewAddress" data-toggle="tab" role="tab" aria-controls="address" aria-expanded="true">
-										<span class="base-icon-location"></span> '.JText::_('TEXT_ADDRESSES').'
+									<a class="nav-link active" id="'.$MAINTAG.'TabView-location" href="#'.$MAINTAG.'TabViewLocation" data-toggle="tab" role="tab" aria-controls="location" aria-expanded="true">
+										<span class="base-icon-location"></span> '.JText::_('TEXT_LOCATIONS').'
 									</a>
 								</li>
 								<li class="nav-item">
@@ -150,21 +152,23 @@ if($vID != 0) :
 
 							<!-- Tab panes -->
 							<div class="tab-content" id="'.$MAINTAG.'TabContent">
-								<div class="tab-pane fade show active" id="'.$MAINTAG.'TabViewAddress" role="tabpanel" aria-labelledby="'.$MAINTAG.'TabView-address">
+								<div class="tab-pane fade show active" id="'.$MAINTAG.'TabViewLocation" role="tabpanel" aria-labelledby="'.$MAINTAG.'TabView-location">
 		';
-									// Addresses
-									$_addressesListFull				= false;
-									$_addressesAddText				= false;
-									$_addressesShowAddBtn			= false;
-									$_addressesRelTag				= 'providers';
-									$_addressesRelTable				= '#__base_rel_providers_addresses';
-									$_addressesAppNameId			= 'address_id';
-									$_addressesRelNameId			= 'provider_id';
-									$_addressesRelListNameId		= 'provider_id';
-									$_addressesRelListId			= $item->id;
+									// Locations
+									$_locationsOnlyBR				= true;
+									$_locationsStateDef				= 'PB';
+									$_locationsListFull				= false;
+									$_locationsAddText				= false;
+									$_locationsShowAddBtn			= false;
+									$_locationsRelTag				= 'providers';
+									$_locationsRelTable				= '#__base_rel_providers_locations';
+									$_locationsAppNameId			= 'location_id';
+									$_locationsRelNameId			= 'provider_id';
+									$_locationsRelListNameId		= 'provider_id';
+									$_locationsRelListId			= $item->id;
 
-									require(JPATH_APPS.DS.'_addresses/_addresses.php');
-									echo '	<a href="#" class="btn btn-sm btn-success base-icon-plus" onclick="_addresses_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-_addresses" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_INSERT_ADDRESS').'</a>';
+									require(JPATH_APPS.DS.'_locations/_locations.php');
+									echo '	<a href="#" class="btn btn-sm btn-success base-icon-plus" onclick="_locations_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-_locations" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_INSERT_LOCATION').'</a>';
 		echo '
 								</div>
 								<div class="tab-pane fade" id="'.$MAINTAG.'TabViewService" role="tabpanel" aria-labelledby="'.$MAINTAG.'TabView-service">
@@ -199,22 +203,22 @@ if($vID != 0) :
 							require(JPATH_APPS.DS.'_providersContacts/_providersContacts.php');
 
 							// Phones
-							$_phonesListFull				= false;
-							$_phonesAddText					= false;
-							$_phonesShowAddBtn				= false;
-							$_phonesRelTag					= 'providers';
-							$_phonesRelTable				= '#__base_rel_providers_phones';
-							$_phonesAppNameId				= 'phone_id';
-							$_phonesRelNameId				= 'provider_id';
-							$_phonesRelListNameId			= 'provider_id';
-							$_phonesRelListId				= $item->id;
+							$_callCentersListFull				= false;
+							$_callCentersAddText				= false;
+							$_callCentersShowAddBtn				= false;
+							$_callCentersRelTag					= 'providers';
+							$_callCentersRelTable				= '#__base_rel_providers_callCenters';
+							$_callCentersAppNameId				= 'callCenter_id';
+							$_callCentersRelNameId				= 'provider_id';
+							$_callCentersRelListNameId			= 'provider_id';
+							$_callCentersRelListId				= $item->id;
 							echo '
 								<h6 class="page-header base-icon-phone-squared pt-2">
-									'.JText::_('TEXT_PROVIDER_PHONES').'
-									<a href="#" class="btn btn-xs btn-success float-right" onclick="_phones_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-_phones" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_PHONE').'"></span></a>
+									'.JText::_('TEXT_PROVIDER_CALL_CENTERS').'
+									<a href="#" class="btn btn-xs btn-success float-right" onclick="_callCenters_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-_callCenters" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_CALL_CENTER').'"></span></a>
 								</h6>
 							';
-							require(JPATH_APPS.DS.'_phones/_phones.php');
+							require(JPATH_APPS.DS.'_callCenters/_callCenters.php');
 
 							// Banks Accounts
 							$_banksAccountsListFull			= false;

@@ -22,6 +22,7 @@ $where = '';
 	$sLabel = array(); // label do campo de busca
 	$searchFields = array(
 		'T1.name'				=> 'FIELD_LABEL_NAME',
+		'T1.company_name'		=> '',
 		'T1.email'				=> 'FIELD_LABEL_EMAIL',
 		'T1.cnpj'				=> 'CNPJ',
 		'T1.insc_municipal'		=> 'Inscrição Municipal/Estadual',

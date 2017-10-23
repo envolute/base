@@ -95,6 +95,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['group_id']			= $input->get('group_id', 0, 'int');
 		$request['agreement']			= $input->get('agreement', 0, 'int');
 		$request['name']				= $input->get('name', '', 'string');
+		$request['company_name']		= $input->get('company_name', '', 'string');
 		$request['email']				= $input->get('email', '', 'string');
 		$request['cnpj']				= $input->get('cnpj', '', 'string');
 		$request['insc_municipal']		= $input->get('insc_municipal', '', 'string');
@@ -155,6 +156,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'group_id'			=> $item->group_id,
 						'agreement'			=> $item->agreement,
 						'name'				=> $item->name,
+						'company_name'		=> $item->company_name,
 						'email'				=> $item->email,
 						'cnpj'				=> $item->cnpj,
 						'insc_municipal'	=> $item->insc_municipal,
@@ -174,6 +176,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('group_id')			.'='. $request['group_id'] .','.
 						$db->quoteName('agreement')			.'='. $request['agreement'] .','.
 						$db->quoteName('name')				.'='. $db->quote($request['name']) .','.
+						$db->quoteName('company_name')		.'='. $db->quote($request['company_name']) .','.
 						$db->quoteName('email')				.'='. $db->quote($request['email']) .','.
 						$db->quoteName('cnpj')				.'='. $db->quote($request['cnpj']) .','.
 						$db->quoteName('insc_municipal')	.'='. $db->quote($request['insc_municipal']) .','.
@@ -400,6 +403,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('group_id') .','.
 							$db->quoteName('agreement') .','.
 							$db->quoteName('name') .','.
+							$db->quoteName('company_name') .','.
 							$db->quoteName('email') .','.
 							$db->quoteName('cnpj') .','.
 							$db->quoteName('insc_municipal') .','.
@@ -414,6 +418,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$request['group_id'] .','.
 							$request['agreement'] .','.
 							$db->quote($request['name']) .','.
+							$db->quote($request['company_name']) .','.
 							$db->quote($request['email']) .','.
 							$db->quote($request['cnpj']) .','.
 							$db->quote($request['insc_municipal']) .','.

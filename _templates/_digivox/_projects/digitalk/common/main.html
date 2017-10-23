@@ -46,9 +46,9 @@
 				<div class="row no-gutters">
 					<div id="sidebar" class="col-md-3 b-right set-height">
 						<div id="sidebar-profile-data" class="text-center pt-3">
-							<img src="images/users/user-1.png" class="rounded-circle mb-2" style="width: 84px; height: 84px;" />
+							<img src="images/users/user-1.png" class="rounded-circle mb-2" />
 							<h5 class="font-weight-bold lh-1">
-								Algusto Cesar <small class="base-icon-circle text-success ml-1" style="vertical-align: middle;"></small>
+								Algusto Cesar <small class="base-icon-circle text-success ml-1"></small>
 								<div class="small text-muted">Lead Design</div>
 							</h5>
 							<a href="#" class="btn btn-sm btn-outline-primary base-icon-pencil"> Editar Perfil</a>
@@ -78,13 +78,16 @@
 								<a class="nav-link small" href="#"><span class="base-icon-bell"></span> CORREIO DE VOZ</a>
 							</li>
 						</ul>
-						<div id="sidebar-chat-list" class="bg-dark p-3 set-height" data-offset-ids="#sidebar-profile-data, #sidebar-btn-actions, #sidebar-history" style="overflow-y: auto;">
+						<div id="sidebar-chat-list" class="bg-dark p-3 set-height" data-offset-ids="#sidebar-profile-data, #sidebar-btn-actions, #sidebar-history">
 							<nav class="nav nav-tabs text-center" id="myTab" role="tablist">
-								<a class="nav-item nav-link col-6" id="sidenav-clients-tab" data-toggle="tab" href="#sidenav-clients" role="tab" aria-controls="sidenav-clients" aria-expanded="true">CLIENTES</a>
-								<a class="nav-item nav-link col-6 active" id="sidenav-groups-tab" data-toggle="tab" href="#sidenav-groups" role="tab" aria-controls="sidenav-groups">GRUPOS</a>
+								<a class="nav-item nav-link col-6" id="sidenav-clients-tab" data-toggle="tab" href="#sidenav-clients" role="tab" aria-controls="sidenav-clients" aria-expanded="true">Amigos</a>
+								<a class="nav-item nav-link col-6 active" id="sidenav-groups-tab" data-toggle="tab" href="#sidenav-groups" role="tab" aria-controls="sidenav-groups">Grupos</a>
 							</nav>
 							<div class="tab-content mb-4" id="sidenav-content">
 								<div class="tab-pane fade" id="sidenav-clients" role="tabpanel" aria-labelledby="sidenav-clients-tab">
+									<div class="form-group">
+										<input type="text" name="search" class="form-control form-control-lg field-search bg-dark-opacity-45 text-gray-400 border-0 rounded" />
+									</div>
 									<h6 class="text-gray-600 small pl-3 pt-2">FAVORITOS</h6>
 									<nav>
 										<div class="nav nav-dark flex-column nav-pills">
@@ -117,8 +120,8 @@
 							</div>
 						</div>
 					</div>
-					<div id="content-full" class="col-md-9">
-						<header id="header" class="b-bottom" style="position: fixed; width: 75%;">
+					<div id="content" class="col-md-9">
+						<div id="top-actions" class="content-actions b-bottom">
 							<div class="row align-items-center no-gutters">
 								<h6 class="col text-black font-weight-bold px-4 m-0">
 									Clients
@@ -127,24 +130,37 @@
 										<a href="#" class="base-icon-star-empty mr-2"></a>
 									</span>
 								</h6>
-								<div class="col input-group" style="margin:-1px 0;">
+								<div class="col input-group">
 									<span class="input-group-btn">
-										<a href="#" class="btn btn-outline-default b-gray-300 d-flex align-items-center justify-content-center text-lg base-icon-th" style="width:60px; height:60px;" role="button"></a>
+										<a href="#" class="btn btn-outline-default b-gray-300 d-flex align-items-center justify-content-center text-lg base-icon-th" role="button"></a>
 									</span>
 									<input type="text" class="form-control b-gray-300 px-3" placeholder="search" />
 									<span class="input-group-btn">
-										<a href="#" class="btn btn-outline-default b-gray-300 d-flex align-items-center justify-content-center text-lg base-icon-cog" style="width:60px; height:60px;" role="button"></a>
-										<a href="#" class="btn btn-outline-default b-gray-300 d-flex align-items-center justify-content-center text-lg base-icon-star-empty" style="width:60px; height:60px;" role="button"></a>
-										<a href="#" class="btn btn-outline-default b-gray-300 d-flex align-items-center justify-content-center text-lg base-icon-ellipsis-vert" style="width:60px; height:60px;" role="button"></a>
+										<a href="#" class="btn btn-outline-default b-gray-300 d-flex align-items-center justify-content-center text-lg base-icon-cog" role="button"></a>
+										<a href="#" class="btn btn-outline-default b-gray-300 d-flex align-items-center justify-content-center text-lg base-icon-star-empty" role="button"></a>
+										<a href="#" class="btn btn-outline-default b-gray-300 d-flex align-items-center justify-content-center text-lg base-icon-ellipsis-vert" role="button"></a>
 									</span>
 								</div>
 							</div>
-						</header>
-						<section class="d-flex" style="margin-top: 60px;">
-							<div class="set-height p-3" data-offset-ids="#header, #footer" style="width: calc(100% - 60px); overflow-y: auto;">
+						</div>
+						<section class="d-flex flex-row-reverse">
+							<div class="stage-links set-height b-left" data-offset-ids="#top-actions, #bottom-actions">
+								<div id="chat-users" class="set-height" data-offset-ids="#top-actions, #bottom-actions">
+									<div class="chat-user text-center pt-3">
+										<img src="images/users/user-4.png" class="avatar rounded-circle mb-2" />
+									</div>
+									<div class="chat-user text-center pt-3">
+										<img src="images/users/user-2.png" class="avatar rounded-circle mb-2" />
+									</div>
+									<div class="chat-user text-center pt-3">
+										<img src="images/users/user-3.png" class="avatar rounded-circle mb-2" />
+									</div>
+								</div>
+							</div>
+							<div class="stage chat set-height p-3" data-offset-ids="#top-actions, #bottom-actions">
 								<div class="row no-gutters mb-4">
 									<div class="col-1">
-										<img src="images/users/user-2.png" class="rounded-circle mb-2" style="width: 48px; height: 48px;" />
+										<img src="images/users/user-2.png" class="avatar rounded-circle mb-2" />
 									</div>
 									<div class="col-8">
 										<h6 class="text-black font-weight-bold">Carla Dantas</h6>
@@ -156,7 +172,7 @@
 								</div>
 								<div class="row no-gutters mb-4">
 									<div class="col-1">
-										<img src="images/users/user-3.png" class="rounded-circle mb-2" style="width: 48px; height: 48px;" />
+										<img src="images/users/user-3.png" class="avatar rounded-circle mb-2" />
 									</div>
 									<div class="col-8">
 										<h6 class="text-black font-weight-bold">Ronaldo Junior</h6>
@@ -166,9 +182,18 @@
 										<div class="small text-muted">TODAY 16:40PM</div>
 									</div>
 								</div>
+								<div class="row no-gutters pb-4 text-center">
+									<div class="col-1"></div>
+									<div class="col-10">
+										<div class="pos-relative">
+											<hr class="pos-absolute w-100">
+											<span class="d-inline-block bg-body text-black font-weight-bold pos-relative zindex-1 px-3 mt-1">Today</span>
+										</div>
+									</div>
+								</div>
 								<div class="row no-gutters flex-row-reverse text-right mb-4">
 									<div class="col-1">
-										<img src="images/users/user-2.png" class="rounded-circle mb-2" style="width: 48px; height: 48px;" />
+										<img src="images/users/user-2.png" class="avatar rounded-circle mb-2" />
 									</div>
 									<div class="col-8">
 										<h6 class="text-black font-weight-bold">Carla Dantas</h6>
@@ -179,37 +204,24 @@
 									</div>
 								</div>
 							</div>
-							<div class="set-height b-left" data-offset-ids="#header, #footer" style="width: 60px;">
-								<div id="chat-users" class="set-height" data-offset-ids="#header, #footer">
-									<div class="chat-user text-center pt-3">
-										<img src="images/users/user-4.png" class="rounded-circle mb-2" style="width: 42px; height: 42px;" />
-									</div>
-									<div class="chat-user text-center pt-3">
-										<img src="images/users/user-2.png" class="rounded-circle mb-2" style="width: 42px; height: 42px;" />
-									</div>
-									<div class="chat-user text-center pt-3">
-										<img src="images/users/user-3.png" class="rounded-circle mb-2" style="width: 42px; height: 42px;" />
-									</div>
-								</div>
-							</div>
 						</section>
-						<footer id="footer" class="b-top" style="position: fixed; bottom: 0; width: 75%;">
+						<div id="bottom-actions" class="content-actions b-top">
 							<div class="row align-items-center no-gutters">
-								<div class="col input-group" style="margin:-1px 0;">
+								<div class="col input-group">
 									<span class="input-group-addon">
 										<a href="#" class="text-lg base-icon-plus-circled px-2" role="button"></a>
 									</span>
-									<span class="input-group-addon" style="flex: 1 1 auto; width: 1%;">
-										<input type="text" class="form-control b-0 h-100 rounded px-3" placeholder="search" />
+									<span class="input-chat input-group-addon">
+										<input type="text" class="form-control b-0 h-100 rounded px-3" placeholder="Type something" />
 									</span>
 									<span class="input-group-btn">
-										<a href="#" class="btn btn-outline-default b-gray-300 d-flex align-items-center justify-content-center text-lg base-icon-phone" style="width:60px; height:60px;" role="button"></a>
-										<a href="#" class="btn btn-outline-default b-gray-300 d-flex align-items-center justify-content-center text-lg base-icon-videocam" style="width:60px; height:60px;" role="button"></a>
-										<a href="#" class="btn btn-dark b-gray-300 d-flex align-items-center justify-content-center text-lg base-icon-user-add" style="width:60px; height:60px;" role="button"></a>
+										<a href="#" class="btn btn-outline-default b-gray-300 d-flex align-items-center justify-content-center text-lg base-icon-phone" role="button"></a>
+										<a href="#" class="btn btn-outline-default b-gray-300 d-flex align-items-center justify-content-center text-lg base-icon-videocam" role="button"></a>
+										<a href="#" class="btn btn-dark b-gray-300 d-flex align-items-center justify-content-center text-lg base-icon-user-add" role="button"></a>
 									</span>
 								</div>
 							</div>
-						</footer>
+						</div>
 					</div>
 				</div>
 			</div>

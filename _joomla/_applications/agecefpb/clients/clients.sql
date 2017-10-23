@@ -27,11 +27,20 @@ CREATE TABLE IF NOT EXISTS `cms_agecefpb_clients` (
   `address_info` varchar(255) NOT NULL,
   `address_district` varchar(100) NOT NULL,
   `address_city` varchar(100) NOT NULL,
-  `phones` varchar(31) NOT NULL,
-  `whatsapp` varchar(5) NOT NULL,
+  `address_state` varchar(100) NOT NULL DEFAULT 'PB',
+  `address_country` varchar(100) NOT NULL,
+  `phone1` varchar(30) NOT NULL,
+  `phone2` varchar(30) NOT NULL,
+  `phone3` varchar(30) NOT NULL,
+  `whatsapp1` tinyint(4) NOT NULL,
+  `whatsapp2` tinyint(4) NOT NULL,
+  `whatsapp3` tinyint(4) NOT NULL,
+  `enable_debit` tinyint(4) NOT NULL,
   `agency` varchar(10) NOT NULL,
   `account` varchar(10) NOT NULL,
   `operation` varchar(10) NOT NULL,
+  `card_name` varchar(30) NOT NULL,
+  `card_limit` decimal(10,2) NOT NULL,
   `access` tinyint(4) NOT NULL,
   `reasonStatus` varchar(100) NOT NULL,
   `state` tinyint(4) NOT NULL,
@@ -42,6 +51,55 @@ CREATE TABLE IF NOT EXISTS `cms_agecefpb_clients` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `cms_agecefpb_clients_birthday_message`
+--
+
+CREATE TABLE IF NOT EXISTS `cms_agecefpb_clients_birthday_message` (
+  `client_id` int(11) NOT NULL,
+  `viewed_date` date NOT NULL,
+  `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY `client_id` (`client_id`,`viewed_date`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `cms_agecefpb_clients_birthday_sendmail`
+--
+
+CREATE TABLE IF NOT EXISTS `cms_agecefpb_clients_birthday_sendmail` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `client_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `day` tinyint(4) NOT NULL,
+  `month` tinyint(4) NOT NULL,
+  `year` year(4) NOT NULL,
+  `sending_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Registra os envios de emails para os aniversariantes';
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `cms_agecefpb_clients_code`
+--
+
+CREATE TABLE IF NOT EXISTS `cms_agecefpb_clients_code` (
+  `code` int(11) NOT NULL,
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `cms_agecefpb_clients_code`
+--
+
+INSERT INTO `cms_agecefpb_clients_code` (`code`, `date`) VALUES
+(100, '2017-10-10 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -67,22 +125,31 @@ CREATE TABLE IF NOT EXISTS `cms_agecefpb_clients_files` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `filename` (`filename`),
   KEY `id_parent` (`id_parent`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `cms_agecefpb_clients_code`
+-- Estrutura da tabela `cms_agecefpb_dependents`
 --
 
-CREATE TABLE IF NOT EXISTS `cms_agecefpb_clients_code` (
-  `code` int(11) NOT NULL,
-  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+CREATE TABLE IF NOT EXISTS `cms_agecefpb_dependents` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `client_id` int(11) NOT NULL,
+  `client_code` varchar(20) NOT NULL,
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `group_id` int(11) NOT NULL DEFAULT '1',
+  `gender` tinyint(4) NOT NULL DEFAULT '1',
+  `name` varchar(100) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `birthday` date NOT NULL,
+  `end_date` date NOT NULL,
+  `occupation` varchar(50) NOT NULL,
+  `note` varchar(255) NOT NULL,
+  `docs` int(11) NOT NULL,
+  `name_card` varchar(50) NOT NULL,
+  `state` tinyint(4) NOT NULL DEFAULT '1',
+  `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_by` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `cms_agecefpb_clients_code`
---
-
-INSERT INTO `cms_agecefpb_clients_code` (`code`, `date`) VALUES
-(100, '2017-10-10 00:00:00');
