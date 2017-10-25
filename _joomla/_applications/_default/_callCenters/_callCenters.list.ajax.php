@@ -123,14 +123,14 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$cName = explode(';', $item->chat_name);
 			$cUser = explode(';', $item->chat_user);
 			$chats = '';
-			for($i = 0; $i < count($em); $i++) {
+			for($i = 0; $i < count($cName); $i++) {
 				if(!empty($cName[$i])) $chats .= '<div class="pb-1"><strong>'.$cName[$i].'</strong>: '.$cUser[$i].'</div>';
 			}
 			// Weblinks
 			$wTxt = explode(';', $item->weblink_text);
 			$wUrl = explode(';', $item->weblink_url);
 			$links = '';
-			for($i = 0; $i < count($em); $i++) {
+			for($i = 0; $i < count($wUrl); $i++) {
 				$text = !empty($wTxt[$i]) ? $wTxt[$i] : $wUrl[$i];
 				$links .= '
 					<div class="pb-1">

@@ -158,37 +158,37 @@ defined('_JEXEC') or die;
 				<hr class="hr-tag" />
 				<span class="badge badge-primary"><?php echo JText::_('TEXT_ADDRESS_DATA'); ?></span>
 				<div class="row">
+					<div class="col-sm-9">
+						<div class="form-group field-required">
+							<label><?php echo JText::_('FIELD_LABEL_ADDRESS_STREET'); ?></label>
+							<input type="text" name="address" id="<?php echo $APPTAG?>-address" class="form-control upper" />
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="form-group field-required">
+							<label><?php echo JText::_('FIELD_LABEL_ADDRESS_NUMBER'); ?></label>
+							<input type="text" name="address_number" id="<?php echo $APPTAG?>-address_number" class="form-control upper" />
+						</div>
+					</div>
+					<div class="col-sm-9">
+						<div class="form-group">
+							<label><?php echo JText::_('FIELD_LABEL_ADDRESS_INFO'); ?></label>
+							<input type="text" name="address_info" id="<?php echo $APPTAG?>-address_info" class="form-control" />
+						</div>
+					</div>
 					<div class="col-sm-3">
 						<div class="form-group">
 							<label><?php echo JText::_('FIELD_LABEL_ADDRESS_ZIP_CODE'); ?></label>
 							<input type="text" name="zip_code" id="<?php echo $APPTAG?>-zip_code" class="form-control field-cep" />
 						</div>
 					</div>
-					<div class="col-sm-7">
-						<div class="form-group field-required">
-							<label><?php echo JText::_('FIELD_LABEL_ADDRESS_STREET'); ?></label>
-							<input type="text" name="address" id="<?php echo $APPTAG?>-address" class="form-control upper" />
-						</div>
-					</div>
-					<div class="col-sm-2">
-						<div class="form-group field-required">
-							<label><?php echo JText::_('FIELD_LABEL_ADDRESS_NUMBER'); ?></label>
-							<input type="text" name="address_number" id="<?php echo $APPTAG?>-address_number" class="form-control upper" />
-						</div>
-					</div>
-					<div class="col-sm-4">
-						<div class="form-group">
-							<label><?php echo JText::_('FIELD_LABEL_ADDRESS_INFO'); ?></label>
-							<input type="text" name="address_info" id="<?php echo $APPTAG?>-address_info" class="form-control" />
-						</div>
-					</div>
-					<div class="col-sm-4">
+					<div class="col-sm-6">
 						<div class="form-group field-required">
 							<label><?php echo JText::_('FIELD_LABEL_ADDRESS_DISTRICT'); ?></label>
 							<input type="text" name="address_district" id="<?php echo $APPTAG?>-address_district" class="form-control upper" />
 						</div>
 					</div>
-					<div class="col-sm-4">
+					<div class="col-sm-6">
 						<div class="form-group field-required">
 							<label><?php echo JText::_('FIELD_LABEL_ADDRESS_CITY'); ?></label>
 							<input type="text" name="address_city" id="<?php echo $APPTAG?>-address_city" class="form-control upper" />
@@ -199,39 +199,26 @@ defined('_JEXEC') or die;
 				</div>
 				<hr class="hr-tag" />
 				<span class="badge badge-primary"><?php echo JText::_('TEXT_CONTACT_DATA'); ?></span>
-				<div class="row">
-					<div class="col-sm-4">
-						<div class="form-group">
-							<label class="field-required"><?php echo JText::_('FIELD_LABEL_CELLPHONE'); ?> 1</label>
-							<input type="text" name="phone1" id="<?php echo $APPTAG?>-phone1" class="form-control field-phone input-required mb-1" />
-							<div class="form-check">
+				<div class="form-group">
+					<button type="button" class="btn btn-xs btn-success base-icon-plus float-right" onclick="<?php echo $APPTAG?>_phoneAdd()"> <?php echo JText::_('TEXT_PHONES_ADD')?></button>
+					<label class="field-required"><?php echo JText::_('FIELD_LABEL_PHONE'); ?></label>
+					<div class="row">
+						<div class="col-sm-4">
+							<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone" class="form-control field-phone input-required mb-1" />
+							<div class="form-check m-0">
 								<label class="form-check-label iconTip hasTooltip" title="<?php echo JText::_('FIELD_HAS_WHATSAPP_DESC') ?>">
-									<input type="checkbox" name="whatsapp1" id="<?php echo $APPTAG?>-whatsapp1" value="1" class="form-check-input" />
+									<input type="checkbox" name="wapp[]" id="<?php echo $APPTAG?>-wapp" value="1" class="form-check-input auto-tab" data-target="#<?php echo $APPTAG?>-whatsapp" data-target-value="1" data-target-value-reset="" data-tab-disabled="true" />
 									<?php echo JText::_('FIELD_HAS_WHATSAPP') ?>
+									<input type="hidden" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp" />
 								</label>
 							</div>
 						</div>
-					</div>
-					<div class="col-sm-4">
-						<div class="form-group">
-							<label><?php echo JText::_('FIELD_LABEL_CELLPHONE'); ?> 2</label>
-							<input type="text" name="phone2" id="<?php echo $APPTAG?>-phone2" class="form-control field-phone mb-1" />
-							<div class="form-check">
-								<label class="form-check-label iconTip hasTooltip" title="<?php echo JText::_('FIELD_HAS_WHATSAPP_DESC') ?>">
-									<input type="checkbox" name="whatsapp2" id="<?php echo $APPTAG?>-whatsapp2" value="1" class="form-check-input" />
-									<?php echo JText::_('FIELD_HAS_WHATSAPP') ?>
-								</label>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-4">
-						<div class="form-group">
-							<label><?php echo JText::_('FIELD_LABEL_PHONE_FIXED'); ?></label>
-							<input type="text" name="phone3" id="<?php echo $APPTAG?>-phone3" class="form-control field-phone" />
-							<input type="hidden" name="whatsapp3" id="<?php echo $APPTAG?>-whatsapp3" value="0" />
+						<div class="col">
+							<input type="text" name="phone_desc[]" id="<?php echo $APPTAG?>-phone_desc" class="form-control" placeholder="<?php echo JText::_('TEXT_PHONE_DESCRIPTION'); ?>" maxlength="50" />
 						</div>
 					</div>
 				</div>
+				<div id="<?php echo $APPTAG?>-phoneGroups" class="newFieldsGroup"></div>
 				<hr class="hr-tag" />
 				<span class="badge badge-primary"><?php echo JText::_('TEXT_ACCOUNT_DATA'); ?></span>
 				<div class="row">

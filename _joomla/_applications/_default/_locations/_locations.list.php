@@ -104,10 +104,10 @@ if($num_rows) : // verifica se existe
 		endif;
 
 		$lock = $item->isPublic == 0 ? '<span class="base-icon-lock text-danger cursor-help hasTooltip" title="'.JText::_('TEXT_PRIVATE_DESC').'"></span> ' : '';
-		$title = !empty($item->title) ? '<h6 class="strong mb-1">'.$lock.baseHelper::nameFormat($item->title).'</h6>' : $lock;
+		$title = !empty($item->title) ? '<h6 class="font-weight-bold mb-1">'.$lock.baseHelper::nameFormat($item->title).'</h6>' : $lock;
 		$info = !empty($item->address_info) ? ', '.$item->address_info : '';
 		$mapa = !empty($item->map_info) ? ' <a href="'.$item->map_info.'" class="badge badge-warning set-modal hasTooltip" title="'.JText::_('TEXT_MAP').'" data-modal-title="'.JText::_('TEXT_LOCATION').'" data-modal-iframe="true" data-modal-width="95%" data-modal-height="95%"><span class="base-icon-location"></span></a> ' : '';
-		$extra = !empty($item->extra_info) ? ' <div class="location-extra-info text-sm"> '.$item->extra_info.'</div>' : '';
+		$extra = !empty($item->extra_info) ? ' <div class="location-extra-info pt-1"> '.$item->extra_info.'</div>' : '';
 		$rowState = $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
@@ -122,7 +122,7 @@ if($num_rows) : // verifica se existe
 				'.$adminView['list']['info'].'
 				<td>
 					'.$title.$mapa.baseHelper::nameFormat($item->address).', '.$item->address_number.$info.'
-					<div class="text-sm">
+					<div class="d-lg-none">
 						'.$item->zip_code.' - '.baseHelper::nameFormat($item->address_district).', '.baseHelper::nameFormat($item->address_city).', '.$item->address_state.'
 					</div>
 				</td>

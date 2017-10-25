@@ -57,6 +57,20 @@ $_SESSION[$APPTAG.'newUsertype'] = 2; // default 'Associado'
 // crud's main table
 	$cfg['mainTable']			= $MAIN_TB;
 
+// form definitions
+	// Localidades apenas do Brasil
+	$cfg['onlyBR']				= false;
+	if(isset(${$APPTAG.'OnlyBR'})) $cfg['onlyBR'] = ${$APPTAG.'OnlyBR'} ? true : false;
+	// País default -> preenche o campo com o valor padrão
+	$cfg['countryDef']			= $cfg['onlyBR'] ? 'BRASIL' : '';
+	if(isset(${$APPTAG.'CountryDef'}) && !empty(${$APPTAG.'CountryDef'})) $cfg['countryDef'] = ${$APPTAG.'CountryDef'};
+	// Estado default -> preenche o campo com o valor padrão
+	$cfg['stateDef']			= '';
+	if(isset(${$APPTAG.'StateDef'}) && !empty(${$APPTAG.'StateDef'})) $cfg['stateDef'] = ${$APPTAG.'StateDef'};
+	// Cidade default -> preenche o campo com o valor padrão
+	$cfg['cityDef']				= '';
+	if(isset(${$APPTAG.'CityDef'}) && !empty(${$APPTAG.'CityDef'})) $cfg['cityDef'] = ${$APPTAG.'CityDef'};
+
 // view
 
 	// show app (Add Button & List)
@@ -112,8 +126,8 @@ $_SESSION[$APPTAG.'newUsertype'] = 2; // default 'Associado'
 	$cfg['dateConvert']			= true;
 	$cfg['load_UI']				= $cfg['dateConvert'];
 	$cfg['priceDecimal']		= false;
-	$cfg['htmlEditor']			= false;
-	$cfg['htmlEditorFull']		= false;
+	$cfg['htmlEditor']			= true;
+	$cfg['htmlEditorFull']		= true;
 
 // crud's upload config
 
@@ -179,6 +193,9 @@ $_SESSION[$APPTAG.'newUsertype'] = 2; // default 'Associado'
 		$_SESSION[$RTAG.'TableField']		= (isset(${$APPTAG.'TableField'}) && !empty(${$APPTAG.'TableField'})) ? ${$APPTAG.'TableField'} : '';
 		// hide 'parentFieldId'
 		$_SESSION[$RTAG.'HideParentField']	= isset(${$APPTAG.'HideParentField'}) ? ${$APPTAG.'HideParentField'} : 0;
+
+		// CUSTOM -> FORM DEFINITIONS
+		$_SESSION[$RTAG.'OnlyBR']	= $cfg['onlyBR'];
 	endif;
 
 ?>

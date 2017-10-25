@@ -19,16 +19,6 @@ $groups = $user->groups;
 // init general css/js files
 require(JPATH_CORE.DS.'apps/_init.app.php');
 
-// Carrega o arquivo de tradução
-// OBS: para arquivos externos com o carregamento do framework '_init.joomla.php' (geralmente em 'ajax')
-// a language 'default' não é reconhecida. Sendo assim, carrega apenas 'en-GB'
-// Para possibilitar o carregamento da language 'default' de forma dinâmica,
-// é necessário passar na sessão ($_SESSION[$APPTAG.'langDef'])
-if(isset($_SESSION[$APPTAG.'langDef'])) :
-	$lang->load('base_apps', JPATH_BASE, $_SESSION[$APPTAG.'langDef'], true);
-	$lang->load('base_'.$APPNAME, JPATH_BASE, $_SESSION[$APPTAG.'langDef'], true);
-endif;
-
 //joomla get request data
 $input      = $app->input;
 
@@ -41,14 +31,27 @@ else :
 	$uID	= is_numeric(base64_decode($uID)) ? base64_decode($uID) : '';
 endif;
 
+// Carrega o arquivo de tradução
+// OBS: para arquivos externos com o carregamento do framework '_init.joomla.php' (geralmente em 'ajax')
+// a language 'default' não é reconhecida. Sendo assim, carrega apenas 'en-GB'
+// Para possibilitar o carregamento da language 'default' de forma dinâmica,
+// é necessário passar na sessão ($_SESSION[$APPTAG.'langDef'])
+if(isset($_SESSION[$APPTAG.'langDef'])) :
+	$lang->load('base_apps', JPATH_BASE, $_SESSION[$APPTAG.'langDef'], true);
+	$lang->load('base_'.$APPNAME, JPATH_BASE, $_SESSION[$APPTAG.'langDef'], true);
+endif;
+
+// Admin Actions
+require_once('clientsRegistrations.select.user.php');
+
 if(!empty($uID) || !empty($dOC)) :
 
 	// DATABASE CONNECT
 	$db = JFactory::getDbo();
 
 	$where = !empty($uID) ? $db->quoteName('T1.id') .' = '. $uID : '';
-	// acesso após a aprovação
-	if($sUD != 'on') $where .= ' AND '.$db->quoteName('T1.user_id') .' = 0 AND '.$db->quoteName('T1.access') .' = 0';
+	// bloqueia o acesso após a aprovação
+	// if($sUD != 'on') $where .= ' AND '.$db->quoteName('T1.user_id') .' = 0 AND '.$db->quoteName('T1.access') .' = 0';
 
 	// GET DATA
 	$query = '
@@ -102,12 +105,14 @@ if(!empty($uID) || !empty($dOC)) :
 		$addressZip = !empty($item->zip_code) ? $item->zip_code.', ' : '';
 		$addressDistrict = !empty($item->address_district) ? baseHelper::nameFormat($item->address_district) : '';
 		$addressCity = !empty($item->address_city) ? ', '.baseHelper::nameFormat($item->address_city) : '';
-		$addressState = !empty($item->address_state) ? ', '.baseHelper::nameFormat($item->address_state) : '';
+		$addressState = !empty($item->address_state) ? ', '.$item->address_state : '';
 		$addressCountry = !empty($item->address_country) ? ', '.baseHelper::nameFormat($item->address_country) : '';
 		// Phones
-		$phones = !empty($item->phone1) ? $item->phone1 : '';
-		$phones .= !empty($item->phone2) ? (!empty($phones) ? '<br />' : '').$item->phone2 : '';
-		$phones .= !empty($item->phone3) ? (!empty($phones) ? '<br />' : '').'(fixo) '.$item->phone3 : '';
+		$ph = explode(';', $item->phone);
+		$phones = '';
+		for($i = 0; $i < count($ph); $i++) {
+			$phones .= '<div>'.$ph[$i].'</div>';
+		}
 
 		$html .= '
 				<div class="row">
@@ -149,12 +154,12 @@ if(!empty($uID) || !empty($dOC)) :
 						<label class="label-sm">'.JText::_('FIELD_LABEL_ADDRESS').':</label>
 						<p>
 							'.baseHelper::nameFormat($item->address).$addressNumber.$addressInfo.'<br />
-							'.$addressZip.$addressDistrict.$addressCity.$addressState.$addressCountry.'
+							'.$addressZip.$addressDistrict.$addressCity.$addressState.'
 						</p>
 					</div>
 					<div class="col-4">
 						<label class="label-sm">'.JText::_('FIELD_LABEL_PHONE').'(s):</label>
-						<p>'.$phones.'</p>
+						'.$phones.'
 					</div>
 				</div>
 				<div class="row">
@@ -256,7 +261,15 @@ if(!empty($uID) || !empty($dOC)) :
 	</div>
 <?php
 else :
-	$app->redirect(JURI::root(true));
-	exit();
+	// ACCESS
+	if($hasAdmin) :
+		// O perfil é visualizado apenas por associados.
+		// Usuários administradores "$hasAdmin" (não associados) só podem
+		// visualizar seus dados ou editar seu perfil, na administração...
+		echo '<div class="alert alert-warning base-icon-attention"> '.JText::_('MSG_IS_ADMIN').'</div>';
+	else :
+		$app->redirect(JURI::root(true));
+		exit();
+	endif;
 endif;
 ?>

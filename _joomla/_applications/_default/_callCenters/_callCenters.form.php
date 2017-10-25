@@ -56,11 +56,11 @@ defined('_JEXEC') or die;
 					<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone" class="form-control field-phone" data-toggle-mask="true" />
 				</div>
 			</div>
-			<div class="col-2 col-lg-1">
+			<div class="col-4 col-sm-2 col-lg-1">
 				<div class="form-group">
-					<label>&#160;</label>
-					<span class="btn-group btn-group-justified" data-toggle="buttons">
-						<label class="btn btn-outline-success btn-block btn-active-success hasTooltip" title="<?php echo JText::_('TEXT_HAS_WHATSAPP'); ?>">
+					<label class="d-block">&#160;</label>
+					<span class="btn-group" data-toggle="buttons">
+						<label class="btn btn-outline-success btn-active-success hasTooltip" title="<?php echo JText::_('TEXT_HAS_WHATSAPP'); ?>">
 							<input type="checkbox" name="wapp[]" id="<?php echo $APPTAG?>-wapp" value="1" class="auto-tab" data-target="#<?php echo $APPTAG?>-whatsapp" data-target-value="1" data-target-value-reset="" data-tab-disabled="true" />
 							<span class="base-icon-whatsapp icon-default"></span>
 							<input type="hidden" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp" />
@@ -71,11 +71,11 @@ defined('_JEXEC') or die;
 			<div class="col-sm-6 col-lg-7">
 				<div class="form-group">
 					<label class="d-none d-lg-block">&#160;</label>
-					<input type="text" name="phone_desc[]" id="<?php echo $APPTAG?>-phone_desc" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?>" />
+					<input type="text" name="phone_desc[]" id="<?php echo $APPTAG?>-phone_desc" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?>" maxlength="50" />
 				</div>
 			</div>
 		</div>
-		<div id="<?php echo $APPTAG?>-phoneGroups"></div>
+		<div id="<?php echo $APPTAG?>-phoneGroups" class="newFieldsGroup"></div>
 		<button type="button" class="btn btn-sm btn-success base-icon-plus" onclick="<?php echo $APPTAG?>_phoneAdd()"> <?php echo JText::_('TEXT_PHONES_ADD')?></button>
 	</div>
 	<div class="tab-pane fade" id="<?php echo $APPTAG?>TabWeb" role="tabpanel" aria-labelledby="<?php echo $APPTAG?>Tab-web">
@@ -90,7 +90,7 @@ defined('_JEXEC') or die;
 						</span>
 					</div>
 				</div>
-				<div id="<?php echo $APPTAG?>-emailGroups"></div>
+				<div id="<?php echo $APPTAG?>-emailGroups" class="newFieldsGroup"></div>
 				<div class="form-group">
 					<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_CHAT_DESC')?>"><?php echo JText::_('FIELD_LABEL_CHAT')?></label>
 					<div class="row no-gutters">
@@ -107,7 +107,7 @@ defined('_JEXEC') or die;
 						</div>
 					</div>
 				</div>
-				<div id="<?php echo $APPTAG?>-chatGroups"></div>
+				<div id="<?php echo $APPTAG?>-chatGroups" class="newFieldsGroup"></div>
 				<div class="form-group">
 					<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_WEBLINK_DESC')?>">Weblink</label>
 					<div class="row no-gutters">
@@ -124,10 +124,11 @@ defined('_JEXEC') or die;
 						</div>
 					</div>
 				</div>
-				<div id="<?php echo $APPTAG?>-linkGroups"></div>
+				<div id="<?php echo $APPTAG?>-linkGroups" class="newFieldsGroup"></div>
 			</div>
 			<div class="col-lg-4 b-left b-default">
 				<!--
+					TODO: Mensagem explicativa sobre as opções
 					<div class="row">
 						<div class="col-sm-6 col-lg-12">
 							<div class="form-group">

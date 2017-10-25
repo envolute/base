@@ -75,7 +75,7 @@ if($vID != 0) :
 			FROM '.$db->quoteName('#__'.$cfg['project'].'_callCenters') .' T1
 				JOIN '. $db->quoteName('#__'.$cfg['project'].'_rel_providers_callCenters') .' T2
 				ON '.$db->quoteName('T2.callCenter_id') .' = T1.id
-			WHERE '.$db->quoteName('T2.provider_id') .' = '. $vID .'
+			WHERE '.$db->quoteName('T2.provider_id') .' = '. $vID .' AND '.$db->quoteName('T1.isPublic') .' = 1
 			ORDER BY '.$db->quoteName('T1.id') .' ASC
 		';
 		try {
@@ -90,7 +90,7 @@ if($vID != 0) :
 
 		$callCenters = '';
 		if($num_rows) : // verifica se existe
-			$callCenters .= '<h6 class="page-header mb-3 base-icon-phone-squared"> '.JText::_('TEXT_PROVIDER_CALL_CENTERS').'</h6>';
+			$callCenters .= '<h6 class="page-header mb-3 base-icon-phone-squared"> '.JText::_('TEXT_CALL_CENTERS').'</h6>';
 			$callCenters .= '<ul class="set-list list-lg list-trim mb-4">';
 			foreach($res as $obj) {
 				// Phones
@@ -166,7 +166,7 @@ if($vID != 0) :
 			$locations .= '<ul class="set-list list-lg list-trim bordered mb-4">';
 			foreach($res as $obj) {
 
-				$title = !empty($obj->title) ? '<h6 class="strong mb-1">'.$lock.baseHelper::nameFormat($obj->title).'</h6>' : $lock;
+				$title = !empty($obj->title) ? '<h6 class="font-weight-bold mb-2">'.$obj->title.'</h6>' : '';
 				$addressInfo = !empty($obj->address_info) ? ', '.$obj->address_info : '';
 				$addressNumber = !empty($obj->address_number) ? ', '.$obj->address_number : '';
 				$addressZip = !empty($obj->zip_code) ? $obj->zip_code.', ' : '';
@@ -175,7 +175,7 @@ if($vID != 0) :
 				$addressState = !empty($obj->address_state) ? ', '.($_SESSION[$RTAG.'OnlyBR'] ? $obj->address_state : baseHelper::nameFormat($obj->address_state)) : '';
 				$addressCountry = (!empty($obj->address_country) && !$_SESSION[$RTAG.'OnlyBR']) ? ', '.baseHelper::nameFormat($obj->address_country) : '';
 				$mapa = !empty($obj->url_map) ? ' <a href="'.$obj->url_map.'" class="badge badge-warning set-modal" title="'.JText::_('TEXT_MAP').'" data-modal-title="'.JText::_('TEXT_LOCATION').'" data-modal-iframe="true" data-modal-width="95%" data-modal-height="95%"><span class="base-icon-location"></span></a> ' : '';
-				$extra = !empty($obj->extra_info) ? ' <div class="location-extra-info text-sm"> '.$obj->extra_info.'</div>' : '';
+				$extra = !empty($obj->extra_info) ? ' <div class="location-extra-info pt-1"> '.$obj->extra_info.'</div>' : '';
 
 				$locations .= '
 					<li>

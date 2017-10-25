@@ -57,10 +57,16 @@ jQuery(function() {
 	var address_state		= jQuery('#<?php echo $APPTAG?>-address_state');
 	var address_country		= jQuery('#<?php echo $APPTAG?>-address_country');
 	// phones
-	var phone1				= jQuery('#<?php echo $APPTAG?>-phone1');
-	var phone2				= jQuery('#<?php echo $APPTAG?>-phone2');
-	var phone3				= jQuery('#<?php echo $APPTAG?>-phone3');
+	var phone				= jQuery('#<?php echo $APPTAG?>-phone');
+	var wapp				= jQuery('#<?php echo $APPTAG?>-wapp');
+	var whatsapp			= jQuery('#<?php echo $APPTAG?>-whatsapp');
+	var phone_desc			= jQuery('#<?php echo $APPTAG?>-phone_desc');
+	var weblink_text		= jQuery('#<?php echo $APPTAG?>-weblink_text');
+	var weblink_url			= jQuery('#<?php echo $APPTAG?>-weblink_url');
+	var chat_name			= jQuery('#<?php echo $APPTAG?>-chat_name');
+	var chat_user			= jQuery('#<?php echo $APPTAG?>-chat_user');
 	// extra info
+	var extra_info			= jQuery('#<?php echo $APPTAG?>-extra_info');
 	var note				= jQuery('#<?php echo $APPTAG?>-note');
 	// Joomla Registration
 	var access				= mainForm.find('input[name=access]:radio'); // radio group
@@ -149,12 +155,21 @@ jQuery(function() {
 			address_city.val('');
 			address_state.val('');
 			address_country.val('');
-			phone1.phoneMaskUpdate(''); // toggleMask
-			phone2.phoneMaskUpdate(''); // toggleMask
-			phone3.phoneMaskUpdate(''); // toggleMask
+			phone.phoneMaskUpdate('');
+			checkOption(wapp, 0); // checkbox
+			whatsapp.val('');
+			phone_desc.val('');
+			chat_name.val('');
+			chat_user.val('');
+			weblink_text.val('');
+			weblink_url.val('');
+			extra_info.val('');
 			note.val('');
 			checkOption(access, 0);
 			reasonStatus.val('');
+
+			// CUSTOM -> Remove new fields
+			jQuery('.newFieldsGroup').empty();
 
 			// hide relations buttons
 			setHidden('#<?php echo $APPTAG?>-buttons-relations', true, '#<?php echo $APPTAG?>-msg-relations');
@@ -240,6 +255,107 @@ jQuery(function() {
 			_banksAccountsContacts_listReload(false, false, false, false, false, formId.val());
 		};
 
+		// PHONE ADD -> Adiciona novo campo para telefone
+		window.<?php echo $APPTAG?>PhoneIndex = 1;
+		window.<?php echo $APPTAG?>_phoneAdd = function(phone, whatsapp, description) {
+			<?php echo $APPTAG?>PhoneIndex++;
+			var p = (isSet(phone) && !isEmpty(phone)) ? phone : '';
+			var w = (isSet(whatsapp) && !isEmpty(whatsapp)) ? whatsapp : '';
+				var wState = (w == 1) ? ' active' : '';
+				var wCheck = (w == 1) ? ' checked' : '';
+			var d = (isSet(description) && !isEmpty(description)) ? description : '';
+
+			var formGroup = '';
+			formGroup += '<div id="<?php echo $APPTAG?>-newPhoneGroup'+<?php echo $APPTAG?>PhoneIndex+'">';
+			formGroup += '	<div class="form-group row">';
+			formGroup += '		<div class="col-sm-6 col-lg-4">';
+			formGroup += '			<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone'+<?php echo $APPTAG?>PhoneIndex+'" value="'+p+'" class="form-control field-phone" data-toggle-mask="true" />';
+			formGroup += '		</div>';
+			formGroup += '		<div class="col-sm-6 col-lg-8">';
+			formGroup += '			<div class="input-group">';
+			formGroup += '				<span class="input-group-btn btn-group" data-toggle="buttons">';
+			formGroup += '					<label class="btn btn-outline-success btn-active-success'+wState+' hasTooltip" title="<?php echo JText::_('TEXT_HAS_WHATSAPP'); ?>">';
+			formGroup += '						<input type="checkbox" name="wapp[]" value="1"'+wCheck+' class="auto-tab" data-target="#<?php echo $APPTAG?>-whatsapp'+<?php echo $APPTAG?>PhoneIndex+'" data-target-value="1" data-target-value-reset="" data-tab-disabled="true" />';
+			formGroup += '						<span class="base-icon-whatsapp icon-default"></span>';
+			formGroup += '						<input type="hidden" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp'+<?php echo $APPTAG?>PhoneIndex+'" value="'+w+'" />';
+			formGroup += '					</label>';
+			formGroup += '				</span>';
+			formGroup += '				<input type="text" name="phone_desc[]" id="<?php echo $APPTAG?>-phone_desc'+<?php echo $APPTAG?>PhoneIndex+'" value="'+d+'" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?>" maxlength="50" />';
+			formGroup += '				<span class="input-group-btn">';
+			formGroup += '					<button type="button" class="btn btn-danger base-icon-cancel" onclick="<?php echo $APPTAG?>_phoneRemove(\'#<?php echo $APPTAG?>-newPhoneGroup'+<?php echo $APPTAG?>PhoneIndex+'\')"></button>';
+			formGroup += '				</span>';
+			formGroup += '			</div>';
+			formGroup += '		</div>';
+			formGroup += '	</div>';
+			formGroup += '</div>';
+
+			jQuery('#<?php echo $APPTAG?>-phoneGroups').append(formGroup);
+			setPhone();
+			checkAutoTab();
+		}
+		// PHONE REMOVE -> Remove campo de telefone
+		window.<?php echo $APPTAG?>_phoneRemove = function(id) {
+			if(confirm('<?php echo JText::_('MSG_CONFIRM_REMOVE_PHONE')?>')) jQuery(id).remove();
+		}
+
+		// CHAT ADD -> Adiciona novo campo de chat
+		window.<?php echo $APPTAG?>ChatIndex = 1;
+		window.<?php echo $APPTAG?>_chatAdd = function(chatName, chatUser) {
+			<?php echo $APPTAG?>ChatIndex++;
+			var name = (isSet(chatName) && !isEmpty(chatName)) ? chatName : '';
+			var user = (isSet(chatUser) && !isEmpty(chatUser)) ? chatUser : '';
+			var formGroup = '';
+			formGroup += '<div id="<?php echo $APPTAG?>-newChatGroup'+<?php echo $APPTAG?>ChatIndex+'" class="form-group">';
+			formGroup += '	<div class="row">';
+			formGroup += '		<div class="col-sm-4">';
+			formGroup += '			<input type="text" name="chat_name[]" id="<?php echo $APPTAG?>-chat_name'+<?php echo $APPTAG?>ChatIndex+'" value="'+name+'" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_CHAT_NAME'); ?>" />';
+			formGroup += '		</div>';
+			formGroup += '		<div class="col-sm-8">';
+			formGroup += '			<div class="input-group">';
+			formGroup += '				<input type="text" name="chat_user[]" id="<?php echo $APPTAG?>-chat_user'+<?php echo $APPTAG?>ChatIndex+'" value="'+user+'" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_CHAT_USER'); ?>" />';
+			formGroup += '				<span class="input-group-btn">';
+			formGroup += '					<button type="button" class="btn btn-danger base-icon-cancel" onclick="<?php echo $APPTAG?>_chatRemove(\'#<?php echo $APPTAG?>-newChatGroup'+<?php echo $APPTAG?>ChatIndex+'\')"></button>';
+			formGroup += '				</span>';
+			formGroup += '			</div>';
+			formGroup += '		</div>';
+			formGroup += '	</div>';
+			formGroup += '</div>';
+			jQuery('#<?php echo $APPTAG?>-chatGroups').append(formGroup);
+		}
+		// CHAT REMOVE -> Remove campo de chat
+		window.<?php echo $APPTAG?>_chatRemove = function(id) {
+			if(confirm('<?php echo JText::_('MSG_CONFIRM_REMOVE_CHAT')?>')) jQuery(id).remove();
+		}
+
+		// WEBLINK ADD -> Adiciona novo campo de weblink
+		window.<?php echo $APPTAG?>LinkIndex = 1;
+		window.<?php echo $APPTAG?>_linkAdd = function(text, urlPath) {
+			<?php echo $APPTAG?>LinkIndex++;
+			var txt = (isSet(text) && !isEmpty(text)) ? text : '';
+			var url = (isSet(urlPath) && !isEmpty(urlPath)) ? urlPath : '';
+			var formGroup = '';
+			formGroup += '<div id="<?php echo $APPTAG?>-newLinkGroup'+<?php echo $APPTAG?>LinkIndex+'" class="form-group">';
+			formGroup += '	<div class="row">';
+			formGroup += '		<div class="col-sm-4">';
+			formGroup += '			<input type="text" name="weblink_text[]" id="<?php echo $APPTAG?>-weblink_text'+<?php echo $APPTAG?>LinkIndex+'" value="'+txt+'" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_WEBLINK_TEXT'); ?>" />';
+			formGroup += '		</div>';
+			formGroup += '		<div class="col-sm-8">';
+			formGroup += '			<div class="input-group">';
+			formGroup += '				<input type="text" name="weblink_url[]" id="<?php echo $APPTAG?>-weblink_url'+<?php echo $APPTAG?>LinkIndex+'" value="'+url+'" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_WEBLINK_URL'); ?>" />';
+			formGroup += '				<span class="input-group-btn">';
+			formGroup += '					<button type="button" class="btn btn-danger base-icon-cancel" onclick="<?php echo $APPTAG?>_linkRemove(\'#<?php echo $APPTAG?>-newLinkGroup'+<?php echo $APPTAG?>LinkIndex+'\')"></button>';
+			formGroup += '				</span>';
+			formGroup += '			</div>';
+			formGroup += '		</div>';
+			formGroup += '	</div>';
+			formGroup += '</div>';
+			jQuery('#<?php echo $APPTAG?>-linkGroups').append(formGroup);
+		}
+		// WEBLINK REMOVE -> Remove campo de weblink
+		window.<?php echo $APPTAG?>_linkRemove = function(id) {
+			if(confirm('<?php echo JText::_('MSG_CONFIRM_REMOVE_WEBLINK')?>')) jQuery(id).remove();
+		}
+
 	// LIST CONTROLLERS
 	// ações & métodos controladores da listagem
 
@@ -293,6 +409,10 @@ jQuery(function() {
 				<?php echo $APPTAG?>_formReset();
 				return false;
 			}
+
+			// CUSTOM -> Remove new fields
+			jQuery('.newFieldsGroup').empty();
+
 			<?php echo $APPTAG?>_formExecute(true, formDisable, true); // inicia o loader
 			jQuery.ajax({
 				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=get&id="+id,
@@ -336,9 +456,44 @@ jQuery(function() {
 						address_city.val(item.address_city);
 						address_state.val(item.address_state);
 						address_country.val(item.address_country);
-						phone1.phoneMaskUpdate(item.phone1); // toggleMask
-						phone2.phoneMaskUpdate(item.phone2); // toggleMask
-						phone3.phoneMaskUpdate(item.phone3); // toggleMask
+						// phones
+						var p = item.phone.split(";");
+						var w = item.whatsapp.split(";");
+						var d = item.phone_desc.split(";");
+						for(i = 0; i < p.length; i++) {
+							wCheck = (w[i] == 1 ? 1 : 0);
+							if(i == 0) {
+								phone.phoneMaskUpdate(p[0]);
+								checkOption(wapp, wCheck); // checkbox
+								whatsapp.val(w[0]);
+								phone_desc.val(d[0]);
+							} else {
+								<?php echo $APPTAG?>_phoneAdd(p[i], w[i], d[i]);
+							}
+						}
+						// chats
+						var cName = item.chat_name.split(";");
+						var cUser = item.chat_user.split(";");
+						for(i = 0; i < cName.length; i++) {
+							if(i == 0) {
+								chat_name.val(cName[0]);
+								chat_user.val(cUser[0]);
+							} else {
+								<?php echo $APPTAG?>_chatAdd(cName[i], cUser[i]);
+							}
+						}
+						// weblinks
+						var wTxt = item.weblink_text.split(";");
+						var wUrl = item.weblink_url.split(";");
+						for(i = 0; i < wUrl.length; i++) {
+							if(i == 0) {
+								weblink_text.val(wTxt[0]);
+								weblink_url.val(wUrl[0]);
+							} else {
+								<?php echo $APPTAG?>_linkAdd(wTxt[i], wUrl[i]);
+							}
+						}
+						extra_info.val(item.extra_info);
 						note.val(item.note);
 						checkOption(access, item.access);
 						reasonStatus.val(item.reasonStatus);

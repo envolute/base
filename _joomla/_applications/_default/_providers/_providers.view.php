@@ -214,7 +214,7 @@ if($vID != 0) :
 							$_callCentersRelListId				= $item->id;
 							echo '
 								<h6 class="page-header base-icon-phone-squared pt-2">
-									'.JText::_('TEXT_PROVIDER_CALL_CENTERS').'
+									'.JText::_('TEXT_CALL_CENTERS').'
 									<a href="#" class="btn btn-xs btn-success float-right" onclick="_callCenters_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-_callCenters" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_CALL_CENTER').'"></span></a>
 								</h6>
 							';

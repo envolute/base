@@ -83,12 +83,37 @@ if($vID != 0) :
 		$addressZip = !empty($item->zip_code) ? $item->zip_code.', ' : '';
 		$addressDistrict = !empty($item->address_district) ? baseHelper::nameFormat($item->address_district) : '';
 		$addressCity = !empty($item->address_city) ? ', '.baseHelper::nameFormat($item->address_city) : '';
-		$addressState = !empty($item->address_state) ? ', '.baseHelper::nameFormat($item->address_state) : '';
-		$addressCountry = !empty($item->address_country) ? ', '.baseHelper::nameFormat($item->address_country) : '';
+		$addressState = !empty($item->address_state) ? ', '.($_SESSION[$RTAG.'OnlyBR'] ? $item->address_state : baseHelper::nameFormat($item->address_state)) : '';
+		$addressCountry = (!empty($item->address_country) && !$_SESSION[$RTAG.'OnlyBR']) ? ', '.baseHelper::nameFormat($item->address_country) : '';
 		// Phones
-		$phones = !empty($item->phone1) ? $item->phone1 : '';
-		$phones .= !empty($item->phone2) ? (!empty($phones) ? '<br />' : '').$item->phone2 : '';
-		$phones .= !empty($item->phone3) ? (!empty($phones) ? '<br />' : '').'(fixo) '.$item->phone3 : '';
+		$ph = explode(';', $item->phone);
+		$wp = explode(';', $item->whatsapp);
+		$pd = explode(';', $item->phone_desc);
+		$phones = '';
+		for($i = 0; $i < count($ph); $i++) {
+			$whapps = $wp[$i] == 1 ? ' <span class="base-icon-whatsapp text-success cursor-help hasTooltip" title="'.JText::_('TEXT_HAS_WHATSAPP').'"></span>' : '';
+			$phDesc = !empty($pd[$i]) ? '<div class="small text-muted pb-1">'.$pd[$i].'</div>' : '';
+			$phones .= '<div class="pb-1">'.$ph[$i].$whapps.$phDesc.'</div>';
+		}
+		// Chats
+		$cName = explode(';', $item->chat_name);
+		$cUser = explode(';', $item->chat_user);
+		$chats = '';
+		for($i = 0; $i < count($cName); $i++) {
+			if(!empty($cName[$i])) $chats .= '<div class="pb-1"><strong>'.$cName[$i].'</strong>: '.$cUser[$i].'</div>';
+		}
+		// Weblinks
+		$wTxt = explode(';', $item->weblink_text);
+		$wUrl = explode(';', $item->weblink_url);
+		$links = '';
+		for($i = 0; $i < count($wUrl); $i++) {
+			$text = !empty($wTxt[$i]) ? $wTxt[$i] : $wUrl[$i];
+			$links .= '
+				<div class="pb-1">
+					<a href="'.$wUrl[$i].'" target="_blank">'.$text.'</a>
+				</div>
+			';
+		}
 
 		// Email, profissão
 		$info1 = '';
@@ -169,11 +194,11 @@ if($vID != 0) :
 		endif;
 		if(!empty($info2)) $info2 = '<div class="row">'.$info2.'</div>';
 
-		// Endereço, telefones
-		$info3 = '';
+		// Endereço
+		$address = '';
 		if(!empty($item->address)) :
-			$info3 .= '
-				<div class="col-md-8">
+			$address .= '
+				<div class="contact-address">
 					<label class="label-sm">'.JText::_('FIELD_LABEL_ADDRESS').':</label>
 					<p>
 						'.baseHelper::nameFormat($item->address).$addressNumber.$addressInfo.'<br />
@@ -182,15 +207,20 @@ if($vID != 0) :
 				</div>
 			';
 		endif;
-		if(!empty($phones)) :
-			$info3 .= '
-				<div class="col-md">
-					<label class="label-sm">'.JText::_('FIELD_LABEL_PHONE').'(s):</label>
-					<p>'.$phones.'</p>
+
+		// Extra Info
+		$extra_info = '';
+		if(!empty($item->extra_info)) :
+			$extra_info .= '
+				<div class="contact-extra-info">
+					<label class="label-sm">'.JText::_('FIELD_LABEL_EXTRA_INFO').':</label>
+					<div class="mb-4">'.$item->extra_info.'</div>
 				</div>
 			';
 		endif;
-		if(!empty($info3)) $info3 = '<hr /><div class="row">'.$info3.'</div>';
+
+		// Acesso
+		$access = ($item->access == 1 && !empty($item->user_id)) ? ' <span class="base-icon-plug text-success cursor-help hasTooltip" title="'.JText::_('TEXT_CONNECTED_USER').'"></span>' : '';
 
 		echo '
 			<div class="row">
@@ -203,20 +233,28 @@ if($vID != 0) :
 							<div class="row">
 								<div class="col-md-8">
 									<label class="label-sm">'.JText::_('FIELD_LABEL_NAME').':</label>
-									<p> '.baseHelper::nameFormat($item->name).'</p>
+									<p> '.baseHelper::nameFormat($item->name).$access.'</p>
 								</div>
 								<div class="col-md-4">
 									<label class="label-sm">'.JText::_('FIELD_LABEL_GROUP').':</label>
 									<p> '.baseHelper::nameFormat($item->group_name).'</p>
 								</div>
 							</div>
-							'.$info1.$info2.$info3.'
+							'.$info1.$info2.$address.$extra_info.'
 						</div>
 					</div>
 				</div>
 				<div class="col">
 					<hr class="d-md-none my-2" />
+
 		';
+					// Contacts Data
+					if(!empty($phones) || !empty($chats) || !empty($links)) :
+						echo '
+							<h6 class="page-header base-icon-phone-squared"> '.JText::_('TEXT_CONTACT_DATA').'</h6>
+							<div class="mb-5">'.$phones.$chats.$links.'</div>
+						';
+					endif;
 
 					// Banks Accounts
 					$_banksAccountsListFull			= false;

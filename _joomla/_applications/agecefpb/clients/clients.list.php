@@ -61,7 +61,7 @@ $html = '
 					<th width="30" class="d-none d-lg-table-cell text-center">&#160;</td>
 					<th>'.JText::_('TEXT_TYPE').'</th>
 					<th width="50" class="d-none d-lg-table-cell text-center">
-						<span class="cursor-help hasTooltip" title="'.JText::_('TEXT_LIST_ENABLED_DEBIT').'">'.JText::_('TEXT_DEBIT').'</span>
+						<span class="cursor-help hasTooltip" title="'.JText::_('MSG_LIST_ENABLED_DEBIT').'">'.JText::_('TEXT_DEBIT').'</span>
 					</td>
 					<th>'.JText::_('TEXT_STATUS').'</th>
 					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>

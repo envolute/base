@@ -102,7 +102,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			endif;
 
 			$lock = $item->isPublic == 0 ? '<span class="base-icon-lock text-danger cursor-help hasTooltip" title="'.JText::_('TEXT_PRIVATE_DESC').'"></span> ' : '';
-			$title = !empty($item->title) ? '<h6 class="strong mb-1">'.$lock.baseHelper::nameFormat($item->title).'</h6>' : $lock;
+			$title = !empty($item->title) ? '<h6 class="font-weight-bold mb-1">'.$lock.$item->title.'</h6>' : $lock;
 			$addressInfo = !empty($item->address_info) ? ', '.$item->address_info : '';
 			$addressNumber = !empty($item->address_number) ? ', '.$item->address_number : '';
 			$addressZip = !empty($item->zip_code) ? $item->zip_code.', ' : '';

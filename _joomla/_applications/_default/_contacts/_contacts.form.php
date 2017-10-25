@@ -34,7 +34,13 @@ $userGrps = $db->loadObjectList();
 		<a class="nav-link active" id="<?php echo $APPTAG?>Tab-general" data-toggle="tab" href="#<?php echo $APPTAG?>TabGeneral" role="tab" aria-controls="general" aria-expanded="true"><?php echo JText::_('TEXT_GENERAL'); ?></a>
 	</li>
 	<li class="nav-item">
+		<a class="nav-link" id="<?php echo $APPTAG?>Tab-location" data-toggle="tab" href="#<?php echo $APPTAG?>TabLocation" role="tab" aria-controls="location"><?php echo JText::_('TEXT_LOCATION_DATA'); ?></a>
+	</li>
+	<li class="nav-item">
 		<a class="nav-link" id="<?php echo $APPTAG?>Tab-contact" data-toggle="tab" href="#<?php echo $APPTAG?>TabContact" role="tab" aria-controls="contact"><?php echo JText::_('TEXT_CONTACT_DATA'); ?></a>
+	</li>
+	<li class="nav-item">
+		<a class="nav-link" id="<?php echo $APPTAG?>Tab-extra" data-toggle="tab" href="#<?php echo $APPTAG?>TabExtra" role="tab" aria-controls="extra"><?php echo JText::_('FIELD_LABEL_EXTRA_INFO'); ?></a>
 	</li>
 </ul>
 <div class="tab-content" id="<?php echo $APPTAG?>TabContent">
@@ -180,7 +186,7 @@ $userGrps = $db->loadObjectList();
 				</div>
 			</div>
 		</div>
-		<div id="<?php echo $APPTAG?>-msg-relations" class="alert alert-info base-icon-info-circled"> 
+		<div id="<?php echo $APPTAG?>-msg-relations" class="alert alert-info base-icon-info-circled">
 			<span class="text-live font-featured"><?php echo JText::_('TEXT_BANKS_ACCOUNTS')?></span>
 			<?php echo JText::_('MSG_ADD_AFTER_SAVE')?>
 		</div>
@@ -311,74 +317,145 @@ $userGrps = $db->loadObjectList();
 			</div>
 		</div>
 	</div>
-	<div class="tab-pane fade" id="<?php echo $APPTAG?>TabContact" role="tabpanel" aria-labelledby="<?php echo $APPTAG?>Tab-contact">
+	<div class="tab-pane fade" id="<?php echo $APPTAG?>TabLocation" role="tabpanel" aria-labelledby="<?php echo $APPTAG?>Tab-location">
 		<div class="row">
-			<div class="col-md-8 col-lg-9">
+			<div class="col-sm-8 col-lg-7">
+				<div class="form-group field-required">
+					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_STREET'); ?></label>
+					<input type="text" name="address" id="<?php echo $APPTAG?>-address" class="form-control upper" />
+				</div>
+			</div>
+			<div class="col-sm-4 col-lg-3">
+				<div class="form-group field-required">
+					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_NUMBER'); ?></label>
+					<input type="text" name="address_number" id="<?php echo $APPTAG?>-address_number" class="form-control upper" />
+				</div>
+			</div>
+			<div class="col-sm-8 col-lg-7">
+				<div class="form-group">
+					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_INFO'); ?></label>
+					<input type="text" name="address_info" id="<?php echo $APPTAG?>-address_info" class="form-control" />
+				</div>
+			</div>
+			<div class="col-sm-4 col-lg-3">
+				<div class="form-group">
+					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_ZIP_CODE'); ?></label>
+					<input type="text" name="zip_code" id="<?php echo $APPTAG?>-zip_code" class="form-control field-cep" />
+				</div>
+			</div>
+			<?php
+			$col = 10;
+			if(!$cfg['onlyBR']) :
+			?>
+				<div class="col-sm-6 col-lg-5">
+					<div class="form-group field-required">
+						<label><?php echo JText::_('FIELD_LABEL_ADDRESS_COUNTRY'); ?></label>
+						<input type="text" name="address_country" id="<?php echo $APPTAG?>-address_country" class="form-control upper" />
+					</div>
+				</div>
+				<div class="col-sm-6 col-lg-5">
+					<div class="form-group field-required">
+						<label><?php echo JText::_('FIELD_LABEL_ADDRESS_STATE'); ?></label>
+						<input type="text" name="address_state" id="<?php echo $APPTAG?>-address_state" class="form-control upper" />
+					</div>
+				</div>
+			<?php
+			else :
+			$col = 8;
+			?>
+				<div class="col-sm-2">
+					<div class="form-group field-required">
+						<label>UF</label>
+						<input type="text" name="address_state" id="<?php echo $APPTAG?>-address_state" class="form-control w-auto upper" size="2" maxlength="2" />
+						<input type="hidden" name="address_country" id="<?php echo $APPTAG?>-address_country" />
+					</div>
+				</div>
+			<?php endif; ?>
+			<div class="col-lg-<?php echo $col?>">
 				<div class="row">
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label><?php echo JText::_('FIELD_LABEL_ADDRESS_ZIP_CODE'); ?></label>
-							<input type="text" name="zip_code" id="<?php echo $APPTAG?>-zip_code" class="form-control field-cep" />
-						</div>
-					</div>
-					<div class="col-lg-7">
-						<div class="form-group">
-							<label><?php echo JText::_('FIELD_LABEL_ADDRESS_STREET'); ?></label>
-							<input type="text" name="address" id="<?php echo $APPTAG?>-address" class="form-control upper" />
-						</div>
-					</div>
-					<div class="col-lg-2">
-						<div class="form-group">
-							<label><?php echo JText::_('FIELD_LABEL_ADDRESS_NUMBER'); ?></label>
-							<input type="text" name="address_number" id="<?php echo $APPTAG?>-address_number" class="form-control upper" />
-						</div>
-					</div>
-					<div class="col-lg-12">
-						<div class="form-group">
-							<label><?php echo JText::_('FIELD_LABEL_ADDRESS_INFO'); ?></label>
-							<input type="text" name="address_info" id="<?php echo $APPTAG?>-address_info" class="form-control" />
-						</div>
-					</div>
-					<div class="col-lg-6">
-						<div class="form-group">
-							<label><?php echo JText::_('FIELD_LABEL_ADDRESS_DISTRICT'); ?></label>
-							<input type="text" name="address_district" id="<?php echo $APPTAG?>-address_district" class="form-control upper" />
-						</div>
-					</div>
-					<div class="col-lg-6">
-						<div class="form-group">
+					<div class="col-sm">
+						<div class="form-group field-required">
 							<label><?php echo JText::_('FIELD_LABEL_ADDRESS_CITY'); ?></label>
 							<input type="text" name="address_city" id="<?php echo $APPTAG?>-address_city" class="form-control upper" />
 						</div>
 					</div>
-					<div class="col-lg-6">
-						<div class="form-group">
-							<label><?php echo JText::_('FIELD_LABEL_ADDRESS_STATE'); ?></label>
-							<input type="text" name="address_state" id="<?php echo $APPTAG?>-address_state" class="form-control upper" />
-						</div>
-					</div>
-					<div class="col-lg-6">
-						<div class="form-group">
-							<label><?php echo JText::_('FIELD_LABEL_ADDRESS_COUNTRY'); ?></label>
-							<input type="text" name="address_country" id="<?php echo $APPTAG?>-address_country" class="form-control upper" />
+					<div class="col-sm">
+						<div class="form-group field-required">
+							<label><?php echo JText::_('FIELD_LABEL_ADDRESS_DISTRICT'); ?></label>
+							<input type="text" name="address_district" id="<?php echo $APPTAG?>-address_district" class="form-control upper" />
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="col-md-4 col-lg-3 b-left b-dashed">
+		</div>
+	</div>
+	<div class="tab-pane fade" id="<?php echo $APPTAG?>TabContact" role="tabpanel" aria-labelledby="<?php echo $APPTAG?>Tab-contact">
+		<div class="row">
+			<div class="col-lg-9">
 				<div class="form-group">
-					<label><?php echo JText::_('FIELD_LABEL_PHONE'); ?> 1</label>
-					<input type="text" name="phone1" id="<?php echo $APPTAG?>-phone1" class="form-control field-phone" data-toggle-mask="true" />
+					<label><?php echo JText::_('FIELD_LABEL_PHONE'); ?></label>
+					<div class="row">
+						<div class="col-sm-6 col-lg-4">
+							<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone" class="form-control field-phone" data-toggle-mask="true" />
+						</div>
+						<div class="col-sm-6 col-lg-8">
+							<div class="input-group">
+								<span class="input-group-btn btn-group" data-toggle="buttons">
+									<label class="btn btn-outline-success btn-active-success hasTooltip" title="<?php echo JText::_('TEXT_HAS_WHATSAPP'); ?>">
+										<input type="checkbox" name="wapp[]" id="<?php echo $APPTAG?>-wapp" value="1" class="auto-tab" data-target="#<?php echo $APPTAG?>-whatsapp" data-target-value="1" data-target-value-reset="" data-tab-disabled="true" />
+										<span class="base-icon-whatsapp icon-default"></span>
+										<input type="hidden" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp" />
+									</label>
+								</span>
+								<input type="text" name="phone_desc[]" id="<?php echo $APPTAG?>-phone_desc" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?>" maxlength="50" />
+							</div>
+						</div>
+					</div>
 				</div>
+				<div id="<?php echo $APPTAG?>-phoneGroups" class="newFieldsGroup"></div>
+				<button type="button" class="btn btn-sm btn-success base-icon-plus float-sm-right" onclick="<?php echo $APPTAG?>_phoneAdd()"> <?php echo JText::_('TEXT_PHONES_ADD')?></button>
+				<hr class="hr-tag" />
+				<span class="badge badge-primary"><?php echo JText::_('TEXT_INTERNET')?></span>
 				<div class="form-group">
-					<label><?php echo JText::_('FIELD_LABEL_PHONE'); ?> 2</label>
-					<input type="text" name="phone2" id="<?php echo $APPTAG?>-phone2" class="form-control field-phone" data-toggle-mask="true" />
+					<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_CHAT_DESC')?>"><?php echo JText::_('FIELD_LABEL_CHAT')?></label>
+					<div class="row">
+						<div class="col-sm-4">
+							<input type="text" name="chat_name[]" id="<?php echo $APPTAG?>-chat_name" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_CHAT_NAME'); ?>" />
+						</div>
+						<div class="col-sm-8">
+							<div class="input-group">
+								<input type="text" name="chat_user[]" id="<?php echo $APPTAG?>-chat_user" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_CHAT_USER'); ?>" />
+								<span class="input-group-btn">
+									<button type="button" class="btn btn-success base-icon-plus hasTooltip" title="<?php echo JText::_('TEXT_ADD_CHAT')?>" onclick="<?php echo $APPTAG?>_chatAdd()"></button>
+								</span>
+							</div>
+						</div>
+					</div>
 				</div>
+				<div id="<?php echo $APPTAG?>-chatGroups" class="newFieldsGroup"></div>
 				<div class="form-group">
-					<label><?php echo JText::_('FIELD_LABEL_PHONE'); ?> 3</label>
-					<input type="text" name="phone3" id="<?php echo $APPTAG?>-phone3" class="form-control field-phone" data-toggle-mask="true" />
+					<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_WEBLINK_DESC')?>">Weblink</label>
+					<div class="row">
+						<div class="col-sm-4">
+							<input type="text" name="weblink_text[]" id="<?php echo $APPTAG?>-weblink_text" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_WEBLINK_TEXT'); ?>" />
+						</div>
+						<div class="col-sm-8">
+							<div class="input-group">
+								<input type="text" name="weblink_url[]" id="<?php echo $APPTAG?>-weblink_url" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_WEBLINK_URL'); ?>" />
+								<span class="input-group-btn">
+									<button type="button" class="btn btn-success base-icon-plus hasTooltip" title="<?php echo JText::_('TEXT_ADD_WEBLINK')?>" onclick="<?php echo $APPTAG?>_linkAdd()"></button>
+								</span>
+							</div>
+						</div>
+					</div>
 				</div>
+				<div id="<?php echo $APPTAG?>-linkGroups" class="newFieldsGroup"></div>
 			</div>
+		</div>
+	</div>
+	<div class="tab-pane fade" id="<?php echo $APPTAG?>TabExtra" role="tabpanel" aria-labelledby="<?php echo $APPTAG?>Tab-extra">
+		<div class="form-group">
+			<textarea name="extra_info" id="<?php echo $APPTAG?>-extra_info" rows="4" class="form-control field-html" data-editor-full="true"></textarea>
 		</div>
 	</div>
 </div>

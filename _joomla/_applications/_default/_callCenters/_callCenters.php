@@ -103,7 +103,7 @@ jQuery(function() {
 			checkOption(isPublic, 1); // radio
 			title.val('');
 			checkOption(showTitle, 1); // checkbox
-			phone.val('');
+			phone.phoneMaskUpdate('');
 			checkOption(wapp, 0); // checkbox
 			whatsapp.val('');
 			phone_desc.val('');
@@ -166,9 +166,9 @@ jQuery(function() {
 		};
 
 		// PHONE ADD -> Adiciona novo campo para telefone
-		window.phoneIndex = 1;
+		window.<?php echo $APPTAG?>PhoneIndex = 1;
 		window.<?php echo $APPTAG?>_phoneAdd = function(phone, whatsapp, description) {
-			phoneIndex++;
+			<?php echo $APPTAG?>PhoneIndex++;
 			var p = (isSet(phone) && !isEmpty(phone)) ? phone : '';
 			var w = (isSet(whatsapp) && !isEmpty(whatsapp)) ? whatsapp : '';
 				var wState = (w == 1) ? ' active' : '';
@@ -176,19 +176,19 @@ jQuery(function() {
 			var d = (isSet(description) && !isEmpty(description)) ? description : '';
 
 			var formGroup = '';
-			formGroup += '<div id="<?php echo $APPTAG?>-newPhoneGroup'+phoneIndex+'" class="row newFieldsGroup">';
+			formGroup += '<div id="<?php echo $APPTAG?>-newPhoneGroup'+<?php echo $APPTAG?>PhoneIndex+'" class="row">';
 			formGroup += '	<div class="col-8 col-sm-6 col-lg-4">';
 			formGroup += '		<div class="form-group">';
-			formGroup += '			<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone'+phoneIndex+'" value="'+p+'" class="form-control field-phone" data-toggle-mask="true" />';
+			formGroup += '			<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone'+<?php echo $APPTAG?>PhoneIndex+'" value="'+p+'" class="form-control field-phone" data-toggle-mask="true" />';
 			formGroup += '		</div>';
 			formGroup += '	</div>';
-			formGroup += '	<div class="col-2 col-lg-1">';
+			formGroup += '	<div class="col-4 col-sm-2 col-lg-1">';
 			formGroup += '		<div class="form-group">';
-			formGroup += '			<span class="btn-group btn-group-justified" data-toggle="buttons">';
-			formGroup += '				<label class="btn btn-outline-success btn-block btn-active-success'+wState+' hasTooltip" title="<?php echo JText::_('TEXT_HAS_WHATSAPP'); ?>">';
-			formGroup += '					<input type="checkbox" name="wapp[]" value="1"'+wCheck+' class="auto-tab" data-target="#<?php echo $APPTAG?>-whatsapp'+phoneIndex+'" data-target-value="1" data-target-value-reset="" data-tab-disabled="true" />';
+			formGroup += '			<span class="btn-group" data-toggle="buttons">';
+			formGroup += '				<label class="btn btn-outline-success btn-active-success'+wState+' hasTooltip" title="<?php echo JText::_('TEXT_HAS_WHATSAPP'); ?>">';
+			formGroup += '					<input type="checkbox" name="wapp[]" value="1"'+wCheck+' class="auto-tab" data-target="#<?php echo $APPTAG?>-whatsapp'+<?php echo $APPTAG?>PhoneIndex+'" data-target-value="1" data-target-value-reset="" data-tab-disabled="true" />';
 			formGroup += '					<span class="base-icon-whatsapp icon-default"></span>';
-			formGroup += '					<input type="hidden" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp'+phoneIndex+'" value="'+w+'" />';
+			formGroup += '					<input type="hidden" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp'+<?php echo $APPTAG?>PhoneIndex+'" value="'+w+'" />';
 			formGroup += '				</label>';
 			formGroup += '			</span>';
 			formGroup += '		</div>';
@@ -196,9 +196,9 @@ jQuery(function() {
 			formGroup += '	<div class="col-sm-6 col-lg-7">';
 			formGroup += '		<div class="form-group">';
 			formGroup += '			<div class="input-group">';
-			formGroup += '				<input type="text" name="phone_desc[]" id="<?php echo $APPTAG?>-phone_desc'+phoneIndex+'" value="'+d+'" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?>" />';
+			formGroup += '				<input type="text" name="phone_desc[]" id="<?php echo $APPTAG?>-phone_desc'+<?php echo $APPTAG?>PhoneIndex+'" value="'+d+'" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?>" maxlength="50" />';
 			formGroup += '				<span class="input-group-btn">';
-			formGroup += '					<button type="button" class="btn btn-danger base-icon-cancel" onclick="<?php echo $APPTAG?>_phoneRemove(\'#<?php echo $APPTAG?>-newPhoneGroup'+phoneIndex+'\')"></button>';
+			formGroup += '					<button type="button" class="btn btn-danger base-icon-cancel" onclick="<?php echo $APPTAG?>_phoneRemove(\'#<?php echo $APPTAG?>-newPhoneGroup'+<?php echo $APPTAG?>PhoneIndex+'\')"></button>';
 			formGroup += '				</span>';
 			formGroup += '			</div>';
 			formGroup += '		</div>';
@@ -207,6 +207,7 @@ jQuery(function() {
 
 			jQuery('#<?php echo $APPTAG?>-phoneGroups').append(formGroup);
 			setPhone();
+			checkAutoTab();
 		}
 		// PHONE REMOVE -> Remove campo de telefone
 		window.<?php echo $APPTAG?>_phoneRemove = function(id) {
@@ -214,16 +215,16 @@ jQuery(function() {
 		}
 
 		// EMAIL ADD -> Adiciona novo campo de email
-		window.emailIndex = 1;
+		window.<?php echo $APPTAG?>EmailIndex = 1;
 		window.<?php echo $APPTAG?>_emailAdd = function(email) {
-			emailIndex++;
+			<?php echo $APPTAG?>EmailIndex++;
 			var val = (isSet(email) && !isEmpty(email)) ? email : '';
 			var formGroup = '';
-			formGroup += '<div id="<?php echo $APPTAG?>-newEmailGroup'+emailIndex+'" class="form-group newFieldsGroup">';
+			formGroup += '<div id="<?php echo $APPTAG?>-newEmailGroup'+<?php echo $APPTAG?>EmailIndex+'" class="form-group">';
 			formGroup += '	<div class="input-group">';
-			formGroup += '		<input type="text" name="email[]" id="<?php echo $APPTAG?>-email'+emailIndex+'" value="'+val+'" class="form-control field-email" placeholder="E-mail" />';
+			formGroup += '		<input type="text" name="email[]" id="<?php echo $APPTAG?>-email'+<?php echo $APPTAG?>EmailIndex+'" value="'+val+'" class="form-control field-email" placeholder="E-mail" />';
 			formGroup += '		<span class="input-group-btn">';
-			formGroup += '			<button type="button" class="btn btn-danger base-icon-cancel" onclick="<?php echo $APPTAG?>_emailRemove(\'#<?php echo $APPTAG?>-newEmailGroup'+emailIndex+'\')"></button>';
+			formGroup += '			<button type="button" class="btn btn-danger base-icon-cancel" onclick="<?php echo $APPTAG?>_emailRemove(\'#<?php echo $APPTAG?>-newEmailGroup'+<?php echo $APPTAG?>EmailIndex+'\')"></button>';
 			formGroup += '		</span>';
 			formGroup += '	</div>';
 			formGroup += '</div>';
@@ -235,22 +236,22 @@ jQuery(function() {
 		}
 
 		// CHAT ADD -> Adiciona novo campo de chat
-		window.chatIndex = 1;
+		window.<?php echo $APPTAG?>ChatIndex = 1;
 		window.<?php echo $APPTAG?>_chatAdd = function(chatName, chatUser) {
-			chatIndex++;
+			<?php echo $APPTAG?>ChatIndex++;
 			var name = (isSet(chatName) && !isEmpty(chatName)) ? chatName : '';
 			var user = (isSet(chatUser) && !isEmpty(chatUser)) ? chatUser : '';
 			var formGroup = '';
-			formGroup += '<div id="<?php echo $APPTAG?>-newChatGroup'+chatIndex+'" class="form-group newFieldsGroup">';
+			formGroup += '<div id="<?php echo $APPTAG?>-newChatGroup'+<?php echo $APPTAG?>ChatIndex+'" class="form-group">';
 			formGroup += '	<div class="row no-gutters">';
 			formGroup += '		<div class="col-sm-4 pr-1">';
-			formGroup += '			<input type="text" name="chat_name[]" id="<?php echo $APPTAG?>-chat_name'+chatIndex+'" value="'+name+'" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_CHAT_NAME'); ?>" />';
+			formGroup += '			<input type="text" name="chat_name[]" id="<?php echo $APPTAG?>-chat_name'+<?php echo $APPTAG?>ChatIndex+'" value="'+name+'" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_CHAT_NAME'); ?>" />';
 			formGroup += '		</div>';
 			formGroup += '		<div class="col-sm-8">';
 			formGroup += '			<div class="input-group">';
-			formGroup += '				<input type="text" name="chat_user[]" id="<?php echo $APPTAG?>-chat_user'+chatIndex+'" value="'+user+'" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_CHAT_USER'); ?>" />';
+			formGroup += '				<input type="text" name="chat_user[]" id="<?php echo $APPTAG?>-chat_user'+<?php echo $APPTAG?>ChatIndex+'" value="'+user+'" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_CHAT_USER'); ?>" />';
 			formGroup += '				<span class="input-group-btn">';
-			formGroup += '					<button type="button" class="btn btn-danger base-icon-cancel" onclick="<?php echo $APPTAG?>_chatRemove(\'#<?php echo $APPTAG?>-newChatGroup'+chatIndex+'\')"></button>';
+			formGroup += '					<button type="button" class="btn btn-danger base-icon-cancel" onclick="<?php echo $APPTAG?>_chatRemove(\'#<?php echo $APPTAG?>-newChatGroup'+<?php echo $APPTAG?>ChatIndex+'\')"></button>';
 			formGroup += '				</span>';
 			formGroup += '			</div>';
 			formGroup += '		</div>';
@@ -264,22 +265,22 @@ jQuery(function() {
 		}
 
 		// WEBLINK ADD -> Adiciona novo campo de weblink
-		window.linkIndex = 1;
+		window.<?php echo $APPTAG?>LinkIndex = 1;
 		window.<?php echo $APPTAG?>_linkAdd = function(text, urlPath) {
-			linkIndex++;
+			<?php echo $APPTAG?>LinkIndex++;
 			var txt = (isSet(text) && !isEmpty(text)) ? text : '';
 			var url = (isSet(urlPath) && !isEmpty(urlPath)) ? urlPath : '';
 			var formGroup = '';
-			formGroup += '<div id="<?php echo $APPTAG?>-newLinkGroup'+linkIndex+'" class="form-group newFieldsGroup">';
+			formGroup += '<div id="<?php echo $APPTAG?>-newLinkGroup'+<?php echo $APPTAG?>LinkIndex+'" class="form-group">';
 			formGroup += '	<div class="row no-gutters">';
 			formGroup += '		<div class="col-sm-4 pr-1">';
-			formGroup += '			<input type="text" name="weblink_text[]" id="<?php echo $APPTAG?>-weblink_text'+linkIndex+'" value="'+txt+'" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_WEBLINK_TEXT'); ?>" />';
+			formGroup += '			<input type="text" name="weblink_text[]" id="<?php echo $APPTAG?>-weblink_text'+<?php echo $APPTAG?>LinkIndex+'" value="'+txt+'" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_WEBLINK_TEXT'); ?>" />';
 			formGroup += '		</div>';
 			formGroup += '		<div class="col-sm-8">';
 			formGroup += '			<div class="input-group">';
-			formGroup += '				<input type="text" name="weblink_url[]" id="<?php echo $APPTAG?>-weblink_url'+linkIndex+'" value="'+url+'" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_WEBLINK_URL'); ?>" />';
+			formGroup += '				<input type="text" name="weblink_url[]" id="<?php echo $APPTAG?>-weblink_url'+<?php echo $APPTAG?>LinkIndex+'" value="'+url+'" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_WEBLINK_URL'); ?>" />';
 			formGroup += '				<span class="input-group-btn">';
-			formGroup += '					<button type="button" class="btn btn-danger base-icon-cancel" onclick="<?php echo $APPTAG?>_linkRemove(\'#<?php echo $APPTAG?>-newLinkGroup'+linkIndex+'\')"></button>';
+			formGroup += '					<button type="button" class="btn btn-danger base-icon-cancel" onclick="<?php echo $APPTAG?>_linkRemove(\'#<?php echo $APPTAG?>-newLinkGroup'+<?php echo $APPTAG?>LinkIndex+'\')"></button>';
 			formGroup += '				</span>';
 			formGroup += '			</div>';
 			formGroup += '		</div>';
@@ -377,7 +378,7 @@ jQuery(function() {
 						for(i = 0; i < p.length; i++) {
 							wCheck = (w[i] == 1 ? 1 : 0);
 							if(i == 0) {
-								phone.val(p[0]);
+								phone.phoneMaskUpdate(p[0]);
 								checkOption(wapp, wCheck); // checkbox
 								whatsapp.val(w[0]);
 								phone_desc.val(d[0]);

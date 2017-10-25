@@ -118,9 +118,28 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['address_city']		= $input->get('address_city', '', 'string');
 		$request['address_state']		= $input->get('address_state', '', 'string');
 		$request['address_country']		= $input->get('address_country', '', 'string');
-		$request['phone1']				= $input->get('phone1', '', 'string');
-		$request['phone2']				= $input->get('phone2', '', 'string');
-		$request['phone3']				= $input->get('phone3', '', 'string');
+		$phone							= $input->get('phone', '', 'array');
+		$phone							= str_replace(';', '.', $phone); // formata
+		$request['phone']				= implode(';', $phone);
+		$whatsapp						= $input->get('whatsapp', '', 'array');
+		$whatsapp						= str_replace(';', '.', $whatsapp); // formata
+		$request['whatsapp']			= implode(';', $whatsapp);
+		$phone_desc						= $input->get('phone_desc', '', 'array');
+		$phone_desc						= str_replace(';', '.', $phone_desc); // formata
+		$request['phone_desc']			= implode(';', $phone_desc);
+		$chat_name						= $input->get('chat_name', '', 'array');
+		$chat_name						= str_replace(';', '.', $chat_name); // formata
+		$request['chat_name']			= implode(';', $chat_name);
+		$chat_user						= $input->get('chat_user', '', 'array');
+		$chat_user						= str_replace(';', '.', $chat_user); // formata
+		$request['chat_user']			= implode(';', $chat_user);
+		$weblink_text					= $input->get('weblink_text', '', 'array');
+		$weblink_text					= str_replace(';', '.', $weblink_text); // formata
+		$request['weblink_text']		= implode(';', $weblink_text);
+		$weblink_url					= $input->get('weblink_url', '', 'array');
+		$weblink_url					= str_replace(';', '.', $weblink_url); // formata
+		$request['weblink_url']			= implode(';', $weblink_url);
+		$request['extra_info']			= $input->get('extra_info', '', 'raw');
 		$request['note']				= $input->get('note', '', 'string');
 	    // user registration action
 	  	$request['access']				= $input->get('access', 0, 'int');
@@ -234,9 +253,14 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'address_city'		=> $item->address_city,
 						'address_state'		=> $item->address_state,
 						'address_country'	=> $item->address_country,
-						'phone1'			=> $item->phone1,
-						'phone2'			=> $item->phone2,
-						'phone3'			=> $item->phone3,
+						'phone'				=> $item->phone,
+						'whatsapp'			=> $item->whatsapp,
+						'phone_desc'		=> $item->phone_desc,
+						'chat_name'			=> $item->chat_name,
+						'chat_user'			=> $item->chat_user,
+						'weblink_text'		=> $item->weblink_text,
+						'weblink_url'		=> $item->weblink_url,
+						'extra_info'		=> $item->extra_info,
 						'note'				=> $item->note,
 						'access'			=> ($itemBlock ? 0 : 1),
 						'reasonStatus'		=> $item->reasonStatus,
@@ -270,9 +294,14 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('address_city')		.'='. $db->quote($request['address_city']) .','.
 						$db->quoteName('address_state')		.'='. $db->quote($request['address_state']) .','.
 						$db->quoteName('address_country')	.'='. $db->quote($request['address_country']) .','.
-						$db->quoteName('phone1')			.'='. $db->quote($request['phone1']) .','.
-						$db->quoteName('phone2')			.'='. $db->quote($request['phone2']) .','.
-						$db->quoteName('phone3')			.'='. $db->quote($request['phone3']) .','.
+						$db->quoteName('phone')				.'='. $db->quote($request['phone']) .','.
+						$db->quoteName('whatsapp')			.'='. $db->quote($request['whatsapp']) .','.
+						$db->quoteName('phone_desc')		.'='. $db->quote($request['phone_desc']) .','.
+						$db->quoteName('chat_name')			.'='. $db->quote($request['chat_name']) .','.
+						$db->quoteName('chat_user')			.'='. $db->quote($request['chat_user']) .','.
+						$db->quoteName('weblink_text')		.'='. $db->quote($request['weblink_text']) .','.
+						$db->quoteName('weblink_url')		.'='. $db->quote($request['weblink_url']) .','.
+						$db->quoteName('extra_info')		.'='. $db->quote($request['extra_info']) .','.
 						$db->quoteName('note')				.'='. $db->quote($request['note']) .','.
 						$db->quoteName('access')			.'='. $request['access'] .','.
 						$db->quoteName('reasonStatus')		.'='. $db->quote($reason) .','.
@@ -600,9 +629,14 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('address_city') .','.
 							$db->quoteName('address_state') .','.
 							$db->quoteName('address_country') .','.
-							$db->quoteName('phone1') .','.
-							$db->quoteName('phone2') .','.
-							$db->quoteName('phone3') .','.
+							$db->quoteName('phone') .','.
+							$db->quoteName('whatsapp') .','.
+							$db->quoteName('phone_desc') .','.
+							$db->quoteName('chat_name') .','.
+							$db->quoteName('chat_user') .','.
+							$db->quoteName('weblink_text') .','.
+							$db->quoteName('weblink_url') .','.
+							$db->quoteName('extra_info') .','.
 							$db->quoteName('note') .','.
 							$db->quoteName('access') .','.
 							$db->quoteName('reasonStatus') .','.
@@ -631,9 +665,14 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quote($request['address_city']) .','.
 							$db->quote($request['address_state']) .','.
 							$db->quote($request['address_country']) .','.
-							$db->quote($request['phone1']) .','.
-							$db->quote($request['phone2']) .','.
-							$db->quote($request['phone3']) .','.
+							$db->quote($request['phone']) .','.
+							$db->quote($request['whatsapp']) .','.
+							$db->quote($request['phone_desc']) .','.
+							$db->quote($request['chat_name']) .','.
+							$db->quote($request['chat_user']) .','.
+							$db->quote($request['weblink_text']) .','.
+							$db->quote($request['weblink_url']) .','.
+							$db->quote($request['extra_info']) .','.
 							$db->quote($request['note']) .','.
 							$request['access'] .','.
 							$db->quote($reason) .','.
