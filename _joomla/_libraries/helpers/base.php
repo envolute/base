@@ -122,14 +122,19 @@ class baseHelper {
 	}
 
 	// GERA O THUMBNAIL
-	public static function thumbnail($img,$w,$h) {
+	// $scale STR
+	// -> false: define que a imagem será cortada exatamente no tamanho passado
+	// -> true: define que a imagem será cortada proporcionalmente
+	public static function thumbnail($img, $w, $h, $scale = false) {
 
 		$image = htmlspecialchars($img);
+		$size = '';
+		if($w && $h) $size = ($scale ? '&maxw='.$w.'&maxh='.$h : '&w='.$w.'&h='.$h);
 
 		// Se for informada a largura e altura, será criado um thumbnail. Senão, carrega a imagem original...
 		// verifica também se NÃO é uma imagem remota, ou acessada em outro servidor
-		if($w && $h && strpos($img,'://') === false) :
-			$image = _CORE_.'/helpers/thumbnail/thumbnail.php?file='._BASE_.DS.htmlspecialchars($img).'&w='.$w.'&h='.$h;
+		if(!empty($size) && strpos($img,'://') === false) :
+			$image = _CORE_.'/helpers/thumbnail/thumbnail.php?file='._BASE_.DS.htmlspecialchars($img).$size;
 		endif;
 
 		return $image;

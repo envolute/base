@@ -21,7 +21,7 @@ $sType = '';
 if($sWidth && $sHeight) $sType = 'scale';
 if($eWidth && $eHeight) $sType = 'exact';
 
-include_once('easyphpthumbnail.class.php');
+include_once('easyphpthumbnail.custom.class.php');
 
 // thumbnail
 $thumb = new easyphpthumbnail;
@@ -98,7 +98,7 @@ else :
 	if($thumb && !is_null($w) && !is_null($h)) :
 		// gera uma imagem dinamica
 		$msg = "Not found";
-		$thumb -> Createcanvas($w,$h,IMAGETYPE_PNG,'#EEEEEE',false);
+		$thumb -> Createcanvas($w,$h,IMAGETYPE_PNG,'#ffffff',true);
 		$thumb -> Addtext = array(1,$msg,'50% 50%','',11,'#AAAAAA');
 		$thumb -> Createthumb();
 	endif;

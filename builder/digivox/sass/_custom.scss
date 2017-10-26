@@ -121,17 +121,17 @@
 		    position:static!important;
 		}
 		#mm-navigation:not(.closed) + .mm-page,
-		html.media-md body.site > #screen {
+		html.media-md body.site:not(.tmpl-dashboard) > #screen {
 			width: calc(100% - 270px);
 		    margin-left: 270px;
 		    transform: none !important;
 		}
 		// Ajustes para o menu inicialmente visível
 		// Evita o deslocamento lateral do conteúdo no carregamento da página
-		html.media-md body.site > #screen { background-color: #eee; }
-		html.media-md body.site > #screen > #wrapper { background-color: #fff; }
-		html.media-md body.site > #screen #toggle-menu { margin-left: 0; }
-		html.media-md body.site > #screen #brand { left: 40px; }
+		html.media-md body.site:not(.tmpl-dashboard) > #screen { background-color: #eee; }
+		html.media-md body.site:not(.tmpl-dashboard) > #screen > #wrapper { background-color: #fff; }
+		html.media-md body.site:not(.tmpl-dashboard) > #screen #toggle-menu { margin-left: 0; }
+		html.media-md body.site:not(.tmpl-dashboard) > #screen #brand { left: 40px; }
 		// panels
 		.mm-panels {
 			height: 56px!important;

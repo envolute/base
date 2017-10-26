@@ -69,6 +69,101 @@ if($vID != 0) :
 	$provider = '';
 	if(!empty($item->name)) : // verifica se existe
 
+		JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
+		// Imagem Principal -> Primeira imagem (index = 0)
+		$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
+		if(!empty($img)) $img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 120, 80, true).'" class="img-fluid float-left b-all bg-white p-1 mr-3" />';
+
+		$site	= !empty($item->website) ? '<a href="'.$item->website.'" class="new-window base-icon-globe" target="_blank"> '.JText::_('FIELD_LABEL_WEBSITE').'</a>' : '';
+		$logo	= '';
+		if(!empty($img)) :
+			if(!empty($item->website)) $logo .= '<a href="'.$item->website.'" target="_blank">';
+			$logo .= $img;
+			if(!empty($item->website)) $logo .= '</a>';
+		endif;
+		$agree	= $item->agreement == 1 ? '<span class="badge badge-success float-right">'.JText::_('FIELD_LABEL_AGREEMENT').'</span>' : '';
+		// DESCRIPTION
+		$description = !empty($item->description) ? $item->description : '';
+
+		$info = '';
+		if(!empty($item->company_name)) :
+			$info .= '
+				<div class="col-md-8">
+					<label class="label-sm">'.JText::_('FIELD_LABEL_COMPANY_NAME').'</label>
+					<p class="text-truncate">'.baseHelper::nameFormat($item->company_name).'</p>
+				</div>
+			';
+		endif;
+		if(!empty($item->cnpj)) :
+			$info .= '
+				<div class="col-md">
+					<label class="label-sm">CNPJ</label>
+					<p>'.$item->cnpj.'</p>
+				</div>
+			';
+		endif;
+		if(!empty($info)) $info = '<div class="row">'.$info.'</div>';
+
+		// Localidades
+		$query	= '
+			SELECT T1.*
+			FROM '.$db->quoteName('#__'.$cfg['project'].'_locations') .' T1
+				JOIN '. $db->quoteName('#__'.$cfg['project'].'_rel_providers_locations') .' T2
+				ON '.$db->quoteName('T2.location_id') .' = T1.id
+			WHERE '.$db->quoteName('T2.provider_id') .' = '. $vID .' AND '.$db->quoteName('T1.isPublic') .' = 1
+			ORDER BY '.$db->quoteName('T1.id') .' ASC
+		';
+		try {
+			$db->setQuery($query);
+			$db->execute();
+			$num_rows = $db->getNumRows();
+			$res = $db->loadObjectList();
+		} catch (RuntimeException $e) {
+			echo $e->getMessage();
+			return;
+		}
+
+		$locations = '';
+		if($num_rows) : // verifica se existe
+			$locations .= '<div class="agreement-locations">';
+			$locations .= '	<hr class="hr-tag" /><span class="badge badge-primary">'.JText::_('TEXT_LOCATIONS').'</span>';
+			$locations .= '	<ul class="set-list list-lg list-trim bordered mb-4">';
+			foreach($res as $obj) {
+
+				$title = !empty($obj->title) ? '<h6 class="font-weight-bold mb-2">'.$obj->title.'</h6>' : '';
+				$addressInfo = !empty($obj->address_info) ? ', '.$obj->address_info : '';
+				$addressNumber = !empty($obj->address_number) ? ', '.$obj->address_number : '';
+				$addressZip = !empty($obj->zip_code) ? $obj->zip_code.', ' : '';
+				$addressDistrict = !empty($obj->address_district) ? baseHelper::nameFormat($obj->address_district) : '';
+				$addressCity = !empty($obj->address_city) ? ', '.baseHelper::nameFormat($obj->address_city) : '';
+				$addressState = !empty($obj->address_state) ? ', '.($_SESSION[$RTAG.'OnlyBR'] ? $obj->address_state : baseHelper::nameFormat($obj->address_state)) : '';
+				$addressCountry = (!empty($obj->address_country) && !$_SESSION[$RTAG.'OnlyBR']) ? ', '.baseHelper::nameFormat($obj->address_country) : '';
+				$mapa = !empty($obj->url_map) ? ' <a href="'.$obj->url_map.'" class="badge badge-warning set-modal" title="'.JText::_('TEXT_MAP').'" data-modal-title="'.JText::_('TEXT_LOCATION').'" data-modal-iframe="true" data-modal-width="95%" data-modal-height="95%"><span class="base-icon-location"></span></a> ' : '';
+				$extra = !empty($obj->extra_info) ? ' <div class="location-extra-info pt-1"> '.$obj->extra_info.'</div>' : '';
+
+				$locations .= '
+					<li>
+						'.$title.$mapa.baseHelper::nameFormat($obj->address).$addressNumber.$addressInfo.'
+						<br />'.
+						$addressZip.$addressDistrict.$addressCity.$addressState.$addressCountry.$extra.'
+					</li>
+				';
+			}
+			$locations .= '	</ul>';
+			$locations .= '</div>';
+			unset($obj); // reseta as informações contidas em item
+		endif;
+
+		$website = '';
+		if(!empty($item->website)) :
+			$website .= '
+				<label class="label-sm">'.JText::_('FIELD_LABEL_WEBSITE').'</label>
+				<div class="text-truncate mb-4">
+					<a href="'.$item->website.'" class="new-window" target="_blank">'.$item->website.'</a>
+				</div>
+			';
+		endif;
+
 		// Call Centers
 		$query	= '
 			SELECT *
@@ -90,7 +185,6 @@ if($vID != 0) :
 
 		$callCenters = '';
 		if($num_rows) : // verifica se existe
-			$callCenters .= '<h6 class="page-header mb-3 base-icon-phone-squared"> '.JText::_('TEXT_CALL_CENTERS').'</h6>';
 			$callCenters .= '<ul class="set-list list-lg list-trim mb-4">';
 			foreach($res as $obj) {
 				// Phones
@@ -129,83 +223,40 @@ if($vID != 0) :
 					';
 				}
 				// Extra info
-				$info = !empty($obj->extra_info) ? '<div class="pt-1">'.$obj->extra_info.'</div>' : '';
+				$extraInfo = !empty($obj->extra_info) ? '<div class="pt-1">'.$obj->extra_info.'</div>' : '';
 				// Título
 				$title = '';
 				if($obj->showTitle == 1) $title = '<h6 class="font-weight-bold mb-2">'.$obj->title.'</h6>';
 				$callCenters .= '
-					<li>'.$title.$phones.$emails.$chats.$links.$info.'</li>
+					<li>'.$title.$phones.$emails.$chats.$links.$extraInfo.'</li>
 				';
 			}
 			$callCenters .= '</ul>';
 			unset($obj); // reseta as informações contidas em item
 		endif;
 
-		// Localidades
-		$query	= '
-			SELECT T1.*
-			FROM '.$db->quoteName('#__'.$cfg['project'].'_locations') .' T1
-				JOIN '. $db->quoteName('#__'.$cfg['project'].'_rel_providers_locations') .' T2
-				ON '.$db->quoteName('T2.location_id') .' = T1.id
-			WHERE '.$db->quoteName('T2.provider_id') .' = '. $vID .' AND '.$db->quoteName('T1.isPublic') .' = 1
-			ORDER BY '.$db->quoteName('T1.id') .' ASC
-		';
-		try {
-			$db->setQuery($query);
-			$db->execute();
-			$num_rows = $db->getNumRows();
-			$res = $db->loadObjectList();
-		} catch (RuntimeException $e) {
-			echo $e->getMessage();
-			return;
-		}
-
-		$locations = '';
-		if($num_rows) : // verifica se existe
-			$locations .= '<h6 class="page-header mb-3 base-icon-location"> '.JText::_('TEXT_LOCATIONS').'</h6>';
-			$locations .= '<ul class="set-list list-lg list-trim bordered mb-4">';
-			foreach($res as $obj) {
-
-				$title = !empty($obj->title) ? '<h6 class="font-weight-bold mb-2">'.$obj->title.'</h6>' : '';
-				$addressInfo = !empty($obj->address_info) ? ', '.$obj->address_info : '';
-				$addressNumber = !empty($obj->address_number) ? ', '.$obj->address_number : '';
-				$addressZip = !empty($obj->zip_code) ? $obj->zip_code.', ' : '';
-				$addressDistrict = !empty($obj->address_district) ? baseHelper::nameFormat($obj->address_district) : '';
-				$addressCity = !empty($obj->address_city) ? ', '.baseHelper::nameFormat($obj->address_city) : '';
-				$addressState = !empty($obj->address_state) ? ', '.($_SESSION[$RTAG.'OnlyBR'] ? $obj->address_state : baseHelper::nameFormat($obj->address_state)) : '';
-				$addressCountry = (!empty($obj->address_country) && !$_SESSION[$RTAG.'OnlyBR']) ? ', '.baseHelper::nameFormat($obj->address_country) : '';
-				$mapa = !empty($obj->url_map) ? ' <a href="'.$obj->url_map.'" class="badge badge-warning set-modal" title="'.JText::_('TEXT_MAP').'" data-modal-title="'.JText::_('TEXT_LOCATION').'" data-modal-iframe="true" data-modal-width="95%" data-modal-height="95%"><span class="base-icon-location"></span></a> ' : '';
-				$extra = !empty($obj->extra_info) ? ' <div class="location-extra-info pt-1"> '.$obj->extra_info.'</div>' : '';
-
-				$locations .= '
-					<li>
-						'.$title.$mapa.baseHelper::nameFormat($obj->address).$addressNumber.$addressInfo.'
-						<br />'.
-						$addressZip.$addressDistrict.$addressCity.$addressState.$addressCountry.$extra.'
-					</li>
-				';
-			}
-			$locations .= '</ul>';
-			unset($obj); // reseta as informações contidas em item
+		// Atendimento
+		$attend = '';
+		if(!empty($website) || !empty($callCenters)) : // verifica se existe
+			$attend .= '
+				<div class="agreement-callCenters">
+					<hr class="hr-tag" />
+					<span class="badge badge-primary">'.JText::_('TEXT_CALL_CENTERS').'</span>
+					'.$website.$callCenters.'
+				</div>
+			';
 		endif;
 
-		JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
-		// Imagem Principal -> Primeira imagem (index = 0)
-		$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
-		if(!empty($img)) $img = '<img src="images/apps/'.$APPPATH.'/'.$img['filename'].'" class="w-100 img-fluid b-all bg-white p-1" />';
-
-		$site	= !empty($item->website) ? '<a href="'.$item->website.'" class="new-window base-icon-globe" target="_blank"> '.JText::_('FIELD_LABEL_WEBSITE').'</a>' : '';
-		$logo	= '';
-		if(!empty($img)) :
-			$logo .= '<div class="col d-none d-sm-block pr-0" style="flex: 0 0 120px;">';
-			if(!empty($item->website)) $logo .= '<a href="'.$item->website.'" target="_blank">';
-			$logo .= $img;
-			if(!empty($item->website)) $logo .= '</a>';
-			$logo .= '</div>';
+		// TERMOS DE SERVIÇO
+		$terms = '';
+		if(!empty($item->service_desc)) : // verifica se existe
+			$terms .= '
+			<div class="agreement-locations p-3 bg-light b-all">
+				<h4 class="page-header mb-3">'.JText::_('FIELD_LABEL_SERVICE').'</h4>
+				'.$item->service_desc.'
+			</div>
+			';
 		endif;
-		$agree	= $item->agreement == 1 ? '<span class="badge badge-success float-right">'.JText::_('FIELD_LABEL_AGREEMENT').'</span>' : '';
-		// DESCRIPTION
-		$description = !empty($item->description) ? $item->description : '';
 
 		$provider .= '
 			<ul class="set-list inline bordered list-trim b-bottom b-dotted text-muted small mb-3 pb-2">
@@ -213,78 +264,27 @@ if($vID != 0) :
 				<li><a href="'.$urlToList.'?gID='.$item->group_id.'">'.$item->group_name.'</a></li>
 			</ul>
 			<div id="agreement-header" class="row">
-				'.$logo.'
 				<div class="col">
-					<h1 class="mt-0">
-						'.baseHelper::nameFormat($item->name).'
-					</h1>
-					'.$description.'
+					<div class="clearfix">
+						'.$logo.'
+						<h1 class="mt-0">
+							'.baseHelper::nameFormat($item->name).'
+						</h1>
+						'.$description.'
+					</div>
+					<hr />
+					'.$info.'
+					<div class="row">
+						<div class="col">
+							'.$locations.$terms.'
+						</div>
+						<div class="col-md-4">
+							'.$attend.'
+						</div>
+					</div>
 				</div>
 			</div>
 		';
-
-		// TAB => INFORMATIONS
-		if(!empty($site) || !empty($callCenters) || !empty($locations) || !empty($item->service_desc)) :
-			$provider .= '
-				<hr />
-				<!-- Nav tabs -->
-				<ul class="nav nav-tabs mt-3" id="'.$APPTAG.'TabInfo" role="tablist">
-			';
-			$active	= ' active';
-			$show	= ' show '.$active;
-			// TABS
-			if(!empty($item->service_desc)) :
-				$provider .= '
-					<li class="nav-item">
-						<a class="nav-link'.$active.'" id="'.$APPTAG.'TabView-service" href="#'.$APPTAG.'TabViewService" data-toggle="tab" role="tab" aria-controls="service">
-							<span class="base-icon-doc-text"></span> '.JText::_('FIELD_LABEL_SERVICE').'
-						</a>
-					</li>
-				';
-				$active = '';
-			endif;
-			if(!empty($callCenters) || !empty($locations)) :
-				$provider .= '
-					<li class="nav-item">
-						<a class="nav-link'.$active.'" id="'.$APPTAG.'TabView-location" href="#'.$APPTAG.'TabViewLocation" data-toggle="tab" role="tab" aria-controls="location" aria-expanded="true">
-							<span class="base-icon-location"></span> '.JText::_('TEXT_LOCATION_CONTACT').'
-						</a>
-					</li>
-				';
-				$active = '';
-			endif;
-			if(!empty($site)) $provider .= '<li class="nav-item d-none d-sm-block">'.$site.'</li>';
-
-			$provider .= '
-				</ul>
-				<!-- Tab panes -->
-				<div class="tab-content" id="'.$APPTAG.'TabContent">
-			';
-
-			// TABS CONTENT
-			if(!empty($item->service_desc)) :
-				$provider .= '
-					<div class="tab-pane fade'.$show.'" id="'.$APPTAG.'TabViewService" role="tabpanel" aria-labelledby="'.$APPTAG.'TabView-service">
-						'.$item->service_desc.'
-					</div>
-				';
-				$show = '';
-			endif;
-			if(!empty($callCenters) || !empty($locations)) :
-				$provider .= '
-					<div class="tab-pane fade'.$show.'" id="'.$APPTAG.'TabViewLocation" role="tabpanel" aria-labelledby="'.$APPTAG.'TabView-location">
-						<div class="row">
-				';
-				if(!empty($locations)) $provider .= '<div class="col-md-7">'.$locations.'</div>';
-				if(!empty($callCenters)) $provider .= '<div class="col-md">'.$callCenters.'</div>';
-				$provider .= '
-						</div>
-					</div>
-				';
-				$show = '';
-			endif;
-			$provider .= '</div>';
-		endif;
 
 	else :
 		$provider = '<p class="base-icon-info-circled alert alert-info m-0"> '.JText::_('MSG_ITEM_NOT_AVAILABLE').'</p>';
