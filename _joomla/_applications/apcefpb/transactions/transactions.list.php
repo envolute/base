@@ -28,8 +28,6 @@ require($PATH_APP_FILE.'.filter.php');
 			ON T4.id = T1.dependent_id
 			LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_invoices') .' T5
 			ON T5.id = T1.invoice_id
-			JOIN '. $db->quoteName('#__users') .' T6
-			ON T1.id = T3.user_id
 		WHERE
 			'.$where.$orderList;
 	;

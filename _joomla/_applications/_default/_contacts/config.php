@@ -193,9 +193,6 @@ $_SESSION[$APPTAG.'newUsertype'] = 2; // default 'Associado'
 		$_SESSION[$RTAG.'TableField']		= (isset(${$APPTAG.'TableField'}) && !empty(${$APPTAG.'TableField'})) ? ${$APPTAG.'TableField'} : '';
 		// hide 'parentFieldId'
 		$_SESSION[$RTAG.'HideParentField']	= isset(${$APPTAG.'HideParentField'}) ? ${$APPTAG.'HideParentField'} : 0;
-
-		// CUSTOM -> FORM DEFINITIONS
-		$_SESSION[$RTAG.'OnlyBR']	= $cfg['onlyBR'];
 	endif;
 
 ?>

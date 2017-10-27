@@ -87,12 +87,18 @@ if(isset($user->id) && $user->id) :
 		$addressZip = !empty($item->zip_code) ? $item->zip_code.', ' : '';
 		$addressDistrict = !empty($item->address_district) ? baseHelper::nameFormat($item->address_district) : '';
 		$addressCity = !empty($item->address_city) ? ', '.baseHelper::nameFormat($item->address_city) : '';
-		$addressState = !empty($item->address_state) ? ', '.baseHelper::nameFormat($item->address_state) : '';
+		$addressState = !empty($item->address_state) ? ', '.$item->address_state : '';
 		$addressCountry = !empty($item->address_country) ? ', '.baseHelper::nameFormat($item->address_country) : '';
 		// Phones
-		$phones = !empty($item->phone1) ? $item->phone1 : '';
-		$phones .= !empty($item->phone2) ? (!empty($phones) ? '<br />' : '').$item->phone2 : '';
-		$phones .= !empty($item->phone3) ? (!empty($phones) ? '<br />' : '').'(fixo) '.$item->phone3 : '';
+		$ph = explode(';', $item->phone);
+		$wp = explode(';', $item->whatsapp);
+		$pd = explode(';', $item->phone_desc);
+		$phones = '';
+		for($i = 0; $i < count($ph); $i++) {
+			$whapps = $wp[$i] == 1 ? ' <span class="base-icon-whatsapp text-success cursor-help hasTooltip" title="'.JText::_('TEXT_HAS_WHATSAPP').'"></span>' : '';
+			$phDesc = !empty($pd[$i]) ? '<div class="small text-muted lh-1 mb-2">'.$pd[$i].'</div>' : '';
+			$phones .= '<div>'.$ph[$i].$whapps.$phDesc.'</div>';
+		}
 
 		$html .= '
 			<a href="'.$urlEdit.'" class="pos-absolute pos-right-gutter zindex-1 btn btn-warning b-2 base-icon-pencil float-md-right mb-2"> '.JText::_('TEXT_EDIT').'</a>
@@ -148,12 +154,12 @@ if(isset($user->id) && $user->id) :
 					<label class="label-sm">'.JText::_('FIELD_LABEL_ADDRESS').':</label>
 					<p>
 						'.baseHelper::nameFormat($item->address).$addressNumber.$addressInfo.'<br />
-						'.$addressZip.$addressDistrict.$addressCity.$addressState.$addressCountry.'
+						'.$addressZip.$addressDistrict.$addressCity.$addressState.'
 					</p>
 				</div>
 				<div class="col-md">
 					<label class="label-sm">'.JText::_('FIELD_LABEL_PHONE').'(s):</label>
-					<p>'.$phones.'</p>
+					'.$phones.'
 				</div>
 			</div>
 			<div class="row">

@@ -118,6 +118,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['address_city']		= $input->get('address_city', '', 'string');
 		$request['address_state']		= $input->get('address_state', '', 'string');
 		$request['address_country']		= $input->get('address_country', '', 'string');
+		$request['onlyBR']				= $input->get('onlyBR', 0, 'int');
 		$phone							= $input->get('phone', '', 'array');
 		$phone							= str_replace(';', '.', $phone); // formata
 		$request['phone']				= implode(';', $phone);
@@ -253,6 +254,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'address_city'		=> $item->address_city,
 						'address_state'		=> $item->address_state,
 						'address_country'	=> $item->address_country,
+						'onlyBR'			=> $item->onlyBR,
 						'phone'				=> $item->phone,
 						'whatsapp'			=> $item->whatsapp,
 						'phone_desc'		=> $item->phone_desc,
@@ -294,6 +296,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('address_city')		.'='. $db->quote($request['address_city']) .','.
 						$db->quoteName('address_state')		.'='. $db->quote($request['address_state']) .','.
 						$db->quoteName('address_country')	.'='. $db->quote($request['address_country']) .','.
+						$db->quoteName('onlyBR')			.'='. $request['onlyBR'] .','.
 						$db->quoteName('phone')				.'='. $db->quote($request['phone']) .','.
 						$db->quoteName('whatsapp')			.'='. $db->quote($request['whatsapp']) .','.
 						$db->quoteName('phone_desc')		.'='. $db->quote($request['phone_desc']) .','.
@@ -629,6 +632,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('address_city') .','.
 							$db->quoteName('address_state') .','.
 							$db->quoteName('address_country') .','.
+							$db->quoteName('onlyBR') .','.
 							$db->quoteName('phone') .','.
 							$db->quoteName('whatsapp') .','.
 							$db->quoteName('phone_desc') .','.
@@ -665,6 +669,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quote($request['address_city']) .','.
 							$db->quote($request['address_state']) .','.
 							$db->quote($request['address_country']) .','.
+							$request['onlyBR'] .','.
 							$db->quote($request['phone']) .','.
 							$db->quote($request['whatsapp']) .','.
 							$db->quote($request['phone_desc']) .','.

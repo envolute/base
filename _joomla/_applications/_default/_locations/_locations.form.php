@@ -80,6 +80,7 @@ defined('_JEXEC') or die;
 							<div class="form-group field-required">
 								<label><?php echo JText::_('FIELD_LABEL_ADDRESS_COUNTRY'); ?></label>
 								<input type="text" name="address_country" id="<?php echo $APPTAG?>-address_country" class="form-control upper" />
+								<input type="hidden" name="onlyBR" id="<?php echo $APPTAG?>-onlyBR" value="0" />
 							</div>
 						</div>
 						<div class="col-sm-6 col-lg-12">
@@ -97,6 +98,7 @@ defined('_JEXEC') or die;
 								<label>UF</label>
 								<input type="text" name="address_state" id="<?php echo $APPTAG?>-address_state" class="form-control w-auto upper" size="2" maxlength="2" />
 								<input type="hidden" name="address_country" id="<?php echo $APPTAG?>-address_country" />
+								<input type="hidden" name="onlyBR" id="<?php echo $APPTAG?>-onlyBR" value="1" />
 							</div>
 						</div>
 					<?php endif; ?>

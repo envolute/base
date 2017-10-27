@@ -102,6 +102,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['address_city']		= $input->get('address_city', $cfg['cityDef'], 'string');
 		$request['address_state']		= $input->get('address_state', $cfg['stateDef'], 'string');
 		$request['address_country']		= $input->get('address_country', $cfg['countryDef'], 'string');
+		$request['onlyBR']				= $input->get('onlyBR', 0, 'int');
 		$request['latitude']			= $input->get('latitude', '', 'string');
 		$request['longitude']			= $input->get('longitude', '', 'string');
 		$request['map_info']			= $input->get('map_info', '', 'string');
@@ -165,6 +166,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'address_city'		=> $item->address_city,
 						'address_state'		=> $item->address_state,
 						'address_country'	=> $item->address_country,
+						'onlyBR'			=> $item->onlyBR,
 						'latitude'			=> $item->latitude,
 						'longitude'			=> $item->longitude,
 						'map_info'			=> $item->map_info,
@@ -186,6 +188,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('address_city')		.'='. $db->quote($request['address_city']) .','.
 						$db->quoteName('address_state')		.'='. $db->quote($request['address_state']) .','.
 						$db->quoteName('address_country')	.'='. $db->quote($request['address_country']) .','.
+						$db->quoteName('onlyBR')			.'='. $request['onlyBR'] .','.
 						$db->quoteName('latitude')			.'='. $db->quote($request['latitude']) .','.
 						$db->quoteName('longitude')			.'='. $db->quote($request['longitude']) .','.
 						$db->quoteName('map_info')			.'='. $db->quote($request['map_info']) .','.
@@ -388,6 +391,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('address_city') .','.
 							$db->quoteName('address_state') .','.
 							$db->quoteName('address_country') .','.
+							$db->quoteName('onlyBR') .','.
 							$db->quoteName('latitude') .','.
 							$db->quoteName('longitude') .','.
 							$db->quoteName('map_info') .','.
@@ -405,6 +409,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quote($request['address_city']) .','.
 							$db->quote($request['address_state']) .','.
 							$db->quote($request['address_country']) .','.
+							$request['onlyBR'] .','.
 							$db->quote($request['latitude']) .','.
 							$db->quote($request['longitude']) .','.
 							$db->quote($request['map_info']) .','.

@@ -201,88 +201,82 @@ $users = $db->loadObjectList();
 	</div>
 </div>
 <hr class="hr-tag" />
-<span class="badge badge-primary"><?php echo JText::_('TEXT_CONTACT_DATA'); ?></span>
+<span class="badge badge-primary"><?php echo JText::_('TEXT_LOCATION_DATA'); ?></span>
 <div class="row">
-	<div class="col-md-7 col-lg-9">
+	<div class="col-lg-9 b-right b-dashed">
 		<div class="row">
-			<div class="col-lg-3">
-				<div class="form-group">
-					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_ZIP_CODE'); ?></label>
-					<input type="text" name="zip_code" id="<?php echo $APPTAG?>-zip_code" class="form-control field-cep" />
-				</div>
-			</div>
-			<div class="col-lg-7">
+			<div class="col-md-9">
 				<div class="form-group field-required">
 					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_STREET'); ?></label>
 					<input type="text" name="address" id="<?php echo $APPTAG?>-address" class="form-control upper" />
 				</div>
 			</div>
-			<div class="col-lg-2">
+			<div class="col-md-3">
 				<div class="form-group field-required">
 					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_NUMBER'); ?></label>
 					<input type="text" name="address_number" id="<?php echo $APPTAG?>-address_number" class="form-control upper" />
 				</div>
 			</div>
-			<div class="col-lg-12">
+			<div class="col-md-9">
 				<div class="form-group">
 					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_INFO'); ?></label>
 					<input type="text" name="address_info" id="<?php echo $APPTAG?>-address_info" class="form-control" />
 				</div>
 			</div>
-			<div class="col-lg-6">
-				<div class="form-group field-required">
-					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_DISTRICT'); ?></label>
-					<input type="text" name="address_district" id="<?php echo $APPTAG?>-address_district" class="form-control upper" />
+			<div class="col-md-4 col-lg-3">
+				<div class="form-group">
+					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_ZIP_CODE'); ?></label>
+					<input type="text" name="zip_code" id="<?php echo $APPTAG?>-zip_code" class="form-control field-cep" />
 				</div>
 			</div>
-			<div class="col-lg-6">
+			<div class="col-md-2">
+				<div class="form-group field-required">
+					<label>UF</label>
+					<input type="text" name="address_state" id="<?php echo $APPTAG?>-address_state" class="form-control upper" size="2" maxlength="2" />
+					<input type="hidden" name="address_country" id="<?php echo $APPTAG?>-address_country" />
+				</div>
+			</div>
+			<div class="col-md-5">
 				<div class="form-group field-required">
 					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_CITY'); ?></label>
 					<input type="text" name="address_city" id="<?php echo $APPTAG?>-address_city" class="form-control upper" />
 				</div>
 			</div>
-			<div class="col-lg-6">
-				<div class="form-group">
-					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_STATE'); ?></label>
-					<input type="text" name="address_state" id="<?php echo $APPTAG?>-address_state" class="form-control upper" />
-				</div>
-			</div>
-			<div class="col-lg-6">
-				<div class="form-group">
-					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_COUNTRY'); ?></label>
-					<input type="text" name="address_country" id="<?php echo $APPTAG?>-address_country" class="form-control upper" />
+			<div class="col-md-5">
+				<div class="form-group field-required">
+					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_DISTRICT'); ?></label>
+					<input type="text" name="address_district" id="<?php echo $APPTAG?>-address_district" class="form-control upper" />
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="col-md-5 col-lg-3 b-left b-dashed">
+</div>
+<hr class="hr-tag" />
+<span class="badge badge-primary"><?php echo JText::_('TEXT_CONTACT_DATA'); ?></span>
+<div class="row">
+	<div class="col-lg-9 b-right b-dashed">
 		<div class="form-group">
-			<label><?php echo JText::_('FIELD_LABEL_CELLPHONE'); ?> 1</label>
-			<div class="input-group">
-				<input type="text" name="phone1" id="<?php echo $APPTAG?>-phone1" class="form-control field-phone" />
-				<span class="input-group-btn btn-group" data-toggle="buttons">
-					<label class="btn btn-outline-success btn-active-success base-icon-whatsapp">
-						<input type="checkbox" name="whatsapp1" id="<?php echo $APPTAG?>-whatsapp1" value="1" />
-					</label>
-				</span>
+			<button type="button" class="btn btn-xs btn-success base-icon-plus float-right" onclick="<?php echo $APPTAG?>_phoneAdd()"> <?php echo JText::_('TEXT_PHONES_ADD')?></button>
+			<label><?php echo JText::_('FIELD_LABEL_PHONE'); ?></label>
+			<div class="row">
+				<div class="col-sm-5 col-lg-4">
+					<div class="input-group">
+						<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone" class="form-control field-phone" />
+						<span class="input-group-btn btn-group" data-toggle="buttons">
+							<label class="btn btn-outline-success btn-active-success hasTooltip" title="<?php echo JText::_('TEXT_HAS_WHATSAPP'); ?>">
+								<input type="checkbox" name="wapp[]" id="<?php echo $APPTAG?>-wapp" value="1" class="auto-tab" data-target="#<?php echo $APPTAG?>-whatsapp" data-target-value="1" data-target-value-reset="" data-tab-disabled="true" />
+								<span class="base-icon-whatsapp icon-default"></span>
+								<input type="hidden" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp" />
+							</label>
+						</span>
+					</div>
+				</div>
+				<div class="col-sm-7 col-lg-8 pt-2 pt-sm-0">
+					<input type="text" name="phone_desc[]" id="<?php echo $APPTAG?>-phone_desc" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?>" maxlength="50" />
+				</div>
 			</div>
 		</div>
-		<div class="form-group">
-			<label><?php echo JText::_('FIELD_LABEL_CELLPHONE'); ?> 2</label>
-			<div class="input-group">
-				<input type="text" name="phone2" id="<?php echo $APPTAG?>-phone2" class="form-control field-phone" />
-				<span class="input-group-btn btn-group" data-toggle="buttons">
-					<label class="btn btn-outline-success btn-active-success base-icon-whatsapp">
-						<input type="checkbox" name="whatsapp2" id="<?php echo $APPTAG?>-whatsapp2" value="1" />
-					</label>
-				</span>
-			</div>
-		</div>
-		<div class="form-group">
-			<label><?php echo JText::_('FIELD_LABEL_PHONE_FIXED'); ?></label>
-			<input type="text" name="phone3" id="<?php echo $APPTAG?>-phone3" class="form-control field-phone" />
-			<input type="hidden" name="whatsapp3" id="<?php echo $APPTAG?>-whatsapp3" value="0" />
-		</div>
+		<div id="<?php echo $APPTAG?>-phoneGroups" class="newFieldsGroup"></div>
 	</div>
 </div>
 <div class="row">
@@ -295,11 +289,11 @@ $users = $db->loadObjectList();
 					<label><?php echo JText::_('FIELD_LABEL_DEBIT'); ?></label>
 					<span class="btn-group btn-group-justified" data-toggle="buttons">
 						<label class="btn btn-default btn-active-danger">
-							<input type="radio" name="enable_debit" id="<?php echo $APPTAG?>-enable_debit0" value="0" class="auto-tab" data-target="#<?php echo $APPTAG?>-account-group" data-target-display="false" />
+							<input type="radio" name="enable_debit" id="<?php echo $APPTAG?>-enable_debit0" value="0" class="auto-tab" data-target="#<?php echo $APPTAG?>-account-group" data-target-display="false" data-tab-disabled="true" />
 							<?php echo JText::_('TEXT_NO'); ?>
 						</label>
 						<label class="btn btn-default btn-active-success">
-							<input type="radio" name="enable_debit" id="<?php echo $APPTAG?>-enable_debit1" value="1" class="auto-tab" data-target="#<?php echo $APPTAG?>-account-group" data-target-display="true" />
+							<input type="radio" name="enable_debit" id="<?php echo $APPTAG?>-enable_debit1" value="1" class="auto-tab" data-target="#<?php echo $APPTAG?>-account-group" data-target-display="true" data-tab-disabled="true" />
 							<?php echo JText::_('TEXT_YES'); ?>
 						</label>
 					</span>

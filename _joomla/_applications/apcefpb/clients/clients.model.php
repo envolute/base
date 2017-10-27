@@ -181,12 +181,15 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['address_city']		= $input->get('address_city', '', 'string');
 		$request['address_state']		= $input->get('address_state', 'PB', 'string');
 		$request['address_country']		= $input->get('address_country', 'BRASIL', 'string');
-		$request['phone1']				= $input->get('phone1', '', 'string');
-		$request['phone2']				= $input->get('phone2', '', 'string');
-		$request['phone3']				= $input->get('phone3', '', 'string');
-	  	$request['whatsapp1']			= $input->get('whatsapp1', 0, 'int');
-	  	$request['whatsapp2']			= $input->get('whatsapp2', 0, 'int');
-	  	$request['whatsapp3']			= $input->get('whatsapp3', 0, 'int');
+		$phone							= $input->get('phone', '', 'array');
+		$phone							= str_replace(';', '.', $phone); // formata
+		$request['phone']				= implode(';', $phone);
+		$whatsapp						= $input->get('whatsapp', '', 'array');
+		$whatsapp						= str_replace(';', '.', $whatsapp); // formata
+		$request['whatsapp']			= implode(';', $whatsapp);
+		$phone_desc						= $input->get('phone_desc', '', 'array');
+		$phone_desc						= str_replace(';', '.', $phone_desc); // formata
+		$request['phone_desc']			= implode(';', $phone_desc);
 	  	$request['enable_debit']		= $input->get('enable_debit', 1, 'int');
 		$request['agency']				= $input->get('agency', '', 'string');
 		$request['account']				= $input->get('account', '', 'string');
@@ -316,12 +319,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'address_city'		=> $item->address_city,
 						'address_state'		=> $item->address_state,
 						'address_country'	=> $item->address_country,
-						'phone1'			=> $item->phone1,
-						'phone2'			=> $item->phone2,
-						'phone3'			=> $item->phone3,
-						'whatsapp1'			=> $item->whatsapp1,
-						'whatsapp2'			=> $item->whatsapp2,
-						'whatsapp3'			=> $item->whatsapp3,
+						'phone'				=> $item->phone,
+						'whatsapp'			=> $item->whatsapp,
+						'phone_desc'		=> $item->phone_desc,
 						'enable_debit'		=> $item->enable_debit,
 						'agency'			=> $item->agency,
 						'account'			=> $item->account,
@@ -363,12 +363,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('address_city')		.'='. $db->quote($request['address_city']) .','.
 						$db->quoteName('address_state')		.'='. $db->quote($request['address_state']) .','.
 						$db->quoteName('address_country')	.'='. $db->quote($request['address_country']) .','.
-						$db->quoteName('phone1')			.'='. $db->quote($request['phone1']) .','.
-						$db->quoteName('phone2')			.'='. $db->quote($request['phone2']) .','.
-						$db->quoteName('phone3')			.'='. $db->quote($request['phone3']) .','.
-						$db->quoteName('whatsapp1')			.'='. $request['whatsapp1'] .','.
-						$db->quoteName('whatsapp2')			.'='. $request['whatsapp2'] .','.
-						$db->quoteName('whatsapp3')			.'='. $request['whatsapp3'] .','.
+						$db->quoteName('phone')				.'='. $db->quote($request['phone']) .','.
+						$db->quoteName('whatsapp')			.'='. $db->quote($request['whatsapp']) .','.
+						$db->quoteName('phone_desc')		.'='. $db->quote($request['phone_desc']) .','.
 						$db->quoteName('enable_debit')		.'='. $request['enable_debit'] .','.
 						$db->quoteName('agency')			.'='. $db->quote($request['agency']) .','.
 						$db->quoteName('account')			.'='. $db->quote($request['account']) .','.
@@ -695,12 +692,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('address_city') .','.
 							$db->quoteName('address_state') .','.
 							$db->quoteName('address_country') .','.
-							$db->quoteName('phone1') .','.
-							$db->quoteName('phone2') .','.
-							$db->quoteName('phone3') .','.
-							$db->quoteName('whatsapp1') .','.
-							$db->quoteName('whatsapp2') .','.
-							$db->quoteName('whatsapp3') .','.
+							$db->quoteName('phone') .','.
+							$db->quoteName('whatsapp') .','.
+							$db->quoteName('phone_desc') .','.
 							$db->quoteName('enable_debit') .','.
 							$db->quoteName('agency') .','.
 							$db->quoteName('account') .','.
@@ -736,12 +730,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quote($request['address_city']) .','.
 							$db->quote($request['address_state']) .','.
 							$db->quote($request['address_country']) .','.
-							$db->quote($request['phone1']) .','.
-							$db->quote($request['phone2']) .','.
-							$db->quote($request['phone3']) .','.
-							$request['whatsapp1'] .','.
-							$request['whatsapp2'] .','.
-							$request['whatsapp3'] .','.
+							$db->quote($request['phone']) .','.
+							$db->quote($request['whatsapp']) .','.
+							$db->quote($request['phone_desc']) .','.
 							$request['enable_debit'] .','.
 							$db->quote($request['agency']) .','.
 							$db->quote($request['account']) .','.

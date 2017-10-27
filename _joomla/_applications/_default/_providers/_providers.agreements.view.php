@@ -136,8 +136,8 @@ if($vID != 0) :
 				$addressZip = !empty($obj->zip_code) ? $obj->zip_code.', ' : '';
 				$addressDistrict = !empty($obj->address_district) ? baseHelper::nameFormat($obj->address_district) : '';
 				$addressCity = !empty($obj->address_city) ? ', '.baseHelper::nameFormat($obj->address_city) : '';
-				$addressState = !empty($obj->address_state) ? ', '.($_SESSION[$RTAG.'OnlyBR'] ? $obj->address_state : baseHelper::nameFormat($obj->address_state)) : '';
-				$addressCountry = (!empty($obj->address_country) && !$_SESSION[$RTAG.'OnlyBR']) ? ', '.baseHelper::nameFormat($obj->address_country) : '';
+				$addressState = !empty($obj->address_state) ? ', '.($obj->onlyBR ? $obj->address_state : baseHelper::nameFormat($obj->address_state)) : '';
+				$addressCountry = (!empty($obj->address_country) && !$obj->onlyBR) ? ', '.baseHelper::nameFormat($obj->address_country) : '';
 				$mapa = !empty($obj->url_map) ? ' <a href="'.$obj->url_map.'" class="badge badge-warning set-modal" title="'.JText::_('TEXT_MAP').'" data-modal-title="'.JText::_('TEXT_LOCATION').'" data-modal-iframe="true" data-modal-width="95%" data-modal-height="95%"><span class="base-icon-location"></span></a> ' : '';
 				$extra = !empty($obj->extra_info) ? ' <div class="location-extra-info pt-1"> '.$obj->extra_info.'</div>' : '';
 

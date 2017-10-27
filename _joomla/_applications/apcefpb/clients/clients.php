@@ -66,12 +66,10 @@ jQuery(function() {
 	var address_state		= jQuery('#<?php echo $APPTAG?>-address_state');
 	var address_country		= jQuery('#<?php echo $APPTAG?>-address_country');
 	// phones
-	var phone1				= jQuery('#<?php echo $APPTAG?>-phone1');
-	var phone2				= jQuery('#<?php echo $APPTAG?>-phone2');
-	var phone3				= jQuery('#<?php echo $APPTAG?>-phone3');
-	var whatsapp1			= jQuery('#<?php echo $APPTAG?>-whatsapp1');
-	var whatsapp2			= jQuery('#<?php echo $APPTAG?>-whatsapp2');
-	var whatsapp3			= jQuery('#<?php echo $APPTAG?>-whatsapp3');
+	var phone				= jQuery('#<?php echo $APPTAG?>-phone');
+	var wapp				= jQuery('#<?php echo $APPTAG?>-wapp');
+	var whatsapp			= jQuery('#<?php echo $APPTAG?>-whatsapp');
+	var phone_desc			= jQuery('#<?php echo $APPTAG?>-phone_desc');
 	// Billing data
 	var enable_debit		= mainForm.find('input[name=enable_debit]:radio'); // radio group
 	var agency				= jQuery('#<?php echo $APPTAG?>-agency');
@@ -179,12 +177,10 @@ jQuery(function() {
 			address_city.val('');
 			address_state.val('PB');
 			address_country.val('BRASIL');
-			phone1.phoneMaskUpdate(''); // toggleMask
-			phone2.phoneMaskUpdate(''); // toggleMask
-			phone3.phoneMaskUpdate(''); // toggleMask
-			checkOption(whatsapp1, 0);
-			checkOption(whatsapp2, 0);
-			checkOption(whatsapp3, 0);
+			phone.phoneMaskUpdate(''); // toggleMask
+			checkOption(wapp, 0); // checkbox
+			whatsapp.val('');
+			phone_desc.val('');
 			checkOption(enable_debit, 1); // radio
 			agency.val('');
 			account.val('');
@@ -198,6 +194,9 @@ jQuery(function() {
 			// ACCESS
 			checkOption(access, 0);
 			reasonStatus.val('');
+
+			// CUSTOM -> Remove new fields
+			jQuery('.newFieldsGroup').empty();
 
 			<?php // Closure Actions
 			require(JPATH_CORE.DS.'apps/snippets/form/formReset.end.js.php');
@@ -259,6 +258,51 @@ jQuery(function() {
 			} else {
 				setHidden('#<?php echo $APPTAG?>-group-caixa', true);
 			}
+		}
+
+		// PHONE ADD -> Adiciona novo campo para telefone
+		window.<?php echo $APPTAG?>PhoneIndex = 1;
+		window.<?php echo $APPTAG?>_phoneAdd = function(phone, whatsapp, description) {
+			<?php echo $APPTAG?>PhoneIndex++;
+			var p = (isSet(phone) && !isEmpty(phone)) ? phone : '';
+			var w = (isSet(whatsapp) && !isEmpty(whatsapp)) ? whatsapp : '';
+				var wState = (w == 1) ? ' active' : '';
+				var wCheck = (w == 1) ? ' checked' : '';
+			var d = (isSet(description) && !isEmpty(description)) ? description : '';
+
+			var formGroup = '';
+			formGroup += '<div id="<?php echo $APPTAG?>-newPhoneGroup'+<?php echo $APPTAG?>PhoneIndex+'">';
+			formGroup += '	<div class="form-group row">';
+			formGroup += '		<div class="col-sm-5 col-lg-4">';
+			formGroup += '			<div class="input-group">';
+			formGroup += '				<input type="text" name="phone[]" id="<?php echo $APPTAG?>-phone'+<?php echo $APPTAG?>PhoneIndex+'" value="'+p+'" class="form-control field-phone" />';
+			formGroup += '				<span class="input-group-btn btn-group" data-toggle="buttons">';
+			formGroup += '					<label class="btn btn-outline-success btn-block btn-active-success'+wState+' hasTooltip" title="<?php echo JText::_('TEXT_HAS_WHATSAPP'); ?>">';
+			formGroup += '						<input type="checkbox" name="wapp[]" value="1"'+wCheck+' class="auto-tab" data-target="#<?php echo $APPTAG?>-whatsapp'+<?php echo $APPTAG?>PhoneIndex+'" data-target-value="1" data-target-value-reset="" data-tab-disabled="true" />';
+			formGroup += '						<span class="base-icon-whatsapp icon-default"></span>';
+			formGroup += '						<input type="hidden" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp'+<?php echo $APPTAG?>PhoneIndex+'" value="'+w+'" />';
+			formGroup += '					</label>';
+			formGroup += '				</span>';
+			formGroup += '			</div>';
+			formGroup += '		</div>';
+			formGroup += '		<div class="col-sm-7 col-lg-8 pt-2 pt-sm-0">';
+			formGroup += '			<div class="input-group">';
+			formGroup += '				<input type="text" name="phone_desc[]" id="<?php echo $APPTAG?>-phone_desc'+<?php echo $APPTAG?>PhoneIndex+'" value="'+d+'" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?>" maxlength="50" />';
+			formGroup += '				<span class="input-group-btn">';
+			formGroup += '					<button type="button" class="btn btn-danger base-icon-cancel" onclick="<?php echo $APPTAG?>_phoneRemove(\'#<?php echo $APPTAG?>-newPhoneGroup'+<?php echo $APPTAG?>PhoneIndex+'\')"></button>';
+			formGroup += '				</span>';
+			formGroup += '			</div>';
+			formGroup += '		</div>';
+			formGroup += '	</div>';
+			formGroup += '</div>';
+
+			jQuery('#<?php echo $APPTAG?>-phoneGroups').append(formGroup);
+			setPhone();
+			checkAutoTab();
+		}
+		// PHONE REMOVE -> Remove campo de telefone
+		window.<?php echo $APPTAG?>_phoneRemove = function(id) {
+			if(confirm('<?php echo JText::_('MSG_CONFIRM_REMOVE_PHONE')?>')) jQuery(id).remove();
 		}
 
 		// CUSTOM -> Reset Registration Fields
@@ -339,6 +383,10 @@ jQuery(function() {
 				<?php echo $APPTAG?>_formReset();
 				return false;
 			}
+
+			// CUSTOM -> Remove new fields
+			jQuery('.newFieldsGroup').empty();
+
 			<?php echo $APPTAG?>_formExecute(true, formDisable, true); // inicia o loader
 			jQuery.ajax({
 				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=get&id="+id,
@@ -387,12 +435,22 @@ jQuery(function() {
 						address_city.val(item.address_city);
 						address_state.val(item.address_state);
 						address_country.val(item.address_country);
-						phone1.phoneMaskUpdate(item.phone1); // toggleMask
-						phone2.phoneMaskUpdate(item.phone2); // toggleMask
-						phone3.phoneMaskUpdate(item.phone3); // toggleMask
-						checkOption(whatsapp1, item.whatsapp1);
-						checkOption(whatsapp2, item.whatsapp2);
-						checkOption(whatsapp3, item.whatsapp3);
+						// phones
+						var p = item.phone.split(";");
+						var w = item.whatsapp.split(";");
+						var d = item.phone_desc.split(";");
+						for(i = 0; i < p.length; i++) {
+							wCheck = (w[i] == 1 ? 1 : 0);
+							if(i == 0) {
+								phone.phoneMaskUpdate(p[0]);
+								checkOption(wapp, wCheck); // checkbox
+								whatsapp.val(w[0]);
+								phone_desc.val(d[0]);
+							} else {
+								<?php echo $APPTAG?>_phoneAdd(p[i], w[i], d[i]);
+							}
+						}
+						// -----
 						checkOption(enable_debit, item.enable_debit);
 						agency.val(item.agency);
 						account.val(item.account);

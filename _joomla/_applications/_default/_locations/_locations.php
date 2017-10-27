@@ -42,6 +42,7 @@ jQuery(function() {
 	var address_city		= jQuery('#<?php echo $APPTAG?>-address_city');
 	var address_state		= jQuery('#<?php echo $APPTAG?>-address_state');
 	var address_country		= jQuery('#<?php echo $APPTAG?>-address_country');
+	var onlyBR 				= jQuery('#<?php echo $APPTAG?>-onlyBR');
 	var latitude			= jQuery('#<?php echo $APPTAG?>-latitude');
 	var longitude			= jQuery('#<?php echo $APPTAG?>-longitude');
 	var map_info			= jQuery('#<?php echo $APPTAG?>-map_info');

@@ -56,6 +56,7 @@ jQuery(function() {
 	var address_city		= jQuery('#<?php echo $APPTAG?>-address_city');
 	var address_state		= jQuery('#<?php echo $APPTAG?>-address_state');
 	var address_country		= jQuery('#<?php echo $APPTAG?>-address_country');
+	var onlyBR 				= jQuery('#<?php echo $APPTAG?>-onlyBR');
 	// phones
 	var phone				= jQuery('#<?php echo $APPTAG?>-phone');
 	var wapp				= jQuery('#<?php echo $APPTAG?>-wapp');

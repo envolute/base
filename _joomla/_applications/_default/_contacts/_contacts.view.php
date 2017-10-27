@@ -83,8 +83,8 @@ if($vID != 0) :
 		$addressZip = !empty($item->zip_code) ? $item->zip_code.', ' : '';
 		$addressDistrict = !empty($item->address_district) ? baseHelper::nameFormat($item->address_district) : '';
 		$addressCity = !empty($item->address_city) ? ', '.baseHelper::nameFormat($item->address_city) : '';
-		$addressState = !empty($item->address_state) ? ', '.($_SESSION[$RTAG.'OnlyBR'] ? $item->address_state : baseHelper::nameFormat($item->address_state)) : '';
-		$addressCountry = (!empty($item->address_country) && !$_SESSION[$RTAG.'OnlyBR']) ? ', '.baseHelper::nameFormat($item->address_country) : '';
+		$addressState = !empty($item->address_state) ? ', '.($item->onlyBR ? $item->address_state : baseHelper::nameFormat($item->address_state)) : '';
+		$addressCountry = (!empty($item->address_country) && !$item->onlyBR) ? ', '.baseHelper::nameFormat($item->address_country) : '';
 		// Phones
 		$ph = explode(';', $item->phone);
 		$wp = explode(';', $item->whatsapp);

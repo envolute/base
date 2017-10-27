@@ -108,8 +108,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$addressZip = !empty($item->zip_code) ? $item->zip_code.', ' : '';
 			$addressDistrict = !empty($item->address_district) ? baseHelper::nameFormat($item->address_district) : '';
 			$addressCity = !empty($item->address_city) ? ', '.baseHelper::nameFormat($item->address_city) : '';
-			$addressState = !empty($item->address_state) ? ', '.($_SESSION[$RTAG.'OnlyBR'] ? $item->address_state : baseHelper::nameFormat($item->address_state)) : '';
-			$addressCountry = (!empty($item->address_country) && !$_SESSION[$RTAG.'OnlyBR']) ? ', '.baseHelper::nameFormat($item->address_country) : '';
+			$addressState = !empty($item->address_state) ? ', '.($item->onlyBR ? $item->address_state : baseHelper::nameFormat($item->address_state)) : '';
+			$addressCountry = (!empty($item->address_country) && !$item->onlyBR ) ? ', '.baseHelper::nameFormat($item->address_country) : '';
 			$mapa = !empty($item->url_map) ? ' <a href="'.$item->url_map.'" class="badge badge-warning set-modal" title="'.JText::_('TEXT_MAP').'" data-modal-title="'.JText::_('TEXT_LOCATION').'" data-modal-iframe="true" data-modal-width="95%" data-modal-height="95%"><span class="base-icon-location"></span></a> ' : '';
 			$extra = !empty($item->extra_info) ? ' <div class="location-extra-info pt-1"> '.$item->extra_info.'</div>' : '';
 			$btnState = $hasAdmin ? '<a href="#" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'"><span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').' hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'"></span></a> ' : '';
