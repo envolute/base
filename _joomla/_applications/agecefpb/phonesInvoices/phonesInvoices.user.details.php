@@ -131,6 +131,16 @@ if($pID > 0) :
 			}
 
 			if($num_rows) : // verifica se existe
+
+				// Total das ligações locais
+				// Caso o valor das ligações locais somado seja maior que o valor do plano, será cobrado o valor somado das ligações.
+				// Caso contrário, será cobrado o valor do plano, que é o valor mínimo a ser cobrado...
+				$totalPlano = ($invoice->total_plano > $invoice->valor_plano) ? $invoice->total_plano : $invoice->valor_plano;
+				// Total dos serviços que não fazem parte do plano
+				$totalServicos = $invoice->total_servicos + $invoice->taxa_servico;
+				// TOTAL
+				$total = $totalPlano + $totalServicos;
+
 				$ss = '';
 				$counter = 0;
 				$html .= '
@@ -183,7 +193,7 @@ if($pID > 0) :
 					<hr class="b-top-2 border-primary" />
 					<div class="row text-xl">
 						<div class="col-6">'.JText::_('TEXT_TOTAL').'</div>
-						<div class="col-6 text-right text-live"><small class="text-muted">R$</small> '.baseHelper::priceFormat($invoice->total).$invoiced.'</div>
+						<div class="col-6 text-right text-live"><small class="text-muted">R$</small> '.baseHelper::priceFormat($total).$invoiced.'</div>
 					</div>
 				';
 			endif;

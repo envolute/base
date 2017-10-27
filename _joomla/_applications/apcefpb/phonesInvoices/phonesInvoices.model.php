@@ -340,7 +340,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					// Get file data
 					$file = uploader::getFile($cfg['fileTable'], '', $id, 0, $cfg['uploadDir']);
 					$csv = $cfg['uploadDir'].$file['filename'];
-					$delimiter = ';Cargo';
+					$delimiter = ';Código Local Destino';
 					$content = explode($delimiter, utf8_encode(file_get_contents($csv)));
 					$line = explode("\n", $content[1]);
 

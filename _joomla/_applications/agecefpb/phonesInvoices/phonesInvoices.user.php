@@ -179,13 +179,23 @@ if($pID > 0) :
 			if($num_rows) : // verifica se existe
 				$html .= '<ul class="set-list bordered list-lg text-lg">';
 				foreach($res as $item) {
+
+					// Total das ligações locais
+					// Caso o valor das ligações locais somado seja maior que o valor do plano, será cobrado o valor somado das ligações.
+					// Caso contrário, será cobrado o valor do plano, que é o valor mínimo a ser cobrado...
+					$totalPlano = ($item->total_plano > $item->valor_plano) ? $item->total_plano : $item->valor_plano;
+					// Total dos serviços que não fazem parte do plano
+					$totalServicos = $item->total_servicos + $item->taxa_servico;
+					// TOTAL
+					$total = $totalPlano + $totalServicos;
+
 					// LINK TO INVOICE
 					$urlToInvoiceDetail = JURI::root().'apps/clients/phonesinvoices/details?invID='.$item->invoice_id.'&pID='.$item->phone_id.($uID != $user->id ? '&uID='.$uID : '');
 					$invoiced = '';
 					if(!empty($item->invoice)) :
 						$invoiced = '
 							<br />
-							<a href="'.JURI::root().'apps/clients/invoices/details?invID='.$item->invoice.($uID != $user->id ? '&uID='.$uID : '').'" class="text-success text-md new-window hasTooltip" title="'.JText::_('MSG_INVOICED').'" target="_blank"> 
+							<a href="'.JURI::root().'apps/clients/invoices/details?invID='.$item->invoice.($uID != $user->id ? '&uID='.$uID : '').'" class="text-success text-md new-window hasTooltip" title="'.JText::_('MSG_INVOICED').'" target="_blank">
 								'.JText::_('TEXT_INVOICED').'
 							</a>
 						';
@@ -201,7 +211,7 @@ if($pID > 0) :
 								</a>
 								</div>
 								<div class="col-6 text-right">
-									<a href="'.$urlToInvoiceDetail.'">R$ '.baseHelper::priceFormat($item->total).'</a>
+									<a href="'.$urlToInvoiceDetail.'">R$ '.baseHelper::priceFormat($total).'</a>
 									'.$invoiced.'
 								</div>
 							</a>
