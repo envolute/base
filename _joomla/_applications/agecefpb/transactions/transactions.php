@@ -519,6 +519,47 @@ jQuery(function() {
 			return false;
 		};
 
+		// Add Selected Fixeds
+		// Importa apenas as movimentações recorrentes selecionadas
+		window.<?php echo $APPTAG?>_addSelectedFixed = function() {
+
+			var msg = '<?php echo JText::_('MSG_ADDFIXED_CONFIRM'); ?>';
+			if(!confirm(msg)) return false;
+			var inv = jQuery('#<?php echo $APPTAG?>-invID');
+			var cod = '&invID='+inv.val();
+			var dados = formList.serialize();
+
+			<?php echo $APPTAG?>_formExecute(true, true, true); // inicia o loader
+
+			jQuery.ajax({
+				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=addSelectedFixed"+cod,
+				dataType: 'json',
+				type: 'POST',
+				data:  dados,
+				cache: false,
+				success: function(data){
+					<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
+					jQuery.map( data, function( res ) {
+						var alert = (res.status == 1) ? 'success' : 'danger';
+						$.baseNotify({ msg: res.msg, type: alert});
+					});
+				},
+				error: function(xhr, status, error) {
+					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
+					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
+					?>
+					<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
+				},
+				complete: function() {
+					// close modal
+					jQuery('#modal-<?php echo $APPTAG?>-addSelectedFixed').modal('hide');
+					inv.selectUpdate('0');
+					hideTips(); // force tooltip close
+				}
+			});
+			return false;
+		};
+
 		// CUSTOM -> importa a fatura telefônica
 		window.<?php echo $APPTAG?>_phoneInvoice = function() {
 
@@ -699,6 +740,14 @@ jQuery(window).on('load', function() {
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<?php require($APPTAG.'.addFixed.form.php'); ?>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="modal-<?php echo $APPTAG?>-addSelectedFixed" tabindex="-1" role="dialog" aria-labelledby="modal-<?php echo $APPTAG?>-addSelectedFixedLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<?php require($APPTAG.'.addSelectedFixed.form.php'); ?>
 				</div>
 			</div>
 		</div>

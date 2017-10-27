@@ -26,7 +26,7 @@ Plugin Name: base-notify => iao alert
         var ext = {
             chkPosition : (opt.position == 'bottom-right')?'bottom-right':((opt.position == 'bottom-left')?'bottom-left':(opt.position == 'top-left')?'top-left':'top-right'),
             closeOption : (opt.closeButton)?'<base-notify-close></base-notify-close>':'<style>#notify'+timeStamp+':before,#notify'+timeStamp+':after{display:none}</style>',
-            chkMsg : (opt.msg.indexOf(" "))?'white-space:pre-wrap;word-wrap:break-word;':''
+            chkMsg : (opt.msg.toString().indexOf(" "))?'white-space:pre-wrap;word-wrap:break-word;':''
         };
         if($('base-notify-box').length==0)
         $('body').append('<base-notify-box position="top-left"><base-notify-start></base-notify-start></base-notify-box><base-notify-box position="top-right"><base-notify-start></base-notify-start></base-notify-box><base-notify-box position="bottom-right"><base-notify-start></base-notify-start></base-notify-box><base-notify-box position="bottom-left"><base-notify-start></base-notify-start></base-notify-box>');

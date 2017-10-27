@@ -72,6 +72,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$state      = $input->get('st', 2, 'int');
 	    $seq        = $input->get('sq', 0, 'int');
 	    $client		= $input->get('cID', 0, 'int');
+		$invID		= $input->get('invID', 0, 'int');
 		$arr		= $input->get('arr', array(), 'array');
 		$arrIds		= (count($arr) > 0) ? implode($arr, ',') : '';
 
@@ -511,6 +512,85 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$data[] = array(
 							'status'			=> 0,
 							'msg'				=> $e->getMessage()
+						);
+
+					}
+
+				// CUSTOM -> ADD SELECTED FIXED
+				elseif($task == 'addSelectedFixed') :
+
+					$query = '
+						INSERT INTO '. $db->quoteName($cfg['mainTable']) .' ('.
+							$db->quoteName('transaction_id') .','.
+							$db->quoteName('parent_id') .','.
+							$db->quoteName('provider_id') .','.
+							$db->quoteName('client_id') .','.
+							$db->quoteName('dependent_id') .','.
+							$db->quoteName('invoice_id') .','.
+							$db->quoteName('description') .','.
+							$db->quoteName('fixed') .','.
+							$db->quoteName('date') .','.
+							$db->quoteName('date_installment') .','.
+							$db->quoteName('price') .','.
+							$db->quoteName('price_total') .','.
+							$db->quoteName('installment') .','.
+							$db->quoteName('total') .','.
+							$db->quoteName('doc_number') .','.
+							$db->quoteName('note') .','.
+							$db->quoteName('state') .','.
+							$db->quoteName('created_by')
+						.')
+						SELECT '.
+							$db->quoteName('T1.transaction_id') .','.
+							$db->quoteName('T1.parent_id') .','.
+							$db->quoteName('T1.provider_id') .','.
+							$db->quoteName('T1.client_id') .','.
+							$db->quoteName('T1.dependent_id') .','.
+							$invID .','.
+							$db->quoteName('T1.description') .',
+							2,'.
+							$db->quoteName('T1.date') .',
+							CURDATE(),'.
+							$db->quoteName('T1.price') .','.
+							$db->quoteName('T1.price_total') .',
+							1,
+							1,'.
+							$db->quoteName('T1.doc_number') .','.
+							$db->quoteName('T1.note') .',
+							1,'.
+							$user->id
+						.' FROM '. $db->quoteName($cfg['mainTable']) .' T1
+							JOIN '. $db->quoteName('#__base_providers') .' T2
+							ON T2.id = T1.provider_id
+							JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T3
+							ON T3.id = T1.client_id
+						WHERE T1.fixed = 1 AND T1.state = 1 AND T3.state = 1 AND T1.id IN ('.$ids.')
+						ORDER BY T1.id
+					';
+
+					try {
+						$db->setQuery($query);
+						$db->execute();
+
+						$data[] = array(
+							'status'			=> 1,
+							'msg'				=> JText::_('MSG_ADD_SELECTED_SUCCESS')
+						);
+
+					} catch (RuntimeException $e) {
+
+						// Error treatment
+						switch($e->getCode()) {
+							case '1062':
+								$sqlErr = JText::_('MSG_SQL_DUPLICATE_FIXED');
+								break;
+							default:
+								$sqlErr = 'Erro: '.$e->getCode().'. '.$e->getMessage();
+						}
+
+						$data[] = array(
+							'status'			=> 0,
+							'msg'				=> $sqlErr
 						);
 
 					}

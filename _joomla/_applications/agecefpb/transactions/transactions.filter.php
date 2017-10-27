@@ -43,6 +43,15 @@ $where = '';
 				jQuery("#fSType, #fInv, #fIgrp, #fCard").selectUpdate();
 			});
 		';
+		$invoiceActions = '
+			<div class="col-sm-4">
+				<div class="form-group">
+					<button type="button" class="btn btn-sm btn-warning '.$APPTAG.'-btn-action hasTooltip" title="'.JText::_('TEXT_ADD_SELECTED_DESC').'" disabled data-toggle="modal" data-target="#modal-'.$APPTAG.'-addSelectedFixed" data-backdrop="static" data-keyboard="false">
+						<span class="base-icon-download btn-icon"></span> '.JText::_('TEXT_ADD_SELECTED').'
+					</button>
+				</div>
+			</div>
+		';
 
 	else :
 
