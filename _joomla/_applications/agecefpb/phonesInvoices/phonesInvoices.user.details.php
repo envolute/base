@@ -55,7 +55,9 @@ if($pID > 0) :
 	$query = '
 		SELECT
 			'. $db->quoteName('T1.id') .',
+			'. $db->quoteName('T2.id') .' plan_id,
 			'. $db->quoteName('T2.name') .' plan,
+			'. $db->quoteName('T2.description') .' plan_desc,
 			'. $db->quoteName('T3.id') .' providerID,
 			'. $db->quoteName('T3.name') .' provider,
 			'. $db->quoteName('T4.name') .' client,
@@ -88,7 +90,7 @@ if($pID > 0) :
 				'.$img.'
 				<h4 class="float-right text-right mt-2 mb-0">
 					'.$phone->phone_number.'
-					<div class="text-md text-muted">'.JText::_('TEXT_PLAN').': '.$phone->plan.'</div>
+					<div class="text-md text-muted">'.baseHelper::nameFormat($phone->client).'</div>
 				</h4>
 			</div>
 		';
@@ -135,7 +137,14 @@ if($pID > 0) :
 				// Total das ligações locais
 				// Caso o valor das ligações locais somado seja maior que o valor do plano, será cobrado o valor somado das ligações.
 				// Caso contrário, será cobrado o valor do plano, que é o valor mínimo a ser cobrado...
-				$totalPlano = ($invoice->total_plano > $invoice->valor_plano) ? $invoice->total_plano : $invoice->valor_plano;
+				if($invoice->total_plano > $invoice->valor_plano) :
+					$totalPlano = $invoice->total_plano;
+					// Excedente
+					$excedente = $invoice->total_plano - $invoice->valor_plano;
+				else :
+					$totalPlano = $invoice->valor_plano;
+					$excedente = '0.00';
+				endif;
 				// Total dos serviços que não fazem parte do plano
 				$totalServicos = $invoice->total_servicos + $invoice->taxa_servico;
 				// TOTAL
@@ -173,14 +182,39 @@ if($pID > 0) :
 					if($counter == $num_rows) $html .= '</ul>';
 				}
 				$html .= '</ul>';
+
+				// Descrição do plano
+				$plan = $phone->plan;
+				if(!empty($phone->plan_desc)) :
+					$plan = '
+						<a href="#modal-phones-plan'.$phone->plan_id.'-desc" data-toggle="modal">
+							'.$phone->plan.'
+							<span class="base-icon-info-circled text-muted"></span>
+						</a>
+					';
+				endif;
+
 				// Valores adicionais
 				$html .= '
-					<hr class="b-top-2 border-primary" />
+					<hr class="b-top-2 border-primary mb-1" />
+					<label class="label-sm mb-2">'.JText::_('TEXT_SUMMARY').'</label>
 					<ul class="set-list bordered font-weight-bold">
 						<li>
 							<div class="row">
-								<div class="col-8">'.JText::_('TEXT_PLAN').': '.$phone->plan.'</div>
+								<div class="col-8">'.JText::_('TEXT_PLAN').': '.$plan.'</div>
 								<div class="col-4 text-right">R$ '.baseHelper::priceFormat($invoice->valor_plano).'</div>
+							</a>
+						</li>
+						<li>
+							<div class="row">
+								<div class="col-8">'.JText::_('TEXT_SURPLUS_TOTAL').'</div>
+								<div class="col-4 text-right">R$ '.baseHelper::priceFormat($excedente).'</div>
+							</a>
+						</li>
+						<li>
+							<div class="row">
+								<div class="col-8">'.JText::_('TEXT_SERVICES_TOTAL').'</div>
+								<div class="col-4 text-right">R$ '.baseHelper::priceFormat($invoice->total_servicos).'</div>
 							</a>
 						</li>
 						<li>

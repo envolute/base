@@ -1042,9 +1042,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'0,'.
 						'0,'.
 						$db->quoteName('due_date') .','.
-						$db->quoteName('due_date') .','.
-						$db->quoteName('total') .','.
-						$db->quoteName('total') .','.
+						$db->quoteName('due_date') .',
+						(`total_servicos` + `taxa_servico` + (IF(`total_plano` > `valor_plano`, `total_plano`, `valor_plano`))),
+						(`total_servicos` + `taxa_servico` + (IF(`total_plano` > `valor_plano`, `total_plano`, `valor_plano`))),'.
 						'1,'.
 						'1,'.
 						$db->quoteName('tel') .','.

@@ -31,7 +31,7 @@ window.<?php echo $APPTAG?>_loadFiles = function(files) {
 				desc = files[i]['filename']+'<br />'+(parseFloat(Math.round(files[i]['filesize'] / 1024)).toFixed(2))+'kb';
 				// Gera os links
 				if(files[i]['mimetype'].indexOf('image') == -1) {
-					path = root + '/get-file?fn='+files[i]['fn']+'&mt='+files[i]['mt']+'&tag=<?php echo base64_encode($APPTAG)?>';
+					path = root + '/apps/get-file?fn='+files[i]['fn']+'&mt='+files[i]['mt']+'&tag=<?php echo base64_encode($APPTAG)?>';
 					html += '	<a href="'+path+'" class="base-icon-attach btn btn-default hasTooltip" data-animation="false" title="<?php echo JText::_('TEXT_DOWNLOAD'); ?><br />'+desc+'"></a>';
 				} else {
 					path = root + '/images/apps/<?php echo $APPPATH?>/'+files[i]['filename'];

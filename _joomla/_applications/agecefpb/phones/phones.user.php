@@ -50,7 +50,9 @@ if(isset($user->id) && $user->id) :
 	$query = '
 	SELECT
 		'. $db->quoteName('T1.id') .',
+		'. $db->quoteName('T2.id') .' plan_id,
 		'. $db->quoteName('T2.name') .' plan,
+		'. $db->quoteName('T2.description') .' plan_desc,
 		'. $db->quoteName('T4.name') .' provider,
 		'. $db->quoteName('T2.price') .',
 		'. $db->quoteName('T1.phone_number') .',
@@ -81,14 +83,36 @@ if(isset($user->id) && $user->id) :
 
 		$html .= '<ul class="set-list bordered list-trim">';
 		foreach($res as $item) {
+			$plan = '<small class="text-muted"><span class="badge badge-primary">'.$item->provider.'</span> '.baseHelper::nameFormat($item->plan).'</small>';
+			if(!empty($item->plan_desc)) :
+				$plan = '
+				<a href="#modal-'.$APPTAG.'-plan'.$item->plan_id.'-desc" data-toggle="modal">
+					'.$plan.'
+				</a>
+				';
+			endif;
 			// LINK TO INVOICE
 			$urlToInvoice = JURI::root().'apps/clients/phonesinvoices?pID='.$item->id.($uID != $user->id ? '&uID='.$uID : '');
 			$html .= '
 				<li>
-					<a href="'.$urlToInvoice.'" class="d-block">
-						<span class="d-inline-block text-muted my-2 clear"><span class="badge badge-primary">'.$item->provider.'</span> '.baseHelper::nameFormat($item->plan).'</span>
-						<br />'.$item->phone_number.'
-					</a>
+					<h5 class="mb-1">
+						'.$item->phone_number.'
+						<a href="'.$urlToInvoice.'" class="btn btn-info btn-xs float-right base-icon-doc-text-inv hasTooltip" title="'.JText::_('TEXT_VIEW_INVOICES').'"> '.JText::_('TEXT_INVOICES').'</a>
+					</h5>
+					'.$plan.'
+					<div class="modal fade" id="modal-phones-plan'.$item->plan_id.'-desc" tabindex="-1" role="dialog" aria-labelledby="modal-'.$APPTAG.'-plan'.$phone->plan_id.'-descLabel">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title">'.JText::_('FIELD_LABEL_PLAN').': '.baseHelper::nameFormat($item->plan).'</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								</div>
+								<div class="modal-body">
+									'.$item->plan_desc.'
+								</div>
+							</div>
+						</div>
+					</div>
 				</li>
 			';
 		}

@@ -4,9 +4,12 @@ defined('_JEXEC') or die;
 $query = '
 	SELECT
 		'. $db->quoteName('T1.id') .',
+		'. $db->quoteName('T2.name') .',
 		'. $db->quoteName('T1.due_date') .'
 	FROM
 		'. $db->quoteName('#__'.$cfg['project'].'_phones_invoices') .' T1
+		JOIN '. $db->quoteName('#__base_providers') .' T2
+		ON '. $db->quoteName('T2.id') .' = '. $db->quoteName('T1.provider_id') .'
 	WHERE T1.state = 1 ORDER BY T1.due_date DESC
 ';
 $db->setQuery($query);
@@ -26,7 +29,7 @@ $invoices = $db->loadObjectList();
 						<option value="0">- <?php echo JText::_('TEXT_SELECT_INVOICE'); ?> -</option>
 						<?php
 							foreach ($invoices as $obj) {
-								echo '<option value="'.$obj->id.'">'.baseHelper::dateFormat($obj->due_date).'</option>';
+								echo '<option value="'.$obj->id.'">'.$obj->name.' - '.baseHelper::dateFormat($obj->due_date).'</option>';
 							}
 						?>
 					</select>
