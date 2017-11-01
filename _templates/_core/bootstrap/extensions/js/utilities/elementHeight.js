@@ -25,7 +25,13 @@ jQuery(function() {
 					a = offIds.split(',');
 					for(i = 0; i < a.length; i++) {
 						el = setElement(a[i].trim());
-						off = off + (elementExist(el) ? el.outerHeight(true) : 0);
+						var eH = 0;
+						if(elementExist(el)) {
+							el.each(function() {
+								eH += jQuery(this).outerHeight(true);
+							});
+						}
+						off = off + eH;
 					}
 				}
 				// padding interno do elemento interfere na altura

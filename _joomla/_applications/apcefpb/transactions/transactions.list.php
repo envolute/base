@@ -191,7 +191,7 @@ if($num_rows) : // verifica se existe
 
 	// TOTAL
 	$html .= '
-		<tr class="warning">
+		<tr class="table-warning">
 			<td colspan="6"><strong>TOTAL</strong></td>
 			<td colspan="7"><strong>'.baseHelper::priceFormat($total, false, 'R$ ').'</strong></td>
 		</tr>

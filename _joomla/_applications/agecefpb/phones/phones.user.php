@@ -100,7 +100,7 @@ if(isset($user->id) && $user->id) :
 						<a href="'.$urlToInvoice.'" class="btn btn-info btn-xs float-right base-icon-doc-text-inv hasTooltip" title="'.JText::_('TEXT_VIEW_INVOICES').'"> '.JText::_('TEXT_INVOICES').'</a>
 					</h5>
 					'.$plan.'
-					<div class="modal fade" id="modal-phones-plan'.$item->plan_id.'-desc" tabindex="-1" role="dialog" aria-labelledby="modal-'.$APPTAG.'-plan'.$phone->plan_id.'-descLabel">
+					<div class="modal fade" id="modal-phones-plan'.$item->plan_id.'-desc" tabindex="-1" role="dialog" aria-labelledby="modal-'.$APPTAG.'-plan'.$item->plan_id.'-descLabel">
 						<div class="modal-dialog" role="document">
 							<div class="modal-content">
 								<div class="modal-header">

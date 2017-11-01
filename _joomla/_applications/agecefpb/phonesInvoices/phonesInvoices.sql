@@ -110,11 +110,10 @@ SELECT
 	`T5`.`state` AS `provider_state`,
 	`T5`.`name` AS `provider`,
 	IF(ISNULL(`T7`.`invoice_id`),0,`T7`.`invoice_id`) AS `invoice`,
-	SUM(`T1`.`valor`) AS `valor_cobrado`,
 	`T4`.`price` AS `valor_plano`,
 	IF(`T6`.`usergroup` <> 13, `T2`.`tax`, (`T2`.`tax` * 2)) AS `taxa_servico`,
-	SUM(CASE WHEN CONVERT(`T1`.`sub_secao` USING utf8) = 'Ligações Locais' THEN `T1`.`valor` ELSE 0 END) AS `total_plano`,
-	SUM(CASE WHEN CONVERT(`T1`.`sub_secao` USING utf8) <> 'Ligações Locais' THEN `T1`.`valor` ELSE 0 END) AS `total_servicos`,
+	SUM(IF(CONVERT(`T1`.`sub_secao` USING utf8) = 'Ligações Locais', `T1`.`valor`, 0)) AS `total_plano`,
+	SUM(IF(CONVERT(`T1`.`sub_secao` USING utf8) <> 'Ligações Locais', `T1`.`valor`, 0)) AS `total_servicos`,
 	`T1`.`created_by` AS `created_by`
 FROM
 (
@@ -158,7 +157,7 @@ SELECT
 	`T1`.`tel` AS `tel`,
 	`T1`.`sub_secao` AS `sub_secao`,
 	`T1`.`secao` AS `secao`,
-	SUM(`T1`.`valor`) AS `valor_cobrado`,
+	SUM(`T1`.`valor`) AS `valor_total`,
 	`T1`.`created_by` AS `created_by`
 FROM
 (

@@ -110,10 +110,10 @@ SELECT
 	`T5`.`state` AS `provider_state`,
 	`T5`.`name` AS `provider`,
 	IF(ISNULL(`T7`.`invoice_id`),0,`T7`.`invoice_id`) AS `invoice`,
-	SUM(`T1`.`valor_cobrado`) AS `valor_cobrado`,
 	`T4`.`price` AS `valor_plano`,
-	`T2`.`tax` AS `taxa_servico`,
-	((SUM(`T1`.`valor_cobrado`) + `T4`.`price`) + `T2`.`tax`) AS `total`,
+	IF(`T6`.`usergroup` <> 13, `T2`.`tax`, (`T2`.`tax` * 2)) AS `taxa_servico`,
+	SUM(IF(CONVERT(`T1`.`sub_secao` USING utf8) = 'Ligações Locais', `T1`.`valor`, 0)) AS `total_plano`,
+	SUM(IF(CONVERT(`T1`.`sub_secao` USING utf8) <> 'Ligações Locais', `T1`.`valor`, 0)) AS `total_servicos`,
 	`T1`.`created_by` AS `created_by`
 FROM
 (
@@ -126,7 +126,7 @@ FROM
 						on((`T2`.`id` = `T1`.`invoice_id`))
 					)
 				 	left join `cms_apcefpb_phones` `T3`
-					on((substring_index(`T3`.`phone_number`,' ',-(1)) like substring_index(`T1`.`tel`,' ',-(1))))
+					on((SUBSTRING(`T3`.`phone_number`, -9, 9) like SUBSTRING(`T1`.`tel`, -9, 9)))
 				)
 				left join `cms_apcefpb_phones_plans` `T4`
 				on((`T4`.`id` = `T3`.`plan_id`))
@@ -157,7 +157,7 @@ SELECT
 	`T1`.`tel` AS `tel`,
 	`T1`.`sub_secao` AS `sub_secao`,
 	`T1`.`secao` AS `secao`,
-	SUM(`T1`.`valor_cobrado`) AS `valor_cobrado`,
+	SUM(`T1`.`valor`) AS `valor_total`,
 	`T1`.`created_by` AS `created_by`
 FROM
 (
@@ -167,7 +167,7 @@ FROM
 	)
 	left join `cms_apcefpb_phones` `T3`
 	on(
-		(substring_index(`T3`.`phone_number`,' ',-(1)) like substring_index(`T1`.`tel`,' ',-(1)))
+		(SUBSTRING(`T3`.`phone_number`, -9, 9) like SUBSTRING(`T1`.`tel`, -9, 9))
 	)
 )
 WHERE `tel` <> ""

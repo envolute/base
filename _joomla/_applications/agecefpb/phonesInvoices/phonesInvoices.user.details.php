@@ -174,7 +174,7 @@ if($pID > 0) :
 						<li>
 							<div class="row">
 								<div class="col-8">'.$item->secao.'</div>
-								<div class="col-4 text-right">R$ '.baseHelper::priceFormat($item->valor_cobrado).'</div>
+								<div class="col-4 text-right">R$ '.baseHelper::priceFormat($item->valor_total).'</div>
 							</a>
 						</li>
 					';

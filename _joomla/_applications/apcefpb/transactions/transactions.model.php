@@ -947,7 +947,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$db->execute();
 
 					// gera o resultado para o CSV
-					$result = setFile($query_tipoE,'A15003                ,AGECEF PB           ,104CAIXA ECONOM FEDERAL'.date("Ymd").substr('000000'.$seq, -6).'05DEBITO AUTOMATICO                                                     ','','',false);
+					$result = setFile($query_tipoE,'A15003                ,APCEF PB           ,104CAIXA ECONOM FEDERAL'.date("Ymd").substr('000000'.$seq, -6).'05DEBITO AUTOMATICO                                                     ','','',false);
 					$result .= setFile($query_tipoZ,NULL,'','');
 					if($result == true) :
 
@@ -1042,9 +1042,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'0,'.
 						'0,'.
 						$db->quoteName('due_date') .','.
-						$db->quoteName('due_date') .','.
-						$db->quoteName('total') .','.
-						$db->quoteName('total') .','.
+						$db->quoteName('due_date') .',
+						(`total_servicos` + `taxa_servico` + (IF(`total_plano` > `valor_plano`, `total_plano`, `valor_plano`))),
+						(`total_servicos` + `taxa_servico` + (IF(`total_plano` > `valor_plano`, `total_plano`, `valor_plano`))),'.
 						'1,'.
 						'1,'.
 						$db->quoteName('tel') .','.
