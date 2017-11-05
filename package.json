@@ -1,20 +1,20 @@
 {
-  "name": "templates",
-  "version": "1.0.0",
+  "name": "base",
+  "version": "4.0.0",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/envolute/templates.git"
+    "url": "git+https://github.com/envolute/base.git"
   },
   "author": "Ivo Junior",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/envolute/templates/issues"
+    "url": "https://github.com/envolute/base/issues"
   },
-  "homepage": "https://github.com/envolute/templates#readme",
+  "homepage": "https://github.com/envolute/base#readme",
   "devDependencies": {
     "babel-preset-es2015": "^6.24.1",
     "gulp": "^3.9.1",
@@ -32,5 +32,9 @@
   "dependencies": {
     "del": "^2.2.2"
   },
-  "description": ""
+  "description": "Envolute Base structure, applications and templates",
+  "keywords": [
+    "template",
+    "applications"
+  ]
 }
