@@ -98,15 +98,59 @@
 						width: 42px;
 						height: 42px;
 					}
-					#content .chat .avatar {
+					#content .chat .avatar  {
 						width: 48px;
 						height: 48px;
+					}
+					#phoneModal .avatar  {
+						width: 37px;
+						height: 37px;
 					}
 
 			#bottom-actions.content-actions .input-chat {
 				flex: 1 1 auto;
 				width: 1%;
 			}
+
+			// Phone Modal
+			#phoneModal {
+				top: 60px;
+				left: calc(50% - 150px);
+				width: 1px;
+				height: 1px;
+				overflow: visible!important;
+			}
+			#phoneModal .modal-dialog {
+				width: 300px;
+				border-radius: .25rem;
+			}
+			#phoneModal .modal-content {
+				border-color: #939ca5;
+			}
+			#phoneModal a,
+			#phoneModal .btn,
+			#phoneModal #phoneDisplay .input-group-addon,
+			#phoneModal #phoneDisplay input[type="text"] {
+				color: #eee!important;
+				transition: all 0.15s ease-in-out;
+			}
+			#phoneModal .nav-link:hover,
+			#phoneModal #phoneDisplay input[type="text"]:hover,
+			#phoneModal #phoneDisplay input[type="text"]:focus {
+				background: $base-gray-600!important;
+				outline: none;
+			}
+			#phoneModal .nav-link a.h2:hover {
+				background: $base-gray-700!important;
+			}
+			#phoneModal #phoneKeyboard .btn {
+			    width: 60px;
+			    height: 60px;
+			    font-size: 30px;
+			    line-height: 1;
+				text-align: center;
+			}
+			#phoneModal #phoneKeyboard .btn-link:hover { background-color: $base-gray-600; }
 
 
 	// SCROLLTOTOP

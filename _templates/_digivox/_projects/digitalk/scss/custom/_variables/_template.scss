@@ -10,6 +10,7 @@
 // COLORS
 
 	//-> gray
+	$gray-base:							#273240 !default;
 	$base-gray-100:						#f8f9fa !default;
 	$base-gray-200:						#E8EDF2 !default; // bg
 	$base-gray-300:						#dee2e6 !default;
@@ -57,6 +58,8 @@
 	$base-text-color:         			#555;
 	$base-link-color:         			$base-color-primary;
 	$base-link-hover-color:				darken($base-link-color, 15%); // copy of 'link-hover-color' bootstrap
+	$base-link-active-color:			lighten($base-link-color, 15%);
+	$base-link-visited-color:			$base-link-hover-color;
 	$base-btn-default-color:			$base-color-primary;
 	$base-btn-default-bg:				#fff;
 	$base-btn-default-border:			$base-border-color;

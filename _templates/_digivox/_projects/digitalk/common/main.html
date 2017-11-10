@@ -38,7 +38,7 @@
 	<a href="#main-content" class="sr-only">Skip to content</a>
 
 	<!-- Screen -->
-	<div id="screen" class="clearfix">
+	<div id="screen" class="clearfix" style="transform:scale(1)">
 
 		<!-- wrapper -->
 		<div id="wrapper" class="clearfix">
@@ -132,7 +132,7 @@
 								</h6>
 								<div class="col input-group">
 									<span class="input-group-btn">
-										<a href="#" class="btn btn-outline-default b-gray-300 d-flex align-items-center justify-content-center text-lg base-icon-th" role="button"></a>
+										<a href="#" class="btn btn-outline-default b-gray-300 d-flex align-items-center justify-content-center text-lg base-icon-th" data-toggle="modal" data-target="#phoneModal" data-backdrop="false" role="button"></a>
 									</span>
 									<input type="text" class="form-control b-gray-300 px-3" placeholder="search" />
 									<span class="input-group-btn">
@@ -232,6 +232,121 @@
 		<!-- / wrapper -->
 		</div>
 
+		<!-- Modal -->
+		<div class="modal fade" id="phoneModal" tabindex="-1" role="dialog" aria-labelledby="phoneModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content bg-gray-500 rounded">
+					<div class="modal-body">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<div class="nav nav-dark flex-column nav-pills">
+							<div class="nav-link p-3 rounded">
+								<a href="#" class="h2 base-icon-phone rounded float-right py-1 px-2 mt-1 mb-0"></a>
+								<a href="#">
+									<img src="images/users/user-3.png" class="avatar rounded-circle float-left mr-3">
+									Ronaldo Junior
+									<small class="d-block">83 98541-5248</small>
+								</a>
+							</div>
+							<div class="nav-link p-3 rounded">
+								<a href="#" class="h2 base-icon-phone rounded float-right py-1 px-2 mt-1 mb-0"></a>
+								<a href="#">
+									<img src="images/users/user-3.png" class="avatar rounded-circle float-left mr-3">
+									Carla Dantas
+									<small class="d-block">83 95489-4515</small>
+								</a>
+							</div>
+						</div>
+						<div id="phoneDisplay" class="form-group py-4 m-0">
+							<div class="input-group input-group-lg">
+								<span class="input-group-addon bg-transparent border-0 base-icon-user-add"></span>
+								<input type="text" class="form-control text-center bg-transparent p-3" />
+								<span class="input-group-btn">
+									<button class="btn btn-link base-icon-cancel"></button>
+								</span>
+							</div>
+						</div>
+						<div id="phoneKeyboard" class="row text-center">
+							<div class="col-4 py-1">
+								<button class="btn btn-lg btn-link rounded-circle">
+									1
+								</button>
+							</div>
+							<div class="col-4 py-1">
+								<button class="btn btn-lg btn-link rounded-circle">
+									2
+									<div class="small">A B C</div>
+								</button>
+							</div>
+							<div class="col-4 py-1">
+								<button class="btn btn-lg btn-link rounded-circle">
+									3
+									<div class="small">D E F</div>
+								</button>
+							</div>
+							<div class="col-4 py-1">
+								<button class="btn btn-lg btn-link rounded-circle">
+									4
+									<div class="small">G H I</div>
+								</button>
+							</div>
+							<div class="col-4 py-1">
+								<button class="btn btn-lg btn-link rounded-circle">
+									5
+									<div class="small">J K L</div>
+								</button>
+							</div>
+							<div class="col-4 py-1">
+								<button class="btn btn-lg btn-link rounded-circle">
+									6
+									<div class="small">M N O</div>
+								</button>
+							</div>
+							<div class="col-4 py-1">
+								<button class="btn btn-lg btn-link rounded-circle">
+									7
+									<div class="small">P Q R S</div>
+								</button>
+							</div>
+							<div class="col-4 py-1">
+								<button class="btn btn-lg btn-link rounded-circle">
+									8
+									<div class="small">T U V</div>
+								</button>
+							</div>
+							<div class="col-4 py-1">
+								<button class="btn btn-lg btn-link rounded-circle">
+									9
+									<div class="small">W X Y Z</div>
+								</button>
+							</div>
+							<div class="col-4 py-1">
+								<button class="btn btn-lg btn-link rounded-circle">
+									*
+								</button>
+							</div>
+							<div class="col-4 py-1">
+								<button class="btn btn-lg btn-link rounded-circle">
+									0
+								</button>
+							</div>
+							<div class="col-4 py-1">
+								<button class="btn btn-lg btn-link rounded-circle">
+									#
+								</button>
+							</div>
+							<div class="col py-3">
+								<button class="btn btn-lg btn-primary rounded-circle">
+									<span class="base-icon-phone"></span>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	<!-- / screen -->
 	</div>
 
@@ -254,6 +369,19 @@
 
 		// define menu item active
 		jQuery('#navigation #atendimento').addClass('active');
+
+		jQuery("#phoneModal > .modal-dialog").draggable({
+			drag: function(e, ui) {
+				// Reset to Mouse, adjust for Scale
+				var myScale = parseFloat(jQuery('#screen').css('transform').split(',')[3]);
+				var myTop = Math.round(ui.position.top / myScale);
+				var myLeft = Math.round(ui.position.left / myScale);
+				ui.position = {
+					top: myTop,
+					left: myLeft
+				};
+			}
+		});
 
 	});
 	</script>
