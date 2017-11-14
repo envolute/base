@@ -6,7 +6,7 @@ jQuery(function() {
 	// EVENTOS RESPONSIVOS
 	window.customResponsive = function () {
 
-		
+
 
 	};
 
@@ -27,6 +27,9 @@ jQuery(function() {
 
 			// CUSTOM RESPONSIVE
 			customResponsive();
+
+			// Buttons
+			// btnRippleEffect();
 
 			// SCROLL TO TOP
 			scrollToTop();

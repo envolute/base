@@ -1,30 +1,32 @@
 // FONTS
 // -------------------------------------------------------------------------
 
-	// Addon's
-	// o sistema BASE disponibiliza 4 fontes padrão
-	// 'primary' é a fonte principal do projeto, ideal para menus, body, etc...
-	// 'condensed' é uma fonte mais compacta, boa para letras grandes. Ideal para cabeçalhos, chamadas, etc...
-	// 'serif' é uma opção de fonte com serif
-	// 'featured' é uma fonte mais 'informal', ideal para em blockquotes, citações, etc...
-	@if $base-fonts-local {
-		@include set-font-family($base-font-primary, $base-font-primary-local-path);
-		@include set-font-family($base-font-condensed, $base-font-condensed-local-path);
-		@include set-font-family($base-font-serif, $base-font-serif-local-path);
-		@include set-font-family($base-font-featured, $base-font-featured-local-path);
-	} @else {
-		@import url(https://fonts.googleapis.com/css?family=#{$base-fonts});
-	}
-	// set default classes
-	.font-primary {
-		@include set-font-class($base-font-primary, $base-font-primary-weight, $base-font-primary-style);
-	}
-	.font-condensed {
-		@include set-font-class($base-font-condensed, $base-font-condensed-weight, $base-font-condensed-style);
-	}
-	.font-serif {
-		@include set-font-class($base-font-serif, $base-font-serif-weight, $base-font-serif-style);
-	}
-	.font-featured {
-		@include set-font-class($base-font-featured, $base-font-featured-weight, $base-font-featured-style);
+	@if $base-fonts-enabled {
+		// Addon's
+		// o sistema BASE disponibiliza 4 fontes padrão
+		// 'primary' é a fonte principal do projeto, ideal para menus, body, etc...
+		// 'condensed' é uma fonte mais compacta, boa para letras grandes. Ideal para cabeçalhos, chamadas, etc...
+		// 'serif' é uma opção de fonte com serif
+		// 'featured' é uma fonte mais 'informal', ideal para em blockquotes, citações, etc...
+		@if $base-fonts-local {
+			@include set-font-family($base-font-primary, $base-font-primary-local-path);
+			@include set-font-family($base-font-condensed, $base-font-condensed-local-path);
+			@include set-font-family($base-font-serif, $base-font-serif-local-path);
+			@include set-font-family($base-font-featured, $base-font-featured-local-path);
+		} @else {
+			@import url(https://fonts.googleapis.com/css?family=#{$base-fonts});
+		}
+		// set default classes
+		.font-primary {
+			@include set-font-class($base-font-primary, $base-font-primary-weight, $base-font-primary-style);
+		}
+		.font-condensed {
+			@include set-font-class($base-font-condensed, $base-font-condensed-weight, $base-font-condensed-style);
+		}
+		.font-serif {
+			@include set-font-class($base-font-serif, $base-font-serif-weight, $base-font-serif-style);
+		}
+		.font-featured {
+			@include set-font-class($base-font-featured, $base-font-featured-weight, $base-font-featured-style);
+		}
 	}

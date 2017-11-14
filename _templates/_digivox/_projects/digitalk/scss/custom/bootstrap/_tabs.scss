@@ -2,7 +2,7 @@
 // Obs: 'legacy' serve para manter o estilo caso a tab esteja no formato da versão anterior
 // sem as classes '.nav-item' e '.nav-link'
 
-.nav-tabs { border-bottom: $tab-border-size solid theme-color("primary"); }
+.nav-tabs { border-bottom: 2px solid $base-gray-600; }
 .nav-tabs > li, // legacy V3
 .nav-tabs .nav-item {
   float: left;
@@ -12,11 +12,9 @@
 .nav-tabs .nav-link {
   display: block;
   padding: $nav-link-padding-y $nav-link-padding-x;
-  border-width: 0px;
-}
-.nav-tabs > li > a:hover, // legacy V3
-.nav-tabs .nav-link:focus {
-    background-color: #eee;
+  color: $base-gray-600;
+  margin-bottom: -2px;
+  border-width: 0 0 2px;
 }
 .nav-tabs > li.active > a,        // legacy V3
 .nav-tabs > li.active > a:focus,  // legacy V3
@@ -24,8 +22,7 @@
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-link.active:focus,
 .nav-tabs .nav-link.active:hover {
-  @include color-yiq(theme-color("primary"));
-  background-color: theme-color("primary");
+  border-bottom-color: theme-color("primary");
 }
 .nav-tabs > li:first-child { margin-left: 5px; } // legacy
 // tab content

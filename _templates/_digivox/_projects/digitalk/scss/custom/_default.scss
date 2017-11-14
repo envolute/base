@@ -46,7 +46,9 @@
 
 	// SIDEBAR
 
-		#sidebar { }
+		#sidebar {
+			flex: 0 0 285px;
+		}
 
 		#sidebar-profile-data > img {
 			width: 84px;
@@ -65,7 +67,7 @@
 
 			.content-actions {
 				position: fixed;
-				width: 75%;
+				width: calc(100% - 285px);
 			}
 			#bottom-actions.content-actions { bottom: 0; }
 

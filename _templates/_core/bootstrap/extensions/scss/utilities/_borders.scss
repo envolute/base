@@ -2,8 +2,11 @@
 // Classe 'border' adiciona bordas a um elemento
 // Abaixo são disponibilizadas classes adicionais para customização
 // das larguras das bordas...
-// Obs: para remover bordas utilize as classes default do bootstrap
-// -> b-0, b-top-0, b-right-0, b-bottom-0, b-left-0
+// Obs: Apenas a remoção das bordas está disponível no formato responsivo.
+// Nesse caso, é possível utilizar bordas e removê-las de acordo com a
+// resolução. As classes responsivas são refletidas apenas na resolução
+// definida, ou seja, "b-top-sm-0" só vai remover na largura 'sm'
+// ---------------------------------------------------------------------------
 // default -> width 1
 .b-all { border-width: 1px!important; }
 .b-y { border-top-width: 1px!important; border-bottom-width: 1px!important; }
@@ -24,6 +27,48 @@
 .b-bottom-3 { border-bottom-width: 3px!important; }
 .b-right-3 { border-right-width: 3px!important; }
 .b-left-3 { border-left-width: 3px!important; }
+// no border -> width 0
+// IMPORTANTE: Deve ficar sempre após os outros tamanhos disponíveis
+.b-0, .b-all-0 { border: 0 !important; }
+.b-top-0    { border-top: 0 !important; }
+.b-right-0  { border-right: 0 !important; }
+.b-bottom-0 { border-bottom: 0 !important; }
+.b-left-0 { border-left: 0 !important; }
+@include media-breakpoint-only(xl) {
+	.b-xs-0, .b-all-xs-0 { border: 0 !important; }
+	.b-top-xs-0    { border-top: 0 !important; }
+	.b-right-xs-0  { border-right: 0 !important; }
+	.b-bottom-xs-0 { border-bottom: 0 !important; }
+	.b-left-xs-0 { border-left: 0 !important; }
+}
+@include media-breakpoint-only(sm) {
+	.b-sm-0, .b-all-sm-0 { border: 0 !important; }
+	.b-top-sm-0    { border-top: 0 !important; }
+	.b-right-sm-0  { border-right: 0 !important; }
+	.b-bottom-sm-0 { border-bottom: 0 !important; }
+	.b-left-sm-0 { border-left: 0 !important; }
+}
+@include media-breakpoint-only(md) {
+	.b-md-0, .b-all-md-0 { border: 0 !important; }
+	.b-top-md-0    { border-top: 0 !important; }
+	.b-right-md-0  { border-right: 0 !important; }
+	.b-bottom-md-0 { border-bottom: 0 !important; }
+	.b-left-md-0 { border-left: 0 !important; }
+}
+@include media-breakpoint-only(lg) {
+	.b-lg-0, .b-all-lg-0 { border: 0 !important; }
+	.b-top-lg-0    { border-top: 0 !important; }
+	.b-right-lg-0  { border-right: 0 !important; }
+	.b-bottom-lg-0 { border-bottom: 0 !important; }
+	.b-left-lg-0 { border-left: 0 !important; }
+}
+@include media-breakpoint-only(xl) {
+	.b-xl-0, .b-all-xl-0 { border: 0 !important; }
+	.b-top-xl-0    { border-top: 0 !important; }
+	.b-right-xl-0  { border-right: 0 !important; }
+	.b-bottom-xl-0 { border-bottom: 0 !important; }
+	.b-left-xl-0 { border-left: 0 !important; }
+}
 
 // Border color default
 [class^="b-all"], [class*=" b-all"] { border-color: $base-border-color; }

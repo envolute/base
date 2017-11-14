@@ -41,6 +41,9 @@ jQuery(function() {
 			// CUSTOM RESPONSIVE
 			customResponsive();
 
+			// Buttons
+			btnRippleEffect();
+
 			// SCROLL TO TOP
 			scrollToTop();
 			jQuery(window).scroll(function(){ scrollToTop() });

@@ -9,5 +9,5 @@
 .form-toolbar .form-title small,
 .form-toolbar .form-title .small {
 	font-size: .9rem;
-  @extend .font-featured;
+	@extend .font-featured !optional;
 }

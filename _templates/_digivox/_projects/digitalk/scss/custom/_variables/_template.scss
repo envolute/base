@@ -13,7 +13,7 @@
 	$gray-base:							#273240 !default;
 	$base-gray-100:						#f8f9fa !default;
 	$base-gray-200:						#E8EDF2 !default; // bg
-	$base-gray-300:						#dee2e6 !default;
+	$base-gray-300:						#D3DBE3 !default;
 	$base-gray-400:						#C0C9D5 !default; // text, lines
 	$base-gray-500:						#adb5bd !default;
 	$base-gray-600:						#536876 !default; // text, lines
@@ -81,6 +81,7 @@
 // TYPOGRAPHY
 
 	// fonts
+	$base-fonts-enabled:				true; // load local fonts
 	$base-fonts-local:					true; // false -> google fonts, true -> fonts locais
 	$base-fonts:						'Roboto|Roboto+Condensed|Droid+Serif:400,400italic';
 	// font-primary
@@ -189,7 +190,7 @@
 
 	// btn raised
 	$base-btn-raised:					1px 1px 2px rgba(0,0,0,0.3), 2px 2px 8px rgba(0,0,0,0.2) !default;
-	$base-btn-raised-hover:				2px 2px 4px rgba(0,0,0,0.3), 3px 3px 9px rgba(0,0,0,0.3) !default;
+	$base-btn-raised-hover:				3px 3px 6px rgba(0,0,0,0.3), 3px 3px 12px rgba(0,0,0,0.3) !default;
 	$base-btn-raised-lg:				1px 1px 4px rgba(0,0,0,0.2), 4px 4px 8px rgba(0,0,0,0.2), 5px 5px 10px rgba(0,0,0,0.2) !default;
 
 // FORMS

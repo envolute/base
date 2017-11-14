@@ -3,7 +3,7 @@ jQuery(function() {
 
   // BUTTON CLICK EFFECT
 	window.btnRippleEffect = function() {
-		jQuery('.btn, .nav-link, .nav-pills').each(function() {
+		jQuery('.btn, .nav-link, .nav-pills, set-ripple').each(function() {
 			jQuery(this).click(function(e) {
 				// Remove any old one
 				jQuery(".ripple").remove();
