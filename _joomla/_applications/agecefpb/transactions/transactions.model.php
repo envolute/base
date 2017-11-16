@@ -280,10 +280,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('dependent_id')		.'='. $request['dependent_id'] .','.
 						$db->quoteName('invoice_id')		.'='. $request['invoice_id'] .','.
 						$db->quoteName('description')		.'='. $db->quote($request['description']) .','.
-						$db->quoteName('fixed')				.'='. $request['fixed'] .','.
+						$db->quoteName('fixed')				.'= IF('. $db->quoteName('fixed') .' = 2, '. $db->quoteName('fixed') .', '.$request['fixed'].'),'.
 						$db->quoteName('isCard')			.'='. $request['isCard'] .','.
+						$db->quoteName('date')				.'='. $db->quote($request['date']) .','.
 						$db->quoteName('date_installment')	.'='. $db->quote($request['date']) .','.
 						$db->quoteName('price')				.'='. $db->quote($request['price']) .','.
+						$db->quoteName('price_total')		.'= IF('. $db->quoteName('total') .' = 1, '. $db->quote($request['price']) .', '.$db->quoteName('price_total').'),'.
 						$db->quoteName('doc_number')		.'='. $db->quote($request['doc_number']) .','.
 						$db->quoteName('note')				.'='. $db->quote($request['note']) .','.
 						$db->quoteName('state')				.'='. $request['state'] .','.
@@ -471,7 +473,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 						$data[] = array(
 							'status'			=> 1,
-							'msg'				=> ''
+							'msg'				=> $query
 						);
 
 					} catch (RuntimeException $e) {
@@ -1038,7 +1040,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'0,'.
 						$state .','.
 						$db->quoteName('phone_id') .','.
-						$db->quote(JText::_('TEXT_MOBILE_PHONE')) .','.
+						'CONCAT('.$db->quote(JText::_('TEXT_MOBILE_PHONE')).', '.$db->quoteName('invoice_id').'),'.
 						'0,'.
 						'0,'.
 						$db->quoteName('due_date') .','.

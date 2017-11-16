@@ -57,6 +57,13 @@
 		#sidebar-profile-data > h5 {
 			vertical-align: middle;
 		}
+		#sidebar-btn-actions .nav-link {
+			color: theme-color("secondary");
+		}
+		#sidebar-btn-actions .nav-link.active {
+			color: theme-color("primary");
+			background-color: transparent!important;
+		}
 		#sidebar-chat-list {
 			overflow-y: auto;
 		}
@@ -69,6 +76,7 @@
 				position: fixed;
 				width: calc(100% - 285px);
 			}
+			#top-actions.content-actions { top: 0; }
 			#bottom-actions.content-actions { bottom: 0; }
 
 			.content-actions > .row > .input-group {
@@ -94,6 +102,9 @@
 				#content section .stage-links + .stage {
 					width: calc(100% - 60px);
 				}
+				#content section .chat-discussion .bg-primary a {
+					@include color-yiq(theme-color('primary'));
+				}
 
 					// AVATARS
 					#content .stage-links .avatar {
@@ -104,7 +115,7 @@
 						width: 48px;
 						height: 48px;
 					}
-					#phoneModal .avatar  {
+					#windowNewCall .avatar  {
 						width: 37px;
 						height: 37px;
 					}
@@ -115,44 +126,45 @@
 			}
 
 			// Phone Modal
-			#phoneModal {
+			#windowNewCall {
 				top: 60px;
 				left: calc(50% - 150px);
 				width: 1px;
 				height: 1px;
 				overflow: visible!important;
 			}
-			#phoneModal .modal-dialog {
+			#windowNewCall .modal-dialog {
 				width: 300px;
 				border-radius: .25rem;
 			}
-			#phoneModal .modal-content {
+			#windowNewCall .modal-content {
 				border-color: #939ca5;
+				background-color: #939ca5;
 			}
-			#phoneModal a,
-			#phoneModal .btn,
-			#phoneModal #phoneDisplay .input-group-addon,
-			#phoneModal #phoneDisplay input[type="text"] {
+			#windowNewCall a,
+			#windowNewCall .btn,
+			#windowNewCall #phoneDisplay .input-group-addon,
+			#windowNewCall #phoneDisplay input[type="text"] {
 				color: #eee!important;
 				transition: all 0.15s ease-in-out;
 			}
-			#phoneModal .nav-link:hover,
-			#phoneModal #phoneDisplay input[type="text"]:hover,
-			#phoneModal #phoneDisplay input[type="text"]:focus {
+			#windowNewCall .nav-link:hover,
+			#windowNewCall #phoneDisplay input[type="text"]:hover,
+			#windowNewCall #phoneDisplay input[type="text"]:focus {
 				background: $base-gray-600!important;
 				outline: none;
 			}
-			#phoneModal .nav-link a.h2:hover {
+			#windowNewCall .nav-link a.h2:hover {
 				background: $base-gray-700!important;
 			}
-			#phoneModal #phoneKeyboard .btn {
+			#windowNewCall #dial-pad .btn {
 			    width: 60px;
 			    height: 60px;
 			    font-size: 30px;
 			    line-height: 1;
 				text-align: center;
 			}
-			#phoneModal #phoneKeyboard .btn-link:hover { background-color: $base-gray-600; }
+			#windowNewCall #dial-pad .btn-link:hover { background-color: $base-gray-600; }
 
 
 	// SCROLLTOTOP

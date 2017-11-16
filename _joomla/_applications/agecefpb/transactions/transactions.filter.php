@@ -177,7 +177,7 @@ $where = '';
 		'T1.description'		=> 'FIELD_LABEL_DESCRIPTION',
 		'T1.doc_number'			=> 'FIELD_LABEL_DOC_NUMBER',
 		'T4.name'				=> 'FIELD_LABEL_DEPENDENT',
-		'T6.username'			=> '',
+		'T3.cpf'				=> '',
 		'T1.note'				=> ''
 	);
 	$i = 0;
@@ -194,9 +194,9 @@ $where = '';
 	$ordf	= $app->input->get($APPTAG.'oF', '', 'string'); // campo a ser ordenado
 	$ordt	= $app->input->get($APPTAG.'oT', '', 'string'); // tipo de ordem: 0 = 'ASC' default, 1 = 'DESC'
 
-	$orderDef = 'T1.transaction_id, T1.parent_id'; // não utilizar vírgula no inicio ou fim
+	$orderDef = 'T1.id'; // não utilizar vírgula no inicio ou fim
 	if(!isset($_SESSION[$APPTAG.'oF'])) : // DEFAULT ORDER
-		$_SESSION[$APPTAG.'oF'] = 'T3.name';
+		$_SESSION[$APPTAG.'oF'] = 'T1.id';
 		$_SESSION[$APPTAG.'oT'] = 'ASC';
 	endif;
 	if(!empty($ordf)) :

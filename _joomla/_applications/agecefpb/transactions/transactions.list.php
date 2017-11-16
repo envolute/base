@@ -140,8 +140,9 @@ if($num_rows) : // verifica se existe
 
 			$urlToInvoice = JURI::root().'apps/clients/invoices/details?invID='.$item->invoice_id.($item->user_id != $user->id ? '&uID='.$item->user_id : '');
 			$urlToPhoneInvoice = JURI::root().'apps/clients/phonesinvoices/details?invID='.$item->phoneInvoice_id.'&pID='.$item->phone_id.($item->user_id != $user->id ? '&uID='.$item->user_id : '');
-			$desc = !empty($item->phoneInvoice_id) ? '<a href="'.$urlToPhoneInvoice.'" class="new-window" target="_blank">'.$item->description.'</a>' : $item->description;
-			$info = !empty($desc) ? $desc : '';
+			$desc = !empty($item->phoneInvoice_id) ? '<a href="'.$urlToPhoneInvoice.'" target="_blank">'.$item->description.'</a>' : $item->description;
+			$info = $item->fixed == 2 ? '<span class="base-icon-arrows-cw text-live cursor-help hasTooltip" title="'.JText::_('TEXT_RECURRENT').'"></span> ' : '';
+			$info .= !empty($desc) ? $desc : '';
 			$info .= !empty($item->doc_number) ? '<div class="text-xs text-muted">Item: '.$item->doc_number.'</div>' : '';
 			$dependent = !empty($item->dependent) ? '<div class="small text-muted">&raquo; <span class="cursor-help hasTooltip" title="'.JText::_('TEXT_TRANSACTION_BY').'">'.baseHelper::nameFormat($item->dependent).'</span></div>' : '';
 			$invoice = !empty($item->invoice_id) ? '<a href="'.$urlToInvoice.'" class="new-window" target="_blank">'.$item->invoice_desc.'</a><div class="small text-live">'.baseHelper::dateFormat($item->invoiceDate).'</div>' : '';

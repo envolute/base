@@ -32,10 +32,10 @@ $app = JFactory::getApplication();
 				$doc->addScript(JURI::root().'templates/base/libs/content/bxslider/jquery.bxslider.min.js');
 				// CHAMADA DO SLIDER
 				// esconde imagens no carregamento
-				$doc->addStyleDeclaration('.allmode-slider-'.$module->id.' > li:not(:first-child) { position: absolute; top: 0; visibility: hidden; }');
+				$doc->addStyleDeclaration('#allmode-slider-'.$module->id.' > li:not(:first-child) { position: absolute; top: 0; visibility: hidden; }');
 				$script = '
 				jQuery(window).on("load", function(){
-					jQuery(".allmode-slider-'.$module->id.'").bxSlider({
+					jQuery("#allmode-slider-'.$module->id.'").bxSlider({
 						mode: "horizontal",
 						autoHover: true,
 						auto: true,
@@ -45,8 +45,8 @@ $app = JFactory::getApplication();
 						infiniteLoop: true,
 						onSliderLoad:function(currentIndex){
 							// mostra as imagens após o carregamento do plugin
-							jQuery(".allmode-slider-'.$module->id.' img").attr("title","");
-							jQuery(".allmode-slider-'.$module->id.' > li:not(:first-child)").css("visibility", "visible");
+							jQuery("#allmode-slider-'.$module->id.' img").attr("title","");
+							jQuery("#allmode-slider-'.$module->id.' > li:not(:first-child)").css("visibility", "visible");
 						}
 					});
 				});

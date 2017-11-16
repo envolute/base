@@ -179,7 +179,7 @@ jQuery(function() {
 			else alert('<?php echo JText::_('MSG_SELECT_ITEM_FROM_LIST')?>');
 		};
 
-		// CUSTOM -> DEPENDENT lista dependentes de acordo com o associado
+		// CUSTOM -> Set fixed transaction
 		window.<?php echo $APPTAG?>_setFixed = function(val) {
 			setHidden('.<?php echo $APPTAG?>-no-fixed', val);
 			if(val == 1) {
@@ -277,7 +277,7 @@ jQuery(function() {
 						<?php echo $APPTAG?>_getDependentList(item.client_id, item.dependent_id);
 						invoice_id.selectUpdate(item.invoice_id); // select
 						description.val(item.description);
-						checkOption(fixed, item.fixed);
+						checkOption(fixed, (item.fixed == 0 ? 0 : 1));
 						// esconde campos da movimentação normal
 						setHidden('.<?php echo $APPTAG?>-no-fixed', item.fixed);
 						checkOption(isCard, item.isCard);
@@ -583,8 +583,11 @@ jQuery(function() {
 				success: function(data){
 					<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
 					jQuery.map( data, function( res ) {
-						if(res.status == 1) <?php echo $APPTAG?>_listReload(true, false);
-						else $.baseNotify({ msg: res.msg, type: "danger" });
+						if(res.status == 1) {
+							<?php echo $APPTAG?>_listReload(true, false);
+						} else {
+							$.baseNotify({ msg: res.msg, type: "danger" });
+						}
 					});
 				},
 				error: function(xhr, status, error) {

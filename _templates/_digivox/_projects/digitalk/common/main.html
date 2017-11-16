@@ -132,7 +132,7 @@
 								</h6>
 								<div class="col input-group">
 									<span class="input-group-btn">
-										<a href="#" class="btn btn-outline-default b-gray-300 d-flex align-items-center justify-content-center text-lg base-icon-th" data-toggle="modal" data-target="#phoneModal" data-backdrop="false" role="button"></a>
+										<a href="#" class="btn btn-outline-default b-gray-300 d-flex align-items-center justify-content-center text-lg base-icon-th" data-toggle="modal" data-target="#windowNewCall" data-backdrop="false" role="button"></a>
 									</span>
 									<input type="text" class="form-control b-gray-300 px-3" placeholder="search" />
 									<span class="input-group-btn">
@@ -233,9 +233,9 @@
 		</div>
 
 		<!-- Modal -->
-		<div class="modal fade" id="phoneModal" tabindex="-1" role="dialog" aria-labelledby="phoneModalLabel" aria-hidden="true">
+		<div class="modal fade" id="windowNewCall" tabindex="-1" role="dialog" aria-labelledby="windowNewCallLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
-				<div class="modal-content bg-gray-500 rounded">
+				<div class="modal-content rounded">
 					<div class="modal-body">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -267,7 +267,7 @@
 								</span>
 							</div>
 						</div>
-						<div id="phoneKeyboard" class="row text-center">
+						<div id="dial-pad" class="row text-center">
 							<div class="col-4 py-1">
 								<button class="btn btn-lg btn-link rounded-circle">
 									1
@@ -370,7 +370,7 @@
 		// define menu item active
 		jQuery('#navigation #atendimento').addClass('active');
 
-		jQuery("#phoneModal > .modal-dialog").draggable({
+		jQuery("#windowNewCall > .modal-dialog").draggable({
 			drag: function(e, ui) {
 				// Reset to Mouse, adjust for Scale
 				var myScale = parseFloat(jQuery('#screen').css('transform').split(',')[3]);
