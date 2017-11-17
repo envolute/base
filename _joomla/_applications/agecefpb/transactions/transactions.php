@@ -25,7 +25,7 @@ $db = JFactory::getDbo();
 ?>
 
 <script>
-jQuery(function() {
+jQuery(window).on('load', function() {
 
 	<?php // Default 'JS' Vars
 	require(JPATH_CORE.DS.'apps/snippets/initVars.js.php');
@@ -573,6 +573,12 @@ jQuery(function() {
 				return false;
 			}
 			if(!confirm('<?php echo JText::_('MSG_CHARGE_CONFIRM'); ?>')) return false;
+			if(formList.find('.isInstallment').length) {
+				if(!confirm('<?php echo JText::_('MSG_ALERT_INSTALLMENT'); ?>')) return false;
+			} else {
+				if(!confirm('NÃO ACHOU: <?php echo JText::_('MSG_ALERT_INSTALLMENT'); ?>')) return false;
+			}
+
 			<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
 
 			jQuery.ajax({

@@ -49,10 +49,9 @@ $adminView['head']['info'] = $adminView['head']['actions'] = '';
 if($hasAdmin) :
 	$adminView['head']['info'] = '
 		<th width="30" class="d-print-none"><input type="checkbox" id="'.$APPTAG.'_checkAll" /></th>
-		<th width="50" class="d-none d-lg-table-cell d-print-none">'.baseAppHelper::linkOrder('#', 'T1.id', $APPTAG).'</th>
 	';
 	$adminView['head']['actions'] = '
-		<th class="text-center d-none d-lg-table-cell d-print-none" width="60">'.baseAppHelper::linkOrder(JText::_('TEXT_ACTIVE'), 'T1.state', $APPTAG).'</th>
+		<th class="text-center d-none d-lg-table-cell d-print-none" width="60">'.JText::_('TEXT_ACTIVE').'</th>
 		<th class="text-center d-print-none" width="90">'.JText::_('TEXT_ACTIONS').'</th>
 	';
 endif;
@@ -116,12 +115,13 @@ if($num_rows) : // verifica se existe
 					<input type="hidden" name="'.$APPTAG.'_date[]" value="'.$item->date.'" />
 					<input type="hidden" name="'.$APPTAG.'_price[]" value="'.$item->price.'" />
 				</td>
-				<td class="d-none d-lg-table-cell d-print-none">'.$item->id.'</td>
 			';
-			$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
+			$regInfo	= 'ID: <span class=&quot;text-live&quot;>#'.$item->id.'</span>';
+			$regInfo	.= '<hr class=&quot;my-1&quot; />';
+			$regInfo	.= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 			$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
 			if($item->alter_date != '0000-00-00 00:00:00') :
-				$regInfo	.= '<hr class=&quot;my-2&quot; />';
+				$regInfo	.= '<hr class=&quot;my-1&quot; />';
 				$regInfo	.= JText::_('TEXT_ALTER_DATE').': '.baseHelper::dateFormat($item->alter_date, 'd/m/Y H:i').'<br />';
 				$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->alter_by)->name);
 			endif;
@@ -134,7 +134,7 @@ if($num_rows) : // verifica se existe
 				<td class="text-center d-print-none">
 					<a href="#" class="btn btn-xs btn-warning hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil"></span></a>
 					<a href="#" class="btn btn-xs btn-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash"></span></a>
-					<a href="#" class="btn btn-xs btn-outline-primary base-icon-info-circled setPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top"></a>
+					<a href="#" class="btn btn-xs btn-outline-primary base-icon-info-circled hasPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top" data-trigger="click focus"></a>
 				</td>
 			';
 		endif;
@@ -142,10 +142,15 @@ if($num_rows) : // verifica se existe
 		$urlToInvoice = JURI::root().'apps/clients/invoices/details?invID='.$item->invoice_id.($item->user_id != $user->id ? '&uID='.$item->user_id : '');
 		$urlToPhoneInvoice = JURI::root().'apps/clients/phonesinvoices/details?invID='.$item->phoneInvoice_id.'&pID='.$item->phone_id.($item->user_id != $user->id ? '&uID='.$item->user_id : '');
 		$desc = !empty($item->phoneInvoice_id) ? '<a href="'.$urlToPhoneInvoice.'" target="_blank">'.$item->description.'</a>' : $item->description;
-		$info = $item->fixed == 2 ? '<span class="base-icon-arrows-cw text-live cursor-help hasTooltip" title="'.JText::_('TEXT_RECURRENT').'"></span> ' : '';
+		$isInstallment = ($item->installment < $item->total) ? 1 : 0;
+		$info = '';
+		if($item->fixed == 2) $info .= '<span class="base-icon-arrows-cw text-live cursor-help hasTooltip" title="'.JText::_('TEXT_RECURRENT').'"></span> ';
+		else if($isInstallment) $info .= '<span class="base-icon-docs isInstallment text-live cursor-help hasTooltip" title="'.JText::_('TEXT_INSTALLMENT_TRANSACTION').'"></span> ';
+		else if($item->phone_id > 0) $info .= '<span class="base-icon-phone text-live cursor-help hasTooltip" title="'.JText::_('TEXT_ADD_PHONE_INVOICE').'"></span> ';
 		$info .= !empty($desc) ? $desc : '';
 		$info .= !empty($item->doc_number) ? '<div class="text-xs text-muted">Item: '.$item->doc_number.'</div>' : '';
 		$dependent = !empty($item->dependent) ? '<div class="small text-muted">&raquo; <span class="cursor-help hasTooltip" title="'.JText::_('TEXT_TRANSACTION_BY').'">'.baseHelper::nameFormat($item->dependent).'</span></div>' : '';
+		$installments = $isInstallment ? '('.$item->installment.'/'.$item->total.') ' : JText::_('TEXT_IN_CASH');
 		$isCard = $item->isCard == 1 ? '<span class="badge badge-warning text-uppercase cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_IS_CARD').'">'.JText::_('FIELD_LABEL_CARD').'</span>' : '';
 		$note = !empty($item->note) ? '<div class="small text-muted font-featured"><span class="base-icon-info-circled text-live cursor-help hasTooltip" title="Observação"></span> '.$item->note.'</div>' : '';
 		$total = $total + $item->price;
@@ -164,7 +169,7 @@ if($num_rows) : // verifica se existe
   				<td>
 					'.baseHelper::priceFormat($item->price, false, 'R$ ').'
 					<div class="small text-muted">
-						('.$item->installment.'/'.$item->total.') '.$isCard.'
+						'.$installments.$isCard.'
 					</div>
 				</td>
 				'.$adminView['list']['actions'].'
@@ -175,9 +180,9 @@ if($num_rows) : // verifica se existe
 
 	// TOTAL
 	$html .= '
-		<tr class="table-warning">
-			<td colspan="6"><strong>TOTAL</strong></td>
-			<td colspan="7"><strong>'.baseHelper::priceFormat($total, false, 'R$ ').'</strong></td>
+		<tr class="table-warning b-top-2 b-primary">
+			<td colspan="5"><strong>TOTAL</strong></td>
+			<td colspan="3"><strong>'.baseHelper::priceFormat($total, false, 'R$ ').'</strong></td>
 		</tr>
 	';
 
@@ -185,7 +190,7 @@ else : // num_rows = 0
 
 	$html .= '
 		<tr>
-			<td colspan="13">
+			<td colspan="8">
 				<div class="alert alert-warning alert-icon m-0">'.JText::_('MSG_LISTNOREG').'</div>
 			</td>
 		</tr>

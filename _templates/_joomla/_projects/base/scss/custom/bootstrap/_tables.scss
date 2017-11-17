@@ -1,1 +1,5 @@
 // TABLES
+
+.table-striped:not(.table-bordered) td {
+	border-top: none;
+}

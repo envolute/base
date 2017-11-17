@@ -7,8 +7,8 @@ $where = '';
 // filter params
 
 	// STATE -> select
-	$active	= $app->input->get('active', 2, 'int');
-	$where .= ($active == 2) ? $db->quoteName('T1.state').' != '.$active : $db->quoteName('T1.state').' = '.$active;
+	$active	= $app->input->get('active', 1, 'int');
+	$where .= $db->quoteName('T1.state').' = '.$active;
 	// USERGROUP -> select
 	$fGroup	= $app->input->get('fGroup', 0, 'int');
 	if($fGroup != 0) $where .= ' AND '.$db->quoteName('T3.usergroup').' = '.$fGroup;
@@ -67,12 +67,12 @@ $where = '';
 		// $fInst: 3 => parcelas não disponíveis para faturamento
 		$where .= ' AND '.$db->quoteName('T1.charged').' = '.($fInst == 3 ? 0 : 1);
 		if($fInst != 1) :
-			// price = price_total => à vista
-			// price <> price_total => parcela
+			// installment = total => à vista
+			// installment < total => parcela
 			// $fInst: 0 => apenas à vista
 			// $fInst: 2/3 => apenas parcelas
-			$oper = ($fInst == 0) ? ' = ' : ' <> ';
-			$where .= ' AND '.$db->quoteName('T1.price').$oper.$db->quoteName('T1.price_total');
+			$oper = ($fInst == 0) ? ' = ' : ' < ';
+			$where .= ' AND '.$db->quoteName('T1.installment').$oper.$db->quoteName('T1.total');
 		endif;
 		// Reabilita os campos das movimentações avulsas
 		$js = '
@@ -231,6 +231,8 @@ $where = '';
 	$sQuery = ''; // query de busca
 	$sLabel = array(); // label do campo de busca
 	$searchFields = array(
+		'T1.id'					=> 'ID',
+		'T1.transaction_id'		=> '',
 		'T1.description'		=> 'FIELD_LABEL_DESCRIPTION',
 		'T1.doc_number'			=> 'FIELD_LABEL_DOC_NUMBER',
 		'T4.name'				=> 'FIELD_LABEL_DEPENDENT',
@@ -251,9 +253,9 @@ $where = '';
 	$ordf	= $app->input->get($APPTAG.'oF', '', 'string'); // campo a ser ordenado
 	$ordt	= $app->input->get($APPTAG.'oT', '', 'string'); // tipo de ordem: 0 = 'ASC' default, 1 = 'DESC'
 
-	$orderDef = 'T1.id'; // não utilizar vírgula no inicio ou fim
+	$orderDef = 'T1.transaction_id, T1.parent_id'; // não utilizar vírgula no inicio ou fim
 	if(!isset($_SESSION[$APPTAG.'oF'])) : // DEFAULT ORDER
-		$_SESSION[$APPTAG.'oF'] = 'T1.id';
+		$_SESSION[$APPTAG.'oF'] = 'T3.name';
 		$_SESSION[$APPTAG.'oT'] = 'ASC';
 	endif;
 	if(!empty($ordf)) :
@@ -407,28 +409,6 @@ $htmlFilter = '
 				<div class="col-md-4 b-left">
 					<div class="row">
 						<div class="col-lg-6">
-							<label class="label-sm">'.JText::_('FIELD_LABEL_IS_CARD').'</label>
-							<div class="form-group">
-								<select name="fCard" id="fCard" class="form-control form-control-sm set-filter">
-									<option value="2">- '.JText::_('TEXT_ALL').' -</option>
-									<option value="1"'.($fCard == 1 ? ' selected' : '').'>'.JText::_('TEXT_YES').'</option>
-									<option value="0"'.($fCard == 0 ? ' selected' : '').'>'.JText::_('TEXT_NO').'</option>
-								</select>
-							</div>
-						</div>
-						<div class="col-lg-6">
-							<div class="form-group">
-								<label class="label-sm">'.JText::_('TEXT_STATE').'</label>
-								<select name="active" id="active" class="form-control form-control-sm set-filter">
-									<option value="2">- '.JText::_('TEXT_ALL').' -</option>
-									<option value="1"'.($active == 1 ? ' selected' : '').'>'.JText::_('TEXT_ACTIVES').'</option>
-									<option value="0"'.($active == 0 ? ' selected' : '').'>'.JText::_('TEXT_INACTIVES').'</option>
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-lg-6">
 							<div class="form-group">
 								<label class="label-sm">'.JText::_('FIELD_LABEL_USERGROUP').'</label>
 								<select name="fGroup" id="fGroup" class="form-control form-control-sm set-filter">
@@ -439,8 +419,35 @@ $htmlFilter = '
 						</div>
 						<div class="col-lg-6">
 							<div class="form-group">
+								<label class="label-sm">'.JText::_('TEXT_STATE').'</label>
+								<span class="btn-group btn-group-sm btn-group-justified" data-toggle="buttons">
+									<label class="btn btn-default btn-active-success">
+										<input type="radio" name="active" name="active-1" class="set-filter" value="1"'.($active == 1 ? ' checked' : '').' />
+										'.JText::_('TEXT_ACTIVES').'
+									</label>
+									<label class="btn btn-default btn-active-danger">
+										<input type="radio" name="active" name="active-0" class="set-filter" value="0"'.($active == 0 ? ' checked' : '').' />
+										'.JText::_('TEXT_INACTIVES').'
+									</label>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="form-group">
 								<label class="label-sm text-truncate">'.implode(', ', $sLabel).'</label>
 								<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm field-search" />
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<label class="label-sm">'.JText::_('FIELD_LABEL_IS_CARD').'</label>
+							<div class="form-group">
+								<select name="fCard" id="fCard" class="form-control form-control-sm set-filter">
+									<option value="2">- '.JText::_('TEXT_ALL').' -</option>
+									<option value="1"'.($fCard == 1 ? ' selected' : '').'>'.JText::_('TEXT_YES').'</option>
+									<option value="0"'.($fCard == 0 ? ' selected' : '').'>'.JText::_('TEXT_NO').'</option>
+								</select>
 							</div>
 						</div>
 					</div>
