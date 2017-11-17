@@ -560,6 +560,84 @@ jQuery(function() {
 			return false;
 		};
 
+		// CUSTOM -> Disponibiliza as próximas parcelas para serem faturadas
+		window.<?php echo $APPTAG?>_chargeInstallments = function() {
+
+			var formCharged	= jQuery('#form-<?php echo $APPTAG?>-chargeInstallments');
+			var groupIDs	= [];
+			formCharged.find('input[name=<?php echo $APPTAG?>GroupID]:checked').map(function() {
+				groupIDs.push(jQuery(this).val());
+			});
+			if(groupIDs == "") {
+				$.baseNotify({ msg: '<?php echo JText::_('MSG_SELECT_ITEM_FROM_LIST'); ?>', type: "danger" });
+				return false;
+			}
+			if(!confirm('<?php echo JText::_('MSG_CHARGE_CONFIRM'); ?>')) return false;
+			<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
+
+			jQuery.ajax({
+				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=chargeInstallments&arr="+groupIDs,
+				dataType: 'json',
+				cache: false,
+				success: function(data){
+					<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
+					jQuery.map( data, function( res ) {
+						if(res.status == 1) <?php echo $APPTAG?>_listReload(true, false);
+						else $.baseNotify({ msg: res.msg, type: "danger" });
+					});
+				},
+				error: function(xhr, status, error) {
+					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
+					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
+					?>
+					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
+				}
+			});
+			return false;
+		};
+
+		// CUSTOM -> Importa apenas as próximas parcelas selecionadas
+		window.<?php echo $APPTAG?>_chargeSelected = function(action) {
+
+			var msg = '<?php echo JText::_('MSG_CHARGE_SELECTED_CONFIRM'); ?>';
+			if(!confirm(msg)) return false;
+			var inv = jQuery('#<?php echo $APPTAG?>-invID');
+			var cod = '&invID='+inv.val();
+			var state = !isSet(action) ? 1 : (action ? 1 : 0);
+			st = '&st='+state;
+			var dados = formList.serialize();
+
+			<?php echo $APPTAG?>_formExecute(true, true, true); // inicia o loader
+
+			jQuery.ajax({
+				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=chargeSelected"+cod+st,
+				dataType: 'json',
+				type: 'POST',
+				data:  dados,
+				cache: false,
+				success: function(data){
+					<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
+					jQuery.map( data, function( res ) {
+						var alert = (res.status == 1) ? 'success' : 'danger';
+						$.baseNotify({ msg: res.msg, type: alert});
+					});
+				},
+				error: function(xhr, status, error) {
+					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
+					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
+					?>
+					<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
+				},
+				complete: function() {
+					// close modal
+					jQuery('#modal-<?php echo $APPTAG?>-addSelectedFixed').modal('hide');
+					inv.selectUpdate('0');
+					hideTips(); // force tooltip close
+				}
+			});
+			return false;
+		};
+
 		// CUSTOM -> importa a fatura telefônica
 		window.<?php echo $APPTAG?>_phoneInvoice = function() {
 
@@ -675,7 +753,7 @@ jQuery(window).on('load', function() {
 						<span class="base-icon-trash"></span> <?php echo JText::_('TEXT_DELETE'); ?>
 					</button>
 				<?php endif; ?>
-				<button class="btn btn-sm btn-default toggle-state <?php echo ((isset($_GET[$APPTAG.'_filter']) || $cfg['showFilter']) ? 'active' : '')?>" data-toggle="collapse" data-target="<?php echo '#filter-'.$APPTAG?>" aria-expanded="<?php echo ((isset($_GET[$APPTAG.'_filter']) || $cfg['showFilter']) ? 'true' : '')?>" aria-controls="<?php echo 'filter'.$APPTAG?>">
+				<button class="btn btn-sm btn-default toggle-state <?php echo ((isset($_GET[$APPTAG.'_filter']) || $cfg['showFilter']) ? 'active' : '')?>" data-toggle="collapse" data-target="<?php echo '#filter-container-'.$APPTAG?>" aria-expanded="<?php echo ((isset($_GET[$APPTAG.'_filter']) || $cfg['showFilter']) ? 'true' : '')?>" aria-controls="<?php echo 'filter'.$APPTAG?>">
 					<span class="base-icon-filter"></span> <?php echo JText::_('TEXT_FILTER'); ?> <span class="base-icon-sort"></span>
 				</button>
 			<?php endif; ?>
@@ -751,6 +829,22 @@ jQuery(window).on('load', function() {
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<?php require($APPTAG.'.addSelectedFixed.form.php'); ?>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="modal-<?php echo $APPTAG?>-chargeInstallments" tabindex="-1" role="dialog" aria-labelledby="modal-<?php echo $APPTAG?>-chargeInstallmentsLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<?php require($APPTAG.'.chargeInstallments.form.php'); ?>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="modal-<?php echo $APPTAG?>-chargeSelected" tabindex="-1" role="dialog" aria-labelledby="modal-<?php echo $APPTAG?>-chargeSelectedLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<?php require($APPTAG.'.chargeSelected.form.php'); ?>
 				</div>
 			</div>
 		</div>

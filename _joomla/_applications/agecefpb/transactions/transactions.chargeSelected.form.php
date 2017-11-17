@@ -16,11 +16,11 @@ $invoices = $db->loadObjectList();
 ?>
 
 <div class="modal-header">
-	<h5 class="modal-title"><?php echo JText::_('TEXT_ADD_FIXED'); ?></h5>
+	<h5 class="modal-title"><?php echo JText::_('TEXT_CHARGE_INSTALLMENTS_DESC'); ?></h5>
 	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 </div>
 <div class="modal-body">
-	<fieldset id="form-<?php echo $APPTAG?>-addSelectedFixed" method="post">
+	<fieldset id="form-<?php echo $APPTAG?>-chargeSelected" method="post">
 		<label class="label-sm"><?php echo JText::_('TEXT_IMPORT_TO')?>:</label>
 		<div class="row">
 			<div class="col-sm-8">
@@ -38,7 +38,7 @@ $invoices = $db->loadObjectList();
 			</div>
 			<div class="col-sm-4 text-right">
 				<div class="form-group">
-					<button type="button" name="btn-<?php echo $APPTAG?>-addSelected-fixed" id="btn-<?php echo $APPTAG?>-addSelected-fixed" class="btn btn-block btn-success" onclick="<?php echo $APPTAG?>_addSelectedFixed()">
+					<button type="button" name="btn-<?php echo $APPTAG?>-chargeSelected" id="btn-<?php echo $APPTAG?>-chargeSelected" class="btn btn-block btn-success" onclick="<?php echo $APPTAG?>_chargeSelected(<?php echo ($fInst < 3 ? 0 : 1)?>)">
 						<span class="base-icon-plus btn-icon"></span>
 						<?php echo JText::_('TEXT_IMPORT'); ?>
 					</button>

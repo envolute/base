@@ -597,6 +597,40 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 					}
 
+				// CUSTOM -> CHARGE SELECTED INSTALLMENTS
+				elseif($task == 'chargeSelected') :
+
+					$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '.$db->quoteName('charged').' = '.$state.' WHERE '.$db->quoteName('id').' IN ('.$ids.')';
+
+					try {
+						$db->setQuery($query);
+						$db->execute();
+
+						$action = $state == 1 ? 'CHARGED' : 'UNCHARGED';
+
+						$data[] = array(
+							'status'			=> 1,
+							'msg'				=> JText::_('MSG_'.$action.'_SELECTED_SUCCESS')
+						);
+
+					} catch (RuntimeException $e) {
+
+						// Error treatment
+						switch($e->getCode()) {
+							case '1062':
+								$sqlErr = JText::_('MSG_SQL_DUPLICATE_FIXED');
+								break;
+							default:
+								$sqlErr = 'Erro: '.$e->getCode().'. '.$e->getMessage();
+						}
+
+						$data[] = array(
+							'status'			=> 0,
+							'msg'				=> $sqlErr
+						);
+
+					}
+
 				endif; // end task
 
 			endif; // num rows
@@ -665,7 +699,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 								$transactionID = $id;
 								$request['invoice_id'] = 0;
 								// atribui o 'transaction_id' ao item principal para a ordenação na listagem
-								$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '.$db->quoteName('transaction_id').' = '.$id.' WHERE '.$db->quoteName('id').' = '.$id;
+								$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '.$db->quoteName('transaction_id').' = '.$id.', '.$db->quoteName('charged').' = 1 WHERE '.$db->quoteName('id').' = '.$id;
 								$db->setQuery($query);
 								$db->execute();
 			                }
@@ -866,6 +900,83 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						);
 
 					}
+
+				else :
+
+					$data[] = array(
+						'status'			=> 0,
+						'msg'				=> JText::_('MSG_SELECT_GROUP')
+					);
+
+				endif;
+
+			// CUSTOM -> CHARGE INSTALLMENTS
+			elseif($task == 'chargeInstallments') :
+
+				// Importa movimentações por grupo
+				if(!empty($arrIds)) :
+
+					$query = '
+						SELECT '.$db->quoteName('T1.id').'
+						FROM '. $db->quoteName($cfg['mainTable']) .' T1
+							JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
+							ON '.$db->quoteName('T2.id').' = '.$db->quoteName('T1.client_id').'
+						WHERE
+							'.$db->quoteName('T1.invoice_id').' = 0 AND
+							'.$db->quoteName('T1.installment').' > 1 AND
+							'.$db->quoteName('T1.charged').' = 0 AND
+							'.$db->quoteName('T2.usergroup').' IN ('.$arrIds.') AND
+							'.$db->quoteName('T1.state').' = 1
+						GROUP BY '.$db->quoteName('T1.transaction_id').'
+						ORDER BY '.$db->quoteName('T1.id').', '.$db->quoteName('T1.installment')
+					;
+					$db->setQuery($query);
+					$inst = $db->loadColumn();
+
+					if(count($inst)) :
+
+						$instIds = implode(',', $inst);
+						$query = '
+							UPDATE '. $db->quoteName($cfg['mainTable']) .'
+							SET '.$db->quoteName('charged').' = 1
+							WHERE '.$db->quoteName('id').' IN ('.$instIds.')
+						';
+
+						try {
+							$db->setQuery($query);
+							$db->execute();
+
+							$data[] = array(
+								'status'			=> 1,
+								'msg'				=> ''
+							);
+
+						} catch (RuntimeException $e) {
+
+							// Error treatment
+							switch($e->getCode()) {
+								case '1062':
+									$sqlErr = JText::_('MSG_SQL_DUPLICATE_FIXED');
+									break;
+								default:
+									$sqlErr = 'Erro: '.$e->getCode().'. '.$e->getMessage();
+							}
+
+							$data[] = array(
+								'status'			=> 0,
+								'msg'				=> $sqlErr
+							);
+
+						}
+
+					else :
+
+						$data[] = array(
+							'status'			=> 0,
+							'msg'				=> JText::_('MSG_CHARGED_EMPTY')
+						);
+
+					endif;
 
 				else :
 
