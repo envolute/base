@@ -2,20 +2,31 @@
 // Set State
 // seta o valor do campo 'state' do registro
 ?>
-window.<?php echo $APPTAG?>_setState = function(itemID, state) {
+window.<?php echo $APPTAG?>_setState = function(itemID, state, recursive) {
 
 	var dados = cod = st = e = '';
 	var msg = '<?php echo JText::_('MSG_LIST0CONFIRM'); ?>';
 	if(state === 1) msg = '<?php echo JText::_('MSG_LIST1CONFIRM'); ?>';
 	if(typeof state !== "null" && typeof state !== "undefined") st = '&st='+state;
-	if(itemID) {
-		cod = '&id='+itemID;
-	} else {
-		if(!confirm(msg)) return false;
-		dados = formList.serialize();
-	}
 
-	<?php echo $APPTAG?>_formExecute(true, true, true); // inicia o loader
+	if(itemID) {
+
+		cod = '&id='+itemID;
+		<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
+
+	} else {
+
+		var reCursive = (isSet(recursive) && recursive) ? true : false;
+		if(!reCursive) {
+			if(!confirm(msg)) return false;
+			<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
+		}
+
+		dados		= formList.serialize();
+		inputVars	= formList.find('input[type="checkbox"]:checked, input[type="hidden"]').length;
+
+	}
+	console.log('setState');
 
 	jQuery.ajax({
 		url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=state"+cod+st,
@@ -24,10 +35,14 @@ window.<?php echo $APPTAG?>_setState = function(itemID, state) {
 		data:  dados,
 		cache: false,
 		success: function(data){
-			<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
 			jQuery.map( data, function( res ) {
+				console.log('Status: '+res.status);
 				if(res.status == 4) {
 					for(i = 0; i < res.ids.length; i++) {
+						console.log('desmarca ID: '+res.ids[i]);
+						// desmarca as linhas referentes aos itens excluídos
+						jQuery('input[name="<?php echo $APPTAG?>_ids[]"][value="'+res.ids[i]+'"]').prop('checked', false);
+						// formata as linhas da listagem
 						e = list.find('#<?php echo $APPTAG?>-state-'+res.ids[i]+' > span');
 						if((res.state == 2 && e.hasClass('base-icon-ok')) || res.state == 0) {
 							e.removeClass('base-icon-ok text-success').addClass('base-icon-cancel text-danger');
@@ -54,6 +69,22 @@ window.<?php echo $APPTAG?>_setState = function(itemID, state) {
 						}
 					}
 					<?php if(!$cfg['listFull']) echo $APPTAG.'_listReload(false, false, false, '.$APPTAG.'oCHL, '.$APPTAG.'rNID, '.$APPTAG.'rID);'; ?>
+					// Tempo para que as linhas sejam desmarcadas...
+					// evitando o reenvio dos itens já executados
+					setTimeout(function() {
+						// verifica quantos estão selecionados
+						var listChecks	= formList.find('input[type="checkbox"]:checked').length;
+						console.log('listChecks: '+listChecks);
+						// Verifica se o envio excede o limite de 1000 para o parâmetro 'max_input_vars' do PHP
+						if(inputVars > maxInputVars && listChecks > 0) {
+							console.log('recall');
+							<?php echo $APPTAG?>_setState(itemID, state, true); // executa novamente com os itens restantes
+						} else {
+							<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
+							$.baseNotify({ msg: res.msg, type: "success"});
+							console.log('finish');
+						}
+					}, 300);
 				} else {
 					$.baseNotify({ msg: res.msg, type: "danger"});
 				}

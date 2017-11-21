@@ -473,7 +473,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 						$data[] = array(
 							'status'			=> 1,
-							'msg'				=> $query
+							'ids'				=> explode(',', $ids),
+							'msg'				=> ''
 						);
 
 					} catch (RuntimeException $e) {
@@ -506,6 +507,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 						$data[] = array(
 							'status'			=> 1,
+							'ids'				=> explode(',', $ids),
 							'msg'				=> ''
 						);
 
@@ -536,6 +538,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('price') .','.
 							$db->quoteName('price_total') .','.
 							$db->quoteName('installment') .','.
+							$db->quoteName('charged') .','.
 							$db->quoteName('total') .','.
 							$db->quoteName('doc_number') .','.
 							$db->quoteName('note') .','.
@@ -555,6 +558,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							CURDATE(),'.
 							$db->quoteName('T1.price') .','.
 							$db->quoteName('T1.price_total') .',
+							1,
 							1,
 							1,'.
 							$db->quoteName('T1.doc_number') .','.
@@ -576,6 +580,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 						$data[] = array(
 							'status'			=> 1,
+							'ids'				=> explode(',', $ids),
 							'msg'				=> JText::_('MSG_ADD_SELECTED_SUCCESS')
 						);
 
@@ -600,17 +605,16 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				// CUSTOM -> CHARGE SELECTED INSTALLMENTS
 				elseif($task == 'chargeSelected') :
 
-					$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '.$db->quoteName('charged').' = '.$state.' WHERE '.$db->quoteName('id').' IN ('.$ids.')';
+					$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '.$db->quoteName('charged').' = 1 WHERE '.$db->quoteName('id').' IN ('.$ids.')';
 
 					try {
 						$db->setQuery($query);
 						$db->execute();
 
-						$action = $state == 1 ? 'CHARGED' : 'UNCHARGED';
-
 						$data[] = array(
 							'status'			=> 1,
-							'msg'				=> JText::_('MSG_'.$action.'_SELECTED_SUCCESS')
+							'ids'				=> explode(',', $ids),
+							'msg'				=> JText::_('MSG_CHARGED_SELECTED_SUCCESS')
 						);
 
 					} catch (RuntimeException $e) {
@@ -618,7 +622,40 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						// Error treatment
 						switch($e->getCode()) {
 							case '1062':
-								$sqlErr = JText::_('MSG_SQL_DUPLICATE_FIXED');
+								$sqlErr = JText::_('MSG_SQL_DUPLICATE_KEY');
+								break;
+							default:
+								$sqlErr = 'Erro: '.$e->getCode().'. '.$e->getMessage();
+						}
+
+						$data[] = array(
+							'status'			=> 0,
+							'msg'				=> $sqlErr
+						);
+
+					}
+
+				// CUSTOM -> UNCHARGE SELECTED INSTALLMENTS
+				elseif($task == 'unchargeSelected') :
+
+					$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '.$db->quoteName('invoice_id').' = 0, '.$db->quoteName('charged').' = 0 WHERE '.$db->quoteName('id').' IN ('.$ids.')';
+
+					try {
+						$db->setQuery($query);
+						$db->execute();
+
+						$data[] = array(
+							'status'			=> 1,
+							'ids'				=> explode(',', $ids),
+							'msg'				=> JText::_('MSG_UNCHARGED_SELECTED_SUCCESS')
+						);
+
+					} catch (RuntimeException $e) {
+
+						// Error treatment
+						switch($e->getCode()) {
+							case '1062':
+								$sqlErr = JText::_('MSG_SQL_DUPLICATE_KEY');
 								break;
 							default:
 								$sqlErr = 'Erro: '.$e->getCode().'. '.$e->getMessage();
@@ -841,6 +878,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('price') .','.
 							$db->quoteName('price_total') .','.
 							$db->quoteName('installment') .','.
+							$db->quoteName('charged') .','.
 							$db->quoteName('total') .','.
 							$db->quoteName('doc_number') .','.
 							$db->quoteName('note') .','.
@@ -859,6 +897,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							CURDATE(),'.
 							$db->quoteName('T1.price') .','.
 							$db->quoteName('T1.price_total') .',
+							1,
 							1,
 							1,'.
 							$db->quoteName('T1.doc_number') .','.
@@ -1136,6 +1175,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('price') .','.
 						$db->quoteName('price_total') .','.
 						$db->quoteName('installment') .','.
+						$db->quoteName('charged') .','.
 						$db->quoteName('total') .','.
 						$db->quoteName('doc_number') .','.
 						$db->quoteName('note') .','.
@@ -1158,6 +1198,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('due_date') .',
 						(`total_servicos` + `taxa_servico` + (IF(`total_plano` > `valor_plano`, `total_plano`, `valor_plano`))),
 						(`total_servicos` + `taxa_servico` + (IF(`total_plano` > `valor_plano`, `total_plano`, `valor_plano`))),'.
+						'1,'.
 						'1,'.
 						'1,'.
 						$db->quoteName('tel') .','.

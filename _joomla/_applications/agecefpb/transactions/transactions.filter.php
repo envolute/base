@@ -84,7 +84,6 @@ $where = '';
 
 		// Apenas para movimentações Avulsas/Importadas
 		$instActions = '';
-		$txtSelect = 'TEXT_CHARGE_SELECTED';
 		if($fInst < 3) :
 			// Importa próximas parcelas
 			$instActions = '
@@ -94,16 +93,27 @@ $where = '';
 					</button>
 				</div>
 			';
-			$txtSelect = 'TEXT_UNCHARGE_SELECTED';
 		endif;
-		// Importa parcelas selecionadas
-		$instActions .= '
-			<div class="form-group d-inline-block">
-				<button type="button" class="btn btn-sm btn-primary '.$APPTAG.'-btn-action hasTooltip" title="'.JText::_('TEXT_CHARGE_SELECTED_DESC').'" disabled data-toggle="modal" data-target="#modal-'.$APPTAG.'-chargeSelected" data-backdrop="static" data-keyboard="false">
-					<span class="base-icon-download btn-icon"></span> '.JText::_($txtSelect).'
-				</button>
-			</div>
-		';
+		if($fInst == 2 && $fInv == 0) :
+			// remove parcelas selecionadas
+			$instActions .= '
+				<div class="form-group d-inline-block">
+					<button type="button" class="btn btn-sm btn-danger '.$APPTAG.'-btn-action hasTooltip" title="'.JText::_('TEXT_UNCHARGE_SELECTED_DESC').'" disabled onclick="'.$APPTAG.'_unchargeSelected()">
+						<span class="base-icon-download btn-icon"></span> '.JText::_('TEXT_UNCHARGE_SELECTED').'
+					</button>
+				</div>
+			';
+		endif;
+		if($fInst == 3) :
+			// Importa parcelas selecionadas
+			$instActions .= '
+				<div class="form-group d-inline-block">
+					<button type="button" class="btn btn-sm btn-primary '.$APPTAG.'-btn-action hasTooltip" title="'.JText::_('TEXT_CHARGE_SELECTED_DESC').'" disabled data-toggle="modal" data-target="#modal-'.$APPTAG.'-chargeSelected" data-backdrop="static" data-keyboard="false">
+						<span class="base-icon-download btn-icon"></span> '.JText::_('TEXT_CHARGE_SELECTED').'
+					</button>
+				</div>
+			';
+		endif;
 
 		if($fInv != 1) : // 1 = sem filtro para faturas, todas as movimentações
 

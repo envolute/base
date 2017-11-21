@@ -38,7 +38,7 @@ $invoices = $db->loadObjectList();
 			</div>
 			<div class="col-sm-4 text-right">
 				<div class="form-group">
-					<button type="button" name="btn-<?php echo $APPTAG?>-chargeSelected" id="btn-<?php echo $APPTAG?>-chargeSelected" class="btn btn-block btn-success" onclick="<?php echo $APPTAG?>_chargeSelected(<?php echo ($fInst < 3 ? 0 : 1)?>)">
+					<button type="button" name="btn-<?php echo $APPTAG?>-chargeSelected" id="btn-<?php echo $APPTAG?>-chargeSelected" class="btn btn-block btn-success" onclick="<?php echo $APPTAG?>_chargeSelected()">
 						<span class="base-icon-plus btn-icon"></span>
 						<?php echo JText::_('TEXT_IMPORT'); ?>
 					</button>

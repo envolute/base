@@ -21,6 +21,8 @@ var listPopup		= jQuery('#modal-list-<?php echo $APPTAG?>');
 	// lista completa
 	var formFilter	= jQuery('#filter-<?php echo $APPTAG?>');
 	var formList	= jQuery('#form-list-<?php echo $APPTAG?>');
+		// Qtd. máxima de inputs enviados através do ajax para o php...
+		window.maxInputVars = 1000; // valor padrão do php
 	var formLimit	= jQuery('#form-limit-<?php echo $APPTAG?>');
 	var formOrder	= jQuery('#form-order-<?php echo $APPTAG?>');
 	// relacionamento

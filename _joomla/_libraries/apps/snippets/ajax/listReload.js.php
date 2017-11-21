@@ -11,9 +11,9 @@ window.<?php echo $APPTAG?>_listReload = function(reload, remove, ids, onlyChild
 			if(reload) {
 				<?php $qs = !empty($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'] : '' ?>
 				location.href = '<?php echo JURI::current().$qs?>';
-			} else if(remove && ids.length > 0) {
+			} else if(ids.length > 0) {
 				for(i = 0; i < ids.length; i++) {
-					jQuery('#<?php echo $APPTAG?>-item-'+ids[i]).remove();
+					if(remove) jQuery('#<?php echo $APPTAG?>-item-'+ids[i]).remove();
 				}
 			}
 			fReload = false;
