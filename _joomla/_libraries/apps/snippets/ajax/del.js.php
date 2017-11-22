@@ -42,19 +42,21 @@ window.<?php echo $APPTAG?>_del = function(itemID, isForm, recursive) {
 					}
 					// remove as linhas referentes aos itens excluídos
 					<?php echo $APPTAG?>_listReload(false, true, res.ids, <?php echo $APPTAG?>oCHL, <?php echo $APPTAG?>rNID, <?php echo $APPTAG?>rID);
-					// Tempo para que as linhas sejam excluídas...
-					// evitando o reenvio dos itens já executados
-					setTimeout(function() {
-						// verifica quantos estão selecionados
-						var listChecks	= formList.find('input[type="checkbox"]:checked').length;
-						// Verifica se o envio excede o limite de 1000 para o parâmetro 'max_input_vars' do PHP
-						if(inputVars > maxInputVars && listChecks > 0) {
-							<?php echo $APPTAG?>_del(itemID, false, true); // executa novamente com os itens restantes
-						} else {
-							<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
-							$.baseNotify({ msg: res.msg, type: "success"});
-						}
-					}, 300);
+					// item individual
+					if(itemID) {
+						<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
+						$.baseNotify({ msg: res.msg, type: "success"});
+					} else {
+						// Tempo para que as linhas sejam excluídas...
+						// evitando o reenvio dos itens já executados
+						setTimeout(function() {
+							// verifica quantos estão selecionados
+							var listChecks	= formList.find('input[type="checkbox"]:checked').length;
+							// Verifica se o envio excede o limite de 1000 para o parâmetro 'max_input_vars' do PHP
+							if(inputVars > maxInputVars && listChecks > 0) <?php echo $APPTAG?>_del(itemID, false, true); // executa novamente com os itens restantes
+							else <?php echo $APPTAG?>_listReload(true, false); // recarrega a página
+						}, 300);
+					}
 				} else {
 					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
 					$.baseNotify({ msg: res.msg, type: "danger"});

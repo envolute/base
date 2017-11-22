@@ -540,10 +540,16 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$elemVal = $ids;
 						endif;
 
+						$setIds = explode(',', $ids);
+						if(count($setIds) > 1) :
+							$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_ITEMS_DELETED_SUCCESS');
+							$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
+						endif;
+
 						$data[] = array(
 							'status'			=> 3,
-							'ids'				=> explode(',', $ids),
-							'msg'				=> JText::_('MSG_DELETED').$userMsg,
+							'ids'				=> $setIds,
+							'msg'				=> JText::_('MSG_DELETED'),
 							'uploadError'		=> $fileMsg,
 							'parentField'		=> $element,
 							'parentFieldVal'	=> $elemVal
@@ -603,10 +609,16 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 						}
 
+						$setIds = explode(',', $ids);
+						if(count($setIds) > 1) :
+							$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_ITEMS_ALTER_SUCCESS');
+							$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
+						endif;
+
 						$data[] = array(
 							'status'			=> 4,
 							'state'				=> $state,
-							'ids'				=> explode(',', $ids),
+							'ids'				=> $setIds,
 							'msg'				=> '',
 							'parentField'		=> $element,
 							'parentFieldVal'	=> $elemVal,
@@ -926,10 +938,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					endif;
 				}
 
-				// Salva na sessão a informação de 'sincronização' dos dados
-				// Assim é possível saber que os dados foram sincronizados
-				// caso haja o redirecionamento para outra página...
-				$_SESSION[$APPTAG.'SyncSuccess'] = true;
+				$setIds = explode(',', $ids);
+				if(count($setIds) > 1) :
+					$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_USER_SYNCHRONIZED');
+					$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
+				endif;
 
 				$data[] = array(
 					'status' => 1

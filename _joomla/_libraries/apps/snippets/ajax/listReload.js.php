@@ -37,10 +37,10 @@ window.<?php echo $APPTAG?>_listReload = function(reload, remove, ids, onlyChild
 					list.html(data);
 				},
 				error: function(xhr, status, error) {
+					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
 					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
 					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
 					?>
-					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
 				},
 				complete: function() {
 					// Reload Javascript Base

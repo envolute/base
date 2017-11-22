@@ -405,6 +405,7 @@ jQuery(window).on('load', function() {
 							// remove os itens executados
 							if(res.ids.length > 0) {
 								for(i = 0; i < res.ids.length; i++) {
+									// remove as linhas referentes aos itens executados
 									jQuery('#<?php echo $APPTAG?>-item-'+res.ids[i]).remove();
 								}
 							}
@@ -457,6 +458,7 @@ jQuery(window).on('load', function() {
 							// remove os itens executados
 							if(res.ids.length > 0) {
 								for(i = 0; i < res.ids.length; i++) {
+									// remove as linhas referentes aos itens executados
 									jQuery('#<?php echo $APPTAG?>-item-'+res.ids[i]).remove();
 								}
 							}
@@ -553,9 +555,8 @@ jQuery(window).on('load', function() {
 							// remove os itens executados
 							if(res.ids.length > 0) {
 								for(i = 0; i < res.ids.length; i++) {
-									// desmarca as linhas executadas
-									// Evita que seja executadas novamente
-									jQuery('input[name="<?php echo $APPTAG?>_ids[]"][value="'+res.ids[i]+'"]').prop('checked', false);
+									// remove as linhas referentes aos itens executados
+									jQuery('#<?php echo $APPTAG?>-item-'+res.ids[i]).remove();
 								}
 							}
 							// Tempo para que as linhas sejam desmarcadas...
@@ -564,16 +565,8 @@ jQuery(window).on('load', function() {
 								// verifica quantos estão selecionados
 								var listChecks	= formList.find('input[type="checkbox"]:checked').length;
 								// Verifica se o envio excede o limite de 1000 para o parâmetro 'max_input_vars' do PHP
-								if(inputVars > maxInputVars && listChecks > 0) {
-									<?php echo $APPTAG?>_addSelectedFixed(true); // executa novamente com os itens restantes
-								} else {
-									<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
-									// close & reset modal
-									jQuery('#modal-<?php echo $APPTAG?>-addSelectedFixed').modal('hide');
-									inv.selectUpdate('0');
-									hideTips(); // force tooltip close
-									$.baseNotify({ msg: res.msg, type: "success"});
-								}
+								if(inputVars > maxInputVars && listChecks > 0) <?php echo $APPTAG?>_addSelectedFixed(true); // executa novamente com os itens restantes
+								else <?php echo $APPTAG?>_listReload(true, false); // recarrega a página
 							}, 300);
 						} else {
 							<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
@@ -662,6 +655,7 @@ jQuery(window).on('load', function() {
 							// remove os itens executados
 							if(res.ids.length > 0) {
 								for(i = 0; i < res.ids.length; i++) {
+									// remove as linhas referentes aos itens executados
 									jQuery('#<?php echo $APPTAG?>-item-'+res.ids[i]).remove();
 								}
 							}
@@ -671,16 +665,8 @@ jQuery(window).on('load', function() {
 								// verifica quantos estão selecionados
 								var listChecks	= formList.find('input[type="checkbox"]:checked').length;
 								// Verifica se o envio excede o limite de 1000 para o parâmetro 'max_input_vars' do PHP
-								if(inputVars > maxInputVars && listChecks > 0) {
-									<?php echo $APPTAG?>_chargeSelected(true); // executa novamente com os itens restantes
-								} else {
-									<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
-									// close modal
-									jQuery('#modal-<?php echo $APPTAG?>-chargeSelected').modal('hide');
-									inv.selectUpdate('0');
-									hideTips(); // force tooltip close
-									$.baseNotify({ msg: res.msg, type: "success"});
-								}
+								if(inputVars > maxInputVars && listChecks > 0) <?php echo $APPTAG?>_chargeSelected(true); // executa novamente com os itens restantes
+								else <?php echo $APPTAG?>_listReload(true, false); // recarrega a página
 							}, 300);
 						} else {
 							<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
@@ -722,6 +708,7 @@ jQuery(window).on('load', function() {
 							// remove os itens executados
 							if(res.ids.length > 0) {
 								for(i = 0; i < res.ids.length; i++) {
+									// remove as linhas referentes aos itens executados
 									jQuery('#<?php echo $APPTAG?>-item-'+res.ids[i]).remove();
 								}
 							}

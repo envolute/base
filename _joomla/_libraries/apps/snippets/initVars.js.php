@@ -1,7 +1,20 @@
 <?php
 // APP JS DEFAULT VARS
 // Variáveis default da app
+
+// MENSAGEM INICIAL
+// Mostra a mensagem inicial da página previamente armazenada em uma variável de sessão...
+$alertCtx = 'success';
+if(isset($_SESSION[$APPTAG.'baseAlert']) && !empty($_SESSION[$APPTAG.'baseAlert']['message'])) :
+	// define o contexto "success, warning, danger..."
+	if(isset($_SESSION[$APPTAG.'baseAlert']['context']) && !empty($_SESSION[$APPTAG.'baseAlert']['context'])) $alertCtx = $_SESSION[$APPTAG.'baseAlert']['context'];
+	// mostra a notificação...
+	echo '$.baseNotify({ msg: "'.$_SESSION[$APPTAG.'baseAlert']['message'].'", type: "'.$alertCtx.'" });';
+	// limpa a mensagem
+	unset($_SESSION[$APPTAG.'baseAlert']);
+endif;
 ?>
+
 var mainForm		= jQuery('#form-<?php echo $APPTAG?>');
 window.mainForm_<?php echo $APPTAG?> = mainForm;
 	// form paginator

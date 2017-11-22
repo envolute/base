@@ -106,32 +106,6 @@ if($num_rows) : // verifica se existe
 			$adminView['list']['info'] = '
 				<td class="check-row d-print-none">
 					<input type="checkbox" name="'.$APPTAG.'_ids[]" class="'.$APPTAG.'-chk" value="'.$item->id.'" />
-					<input type="hidden" name="'.$APPTAG.'_parent_id[]" value="'.$item->parent_id.'" />
-					<input type="hidden" name="'.$APPTAG.'_provider_id[]" value="'.$item->provider_id.'" />
-					<input type="hidden" name="'.$APPTAG.'_client_id[]" value="'.$item->client_id.'" />
-					<input type="hidden" name="'.$APPTAG.'_dependent_id[]" value="'.$item->dependent_id.'" />
-					<input type="hidden" name="'.$APPTAG.'_description[]" value="'.$item->description.'" />
-					<input type="hidden" name="'.$APPTAG.'_fixed[]" value="'.$item->fixed.'" />
-					<input type="hidden" name="'.$APPTAG.'_date[]" value="'.$item->date.'" />
-					<input type="hidden" name="'.$APPTAG.'_price[]" value="'.$item->price.'" />
-
-					<input type="hidden" name="'.$APPTAG.'_parent_id[]" value="'.$item->parent_id.'" />
-					<input type="hidden" name="'.$APPTAG.'_provider_id[]" value="'.$item->provider_id.'" />
-					<input type="hidden" name="'.$APPTAG.'_client_id[]" value="'.$item->client_id.'" />
-					<input type="hidden" name="'.$APPTAG.'_dependent_id[]" value="'.$item->dependent_id.'" />
-					<input type="hidden" name="'.$APPTAG.'_description[]" value="'.$item->description.'" />
-					<input type="hidden" name="'.$APPTAG.'_fixed[]" value="'.$item->fixed.'" />
-					<input type="hidden" name="'.$APPTAG.'_date[]" value="'.$item->date.'" />
-					<input type="hidden" name="'.$APPTAG.'_price[]" value="'.$item->price.'" />
-
-					<input type="hidden" name="'.$APPTAG.'_parent_id[]" value="'.$item->parent_id.'" />
-					<input type="hidden" name="'.$APPTAG.'_provider_id[]" value="'.$item->provider_id.'" />
-					<input type="hidden" name="'.$APPTAG.'_client_id[]" value="'.$item->client_id.'" />
-					<input type="hidden" name="'.$APPTAG.'_dependent_id[]" value="'.$item->dependent_id.'" />
-					<input type="hidden" name="'.$APPTAG.'_description[]" value="'.$item->description.'" />
-					<input type="hidden" name="'.$APPTAG.'_fixed[]" value="'.$item->fixed.'" />
-					<input type="hidden" name="'.$APPTAG.'_date[]" value="'.$item->date.'" />
-					<input type="hidden" name="'.$APPTAG.'_price[]" value="'.$item->price.'" />
 				</td>
 			';
 			$regInfo	= 'ID: <span class=&quot;text-live&quot;>#'.$item->id.'</span>';

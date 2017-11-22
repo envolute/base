@@ -7,8 +7,8 @@ $where = '';
 // filter params
 
 	// STATE -> select
-	$active	= $app->input->get('active', 1, 'int');
-	$where .= $db->quoteName('T1.state').' = '.$active;
+	$active	= $app->input->get('active', 2, 'int');
+	$where .= ($active == 2) ? $db->quoteName('T1.state').' != '.$active : $db->quoteName('T1.state').' = '.$active;
 	// USERGROUP -> select
 	$fGroup	= $app->input->get('fGroup', 0, 'int');
 	if($fGroup != 0) $where .= ' AND '.$db->quoteName('T3.usergroup').' = '.$fGroup;
@@ -395,7 +395,7 @@ $htmlFilter = '
 						</div>
 						<div class="col-lg-6">
 							<div id="fSType-group" class="form-group">
-								<label class="label-sm iconTip hasTooltip" title="'.JText::_('TEXT_IMPORTED_TRANSACTIONS_DESC').'">'.JText::_('TEXT_IMPORTED_TRANSACTIONS').'</label>
+								<label class="label-sm iconTip hasTooltip" title="'.JText::_('TEXT_FIXED_IMPORTED_DESC').'">'.JText::_('TEXT_FIXED_IMPORTED').'</label>
 								<select name="fSType" id="fSType" class="form-control form-control-sm set-filter">
 									<option value="1">'.JText::_('TEXT_SHOW').'</option>
 									<option value="0"'.($fSType == 0 ? ' selected' : '').'>'.JText::_('TEXT_HIDE').'</option>
@@ -429,17 +429,12 @@ $htmlFilter = '
 						</div>
 						<div class="col-lg-6">
 							<div class="form-group">
-								<label class="label-sm">'.JText::_('TEXT_STATE').'</label>
-								<span class="btn-group btn-group-sm btn-group-justified" data-toggle="buttons">
-									<label class="btn btn-default btn-active-success">
-										<input type="radio" name="active" name="active-1" class="set-filter" value="1"'.($active == 1 ? ' checked' : '').' />
-										'.JText::_('TEXT_ACTIVES').'
-									</label>
-									<label class="btn btn-default btn-active-danger">
-										<input type="radio" name="active" name="active-0" class="set-filter" value="0"'.($active == 0 ? ' checked' : '').' />
-										'.JText::_('TEXT_INACTIVES').'
-									</label>
-								</span>
+								<label class="label-sm">'.JText::_('FIELD_LABEL_ITEM_STATE').'</label>
+								<select name="active" id="active" class="form-control form-control-sm set-filter">
+									<option value="2">- '.JText::_('TEXT_ALL').' -</option>
+									<option value="1"'.($active == 1 ? ' selected' : '').'>'.JText::_('TEXT_ACTIVES').'</option>
+									<option value="0"'.($active == 0 ? ' selected' : '').'>'.JText::_('TEXT_INACTIVES').'</option>
+								</select>
 							</div>
 						</div>
 					</div>

@@ -377,9 +377,15 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$elemVal = $ids;
 						endif;
 
+						$setIds = explode(',', $ids);
+						if(count($setIds) > 1) :
+							$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_ITEMS_DELETED_SUCCESS');
+							$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
+						endif;
+
 						$data[] = array(
 							'status'			=> 3,
-							'ids'				=> explode(',', $ids),
+							'ids'				=> $setIds,
 							'msg'				=> JText::_('MSG_DELETED'),
 							'uploadError'		=> $fileMsg,
 							'parentField'		=> $element,
@@ -418,10 +424,16 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$elemLabel = $db->loadResult();
 						endif;
 
+						$setIds = explode(',', $ids);
+						if(count($setIds) > 1) :
+							$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_ITEMS_ALTER_SUCCESS');
+							$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
+						endif;
+
 						$data[] = array(
 							'status'			=> 4,
 							'state'				=> $state,
-							'ids'				=> explode(',', $ids),
+							'ids'				=> $setIds,
 							'msg'				=> '',
 							'parentField'		=> $element,
 							'parentFieldVal'	=> $elemVal,
@@ -471,6 +483,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->setQuery($query);
 						$db->execute();
 
+						$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_TRANSACTION_INVOICED');
+						$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
+
 						$data[] = array(
 							'status'			=> 1,
 							'ids'				=> explode(',', $ids),
@@ -504,6 +519,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 						$db->setQuery($query);
 						$db->execute();
+
+						$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_TRANSACTION_REMOVE_FROM_INVOICE');
+						$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
 
 						$data[] = array(
 							'status'			=> 1,
@@ -578,10 +596,13 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->setQuery($query);
 						$db->execute();
 
+						$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_ADD_SELECTED_SUCCESS');
+						$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
+
 						$data[] = array(
 							'status'			=> 1,
 							'ids'				=> explode(',', $ids),
-							'msg'				=> JText::_('MSG_ADD_SELECTED_SUCCESS')
+							'msg'				=> ''
 						);
 
 					} catch (RuntimeException $e) {
@@ -611,10 +632,13 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->setQuery($query);
 						$db->execute();
 
+						$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_CHARGED_SELECTED_SUCCESS');
+						$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
+
 						$data[] = array(
 							'status'			=> 1,
 							'ids'				=> explode(',', $ids),
-							'msg'				=> JText::_('MSG_CHARGED_SELECTED_SUCCESS')
+							'msg'				=> ''
 						);
 
 					} catch (RuntimeException $e) {
@@ -644,10 +668,13 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->setQuery($query);
 						$db->execute();
 
+						$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_UNCHARGED_SELECTED_SUCCESS');
+						$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
+
 						$data[] = array(
 							'status'			=> 1,
 							'ids'				=> explode(',', $ids),
-							'msg'				=> JText::_('MSG_UNCHARGED_SELECTED_SUCCESS')
+							'msg'				=> ''
 						);
 
 					} catch (RuntimeException $e) {
@@ -917,6 +944,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->setQuery($query);
 						$db->execute();
 
+						$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_TRANSACTIONS_FIXED_IMPORTED');
+						$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
+
 						$data[] = array(
 							'status'			=> 1,
 							'msg'				=> ''
@@ -984,6 +1014,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						try {
 							$db->setQuery($query);
 							$db->execute();
+
+							$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_TRANSACTIONS_INSTALLMENTS_IMPORTED');
+							$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
 
 							$data[] = array(
 								'status'			=> 1,
@@ -1224,6 +1257,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 					$db->setQuery($query);
 					$db->execute();
+
+					$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_PHONE_INVOICE_IMPORTED');
+					$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
 
 					$data[] = array(
 						'status'			=> 1,

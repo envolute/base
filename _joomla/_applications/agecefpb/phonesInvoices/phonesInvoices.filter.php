@@ -133,7 +133,7 @@ $htmlFilter = '
 				</div>
 				<div class="col-sm-6 col-md-2">
 					<div class="form-group">
-						<label class="label-sm">'.JText::_('TEXT_STATE').'</label>
+						<label class="label-sm">'.JText::_('FIELD_LABEL_ITEM_STATE').'</label>
 						<select name="active" id="active" class="form-control form-control-sm set-filter">
 							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
 							<option value="1"'.($active == 1 ? ' selected' : '').'>'.JText::_('TEXT_ACTIVES').'</option>
