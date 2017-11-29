@@ -252,9 +252,15 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$elemVal = $ids;
 						endif;
 
+						$setIds = explode(',', $ids);
+						if(count($setIds) > 1) :
+							$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_ITEMS_DELETED_SUCCESS');
+							$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
+						endif;
+
 						$data[] = array(
 							'status'			=> 3,
-							'ids'				=> explode(',', $ids),
+							'ids'				=> $setIds,
 							'msg'				=> JText::_('MSG_DELETED'),
 							'uploadError'		=> $fileMsg,
 							'parentField'		=> $element,
@@ -295,10 +301,16 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$elemLabel = $db->loadResult();
 						endif;
 
+						$setIds = explode(',', $ids);
+						if(count($setIds) > 1) :
+							$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_ITEMS_ALTER_SUCCESS');
+							$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
+						endif;
+
 						$data[] = array(
 							'status'			=> 4,
 							'state'				=> $state,
-							'ids'				=> explode(',', $ids),
+							'ids'				=> $setIds,
 							'msg'				=> '',
 							'parentField'		=> $element,
 							'parentFieldVal'	=> $elemVal,

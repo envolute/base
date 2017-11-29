@@ -25,7 +25,7 @@ $db = JFactory::getDbo();
 ?>
 
 <script>
-jQuery(function() {
+jQuery(window).on('load', function() {
 
 	<?php // Default 'JS' Vars
 	require(JPATH_CORE.DS.'apps/snippets/initVars.js.php');
@@ -179,7 +179,7 @@ jQuery(function() {
 			else alert('<?php echo JText::_('MSG_SELECT_ITEM_FROM_LIST')?>');
 		};
 
-		// CUSTOM -> DEPENDENT lista dependentes de acordo com o associado
+		// CUSTOM -> Set fixed transaction
 		window.<?php echo $APPTAG?>_setFixed = function(val) {
 			setHidden('.<?php echo $APPTAG?>-no-fixed', val);
 			if(val == 1) {
@@ -277,7 +277,7 @@ jQuery(function() {
 						<?php echo $APPTAG?>_getDependentList(item.client_id, item.dependent_id);
 						invoice_id.selectUpdate(item.invoice_id); // select
 						description.val(item.description);
-						checkOption(fixed, item.fixed);
+						checkOption(fixed, (item.fixed == 0 ? 0 : 1));
 						// esconde campos da movimentação normal
 						setHidden('.<?php echo $APPTAG?>-no-fixed', item.fixed);
 						checkOption(isCard, item.isCard);
@@ -334,6 +334,7 @@ jQuery(function() {
 		// Set dependents List
 		// seta a lista de dependentes de acordo com o associado selecionado
 		window.<?php echo $APPTAG?>_getDependentList = function(itemID, id) {
+			<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
 			jQuery.ajax({
 				url: "<?php echo $URL_APP_FILE ?>.model.php?task=cList&cID="+itemID,
 				dataType: 'json',
@@ -365,24 +366,32 @@ jQuery(function() {
 					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
 					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
 					?>
+				},
+				complete: function() {
+					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
 				}
 			});
 			return false;
 		};
 
 		// CUSTOM -> atribui a fatura
-		window.<?php echo $APPTAG?>_invoice = function() {
+		window.<?php echo $APPTAG?>_invoice = function(recursive) {
 
-			var formInv = jQuery('#form-<?php echo $APPTAG?>-invoice');
-			var invID = formInv.find('#<?php echo $APPTAG?>-invoiceID').val();
+			var form = jQuery('#form-<?php echo $APPTAG?>-invoice');
+			var invID = form.find('#<?php echo $APPTAG?>-invoiceID').val();
 			if(invID == 0) {
 				alert('<?php echo JText::_('MSG_SELECT_ITEM_FROM_LIST'); ?>');
 				return false;
 			}
-			if(!confirm('<?php echo JText::_('MSG_INVOICED_CONFIRM'); ?>')) return false;
-			<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
 
-			var dados = formList.serialize();
+			var reCursive = (isSet(recursive) && recursive) ? true : false;
+			if(!reCursive) {
+				if(!confirm('<?php echo JText::_('MSG_INVOICED_CONFIRM'); ?>')) return false;
+				<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
+			}
+
+			var dados		= formList.serialize();
+			var inputVars	= formList.find('input[type="checkbox"]:checked, input[type="hidden"]').length;
 
 			jQuery.ajax({
 				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=invoice&st="+invID,
@@ -391,29 +400,51 @@ jQuery(function() {
 				data:  dados,
 				cache: false,
 				success: function(data){
-					<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
 					jQuery.map( data, function( res ) {
-						if(res.status == 1) <?php echo $APPTAG?>_listReload(true, false);
-						else $.baseNotify({ msg: res.msg, type: "danger" });
+						if(res.status == 1) {
+							// remove os itens executados
+							if(res.ids.length > 0) {
+								for(i = 0; i < res.ids.length; i++) {
+									// remove as linhas referentes aos itens executados
+									jQuery('#<?php echo $APPTAG?>-item-'+res.ids[i]).remove();
+								}
+							}
+							// Tempo para que as linhas sejam removidas...
+							// evitando o reenvio dos itens já executados
+							setTimeout(function() {
+								// verifica quantos estão selecionados
+								var listChecks	= formList.find('input[type="checkbox"]:checked').length;
+								// Verifica se o envio excede o limite de 1000 para o parâmetro 'max_input_vars' do PHP
+								if(inputVars > maxInputVars && listChecks > 0) <?php echo $APPTAG?>_invoice(true); // executa novamente com os itens restantes
+								else <?php echo $APPTAG?>_listReload(true, false); // recarrega a página
+							}, 300);
+						} else {
+							<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
+							$.baseNotify({ msg: res.msg, type: "danger" });
+						}
 					});
 				},
 				error: function(xhr, status, error) {
+					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
 					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
 					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
 					?>
-					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
 				}
 			});
 			return false;
 		};
 
 		// CUSTOM -> remover a fatura
-		window.<?php echo $APPTAG?>_removeInvoice = function() {
+		window.<?php echo $APPTAG?>_removeInvoice = function(recursive) {
 
-			if(!confirm('<?php echo JText::_('MSG_REMOVE_INVOICED_CONFIRM'); ?>')) return false;
-			<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
+			var reCursive = (isSet(recursive) && recursive) ? true : false;
+			if(!reCursive) {
+				if(!confirm('<?php echo JText::_('MSG_REMOVE_INVOICED_CONFIRM'); ?>')) return false;
+				<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
+			}
 
-			var dados = formList.serialize();
+			var dados		= formList.serialize();
+			var inputVars	= formList.find('input[type="checkbox"]:checked, input[type="hidden"]').length;
 
 			jQuery.ajax({
 				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=removeInvoice",
@@ -422,9 +453,310 @@ jQuery(function() {
 				data:  dados,
 				cache: false,
 				success: function(data){
+					jQuery.map( data, function( res ) {
+						if(res.status == 1) {
+							// remove os itens executados
+							if(res.ids.length > 0) {
+								for(i = 0; i < res.ids.length; i++) {
+									// remove as linhas referentes aos itens executados
+									jQuery('#<?php echo $APPTAG?>-item-'+res.ids[i]).remove();
+								}
+							}
+							// Tempo para que as linhas sejam removidas...
+							// evitando o reenvio dos itens já executados
+							setTimeout(function() {
+								// verifica quantos estão selecionados
+								var listChecks	= formList.find('input[type="checkbox"]:checked').length;
+								// Verifica se o envio excede o limite de 1000 para o parâmetro 'max_input_vars' do PHP
+								if(inputVars > maxInputVars && listChecks > 0) <?php echo $APPTAG?>_removeInvoice(true); // executa novamente com os itens restantes
+								else <?php echo $APPTAG?>_listReload(true, false); // recarrega a página
+							}, 300);
+						} else {
+							<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
+							$.baseNotify({ msg: res.msg, type: "danger" });
+						}
+					});
+				},
+				error: function(xhr, status, error) {
+					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
+					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
+					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
+					?>
+				}
+			});
+			return false;
+		};
+
+		// CUSTOM -> gera cópia das movimentações fixas sem fatura
+		window.<?php echo $APPTAG?>_addFixed = function() {
+
+			var form = jQuery('#form-<?php echo $APPTAG?>-addFixed');
+			var groupIDs = [];
+			form.find('input[name=<?php echo $APPTAG?>GroupID]:checked').map(function() {
+				groupIDs.push(jQuery(this).val());
+			});
+			if(groupIDs == "") {
+				$.baseNotify({ msg: '<?php echo JText::_('MSG_SELECT_ITEM_FROM_LIST'); ?>', type: "danger" });
+				return false;
+			}
+			if(!confirm('<?php echo JText::_('MSG_ADDFIXED_CONFIRM'); ?>')) return false;
+			<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
+
+			jQuery.ajax({
+				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=addFixed&arr="+groupIDs,
+				dataType: 'json',
+				cache: false,
+				success: function(data){
+					jQuery.map( data, function( res ) {
+						if(res.status == 1) {
+							<?php echo $APPTAG?>_listReload(true, false); // recarrega a página
+						} else {
+							<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
+							$.baseNotify({ msg: res.msg, type: "danger" });
+						}
+					});
+				},
+				error: function(xhr, status, error) {
+					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
+					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
+					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
+					?>
+				}
+			});
+			return false;
+		};
+
+		// Add Selected Fixeds
+		// Importa apenas as movimentações recorrentes selecionadas
+		window.<?php echo $APPTAG?>_addSelectedFixed = function(recursive) {
+
+			var reCursive = (isSet(recursive) && recursive) ? true : false;
+			if(!reCursive) {
+				if(!confirm('<?php echo JText::_('MSG_ADDFIXED_CONFIRM'); ?>')) return false;
+				<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
+			}
+
+			var form = jQuery('#form-<?php echo $APPTAG?>-addSelectedFixed');
+			var inv = form.find('#<?php echo $APPTAG?>-invID');
+			var cod = '&invID='+inv.val();
+
+			var dados		= formList.serialize();
+			var inputVars	= formList.find('input[type="checkbox"]:checked, input[type="hidden"]').length;
+
+			jQuery.ajax({
+				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=addSelectedFixed"+cod,
+				dataType: 'json',
+				type: 'POST',
+				data:  dados,
+				cache: false,
+				success: function(data){
+					jQuery.map( data, function( res ) {
+						if(res.status == 1) {
+							// remove os itens executados
+							if(res.ids.length > 0) {
+								for(i = 0; i < res.ids.length; i++) {
+									// remove as linhas referentes aos itens executados
+									jQuery('#<?php echo $APPTAG?>-item-'+res.ids[i]).remove();
+								}
+							}
+							// Tempo para que as linhas sejam desmarcadas...
+							// evitando o reenvio dos itens já executados
+							setTimeout(function() {
+								// verifica quantos estão selecionados
+								var listChecks	= formList.find('input[type="checkbox"]:checked').length;
+								// Verifica se o envio excede o limite de 1000 para o parâmetro 'max_input_vars' do PHP
+								if(inputVars > maxInputVars && listChecks > 0) <?php echo $APPTAG?>_addSelectedFixed(true); // executa novamente com os itens restantes
+								else <?php echo $APPTAG?>_listReload(true, false); // recarrega a página
+							}, 300);
+						} else {
+							<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
+							$.baseNotify({ msg: res.msg, type: "danger" });
+						}
+					});
+				},
+				error: function(xhr, status, error) {
+					<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
+					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
+					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
+					?>
+				}
+			});
+			return false;
+		};
+
+		// CUSTOM -> Disponibiliza as próximas parcelas para serem faturadas
+		window.<?php echo $APPTAG?>_chargeInstallments = function() {
+
+			var form = jQuery('#form-<?php echo $APPTAG?>-chargeInstallments');
+			var groupIDs= [];
+			form.find('input[name=<?php echo $APPTAG?>GroupID]:checked').map(function() {
+				groupIDs.push(jQuery(this).val());
+			});
+			if(groupIDs == "") {
+				$.baseNotify({ msg: '<?php echo JText::_('MSG_SELECT_ITEM_FROM_LIST'); ?>', type: "danger" });
+				return false;
+			}
+			if(!confirm('<?php echo JText::_('MSG_CHARGE_CONFIRM'); ?>')) return false;
+			if(formList.find('.isInstallment').length) {
+				if(!confirm('<?php echo JText::_('MSG_ALERT_INSTALLMENT'); ?>')) return false;
+			}
+
+			<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
+
+			jQuery.ajax({
+				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=chargeInstallments&arr="+groupIDs,
+				dataType: 'json',
+				cache: false,
+				success: function(data){
+					jQuery.map( data, function( res ) {
+						if(res.status == 1) {
+							<?php echo $APPTAG?>_listReload(true, false); // recarrega a página
+						} else {
+							<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
+							$.baseNotify({ msg: res.msg, type: "danger" });
+						}
+					});
+				},
+				error: function(xhr, status, error) {
+					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
+					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
+					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
+					?>
+				}
+			});
+			return false;
+		};
+
+		// CUSTOM -> Importa apenas as próximas parcelas selecionadas
+		window.<?php echo $APPTAG?>_chargeSelected = function(recursive) {
+
+			var reCursive = (isSet(recursive) && recursive) ? true : false;
+			if(!reCursive) {
+				if(!confirm('<?php echo JText::_('MSG_CHARGE_SELECTED_CONFIRM'); ?>')) return false;
+				<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
+			}
+
+			var form = jQuery('#form-<?php echo $APPTAG?>-chargeSelected');
+			var inv = form.find('#<?php echo $APPTAG?>-invID');
+			var cod = '&invID='+inv.val();
+
+			var dados		= formList.serialize();
+			var inputVars	= formList.find('input[type="checkbox"]:checked, input[type="hidden"]').length;
+
+			jQuery.ajax({
+				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=chargeSelected"+cod,
+				dataType: 'json',
+				type: 'POST',
+				data:  dados,
+				cache: false,
+				success: function(data){
+					jQuery.map( data, function( res ) {
+						if(res.status == 1) {
+							// remove os itens executados
+							if(res.ids.length > 0) {
+								for(i = 0; i < res.ids.length; i++) {
+									// remove as linhas referentes aos itens executados
+									jQuery('#<?php echo $APPTAG?>-item-'+res.ids[i]).remove();
+								}
+							}
+							// Tempo para que as linhas sejam removidas...
+							// evitando o reenvio dos itens já executados
+							setTimeout(function() {
+								// verifica quantos estão selecionados
+								var listChecks	= formList.find('input[type="checkbox"]:checked').length;
+								// Verifica se o envio excede o limite de 1000 para o parâmetro 'max_input_vars' do PHP
+								if(inputVars > maxInputVars && listChecks > 0) <?php echo $APPTAG?>_chargeSelected(true); // executa novamente com os itens restantes
+								else <?php echo $APPTAG?>_listReload(true, false); // recarrega a página
+							}, 300);
+						} else {
+							<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
+							$.baseNotify({ msg: res.msg, type: "danger" });
+						}
+					});
+				},
+				error: function(xhr, status, error) {
+					<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
+					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
+					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
+					?>
+				}
+			});
+			return false;
+		};
+
+		// CUSTOM -> remove parcelas selecionadas da lista de movimentações disponíveis para faturar
+		window.<?php echo $APPTAG?>_unchargeSelected = function(recursive) {
+
+			var reCursive = (isSet(recursive) && recursive) ? true : false;
+			if(!reCursive) {
+				if(!confirm('<?php echo JText::_('MSG_UNCHARGE_SELECTED_CONFIRM'); ?>')) return false;
+				<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
+			}
+
+			var dados		= formList.serialize();
+			var inputVars	= formList.find('input[type="checkbox"]:checked, input[type="hidden"]').length;
+
+			jQuery.ajax({
+				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=unchargeSelected",
+				dataType: 'json',
+				type: 'POST',
+				data:  dados,
+				cache: false,
+				success: function(data){
+					jQuery.map( data, function( res ) {
+						if(res.status == 1) {
+							// remove os itens executados
+							if(res.ids.length > 0) {
+								for(i = 0; i < res.ids.length; i++) {
+									// remove as linhas referentes aos itens executados
+									jQuery('#<?php echo $APPTAG?>-item-'+res.ids[i]).remove();
+								}
+							}
+							// Tempo para que as linhas sejam removidas...
+							// evitando o reenvio dos itens já executados
+							setTimeout(function() {
+								// verifica quantos estão selecionados
+								var listChecks	= formList.find('input[type="checkbox"]:checked').length;
+								// Verifica se o envio excede o limite de 1000 para o parâmetro 'max_input_vars' do PHP
+								if(inputVars > maxInputVars && listChecks > 0) <?php echo $APPTAG?>_unchargeSelected(true); // executa novamente com os itens restantes
+								else <?php echo $APPTAG?>_listReload(true, false); // recarrega a página
+							}, 300);
+						} else {
+							<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
+							$.baseNotify({ msg: res.msg, type: "danger" });
+						}
+					});
+				},
+				error: function(xhr, status, error) {
+					<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
+					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
+					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
+					?>
+				}
+			});
+			return false;
+		};
+
+		// CUSTOM -> importa a fatura telefônica
+		window.<?php echo $APPTAG?>_phoneInvoice = function() {
+
+			var form = jQuery('#form-<?php echo $APPTAG?>-phoneInvoice');
+			var invID = form.find('#<?php echo $APPTAG?>-phoneInvoiceID').val();
+			if(invID == 0) {
+				alert('<?php echo JText::_('MSG_SELECT_ITEM_FROM_LIST'); ?>');
+				return false;
+			}
+			if(!confirm('<?php echo JText::_('MSG_PHONE_INVOICED_CONFIRM'); ?>')) return false;
+			<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
+
+			jQuery.ajax({
+				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=phoneInvoice&st="+invID,
+				dataType: 'json',
+				cache: false,
+				success: function(data){
 					<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
 					jQuery.map( data, function( res ) {
-						if(res.status == 1) <?php echo $APPTAG?>_listReload(true, false);
+						if(res.status == 1) <?php echo $APPTAG?>_listReload(true, false); // recarrega a página
 						else $.baseNotify({ msg: res.msg, type: "danger" });
 					});
 				},
@@ -481,120 +813,6 @@ jQuery(function() {
 		// CUSTOM -> seta o sequencial anterior atribuído à fatura
 		window.<?php echo $APPTAG?>_setSequencial = function(val) {
 			formFilter.find('#<?php echo $APPTAG?>-seq').val(val);
-		};
-
-		// CUSTOM -> gera cópia das movimentações fixas sem fatura
-		window.<?php echo $APPTAG?>_addFixed = function() {
-
-			var formFixed	= jQuery('#form-<?php echo $APPTAG?>-addFixed');
-			var groupIDs	= [];
-			formFixed.find('input[name=<?php echo $APPTAG?>GroupID]:checked').map(function() {
-				groupIDs.push(jQuery(this).val());
-			});
-			if(groupIDs == "") {
-				$.baseNotify({ msg: '<?php echo JText::_('MSG_SELECT_ITEM_FROM_LIST'); ?>', type: "danger" });
-				return false;
-			}
-			if(!confirm('<?php echo JText::_('MSG_ADDFIXED_CONFIRM'); ?>')) return false;
-			<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
-
-			jQuery.ajax({
-				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=addFixed&arr="+groupIDs,
-				dataType: 'json',
-				cache: false,
-				success: function(data){
-					<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
-					jQuery.map( data, function( res ) {
-						if(res.status == 1) <?php echo $APPTAG?>_listReload(true, false);
-						else $.baseNotify({ msg: res.msg, type: "danger" });
-					});
-				},
-				error: function(xhr, status, error) {
-					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
-					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
-					?>
-					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
-				}
-			});
-			return false;
-		};
-
-		// Add Selected Fixeds
-		// Importa apenas as movimentações recorrentes selecionadas
-		window.<?php echo $APPTAG?>_addSelectedFixed = function() {
-
-			var msg = '<?php echo JText::_('MSG_ADDFIXED_CONFIRM'); ?>';
-			if(!confirm(msg)) return false;
-			var inv = jQuery('#<?php echo $APPTAG?>-invID');
-			var cod = '&invID='+inv.val();
-			var dados = formList.serialize();
-
-			<?php echo $APPTAG?>_formExecute(true, true, true); // inicia o loader
-
-			jQuery.ajax({
-				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=addSelectedFixed"+cod,
-				dataType: 'json',
-				type: 'POST',
-				data:  dados,
-				cache: false,
-				success: function(data){
-					<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
-					jQuery.map( data, function( res ) {
-						var alert = (res.status == 1) ? 'success' : 'danger';
-						$.baseNotify({ msg: res.msg, type: alert});
-					});
-				},
-				error: function(xhr, status, error) {
-					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
-					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
-					?>
-					<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
-				},
-				complete: function() {
-					// close modal
-					jQuery('#modal-<?php echo $APPTAG?>-addSelectedFixed').modal('hide');
-					inv.selectUpdate('0');
-					hideTips(); // force tooltip close
-				}
-			});
-			return false;
-		};
-
-		// CUSTOM -> importa a fatura telefônica
-		window.<?php echo $APPTAG?>_phoneInvoice = function() {
-
-			var formInv = jQuery('#form-<?php echo $APPTAG?>-phoneInvoice');
-			var invID = formInv.find('#<?php echo $APPTAG?>-phoneInvoiceID').val();
-			if(invID == 0) {
-				alert('<?php echo JText::_('MSG_SELECT_ITEM_FROM_LIST'); ?>');
-				return false;
-			}
-			if(!confirm('<?php echo JText::_('MSG_PHONE_INVOICED_CONFIRM'); ?>')) return false;
-			<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
-
-			var dados = formList.serialize();
-
-			jQuery.ajax({
-				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=phoneInvoice&st="+invID,
-				dataType: 'json',
-				type: 'POST',
-				data:  dados,
-				cache: false,
-				success: function(data){
-					<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
-					jQuery.map( data, function( res ) {
-						if(res.status == 1) <?php echo $APPTAG?>_listReload(true, false);
-						else $.baseNotify({ msg: res.msg, type: "danger" });
-					});
-				},
-				error: function(xhr, status, error) {
-					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
-					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
-					?>
-					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
-				}
-			});
-			return false;
 		};
 
 }); // CLOSE JQUERY->READY
@@ -672,7 +890,7 @@ jQuery(window).on('load', function() {
 						<span class="base-icon-trash"></span> <?php echo JText::_('TEXT_DELETE'); ?>
 					</button>
 				<?php endif; ?>
-				<button class="btn btn-sm btn-default toggle-state <?php echo ((isset($_GET[$APPTAG.'_filter']) || $cfg['showFilter']) ? 'active' : '')?>" data-toggle="collapse" data-target="<?php echo '#filter-'.$APPTAG?>" aria-expanded="<?php echo ((isset($_GET[$APPTAG.'_filter']) || $cfg['showFilter']) ? 'true' : '')?>" aria-controls="<?php echo 'filter'.$APPTAG?>">
+				<button class="btn btn-sm btn-default toggle-state <?php echo ((isset($_GET[$APPTAG.'_filter']) || $cfg['showFilter']) ? 'active' : '')?>" data-toggle="collapse" data-target="<?php echo '#filter-container-'.$APPTAG?>" aria-expanded="<?php echo ((isset($_GET[$APPTAG.'_filter']) || $cfg['showFilter']) ? 'true' : '')?>" aria-controls="<?php echo 'filter'.$APPTAG?>">
 					<span class="base-icon-filter"></span> <?php echo JText::_('TEXT_FILTER'); ?> <span class="base-icon-sort"></span>
 				</button>
 			<?php endif; ?>
@@ -748,6 +966,22 @@ jQuery(window).on('load', function() {
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<?php require($APPTAG.'.addSelectedFixed.form.php'); ?>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="modal-<?php echo $APPTAG?>-chargeInstallments" tabindex="-1" role="dialog" aria-labelledby="modal-<?php echo $APPTAG?>-chargeInstallmentsLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<?php require($APPTAG.'.chargeInstallments.form.php'); ?>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="modal-<?php echo $APPTAG?>-chargeSelected" tabindex="-1" role="dialog" aria-labelledby="modal-<?php echo $APPTAG?>-chargeSelectedLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<?php require($APPTAG.'.chargeSelected.form.php'); ?>
 				</div>
 			</div>
 		</div>

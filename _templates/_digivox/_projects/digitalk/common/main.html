@@ -121,7 +121,7 @@
 						</div>
 					</div>
 					<div id="content" class="col">
-						<div id="top-actions" class="content-actions b-bottom">
+						<header class="content-toolbar">
 							<div class="row align-items-center no-gutters">
 								<h6 class="col text-black font-weight-bold px-4 m-0">
 									Clients
@@ -132,32 +132,32 @@
 								</h6>
 								<div class="col input-group">
 									<span class="input-group-btn">
-										<a href="#" class="btn btn-outline-default b-gray-300 d-flex align-items-center justify-content-center text-lg base-icon-th" data-toggle="modal" data-target="#windowNewCall" data-backdrop="false" data-focus="false" role="button"></a>
+										<a href="#" class="btn btn-outline-default base-icon-th" data-toggle="modal" data-target="#windowNewCall" data-backdrop="false" data-focus="false" role="button"></a>
 									</span>
-									<input type="text" class="form-control b-gray-300 px-3" placeholder="search" />
+									<input type="text" class="form-control px-3" placeholder="search" />
 									<span class="input-group-btn">
-										<a href="#" class="btn btn-outline-default b-gray-300 d-flex align-items-center justify-content-center text-lg base-icon-cog" role="button"></a>
-										<a href="#" class="btn btn-outline-default b-gray-300 d-flex align-items-center justify-content-center text-lg base-icon-star-empty" role="button"></a>
-										<a href="#" class="btn btn-outline-default b-gray-300 d-flex align-items-center justify-content-center text-lg base-icon-ellipsis-vert" role="button"></a>
+										<a href="#" class="btn btn-outline-default base-icon-cog" role="button"></a>
+										<a href="#" class="btn btn-outline-default base-icon-star-empty" role="button"></a>
+										<a href="#" class="btn btn-outline-default base-icon-ellipsis-vert" role="button"></a>
 									</span>
 								</div>
 							</div>
-						</div>
-						<section class="d-flex flex-row-reverse">
-							<div class="stage-links set-height b-left" data-offset-ids="#top-actions, #bottom-actions">
-								<div id="chat-users" class="set-height" data-offset-ids="#top-actions, #bottom-actions">
-									<div class="chat-user text-center pt-3">
+						</header>
+						<section>
+							<div class="stage-toolbar set-height" data-offset-ids=".content-toolbar">
+								<div class="chat-users">
+									<div class="chat-user pt-3">
 										<img src="images/users/user-4.png" class="avatar rounded-circle mb-2" />
 									</div>
-									<div class="chat-user text-center pt-3">
+									<div class="chat-user pt-3">
 										<img src="images/users/user-2.png" class="avatar rounded-circle mb-2" />
 									</div>
-									<div class="chat-user text-center pt-3">
+									<div class="chat-user pt-3">
 										<img src="images/users/user-3.png" class="avatar rounded-circle mb-2" />
 									</div>
 								</div>
 							</div>
-							<div class="stage chat set-height p-3" data-offset-ids="#top-actions, #bottom-actions">
+							<div class="stage chat set-height p-3" data-offset-ids=".content-toolbar">
 								<div class="row no-gutters mb-4">
 									<div class="col-1">
 										<img src="images/users/user-2.png" class="avatar rounded-circle mb-2" />
@@ -235,31 +235,31 @@
 									</div>
 									<div class="col-8">
 										<h6 class="text-black font-weight-bold">Carla Dantas</h6>
-										<div class="bg-primary text-white rounded p-3">
-											Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed placerat metus dolor, nec vulputate orci vehicula in. Sed purus urna, dictum quis urna ac, lacinia consequat massa.
+										<div class="bg-primary rounded p-3">
+											Lorem ipsum dolor sit amet, <a class="bg-link" href="#">consectetur adipiscing elit</a>. Sed placerat metus dolor, nec vulputate orci vehicula in. Sed purus urna, dictum quis urna ac, lacinia consequat massa.
 										</div>
 										<div class="small text-muted">TODAY 16:40PM</div>
 									</div>
 								</div>
 							</div>
 						</section>
-						<div id="bottom-actions" class="content-actions b-top">
+						<footer class="content-toolbar">
 							<div class="row align-items-center no-gutters">
 								<div class="col input-group">
-									<span class="input-group-addon b-0">
+									<span class="input-group-addon">
 										<a href="#" class="text-lg base-icon-plus-circled text-gray-600 px-3" role="button"></a>
 									</span>
-									<span class="input-chat input-group-addon b-0 pl-0">
+									<span class="input-chat input-group-addon pl-0">
 										<input type="text" class="form-control b-0 h-100 rounded px-3" placeholder="Type something" />
 									</span>
-									<span class="input-group-btn">
-										<a href="#" class="btn btn-outline-default b-gray-300 d-flex align-items-center justify-content-center text-lg base-icon-phone" role="button"></a>
-										<a href="#" class="btn btn-outline-default b-gray-300 d-flex align-items-center justify-content-center text-lg base-icon-videocam" role="button"></a>
-										<a href="#" class="btn btn-dark b-gray-300 d-flex align-items-center justify-content-center text-lg base-icon-user-add" role="button"></a>
+									<span class="input-group-btn ml-auto">
+										<a href="#" class="btn btn-outline-default base-icon-phone" role="button"></a>
+										<a href="#" class="btn btn-outline-default base-icon-videocam" role="button"></a>
+										<a href="#" class="btn btn-dark base-icon-user-add" role="button"></a>
 									</span>
 								</div>
 							</div>
-						</div>
+						</footer>
 					</div>
 				</div>
 			</div>

@@ -1,0 +1,16 @@
+// TEXT INDICATORS
+
+sup.text-indicator,
+sub.text-indicator {
+	display: inline-block;
+	min-width: 6px;
+	min-height: 6px;
+    padding: 0;
+	border-radius: 100%;
+}
+sup.text-indicator[class*="base-icon-"][class*="bg-"],
+sub.text-indicator[class*="base-icon-"][class*="bg-"], {
+	height: 1.6em;
+    width: 1.6em;
+    line-height: 1.6em;
+}

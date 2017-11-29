@@ -1,0 +1,24 @@
+// @EXTENSIONS
+// CUSTOMIZAÇÕES PARA ELEMENTOS DO TEMPLATE
+
+// CORE
+@import "../../../../../../_core/bootstrap/extensions/scss/imports"; // _builder/
+
+// Bootstrap Local Customize
+@import "../bootstrap/alert";
+@import "../bootstrap/breadcrumb";
+@import "../bootstrap/buttons";
+@import "../bootstrap/forms";
+@import "../bootstrap/modal";
+@import "../bootstrap/popover";
+@import "../bootstrap/tables";
+@import "../bootstrap/tabs";
+@import "../bootstrap/typography";
+
+// Base
+@import "../bootstrap/extensions/bxslider";
+@import "../bootstrap/extensions/code";
+@import "../bootstrap/extensions/custom-fields";
+@import "../bootstrap/extensions/form-toolbar";
+@import "../bootstrap/extensions/loader";
+@import "../bootstrap/extensions/nav.menu";

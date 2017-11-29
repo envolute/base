@@ -141,7 +141,7 @@ FROM
 	on((`T7`.`phone_id` = `T3`.`id`))
 )
 WHERE `T1`.`tel` <> ""
-GROUP BY `T1`.`tel`
+GROUP BY `T1`.`invoice_id`, `T1`.`tel`
 ORDER BY `T1`.`invoice_id`, `T6`.`name`;
 
 -- --------------------------------------------------------

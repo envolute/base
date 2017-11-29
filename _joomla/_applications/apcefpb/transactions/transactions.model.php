@@ -280,10 +280,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('dependent_id')		.'='. $request['dependent_id'] .','.
 						$db->quoteName('invoice_id')		.'='. $request['invoice_id'] .','.
 						$db->quoteName('description')		.'='. $db->quote($request['description']) .','.
-						$db->quoteName('fixed')				.'='. $request['fixed'] .','.
+						$db->quoteName('fixed')				.'= IF('. $db->quoteName('fixed') .' = 2, '. $db->quoteName('fixed') .', '.$request['fixed'].'),'.
 						$db->quoteName('isCard')			.'='. $request['isCard'] .','.
+						$db->quoteName('date')				.'='. $db->quote($request['date']) .','.
 						$db->quoteName('date_installment')	.'='. $db->quote($request['date']) .','.
 						$db->quoteName('price')				.'='. $db->quote($request['price']) .','.
+						$db->quoteName('price_total')		.'= IF('. $db->quoteName('total') .' = 1, '. $db->quote($request['price']) .', '.$db->quoteName('price_total').'),'.
 						$db->quoteName('doc_number')		.'='. $db->quote($request['doc_number']) .','.
 						$db->quoteName('note')				.'='. $db->quote($request['note']) .','.
 						$db->quoteName('state')				.'='. $request['state'] .','.
@@ -375,9 +377,15 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$elemVal = $ids;
 						endif;
 
+						$setIds = explode(',', $ids);
+						if(count($setIds) > 1) :
+							$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_ITEMS_DELETED_SUCCESS');
+							$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
+						endif;
+
 						$data[] = array(
 							'status'			=> 3,
-							'ids'				=> explode(',', $ids),
+							'ids'				=> $setIds,
 							'msg'				=> JText::_('MSG_DELETED'),
 							'uploadError'		=> $fileMsg,
 							'parentField'		=> $element,
@@ -416,10 +424,16 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$elemLabel = $db->loadResult();
 						endif;
 
+						$setIds = explode(',', $ids);
+						if(count($setIds) > 1) :
+							$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_ITEMS_ALTER_SUCCESS');
+							$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
+						endif;
+
 						$data[] = array(
 							'status'			=> 4,
 							'state'				=> $state,
-							'ids'				=> explode(',', $ids),
+							'ids'				=> $setIds,
 							'msg'				=> '',
 							'parentField'		=> $element,
 							'parentFieldVal'	=> $elemVal,
@@ -469,8 +483,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->setQuery($query);
 						$db->execute();
 
+						$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_TRANSACTION_INVOICED');
+						$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
+
 						$data[] = array(
 							'status'			=> 1,
+							'ids'				=> explode(',', $ids),
 							'msg'				=> ''
 						);
 
@@ -502,8 +520,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->setQuery($query);
 						$db->execute();
 
+						$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_TRANSACTION_REMOVE_FROM_INVOICE');
+						$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
+
 						$data[] = array(
 							'status'			=> 1,
+							'ids'				=> explode(',', $ids),
 							'msg'				=> ''
 						);
 
@@ -534,6 +556,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('price') .','.
 							$db->quoteName('price_total') .','.
 							$db->quoteName('installment') .','.
+							$db->quoteName('charged') .','.
 							$db->quoteName('total') .','.
 							$db->quoteName('doc_number') .','.
 							$db->quoteName('note') .','.
@@ -554,6 +577,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('T1.price') .','.
 							$db->quoteName('T1.price_total') .',
 							1,
+							1,
 							1,'.
 							$db->quoteName('T1.doc_number') .','.
 							$db->quoteName('T1.note') .',
@@ -572,9 +596,13 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->setQuery($query);
 						$db->execute();
 
+						$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_ADD_SELECTED_SUCCESS');
+						$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
+
 						$data[] = array(
 							'status'			=> 1,
-							'msg'				=> JText::_('MSG_ADD_SELECTED_SUCCESS')
+							'ids'				=> explode(',', $ids),
+							'msg'				=> ''
 						);
 
 					} catch (RuntimeException $e) {
@@ -583,6 +611,78 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						switch($e->getCode()) {
 							case '1062':
 								$sqlErr = JText::_('MSG_SQL_DUPLICATE_FIXED');
+								break;
+							default:
+								$sqlErr = 'Erro: '.$e->getCode().'. '.$e->getMessage();
+						}
+
+						$data[] = array(
+							'status'			=> 0,
+							'msg'				=> $sqlErr
+						);
+
+					}
+
+				// CUSTOM -> CHARGE SELECTED INSTALLMENTS
+				elseif($task == 'chargeSelected') :
+
+					$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '.$db->quoteName('charged').' = 1 WHERE '.$db->quoteName('id').' IN ('.$ids.')';
+
+					try {
+						$db->setQuery($query);
+						$db->execute();
+
+						$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_CHARGED_SELECTED_SUCCESS');
+						$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
+
+						$data[] = array(
+							'status'			=> 1,
+							'ids'				=> explode(',', $ids),
+							'msg'				=> ''
+						);
+
+					} catch (RuntimeException $e) {
+
+						// Error treatment
+						switch($e->getCode()) {
+							case '1062':
+								$sqlErr = JText::_('MSG_SQL_DUPLICATE_KEY');
+								break;
+							default:
+								$sqlErr = 'Erro: '.$e->getCode().'. '.$e->getMessage();
+						}
+
+						$data[] = array(
+							'status'			=> 0,
+							'msg'				=> $sqlErr
+						);
+
+					}
+
+				// CUSTOM -> UNCHARGE SELECTED INSTALLMENTS
+				elseif($task == 'unchargeSelected') :
+
+					$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '.$db->quoteName('invoice_id').' = 0, '.$db->quoteName('charged').' = 0 WHERE '.$db->quoteName('id').' IN ('.$ids.')';
+
+					try {
+						$db->setQuery($query);
+						$db->execute();
+
+						$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_UNCHARGED_SELECTED_SUCCESS');
+						$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
+
+						$data[] = array(
+							'status'			=> 1,
+							'ids'				=> explode(',', $ids),
+							'msg'				=> ''
+						);
+
+					} catch (RuntimeException $e) {
+
+						// Error treatment
+						switch($e->getCode()) {
+							case '1062':
+								$sqlErr = JText::_('MSG_SQL_DUPLICATE_KEY');
 								break;
 							default:
 								$sqlErr = 'Erro: '.$e->getCode().'. '.$e->getMessage();
@@ -663,7 +763,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 								$transactionID = $id;
 								$request['invoice_id'] = 0;
 								// atribui o 'transaction_id' ao item principal para a ordenação na listagem
-								$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '.$db->quoteName('transaction_id').' = '.$id.' WHERE '.$db->quoteName('id').' = '.$id;
+								$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '.$db->quoteName('transaction_id').' = '.$id.', '.$db->quoteName('charged').' = 1 WHERE '.$db->quoteName('id').' = '.$id;
 								$db->setQuery($query);
 								$db->execute();
 			                }
@@ -805,6 +905,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('price') .','.
 							$db->quoteName('price_total') .','.
 							$db->quoteName('installment') .','.
+							$db->quoteName('charged') .','.
 							$db->quoteName('total') .','.
 							$db->quoteName('doc_number') .','.
 							$db->quoteName('note') .','.
@@ -824,6 +925,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('T1.price') .','.
 							$db->quoteName('T1.price_total') .',
 							1,
+							1,
 							1,'.
 							$db->quoteName('T1.doc_number') .','.
 							$db->quoteName('T1.note') .',
@@ -841,6 +943,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					try {
 						$db->setQuery($query);
 						$db->execute();
+
+						$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_TRANSACTIONS_FIXED_IMPORTED');
+						$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
 
 						$data[] = array(
 							'status'			=> 1,
@@ -864,6 +969,86 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						);
 
 					}
+
+				else :
+
+					$data[] = array(
+						'status'			=> 0,
+						'msg'				=> JText::_('MSG_SELECT_GROUP')
+					);
+
+				endif;
+
+			// CUSTOM -> CHARGE INSTALLMENTS
+			elseif($task == 'chargeInstallments') :
+
+				// Importa movimentações por grupo
+				if(!empty($arrIds)) :
+
+					$query = '
+						SELECT '.$db->quoteName('T1.id').'
+						FROM '. $db->quoteName($cfg['mainTable']) .' T1
+							JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
+							ON '.$db->quoteName('T2.id').' = '.$db->quoteName('T1.client_id').'
+						WHERE
+							'.$db->quoteName('T1.invoice_id').' = 0 AND
+							'.$db->quoteName('T1.installment').' > 1 AND
+							'.$db->quoteName('T1.charged').' = 0 AND
+							'.$db->quoteName('T2.usergroup').' IN ('.$arrIds.') AND
+							'.$db->quoteName('T1.state').' = 1
+						GROUP BY '.$db->quoteName('T1.transaction_id').'
+						ORDER BY '.$db->quoteName('T1.id').', '.$db->quoteName('T1.installment')
+					;
+					$db->setQuery($query);
+					$inst = $db->loadColumn();
+
+					if(count($inst)) :
+
+						$instIds = implode(',', $inst);
+						$query = '
+							UPDATE '. $db->quoteName($cfg['mainTable']) .'
+							SET '.$db->quoteName('charged').' = 1
+							WHERE '.$db->quoteName('id').' IN ('.$instIds.')
+						';
+
+						try {
+							$db->setQuery($query);
+							$db->execute();
+
+							$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_TRANSACTIONS_INSTALLMENTS_IMPORTED');
+							$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
+
+							$data[] = array(
+								'status'			=> 1,
+								'msg'				=> ''
+							);
+
+						} catch (RuntimeException $e) {
+
+							// Error treatment
+							switch($e->getCode()) {
+								case '1062':
+									$sqlErr = JText::_('MSG_SQL_DUPLICATE_FIXED');
+									break;
+								default:
+									$sqlErr = 'Erro: '.$e->getCode().'. '.$e->getMessage();
+							}
+
+							$data[] = array(
+								'status'			=> 0,
+								'msg'				=> $sqlErr
+							);
+
+						}
+
+					else :
+
+						$data[] = array(
+							'status'			=> 0,
+							'msg'				=> JText::_('MSG_CHARGED_EMPTY')
+						);
+
+					endif;
 
 				else :
 
@@ -1023,6 +1208,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('price') .','.
 						$db->quoteName('price_total') .','.
 						$db->quoteName('installment') .','.
+						$db->quoteName('charged') .','.
 						$db->quoteName('total') .','.
 						$db->quoteName('doc_number') .','.
 						$db->quoteName('note') .','.
@@ -1038,13 +1224,14 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'0,'.
 						$state .','.
 						$db->quoteName('phone_id') .','.
-						$db->quote(JText::_('TEXT_MOBILE_PHONE')) .','.
+						'CONCAT('.$db->quote(JText::_('TEXT_MOBILE_PHONE')).', '.$db->quoteName('invoice_id').'),'.
 						'0,'.
 						'0,'.
 						$db->quoteName('due_date') .','.
 						$db->quoteName('due_date') .',
 						(`total_servicos` + `taxa_servico` + (IF(`total_plano` > `valor_plano`, `total_plano`, `valor_plano`))),
 						(`total_servicos` + `taxa_servico` + (IF(`total_plano` > `valor_plano`, `total_plano`, `valor_plano`))),'.
+						'1,'.
 						'1,'.
 						'1,'.
 						$db->quoteName('tel') .','.
@@ -1070,6 +1257,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 					$db->setQuery($query);
 					$db->execute();
+
+					$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_PHONE_INVOICE_IMPORTED');
+					$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
 
 					$data[] = array(
 						'status'			=> 1,

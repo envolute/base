@@ -5,20 +5,5 @@
 	padding: 0;
 	width: $base-btn-fab-size;
 	height: $base-btn-fab-size;
-	line-height: $base-btn-fab-size;
-}
-.btn-xs.btn-fab {
-	width: $base-btn-fab-size-xs;
-	height: $base-btn-fab-size-xs;
-	line-height: $base-btn-fab-size-xs;
-}
-.btn-sm.btn-fab {
-	width: $base-btn-fab-size-sm;
-	height: $base-btn-fab-size-sm;
-	line-height: $base-btn-fab-size-sm;
-}
-.btn-lg.btn-fab {
-	width: $base-btn-fab-size-lg;
-	height: $base-btn-fab-size-lg;
-	line-height: $base-btn-fab-size-lg;
+	line-height: ($base-btn-fab-size - 0.1);
 }

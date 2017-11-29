@@ -72,62 +72,129 @@
 
 	// CONTENT -> área total do conteúdo incluindo as laterais
 
+		$content-toolbar-size: 60px; // tamanho máximo das 'Toolbars'
+
 		#content { }
 
-			.content-actions {
+			// CONTENT TOOLBAR
+			.content-toolbar {
 				position: fixed;
 				width: calc(100% - 285px);
+				min-height: #{$content-toolbar-size};
+				background: #fff;
 			}
-			#top-actions.content-actions { top: 0; }
-			#bottom-actions.content-actions { bottom: 0; }
-
-			.content-actions > .row > .input-group {
-				margin:-1px 0;
+			.content-toolbar > * {
+				min-height: #{$content-toolbar-size};
+				align-items: center!important;
+				margin: 0;
+			}
+			.content-toolbar > .row > [class*="col"] { padding: 0; }
+			header.content-toolbar {
+				top: 0;
+				border-bottom: 1px solid $base-border-color;
+			}
+			footer.content-toolbar {
+				bottom: 0;
+				border-top: 1px solid $base-border-color;
 			}
 
-			.content-actions .btn {
-				min-width:60px;
-				height:60px;
+			.content-toolbar h6 {
+				font-weight: bold;
+				color: black;
+			}
+			.content-toolbar .btn {
+				min-width: #{$content-toolbar-size};
+				height: #{$content-toolbar-size};
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: $base-text-lg;
+				border-width: 0 1px;
+				border-color: $base-gray-300 !important;
+			}
+			.content-toolbar .btn-outline-default { background-color: #fff !important; }
+			.content-toolbar .btn-outline-default:hover { background-color: $base-gray-400 !important; }
+			.content-toolbar .input-group-addon {
+				border: none !important;
+			}
+			.content-toolbar .form-control {
+				height: #{$content-toolbar-size};
+				border-width: 0 1px;
+				border-color: $base-gray-300 !important;
 			}
 
-			#content section {
-				margin-top: 59px;
-			}
-
-				#content section .stage-links {
-					width: 60px;
-					float: right;
-				}
-				#content section .stage {
-					overflow-y: auto;
-				}
-				#content section .stage-links + .stage {
-					width: calc(100% - 60px);
-				}
-				#content section .chat-discussion .bg-primary a {
-					@include color-yiq(theme-color('primary'));
-				}
-
-					// AVATARS
-					#content .stage-links .avatar {
-						width: 42px;
-						height: 42px;
-					}
-					#content .chat .avatar  {
-						width: 48px;
-						height: 48px;
-					}
-					#windowNewCall .avatar  {
-						width: 37px;
-						height: 37px;
-					}
-
-			#bottom-actions.content-actions .input-chat {
+			footer.content-toolbar .input-chat {
 				flex: 1 1 auto;
 				width: 1%;
 			}
 
-			// Phone Modal
+			// SECTION
+			.content-toolbar + section {
+				display: flex;
+				margin-top: #{($content-toolbar-size + 1)};
+			}
+
+			// STAGE
+			#content section .stage {
+				width: 100%;
+				order: 1;
+				overflow-y: auto;
+			}
+			#content section .stage-toolbar {
+				width: #{($content-toolbar-size - 1)};
+				order: 2;
+				text-align: center;
+				overflow: hidden;
+			}
+			#content section .stage-toolbar + .stage {
+				width: calc(100% - #{($content-toolbar-size - 1)});
+				border-right: 1px solid $base-border-color;
+			}
+			#content section .stage > .row { margin: 0; }
+			#content section .stage > .row > [class*="col"] { padding: 0; }
+			#content section .stage .card {
+				margin-bottom: $spacer;
+				border: none;
+				border-radius: 6px;
+			}
+			#content section .stage .card.stage-tab-menu .card-body {
+				padding-bottom: 0!important;
+			}
+			#content section .stage .card.stage-tab-menu .nav.nav-tabs {
+				border-bottom: 0!important;
+			}
+			#content section .stage .card.stage-tab-menu .nav-tabs .nav-link {
+				padding: .6rem 2rem 1.6rem;
+				margin-bottom: 0;
+				font-weight: bold;
+				border-bottom-width: 4px;
+			}
+			#content section .stage .card a:not(.active),
+			#content section .stage .card .btn-link,
+			#content section .stage .card.stage-tab-menu .nav-tabs .nav-link:not(.active) {
+				color: $base-color-muted;
+			}
+			#content section .stage .card.stage-tab-menu .nav-tabs .nav-link:not(.active):hover {
+				border-bottom-color: $base-color-muted!important;
+			}
+
+			// GERAL
+
+				// AVATARS
+				#content .stage-toolbar .avatar {
+					width: 42px;
+					height: 42px;
+				}
+				#content .chat .avatar  {
+					width: 48px;
+					height: 48px;
+				}
+				#windowNewCall .avatar  {
+					width: 37px;
+					height: 37px;
+				}
+
+			// PHONE NODAL
 			#windowNewCall {
 				top: 60px;
 				left: calc(50% - 150px);

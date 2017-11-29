@@ -1,6 +1,7 @@
 // @BOOTSTRAP EXTENSIONS
 
 // MIXINS
+@import "_mixins/bg-color";
 @import "_mixins/fonts";
 @import "_mixins/forms";
 @import "_mixins/color-yiq";
@@ -63,6 +64,7 @@
 @import "typography/set-list";
 @import "typography/text-breakline";
 @import "typography/text-colors";
+@import "typography/text-indicators";
 @import "typography/text-shadows";
 @import "typography/text-sizes";
 @import "typography/baseicons/animation";

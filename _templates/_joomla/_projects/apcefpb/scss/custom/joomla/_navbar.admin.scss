@@ -1,0 +1,91 @@
+// ADMIN NAVBAR
+
+	// ÁREA DE CONTEÚDO
+	// Quando a navbar está ativa, a área de conteúdo é posicionada mais abaixo
+	// para que não fique por trás da navbar.
+	// IMPORTANTE: O posicionamento era feito na div "#wrapper". Mas isso estava alterando
+	// o posicionamento da modal quando utilizado o plugin "modals". Assim o posicionamento
+	// passou a ser realizado na div "#screen"
+	#{$base-break-up}.isAdmin #screen { padding-top: $admin-navbar-height; }
+
+	// NAVBAR
+	#cmstools.navbar {
+		font-size: 13px;
+		font-family: arial;
+	}
+	#cmstools.navbar [class*="base-icon-"]:before { font-size: 14px; }
+	#{$base-break-up} #cmstools.navbar {
+		height: $admin-navbar-height;
+		padding: 0;
+	}
+	#{$base-break-up} #cmstools.fixed-top {
+		opacity: $admin-navbar-opacity;
+		box-shadow: 0px 1px 3px rgba(0,0,0,0.3);
+	}
+	// Navegação em dispositivos móveis
+	#{$base-break-down} #cmstools.fixed-top {
+		position: relative!important;
+	}
+	// Quando o vertical menu estiver habilitado
+	body.sm-container #cmstools .navbar-toggler {
+		margin-left: $admin-navbar-toggler-margin;
+	}
+	// Collapsed
+	#cmstools .navbar-collapse.show { padding-top: $base-space; }
+
+	// NAV MENU
+
+		// LINKS
+
+		#cmstools.navbar .nav.menu a { }
+
+			// HOVER & ACTIVE STATES
+			//-> Light
+			#cmstools.navbar-light .nav.menu li:not(.active) > a:hover,
+			#cmstools.navbar-light .nav.menu li:not(.active) > a:focus,
+			#cmstools.navbar-light .nav.menu li.parent:not(.active):hover > a,
+			#cmstools.navbar-light .nav.menu li.opened:not(.active) > a {
+				color: $link-hover-color;
+				background-color: darken($gray-200, 4%);
+			}
+			//-> Inverse
+			#cmstools.bg-dark .nav.menu li > a:hover,
+			#cmstools.bg-dark .nav.menu li > a:focus,
+			#cmstools.bg-dark .nav.menu li.parent:hover > a,
+			#cmstools.bg-dark .nav.menu li.active > a,
+			#cmstools.bg-dark .nav.menu li.opened > a {
+				color: #fff;
+				background-color: #000;
+			}
+			//-> Primary
+			#cmstools.bg-primary .nav.menu li > a:hover,
+			#cmstools.bg-primary .nav.menu li > a:focus,
+			#cmstools.bg-primary .nav.menu li.parent:hover > a,
+			#cmstools.bg-primary .nav.menu li.active > a,
+			#cmstools.bg-primary .nav.menu li.opened > a {
+				color: #fff;
+				background-color: darken(theme-color("primary"), 4%);
+			}
+
+	// NAV CHILD
+	#cmstools .nav.menu:not(.nav-stacked) .nav-child {
+		padding: 0;
+	}
+		//-> Light
+		#cmstools.navbar-light .nav.menu .nav-child {
+			background-color: $gray-200;
+		}
+		//-> Inverse
+		#cmstools.bg-dark .nav.menu .nav-child {
+			background-color: #111;
+		}
+		#cmstools.bg-dark .nav.menu .nav-child .divider {
+			background-color: #333;
+		}
+		//-> Primary
+		#cmstools.bg-primary .nav.menu .nav-child {
+			background-color: lighten(theme-color("primary"), 1%);
+		}
+		#cmstools.bg-primary .nav.menu .nav-child .divider {
+			background-color: lighten(theme-color("primary"), 5%);
+		}

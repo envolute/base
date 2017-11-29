@@ -25,7 +25,7 @@ $db = JFactory::getDbo();
 ?>
 
 <script>
-jQuery(function() {
+jQuery(window).on('load', function() {
 
 	<?php // Default 'JS' Vars
 	require(JPATH_CORE.DS.'apps/snippets/initVars.js.php');
@@ -513,11 +513,16 @@ jQuery(function() {
 				type: 'POST',
 				cache: false,
 				success: function(data) {
-					<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
 					jQuery.map( data, function( res ) {
 						setTimeout(function() {
 							window.location.href = "<?php echo JURI::current()?>";
 						}, 1000);
+						if(res.status == 1) {
+							<?php echo $APPTAG?>_listReload(true, false); // recarrega a página
+						} else {
+							<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
+							$.baseNotify({ msg: "<?php echo JText::_('MSG_SYNC_ERROR')?>", type: "danger" });
+						}
 					});
 				},
 				error: function(xhr, status, error) {
@@ -670,13 +675,7 @@ jQuery(window).on('load', function() {
 				</button>
 			<?php endif; ?>
 		</div>
-		<?php
-		// Mensagem de sucesso após a sincronização dos dados
-		if(isset($_SESSION[$APPTAG.'SyncSuccess']) && $_SESSION[$APPTAG.'SyncSuccess']) :
-			echo '<h5 class="alert alert-success base-icon-ok"> '.JText::_('MSG_USER_SYNCHRONIZED').'</h5>';
-			unset($_SESSION[$APPTAG.'SyncSuccess']);
-		endif;
-		?>
+
 	<?php endif; // showApp ?>
 
 	<?php

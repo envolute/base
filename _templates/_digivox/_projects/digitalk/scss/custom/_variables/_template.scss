@@ -39,8 +39,11 @@
 	$base-color-primary-light:			mix(white, $base-color-primary, 20%);
 	$base-color-primary-lighter:		mix(white, $base-color-primary, 50%);
 	$base-color-primary-lightest:		mix(white, $base-color-primary, 70%);
+	$base-color-light:					#F8F9FA !default;
+	$base-color-dark:					$gray-base !default;
 	$base-color-live:					$base-orange;
 	$base-color-white:					#fff;
+	$base-color-muted:					$base-gray-500;
 	// bg 'gray' default
 	$base-bg-muted:						$base-gray-200;
 	// bg opacity
@@ -58,8 +61,6 @@
 	$base-text-color:         			#555;
 	$base-link-color:         			$base-color-primary;
 	$base-link-hover-color:				darken($base-link-color, 15%); // copy of 'link-hover-color' bootstrap
-	$base-link-active-color:			lighten($base-link-color, 15%);
-	$base-link-visited-color:			$base-link-hover-color;
 	$base-btn-default-color:			$base-color-primary;
 	$base-btn-default-bg:				#fff;
 	$base-btn-default-border:			$base-border-color;
@@ -179,10 +180,7 @@
 // BUTTONS
 
 	// floating action
-	$base-btn-fab-size:					2.8rem !default;
-	$base-btn-fab-size-xs:				1.8rem !default;
-	$base-btn-fab-size-sm:				2.35rem !default;
-	$base-btn-fab-size-lg:				3.5rem !default;
+	$base-btn-fab-size:					2.4em !default;
 
 	// btn link bordered
 	$btn-link-bordered:					1px solid !default;

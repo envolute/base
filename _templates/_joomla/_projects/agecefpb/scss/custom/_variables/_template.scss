@@ -11,15 +11,15 @@
 
 	//-> gray
 	$gray-base:							#273240 !default;
-	$base-gray-100:						mix(black, $gray-base, 10%); !default;
-	$base-gray-200:						mix(black, $gray-base, 20%); !default;
-	$base-gray-300:						mix(black, $gray-base, 30%); !default;
-	$base-gray-400:						mix(black, $gray-base, 40%); !default;
-	$base-gray-500:						mix(black, $gray-base, 50%); !default;
-	$base-gray-600:						mix(black, $gray-base, 60%); !default;
-	$base-gray-700:						mix(black, $gray-base, 70%); !default;
-	$base-gray-800:						mix(black, $gray-base, 80%); !default;
-	$base-gray-900:						mix(black, $gray-base, 90%); !default;
+	$base-gray-100:						mix($gray-base, white, 4%)!default;
+	$base-gray-200:						mix($gray-base, white, 10%)!default;
+	$base-gray-300:						mix($gray-base, white, 20%)!default;
+	$base-gray-400:						mix($gray-base, white, 30%)!default;
+	$base-gray-500:						mix($gray-base, white, 45%)!default;
+	$base-gray-600:						mix($gray-base, white, 55%)!default;
+	$base-gray-700:						mix($gray-base, white, 65%)!default;
+	$base-gray-800:						mix($gray-base, white, 75%)!default;
+	$base-gray-900:						mix($gray-base, white, 85%)!default;
 	// colors
 	$base-blue:							#007bff !default;
 	$base-indigo:						#6610f2 !default;
@@ -39,8 +39,11 @@
 	$base-color-primary-light:			mix(white, $base-color-primary, 15%);
 	$base-color-primary-lighter:		mix(white, $base-color-primary, 50%);
 	$base-color-primary-lightest:		mix(white, $base-color-primary, 70%);
+	$base-color-light:					#F8F9FA !default;
+	$base-color-dark:					$gray-base !default;
 	$base-color-live:					$base-orange;
 	$base-color-white:					#fff;
+	$base-color-muted:					$base-gray-600;
 	// bg 'gray' default
 	$base-bg-muted:						$base-gray-100;
 	// bg opacity
@@ -58,8 +61,6 @@
 	$base-text-color:         			#555;
 	$base-link-color:         			$base-color-primary;
 	$base-link-hover-color:				darken($base-link-color, 15%); // copy of 'link-hover-color' bootstrap
-	$base-link-active-color:			lighten($base-link-color, 15%);
-	$base-link-visited-color:			$base-link-hover-color;
 	$base-btn-default-color:			$base-color-primary;
 	$base-btn-default-bg:				#fff;
 	$base-btn-default-border:			$base-border-color;

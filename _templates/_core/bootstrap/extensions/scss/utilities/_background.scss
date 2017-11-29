@@ -1,49 +1,60 @@
 // BACKGROUND COLORS
 
-	.bg-body { background-color: $body-bg; }
+	@include base-bg-color('body', $base-body-bg);
 	// theme addons
-	.bg-primary-dark { background-color: $base-color-primary-dark; }
-	.bg-primary-darker { background-color: $base-color-primary-darker; }
-	.bg-primary-darkest { background-color: $base-color-primary-darkest; }
-	.bg-primary-light { background-color: $base-color-primary-light; }
-	.bg-primary-lighter { background-color: $base-color-primary-lighter; }
-	.bg-primary-lightest { background-color: $base-color-primary-lightest; }
-	.bg-live { background-color: $base-color-live!important; }
+	@include base-bg-color('primary', theme-color('primary'), $bg-primary-text-color, $bg-primary-link-color, false);
+	@include base-bg-color('secondary', theme-color('secondary'), $bg-secondary-text-color, $bg-secondary-link-color, false);
+	@include base-bg-color('success', theme-color('success'), $bg-success-text-color, $bg-success-link-color, false);
+	@include base-bg-color('info', theme-color('info'), $bg-info-text-color, $bg-info-link-color, false);
+	@include base-bg-color('warning', theme-color('warning'), $bg-warning-text-color, $bg-warning-link-color, false);
+	@include base-bg-color('danger', theme-color('danger'), $bg-danger-text-color, $bg-danger-link-color, false);
+	@include base-bg-color('light', theme-color('light'), $bg-light-text-color, $bg-light-link-color, false);
+	@include base-bg-color('dark', theme-color('dark'), $bg-dark-text-color, $bg-dark-link-color, false);
+	@include base-bg-color('live', $base-color-live, $bg-live-text-color, $bg-live-link-color);
+	// primary variations
+	@include base-bg-color('primary-dark', $base-color-primary-dark, $bg-primary-dark-text-color, $bg-primary-dark-link-color);
+	@include base-bg-color('primary-darker', $base-color-primary-darker, $bg-primary-darker-text-color, $bg-primary-darker-link-color);
+	@include base-bg-color('primary-darkest', $base-color-primary-darkest, $bg-primary-darkest-text-color, $bg-primary-darkest-link-color);
+	@include base-bg-color('primary-light', $base-color-primary-light, $bg-primary-light-text-color, $bg-primary-light-link-color);
+	@include base-bg-color('primary-lighter', $base-color-primary-lighter, $bg-primary-lighter-text-color, $bg-primary-lighter-link-color);
+	@include base-bg-color('primary-lightest', $base-color-primary-lightest, $bg-primary-lightest-text-color, $bg-primary-lightest-link-color);
 	// gray options
-	.bg-white { background-color: $white; }
-	.bg-gray-100 { background-color: $gray-100; }
-	.bg-gray-200 { background-color: $gray-200; }
-	.bg-gray-300 { background-color: $gray-300; }
-	.bg-gray-400 { background-color: $gray-400; }
-	.bg-gray-500 { background-color: $gray-500; }
-	.bg-gray-600 { background-color: $gray-600; }
-	.bg-gray-700 { background-color: $gray-700; }
-	.bg-gray-800 { background-color: $gray-800; }
-	.bg-gray-900 { background-color: $gray-900; }
-	.bg-black { background-color: $black; }
-	// background opacity
-		// dark
-		.bg-dark-opacity-15 { background-color: rgba($bg-dark-opacity, .15); }
-		.bg-dark-opacity-30 { background-color: rgba($bg-dark-opacity, .30); }
-		.bg-dark-opacity-45 { background-color: rgba($bg-dark-opacity, .45); }
-		.bg-dark-opacity-60 { background-color: rgba($bg-dark-opacity, .60); }
-		.bg-dark-opacity-75 { background-color: rgba($bg-dark-opacity, .75); }
-		.bg-dark-opacity-90 { background-color: rgba($bg-dark-opacity, .90); }
-		// light
-		.bg-light-opacity-15 { background-color: rgba($bg-light-opacity, .15); }
-		.bg-light-opacity-30 { background-color: rgba($bg-light-opacity, .30); }
-		.bg-light-opacity-45 { background-color: rgba($bg-light-opacity, .45); }
-		.bg-light-opacity-60 { background-color: rgba($bg-light-opacity, .60); }
-		.bg-light-opacity-75 { background-color: rgba($bg-light-opacity, .75); }
-		.bg-light-opacity-90 { background-color: rgba($bg-light-opacity, .90); }
+	@include base-bg-color('white', $base-color-white, $bg-white-text-color, $bg-white-link-color);
+	@include base-bg-color('gray-100', $base-gray-100, $bg-gray-100-text-color, $bg-gray-100-link-color);
+	@include base-bg-color('gray-200', $base-gray-200, $bg-gray-200-text-color, $bg-gray-200-link-color);
+	@include base-bg-color('gray-300', $base-gray-300, $bg-gray-300-text-color, $bg-gray-300-link-color);
+	@include base-bg-color('gray-400', $base-gray-400, $bg-gray-400-text-color, $bg-gray-400-link-color);
+	@include base-bg-color('gray-500', $base-gray-500, $bg-gray-500-text-color, $bg-gray-500-link-color);
+	@include base-bg-color('gray-600', $base-gray-600, $bg-gray-600-text-color, $bg-gray-600-link-color);
+	@include base-bg-color('gray-700', $base-gray-700, $bg-gray-700-text-color, $bg-gray-700-link-color);
+	@include base-bg-color('gray-800', $base-gray-800, $bg-gray-800-text-color, $bg-gray-800-link-color);
+	@include base-bg-color('gray-900', $base-gray-900, $bg-gray-900-text-color, $bg-gray-900-link-color);
+	@include base-bg-color('black', $base-color-black, $bg-black-text-color, $bg-black-link-color);
 	// colors options
-	.bg-blue { background-color: $blue; }
-	.bg-indigo { background-color: $indigo; }
-	.bg-purple { background-color: $purple; }
-	.bg-pink { background-color: $pink; }
-	.bg-red { background-color: $red; }
-	.bg-orange { background-color: $orange; }
-	.bg-yellow { background-color: $yellow; }
-	.bg-green { background-color: $green; }
-	.bg-teal { background-color: $teal; }
-	.bg-cyan { background-color: $cyan; }
+	@include base-bg-color('blue', $base-blue, $bg-blue-text-color, $bg-blue-link-color);
+	@include base-bg-color('indigo', $base-indigo, $bg-indigo-text-color, $bg-indigo-link-color);
+	@include base-bg-color('purple', $base-purple, $bg-purple-text-color, $bg-purple-link-color);
+	@include base-bg-color('pink', $base-pink, $bg-pink-text-color, $bg-pink-link-color);
+	@include base-bg-color('red', $base-red, $bg-red-text-color, $bg-red-link-color);
+	@include base-bg-color('orange', $base-orange, $bg-orange-text-color, $bg-orange-link-color);
+	@include base-bg-color('yellow', $base-yellow, $bg-yellow-text-color, $bg-yellow-link-color);
+	@include base-bg-color('green', $base-green, $bg-green-text-color, $bg-green-link-color);
+	@include base-bg-color('teal', $base-teal, $bg-teal-text-color, $bg-teal-link-color);
+	@include base-bg-color('cyan', $base-cyan, $bg-cyan-text-color, $bg-cyan-link-color);
+
+	// BACKGROUND OPACITY
+
+		// // dark
+		// @include base-bg-color('dark-opacity-15', $base-color-white);
+		// @include base-bg-color('dark-opacity-30', $base-color-white);
+		// @include base-bg-color('dark-opacity-45', $base-color-whiter);
+		// @include base-bg-color('dark-opacity-60', $base-color-white);
+		// @include base-bg-color('dark-opacity-75', $base-color-white);
+		// @include base-bg-color('dark-opacity-90', $base-color-white);
+		// // light
+		// @include base-bg-color('light-opacity-15', $bg-body-text-color, $bg-body-link-color);
+		// @include base-bg-color('light-opacity-30', $bg-body-text-color, $bg-body-link-color);
+		// @include base-bg-color('light-opacity-45', $bg-body-text-color, $bg-body-link-color));
+		// @include base-bg-color('light-opacity-60', $bg-body-text-color, $bg-body-link-color);
+		// @include base-bg-color('light-opacity-75', $bg-body-text-color, $bg-body-link-color);
+		// @include base-bg-color('light-opacity-90', $bg-body-text-color, $bg-body-link-color);

@@ -57,9 +57,9 @@
   $yiq: (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
 
   @if ($yiq >= 150) {
-    color: #111;
+    color: $yiq-text-dark;
   } @else {
-    color: #fff;
+    color: $yiq-text-light;
   }
 }
 
