@@ -107,11 +107,19 @@ $this->direction = $doc->direction;
 	$params['header_6_container'] = $this->params->get('header_6_container', 'container');
 	$params['header_6_newContainerClass']	= $this->params->get('header_6_newContainerClass');
 	$params['header_6']  = $this->params->get('header_6');
+	$params['header_7_newRow']       = $this->params->get('header_7_newRow', 0);
+	$params['header_7_newRowClass']	= $this->params->get('header_7_newRowClass');
+	$params['header_7_container'] = $this->params->get('header_7_container', 'container');
+	$params['header_7_newContainerClass']	= $this->params->get('header_7_newContainerClass');
+	$params['header_7']  = $this->params->get('header_7');
+	$params['header_8_newRow']       = $this->params->get('header_8_newRow', 0);
+	$params['header_8_newRowClass']	= $this->params->get('header_8_newRowClass');
+	$params['header_8_container'] = $this->params->get('header_8_container', 'container');
+	$params['header_8_newContainerClass']	= $this->params->get('header_8_newContainerClass');
+	$params['header_8']  = $this->params->get('header_8');
 
 	// Sections
-	$params['section_top_container'] = $this->params->get('section_top_container', 'container');
 	$params['section_top'] = $this->params->get('section_top');
-	$params['section_bottom_container'] = $this->params->get('section_bottom_container', 'container');
 	$params['section_bottom'] = $this->params->get('section_bottom');
 
 	// Full Content -> classe(s) adicional(is)
@@ -169,6 +177,16 @@ $this->direction = $doc->direction;
 	$params['footer_6_container'] = $this->params->get('footer_6_container', 'container');
 	$params['footer_6_newContainerClass']	= $this->params->get('footer_6_newContainerClass');
 	$params['footer_6']	= $this->params->get('footer_6');
+	$params['footer_7_newRow']       = $this->params->get('footer_7_newRow', 0);
+	$params['footer_7_newRowClass']	= $this->params->get('footer_7_newRowClass');
+	$params['footer_7_container'] = $this->params->get('footer_7_container', 'container');
+	$params['footer_7_newContainerClass']	= $this->params->get('footer_7_newContainerClass');
+	$params['footer_7']	= $this->params->get('footer_7');
+	$params['footer_8_newRow']       = $this->params->get('footer_8_newRow', 0);
+	$params['footer_8_newRowClass']	= $this->params->get('footer_8_newRowClass');
+	$params['footer_8_container'] = $this->params->get('footer_8_container', 'container');
+	$params['footer_8_newContainerClass']	= $this->params->get('footer_8_newContainerClass');
+	$params['footer_8']	= $this->params->get('footer_8');
 
 	function loadPosition($tmpl, $params, $position, $total, $modStyle = 'base') {
 
@@ -249,44 +267,15 @@ $this->direction = $doc->direction;
 
 	function loadSection($tmpl, $params, $position, $modStyle = 'noContainer') {
 
-		$sOpen = $sClose = '';
 		$sgrid = $params['section_'.$position]; // classe da posição
 		if($tmpl->countModules('section-'.$position) > 0):
-			echo '<!-- Section '.$position.' -->';
-			if($params['section_'.$position.'_container'] != 'none'):
-				$sOpen = '
-				<div class="'.$params['section_'.$position.'_container'].'">
-					<div class="row">
-				';
-				$sClose = '
-					</div>
-				</div>
-				';
-				// Como foi definido um container, se a classe vier vazia,
-				// adiciona a classe 'col' para definir a coluna do grid
-				if(empty($sgrid)) $sgrid = 'col';
-			endif;
-			echo $sOpen;
 			echo '
-				<div id="section-bottom" class="'.$sgrid.'">
-					<jdoc:include type="modules" name="section-bottom" style="base" />
+				<!-- Section '.$position.' -->
+				<div id="section-'.$position.'" class="'.$sgrid.'">
+					<jdoc:include type="modules" name="section-'.$position.'" style="base" />
 				</div>
+				<!--/ Section '.$position.' -->
 			';
-			echo $sClose;
-			echo '<!--/ Section '.$position.' -->';
-		endif;
-
-
-		if(!empty($html)) :
-			// fecha a posição caso o loop não vá até o último item
-			if($current < $total && !$closed) :
-				if($hasWrapper) :
-					$html .= '  </div>'; // fecha 'row'
-					$html .= '</div>'; // fecha 'container'
-        		endif;
-				$html .= '</div>'; // fecha 'new-line'
-			endif;
-			echo '<div id="'.$position.'">'.$html.'</div>';
 		endif;
 
 	} // fecha 'funcion'

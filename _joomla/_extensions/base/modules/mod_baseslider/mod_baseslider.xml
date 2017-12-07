@@ -89,6 +89,10 @@
 					<option value="1">JYES</option>
 				</field>
 
+				<field name="link_to_list" type="text" filter="string" default="" label="MOD_BASESLIDER_LINK_LABEL" description="MOD_BASESLIDER_LINK_DESC" />
+				<field name="link_text" type="text" filter="string" default="" label="MOD_BASESLIDER_LINK_TEXT_LABEL" description="MOD_BASESLIDER_LINK_TEXT_DESC" />
+				<field name="link_class" type="text" filter="string" default="" label="MOD_BASESLIDER_LINK_CLASS_LABEL" description="MOD_BASESLIDER_LINK_CLASS_DESC" />
+
 				<field name="slider" type="spacer" class="text" label="MOD_BASESLIDER_SLIDER_LABEL" />
 
 				<field name="slide_mode"

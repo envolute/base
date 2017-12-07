@@ -65,6 +65,30 @@
 			padding: $grid-gutter-width 0;
 		}
 
+		// HOME
+		.home .allmode-showall {
+			font-size: 0.9rem;
+		}
+		.home #full-content .allmode-box figure {
+			transition: all .3s ease;
+			border: 3px solid #fff;
+    		box-shadow: 1px 1px 6px rgba(0,0,0,0.3);
+		}
+		.home #full-content .allmode-box figure:hover {
+			box-shadow: 1px 1px 6px rgba(0,0,0,0.2), 4px 4px 20px 0px rgba(0,0,0,0.2);
+		}
+		.home-list-gallery .allmode-showall {
+			text-align: right;
+			font-size: 0.9rem;
+		}
+		.home-list-fenae .allmode-showall {
+			margin-top: 1rem;
+			padding-top: .5rem;
+			border-top: 1px solid $base-border-color;
+			text-align: right;
+			font-size: 0.9rem;
+		}
+
 	// SECTION BOTTOM
 
 		#section-bottom {
@@ -81,9 +105,40 @@
 
 		}
 		#footer .set-list > li {
-			border-color: $base-gray-700;
+			border-color: $base-gray-900;
 		}
 		#{$base-break-down}  #footer { text-align: center; }
+
+		// Parcerias
+		#flag-parcerias {
+		    position: absolute;
+		    z-index: 1;
+		    top: -30px;
+		    left: -30px;
+		}
+
+		// Localidades
+		#locations-map-bg {
+			position: absolute;
+			width: 100%;
+			height: 237px;
+			background: url("../images/location-map.png");
+			box-shadow: inset 0 2px 3px rgba(0,0,0,0.3);
+		}
+
+	// HIDDEN
+
+		// Pesquisa
+		#hidden #mod-search-searchword {
+			padding: .5rem 1rem;
+			font-size: 1.3rem;
+			line-height: 1.8;
+			border-radius: 3px;
+		}
+		#modal-107 .close {
+			color: $base-color-white;
+			text-shadow: none;
+		}
 
 	// SCROLLTOTOP
 

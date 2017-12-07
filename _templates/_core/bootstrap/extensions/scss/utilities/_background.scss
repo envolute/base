@@ -44,17 +44,17 @@
 
 	// BACKGROUND OPACITY
 
-		// // dark
-		// @include base-bg-color('dark-opacity-15', $base-color-white);
-		// @include base-bg-color('dark-opacity-30', $base-color-white);
-		// @include base-bg-color('dark-opacity-45', $base-color-whiter);
-		// @include base-bg-color('dark-opacity-60', $base-color-white);
-		// @include base-bg-color('dark-opacity-75', $base-color-white);
-		// @include base-bg-color('dark-opacity-90', $base-color-white);
-		// // light
-		// @include base-bg-color('light-opacity-15', $bg-body-text-color, $bg-body-link-color);
-		// @include base-bg-color('light-opacity-30', $bg-body-text-color, $bg-body-link-color);
-		// @include base-bg-color('light-opacity-45', $bg-body-text-color, $bg-body-link-color));
-		// @include base-bg-color('light-opacity-60', $bg-body-text-color, $bg-body-link-color);
-		// @include base-bg-color('light-opacity-75', $bg-body-text-color, $bg-body-link-color);
-		// @include base-bg-color('light-opacity-90', $bg-body-text-color, $bg-body-link-color);
+		// dark
+		.bg-dark-opacity-15 { background-color: rgba($bg-dark-opacity, .15); }
+		.bg-dark-opacity-30 { background-color: rgba($bg-dark-opacity, .30); }
+		.bg-dark-opacity-45 { background-color: rgba($bg-dark-opacity, .45); }
+		.bg-dark-opacity-60 { background-color: rgba($bg-dark-opacity, .60); }
+		.bg-dark-opacity-75 { background-color: rgba($bg-dark-opacity, .75); }
+		.bg-dark-opacity-90 { background-color: rgba($bg-dark-opacity, .90); }
+		// light
+		.bg-light-opacity-15 { background-color: rgba($bg-light-opacity, .15); }
+		.bg-light-opacity-30 { background-color: rgba($bg-light-opacity, .30); }
+		.bg-light-opacity-45 { background-color: rgba($bg-light-opacity, .45); }
+		.bg-light-opacity-60 { background-color: rgba($bg-light-opacity, .60); }
+		.bg-light-opacity-75 { background-color: rgba($bg-light-opacity, .75); }
+		.bg-light-opacity-90 { background-color: rgba($bg-light-opacity, .90); }

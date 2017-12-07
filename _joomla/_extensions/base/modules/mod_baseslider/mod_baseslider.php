@@ -33,6 +33,9 @@ if(!empty($file) && file_exists($file)) :
 	$show_desc			= $params->get('show_desc', 0); // mostrar a descrição do item
 	$show_user			= $params->get('show_user', 0); // mostrar o usuário/autor do item
 	$show_value			= $params->get('show_value', 0); // mostrar o valor do item
+	$link_to_list		= $params->get('link_to_list'); // mostrar o link para a listagem completa
+	$link_text			= $params->get('link_text'); // text do link para a listagem completa
+	$link_class			= $params->get('link_class'); // classe CSS do link para a listagem completa
 
 	// Opções do slide
 	$mode				= $params->get('slide_mode', 'horizontal');
@@ -130,6 +133,15 @@ if(!empty($file) && file_exists($file)) :
 	$class .= !empty($slide_class) ? $slide_class : '';
 	$class = !empty($class) ? ' class="'.$class.'"' : '';
 
+	$link = '';
+	if(!empty($link_to_list) && !empty($link_text)) :
+		$link = '
+			<div class="mod-base-slider-showmore">
+				<a href="'.$link_to_list.'" class="'.$link_class.'">'.$link_text.'</a>
+			</div>
+		';
+	endif;
+
 	echo '
 		<div id="'.$propID.'"'.$class.'>
 			<ul id="mod-base-bxslider-'.$module->id.'" class="bxslider">
@@ -142,6 +154,7 @@ if(!empty($file) && file_exists($file)) :
 			endif;
 	echo '
 			</ul>
+			'.$link.'
 		</div>
 	';
 

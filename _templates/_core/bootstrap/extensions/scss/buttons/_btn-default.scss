@@ -3,8 +3,8 @@
 // Porém, ela é mentida para que '.btn-scondary' possa ser mais flexível
 // Assim, ela entrar como uma extensão...
 .btn-default {
-	@include button-variant($base-bg-muted, $base-border-color, darken($base-bg-muted, 7.5%), darken($base-border-color, 10%));
+	@include button-variant($base-btn-default-bg, $base-btn-default-border, $base-btn-default-hover-bg, $base-btn-default-hover-border);
 }
 .btn-outline-default {
-	@include button-outline-variant($base-gray-500, #fff);
+	@include button-outline-variant($base-btn-default-outline, $base-btn-default-outline-variant);
 }

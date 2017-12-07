@@ -306,12 +306,12 @@ $table-cell-padding:            .75rem !default;
 $table-cell-padding-sm:         .5rem !default; // -> {CUSTOM: .3rem}
 
 $table-bg:                      transparent !default;
-$table-accent-bg:               rgba($black,.05) !default;
-$table-hover-bg:                rgba($black,.075) !default;
+$table-accent-bg:               $white !default; // -> {CUSTOM: rgba($black,.05)}
+$table-hover-bg:                $gray-200 !default; // -> {CUSTOM: rgba($black,.075)}
 $table-active-bg:               $table-hover-bg !default;
 
 $table-border-width:            $border-width !default;
-$table-border-color:            $base-border-color !default; // -> {CUSTOM: $gray-200}
+$table-border-color:            $base-border-color-light !default; // -> {CUSTOM: $gray-200}
 
 $table-head-bg:                 $gray-200 !default;
 $table-head-color:              $gray-700 !default;

@@ -55,7 +55,7 @@ require_once('_init.tpl.php');
 			<?php
 
 			// HEADER
-			loadPosition($this, $params, 'header', 6);
+			loadPosition($this, $params, 'header', 8);
 
 			// SECTION TOP
 			loadSection($this, $params, 'top');
@@ -66,6 +66,8 @@ require_once('_init.tpl.php');
 			<div id="full-content">
 				<div class="<?php echo $params['full_content_container']?>">
 					<div class="row">
+
+						<jdoc:include type="message" />
 
 						<?php if($this->countModules('full-content-top') > 0): ?>
 							<!-- Full Content Top -->
@@ -102,8 +104,6 @@ require_once('_init.tpl.php');
 
 								<!-- Component -->
 								<div id="component" class="col">
-
-									<jdoc:include type="message" />
 
 									<?php if($this->countModules('component-top') > 0): ?>
 										<!-- Component Top -->
@@ -171,7 +171,7 @@ require_once('_init.tpl.php');
 			echo '<a id="scroll-to-top" href="#screen" class="go-to"></a>';
 
 			// FOOTER
-			loadPosition($this, $params, 'footer', 6);
+			loadPosition($this, $params, 'footer', 8);
 
 			// HIDDEN
 			if($this->countModules('hidden') > 0):

@@ -11,6 +11,7 @@ jQuery(document).ready(function() {
 
 		// Helpers
 		modalHelpers();
+		setBaseModal();
 		setTips();
 		collapseAll();
 		// Browser

@@ -96,6 +96,17 @@
 			text-shadow: 1px 1px 0 $white;
 			border-bottom: 3px solid transparent;
 		}
+		@include media-breakpoint-up(md) {
+			.mainmenu.nav.menu:not(.nav-stacked) > li > a,
+			.mainmenu.nav.menu:not(.nav-stacked) > li > a:link,
+			.mainmenu.nav.menu:not(.nav-stacked) > li > a:visited {
+				padding-left: 1.5rem;
+				padding-right: 1.5rem;
+			}
+			.mainmenu.nav.menu .child-reveal {
+				padding-right: 1.2rem;
+			}
+		}
 		// Efeito hover
 		.mainmenu.nav.menu li:not(.active) > a:hover,
 		.mainmenu.nav.menu li:not(.active) > a:focus,
@@ -111,12 +122,15 @@
 			border-color: $base-color-live;
 			background-color: transparent;
 		}
+		.mainmenu.nav.menu .child-reveal {
+			color: $base-color-primary-lighter;
+		}
 
 	// SUB MENU
 
 		.mainmenu.nav.menu:not(.nav-stacked) .nav-child {
 			border-top: 1px solid $base-color-primary-lighter;
-			background-color: $base-color-white;
+			background-color: $white;
 		}
 
 		// Item <a>
@@ -134,3 +148,37 @@
 			.mainmenu.nav.menu .nav-child li.parent:not(.active):hover > a {
 				border-bottom: 1px solid $base-gray-200 !important;
 			}
+
+// USERMENU -> MENU DO USUÁRIO
+
+	// NÍVEL 1
+
+		// Item container <li>
+		.usermenu.nav.menu > li:last-child {
+			margin-left: auto;
+		}
+		// Item <a>
+		// Formato do item -> definido no link <a>
+		.usermenu.nav.menu:not(.nav-stacked) > li > a,
+		.usermenu.nav.menu:not(.nav-stacked) > li > a:link,
+		.usermenu.nav.menu:not(.nav-stacked) > li > a:visited {
+			padding: .5rem .75rem 0.65rem;
+			margin: 0 1px;
+			color: $white;
+			font-size: .94rem;
+			border-radius: 3px 3px 0 0;
+		}
+		// Efeito hover
+		.usermenu.nav.menu li:not(.active) > a:hover,
+		.usermenu.nav.menu li:not(.active) > a:focus,
+		.usermenu.nav.menu li.parent:not(.active):hover > a {
+			color: $base-color-live;
+			background-color: $white;
+		}
+		// Item ativo
+		.usermenu.nav.menu:not(.nav-stacked) li.active > a,
+		.usermenu.nav.menu:not(.nav-stacked) li > a.active // em caso de scroll 'go-to'
+		{
+			color: $base-color-live;
+			background-color: $body-bg;
+		}

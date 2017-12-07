@@ -1,5 +1,7 @@
 // TABLES
 
-.table-striped:not(.table-bordered) td {
-	border-top: none;
+.table thead th {
+	font-weight: normal;
+	color: $base-color-dark;
+	border-color: $base-gray-700;
 }

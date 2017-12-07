@@ -263,6 +263,14 @@
 
 // BUTTONS
 
+	// btn default
+	$base-btn-default-bg:				$base-bg-muted !default;
+	$base-btn-default-border:			$base-border-color !default;
+	$base-btn-default-hover-bg:			darken($base-bg-muted, 7.5%) !default;
+	$base-btn-default-hover-border:		darken($base-border-color, 10%) !default;
+	$base-btn-default-outline:			$base-gray-300 !default;
+	$base-btn-default-outline-variant:	$base-text-color !default;
+
 	// floating action
 	$base-btn-fab-size:					2.8rem !default;
 	$base-btn-fab-size-xs:				1.8rem !default;
@@ -284,11 +292,11 @@
 	$fieldset-padding-top:				2.5em;
 	$fieldset-padding:					1.5em;
 	$fieldset-padding-sm:				1em;
-	$fieldset-border:					1px solid $base-border-color;
+	$fieldset-border:					1px solid $base-border-color-light;
 	// -> bordered
 	$fieldset-bordered-form-actions-bg:	$base-gray-100;
 	// -> embed
-	$fieldset-embed-bg:					$base-gray-100;
+	$fieldset-embed-bg:					$base-color-white;
 	$fieldset-embed-border:				$fieldset-border;
 	$fieldset-embed-shadow:				inset 1px 1px 5px rgba(0,0,0,0.06);
 	$fieldset-embed-outline:			4px solid $base-body-bg;
@@ -298,7 +306,7 @@
 	$fieldset-embed-legend-color:		$base-color-primary;
 	$fieldset-embed-legend-radius:		0 0 $base-radius-default $base-radius-default;
 	$fieldset-embed-legend-shadow:		1px 1px 2px rgba(0,0,0,0.06);
-	$fieldset-embed-striped-color:		#fff; // optional bootstrap striped color
+	$fieldset-embed-striped-color:		$base-body-bg; // optional bootstrap striped color
 
 	// Field Icon
 	$base-field-icon-padding-left:		2em !default;
@@ -323,7 +331,7 @@
 	$nav-menu-main-item-hover-bg:		$base-gray-100;
 	$nav-menu-main-item-padding-y:		$base-input-padding-y !default;
 	$nav-menu-main-item-padding-x:		$base-input-padding-x !default;
-	$nav-menu-indicator-padding:		0 .5em !default; // child-reveal
+	$nav-menu-indicator-padding:		0 .9rem 0 .5em !default; // child-reveal
 	$nav-menu-child-indicator-mr-1:		8px !default; // child-reveal
 	$nav-menu-child-minWidth:			14rem;
 	$nav-menu-child-padding:			0;
@@ -374,10 +382,10 @@
 // UTILITIES
 
 	// box shadow
-	$base-shadow: 						0 0 3px 1px rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.2);
-	$base-shadow-sm:					0 0 3px 0 rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.2);
-	$base-shadow-lg:					0 0 10px 2px rgba(0,0,0,0.2), 0 0 1px rgba(0,0,0,0.2);
-	$base-shadow-xl:					0 0 15px 2px rgba(0,0,0,0.2), 0 0 1px 1px rgba(0,0,0,0.2);
+	$base-shadow: 						0 0 6px 1px rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.1);
+	$base-shadow-sm:					0 0 5px 0px rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.1);
+	$base-shadow-lg:					0 0 15px 2px rgba(0,0,0,0.2), 0 0 1px rgba(0,0,0,0.2);
+	$base-shadow-xl:					0 0 20px 2px rgba(0,0,0,0.2), 0 0 1px 1px rgba(0,0,0,0.2);
 	$base-shadow-to-left:				-1px 1px 3px rgba(0,0,0,0.1);
 	$base-shadow-to-right:				1px 1px 3px rgba(0,0,0,0.1);
 
