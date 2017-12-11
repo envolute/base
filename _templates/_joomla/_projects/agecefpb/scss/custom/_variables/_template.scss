@@ -10,6 +10,7 @@
 // COLORS
 
 	//-> gray
+	$base-color-white:					#fff;
 	$gray-base:							#273240 !default;
 	$base-gray-100:						mix($gray-base, white, 4%)!default;
 	$base-gray-200:						mix($gray-base, white, 10%)!default;
@@ -20,6 +21,7 @@
 	$base-gray-700:						mix($gray-base, white, 65%)!default;
 	$base-gray-800:						mix($gray-base, white, 75%)!default;
 	$base-gray-900:						mix($gray-base, white, 85%)!default;
+	$base-color-black:					#000;
 	// colors
 	$base-blue:							#007bff !default;
 	$base-indigo:						#6610f2 !default;
@@ -39,6 +41,11 @@
 	$base-color-primary-light:			mix(white, $base-color-primary, 15%);
 	$base-color-primary-lighter:		mix(white, $base-color-primary, 50%);
 	$base-color-primary-lightest:		mix(white, $base-color-primary, 70%);
+	$base-color-secondary:				#C3D1E4;
+	$base-color-success:				$base-green;
+	$base-color-info:					$base-cyan;
+	$base-color-warning:				$base-yellow;
+	$base-color-danger:					$base-red;
 	$base-color-light:					#F8F9FA !default;
 	$base-color-dark:					$gray-base !default;
 	$base-color-live:					$base-orange;
@@ -66,6 +73,84 @@
 	$base-btn-default-border:			$base-border-color;
 	$base-input-padding-x:				.75rem;
 	$base-input-padding-y:				.5rem;
+
+	// text & link colors definitions for bg-color classes
+		// theme colors
+		$bg-primary-text-color: $base-color-white;
+			$bg-primary-link-color: mix($bg-primary-text-color, $base-color-primary, 80%);
+		$bg-secondary-text-color: $base-color-dark;
+			$bg-secondary-link-color: mix($bg-secondary-text-color, $base-color-secondary, 80%);
+		$bg-success-text-color: $base-color-white;
+			$bg-success-link-color: mix($bg-success-text-color, $base-color-success, 80%);
+		$bg-info-text-color: $base-color-white;
+			$bg-info-link-color: mix($bg-info-text-color, $base-color-info, 80%);
+		$bg-warning-text-color: $base-color-white;
+			$bg-warning-link-color: mix($bg-warning-text-color, $base-color-warning, 80%);
+		$bg-danger-text-color: $base-color-white;
+			$bg-danger-link-color: mix($bg-danger-text-color, $base-color-danger, 80%);
+		$bg-light-text-color: $base-text-color;
+			$bg-light-link-color: $base-link-color;
+		$bg-dark-text-color: $base-color-light;
+			$bg-dark-link-color: mix($bg-dark-text-color, $base-color-dark, 80%);
+		$bg-live-text-color: $base-color-white;
+			$bg-live-link-color: mix($bg-live-text-color, $base-color-live, 80%);
+		// primary variations
+		$bg-primary-light-text-color: $base-color-white;
+			$bg-primary-light-link-color: mix($bg-primary-light-text-color, $base-color-primary-light, 80%);
+		$bg-primary-lighter-text-color: $base-color-primary-darker;
+			$bg-primary-lighter-link-color: mix($bg-primary-lighter-text-color, $base-color-primary-lighter, 80%);
+		$bg-primary-lightest-text-color: $base-color-primary-darker;
+			$bg-primary-lightest-link-color: mix($bg-primary-lightest-text-color, $base-color-primary-lightest, 80%);
+		$bg-primary-dark-text-color: $base-color-white;
+			$bg-primary-dark-link-color: mix($bg-primary-dark-text-color, $base-color-primary-dark, 80%);
+		$bg-primary-darker-text-color: $base-color-white;
+			$bg-primary-darker-link-color: mix($bg-primary-darker-text-color, $base-color-primary-darker, 80%);
+		$bg-primary-darkest-text-color: $base-color-white;
+			$bg-primary-darkest-link-color: mix($bg-primary-darkest-text-color, $base-color-primary-darkest, 80%);
+		// gray options
+		$bg-white-text-color: $base-text-color;
+			$bg-white-link-color: $base-link-color;
+		$bg-gray-100-text-color: $base-text-color;
+			$bg-gray-100-link-color: $base-link-color;
+		$bg-gray-200-text-color: $base-text-color;
+			$bg-gray-200-link-color: $base-link-color;
+		$bg-gray-300-text-color: $base-text-color;
+			$bg-gray-300-link-color: $base-link-color;
+		$bg-gray-400-text-color: $base-gray-900;
+			$bg-gray-400-link-color: mix($bg-gray-400-text-color, $base-gray-400, 80%);
+		$bg-gray-500-text-color: $base-color-white;
+			$bg-gray-500-link-color: mix($bg-gray-500-text-color, $base-gray-500, 80%);
+		$bg-gray-600-text-color: $base-color-white;
+			$bg-gray-600-link-color: mix($bg-gray-600-text-color, $base-gray-600, 80%);
+		$bg-gray-700-text-color: $base-color-white;
+			$bg-gray-700-link-color: mix($bg-gray-700-text-color, $base-gray-700, 80%);
+		$bg-gray-800-text-color: $base-gray-200;
+			$bg-gray-800-link-color: mix($bg-gray-800-text-color, $base-gray-800, 80%);
+		$bg-gray-900-text-color: $base-gray-200;
+			$bg-gray-900-link-color: mix($bg-gray-900-text-color, $base-gray-900, 80%);
+		$bg-black-text-color: $base-gray-200;
+			$bg-black-link-color: mix($bg-black-text-color, $base-color-black, 80%);
+		// colors options
+		$bg-blue-text-color: $base-color-white;
+			$bg-blue-link-color: mix($bg-blue-text-color, $base-blue, 80%);
+		$bg-indigo-text-color: $base-color-white;
+			$bg-indigo-link-color: mix($bg-indigo-text-color, $base-indigo, 80%);
+		$bg-purple-text-color: $base-color-white;
+			$bg-purple-link-color: mix($bg-purple-text-color, $base-purple, 80%);
+		$bg-pink-text-color: $base-color-white;
+			$bg-pink-link-color: mix($bg-pink-text-color, $base-pink, 80%);
+		$bg-red-text-color: $base-color-white;
+			$bg-red-link-color: mix($bg-red-text-color, $base-red, 80%);
+		$bg-orange-text-color: $base-color-white;
+			$bg-orange-link-color: mix($bg-orange-text-color, $base-orange, 80%);
+		$bg-yellow-text-color: $base-color-white;
+			$bg-yellow-link-color: mix($bg-yellow-text-color, $base-yellow, 80%);
+		$bg-green-text-color: $base-color-white;
+			$bg-green-link-color: mix($bg-green-text-color, $base-green, 80%);
+		$bg-teal-text-color: $base-color-white;
+			$bg-teal-link-color: mix($bg-teal-text-color, $base-teal, 80%);
+		$bg-cyan-text-color: $base-color-white;
+			$bg-cyan-link-color: mix($bg-cyan-text-color, $base-cyan, 80%);
 
 	// space
 	$base-space:						15px; // IMPORTANT: define bootstrap '$grid-gutter-width-base' variable
@@ -178,6 +263,14 @@
  	$base-table-line-height:			1.25 !default;
 
 // BUTTONS
+
+	// btn default
+	$base-btn-default-bg:				$base-bg-muted !default;
+	$base-btn-default-border:			$base-border-color !default;
+	$base-btn-default-hover-bg:			darken($base-bg-muted, 7.5%) !default;
+	$base-btn-default-hover-border:		darken($base-border-color, 10%) !default;
+	$base-btn-default-outline:			$base-gray-300 !default;
+	$base-btn-default-outline-variant:	$base-text-color !default;
 
 	// floating action
 	$base-btn-fab-size:					2.8rem !default;

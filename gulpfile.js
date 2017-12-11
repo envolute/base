@@ -2,7 +2,7 @@
 var gulp = require('gulp');
 
 // Define Project Name
-var project     = 'apcefpb';
+var project     = 'agecefpb';
 
 // Define base folders
 var builder     = '_templates';
