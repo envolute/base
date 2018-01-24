@@ -67,8 +67,8 @@ $html = '
 					<th>'.JText::_('FIELD_LABEL_CLIENT').'</th>
 					<th class="d-none d-lg-table-cell">'.JText::_('FIELD_LABEL_PROVIDER').'</th>
 					<th class="d-none d-lg-table-cell">'.JText::_('FIELD_LABEL_DESCRIPTION').'</th>
-					<th>'.JText::_('FIELD_LABEL_DATE').'</th>
-					<th>'.JText::_('FIELD_LABEL_PRICE').'</th>
+					<th width="90">'.JText::_('FIELD_LABEL_DATE').'</th>
+					<th width="100">'.JText::_('FIELD_LABEL_PRICE').'</th>
 					'.$adminView['head']['actions'].'
 				</tr>
 			</thead>
@@ -134,7 +134,7 @@ if($num_rows) : // verifica se existe
 		$urlToInvoice = JURI::root().'apps/clients/invoices/details?invID='.$item->invoice_id.($item->user_id != $user->id ? '&uID='.$item->user_id : '');
 		$urlToPhoneInvoice = JURI::root().'apps/clients/phonesinvoices/details?invID='.$item->phoneInvoice_id.'&pID='.$item->phone_id.($item->user_id != $user->id ? '&uID='.$item->user_id : '');
 		$desc = !empty($item->phoneInvoice_id) ? '<a href="'.$urlToPhoneInvoice.'" target="_blank">'.$item->description.'</a>' : $item->description;
-		$isInstallment = ($item->installment < $item->total) ? 1 : 0;
+		$isInstallment = ($item->total > 1) ? 1 : 0;
 		$info = '';
 		if($item->fixed == 2) $info .= '<span class="base-icon-arrows-cw text-live cursor-help hasTooltip" title="'.JText::_('TEXT_RECURRENT').'"></span> ';
 		else if($isInstallment) $info .= '<span class="base-icon-docs isInstallment text-live cursor-help hasTooltip" title="'.JText::_('TEXT_INSTALLMENT_TRANSACTION').'"></span> ';

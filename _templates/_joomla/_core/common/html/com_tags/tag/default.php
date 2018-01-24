@@ -16,10 +16,10 @@ $isSingleTag = (count($this->item) == 1);
 <div class="tag-category">
 
 	<?php if ($this->params->get('show_page_heading')) : ?>
-		<h4 class="page-header">
+		<h5 class="page-header">
 			<span class="base-icon-tags"></span>
 			<?php echo $this->escape($this->params->get('page_heading')); ?>
-		</h4>
+		</h5>
 	<?php endif; ?>
 	<?php if($this->params->get('show_tag_title', 1)) : ?>
 		<h2>

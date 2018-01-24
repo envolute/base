@@ -167,7 +167,6 @@ jQuery(window).on('load', function() {
 		};
 
 		// CUSTOM -> DEPENDENT lista dependentes de acordo com o associado
-		// DESABILITADO => NÃO HÁ CADASTRO DE DEPENDENTES
 		client_id.on('change', function() {
 			<?php echo $APPTAG?>_getDependentList(jQuery(this).val());
 		});

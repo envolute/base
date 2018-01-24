@@ -67,7 +67,9 @@ require_once('_init.tpl.php');
 				<div class="<?php echo $params['full_content_container']?>">
 					<div class="row">
 
-						<jdoc:include type="message" />
+						<div class="col-12">
+							<jdoc:include type="message" />
+						</div>
 
 						<?php if($this->countModules('full-content-top') > 0): ?>
 							<!-- Full Content Top -->

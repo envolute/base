@@ -28,6 +28,7 @@ jQuery(document).ready(function() {
 		linkActionsDef();
 		// Utilities
 		setElementHeight();
+		setIframeHeight();
 		imageRetina();
 		setParentWidth();
 		gotoElement();

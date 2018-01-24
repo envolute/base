@@ -116,13 +116,13 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['address_city']		= $input->get('address_city', '', 'string');
 		$request['address_state']		= $input->get('address_state', 'PB', 'string');
 		$request['address_country']		= $input->get('address_country', 'BRASIL', 'string');
-		$phone							= $input->get('phone', '', 'array');
+		$phone							= $input->get('phone', array(), 'array');
 		$phone							= str_replace(';', '.', $phone); // formata
 		$request['phone']				= implode(';', $phone);
-		$whatsapp						= $input->get('whatsapp', '', 'array');
+		$whatsapp						= $input->get('whatsapp', array(), 'array');
 		$whatsapp						= str_replace(';', '.', $whatsapp); // formata
 		$request['whatsapp']			= implode(';', $whatsapp);
-		$phone_desc						= $input->get('phone_desc', '', 'array');
+		$phone_desc						= $input->get('phone_desc', array(), 'array');
 		$phone_desc						= str_replace(';', '.', $phone_desc); // formata
 		$request['phone_desc']			= implode(';', $phone_desc);
 	  	$request['enable_debit']		= $input->get('enable_debit', 1, 'int');

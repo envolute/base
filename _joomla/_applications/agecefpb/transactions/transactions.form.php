@@ -65,21 +65,6 @@ $invoices = $db->loadObjectList();
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-4 <?php echo $APPTAG?>-no-fixed">
-				<div class="form-group field-required">
-					<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_IS_CARD_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_IS_CARD'); ?></label>
-					<span class="btn-group btn-group-justified" data-toggle="buttons">
-						<label class="btn btn-default btn-active-danger">
-							<input type="radio" name="isCard" id="<?php echo $APPTAG?>-isCard-0" value="0" onchange="<?php echo $APPTAG?>_setCard(false)" />
-							<?php echo JText::_('TEXT_NO'); ?>
-						</label>
-						<label class="btn btn-default btn-active-success">
-							<input type="radio" name="isCard" id="<?php echo $APPTAG?>-isCard-1" value="1" onchange="<?php echo $APPTAG?>_setCard(true)" />
-							<?php echo JText::_('TEXT_YES'); ?>
-						</label>
-					</span>
-				</div>
-			</div>
 			<div class="col-md-8">
 				<div class="form-group field-required">
 					<label><?php echo JText::_('FIELD_LABEL_CLIENT'); ?></label>
@@ -90,14 +75,6 @@ $invoices = $db->loadObjectList();
 								echo '<option value="'.$obj->id.'">'.baseHelper::nameFormat($obj->name).'</option>';
 							}
 						?>
-					</select>
-				</div>
-			</div>
-			<div class="col-md-8">
-				<div class="form-group">
-					<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_BUYER_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_BUYER'); ?></label>
-					<select name="dependent_id" id="<?php echo $APPTAG?>-dependent_id" class="form-control">
-						<option value="0"><?php echo JText::_('TEXT_SELECT')?></option>
 					</select>
 				</div>
 			</div>
@@ -114,7 +91,6 @@ $invoices = $db->loadObjectList();
 						<span class="input-group-addon">R$</span>
 						<input type="text" name="price" id="<?php echo $APPTAG?>-price" class="form-control field-price" data-convert="true" />
 					</span>
-					<input type="hidden" name="cardLimit" id="<?php echo $APPTAG?>-cardLimit" />
 				</div>
 			</div>
 			<div class="col-6 col-md-4 <?php echo $APPTAG?>-no-fixed">
@@ -155,7 +131,7 @@ $invoices = $db->loadObjectList();
 		<div class="form-group">
 			<hr class="hr-tag" />
 			<span class="base-icon-info-circled badge badge-warning cursor-help hasTooltip" title="<?php echo JText::_('FIELD_LABEL_NOTE_DESC'); ?>"> <?php echo JText::_('FIELD_LABEL_NOTE'); ?></span>
-			<textarea type="text" name="note" id="<?php echo $APPTAG?>-note" rows="15" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_NOTE_DESC'); ?>"></textarea>
+			<textarea type="text" name="note" id="<?php echo $APPTAG?>-note" rows="10" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_NOTE_DESC'); ?>"></textarea>
 		</div>
 	</div>
 </div>

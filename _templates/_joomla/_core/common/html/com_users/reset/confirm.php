@@ -14,9 +14,9 @@ JHtml::_('behavior.formvalidator');
 ?>
 <div class="reset-confirm<?php echo $this->pageclass_sfx?>">
 	<?php if ($this->params->get('show_page_heading')) : ?>
-	<h4 class="page-header">
+	<h5 class="page-header">
 		<?php echo $this->escape($this->params->get('page_heading')); ?>
-	</h4>
+	</h5>
 	<?php endif; ?>
 
 	<form action="<?php echo JRoute::_('index.php?option=com_users&task=reset.confirm'); ?>" method="post" class="form-validate">

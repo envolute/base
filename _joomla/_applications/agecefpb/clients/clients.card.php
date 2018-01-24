@@ -37,6 +37,9 @@ if(isset($_SESSION[$APPTAG.'langDef'])) :
 	$lang->load('base_'.$APPNAME, JPATH_BASE, $_SESSION[$APPTAG.'langDef'], true);
 endif;
 
+// Admin Actions
+require_once('clients.select.user.php');
+
 // database connect
 $db = JFactory::getDbo();
 
@@ -46,7 +49,7 @@ $query = '
 	  '. $db->quoteName('T1.id') .',
 	  '. $db->quoteName('T1.name') .',
 	  '. $db->quoteName('T1.card_name') .',
-	  '. $db->quoteName('T1.cx_code') .',
+	  '. $db->quoteName('T1.cpf') .',
 	  '. $db->quoteName('T3.username') .' code,
 	  '. $db->quoteName('T2.title') .' grp
 	FROM
@@ -55,7 +58,7 @@ $query = '
 	  ON T2.id = T1.usergroup
 	  LEFT JOIN '. $db->quoteName('#__users') .' T3
 	  ON T3.id = T1.user_id
-	WHERE '. $db->quoteName('T1.id') .' = '.$uID
+	WHERE '. $db->quoteName('T1.user_id') .' = '.$uID
 ;
 $db->setQuery($query);
 $item = $db->loadObject();
@@ -65,24 +68,24 @@ if(!empty($item->name)) : // verifica se existe
 	JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 	// Imagem Principal -> Primeira imagem (index = 0)
 	$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
-	if(!empty($img)) $img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 300, 400).'" style="float:left; width:68px; height:90px; border:2px solid #f60" />';
+	if(!empty($img)) $img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 110, 110).'" style="position:absolute; top:20px; right:20px; width:110px; height:110px; border:3px solid #dcdcdc; border-radius:10px;" />';
 
 	$grp = '<span class="left-space text-upper">'.$item->grp.'</span>';
 	$matricula = '';
-	if(!empty($item->cx_matricula)) :
-		$matricula = '<div style="text-align:right;">Mat. <strong>'.$item->cx_matricula.'</strong>'.$grp.'</div>';
+	if(!empty($item->cx_code)) :
+		$matricula = '<div style="text-align:right;">Mat. <strong>'.$item->cx_code.'</strong>'.$grp.'</div>';
 		$grp = '';
 	endif;
 	$doc = JFactory::getDocument();
 	$doc->addStyleDeclaration('body{ overflow: hidden!important; }');
 	$html = '
-		<div id="'.$APPTAG.'-card" style="padding:20px 0 0 1px; font-size:11px;">
-			'.$img.'
-			<div style="padding:65px 0 0; text-align:right;">'.(!empty($item->card_name) ? $item-> : $item->name).'</div>
-			<div style="text-align:right;">Cód. <strong>'.$item->code.'</strong>'.$grp.'</div>
-			'.$matricula.'
-		</div>
-		<script>jQuery(window).on('load', function() { print() });</script>
+	<div class="text-primary-dark font-weight-bold pos-relative m-auto" style="width:500px; height:314px; border-radius:15px; overflow-x:auto; overflow-y:hidden">
+		<img src="images/template/cartao.png" style="position:absolute" />
+		'.$img.'
+		<div style="position:absolute; top:110px; left:100px; width: 280px;" class="text-overflow">'.(!empty($item->card_name) ? $item->card_name : $item->name).'</div>
+		<div style="position:absolute; top:145px; left:85px;">'.$item->cpf.'</div>
+		<div style="position:absolute; top:182px; left:205px;">'.date('d/m/Y', strtotime($item->birthday)).'</div>
+	</div>
 	';
 else :
 	$html = '<p class="alert alert-info alert-icon no-margin">'.JText::_('MSG_EMPTY_CARD').'</p>';

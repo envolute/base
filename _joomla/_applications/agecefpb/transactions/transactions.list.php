@@ -15,7 +15,6 @@ require($PATH_APP_FILE.'.filter.php');
 			'. $db->quoteName('T2.name') .' provider,
 			'. $db->quoteName('T3.name') .' client,
 			'. $db->quoteName('T3.user_id') .',
-			'. $db->quoteName('T4.name') .' dependent,
 			'. $db->quoteName('T5.due_date') .' invoiceDate,
 			IF(`T5`.`custom_desc` <> "", `T5`.`custom_desc`, `T5`.`description`) invoice_desc
 		FROM
@@ -24,8 +23,6 @@ require($PATH_APP_FILE.'.filter.php');
 			ON T2.id = T1.provider_id
 			JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T3
 			ON T3.id = T1.client_id
-			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_dependents') .' T4
-			ON T4.id = T1.dependent_id
 			LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_invoices') .' T5
 			ON T5.id = T1.invoice_id
 		WHERE
@@ -134,16 +131,14 @@ if($num_rows) : // verifica se existe
 		$urlToInvoice = JURI::root().'apps/clients/invoices/details?invID='.$item->invoice_id.($item->user_id != $user->id ? '&uID='.$item->user_id : '');
 		$urlToPhoneInvoice = JURI::root().'apps/clients/phonesinvoices/details?invID='.$item->phoneInvoice_id.'&pID='.$item->phone_id.($item->user_id != $user->id ? '&uID='.$item->user_id : '');
 		$desc = !empty($item->phoneInvoice_id) ? '<a href="'.$urlToPhoneInvoice.'" target="_blank">'.$item->description.'</a>' : $item->description;
-		$isInstallment = ($item->installment < $item->total) ? 1 : 0;
+		$isInstallment = ($item->total > 1) ? 1 : 0;
 		$info = '';
 		if($item->fixed == 2) $info .= '<span class="base-icon-arrows-cw text-live cursor-help hasTooltip" title="'.JText::_('TEXT_RECURRENT').'"></span> ';
 		else if($isInstallment) $info .= '<span class="base-icon-docs isInstallment text-live cursor-help hasTooltip" title="'.JText::_('TEXT_INSTALLMENT_TRANSACTION').'"></span> ';
 		else if($item->phone_id > 0) $info .= '<span class="base-icon-phone text-live cursor-help hasTooltip" title="'.JText::_('TEXT_ADD_PHONE_INVOICE').'"></span> ';
 		$info .= !empty($desc) ? $desc : '';
 		$info .= !empty($item->doc_number) ? '<div class="text-xs text-muted">Item: '.$item->doc_number.'</div>' : '';
-		$dependent = !empty($item->dependent) ? '<div class="small text-muted">&raquo; <span class="cursor-help hasTooltip" title="'.JText::_('TEXT_TRANSACTION_BY').'">'.baseHelper::nameFormat($item->dependent).'</span></div>' : '';
 		$installments = $isInstallment ? '('.$item->installment.'/'.$item->total.') ' : JText::_('TEXT_IN_CASH');
-		$isCard = $item->isCard == 1 ? '<span class="badge badge-warning text-uppercase cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_IS_CARD').'">'.JText::_('FIELD_LABEL_CARD').'</span>' : '';
 		$note = !empty($item->note) ? '<div class="small text-muted font-featured"><span class="base-icon-info-circled text-live cursor-help hasTooltip" title="Observação"></span> '.$item->note.'</div>' : '';
 		$total = $total + $item->price;
 		$rowState = $item->state == 0 ? 'table-danger' : '';
@@ -151,7 +146,7 @@ if($num_rows) : // verifica se existe
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
-				<td>'.baseHelper::nameFormat($item->client).$dependent.'</td>
+				<td>'.baseHelper::nameFormat($item->client).'</td>
   				<td class="d-none d-lg-table-cell">'.baseHelper::nameFormat($item->provider).'</td>
   				<td class="d-none d-lg-table-cell">'.$info.'</td>
   				<td>
@@ -161,7 +156,7 @@ if($num_rows) : // verifica se existe
   				<td>
 					'.baseHelper::priceFormat($item->price, false, 'R$ ').'
 					<div class="small text-muted">
-						'.$installments.$isCard.'
+						'.$installments.'
 					</div>
 				</td>
 				'.$adminView['list']['actions'].'

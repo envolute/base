@@ -26,9 +26,9 @@
 		border-top: 0;
 		background-color: $fieldset-embed-legend-bg;
 		@if $base-enable-rounded { border-radius: $fieldset-embed-legend-radius; }
-	  @else { border-radius: 0; }
+	  	@else { border-radius: 0; }
 		box-shadow: $fieldset-embed-legend-shadow;
-		z-index: 1;
+		z-index: 0;
 	}
 	.fieldset-embed .fieldset-embed legend { background-color: $fieldset-embed-bg; }
 	// legenda à direita

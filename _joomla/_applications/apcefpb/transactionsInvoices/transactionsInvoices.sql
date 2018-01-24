@@ -140,3 +140,35 @@ FROM
 WHERE `T1`.`state` = 1
 GROUP BY `T1`.`id`, `T2`.`client_id`
 ORDER BY `T1`.`due_date` DESC
+
+
+
+
+-- -------------------------------------------------------------------------
+
+
+MIGRAÇÃO
+
+
+1 - Copiar a tabela "cms_apcefpb_transactions_invoices" da base antiga e copiar para a tabela "migracao_invoices" na base nova
+
+2 - Rodar o comando abaixo (migração dos dados da tabela "transactions_invoices" antiga para a nova)
+
+INSERT INTO `cms_apcefpb_transactions_invoices` (
+	`id`,
+	`due_date`,
+	`description`,
+	`note`,
+	`state`,
+	`created_date`,
+	`created_by`
+) SELECT
+	`id`,
+	`due_date`,
+	'Fatura Mensal',
+	`note`,
+	`state`,
+	`created_date`,
+	`created_by`
+FROM `migracao_invoices`
+ORDER BY `id`

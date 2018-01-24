@@ -5,10 +5,10 @@ require('config.php');
 
 // ACESSO: Libera o acesso aos clients
 // Atribui aos clientes o perfil de visualizador só para esse código
-unset($cfg['groupId']['viewer']); // Limpa os valores padrão
-$cfg['groupId']['viewer'][]	= 11; // Associado -> Efetivo
-$cfg['groupId']['viewer'][]	= 12; // Associado -> Aposentado
-$cfg['groupId']['viewer'][]	= 13; // Associado -> Contribuinte
+// unset($cfg['groupId']['viewer']); // Limpa os valores padrão
+// $cfg['groupId']['viewer'][]	= 11; // Associado -> Efetivo
+// $cfg['groupId']['viewer'][]	= 12; // Associado -> Aposentado
+// $cfg['groupId']['viewer'][]	= 13; // Associado -> Contribuinte
 
 // IMPORTANTE: Carrega o arquivo 'helper' do template
 JLoader::register('baseHelper', JPATH_CORE.DS.'helpers/base.php');
@@ -25,7 +25,6 @@ require(JPATH_CORE.DS.'apps/_init.app.php');
 
 // Get request data
 $uID = $app->input->get('uID', 0, 'int');
-$uID = ($hasAdmin && $uID > 0) ? $uID : $user->id;
 
 // Carrega o arquivo de tradução
 // OBS: para arquivos externos com o carregamento do framework '_init.joomla.php' (geralmente em 'ajax')
@@ -67,10 +66,10 @@ if(!empty($item->name)) : // verifica se existe
 	$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
 	if(!empty($img)) $img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 300, 400).'" style="float:left; width:68px; height:90px; border:2px solid #f60" />';
 
-	$grp = '<span class="left-space text-upper">'.$item->grp.'</span>';
+	$grp = '<span class="ml-3 text-uppercase">'.$item->grp.'</span>';
 	$matricula = '';
-	if(!empty($item->cx_matricula)) :
-		$matricula = '<div style="text-align:right;">Mat. <strong>'.$item->cx_matricula.'</strong>'.$grp.'</div>';
+	if(!empty($item->cx_code)) :
+		$matricula = '<div style="text-align:right;">Mat. <strong>'.$item->cx_code.'</strong>'.$grp.'</div>';
 		$grp = '';
 	endif;
 	$doc = JFactory::getDocument();
@@ -78,11 +77,11 @@ if(!empty($item->name)) : // verifica se existe
 	$html = '
 		<div id="'.$APPTAG.'-card" style="padding:20px 0 0 1px; font-size:11px;">
 			'.$img.'
-			<div style="padding:65px 0 0; text-align:right;">'.(!empty($item->card_name) ? $item-> : $item->name).'</div>
+			<div style="padding:65px 0 0; text-align:right; font-weight:bold;">'.(!empty($item->card_name) ? $item->card_name : $item->name).'</div>
 			<div style="text-align:right;">Cód. <strong>'.$item->code.'</strong>'.$grp.'</div>
 			'.$matricula.'
 		</div>
-		<script>jQuery(window).on('load', function() { print() });</script>
+		<script>jQuery(window).on("load", function() { print() });</script>
 	';
 else :
 	$html = '<p class="alert alert-info alert-icon no-margin">'.JText::_('MSG_EMPTY_CARD').'</p>';

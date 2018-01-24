@@ -78,7 +78,6 @@ jQuery(window).on('load', function() {
 	// Card
 	var toggleName 			= jQuery('#<?php echo $APPTAG?>-toggleName');
 	var card_name 			= jQuery('#<?php echo $APPTAG?>-card_name');
-	var card_limit			= jQuery('#<?php echo $APPTAG?>-card_limit');
 	// Joomla Registration
 	var access				= mainForm.find('input[name=access]:radio'); // radio group
 	var newUser				= jQuery('#<?php echo $APPTAG?>-newUser');
@@ -188,7 +187,6 @@ jQuery(window).on('load', function() {
 			// CARD
 			checkOption(toggleName, 0);
 			card_name.val('');
-			card_limit.val('<?php echo $_SESSION[$APPTAG.'cardLimit']?>');
 			// esconde o botão para impressão
 			setHidden('#<?php echo $APPTAG?>-group-btnPrint', true);
 			// ACCESS
@@ -458,7 +456,6 @@ jQuery(window).on('load', function() {
 						// CARD
 						checkOption(toggleName, (!isEmpty(item.card_name) ? 1 : 0));
 						card_name.val(item.card_name);
-						card_limit.val(item.card_limit);
 						// mostra o botão para impressão
 						setHidden('#<?php echo $APPTAG?>-group-btnPrint', false);
 						// ACCESS

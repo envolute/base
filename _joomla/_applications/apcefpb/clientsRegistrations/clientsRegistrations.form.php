@@ -63,7 +63,7 @@ defined('_JEXEC') or die;
 			</div>
 		</fieldset>
 		<div class="row">
-			<div class="col-lg-9 b-right b-dashed b-primary">
+			<div class="col-lg-9 b-right b-right-dashed b-primary">
 				<div class="row">
 					<div class="col-12">
 						<div class="form-group field-required">

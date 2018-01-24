@@ -34,14 +34,14 @@ $where = '';
 	if($isFixed == 1) :
 
 		// Reseta os campos para movimentações avulsas
-		$fIgrp = $fCard = 2;
+		$fIgrp = 2;
 		$fInv = 0;
 		$fInst = 1;
 		// Desabilita os campos das movimentações avulsas
 		$js = '
 			jQuery(function() {
-				jQuery("#fSType, #fInv, #fInst, #fCard").prop("disabled", true);
-				jQuery("#fSType, #fInv, #fInst, #fCard").selectUpdate();
+				jQuery("#fSType, #fInv, #fInst").prop("disabled", true);
+				jQuery("#fSType, #fInv, #fInst").selectUpdate();
 			});
 		';
 		$listActions = '
@@ -56,9 +56,6 @@ $where = '';
 
 	else :
 
-		// IS CARD -> select
-		$fCard	= $app->input->get('fCard', 2, 'int');
-		if($fCard != 2) $where .= ' AND '.$db->quoteName('T1.isCard').' = '.$fCard;
 		// INVOICE -> select
 		$fInv	= $app->input->get('fInv', 0, 'int');
 		// [filter] ALL INSTALLMENTS -> opção para visualizar todas as parcelas
@@ -67,18 +64,18 @@ $where = '';
 		// $fInst: 3 => parcelas não disponíveis para faturamento
 		$where .= ' AND '.$db->quoteName('T1.charged').' = '.($fInst == 3 ? 0 : 1);
 		if($fInst != 1) :
-			// installment = total => à vista
-			// installment < total => parcela
+			// total = 1 => à vista
+			// total > 1 => parcela
 			// $fInst: 0 => apenas à vista
 			// $fInst: 2/3 => apenas parcelas
-			$oper = ($fInst == 0) ? ' = ' : ' < ';
-			$where .= ' AND '.$db->quoteName('T1.installment').$oper.$db->quoteName('T1.total');
+			$oper = ($fInst == 0) ? ' = ' : ' > ';
+			$where .= ' AND '.$db->quoteName('T1.total').$oper.'1';
 		endif;
 		// Reabilita os campos das movimentações avulsas
 		$js = '
 			jQuery(function() {
-				jQuery("#fSType, #fInv, #fInst, #fCard").prop("disabled", false);
-				jQuery("#fSType, #fInv, #fInst, #fCard").selectUpdate();
+				jQuery("#fSType, #fInv, #fInst").prop("disabled", false);
+				jQuery("#fSType, #fInv, #fInst").selectUpdate();
 			});
 		';
 
@@ -245,7 +242,6 @@ $where = '';
 		'T1.transaction_id'		=> '',
 		'T1.description'		=> 'FIELD_LABEL_DESCRIPTION',
 		'T1.doc_number'			=> 'FIELD_LABEL_DOC_NUMBER',
-		'T4.name'				=> 'FIELD_LABEL_DEPENDENT',
 		'T3.cpf'				=> '',
 		'T1.note'				=> ''
 	);
@@ -438,23 +434,9 @@ $htmlFilter = '
 							</div>
 						</div>
 					</div>
-					<div class="row">
-						<div class="col-lg-6">
-							<div class="form-group">
-								<label class="label-sm text-truncate">'.implode(', ', $sLabel).'</label>
-								<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm field-search" />
-							</div>
-						</div>
-						<div class="col-lg-6">
-							<label class="label-sm">'.JText::_('FIELD_LABEL_IS_CARD').'</label>
-							<div class="form-group">
-								<select name="fCard" id="fCard" class="form-control form-control-sm set-filter">
-									<option value="2">- '.JText::_('TEXT_ALL').' -</option>
-									<option value="1"'.($fCard == 1 ? ' selected' : '').'>'.JText::_('TEXT_YES').'</option>
-									<option value="0"'.($fCard == 0 ? ' selected' : '').'>'.JText::_('TEXT_NO').'</option>
-								</select>
-							</div>
-						</div>
+					<div class="form-group">
+						<label class="label-sm text-truncate">'.implode(', ', $sLabel).'</label>
+						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm field-search" />
 					</div>
 				</div>
 				<div class="col-md-4 b-left">

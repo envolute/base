@@ -54,9 +54,7 @@ $where = '';
 		'T1.address_district'	=> '',
 		'T1.address_city'		=> '',
 		'T1.zip_code'			=> '',
-		'T1.phone1'				=> 'FIELD_LABEL_PHONE',
-		'T1.phone2'				=> '',
-		'T1.phone3'				=> ''
+		'T1.phone'				=> 'FIELD_LABEL_PHONE'
 	);
 	$i = 0;
 	foreach($searchFields as $key => $value) {

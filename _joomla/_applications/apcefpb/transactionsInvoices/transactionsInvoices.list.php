@@ -59,6 +59,7 @@ $html = '
 				<tr>
 					'.$adminView['head']['info'].'
 					<th width="120">'.JText::_('FIELD_LABEL_DUE_DATE').'</th>
+					<th width="60">'.JText::_('TEXT_DATE_YEAR').'</th>
 					<th class="d-none d-md-table-cell">'.JText::_('FIELD_LABEL_DESCRIPTION').'</th>
 					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
 					'.$adminView['head']['actions'].'
@@ -111,7 +112,9 @@ if($num_rows) : // verifica se existe
 			';
 		endif;
 
-		$note = !empty($item->note) ? '<span class="base-icon-info-circled cursor-help hasTooltip" title="'.$item->note.'"></span> ' : '';
+		$dt = explode('-', $item->due_date);
+		$date = $dt[2].JText::_('TEXT_DATE_OF').baseHelper::getMonthName($dt[1]);
+		$note = !empty($item->note) ? '<br /><small class="text-muted">'.$item->note.'</small>' : '';
 		$rowState = $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
@@ -124,8 +127,9 @@ if($num_rows) : // verifica se existe
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
-				<td>'.$note.baseHelper::dateFormat($item->due_date, 'd-m-Y').'</td>
-				<td class="d-none d-md-table-cell">'.$item->invoice_desc.'</td>
+				<td>'.$date.'</td>
+				<td>'.$dt[0].'</td>
+				<td class="d-none d-md-table-cell">'.$item->invoice_desc.$note.'</td>
 				<td class="d-none d-lg-table-cell">
 					'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'
 					<a href="#" class="base-icon-info-circled hasPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top"></a>

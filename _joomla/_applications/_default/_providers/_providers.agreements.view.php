@@ -259,7 +259,7 @@ if($vID != 0) :
 		endif;
 
 		$provider .= '
-			<ul class="set-list inline bordered list-trim b-bottom b-dotted text-muted small mb-3 pb-2">
+			<ul class="set-list inline bordered list-trim b-bottom b-bottom-dotted text-muted small mb-3 pb-2">
 				<li><a href="'.$urlToList.'" class="text-uppercase base-icon-reply"> '.JText::_('TEXT_AGREEMENTS').'</a></li>
 				<li><a href="'.$urlToList.'?gID='.$item->group_id.'">'.$item->group_name.'</a></li>
 			</ul>

@@ -37,7 +37,6 @@ CREATE TABLE IF NOT EXISTS `cms_agecefpb_clients` (
   `account` varchar(10) NOT NULL,
   `operation` varchar(10) NOT NULL,
   `card_name` varchar(30) NOT NULL,
-  `card_limit` decimal(10,2) NOT NULL,
   `access` tinyint(4) NOT NULL,
   `reasonStatus` varchar(100) NOT NULL,
   `state` tinyint(4) NOT NULL,
@@ -125,28 +124,3 @@ CREATE TABLE IF NOT EXISTS `cms_agecefpb_clients_files` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
-
---
--- Estrutura da tabela `cms_agecefpb_dependents`
---
-
-CREATE TABLE IF NOT EXISTS `cms_agecefpb_dependents` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `client_id` int(11) NOT NULL,
-  `client_code` varchar(20) NOT NULL,
-  `user_id` int(11) NOT NULL DEFAULT '0',
-  `group_id` int(11) NOT NULL DEFAULT '1',
-  `gender` tinyint(4) NOT NULL DEFAULT '1',
-  `name` varchar(100) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `birthday` date NOT NULL,
-  `end_date` date NOT NULL,
-  `occupation` varchar(50) NOT NULL,
-  `note` varchar(255) NOT NULL,
-  `docs` int(11) NOT NULL,
-  `name_card` varchar(50) NOT NULL,
-  `state` tinyint(4) NOT NULL DEFAULT '1',
-  `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `created_by` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;

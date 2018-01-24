@@ -370,7 +370,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$request['client_id'] .','.
 							$request['plan_id'] .','.
 							$db->quote($request['phone_number']) .','.
-							$db->quote($request['nome']) .','.
+							$db->quote($request['note']) .','.
 							$request['state'] .','.
 							$user->id
 						.')

@@ -14,9 +14,9 @@ JHtml::_('behavior.formvalidator');
 ?>
 <div class="reset<?php echo $this->pageclass_sfx?>">
 	<?php if ($this->params->get('show_page_heading')) : ?>
-	<h4 class="page-header">
+	<h5 class="page-header">
 		<?php echo $this->escape($this->params->get('page_heading')); ?>
-	</h4>
+	</h5>
 	<?php endif; ?>
 
 	<form id="user-registration" action="<?php echo JRoute::_('index.php?option=com_users&task=reset.request'); ?>" method="post" class="form-validate">

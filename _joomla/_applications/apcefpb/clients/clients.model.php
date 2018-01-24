@@ -162,10 +162,13 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['rg_orgao']			= $input->get('rg_orgao', '', 'string');
 		$request['gender']				= $input->get('gender', 1, 'int');
 		$request['birthday']			= $input->get('birthday', '', 'string');
+		$request['place_birth']			= $input->get('place_birth', '', 'string');
 		$request['marital_status']		= $input->get('marital_status', 0, 'int');
 		$request['partner']				= $input->get('partner', '', 'string');
 	  	$request['children']			= $input->get('children', 0, 'int');
-	  	$request['cx_email']			= $input->get('cx_email', '', 'string');
+		$request['mother_name']			= $input->get('mother_name', '', 'string');
+		$request['father_name']			= $input->get('father_name', '', 'string');
+		$request['cx_email']			= $input->get('cx_email', '', 'string');
 			// formata o email da caixa
 		    $cx_email = $request['cx_email'];
 		    if(!empty($cx_email)) $cx_email = (strpos($cx_email, '@') === false) ? $cx_email.'@caixa.gov.br' : $cx_email;
@@ -181,13 +184,13 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['address_city']		= $input->get('address_city', '', 'string');
 		$request['address_state']		= $input->get('address_state', 'PB', 'string');
 		$request['address_country']		= $input->get('address_country', 'BRASIL', 'string');
-		$phone							= $input->get('phone', '', 'array');
+		$phone							= $input->get('phone', array(), 'array');
 		$phone							= str_replace(';', '.', $phone); // formata
 		$request['phone']				= implode(';', $phone);
-		$whatsapp						= $input->get('whatsapp', '', 'array');
+		$whatsapp						= $input->get('whatsapp', array(), 'array');
 		$whatsapp						= str_replace(';', '.', $whatsapp); // formata
 		$request['whatsapp']			= implode(';', $whatsapp);
-		$phone_desc						= $input->get('phone_desc', '', 'array');
+		$phone_desc						= $input->get('phone_desc', array(), 'array');
 		$phone_desc						= str_replace(';', '.', $phone_desc); // formata
 		$request['phone_desc']			= implode(';', $phone_desc);
 	  	$request['enable_debit']		= $input->get('enable_debit', 1, 'int');
@@ -200,7 +203,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	    // user registration action
 	  	$request['access']				= $input->get('access', 0, 'int');
 			// USERNAME
-			$request['username']		= baseHelper::alphaNum($request['cpf']);
+			$request['username']		= $input->get('username', '', 'string'); //baseHelper::alphaNum($request['cpf']);
 			$code = getClientCode($cfg, $request['username']);
 			$length = (strlen($code) > 6) ? 11 : 6;
 			$username = baseHelper::lengthFixed($code, $length);
@@ -302,9 +305,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'rg_orgao'			=> $item->rg_orgao,
 						'gender'			=> $item->gender,
 						'birthday'			=> $item->birthday,
+						'place_birth'		=> $item->place_birth,
 						'marital_status'	=> $item->marital_status,
 						'partner'			=> $item->partner,
 						'children'			=> $item->children,
+						'mother_name'		=> $item->mother_name,
+						'father_name'		=> $item->father_name,
 						// remove '@caixa.gov.br'
 	    				'cx_email'			=> (!empty($item->cx_email) ? substr($item->cx_email, 0, strpos($item->cx_email, '@')) : ''),
 						'cx_code'			=> $item->cx_code,
@@ -347,9 +353,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('rg_orgao')			.'='. $db->quote($request['rg_orgao']) .','.
 						$db->quoteName('gender')			.'='. $request['gender'] .','.
 						$db->quoteName('birthday')			.'='. $db->quote($request['birthday']) .','.
+						$db->quoteName('place_birth')		.'='. $db->quote($request['place_birth']) .','.
 						$db->quoteName('marital_status') 	.'='. $request['marital_status'] .','.
 						$db->quoteName('partner')			.'='. $db->quote($request['partner']) .','.
 						$db->quoteName('children')			.'='. $request['children'] .','.
+						$db->quoteName('mother_name')		.'='. $db->quote($request['mother_name']) .','.
+						$db->quoteName('father_name')		.'='. $db->quote($request['father_name']) .','.
 						$db->quoteName('cx_code')			.'='. $db->quote($request['cx_code']) .','.
 						$db->quoteName('cx_email')			.'='. $db->quote($cx_email) .','.
 						$db->quoteName('cx_role')			.'='. $db->quote($request['cx_role']) .','.
@@ -688,9 +697,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('rg_orgao') .','.
 							$db->quoteName('gender') .','.
 							$db->quoteName('birthday') .','.
+							$db->quoteName('place_birth') .','.
 							$db->quoteName('marital_status') .','.
 							$db->quoteName('partner') .','.
 							$db->quoteName('children') .','.
+							$db->quoteName('mother_name') .','.
+							$db->quoteName('father_name') .','.
 							$db->quoteName('cx_email') .','.
 							$db->quoteName('cx_code') .','.
 							$db->quoteName('cx_role') .','.
@@ -726,9 +738,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quote($request['rg_orgao']) .','.
 							$request['gender'] .','.
 							$db->quote($request['birthday']) .','.
+							$db->quote($request['place_birth']) .','.
 							$request['marital_status'] .','.
 							$db->quote($request['partner']) .','.
 							$request['children'] .','.
+							$db->quote($request['mother_name']) .','.
+							$db->quote($request['father_name']) .','.
 							$db->quote($cx_email) .','.
 							$db->quote($request['cx_code']) .','.
 							$db->quote($request['cx_role']) .','.

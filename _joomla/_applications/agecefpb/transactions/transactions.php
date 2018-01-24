@@ -34,12 +34,9 @@ jQuery(window).on('load', function() {
 	// APP FIELDS
 	var provider_id			= jQuery('#<?php echo $APPTAG?>-provider_id');
 	var client_id			= jQuery('#<?php echo $APPTAG?>-client_id');
-	var dependent_id		= jQuery('#<?php echo $APPTAG?>-dependent_id');
 	var invoice_id			= jQuery('#<?php echo $APPTAG?>-invoice_id');
 	var description			= jQuery('#<?php echo $APPTAG?>-description');
 	var fixed				= mainForm.find('input[name=fixed]:radio'); // radio group
-	var isCard 				= mainForm.find('input[name=isCard]:radio'); // radio group
-	var cardLimit			= jQuery('#<?php echo $APPTAG?>-cardLimit');
 	var date 				= jQuery('#<?php echo $APPTAG?>-date');
 	var price 				= jQuery('#<?php echo $APPTAG?>-price');
 	var total 				= jQuery('#<?php echo $APPTAG?>-total');
@@ -102,16 +99,14 @@ jQuery(window).on('load', function() {
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
 			client_id.selectUpdate(0); // select
-			dependent_id.selectUpdate(0); // select
 			invoice_id.selectUpdate(0); // select
 			description.val(''); // select
 			checkOption(fixed, 0);
 			// mostra campos da movimentação normal
 			setHidden('.<?php echo $APPTAG?>-no-fixed', false);
-			checkOption(isCard, 0);
-			cardLimit.val('');
 			date.val('');
 			price.val('');
+			<?php echo $APPTAG?>_setInstallments();
 			totalDesc.val('');
 			// oculta os campos não editáveis
 			setHidden('.<?php echo $APPTAG?>-no-edit', false, '.<?php echo $APPTAG?>-only-edit');
@@ -166,12 +161,6 @@ jQuery(window).on('load', function() {
 			?>
 		};
 
-		// CUSTOM -> DEPENDENT lista dependentes de acordo com o associado
-		// DESABILITADO => NÃO HÁ CADASTRO DE DEPENDENTES
-		client_id.on('change', function() {
-			<?php echo $APPTAG?>_getDependentList(jQuery(this).val());
-		});
-
 		// CUSTOM -> edit from select
 		window.<?php echo $APPTAG?>_editInvoice = function() {
 			var itemID = jQuery('#<?php echo $APPTAG?>-invoiceID').val();
@@ -183,15 +172,14 @@ jQuery(window).on('load', function() {
 		window.<?php echo $APPTAG?>_setFixed = function(val) {
 			setHidden('.<?php echo $APPTAG?>-no-fixed', val);
 			if(val == 1) {
-				checkOption(isCard, 0);
 				invoice_id.selectUpdate(0);
 			}
 		};
 
-		// CUSTOM -> set card installments
-		window.<?php echo $APPTAG?>_setCard = function(card) {
+		// CUSTOM -> set installments
+		window.<?php echo $APPTAG?>_setInstallments = function() {
 			total.empty();
-			var limit = card ? 3 : 90;
+			var limit = 90;
 			for(i = 1; i <= limit; i++) {
 				total.append('<option value="'+i+'">'+i+'</option>');
 			}
@@ -274,14 +262,11 @@ jQuery(window).on('load', function() {
 						// App Fields
 						provider_id.selectUpdate(item.provider_id); // select
 						client_id.selectUpdate(item.client_id); // select
-						<?php echo $APPTAG?>_getDependentList(item.client_id, item.dependent_id);
 						invoice_id.selectUpdate(item.invoice_id); // select
 						description.val(item.description);
 						checkOption(fixed, (item.fixed == 0 ? 0 : 1));
 						// esconde campos da movimentação normal
 						setHidden('.<?php echo $APPTAG?>-no-fixed', item.fixed);
-						checkOption(isCard, item.isCard);
-						cardLimit.val(item.cardLimit);
 						date.val(dateFormat(item.date));
 						price.val(item.price);
 						totalDesc.val(item.totalDesc);
@@ -329,50 +314,7 @@ jQuery(window).on('load', function() {
 
 		<? endif; ?>
 
-		// CUSTOM
-		// DESABILITADO => NÃO HÁ CADASTRO DE DEPENDENTES
-		// Set dependents List
-		// seta a lista de dependentes de acordo com o associado selecionado
-		window.<?php echo $APPTAG?>_getDependentList = function(itemID, id) {
-			<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
-			jQuery.ajax({
-				url: "<?php echo $URL_APP_FILE ?>.model.php?task=cList&cID="+itemID,
-				dataType: 'json',
-				type: 'POST',
-				cache: false,
-				success: function(data){
-					jQuery.map( data, function( res, i ) {
-						if(res.status != 0) {
-							// remove all options
-							if(i == 0) {
-								dependent_id.find('option').remove();
-								cardLimit.val(res.cardLimit);
-								// init new options list
-								if(res.status == 1) {
-									dependent_id.append('<option value="0">- <?php echo JText::_('TEXT_TRANSACTION_BY_CLIENT'); ?> -</option>');
-								} else {
-									dependent_id.append('<option value="0">- <?php echo JText::_('TEXT_CLIENT_NO_HAVE_DEPENDENT'); ?> -</option>');
-								}
-							}
-							if(res.status == 1) dependent_id.append('<option value="'+res.id+'">'+res.name+'</option>');
-							if(isSet(id) && id) dependent_id.val(id);
-							dependent_id.selectUpdate(); // atualiza o select
-						} else {
-							$.baseNotify({ msg: res.msg, type: "danger"});
-						}
-					});
-				},
-				error: function(xhr, status, error) {
-					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
-					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
-					?>
-				},
-				complete: function() {
-					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
-				}
-			});
-			return false;
-		};
+
 
 		// CUSTOM -> atribui a fatura
 		window.<?php echo $APPTAG?>_invoice = function(recursive) {
@@ -819,29 +761,8 @@ jQuery(window).on('load', function() {
 
 jQuery(window).on('load', function() {
 
-	// custom validation for phone number
-	jQuery.validator.addMethod("validaCardLimit", function(value, element, param) {
-		var v = value.replace(/\./g, '').replace(/\,/g, '.');
-		var p = param.replace(/\./g, '').replace(/\,/g, '.');
-		return this.optional(element) || parseFloat(v) <= parseFloat(p);
-	}, '');
-
 	// Jquery Validation
 	window.<?php echo $APPTAG?>_validator = mainForm_<?php echo $APPTAG?>.validate({
-		rules: {
-			price: {
-				validaCardLimit: function() {
-					return jQuery('#<?php echo $APPTAG?>-isCard').is(':checked') ? jQuery('#<?php echo $APPTAG?>-cardLimit').val() : '1000000000,00';
-				}
-			}
-		},
-		messages: {
-			price: {
-				validaCardLimit: function() {
-					return '<?php echo JText::_('MSG_VALIDATION_ERROR_CARD_LIMIT')?><strong>'+jQuery('#<?php echo $APPTAG?>-cardLimit').val()+'</strong>';
-				}
-			}
-		},
 		//don't remove this
 		invalidHandler: function(event, validator) {
 			//if there is error,

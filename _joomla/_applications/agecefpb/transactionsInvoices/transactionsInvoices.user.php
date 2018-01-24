@@ -79,7 +79,7 @@ if($uID > 0) :
 
 	// Header
 	$html .= '
-		<div class="row no-gutters b-bottom b-dashed pb-2 hidden-print mb-2">
+		<div class="row no-gutters b-bottom b-bottom-dashed pb-2 hidden-print mb-2">
 			<div class="col-sm-8">
 				<h3 class="m-0">Faturas do Associado</h3>
 				<div class="text-md text-muted">'.$clientName.'</div>

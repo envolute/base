@@ -63,6 +63,10 @@ $_SESSION[$APPTAG.'cardLimit'] = '300,00'; // default
 // crud's main table
 	$cfg['mainTable']			= $MAIN_TB;
 
+// Save Function
+// fuction called after save action
+	$cfg['saveTrigger']			= '';
+
 	// date & price convertions
 	$cfg['dateConvert']			= true;
 	$cfg['load_UI']				= $cfg['dateConvert'];

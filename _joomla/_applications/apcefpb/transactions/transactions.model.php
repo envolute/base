@@ -763,7 +763,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 								$transactionID = $id;
 								$request['invoice_id'] = 0;
 								// atribui o 'transaction_id' ao item principal para a ordenação na listagem
-								$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '.$db->quoteName('transaction_id').' = '.$id.', '.$db->quoteName('charged').' = 1 WHERE '.$db->quoteName('id').' = '.$id;
+								// em caso de movimentação avulsa total = 1, seta como 'charged'
+								$charged = ($request['total'] == 1) ? ', '.$db->quoteName('charged').' = 1' : '';
+								$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '.$db->quoteName('transaction_id').' = '.$id.$charged.' WHERE '.$db->quoteName('id').' = '.$id;
 								$db->setQuery($query);
 								$db->execute();
 			                }
@@ -986,21 +988,37 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				if(!empty($arrIds)) :
 
 					$query = '
-						SELECT '.$db->quoteName('T1.id').'
+						SELECT '.$db->quoteName('T1.transaction_id').'
 						FROM '. $db->quoteName($cfg['mainTable']) .' T1
 							JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
 							ON '.$db->quoteName('T2.id').' = '.$db->quoteName('T1.client_id').'
 						WHERE
 							'.$db->quoteName('T1.invoice_id').' = 0 AND
-							'.$db->quoteName('T1.installment').' > 1 AND
 							'.$db->quoteName('T1.charged').' = 0 AND
 							'.$db->quoteName('T2.usergroup').' IN ('.$arrIds.') AND
 							'.$db->quoteName('T1.state').' = 1
-						GROUP BY '.$db->quoteName('T1.transaction_id').'
-						ORDER BY '.$db->quoteName('T1.id').', '.$db->quoteName('T1.installment')
+						GROUP BY '.$db->quoteName('T1.transaction_id')
 					;
 					$db->setQuery($query);
-					$inst = $db->loadColumn();
+					//$inst = $db->loadColumn();
+					// transactions IDs
+					$tIds = $db->loadColumn();
+					$inst = array();
+					for($i = 0; $i < count($tIds); $i++) {
+						$query = '
+							SELECT id
+							FROM '. $db->quoteName($cfg['mainTable']) .'
+							WHERE
+								'.$db->quoteName('invoice_id').' = 0 AND
+								'.$db->quoteName('charged').' = 0 AND
+								'.$db->quoteName('state').' = 1 AND
+								'.$db->quoteName('transaction_id').' = '.$tIds[$i].'
+							ORDER BY '.$db->quoteName('installment').'
+							LIMIT 1
+						';
+						$db->setQuery($query);
+						$inst[] = $db->loadResult();
+					}
 
 					if(count($inst)) :
 
@@ -1191,7 +1209,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			elseif($task == 'phoneInvoice') :
 
 				$query = '
-					INSERT '. $db->quoteName($cfg['mainTable']) .' ('.
+					INSERT INTO '. $db->quoteName($cfg['mainTable']) .' ('.
 						$db->quoteName('transaction_id') .','.
 						$db->quoteName('parent_id') .','.
 						$db->quoteName('provider_id') .','.

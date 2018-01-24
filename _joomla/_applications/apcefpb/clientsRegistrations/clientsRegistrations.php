@@ -376,15 +376,25 @@ jQuery(window).on('load', function() {
 
 		// NO EDITABLE FIELDS
 		window.<?php echo $APPTAG?>_noEditableField = function(field, reset) {
-			if(isSet(reset) && reset) {
-				field.prop('disabled', false);
-			} else {
+			field.prop('disabled', false);
+			if(!isSet(reset) || !reset) {
 				var val = field.val();
-				if(!isEmpty(val) && val != 0 && val != '0_/__/____') field.prop('disabled', true);
-				else field.prop('disabled', false);
+				if(field.is('select')) {
+					if(!isEmpty(val) && val != 0) field.prop('disabled', true);
+					// Atualiza se for select 'chosen'
+					field.trigger('chosen:updated');
+				} else if(field.is(':radio')) {
+					val = field.filter(':checked').length ? field.filter(':checked').val() : 0;
+					if(!isEmpty(val) && val != 0) {
+						field.prop('disabled', true);
+						field.parent('label.btn').addClass('disabled');
+					} else {
+						field.parent('label.btn').removeClass('disabled');
+					}
+				} else {
+					if(!isEmpty(val) && val != 0 && val != '0_/__/____') field.prop('disabled', true);
+				}
 			}
-			// Atualiza se for select 'chosen'
-			if(field.is('select')) field.trigger('chosen:updated');
 		};
 
 		<?php // SAVE -> executa a ação de inserção ou atualização dos dados no banco
@@ -405,101 +415,101 @@ jQuery(window).on('load', function() {
 
 	// JQUERY VALIDATION
 	window.<?php echo $APPTAG?>_validator = mainForm_<?php echo $APPTAG?>.validate({
-		rules: {
-			email: {
-				remote: {
-					url: '<?php echo _CORE_?>helpers/users/checkEmail.php',
-					type: 'post',
-					data: {
-						cmail: function() {
-							return jQuery('#<?php echo $APPTAG?>-cmail').val();
-						}
-					}
-				}
-			},
-			cpf : {
-				remote: {
-					url: '<?php echo _CORE_?>helpers/users/checkField.php',
-					type: 'post',
-					data: {
-						dbTable: function() {
-							return '<?php echo $cfg['mainTable']?>';
-						},
-						dbField: function() {
-							return 'cpf';
-						},
-						val: function() {
-							return jQuery('#<?php echo $APPTAG?>-cpf').val();
-						},
-						cval: function() {
-							return jQuery('#<?php echo $APPTAG?>-ccpf').val();
-						},
-						valida: function() {
-							return 1;
-						}
-					}
-				}
-			},
-			cx_email: { // email caixa
-				required: function(el) {
-					return (jQuery('#<?php echo $APPTAG?>-usergroup option:selected').val() == 11);
-				}
-			},
-			cx_code: { // matrícula caixa
-				required: function(el) {
-					return (jQuery('#<?php echo $APPTAG?>-usergroup option:selected').val() == 11);
-				}
-			},
-			cx_date: { // data de admissão
-				required: function(el) {
-					return (jQuery('#<?php echo $APPTAG?>-usergroup option:selected').val() == 11);
-				}
-			},
-			cx_role: { // cargo/função
-				required: function(el) {
-					return (jQuery('#<?php echo $APPTAG?>-usergroup option:selected').val() == 11);
-				}
-			},
-			cx_situated: { // lotação (agencia)
-				required: function(el) {
-					return (jQuery('#<?php echo $APPTAG?>-usergroup option:selected').val() == 11);
-				}
-			},
-			partner: { // conjuge
-				required: function(el) {
-					return jQuery('#<?php echo $APPTAG?>-marital_status option:selected').data('targetDisplay');
-				}
-			},
-			agency: { // Conta => agencia
-				required: function(el) {
-					return (jQuery('#<?php echo $APPTAG?>-enable_debit').is(':checked'));
-				}
-			},
-			account: { // Conta => número da conta
-				required: function(el) {
-					return (jQuery('#<?php echo $APPTAG?>-enable_debit').is(':checked'));
-				}
-			},
-			operation: { // Conta => operação
-				required: function(el) {
-					return (jQuery('#<?php echo $APPTAG?>-enable_debit').is(':checked'));
-				}
-			},
-			repassword: {
-				equalTo: '#<?php echo $APPTAG?>-password'
-			}
-		},
-		messages: {
-			email: {
-				remote: '<?php echo JText::_('MSG_EMAIL_EXISTS')?>'
-			},
-			cpf : {
-				remote: '<?php echo JText::_('MSG_USERNAME_EXISTS')?>'
-			},
-			repassword: {
-				equalTo: '<?php echo JText::_('MSG_PASS_NOT_EQUAL')?>'
-			}
-		},
+		// rules: {
+		// 	email: {
+		// 		remote: {
+		// 			url: '<?php echo _CORE_?>helpers/users/checkEmail.php',
+		// 			type: 'post',
+		// 			data: {
+		// 				cmail: function() {
+		// 					return jQuery('#<?php echo $APPTAG?>-cmail').val();
+		// 				}
+		// 			}
+		// 		}
+		// 	},
+		// 	cpf : {
+		// 		remote: {
+		// 			url: '<?php echo _CORE_?>helpers/users/checkField.php',
+		// 			type: 'post',
+		// 			data: {
+		// 				dbTable: function() {
+		// 					return '<?php echo $cfg['mainTable']?>';
+		// 				},
+		// 				dbField: function() {
+		// 					return 'cpf';
+		// 				},
+		// 				val: function() {
+		// 					return jQuery('#<?php echo $APPTAG?>-cpf').val();
+		// 				},
+		// 				cval: function() {
+		// 					return jQuery('#<?php echo $APPTAG?>-ccpf').val();
+		// 				},
+		// 				valida: function() {
+		// 					return 1;
+		// 				}
+		// 			}
+		// 		}
+		// 	},
+		// 	cx_email: { // email caixa
+		// 		required: function(el) {
+		// 			return (jQuery('#<?php echo $APPTAG?>-usergroup option:selected').val() == 11);
+		// 		}
+		// 	},
+		// 	cx_code: { // matrícula caixa
+		// 		required: function(el) {
+		// 			return (jQuery('#<?php echo $APPTAG?>-usergroup option:selected').val() == 11);
+		// 		}
+		// 	},
+		// 	cx_date: { // data de admissão
+		// 		required: function(el) {
+		// 			return (jQuery('#<?php echo $APPTAG?>-usergroup option:selected').val() == 11);
+		// 		}
+		// 	},
+		// 	cx_role: { // cargo/função
+		// 		required: function(el) {
+		// 			return (jQuery('#<?php echo $APPTAG?>-usergroup option:selected').val() == 11);
+		// 		}
+		// 	},
+		// 	cx_situated: { // lotação (agencia)
+		// 		required: function(el) {
+		// 			return (jQuery('#<?php echo $APPTAG?>-usergroup option:selected').val() == 11);
+		// 		}
+		// 	},
+		// 	partner: { // conjuge
+		// 		required: function(el) {
+		// 			return jQuery('#<?php echo $APPTAG?>-marital_status option:selected').data('targetDisplay');
+		// 		}
+		// 	},
+		// 	agency: { // Conta => agencia
+		// 		required: function(el) {
+		// 			return (jQuery('#<?php echo $APPTAG?>-enable_debit').is(':checked'));
+		// 		}
+		// 	},
+		// 	account: { // Conta => número da conta
+		// 		required: function(el) {
+		// 			return (jQuery('#<?php echo $APPTAG?>-enable_debit').is(':checked'));
+		// 		}
+		// 	},
+		// 	operation: { // Conta => operação
+		// 		required: function(el) {
+		// 			return (jQuery('#<?php echo $APPTAG?>-enable_debit').is(':checked'));
+		// 		}
+		// 	},
+		// 	repassword: {
+		// 		equalTo: '#<?php echo $APPTAG?>-password'
+		// 	}
+		// },
+		// messages: {
+		// 	email: {
+		// 		remote: '<?php echo JText::_('MSG_EMAIL_EXISTS')?>'
+		// 	},
+		// 	cpf : {
+		// 		remote: '<?php echo JText::_('MSG_USERNAME_EXISTS')?>'
+		// 	},
+		// 	repassword: {
+		// 		equalTo: '<?php echo JText::_('MSG_PASS_NOT_EQUAL')?>'
+		// 	}
+		// },
 		//don't remove this
 		invalidHandler: function(event, validator) {
 			//if there is error,

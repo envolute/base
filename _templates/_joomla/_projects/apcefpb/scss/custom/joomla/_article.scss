@@ -18,26 +18,33 @@
 	// PUBLISH INFO
 
 		.item-page #item-publish-info {
-			margin-bottom: 2em;
 			padding-bottom: .5em;
-			border-bottom: 1px solid $base-border-color;
+			color: $text-muted;
+		}
+
+	// TITLE
+
+		.item-page h2.item-title {
+			padding-bottom: map-get($spacers, 4);
+			margin-bottom: map-get($spacers, 4);
 		}
 
 	// IMAGE FULL
 
-		.item-page .item-image {
-			margin: 0 auto 1em;
+		.item-page figure.to-none {
+			display: block;
+			text-align: center;
 		}
 		@include media-breakpoint-up(sm) {
-			.item-page .item-image.to-left {
+			.item-page figure.to-left {
 				width: 42%;
 				float: left;
-				margin: .25em 2% 1em 0;
+				margin-right: 2%;
 			}
-			.item-page .item-image.to-right {
+			.item-page figure.to-right {
 				width: 42%;
 				float: right;
-				margin: .25em 0 1em 2%;
+				margin-left: 2%;
 			}
 		}
 		// CAPTION -> legenda da imagem

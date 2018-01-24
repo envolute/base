@@ -20,7 +20,7 @@ $lang->load('plg_user_profile', JPATH_ADMINISTRATOR);
 ?>
 <div class="profile-edit<?php echo $this->pageclass_sfx?>">
 	<?php if ($this->params->get('show_page_heading')) : ?>
-		<h4 class="page-header"><?php echo $this->escape($this->params->get('page_heading')); ?></h4>
+		<h5 class="page-header"><?php echo $this->escape($this->params->get('page_heading')); ?></h5>
 	<?php endif; ?>
 
 	<script type="text/javascript">

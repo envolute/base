@@ -86,7 +86,7 @@ $app = JFactory::getApplication();
 					<?php } ?>
 
 					<?php if ($item->title) { ?>
-						<h6 class="text-sm m-0"><a href="<?php echo $item->link; ?>"><?php echo $item->title; ?></a></h6>
+						<h6 class="m-0 text-sm"><a href="<?php echo $item->link; ?>"><?php echo $item->title; ?></a></h6>
 					<?php } ?>
 
 				</li>

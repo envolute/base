@@ -14,9 +14,9 @@ JHtml::_('behavior.formvalidator');
 ?>
 <div class="login">
 	<?php if ($this->params->get('show_page_heading')) : ?>
-	<h4 class="page-header">
+	<h5 class="page-header">
 		<?php echo $this->escape($this->params->get('page_heading')); ?>
-	</h4>
+	</h5>
 	<?php endif; ?>
 
 	<div class="row justify-content-center">

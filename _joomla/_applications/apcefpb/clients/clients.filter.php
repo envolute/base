@@ -47,6 +47,9 @@ $where = '';
 		'T1.cx_email'			=> '',
 		'T1.cpf'				=> 'CPF',
 		'T1.rg'					=> 'RG',
+		'T1.place_birth'		=> 'FIELD_LABEL_PLACE_BIRTH',
+		'T1.mother_name'		=> 'FIELD_LABEL_MOTHER_NAME',
+		'T1.father_name'		=> 'FIELD_LABEL_FATHER_NAME',
 		'T1.cx_code'			=> 'FIELD_LABEL_CODE',
 		'T1.cx_role'			=> 'FIELD_LABEL_ROLE',
 		'T1.cx_situated'		=> 'FIELD_LABEL_SITUATED',
@@ -54,9 +57,7 @@ $where = '';
 		'T1.address_district'	=> '',
 		'T1.address_city'		=> '',
 		'T1.zip_code'			=> '',
-		'T1.phone1'				=> 'FIELD_LABEL_PHONE',
-		'T1.phone2'				=> '',
-		'T1.phone3'				=> ''
+		'T1.phone'				=> 'FIELD_LABEL_PHONE'
 	);
 	$i = 0;
 	foreach($searchFields as $key => $value) {
@@ -72,9 +73,10 @@ $where = '';
 	$ordf	= $app->input->get($APPTAG.'oF', '', 'string'); // campo a ser ordenado
 	$ordt	= $app->input->get($APPTAG.'oT', '', 'string'); // tipo de ordem: 0 = 'ASC' default, 1 = 'DESC'
 
+	unset($_SESSION[$APPTAG.'oF']);
 	$orderDef = 'T1.name'; // não utilizar vírgula no inicio ou fim
 	if(!isset($_SESSION[$APPTAG.'oF'])) : // DEFAULT ORDER
-		$_SESSION[$APPTAG.'oF'] = 'T1.access';
+		$_SESSION[$APPTAG.'oF'] = 'T1.enable_debit';
 		$_SESSION[$APPTAG.'oT'] = 'ASC';
 	endif;
 	if(!empty($ordf)) :

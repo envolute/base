@@ -103,14 +103,14 @@ JLoader::register('baseHelper', JPATH_BASE.'/libraries/envolute/helpers/base.php
 	endif;
 
 	if(!empty($pagehead) || !empty($actions)) :
-		$pagehead = '<h4 id="item-page-heading" class="page-header clearfix">';
+		$pagehead = '<h5 id="item-page-heading" class="page-header clearfix">';
 			if(!empty($heading)) :
 				$pagehead .= $heading;
 				$pagehead .= '<span class="float-right">'.$actions.'</span>';
 			elseif(!empty($actions)):
 				$pagehead .= $actions;
 			endif;
-		$pagehead .= '</h4>';
+		$pagehead .= '</h5>';
 	endif;
 
 // INFORMAÇÕES DE PUBLICAÇÃO -> *CATEGORIA, AUTOR, DATA DE PUBLICAÇÃO, ACESSOS.
@@ -173,7 +173,7 @@ JLoader::register('baseHelper', JPATH_BASE.'/libraries/envolute/helpers/base.php
 		// Posição da imagem -> esquerda, direita, centralizada
 		$imgfloat = empty($images->float_fulltext) ? $params->get('float_fulltext') : $images->float_fulltext;
 
-		$image .= '<div class="item-image to-'.htmlspecialchars($imgfloat).'">';
+		$image .= '<figure class="item-image to-'.htmlspecialchars($imgfloat).'">';
 
 			// Legenda da imagem
 			$caption = ($images->image_fulltext_caption) ? ' caption' : '';
@@ -186,7 +186,7 @@ JLoader::register('baseHelper', JPATH_BASE.'/libraries/envolute/helpers/base.php
 
 			$image .= '<img '.$props.' />';
 
-		$image .= '</div>';
+		$image .= '</figure>';
 
 		// FACEBOOK TAGS
 		$imgSrc	= htmlspecialchars($images->image_fulltext);
@@ -243,12 +243,12 @@ JLoader::register('baseHelper', JPATH_BASE.'/libraries/envolute/helpers/base.php
 	// PAGE HEADING
 	echo $pagehead;
 
-	// TÍTULO
-	if ($params->get('show_title'))
-	echo '<h2 class="m-0 pb-4" itemprop="headline">'.$this->escape($this->item->title).'</h2>';
-
 	// INFO
 	echo $info;
+
+	// TÍTULO
+	if ($params->get('show_title'))
+	echo '<h2 class="item-title" itemprop="headline">'.$this->escape($this->item->title).'</h2>';
 
 	// INTRODUÇÃO
 	if ($params->get('show_intro') && !empty($this->item->event->afterDisplayTitle))

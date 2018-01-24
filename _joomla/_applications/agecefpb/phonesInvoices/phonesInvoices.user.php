@@ -143,7 +143,7 @@ if($uID) :
 			// Filtro
 			$selectYear = !empty($flt_year) ? '<select name="fYear" id="fYear" class="form-control-lg set-filter">'.$flt_year.'</select>' : '';
 			$html .= '
-				<form id="filter-'.$APPTAG.'" class="b-bottom b-dashed pb-2 mb-3 hidden-print" method="get">
+				<form id="filter-'.$APPTAG.'" class="b-bottom b-bottom-dashed pb-2 mb-3 hidden-print" method="get">
 					<select name="pID" id="pID" class="form-control-lg set-filter">
 						'.$flt_phone.'
 					</select>

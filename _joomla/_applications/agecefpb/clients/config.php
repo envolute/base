@@ -37,9 +37,6 @@ endif;
 // get user type default in registration
 $_SESSION[$APPTAG.'newUsertype'] = 11; // default 'Associado->efetivo'
 
-// get user type default in registration
-$_SESSION[$APPTAG.'cardLimit'] = '300,00'; // default
-
 // Crud's permissions
 	$cfg['isPublic']			= false; // Público -> acesso aberto a todos
 	// Restrict Access
@@ -59,6 +56,10 @@ $_SESSION[$APPTAG.'cardLimit'] = '300,00'; // default
 
 // crud's main table
 	$cfg['mainTable']			= $MAIN_TB;
+
+// Save Function
+// fuction called after save action
+	$cfg['saveTrigger']			= '';
 
 // view
 

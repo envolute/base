@@ -100,12 +100,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	    $request['parent_id']			= $input->get('parent_id', 0, 'int');
 	  	$request['provider_id']			= $input->get('provider_id', 0, 'int');
 	    $request['client_id']			= $input->get('client_id', 0, 'int');
-	    $request['dependent_id']		= $input->get('dependent_id', 0, 'int');
 	    $request['invoice_id']			= $input->get('invoice_id', 0, 'int');
 	    $request['description']			= $input->get('description', '', 'string');
 	    $request['fixed']				= $input->get('fixed', 0, 'int');
-	    $request['isCard']				= $input->get('isCard', 0, 'int');
-	  	$request['date']				= $input->get('date', '', 'string');
+	    $request['date']				= $input->get('date', '', 'string');
 	      // data da parcela
 	      $date_installment				= $db->quote($request['date']);
 	  	$request['price']				= $input->get('price'); // não usar 'float' devido ao setLocale(pt-BR) que altera '.' por ','
@@ -115,21 +113,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	    // price
 	    $price = $request['total'] != 0 ? ($request['price'] / $request['total']) : 0;
-
-		// CUSTOM -> get user's card limit
-		function getCardLimit($itemID, $cfg) {
-			// database connect
-			$db = JFactory::getDbo();
-			$query = 'SELECT '. $db->quoteName('card_limit') .' FROM '. $db->quoteName('#__'.$cfg['project'].'_clients') .' WHERE id = '.$itemID;
-			$db->setQuery($query);
-			$maxLimit = $db->loadResult();
-			// somatório do valor das movimentações não faturadas do cliente
-			$query = 'SELECT SUM(price) FROM '. $db->quoteName($cfg['mainTable']) .' WHERE client_id = '.$itemID.' AND isCard = 1 AND invoice_id = 0';
-			$db->setQuery($query);
-			$limit =  $db->loadResult();
-			$limit = (float)$maxLimit - (float)$limit;
-			return  str_replace('.', ',', $limit);
-		}
 
 		// CUSTOM -> Gera arquivo de débito
 		// se informar apenas o nome da tabela, fará uma consulta em todas as colunas;
@@ -242,8 +225,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				// GET DATA
 				if($task == 'get') :
 
-					$cardLimit = getCardLimit($item->client_id, $cfg);
-
 					$data[] = array(
 						// Default Fields
 						'id'				=> $item->id,
@@ -254,12 +235,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'parent_id'			=> $item->parent_id,
 						'provider_id'		=> $item->provider_id,
 						'client_id'			=> $item->client_id,
-						'dependent_id'		=> $item->dependent_id,
 						'invoice_id'		=> $item->invoice_id,
 						'description'		=> $item->description,
 						'fixed'				=> $item->fixed,
-						'isCard'			=> $item->isCard,
-						'cardLimit'			=> $cardLimit,
 						'date'				=> $item->date_installment,
 						'price'				=> $item->price,
 						'price_total'		=> $item->price_total,
@@ -277,11 +255,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$query .=
 						$db->quoteName('provider_id')		.'='. $request['provider_id'] .','.
 						$db->quoteName('client_id')			.'='. $request['client_id'] .','.
-						$db->quoteName('dependent_id')		.'='. $request['dependent_id'] .','.
 						$db->quoteName('invoice_id')		.'='. $request['invoice_id'] .','.
 						$db->quoteName('description')		.'='. $db->quote($request['description']) .','.
 						$db->quoteName('fixed')				.'= IF('. $db->quoteName('fixed') .' = 2, '. $db->quoteName('fixed') .', '.$request['fixed'].'),'.
-						$db->quoteName('isCard')			.'='. $request['isCard'] .','.
 						$db->quoteName('date')				.'='. $db->quote($request['date']) .','.
 						$db->quoteName('date_installment')	.'='. $db->quote($request['date']) .','.
 						$db->quoteName('price')				.'='. $db->quote($request['price']) .','.
@@ -547,7 +523,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('parent_id') .','.
 							$db->quoteName('provider_id') .','.
 							$db->quoteName('client_id') .','.
-							$db->quoteName('dependent_id') .','.
 							$db->quoteName('invoice_id') .','.
 							$db->quoteName('description') .','.
 							$db->quoteName('fixed') .','.
@@ -568,7 +543,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('T1.parent_id') .','.
 							$db->quoteName('T1.provider_id') .','.
 							$db->quoteName('T1.client_id') .','.
-							$db->quoteName('T1.dependent_id') .','.
 							$invID .','.
 							$db->quoteName('T1.description') .',
 							2,'.
@@ -716,11 +690,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 								$db->quoteName('parent_id') .','.
 								$db->quoteName('provider_id') .','.
 								$db->quoteName('client_id') .','.
-								$db->quoteName('dependent_id') .','.
 								$db->quoteName('invoice_id') .','.
 								$db->quoteName('description') .','.
 								$db->quoteName('fixed') .','.
-								$db->quoteName('isCard') .','.
 								$db->quoteName('date') .','.
 								$db->quoteName('date_installment') .','.
 								$db->quoteName('price') .','.
@@ -736,11 +708,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 								(isset($id) ? $id : 0) .','.
 								$request['provider_id'] .','.
 								$request['client_id'] .','.
-								$request['dependent_id'] .','.
 								$request['invoice_id'] .','.
 								$db->quote($request['description']) .','.
 								$request['fixed'] .','.
-								$request['isCard'] .','.
 								$db->quote($request['date']) .','.
 								$date_installment .','.
 								$db->quote($price) .','.
@@ -763,7 +733,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 								$transactionID = $id;
 								$request['invoice_id'] = 0;
 								// atribui o 'transaction_id' ao item principal para a ordenação na listagem
-								$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '.$db->quoteName('transaction_id').' = '.$id.', '.$db->quoteName('charged').' = 1 WHERE '.$db->quoteName('id').' = '.$id;
+								// em caso de movimentação avulsa total = 1, seta como 'charged'
+								$charged = ($request['total'] == 1) ? ', '.$db->quoteName('charged').' = 1' : '';
+								$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '.$db->quoteName('transaction_id').' = '.$id.$charged.' WHERE '.$db->quoteName('id').' = '.$id;
 								$db->setQuery($query);
 								$db->execute();
 			                }
@@ -838,53 +810,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 				endif; // end validation
 
-			// CUSTOM: get dependents list of client
-			elseif($task == 'cList' && $client != 0) :
-
-				// get client_id of project
-				// get contacts list of project's client
-				$query = '
-					SELECT id, name
-					FROM '. $db->quoteName('#__'.$cfg['project'].'_dependents') .'
-					WHERE '. $db->quoteName('client_id') .' = '.$client
-				;
-
-				$cardLimit = getCardLimit($client, $cfg);
-
-				try {
-					$db->setQuery($query);
-					$db->execute();
-					$num_itens = $db->getNumRows();
-					$list = $db->loadObjectList();
-
-					if($num_itens) :
-						foreach($list as $item) {
-							$data[] = array(
-								// Default Fields
-								'status'		=> 1,
-								'client'		=> $client,
-								// App Fields
-								'id'			=> $item->id,
-								'name'			=> baseHelper::nameFormat($item->name),
-								'cardLimit'		=> $cardLimit
-							);
-						}
-					else :
-						$data[] = array(
-							'status'			=> 2,
-							'cardLimit'			=> $cardLimit
-						);
-					endif;
-
-				} catch (RuntimeException $e) {
-
-					$data[] = array(
-						'status'				=> 0,
-						'msg'					=> $e->getMessage()
-					);
-
-				}
-
 			// CUSTOM -> ADD FIXED
 			elseif($task == 'addFixed') :
 
@@ -897,7 +822,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('parent_id') .','.
 							$db->quoteName('provider_id') .','.
 							$db->quoteName('client_id') .','.
-							$db->quoteName('dependent_id') .','.
 							$db->quoteName('description') .','.
 							$db->quoteName('fixed') .','.
 							$db->quoteName('date') .','.
@@ -917,7 +841,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('T1.parent_id') .','.
 							$db->quoteName('T1.provider_id') .','.
 							$db->quoteName('T1.client_id') .','.
-							$db->quoteName('T1.dependent_id') .','.
 							$db->quoteName('T1.description') .',
 							2,'.
 							$db->quoteName('T1.date') .',
@@ -986,21 +909,37 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				if(!empty($arrIds)) :
 
 					$query = '
-						SELECT '.$db->quoteName('T1.id').'
+						SELECT '.$db->quoteName('T1.transaction_id').'
 						FROM '. $db->quoteName($cfg['mainTable']) .' T1
 							JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
 							ON '.$db->quoteName('T2.id').' = '.$db->quoteName('T1.client_id').'
 						WHERE
 							'.$db->quoteName('T1.invoice_id').' = 0 AND
-							'.$db->quoteName('T1.installment').' > 1 AND
 							'.$db->quoteName('T1.charged').' = 0 AND
 							'.$db->quoteName('T2.usergroup').' IN ('.$arrIds.') AND
 							'.$db->quoteName('T1.state').' = 1
-						GROUP BY '.$db->quoteName('T1.transaction_id').'
-						ORDER BY '.$db->quoteName('T1.id').', '.$db->quoteName('T1.installment')
+						GROUP BY '.$db->quoteName('T1.transaction_id')
 					;
 					$db->setQuery($query);
-					$inst = $db->loadColumn();
+					//$inst = $db->loadColumn();
+					// transactions IDs
+					$tIds = $db->loadColumn();
+					$inst = array();
+					for($i = 0; $i < count($tIds); $i++) {
+						$query = '
+							SELECT id
+							FROM '. $db->quoteName($cfg['mainTable']) .'
+							WHERE
+								'.$db->quoteName('invoice_id').' = 0 AND
+								'.$db->quoteName('charged').' = 0 AND
+								'.$db->quoteName('state').' = 1 AND
+								'.$db->quoteName('transaction_id').' = '.$tIds[$i].'
+							ORDER BY '.$db->quoteName('installment').'
+							LIMIT 1
+						';
+						$db->setQuery($query);
+						$inst[] = $db->loadResult();
+					}
 
 					if(count($inst)) :
 
@@ -1132,7 +1071,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$db->execute();
 
 					// gera o resultado para o CSV
-					$result = setFile($query_tipoE,'A15003                ,AGECEF PB           ,104CAIXA ECONOM FEDERAL'.date("Ymd").substr('000000'.$seq, -6).'05DEBITO AUTOMATICO                                                     ','','',false);
+					$result = setFile($query_tipoE,'A1040978110001        ,ASSOCIACAO DOS GESTO,104CAIXA ECONOM FEDERAL'.date("Ymd").substr('000000'.$seq, -6).'04DEB AUTOMAT      0922003000001250PP                                   ','','',false);
 					$result .= setFile($query_tipoZ,NULL,'','');
 					if($result == true) :
 
@@ -1191,18 +1130,16 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			elseif($task == 'phoneInvoice') :
 
 				$query = '
-					INSERT '. $db->quoteName($cfg['mainTable']) .' ('.
+					INSERT INTO '. $db->quoteName($cfg['mainTable']) .' ('.
 						$db->quoteName('transaction_id') .','.
 						$db->quoteName('parent_id') .','.
 						$db->quoteName('provider_id') .','.
 						$db->quoteName('client_id') .','.
-						$db->quoteName('dependent_id') .','.
 						$db->quoteName('invoice_id') .','.
 						$db->quoteName('phoneInvoice_id') .','.
 						$db->quoteName('phone_id') .','.
 						$db->quoteName('description') .','.
 						$db->quoteName('fixed') .','.
-						$db->quoteName('isCard') .','.
 						$db->quoteName('date') .','.
 						$db->quoteName('date_installment') .','.
 						$db->quoteName('price') .','.
@@ -1221,11 +1158,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('provider_id') .','.
 						$db->quoteName('client_id') .','.
 						'0,'.
-						'0,'.
 						$state .','.
 						$db->quoteName('phone_id') .','.
 						'CONCAT('.$db->quote(JText::_('TEXT_MOBILE_PHONE')).', '.$db->quoteName('invoice_id').'),'.
-						'0,'.
 						'0,'.
 						$db->quoteName('due_date') .','.
 						$db->quoteName('due_date') .',

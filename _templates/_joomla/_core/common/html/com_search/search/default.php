@@ -13,13 +13,13 @@ defined('_JEXEC') or die;
 
 <div class="search <?php echo $this->pageclass_sfx; ?>">
 	<?php if ($this->params->get('show_page_heading')) : ?>
-	<h4 class="page-header">
+	<h5 class="page-header">
 		<?php if ($this->escape($this->params->get('page_heading'))) :?>
 			<?php echo $this->escape($this->params->get('page_heading')); ?>
 		<?php else : ?>
 			<?php echo $this->escape($this->params->get('page_title')); ?>
 		<?php endif; ?>
-	</h4>
+	</h5>
 	<?php endif; ?>
 
 	<?php echo $this->loadTemplate('form'); ?>

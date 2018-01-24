@@ -27,7 +27,7 @@ $users = $db->loadObjectList();
 ?>
 
 <div class="row">
-	<div class="col-lg-9 b-right b-dashed">
+	<div class="col-lg-9 b-right b-right-dashed">
 		<div class="row">
 			<div class="col-sm-8">
 				<div class="form-group field-required">
@@ -44,7 +44,7 @@ $users = $db->loadObjectList();
 				</div>
 				<div id="<?php echo $APPTAG?>-group-nameCard" class="form-group" hidden>
 					<label class="iconTip hasTooltip" title="<?php echo JText::_('MSG_CARD_NAME'); ?>"><?php echo JText::_('FIELD_LABEL_CARD_NAME'); ?></label><br />
-					<input type="text" name="" id="<?php echo $APPTAG?>-card_name" class="form-control upper" maxlength="30" />
+					<input type="text" name="card_name" id="<?php echo $APPTAG?>-card_name" class="form-control upper" maxlength="30" />
 				</div>
 			</div>
 			<div class="col-md-4">
@@ -177,6 +177,20 @@ $users = $db->loadObjectList();
 					<input type="text" name="partner" id="<?php echo $APPTAG?>-partner" class="form-control upper" />
 				</div>
 			</div>
+			<div class="col-md-12">
+				<div class="form-group">
+					<label class="field-required"><?php echo JText::_('FIELD_LABEL_PLACE_BIRTH'); ?></label>
+					<input type="text" name="place_birth" id="<?php echo $APPTAG?>-place_birth" class="form-control upper" />
+				</div>
+				<div class="form-group">
+					<label class="field-required"><?php echo JText::_('FIELD_LABEL_MOTHER_NAME'); ?></label>
+					<input type="text" name="mother_name" id="<?php echo $APPTAG?>-mother_name" class="form-control upper" />
+				</div>
+				<div class="form-group">
+					<label class="field-required"><?php echo JText::_('FIELD_LABEL_FATHER_NAME'); ?></label>
+					<input type="text" name="father_name" id="<?php echo $APPTAG?>-father_name" class="form-control upper" />
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="col-lg-3">
@@ -203,7 +217,7 @@ $users = $db->loadObjectList();
 <hr class="hr-tag" />
 <span class="badge badge-primary"><?php echo JText::_('TEXT_LOCATION_DATA'); ?></span>
 <div class="row">
-	<div class="col-lg-9 b-right b-dashed">
+	<div class="col-lg-9 b-right b-right-dashed">
 		<div class="row">
 			<div class="col-md-9">
 				<div class="form-group field-required">
@@ -254,7 +268,7 @@ $users = $db->loadObjectList();
 <hr class="hr-tag" />
 <span class="badge badge-primary"><?php echo JText::_('TEXT_CONTACT_DATA'); ?></span>
 <div class="row">
-	<div class="col-lg-9 b-right b-dashed">
+	<div class="col-lg-9 b-right b-right-dashed">
 		<div class="form-group">
 			<button type="button" class="btn btn-xs btn-success base-icon-plus float-right" onclick="<?php echo $APPTAG?>_phoneAdd()"> <?php echo JText::_('TEXT_PHONES_ADD')?></button>
 			<label><?php echo JText::_('FIELD_LABEL_PHONE'); ?></label>

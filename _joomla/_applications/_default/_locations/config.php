@@ -54,6 +54,10 @@ endif;
 // crud's main table
 	$cfg['mainTable']			= $MAIN_TB;
 
+// Save Function
+// fuction called after save action
+	$cfg['saveTrigger']			= '';
+
 // form definitions
 	// Localidades apenas do Brasil
 	$cfg['onlyBR']				= false;

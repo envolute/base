@@ -18,7 +18,7 @@ defined('_JEXEC') or die;
 
 	// page header
 	if ($this->params->get('show_page_heading', 1) && $this->escape($this->params->get('page_heading'))) :
-		echo '<h4 class="page-header">'.$this->escape($this->params->get('page_heading')).'</h4>';
+		echo '<h5 class="page-header">'.$this->escape($this->params->get('page_heading')).'</h5>';
 	endif;
 
 	if(!empty($this->app) && file_exists(JPATH_BASE.'/base-apps/'.$this->app.'/'.$this->app.'.php')) :

@@ -54,9 +54,14 @@ endif;
 // crud's main table
 	$cfg['mainTable']			= $MAIN_TB;
 
+// Save Function
+// fuction called after save action
+	$cfg['saveTrigger']			= '';
+
 // Predefined Description
 // Obs: o primeiro item será o item padrão
-	$preDesc[]					= JText::_('DESC_MONTHLY_BILL');
+	$preDesc[]					= JText::_('DESC_MONTHLY_CLIENT_BILL');
+	$preDesc[]					= JText::_('DESC_MONTHLY_CONTRIBUTOR_BILL');
 
 // view
 

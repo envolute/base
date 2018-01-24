@@ -123,7 +123,7 @@ if($vID != 0) :
 					'.$img.'
 				</div>
 				<div class="col">
-					<ul class="set-list inline bordered list-trim text-muted small mb-2 pb-1 b-bottom b-dotted">
+					<ul class="set-list inline bordered list-trim text-muted small mb-2 pb-1 b-bottom b-bottom-dotted">
 						<li>'.$agree.'</li>
 						<li>'.$item->grp.'</li>
 					</ul>

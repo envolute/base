@@ -47,9 +47,12 @@ jQuery(window).on('load', function() {
 	var rg_orgao			= jQuery('#<?php echo $APPTAG?>-rg_orgao');
 	var gender 				= mainForm.find('input[name=gender]:radio'); // radio group
 	var birthday			= jQuery('#<?php echo $APPTAG?>-birthday');
+	var place_birth			= jQuery('#<?php echo $APPTAG?>-place_birth');
 	var marital_status		= jQuery('#<?php echo $APPTAG?>-marital_status');
 	var partner				= jQuery('#<?php echo $APPTAG?>-partner');
 	var children			= jQuery('#<?php echo $APPTAG?>-children');
+	var mother_name			= jQuery('#<?php echo $APPTAG?>-mother_name');
+	var father_name			= jQuery('#<?php echo $APPTAG?>-father_name');
 	// Company data
 	var cx_code				= jQuery('#<?php echo $APPTAG?>-cx_code'); // matrícula
 	var cx_email			= jQuery('#<?php echo $APPTAG?>-cx_email');
@@ -161,9 +164,12 @@ jQuery(window).on('load', function() {
 			rg_orgao.val('');
 			checkOption(gender, ''); // radio
 			birthday.val('');
+			place_birth.val('');
 			marital_status.selectUpdate(0); // select
 			partner.val('');
 			children.selectUpdate(0); // select
+			mother_name.val('');
+			father_name.val('');
 			cx_code.val('');
 			cx_email.val('');
 			cx_role.val('');
@@ -321,8 +327,9 @@ jQuery(window).on('load', function() {
 		};
 
 		// CUSTOM: Print Card
-		window.<?php echo $APPTAG?>_printCard = function(){
-			var urlPrint = '<?php echo JURI::root()?>apps/clients/<?php echo $APPTAG?>-card?uID='+formId.val()+'&tmpl=component';
+		window.<?php echo $APPTAG?>_printCard = function(itemID){
+			var cID = (isSet(itemID) && itemID > 0) ? itemID : formId.val();
+			var urlPrint = '<?php echo JURI::root()?>apps/clients/<?php echo $APPTAG?>-card?uID='+cID+'&tmpl=component';
 			jQuery('#<?php echo $APPTAG?>-card-iframe').attr("src", urlPrint);
 			jQuery("#modal-card-<?php echo $APPTAG?>").modal();
 		}
@@ -419,9 +426,12 @@ jQuery(window).on('load', function() {
 						rg_orgao.val(item.rg_orgao);
 						checkOption(gender, item.gender); // radio
 						birthday.val(dateFormat(item.birthday)); // DATE -> conversão de data
+						place_birth.val(item.place_birth);
 						marital_status.selectUpdate(item.marital_status); // select
 						partner.val(item.partner);
 						children.selectUpdate(item.children); // select
+						mother_name.val(item.mother_name);
+						father_name.val(item.father_name);
 						cx_code.val(item.cx_code);
 						cx_email.val(item.cx_email);
 						cx_role.val(item.cx_role);

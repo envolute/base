@@ -154,7 +154,7 @@ if($pID > 0) :
 				$counter = 0;
 				$html .= '
 					<hr class="mt-0 mb-2" />
-					<div class="text-lg b-bottom b-dashed pb-2 mb-4">
+					<div class="text-lg b-bottom b-bottom-dashed pb-2 mb-4">
 						<a href="'.$urlToInvoices.'" class="base-icon-left-big hidden-print"><span class="d-none d-sm-inline"> '.JText::_('TEXT_RETURN_TO_INVOICES').'</span></a>
 						<span class="d-print-inline"> '.JText::_('TEXT_COVENANT').'</span>
 						<span class="float-right">'.JText::_('FIELD_LABEL_DUE_DATE').': '.baseHelper::dateFormat($invoice->due_date).'</span>

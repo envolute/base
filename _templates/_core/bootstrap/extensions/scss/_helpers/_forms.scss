@@ -23,11 +23,3 @@
 		.input-group-addon input[type="checkbox"] {
 			vertical-align: bottom;
 		}
-
-		// Opções de customização para 'input-group-addon'
-		.input-group-addon.live { color: $base-color-live; }
-		.input-group-addon.primary { color: theme-color("primary"); }
-		.input-group-addon.info { color: theme-color("info"); }
-		.input-group-addon.success { color: theme-color("success"); }
-		.input-group-addon.warning { color: theme-color("warning"); }
-		.input-group-addon.danger { color: theme-color("danger"); }

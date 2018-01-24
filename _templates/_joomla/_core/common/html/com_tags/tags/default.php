@@ -16,22 +16,22 @@ $descriptionImage = $this->params->get('all_tags_description_image');
 ?>
 <div class="tag-category">
 	<?php  if ($this->params->get('show_page_heading')) : ?>
-		<h4 class="page-header">
-			<span class="base-icon-tags"></span> 
+		<h5 class="page-header">
+			<span class="base-icon-tags"></span>
 			<?php echo $this->escape($this->params->get('page_heading')); ?>
-		</h4>
+		</h5>
 	<?php endif;?>
-	<?php 
+	<?php
 	if (
 	($this->params->get('all_tags_show_description_image') && !empty($descriptionImage)) ||
 	(!empty($description))
 	):?>
 		<div class="category-desc">
-			
+
 			<?php if ($this->params->get('all_tags_show_description_image') && !empty($descriptionImage)):?>
 				<div><?php echo '<img src="' . $descriptionImage . '">';?></div>
 			<?php endif;?>
-			
+
 			<?php if (!empty($description)):?>
 				<div><?php echo $description;?></div>
 			<?php endif;?>

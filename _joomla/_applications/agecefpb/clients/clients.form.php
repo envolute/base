@@ -27,7 +27,7 @@ $users = $db->loadObjectList();
 ?>
 
 <div class="row">
-	<div class="col-lg-9 b-right b-dashed">
+	<div class="col-lg-9 b-right b-right-dashed">
 		<div class="row">
 			<div class="col-sm-8">
 				<div class="form-group field-required">
@@ -44,7 +44,7 @@ $users = $db->loadObjectList();
 				</div>
 				<div id="<?php echo $APPTAG?>-group-nameCard" class="form-group" hidden>
 					<label class="iconTip hasTooltip" title="<?php echo JText::_('MSG_CARD_NAME'); ?>"><?php echo JText::_('FIELD_LABEL_CARD_NAME'); ?></label><br />
-					<input type="text" name="" id="<?php echo $APPTAG?>-card_name" class="form-control upper" maxlength="30" />
+					<input type="text" name="card_name" id="<?php echo $APPTAG?>-card_name" class="form-control upper" maxlength="30" />
 				</div>
 			</div>
 			<div class="col-md-4">
@@ -194,16 +194,12 @@ $users = $db->loadObjectList();
 				<input type="file" name="file[0]" id="<?php echo $APPTAG?>-file0" class="field-image" hidden />
 			</div>
 		</div>
-		<div id="<?php echo $APPTAG?>-group-btnPrint" class="form-group" hidden>
-			<label class="d-block text-center pt-1"><?php echo JText::_('TEXT_CLIENT_CARD'); ?></label>
-			<button type="button" class="btn btn-lg btn-block btn-success base-icon-print btn-icon" onclick="<?php echo $APPTAG?>_printCard()"> <?php echo JText::_('TEXT_PRINT'); ?></button>
-		</div>
 	</div>
 </div>
 <hr class="hr-tag" />
 <span class="badge badge-primary"><?php echo JText::_('TEXT_LOCATION_DATA'); ?></span>
 <div class="row">
-	<div class="col-lg-9 b-right b-dashed">
+	<div class="col-lg-9 b-right b-right-dashed">
 		<div class="row">
 			<div class="col-md-9">
 				<div class="form-group field-required">
@@ -254,7 +250,7 @@ $users = $db->loadObjectList();
 <hr class="hr-tag" />
 <span class="badge badge-primary"><?php echo JText::_('TEXT_CONTACT_DATA'); ?></span>
 <div class="row">
-	<div class="col-lg-9 b-right b-dashed">
+	<div class="col-lg-9 b-right b-right-dashed">
 		<div class="form-group">
 			<button type="button" class="btn btn-xs btn-success base-icon-plus float-right" onclick="<?php echo $APPTAG?>_phoneAdd()"> <?php echo JText::_('TEXT_PHONES_ADD')?></button>
 			<label><?php echo JText::_('FIELD_LABEL_PHONE'); ?></label>
@@ -279,10 +275,10 @@ $users = $db->loadObjectList();
 		<div id="<?php echo $APPTAG?>-phoneGroups" class="newFieldsGroup"></div>
 	</div>
 </div>
+<hr class="hr-tag" />
+<span class="badge badge-primary"><?php echo JText::_('TEXT_ACCOUNT_DATA'); ?></span>
 <div class="row">
-	<div class="col-lg-9">
-		<hr class="hr-tag" />
-		<span class="badge badge-primary"><?php echo JText::_('TEXT_ACCOUNT_DATA'); ?></span>
+	<div class="col-lg-9 b-right b-right-dashed">
 		<div class="row">
 			<div class="col-md-4">
 				<div class="form-group">
@@ -324,18 +320,6 @@ $users = $db->loadObjectList();
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-	</div>
-	<div class="col-lg-3">
-		<hr class="hr-tag" />
-		<span class="badge badge-primary"><?php echo JText::_('TEXT_CLIENT_CREDIT_CARD'); ?></span>
-		<div class="form-group field-required">
-			<label><?php echo JText::_('FIELD_LABEL_CARD_LIMIT'); ?></label>
-			<div class="input-group" style="max-width:200px;">
-				<span class="input-group-addon">R$</span>
-				<input type="text" name="card_limit" id="<?php echo $APPTAG?>-card_limit" class="form-control field-price" data-convert="true" />
-				<span class="input-group-addon base-icon-info-circled cursor-help hasPopover" data-placement="top" data-content="<?php echo JText::_('MSG_MEMBERSHIP_BENEFITS_DESC')?>"></span>
 			</div>
 		</div>
 	</div>

@@ -21,7 +21,7 @@ JLoader::register('baseHelper', JPATH_BASE.'/libraries/envolute/helpers/base.php
 ?>
 <div class="categoryBaseView" itemscope itemtype="https://schema.org/Blog">
 	<?php if ($this->params->get('show_page_heading')) : ?>
-		<h4 class="page-header"> <?php echo $this->escape($this->params->get('page_heading')); ?> </h4>
+		<h5 class="page-header"> <?php echo $this->escape($this->params->get('page_heading')); ?> </h5>
 	<?php endif; ?>
 
 	<?php if (empty($this->lead_items) && empty($this->link_items) && empty($this->intro_items)) : ?>

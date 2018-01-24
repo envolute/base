@@ -48,6 +48,10 @@ endif;
 // crud's main table
 	$cfg['mainTable']			= $MAIN_TB;
 
+// Save Function
+// fuction called after save action
+	$cfg['saveTrigger']			= '';
+
 // view
 	// show app (Add Button & List)
 	$isModal = isset(${$APPTAG.'Modal'}) ? ${$APPTAG.'Modal'} : true;

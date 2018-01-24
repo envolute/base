@@ -14,6 +14,7 @@ require($PATH_APP_FILE.'.filter.php');
 			T1.*,
 			IF(T1.agency <> "" AND T1.account <> "" AND T1.operation <> "", 1, 0) account_info,
 			'. $db->quoteName('T2.name') .' user,
+			'. $db->quoteName('T2.username') .',
 			'. $db->quoteName('T3.title') .' type
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
@@ -46,7 +47,7 @@ if($hasAdmin) :
 	';
 	$adminView['head']['actions'] = '
 		<th class="text-center d-none d-lg-table-cell d-print-none" width="60">'.baseAppHelper::linkOrder(JText::_('TEXT_ACTIVE'), 'T1.state', $APPTAG).'</th>
-		<th width="100" class="text-center d-print-none">'.JText::_('TEXT_ACTIONS').'</th>
+		<th colspan="2" class="text-center d-print-none">'.JText::_('TEXT_ACTIONS').'</th>
 	';
 endif;
 
@@ -58,13 +59,13 @@ $html = '
 				<tr>
 					'.$adminView['head']['info'].'
 					<th>'.JText::_('FIELD_LABEL_NAME').'</th>
-					<th width="30" class="d-none d-lg-table-cell text-center">&#160;</td>
+					<th width="50" class="d-none d-lg-table-cell text-center">&#160;</td>
 					<th>'.JText::_('TEXT_TYPE').'</th>
 					<th width="50" class="d-none d-lg-table-cell text-center">
 						<span class="cursor-help hasTooltip" title="'.JText::_('MSG_LIST_ENABLED_DEBIT').'">'.JText::_('TEXT_DEBIT').'</span>
 					</td>
 					<th>'.JText::_('TEXT_STATUS').'</th>
-					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
+					<th width="120" class="d-none d-lg-table-cell">'.JText::_('FIELD_LABEL_BIRTHDAY').'</th>
 					'.$adminView['head']['actions'].'
 				</tr>
 			</thead>
@@ -81,12 +82,18 @@ if($num_rows) : // verifica se existe
 
 	foreach($res as $item) {
 
+		// só permite a impressão da carteira de associado com foto
+		$printCard = '<button type="button" class="btn btn-lg btn-default base-icon-print hasTooltip disabled" title="'.JText::_('MSG_CARD_NO_PHOTO').'"></button>';
+
 		if($cfg['hasUpload']) :
 			JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 
 			// Imagem Principal -> Primeira imagem (index = 0)
 			$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
-			if(!empty($img)) $img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 32, 32).'" class="d-none d-md-inline img-fluid rounded-circle float-left mr-2" />';
+			if(!empty($img)) {
+				$img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 44, 44).'" class="d-none d-md-inline img-fluid rounded float-left mr-2" />';
+				$printCard = '<button type="button" class="btn btn-lg btn-outline-primary base-icon-print hasTooltip" title="'.JText::_('TEXT_CLIENT_CARD').'" onclick="'.$APPTAG.'_printCard('.$item->id.')"></button>';
+			}
 
 			// Arquivos -> Grupo de imagens ('#'.$APPTAG.'-files-group')
 			// Obs: para pegar todas as imagens basta remover o 'grupo' ('#'.$APPTAG.'-files-group')
@@ -109,18 +116,61 @@ if($num_rows) : // verifica se existe
 				<td class="check-row d-print-none"><input type="checkbox" name="'.$APPTAG.'_ids[]" class="'.$APPTAG.'-chk" value="'.$item->id.'" /></td>
 				<td class="d-none d-lg-table-cell d-print-none">'.$item->id.'</td>
 			';
+			$regInfo	= 'ID: <span class=&quot;text-live&quot;>#'.$item->id.'</span>';
+			$regInfo	.= '<hr class=&quot;my-1&quot; />';
+			$regInfo	.= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
+			$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
+			if($item->alter_date != '0000-00-00 00:00:00') :
+				$regInfo	.= '<hr class=&quot;my-1&quot; />';
+				$regInfo	.= JText::_('TEXT_ALTER_DATE').': '.baseHelper::dateFormat($item->alter_date, 'd/m/Y H:i').'<br />';
+				$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->alter_by)->name);
+			endif;
 			$adminView['list']['actions'] = '
 				<td class="text-center d-none d-lg-table-cell d-print-none">
 					<a href="#" class="hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'">
 						<span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').'"></span>
 					</a>
 				</td>
-				<td class="text-center d-print-none">
-					<a href="#" class="btn btn-xs btn-success hasTooltip" title="'.JText::_('TEXT_PHONES').'" onclick="phones_listReload(false, false, false, true, \'client_id\', '.$item->id.')" data-toggle="modal" data-target="#modal-list-phones"><span class="base-icon-phone"></span></a>
-					<a href="#" class="btn btn-xs btn-warning hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil"></span></a>
-					<a href="#" class="btn btn-xs btn-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash"></span></a>
+				<td width="60" class="text-center d-print-none">
+					<a href="#" class="btn btn-xs btn-success hasTooltip" title="'.JText::_('TEXT_DEPENDENTS').'" onclick="dependents_listReload(false, false, false, true, \'client_id\', '.$item->id.')" data-toggle="modal" data-target="#modal-list-dependents"><span class="base-icon-user"></span></a>
+					<a href="#" class="btn btn-xs btn-outline-primary base-icon-info-circled hasPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top" data-trigger="click focus"></a>
+					<a href="#" class="btn btn-xs btn-warning mt-1 hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil"></span></a>
+					<a href="#" class="btn btn-xs btn-danger mt-1 hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash"></span></a>
 				</td>
+				<td width="60">'.$printCard.'</td>
 			';
+		endif;
+
+		// Required info
+		$required[] = $item->cpf;
+		$required[] = $item->rg;
+		$required[] = $item->rg_orgao;
+		$required[] = $item->place_birth;
+		$required[] = $item->marital_status;
+		$required[] = $item->gender;
+		$required[] = $item->mother_name;
+		$required[] = $item->father_name;
+		$required[] = $item->address;
+		$required[] = $item->address_number;
+		$required[] = $item->address_district;
+		$required[] = $item->address_city;
+		$required[] = $item->agency;
+		$required[] = $item->account;
+		$required[] = $item->operation;
+
+		$incomplete = false;
+		for($i = 0; $i < count($required); $i++) {
+			if(empty($required[$i]) || $required[$i] === 0 || $item->birthday == '0000-00-00') {
+				$incomplete = true;
+				if($item->id == 1406) echo '==>'.$required[$i];
+			}
+		}
+		// clear required array
+		unset($required);
+		// Show incomplete data message
+		$incompleteAlert = ' <span class="base-icon-ok text-success cursor-help hasTooltip" title="'.JText::sprintf('MSG_COMPLETE_DATA').'"></span>';;
+		if($incomplete) :
+			$incompleteAlert = ' <span class="base-icon-attention text-live cursor-help hasTooltip" title="'.JText::sprintf('MSG_INCOMPLETE_DATA').'"></span>';
 		endif;
 
 		if($item->access == 0) :
@@ -146,27 +196,18 @@ if($num_rows) : // verifica se existe
 		$debit = '<span class="base-icon-'.$debit.' cursor-help hasTooltip" title="'.JText::_($debitMsg).'"></span>';
 		$urlViewData = JURI::root().'apps/clients/view?vID='.$item->id;
 		$status = $item->state == 0 ? '<span class="base-icon-attention text-live"> '.JText::_('TEXT_BLOCKED').'</span>' : $status;
+
 		$rowState	= $item->state == 0 ? 'table-danger' : '';
-		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
-		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
-		if($item->alter_date != '0000-00-00 00:00:00') :
-			$regInfo	.= '<hr class=&quot;my-2&quot; />';
-			$regInfo	.= JText::_('TEXT_ALTER_DATE').': '.baseHelper::dateFormat($item->alter_date, 'd/m/Y H:i').'<br />';
-			$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->alter_by)->name);
-		endif;
 		// Resultados
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
-				<td>'.$img.$item->name.'<div class="small text-muted">'.$item->cx_role.' - '.$item->cx_situated.'</td>
-				<td class="d-none d-lg-table-cell text-center"><a href="'.$urlViewData.'" target="_blank" class="base-icon-doc-text hasTooltip" title="'.JText::_('TEXT_VIEW_DATA').'"></a></td>
+				<td>'.$img.baseHelper::nameFormat($item->name).'<div class="small text-muted">'.JText::_('FIELD_LABEL_CODE_ABBR').': <span class="text-live cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_CODE').'">'.$item->username.'</span> ('.$item->email.')</td>
+				<td class="d-none d-lg-table-cell text-center"><a href="'.$urlViewData.'" target="_blank" class="base-icon-doc-text hasTooltip" title="'.JText::_('TEXT_VIEW_DATA').'"></a>'.$incompleteAlert.'</td>
 				<td>'.$item->type.'</td>
 				<td class="d-none d-lg-table-cell text-center">'.$debit.'</td>
 				<td>'.$status.'</td>
-				<td class="d-none d-lg-table-cell">
-					'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'
-					<a href="#" class="base-icon-info-circled hasPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top"></a>
-				</td>
+				<td class="d-none d-lg-table-cell">'.baseHelper::dateFormat($item->birthday, 'd/m/Y', true, '-').'</td>
 				'.$adminView['list']['actions'].'
 			</tr>
 		';
@@ -176,7 +217,7 @@ else : // num_rows = 0
 
 	$html .= '
 		<tr>
-			<td colspan="9">
+			<td colspan="10">
 				<div class="alert alert-warning alert-icon m-0">'.JText::_('MSG_LISTNOREG').'</div>
 			</td>
 		</tr>

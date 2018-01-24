@@ -67,14 +67,11 @@ SELECT
 	`T2`.`client_id` AS `client_id`,
 	`T4`.`user_id` AS `user_id`,
 	`T4`.`name` AS `client_name`,
-	`T2`.`dependent_id` AS `dependent_id`,
-	`T5`.`name` AS `dependent_name`,
 	`T2`.`phoneInvoice_id` AS `phoneInvoice_id`,
 	`T2`.`phone_id` AS `phone_id`,
 	`T2`.`description` AS `description`,
 	`T2`.`doc_number` AS `doc_number`,
 	`T2`.`fixed` AS `fixed`,
-	`T2`.`isCard` AS `isCard`,
 	`T2`.`date_installment` AS `date_installment`,
 	`T2`.`price` AS `price`,
 	`T2`.`installment` AS `installment`,
@@ -82,19 +79,15 @@ SELECT
 FROM
 (
 	(
-		(
-			(`cms_agecefpb_transactions_invoices` `T1`
-				join `cms_agecefpb_transactions` `T2`
-				on(((`T2`.`invoice_id` = `T1`.`id`) and (`T2`.`state` = 1)))
-			)
-			join `cms_base_providers` `T3`
-			on((`T3`.`id` = `T2`.`provider_id`))
+		(`cms_agecefpb_transactions_invoices` `T1`
+			join `cms_agecefpb_transactions` `T2`
+			on(((`T2`.`invoice_id` = `T1`.`id`) and (`T2`.`state` = 1)))
 		)
-		join `cms_agecefpb_clients` `T4`
-		on((`T4`.`id` = `T2`.`client_id`))
+		join `cms_base_providers` `T3`
+		on((`T3`.`id` = `T2`.`provider_id`))
 	)
-	left join `cms_agecefpb_dependents` `T5`
-	on((`T5`.`id` = `T2`.`dependent_id`))
+	join `cms_agecefpb_clients` `T4`
+	on((`T4`.`id` = `T2`.`client_id`))
 )
 WHERE `T1`.`state` = 1
 ORDER BY `T1`.`due_date` DESC;
@@ -140,3 +133,14 @@ FROM
 WHERE `T1`.`state` = 1
 GROUP BY `T1`.`id`, `T2`.`client_id`
 ORDER BY `T1`.`due_date` DESC
+
+-- lista de valores cobrados errados em Janeiro
+SELECT T3.name, T3.agency, T3.account, T3.operation, T4.phone_number, T1.price cobrado, T2.price corrigido, (T2.price - T1.price) devolver
+FROM `cms_agecefpb_transactions_teste` T1
+	JOIN cms_agecefpb_transactions_correct_values T2
+    ON T2.phone_id = T1.phone_id
+    JOIN cms_agecefpb_clients T3
+    ON T3.id = T1.client_id
+    JOIN cms_agecefpb_phones T4
+    ON T4.id = T1.phone_id
+WHERE T1.invoice_id = 4

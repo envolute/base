@@ -237,10 +237,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						// FORCE DELETE RELATIONSHIPS
 						// força a exclusão do(s) relacionamento(s) caso os parâmetros não sejam setados
 						// isso é RECOMENDÁVEL sempre que houver um ou mais relacionamentos
-						// SAMPLES -> remove os registros relacionados aos exemplos
-						// $query = 'DELETE FROM '. $db->quoteName('#__'.$cfg['project'].'_app_sample') .' WHERE '. $db->quoteName('type_id') .' IN ('.$ids.')';
-						// $db->setQuery($query);
-						// $db->execute();
+						// INVOICE DETAILS -> remove os registros relacionados ao detalhamento
+						$query = 'DELETE FROM '. $db->quoteName($cfg['mainTable'].'_details') .' WHERE '. $db->quoteName('invoice_id') .' IN ('.$ids.')';
+						$db->setQuery($query);
+						$db->execute();
 
 						// UPDATE FIELD
 						// executa apenas com valores individuais

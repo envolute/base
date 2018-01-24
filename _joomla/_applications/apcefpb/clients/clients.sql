@@ -150,3 +150,130 @@ CREATE TABLE IF NOT EXISTS `cms_apcefpb_dependents` (
   `created_by` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
+
+-- -------------------------------------------------------------------------
+
+
+MIGRAÇÃO
+
+
+1 - Copiar a tabela "cms_apcefpb_clients" da base antiga e copiar para a tabela "migracao_clients" na base nova
+
+2 - Limpar/esvaziar as tabelas "cms_users" e "cms_usermap_user_groups" na base nova
+
+3 - Copiar os dados das tabelas "cms_users" e "cms_usermap_user_groups" da base antiga para a nova
+
+4 - Rodar o comando abaixo (migração dos dados da tabela "clients" antiga para a nova)
+
+INSERT INTO `cms_apcefpb_clients` (
+	`id`,
+	`user_id`,
+	`usergroup`,
+	`name`,
+	`email`,
+	`cpf`,
+	`rg`,
+	`rg_orgao`,
+	`gender`,
+	`birthday`,
+	`place_birth`,
+	`marital_status`,
+	`partner`,
+	`children`,
+	`mother_name`,
+	`father_name`,
+	`cx_email`,
+	`cx_code`,
+	`cx_role`,
+	`cx_situated`,
+	`cx_date`,
+	`enable_debit`,
+	`card_name`,
+	`card_limit`,
+	`access`,
+	`state`,
+	`created_date`,
+	`created_by`,
+	`agency`,
+	`account`,
+	`operation`,
+	`zip_code`,
+	`address`,
+	`address_number`,
+	`address_info`,
+	`address_district`,
+	`address_city`,
+	`address_state`
+) SELECT
+	`T1`.`id`,
+	`T1`.`user_id`,
+	`T1`.`usergroup`,
+	`T1`.`name`,
+	`T1`.`email`,
+	`T1`.`cpf`,
+	`T1`.`rg`,
+	`T1`.`rg_orgao`,
+	`T1`.`gender`,
+	`T1`.`birthday`,
+	`T1`.`place_birth`,
+	IF(`T1`.`marital_status` = 'SOLTEIRO', 1, IF(`T1`.`marital_status` = 'CASADO', 2, IF(`T1`.`marital_status` = 'UNIÃO ESTÁVEL', 3, IF(`T1`.`marital_status` = 'DIVORCIADO', 4, IF(`T1`.`marital_status` = 'VIÚVO', 5, 0))))),
+	`T1`.`partner`,
+	`T1`.`children`,
+	`T1`.`mother_name`,
+	`T1`.`father_name`,
+	`T1`.`cx_email`,
+	`T1`.`cx_matricula`,
+	`T1`.`cx_cargo`,
+	`T1`.`cx_lotacao`,
+	`T1`.`cx_admissao`,
+	1,
+	`T1`.`name_card`,
+	`T1`.`card_limit`,
+	`T1`.`state`,
+	`T1`.`state`,
+	`T1`.`created_date`,
+	`T1`.`created_by`,
+	`T3`.`agency`,
+	`T3`.`account`,
+	`T3`.`operation`,
+	`T5`.`zip_code`,
+	`T5`.`address`,
+	`T5`.`address_number`,
+	`T5`.`address_info`,
+	`T5`.`address_district`,
+	`T5`.`address_city`,
+	`T5`.`address_state`
+FROM `migracao_clients` T1
+	LEFT JOIN `migracao_rel_clients_banksAccounts` T2
+	ON `T2`.`client_id` = `T1`.`id`
+	LEFT JOIN `migracao_banks_accounts` T3
+	ON `T3`.`id` = `T2`.`bankAccount_id`
+	LEFT JOIN `migracao_rel_clients_addresses` T4
+	ON `T4`.`client_id` = `T1`.`id`
+	LEFT JOIN `migracao_addresses` T5
+	ON `T5`.`id` = `T4`.`address_id`
+ORDER BY `id`
+
+-- Obs 1:
+-- Corrige o "Marital Status"
+-- "SOLTEIRO"		=> 1 (231)
+-- "CASADO"		=> 2 (900)
+-- "UNIÃO ESTÁVEL"	=> 3 (30)
+-- "DIVORCIADO"	=> 4 (55)
+-- "VIÚVO"			=> 5 (53)
+-- Obs 2:
+-- Migra os endereços e as contas bancárias
+-- Obs 3:
+-- Tinha vários endereços duplicados, foram excluidos os mais antigos
+
+5 - Migrar telefones
+???
+
+6 - Atualizar a tabela "cms_apcefpb_clients_code" com o valor da tabela antiga
+
+7 - Copiar dados da tabela "migracao_clients_files" para "cms_apcefpb_clients_files"
+
+8 - Copiar os arquivos do antigo "images/uploads/clients" para o novo "images/apps/clients"

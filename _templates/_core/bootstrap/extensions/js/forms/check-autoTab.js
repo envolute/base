@@ -20,6 +20,12 @@ jQuery(function() {
 
 			if(elementExist(objFocus)) {
 
+				// Quando o target não é um campo, 'data-target-field' indica o campo que será utilizado...
+				// Caso 'data-target-field' não seja informado, será utitlizado o primeiro campo visível dentro do 'target'
+				var field = obj.data('targetField');
+				if(isSet(field) && !isEmpty(field)) {
+					if(field.indexOf('#') == -1 && field.indexOf('.') == -1) field = '#'+field;
+				}
 				var disable = obj.data('targetDisabled');
 				var display = obj.data('targetDisplay');
 				var value = obj.data('targetValue');
@@ -34,19 +40,21 @@ jQuery(function() {
 						// IMPORTANT: this must go before autoTab
 						if(elementExist(objFocus)) {
 							// Set target disable status
-							if(disable != null) {
+							if(isSet(disable)) {
 								newStatus = toggleDisabled(objFocus, disable);
 								if(isSet(objGroup)) toggleDisabled(objGroup, newStatus);
 							}
 							// Set target status display
-							if(display != null) {
+							if(isSet(display)) {
 								newStatus = toggleDisplay(objFocus, display);
 								if(isSet(objGroup)) toggleDisplay(objGroup, (newStatus ? false : true));
 							}
 							// TAB TO TARGET
 							var el = objFocus;
 							// Verifica se o elemento é um 'campo' ou um 'elemento html'
-							if(!objFocus.is('input') && !objFocus.is('textarea') && !objFocus.is('select')) {
+							if(isSet(field) || (!objFocus.is('input') && !objFocus.is('textarea') && !objFocus.is('select'))) {
+								if(elementExist(field)) el = setElement(field);
+							} else {
 								if(objFocus.find('input, textarea, select.no-chosen').filter(':visible:first').length) {
 									el = objFocus.find('input, textarea, select').filter(':visible:first');
 								} else if(objFocus.find('select').filter(':first').length) {
@@ -57,7 +65,7 @@ jQuery(function() {
 							// newStatus: (false) habilitado|show / (true) desabilitado|hidden
 							if(elementExist(el) && newStatus && !tabDisabled) inputGetFocus(el);
 							// Set value
-							if(value != null && value != "undefined") el.val(value);
+							if(isSet(value)) el.val(value);
 							// Verifica se é um select 'chosen'
 							if(el.is('select') && el.next('.chosen-container').length) el.trigger("chosen:updated"); // select
 						} else {
@@ -67,19 +75,21 @@ jQuery(function() {
 					} else {
 						if(elementExist(objFocus)) {
 							// Set target status disable
-							if(disable != null) {
+							if(isSet(disable)) {
 								newStatus = toggleDisabled(objFocus, (disable ? false : true));
 								if(isSet(objGroup)) toggleDisabled(objGroup, disable);
 							}
 							// Set target status display
-							if(display != null) {
+							if(isSet(display)) {
 								newStatus = toggleDisplay(objFocus, (display ? false : true));
 								if(isSet(objGroup)) toggleDisplay(objGroup, display);
 							}
 							// TAB TO TARGET
 							var el = objFocus;
 							// Verifica se o elemento é um 'campo' ou um 'elemento html'
-							if(!objFocus.is('input') && !objFocus.is('textarea') && !objFocus.is('select')) {
+							if(isSet(field) || (!objFocus.is('input') && !objFocus.is('textarea') && !objFocus.is('select'))) {
+								if(elementExist(field)) el = setElement(field);
+							} else {
 								if(objFocus.find('input, textarea, select.no-chosen').filter(':visible:first').length) {
 									el = objFocus.find('input, textarea, select').filter(':visible:first');
 								} else if(objFocus.find('select').filter(':first').length) {
@@ -90,8 +100,8 @@ jQuery(function() {
 							// newStatus: (false) habilitado|show / (true) desabilitado|hidden
 							if(elementExist(el) && newStatus && !tabDisabled) inputGetFocus(el);
 							// Set value
-							if(reset != null && reset != "undefined") el.val(reset);
-							else if(value != null && value != "undefined") el.val(value);
+							if(isSet(reset)) el.val(reset);
+							else if(isSet(value)) el.val(value);
 							// Verifica se é um select 'chosen'
 							if(el.is('select') && el.next('.chosen-container').length) el.trigger("chosen:updated"); // select
 						} else {

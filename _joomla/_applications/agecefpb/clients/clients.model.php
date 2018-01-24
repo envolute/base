@@ -181,13 +181,13 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['address_city']		= $input->get('address_city', '', 'string');
 		$request['address_state']		= $input->get('address_state', 'PB', 'string');
 		$request['address_country']		= $input->get('address_country', 'BRASIL', 'string');
-		$phone							= $input->get('phone', '', 'array');
+		$phone							= $input->get('phone', array(), 'array');
 		$phone							= str_replace(';', '.', $phone); // formata
 		$request['phone']				= implode(';', $phone);
-		$whatsapp						= $input->get('whatsapp', '', 'array');
+		$whatsapp						= $input->get('whatsapp', array(), 'array');
 		$whatsapp						= str_replace(';', '.', $whatsapp); // formata
 		$request['whatsapp']			= implode(';', $whatsapp);
-		$phone_desc						= $input->get('phone_desc', '', 'array');
+		$phone_desc						= $input->get('phone_desc', array(), 'array');
 		$phone_desc						= str_replace(';', '.', $phone_desc); // formata
 		$request['phone_desc']			= implode(';', $phone_desc);
 	  	$request['enable_debit']		= $input->get('enable_debit', 1, 'int');
@@ -196,7 +196,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['operation']			= $input->get('operation', '', 'string');
 		// CARD
 		$request['card_name']			= $input->get('card_name', '', 'string');
-	  	$request['card_limit']			= $input->get('card_limit', 0.00, 'float');
 	    // user registration action
 	  	$request['access']				= $input->get('access', 0, 'int');
 			// USERNAME
@@ -327,7 +326,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'account'			=> $item->account,
 						'operation'			=> $item->operation,
 			            'card_name'			=> $item->card_name,
-			            'card_limit'		=> $item->card_limit,
 						'access'			=> ($itemBlock ? 0 : 1),
 						'reasonStatus'		=> $item->reasonStatus,
 						'files'				=> $listFiles
@@ -371,7 +369,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('account')			.'='. $db->quote($request['account']) .','.
 						$db->quoteName('operation')			.'='. $db->quote($request['operation']) .','.
 						$db->quoteName('card_name')			.'='. $db->quote($request['card_name']) .','.
-						$db->quoteName('card_limit')		.'='. $db->quote($request['card_limit']) .','.
 						$db->quoteName('access')			.'='. $request['access'] .','.
 						$db->quoteName('reasonStatus')		.'='. $db->quote($reason) .','.
 						$db->quoteName('state')				.'='. $request['state'] .','.
@@ -712,7 +709,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('account') .','.
 							$db->quoteName('operation') .','.
 							$db->quoteName('card_name') .','.
-							$db->quoteName('card_limit') .','.
 							$db->quoteName('access') .','.
 							$db->quoteName('reasonStatus') .','.
 							$db->quoteName('state') .','.
@@ -750,7 +746,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quote($request['account']) .','.
 							$db->quote($request['operation']) .','.
 							$db->quote($request['card_name']) .','.
-							$db->quote($request['card_limit']) .','.
 							$request['access'] .','.
 							$db->quote($reason) .','.
 							$request['state'] .','.

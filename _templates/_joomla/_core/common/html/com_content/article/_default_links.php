@@ -17,7 +17,7 @@ $params = $this->item->params;
 if ($urls && (!empty($urls->urla) || !empty($urls->urlb) || !empty($urls->urlc))) :
 ?>
 <div class="content-links">
-	<h4 class="page-header">Links</h4>
+	<h5 class="page-header">Links</h5>
 	<ul class="set-list bordered">
 		<?php
 			$urlarray = array(

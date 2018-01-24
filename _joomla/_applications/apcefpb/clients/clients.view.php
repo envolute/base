@@ -75,14 +75,25 @@ if($vID != 0) :
 			JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 			// Imagem Principal -> Primeira imagem (index = 0)
 			$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
-			if(!empty($img)) $img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 300, 300).'" class="img-fluid b-all b-dashed p-1" />';
-			else $img = '<div class="image-file"><div class="image-action"><div class="image-file-label"><span class="base-icon-file-image"></span></div></div></div>';
+			if(!empty($img)) {
+				$img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 300, 300).'" class="img-fluid b-all b-all-dashed p-1" />';
+				$printCard = '
+					<div class="pt-3">
+						<label class="label-sm">'.JText::_('TEXT_CLIENT_CARD').'</label>
+						<button type="button" class="btn btn-lg btn-block btn-success base-icon-print btn-icon" onclick="'.$APPTAG.'_printCard('.$item->id.')"> '.JText::_('TEXT_PRINT').'</button>
+					</div>
+				';
+			} else {
+				$img = '<div class="image-file"><div class="image-action"><div class="image-file-label"><span class="base-icon-file-image"></span></div></div></div>';
+				$printCard = '';
+			}
 		endif;
 
+		$undefined = '<span class="base-icon-attention text-live"> '.JText::_('TEXT_UNDEFINED').'</span>';
 		$partner = '';
 		if(!empty($item->partner)) :
 			$partner = '
-				<div class="col">
+				<div class="col-12">
 					<label class="label-sm">'.JText::_('FIELD_LABEL_PARTNER').':</label><p>'.baseHelper::nameFormat($item->partner).'</p>
 				</div>
 			';
@@ -96,20 +107,43 @@ if($vID != 0) :
 		$addressState = !empty($item->address_state) ? ', '.$item->address_state : '';
 		$addressCountry = !empty($item->address_country) ? ', '.baseHelper::nameFormat($item->address_country) : '';
 		// Phones
-		$ph = explode(';', $item->phone);
-		$wp = explode(';', $item->whatsapp);
-		$pd = explode(';', $item->phone_desc);
 		$phones = '';
-		for($i = 0; $i < count($ph); $i++) {
-			$whapps = $wp[$i] == 1 ? ' <span class="base-icon-whatsapp text-success cursor-help hasTooltip" title="'.JText::_('TEXT_HAS_WHATSAPP').'"></span>' : '';
-			$phDesc = !empty($pd[$i]) ? '<div class="small text-muted lh-1 mb-2">'.$pd[$i].'</div>' : '';
-			$phones .= '<div>'.$ph[$i].$whapps.$phDesc.'</div>';
+		$ph = explode(';', $item->phone);
+		if(!empty($item->phone) && $item->phone != ';') :
+			$wp = explode(';', $item->whatsapp);
+			$pd = explode(';', $item->phone_desc);
+			for($i = 0; $i < count($ph); $i++) {
+				$whapps = $wp[$i] == 1 ? ' <span class="base-icon-whatsapp text-success cursor-help hasTooltip" title="'.JText::_('TEXT_HAS_WHATSAPP').'"></span>' : '';
+				$phDesc = !empty($pd[$i]) ? '<div class="small text-muted lh-1 mb-2">'.$pd[$i].'</div>' : '';
+				$phones .= '<div>'.$ph[$i].$whapps.$phDesc.'</div>';
+			}
+		endif;
+		$required = array($item->cpf, $item->rg, $item->rg_orgao, $item->place_birth, $item->marital_status, $item->gender, $item->mother_name, $item->father_name, $item->address, $item->address_number, $item->address_district, $item->address_city, $item->agency, $item->account, $item->operation);
+		$incomplete = false;
+		for($i = 0; $i < count($required); $i++) {
+			if(empty($required[$i]) || $required[$i] === 0) $incomplete = true;
 		}
+		if(empty($item->birthday) || $item->birthday == '0000-00-00') $incomplete = true;
+		// Show incomplete data message
+		if($incomplete) echo '<div class="alert alert-warning base-icon-attention"> '.JText::_('MSG_INCOMPLETE_DATA').'</div>';
+
+		// Tratamento de campos obrigatórios
+		$gender = ($item->gender == 0) ? $undefined : JText::_('TEXT_GENDER_'.$item->gender);
+		$mStatus = ($item->marital_status == 0) ? $undefined : JText::_('TEXT_MARITAL_STATUS_'.$item->marital_status);
+		$mother = empty($item->mother_name) ? $undefined : baseHelper::nameFormat($item->mother_name);
+		$father = empty($item->father_name) ? $undefined : baseHelper::nameFormat($item->father_name);
+		$birthday = (empty($item->birthday) || $item->birthday == '0000-00-00') ? $undefined : baseHelper::dateFormat($item->birthday);
+		$place = empty($item->place_birth) ? $undefined : baseHelper::nameFormat($item->place_birth);
+		$cpf = empty($item->cpf) ? $undefined : $item->cpf;
+		$rg = empty($item->rg) ? $undefined : $item->rg.' / '.$item->rg_orgao;
+		$address = empty($item->address) ? $undefined : baseHelper::nameFormat($item->address).$addressNumber.$addressInfo.'<br />'.$addressZip.$addressDistrict.$addressCity.$addressState;
+		$phones = empty($phones) ? $undefined : $phones;
 
 		$html .= '
 			<div class="row">
 				<div class="col-sm-4 col-md-2 mb-4 mb-md-0">
 					<div style="max-width: 300px">'.$img.'</div>
+					'.$printCard.'
 				</div>
 				<div class="col-sm-8 col-md-6">
 					<label class="label-sm">'.JText::_('FIELD_LABEL_NAME').':</label>
@@ -119,17 +153,25 @@ if($vID != 0) :
 					<div class="row">
 						<div class="col-4">
 							<label class="label-sm">'.JText::_('FIELD_LABEL_GENDER').':</label>
-							<p>'.JText::_('TEXT_GENDER_'.$item->gender).'</p>
+							<p>'.$gender.'</p>
 						</div>
 						<div class="col-4">
 							<label class="label-sm">'.JText::_('FIELD_LABEL_MARITAL_STATUS').':</label>
-							<p>'.JText::_('TEXT_MARITAL_STATUS_'.$item->marital_status).'</p>
+							<p>'.$mStatus.'</p>
 						</div>
 						<div class="col-4">
 							<label class="label-sm">'.JText::_('FIELD_LABEL_CHILDREN').':</label>
 							<p>'.$item->children.'</p>
 						</div>
 						'.$partner.'
+						<div class="col-lg-6">
+							<label class="label-sm">'.JText::_('FIELD_LABEL_MOTHER_NAME').':</label>
+							<p>'.$mother.'</p>
+						</div>
+						<div class="col-lg-6">
+							<label class="label-sm">'.JText::_('FIELD_LABEL_FATHER_NAME').':</label>
+							<p>'.$father.'</p>
+						</div>
 					</div>
 				</div>
 				<div class="col-md-4">
@@ -140,15 +182,19 @@ if($vID != 0) :
 						</div>
 						<div class="col-6 col-sm-4 col-md-12">
 							<label class="label-sm">'.JText::_('FIELD_LABEL_BIRTHDAY').':</label>
-							<p>'.baseHelper::dateFormat($item->birthday).'</p>
+							<p>'.$birthday.'</p>
+						</div>
+						<div class="col-6 col-sm-4 col-md-12">
+							<label class="label-sm">'.JText::_('FIELD_LABEL_PLACE_BIRTH').':</label>
+							<p>'.$place.'</p>
 						</div>
 						<div class="col-6 col-sm-4 col-md-12">
 							<label class="label-sm">CPF:</label>
-							<p>'.$item->cpf.'</p>
+							<p>'.$cpf.'</p>
 						</div>
 						<div class="col-6 col-sm-4 col-md-12">
 							<label class="label-sm">RG:</label>
-							<p>'.$item->rg.' / '.$item->rg_orgao.'</p>
+							<p>'.$rg.'</p>
 						</div>
 					</div>
 				</div>
@@ -157,10 +203,7 @@ if($vID != 0) :
 			<div class="row">
 				<div class="col-md-8">
 					<label class="label-sm">'.JText::_('FIELD_LABEL_ADDRESS').':</label>
-					<p>
-						'.baseHelper::nameFormat($item->address).$addressNumber.$addressInfo.'<br />
-						'.$addressZip.$addressDistrict.$addressCity.$addressState.'
-					</p>
+					<p>'.$address.'</p>
 				</div>
 				<div class="col-md">
 					<label class="label-sm">'.JText::_('FIELD_LABEL_PHONE').'(s):</label>
@@ -182,30 +225,35 @@ if($vID != 0) :
 			';
 		endif;
 		if($item->usergroup == 11) :
+			$cx_email = empty($item->cx_email) ? $undefined : $item->cx_email;
+			$cx_situated = empty($item->cx_situated) ? $undefined : $item->cx_situated;
 			$html .= '
 							<div class="col-sm-6 col-md-4">
-								<label class="label-sm">'.JText::_('FIELD_LABEL_EMAIL').':</label>
-								<p>'.$item->cx_email.'</p>
+								<label class="label-sm">'.JText::_('FIELD_LABEL_EMAIL').' Caixa:</label>
+								<p>'.$cx_email.'</p>
 							</div>
 							<div class="col-6 col-sm-4">
 								<label class="label-sm">'.JText::_('FIELD_LABEL_SITUATED').':</label>
-								<p>'.$item->cx_situated.'</p>
+								<p>'.$cx_situated.'</p>
 							</div>
 			';
 		endif;
 		if($item->usergroup != 13) :
-				$html .= '
+			$cx_code = empty($item->cx_code) ? $undefined : $item->cx_code;
+			$cx_date = (empty($item->cx_date) || $item->cx_date == '0000-00-00') ? $undefined : baseHelper::dateFormat($item->cx_date);
+			$cx_role = empty($item->cx_role) ? $undefined : $item->cx_role;
+			$html .= '
 							<div class="col-6 col-md-4">
 								<label class="label-sm">'.JText::_('FIELD_LABEL_CODE').':</label>
-								<p>'.$item->cx_code.'</p>
+								<p>'.$cx_code.'</p>
 							</div>
 							<div class="col-6 col-sm-4">
 								<label class="label-sm">'.JText::_('FIELD_LABEL_ADMISSION_DATE').':</label>
-								<p>'.baseHelper::dateFormat($item->cx_date).'</p>
+								<p>'.$cx_date.'</p>
 							</div>
 							<div class="col-6 col-sm-4">
 								<label class="label-sm">'.JText::_('FIELD_LABEL_ROLE').':</label>
-								<p>'.$item->cx_role.'</p>
+								<p>'.$cx_role.'</p>
 							</div>
 						</div>
 					</div>
@@ -248,6 +296,22 @@ if($vID != 0) :
 		';
 
 		echo $html;
+
+		// DEPENDENTES
+		// Contacts
+		$dependentsListFull		= false;
+		$dependentsShowAddBtn	= false;
+		$dependentsRelTag		= 'clients';
+		$dependentsRelListNameId= 'client_id';
+		$dependentsRelListId	= $item->id;
+		$dependentsOnlyChildList= true;
+		echo '
+			<h4 class="page-header base-icon-users pt-5">
+				'.JText::_('TEXT_DEPENDENTS').'
+				<a href="#" class="btn btn-xs btn-success float-right base-icon-plus" onclick="dependents_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-dependents" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_ADD').'</a>
+			</h4>
+		';
+		require(JPATH_APPS.DS.'dependents/dependents.php');
 
 	else :
 		echo '<p class="base-icon-info-circled alert alert-info m-0"> '.JText::_('MSG_ITEM_NOT_AVAILABLE').'</p>';

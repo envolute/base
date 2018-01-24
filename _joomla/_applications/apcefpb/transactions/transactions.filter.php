@@ -67,12 +67,12 @@ $where = '';
 		// $fInst: 3 => parcelas não disponíveis para faturamento
 		$where .= ' AND '.$db->quoteName('T1.charged').' = '.($fInst == 3 ? 0 : 1);
 		if($fInst != 1) :
-			// installment = total => à vista
-			// installment < total => parcela
+			// total = 1 => à vista
+			// total > 1 => parcela
 			// $fInst: 0 => apenas à vista
 			// $fInst: 2/3 => apenas parcelas
-			$oper = ($fInst == 0) ? ' = ' : ' < ';
-			$where .= ' AND '.$db->quoteName('T1.installment').$oper.$db->quoteName('T1.total');
+			$oper = ($fInst == 0) ? ' = ' : ' > ';
+			$where .= ' AND '.$db->quoteName('T1.total').$oper.'1';
 		endif;
 		// Reabilita os campos das movimentações avulsas
 		$js = '
@@ -316,7 +316,7 @@ $where = '';
 	$invoices = $db->loadObjectList();
 	$currInvoice = '';
 	foreach ($invoices as $obj) {
-		$desc = baseHelper::nameFormat($obj->invoice_desc, 20);
+		$desc = baseHelper::nameFormat($obj->invoice_desc, 30);
 		$flt_invoice .= '<option value="'.$obj->id.'"'.($obj->id == $fInv ? ' selected = "selected"' : '').'>'.baseHelper::dateFormat($obj->due_date).' - '.$desc.'</option>';
 		if($obj->id == $fInv) $currInvoice = JText::_('FIELD_LABEL_INVOICE').' '.baseHelper::dateFormat($obj->due_date).' <span class="text-md">('.$desc.')</span>';
 	}

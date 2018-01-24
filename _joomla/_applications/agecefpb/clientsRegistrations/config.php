@@ -36,9 +36,6 @@ endif;
 // get user type default in registration
 $_SESSION[$APPTAG.'newUsertype'] = 11; // default 'Associado->efetivo'
 
-// get user type default in registration
-$_SESSION[$APPTAG.'cardLimit'] = '300,00'; // default
-
 // form action config
 	$cfg['isEdit']				= isset(${$APPTAG.'IsEdit'}) ? ${$APPTAG.'IsEdit'} : false;
 
@@ -62,6 +59,10 @@ $_SESSION[$APPTAG.'cardLimit'] = '300,00'; // default
 
 // crud's main table
 	$cfg['mainTable']			= $MAIN_TB;
+
+// Save Function
+// fuction called after save action
+	$cfg['saveTrigger']			= '';
 
 	// date & price convertions
 	$cfg['dateConvert']			= true;

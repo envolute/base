@@ -111,7 +111,7 @@ defined('_JEXEC') or die;
 			</div>
 		</div>
 	</div>
-	<div class="col-lg-3 b-left b-dashed">
+	<div class="col-lg-3 b-left b-left-dashed">
 		<hr class="d-lg-none" />
 		<div class="row">
 			<div class="col-sm-6 col-lg-12">

@@ -138,7 +138,7 @@ FROM
 		on((`T6`.`id` = `T3`.`client_id`))
 	)
 	left join `cms_apcefpb_transactions` `T7`
-	on((`T7`.`phone_id` = `T3`.`id`))
+	on((`T7`.`phone_id` = `T3`.`id` AND `T7`.`phoneInvoice_id` = `T1`.`invoice_id`))
 )
 WHERE `T1`.`tel` <> ""
 GROUP BY `T1`.`invoice_id`, `T1`.`tel`

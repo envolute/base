@@ -59,6 +59,7 @@ var tmplCSS     = tmpl + '/css';
       core+'/bootstrap/extensions/js/typography/linkActions.js',
       // Utilities
       core+'/bootstrap/extensions/js/utilities/elementHeight.js',
+	  core+'/bootstrap/extensions/js/utilities/iframeHeight.js',
       core+'/bootstrap/extensions/js/utilities/imageRetina.js',
       core+'/bootstrap/extensions/js/utilities/isOnScreen.js',
       core+'/bootstrap/extensions/js/utilities/parentWidth.js',
