@@ -18,7 +18,7 @@ define( '_JEXEC', 1 );
 define( '_VALID_MOS', 1 );
 require_once ( JPATH_BASE .DS.'includes'.DS.'defines.php' );
 require_once ( JPATH_BASE .DS.'includes'.DS.'framework.php' );
-require_once ( JPATH_BASE .DS.'libraries'.DS.'joomla'.DS.'factory.php' );
+require_once ( JPATH_BASE .DS.'libraries'.DS.'joomla'.DS.'database'.DS.'factory.php' );
 
 // Quando o Joomla é carregado manualmente os caminhos passam a ser relativos
 // ao diretório do arquivo no qual o joomla é carregado. Dessa forma, a class 'JURI::root()'

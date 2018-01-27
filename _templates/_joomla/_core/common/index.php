@@ -53,6 +53,39 @@ require_once('_init.tpl.php');
 		<div id="wrapper">
 
 			<?php
+			$hasSidebar = ($this->countModules('sidebar-header') > 0 || $this->countModules('sidebar-content') > 0 || $this->countModules('sidebar-footer') > 0) ? true : false;
+			if($hasSidebar) :
+			?>
+				<div id="tmpl-sidebar">
+
+					<?php if($this->countModules('sidebar-header') > 0): ?>
+						<!-- Side Bar Header -->
+						<div id="tmpl-sidebar-header">
+							<jdoc:include type="modules" name="sidebar-header" style="base" />
+						</div>
+					<?php endif; ?>
+
+					<?php if($this->countModules('sidebar-content') > 0): ?>
+						<!-- Side Bar Content -->
+						<div id="tmpl-sidebar-content" class="base-scrollbar set-height" data-offset-elements="#cmstools, #tmpl-sidebar-header, #tmpl-sidebar-footer">
+							<jdoc:include type="modules" name="sidebar-content" style="base" />
+						</div>
+					<?php endif; ?>
+
+					<?php if($this->countModules('sidebar-footer') > 0): ?>
+						<!-- Side Bar Footer -->
+						<div id="tmpl-sidebar-footer">
+							<jdoc:include type="modules" name="sidebar-footer" style="base" />
+						</div>
+					<?php endif; ?>
+
+				</div>
+
+			<?php
+			endif;
+
+			// TEMPLATE CONTENT CONTAINER
+			if($hasSidebar) echo '<div id="tmpl-content">';
 
 			// HEADER
 			loadPosition($this, $params, 'header', 8);
@@ -174,6 +207,9 @@ require_once('_init.tpl.php');
 
 			// FOOTER
 			loadPosition($this, $params, 'footer', 8);
+
+			// CLOSE TEMPLATE CONTENT CONTAINER
+			if($hasSidebar) echo '</div>';
 
 			// HIDDEN
 			if($this->countModules('hidden') > 0):

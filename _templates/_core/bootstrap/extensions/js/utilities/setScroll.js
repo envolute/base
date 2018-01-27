@@ -1,18 +1,18 @@
 //JQUERY
 jQuery(function() {
 
-  // SMOOTH SCROLL
-  window.scrollTo = function(obj, offSet){
-    var e;
-    var topSpace = (isSet(offSet)) ? offSet : 0;
-    if(obj == null) {
-      e = jQuery('body');
-    } else {
-      var object = (jQuery.type(obj) === "string") ? jQuery(obj) : obj;
-      e = (elementExist(object)) ? jQuery(obj) : jQuery('body');
-    }
-    jQuery('html,body').animate({scrollTop: e.offset().top - topSpace},'slow');
-  };
+	// SMOOTH SCROLL
+	window.scrollTo = function(obj, offSet){
+		var e;
+		var topSpace = (isSet(offSet)) ? offSet : 0;
+		if(obj == null) {
+			e = jQuery('body');
+		} else {
+			var object = (jQuery.type(obj) === "string") ? jQuery(obj) : obj;
+			e = (elementExist(object)) ? jQuery(obj) : jQuery('body');
+		}
+		jQuery('html,body').animate({scrollTop: e.offset().top - topSpace},'slow');
+	};
 
 	// #GOTO -> SMOOTH ANCHOR
 	window.gotoElement = function(elem, offset) {
@@ -37,6 +37,14 @@ jQuery(function() {
 					}
 				});
 			});
+		}
+	};
+
+	// SET CUSTOM SCROLL 'PERFECT SCROLLBAR'
+	window.setScrollBar = function(elem) {
+		var el = isSet(elem) ? elem : '.base-scrollbar';
+		if(elementExist(setElement(el))) {
+			window.psScrollbar = new PerfectScrollbar(el);
 		}
 	};
 

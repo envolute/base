@@ -2,7 +2,7 @@
 var gulp = require('gulp');
 
 // Define Project Name
-var project     = 'agecefpb';
+var project     = 'base';
 
 // Define base folders
 var builder     = '_templates';
@@ -68,6 +68,7 @@ var tmplCSS     = tmpl + '/css';
       core+'/bootstrap/extensions/js/utilities/toggleHidden.js',
       core+'/bootstrap/extensions/js/utilities/toggleIcon.js',
       core+'/bootstrap/extensions/js/utilities/libs/jquery.actual.js',
+      core+'/bootstrap/extensions/js/utilities/libs/perfect-scrollbar.js',
       // Default Libs
         // chosen
         core+'/bootstrap/extensions/js/forms/select-chosen.js',

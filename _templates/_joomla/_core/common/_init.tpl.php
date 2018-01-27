@@ -308,6 +308,8 @@ $this->direction = $doc->direction;
 	<?php if($responsive) echo '<meta name="viewport" content="width=device-width, initial-scale=1">'; ?>
 
 	<?php
+	// 'BASE' CSS FILES
+	require_once('templates/base/_css.tpl.php');
 	// INITIALIZE JS FILES
 	$jsInit	= $this->params->get('jsInit');
 	require_once('templates/base/_js.init.php');
@@ -320,9 +322,6 @@ $this->direction = $doc->direction;
 	<jdoc:include type="head" />
 
 	<?php
-	// 'BASE' CSS FILES
-	require_once('templates/base/_css.tpl.php');
-
 	// 'BASE' CUSTOM JS FILES
 	$jsCustom	= $this->params->get('jsCustom');
 	require_once('templates/base/_js.custom.php');

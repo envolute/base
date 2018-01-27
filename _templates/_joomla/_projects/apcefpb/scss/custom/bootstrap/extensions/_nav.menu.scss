@@ -135,11 +135,11 @@
 
 		// Item <a>
 
-			.nav.menu:not(.nav-stacked) .nav-child li > a {
+			.mainmenu.nav.menu:not(.nav-stacked) .nav-child li > a {
 				padding: 0.5em 1rem;
 				border-bottom: 1px dashed $gray-300!important;
 			}
-			.nav.menu .nav-child li:last-child > a {
+			.mainmenu.nav.menu .nav-child li:last-child > a {
 				border-bottom-color: transparent!important;
 			}
 			// Efeito hover

@@ -1,4 +1,7 @@
-<div class="row form-toolbar mb-3">
+<?php
+$hideToolbar = (isset($cfg['showFormToolbar']) && !$cfg['showFormToolbar']) ? ' hidden' : '';
+?>
+<div class="row form-toolbar mb-3"<?php echo $hideToolbar?>>
 	<div id="<?php echo $APPTAG?>-formPaginator" class="col-sm">
 		<div class="form-group">
 			<span class="input-group">

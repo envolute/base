@@ -1,0 +1,128 @@
+// DP CALENDAR
+
+	// loader
+	.dpcalendar-loader {
+	    position: absolute;
+	    left: 0;
+	    padding-top: 22px;
+	}
+	// [MODULE] MINI CALENDAR -> loader
+	.module .dpcalendar-loader {
+	    left: 60px;
+	    padding-top: 2px;
+	}
+
+	// container
+	.dp-calendar.fc {
+	    border: 1px solid $base-border-color;
+	}
+
+	// Toolbar
+
+		.fc-toolbar {
+		    margin: 0!important;
+			padding: 5px;
+		    background-color: $gray-200;
+		}
+		// button
+		.fc-toolbar button {
+		    height: auto!important;
+		    padding: .3em;
+		    font-size: .8rem;
+		}
+		// header
+		.fc-toolbar .fc-center {
+		    display: block!important;
+		}
+		.fc-toolbar .fc-center > h2 {
+			display: block;
+			float: none;
+			padding: 0 5px;
+			line-height: 25px!important;
+			font-size: 14px!important;
+			text-align: right!important;
+			color: $base-color-primary-dark;
+			text-shadow: 1px 1px 0 #fff;
+		}
+		.fc-toolbar .fc-right {
+		    margin-left: 5px;
+		}
+
+	// CALENDAR -> Tabela
+
+		.fc table {
+		    font-size: .85rem;
+		}
+		// cor da borda
+		.fc td, .fc th {
+		    border-color: $base-border-color;
+		}
+		// Header
+		.fc-head-container > .fc-row {
+			margin: 0!important;
+			border: none!important;
+			text-shadow: -1px -1px 0 $base-color-primary-darker;
+			background: theme-color("primary");
+			@include color-yiq(theme-color("primary"));
+		}
+		.fc-head-container th {
+			vertical-align: middle;
+			font-weight: normal;
+		    line-height: 1.8;
+		}
+
+		// Body
+
+			// [MODULE] MINI CALENDAR -> container scroll
+			.module .fc-scroller {
+				overflow-y: auto!important;
+				height: auto!important;
+			}
+			// [MODULE] MINI CALENDAR -> altura da linha
+			.module .fc-basic-view .fc-body .fc-row {
+			    min-height: 30px;
+			}
+			// [MODULE] MINI CALENDAR -> número do dia/semana
+			.module .fc-basic-view .fc-day-number,
+			.module .fc-basic-view .fc-week-number {
+			    padding: 3px 2px 0;
+			    line-height: 12px;
+			}
+			// dia atual
+			.fc-basic-view td.fc-today {
+			    color: $base-color-live;
+			}
+			// [MODULE] MINI CALENDAR -> marcador de evento
+			.module tr:first-child > td > .fc-day-grid-event {
+			    margin-top: 0px;
+			}
+			.module .fc-event {
+			    line-height: 10px;
+			    width: 10px;
+			    height: 10px;
+			}
+
+	// Tooltip
+	.tooltipster-content ul {
+		padding: 0 1rem 0 1.2rem!important;
+		margin: 2px 0!important;
+	}
+
+	// EVENTO
+
+		// Header
+		#dp-event .dp-event-header {
+		    padding: .5rem 0;
+		    margin-bottom: 1rem;
+		    border-width: 1px;
+		    font-weight: 400;
+		}
+		// imagens
+		#dp-event .dp-event-image-container img {
+			max-width: 100%;
+			margin-bottom: .5rem;
+		}
+		// mapa
+		#dp-event-information-content-details-metadata-details-map {
+		    height: 250px!important;
+		}

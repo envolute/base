@@ -31,12 +31,14 @@ jQuery(document).ready(function() {
 		setIframeHeight();
 		imageRetina();
 		setParentWidth();
+		setScrollBar();
 		gotoElement();
 		toggleIcon();
 
 	};
 	// CHAMADA GERAL DAS DEFINIÇÕES
 	setCoreDefinitions();
+
 
 	// ---------------------------------------------------------------------------------
 	// ON RESIZE CONTROLLER

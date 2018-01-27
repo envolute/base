@@ -1150,7 +1150,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$db->execute();
 
 					// gera o resultado para o CSV
-					$result = setFile($query_tipoE,'A15003                ,APCEF PB           ,104CAIXA ECONOM FEDERAL'.date("Ymd").substr('000000'.$seq, -6).'05DEBITO AUTOMATICO                                                     ','','',false);
+					$result = setFile($query_tipoE,'A15003                ,APCEF PB            ,104CAIXA ECONOM FEDERAL'.date("Ymd").substr('000000'.$seq, -6).'05DEBITO AUTOMATICO                                                     ','','',false);
 					$result .= setFile($query_tipoZ,NULL,'','');
 					if($result == true) :
 

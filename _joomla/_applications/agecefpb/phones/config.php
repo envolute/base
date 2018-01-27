@@ -109,6 +109,10 @@ endif;
 	$cfg['showListDesc']		= false;
 	$cfg['showFormDesc']		= false;
 
+// form's
+
+	$cfg['showFormToolbar']		= true;
+
 	// date & price convertions
 	$cfg['dateConvert']			= false;
 	$cfg['load_UI']				= $cfg['dateConvert'];

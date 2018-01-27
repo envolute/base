@@ -1,11 +1,13 @@
 --
--- Estrutura da tabela `cms_agecefpb_phones_plans_operators`
+-- Estrutura da tabela `cms_base_providers`
 --
 
-CREATE TABLE IF NOT EXISTS `cms_agecefpb_providers` (
+CREATE TABLE `cms_base_providers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `group_id` int(11) NOT NULL,
+  `agreement` tinyint(4) NOT NULL,
   `name` varchar(100) NOT NULL,
+  `company_name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `cnpj` varchar(20) NOT NULL,
   `insc_municipal` varchar(20) NOT NULL,
@@ -21,15 +23,15 @@ CREATE TABLE IF NOT EXISTS `cms_agecefpb_providers` (
   `alter_by` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `group_id` (`group_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `cms_agecefpb_phones_plans_operators_files`
+-- Estrutura da tabela `cms_base_providers_files`
 --
 
-CREATE TABLE IF NOT EXISTS `cms_agecefpb_providers_files` (
+CREATE TABLE `cms_base_providers_files` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_parent` int(11) NOT NULL,
   `index` int(11) NOT NULL,
@@ -47,4 +49,62 @@ CREATE TABLE IF NOT EXISTS `cms_agecefpb_providers_files` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `filename` (`filename`),
   KEY `id_parent` (`id_parent`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Estrutura da tabela `cms_base_rel_providers_banksAccounts`
+--
+
+CREATE TABLE `cms_base_rel_providers_banksAccounts` (
+  `provider_id` int(11) NOT NULL,
+  `bankAccount_id` int(11) NOT NULL,
+  `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY `contact_id` (`provider_id`,`bankAccount_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `cms_base_rel_providers_callCenters`
+--
+
+CREATE TABLE `cms_base_rel_providers_callCenters` (
+  `provider_id` int(11) NOT NULL,
+  `callCenter_id` int(11) NOT NULL,
+  `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY `contact_id` (`provider_id`,`callCenter_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `cms_base_rel_providers_contacts`
+--
+
+CREATE TABLE `cms_base_rel_providers_contacts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `provider_id` int(11) NOT NULL,
+  `contact_id` int(11) NOT NULL,
+  `main` tinyint(4) NOT NULL,
+  `department` varchar(50) NOT NULL,
+  `state` tinyint(4) NOT NULL DEFAULT '1',
+  `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_by` int(11) NOT NULL,
+  `alter_date` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `alter_by` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `provider_id` (`provider_id`,`contact_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Relação entre conveniados e contatos';
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `cms_base_rel_providers_locations`
+--
+
+CREATE TABLE `cms_base_rel_providers_locations` (
+  `provider_id` int(11) NOT NULL,
+  `location_id` int(11) NOT NULL,
+  `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY `contact_id` (`provider_id`,`location_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Relacionamento entre conveniados e endereços';

@@ -1,8 +1,8 @@
 --
--- Estrutura da tabela `cms_agecefpb_phones_plans_operators`
+-- Estrutura da tabela `cms_base_contacts_groups`
 --
 
-CREATE TABLE IF NOT EXISTS `cms_base_contacts_groups` (
+CREATE TABLE `cms_base_contacts_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `state` tinyint(4) NOT NULL,
@@ -12,4 +12,4 @@ CREATE TABLE IF NOT EXISTS `cms_base_contacts_groups` (
   `alter_by` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;

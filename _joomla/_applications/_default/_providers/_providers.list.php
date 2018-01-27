@@ -146,7 +146,7 @@ else : // num_rows = 0
 
 	$html .= '
 		<tr>
-			<td colspan="8">
+			<td colspan="9">
 				<div class="alert alert-warning alert-icon m-0">'.JText::_('MSG_LISTNOREG').'</div>
 			</td>
 		</tr>

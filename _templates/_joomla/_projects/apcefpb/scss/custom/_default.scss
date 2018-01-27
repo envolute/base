@@ -44,6 +44,20 @@
 		// .media-lg #wrapper { width: 992px; }
 		// .media-xl #wrapper { width: 1200px; }
 
+	// SIDEBAR
+
+		#tmpl-sidebar {
+			background-color: $base-sidebar-bg;
+		}
+			#tmpl-sidebar-header {
+				height: $base-sidebar-header-height;
+				background-color: $base-sidebar-header-bg;
+			}
+			#tmpl-sidebar-footer {
+				height: $base-sidebar-footer-height;
+				background-color: $base-sidebar-footer-bg;
+			}
+
 	// HEADER
 
 		#header { }

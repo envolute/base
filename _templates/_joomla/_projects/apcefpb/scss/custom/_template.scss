@@ -66,6 +66,31 @@ body { position: relative; }
 	html.isAdmin #wrapper { min-height: calc(100vh - #{$admin-navbar-height}); }
 	html.isMM:not(.media-md) #wrapper { margin-left: 0!important; }
 
+// SIDEBAR -> barra lateral do template
+
+	#tmpl-sidebar {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: #{$base-sidebar-width};
+		height: 100vh;
+		z-index: 1;
+	}
+	html.isAdmin #tmpl-sidebar {
+		top: $admin-navbar-height;
+		height: calc(100vh - #{$admin-navbar-height});
+	}
+	#tmpl-sidebar-content { position: relative; }
+	#tmpl-sidebar-header,
+	#tmpl-sidebar-content,
+	#tmpl-sidebar-footer { width: #{$base-sidebar-width}; }
+
+	// content
+	#tmpl-sidebar:not(.closed) + #tmpl-content {
+		width: calc(100% - #{$base-sidebar-width});
+		margin-left: $base-sidebar-width!important;
+	}
+
 // FOOTER
 
 	.html.media-md:not(.media-lg) #footer {

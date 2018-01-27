@@ -34,6 +34,9 @@
 		<position>bg-layer</position>
 		<position>system-menu</position>
 		<position>base-menu</position>
+		<position>sidebar-header</position>
+		<position>sidebar-content</position>
+		<position>sidebar-footer</position>
 		<position>header-1</position>
 		<position>header-2</position>
 		<position>header-3</position>

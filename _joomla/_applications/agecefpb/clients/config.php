@@ -112,6 +112,10 @@ $_SESSION[$APPTAG.'newUsertype'] = 11; // default 'Associado->efetivo'
 	$cfg['showListDesc']		= false;
 	$cfg['showFormDesc']		= false;
 
+// form's
+
+	$cfg['showFormToolbar']		= true;
+
 	// date & price convertions
 	$cfg['dateConvert']			= true;
 	$cfg['load_UI']				= $cfg['dateConvert'];

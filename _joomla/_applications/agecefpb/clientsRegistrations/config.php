@@ -64,6 +64,10 @@ $_SESSION[$APPTAG.'newUsertype'] = 11; // default 'Associado->efetivo'
 // fuction called after save action
 	$cfg['saveTrigger']			= '';
 
+// form's
+
+	$cfg['showFormToolbar']		= true;
+
 	// date & price convertions
 	$cfg['dateConvert']			= true;
 	$cfg['load_UI']				= $cfg['dateConvert'];

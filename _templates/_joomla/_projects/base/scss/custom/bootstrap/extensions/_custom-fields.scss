@@ -1,0 +1,36 @@
+// CUSTOM FIELDS
+// Campos personalizados
+
+	// FIELD IMAGE FILE
+	.image-file .image-action {
+		border: $base-field-image-border dashed $base-border-color;
+	}
+    .image-file .image-action.active {
+		border-color: theme-color("success");
+    }
+	.image-file .image-file-label {
+		color: $text-muted;
+		background-color: $gray-100;
+	}
+	.image-file .image-action.active .image-file-label {
+		@include color-yiq(theme-color("success"));
+		background-color: theme-color("success");
+	}
+	.image-file .image-file-label > [class*="base-icon"]::before {
+		display: block;
+		font-size: 1.6rem;
+	}
+	.image-file .image-file-on {
+		padding: map-get($spacers, 2);
+		background-color: #000;
+	    background: rgba(0, 0, 0, 0.5);
+	}
+	.image-file .image-file-edit::before {
+		width: 3rem;
+		height: 3rem;
+		line-height: 3rem;
+		border-radius: 3rem;
+		color: #fff;
+		background-color: #000;
+		background-color: rgba(0, 0, 0, 0.7);
+	}

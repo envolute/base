@@ -1,0 +1,31 @@
+// LIST
+
+	// TABLE
+	.base-app-list .table thead th,
+	.base-app-list .table thead td {
+		padding-top: 0;
+		border-top: 0!important;
+	}
+	// Evita a quebra de linha do ícone de ordenação
+	.base-app-list .table th .SETOrder { white-space: nowrap; }
+
+	// TOOLBAR
+	// botões de ação da listagem
+	.base-app .list-toolbar {
+		margin-bottom: 10px;
+		text-align: right;
+	}
+	.media-md #component .base-app .list-toolbar.floating {
+		position: absolute;
+		top: -(map-get($spacers, 1));
+		right: ($grid-gutter-width / 2);
+		margin: 0;
+	}
+	.base-app .modal .modal-list-toolbar {
+		position: absolute;
+		top: -38px;
+		right: 40px;
+	}
+
+	// PAGINATION
+	.base-app .base-app-pagination .pagination{ margin: 0!important; }

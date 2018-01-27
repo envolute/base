@@ -26,9 +26,12 @@ window.<?php echo $APPTAG?>_listReload = function(reload, remove, ids, onlyChild
 			<?php echo $APPTAG?>rNID = (typeof relNameId !== "null" && typeof relNameId !== "undefined") ? relNameId : '';
 			<?php echo $APPTAG?>rID = (typeof relId !== "null" && typeof relId !== "undefined" && relId !== 0) ? relId : 0;
 			<?php if(!empty($_SESSION[$RTAG.'RelTable'])) echo $APPTAG.'_setRelation('.$APPTAG.'rID);'; ?>
+			// pega os dados enviados pelo filtro
+			var dados = (formFilter.length) ? formFilter.serialize() : '';
 			jQuery.ajax({
-				url: "<?php echo $URL_APP_FILE ?>.list.ajax.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&oCHL="+<?php echo $APPTAG?>oCHL+"&rNID="+<?php echo $APPTAG?>rNID+"&rID="+<?php echo $APPTAG?>rID,
+				url: "<?php echo $cfg['listAjax'] ?>?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&oCHL="+<?php echo $APPTAG?>oCHL+"&rNID="+<?php echo $APPTAG?>rNID+"&rID="+<?php echo $APPTAG?>rID,
 				type: 'POST',
+				data:  dados,
 				cache: false,
 				success: function(data) {
 					// encerra o loader

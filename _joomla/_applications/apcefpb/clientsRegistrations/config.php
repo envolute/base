@@ -67,6 +67,10 @@ $_SESSION[$APPTAG.'cardLimit'] = '300,00'; // default
 // fuction called after save action
 	$cfg['saveTrigger']			= '';
 
+// form's
+
+	$cfg['showFormToolbar']		= true;
+
 	// date & price convertions
 	$cfg['dateConvert']			= true;
 	$cfg['load_UI']				= $cfg['dateConvert'];
