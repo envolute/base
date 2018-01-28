@@ -1,57 +1,27 @@
 <?php
 defined('_JEXEC') or die;
 
-// QUERY FOR LIST
-$where = '';
+// AJAX FILTER
+// Para que seja possível utilizar o filtro numa listagem ajax é necessário que
+// o formulário esteja no corpo da página (fora do resultado da listagem "list.ajax")
+// Dessa forma, o formulário é carregado no arquivo principal através da variável
+// $cfg['ajaxFilter'] ou do parâmetro ${$APPTAG.'AjaxFilter'}
+// Já o script de tratamento do filtro deve estar "incluso" na listagem ajax.
+// => require($PATH_APP_FILE.'.filter.query.php');
+// Para isso, é criado o arquivo "[project].filter.query.php" para conter
+// o script de tratamento dos parâmetros e montagem da variável "where"
+// Obs: Caso não haja a necessidade de filtro em listagem ajax, o código contido em
+// "[project].filter.query.php" pode ser colocado aqui e o arquivo deletado,
+// mantendo assim um único arquivo "[project].filter.php" para filtragem
+// Ou seja, caso não exista o arquivo "[project].filter.query.php" no diretório
+// da aplicação é porque o filro ajax não é utilizado!
 
-// filter params
+// LOAD FILTER QUERY
+require($PATH_APP_FILE.'.filter.query.php');
 
-	// STATE -> select
-	$active	= $app->input->get('active', 2, 'int');
-	$where .= ($active == 2) ? $db->quoteName('T1.state').' != '.$active : $db->quoteName('T1.state').' = '.$active;
-	// GROUP
-	$groupID	= $app->input->get('groupID', 0, 'int');
-	if($groupID != 0) $where .= ' AND '.$db->quoteName('T1.group_id').' = '.$groupID;
+// ACTION
 
-	// Search 'Text fields'
-	$search	= $app->input->get('fSearch', '', 'string');
-	$sQuery = ''; // query de busca
-	$sLabel = array(); // label do campo de busca
-	$searchFields = array(
-		'T1.name'			=> 'FIELD_LABEL_NAME',
-		'T1.note'			=> 'FIELD_LABEL_NOTE'
-	);
-	$i = 0;
-	foreach($searchFields as $key => $value) {
-		$_OR = ($i > 0) ? ' OR ' : '';
-		$sQuery .= $_OR.'LOWER('.$db->quoteName($key).') LIKE LOWER("%'.$search.'%")';
-		if(!empty($value)) $sLabel[] .= JText::_($value);
-		$i++;
-	}
-	if(!empty($search)) $where .= ' AND ('.$sQuery.')';
-
-// ORDER BY
-
-	$ordf	= $app->input->get($APPTAG.'oF', '', 'string'); // campo a ser ordenado
-	$ordt	= $app->input->get($APPTAG.'oT', '', 'string'); // tipo de ordem: 0 = 'ASC' default, 1 = 'DESC'
-
-	$orderDef = ''; // não utilizar vírgula no inicio ou fim
-	if(!isset($_SESSION[$APPTAG.'oF'])) : // DEFAULT ORDER
-		$_SESSION[$APPTAG.'oF'] = 'T2.name';
-		$_SESSION[$APPTAG.'oT'] = 'ASC';
-	endif;
-	if(!empty($ordf)) :
-		$_SESSION[$APPTAG.'oF'] = $ordf;
-		$_SESSION[$APPTAG.'oT'] = $ordt;
-	endif;
-	$orderList = !empty($_SESSION[$APPTAG.'oF']) ? $db->quoteName($_SESSION[$APPTAG.'oF']).' '.$_SESSION[$APPTAG.'oT'] : '';
-	// fixa a ordenação em caso de itens com o mesmo valor (ex: mesma data)
-	$orderList .= (!empty($orderList) && !empty($orderDef) ? ', ' : '').$orderDef;
-	$orderList .= (!empty($orderList) ? ', ' : '').$db->quoteName('T1.id').' DESC';
-	// set order by
-	$orderList = !empty($orderList) ? ' ORDER BY '.$orderList : '';
-
-	$SETOrder = $APPTAG.'setOrder';
+	$btnAction = $cfg['listFull'] ? 'type="submit"' : 'type="button" onclick="'.$APPTAG.'_listReload(false);"';
 
 // FILTER'S DINAMIC FIELDS
 
@@ -64,27 +34,11 @@ $where = '';
 		$flt_group .= '<option value="'.$obj->id.'"'.($obj->id == $groupID ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
 	}
 
-// VISIBILITY
-// Elementos visíveis apenas quando uma consulta é realizada
-
-	$hasFilter = $app->input->get($APPTAG.'_filter', 0, 'int');
-	// Estado inicial dos elementos
-	$btnClearFilter		= ''; // botão de resetar
-	$textResults		= ''; // Texto informativo
-	// Filtro ativo
-	if($hasFilter) :
-		$btnClearFilter = '
-			<a href="'.JURI::current().'" class="btn btn-sm btn-danger base-icon-cancel-circled btn-icon">
-				'.JText::_('TEXT_CLEAR').' '.JText::_('TEXT_FILTER').'
-			</a>
-		';
-		$textResults = '<span class="base-icon-down-big text-muted d-none d-sm-inline"> '.JText::_('TEXT_SEARCH_RESULTS').'</span>';
-	endif;
 
 // VIEW
 $htmlFilter = '
 	<form id="filter-'.$APPTAG.'" class="hidden-print collapse '.((isset($_GET[$APPTAG.'_filter']) || $cfg['showFilter']) ? 'show' : '').'" method="get">
-		<fieldset class="fieldset-embed fieldset-sm pt-3 pb-0">
+		<fieldset class="fieldset-embed fieldset-sm pt-2 pb-0">
 			<input type="hidden" name="'.$APPTAG.'_filter" value="1" />
 
 			<div class="row">
@@ -113,19 +67,13 @@ $htmlFilter = '
 						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />
 					</div>
 				</div>
-			</div>
-			<div id="base-app-filter-buttons" class="row pt-3 b-top align-items-center">
-				<div class="col-sm">
+				<div class="col-sm col-lg-2 text-right">
 					<div class="form-group">
-						'.$textResults.'
-					</div>
-				</div>
-				<div class="col-sm text-right">
-					<div class="form-group">
-						<button type="submit" class="btn btn-sm btn-primary base-icon-search btn-icon">
+						<label class="label-sm">&#160;</label>
+						<button '.$btnAction.' id="'.$APPTAG.'-submit-filter" class="btn btn-sm btn-primary base-icon-search btn-icon">
 							'.JText::_('TEXT_SEARCH').'
 						</button>
-						'.$btnClearFilter.'
+						<a href="'.JURI::current().'" class="btn btn-sm btn-danger base-icon-cancel-circled hasTooltip" title="'.JText::_('TEXT_RESET').'"></a>
 					</div>
 				</div>
 			</div>

@@ -1,9 +1,6 @@
 <?php
 defined('_JEXEC') or die;
 
-// LOAD FILTER
-require($PATH_APP_FILE.'.filter.php');
-
 // LIST
 
 	// PAGINATION VAR's
@@ -48,7 +45,7 @@ endif;
 
 // VIEW
 $html = '
-	<form id="form-list-'.$APPTAG.'" method="post">
+	<form id="form-list-'.$APPTAG.'" method="post" class="pt-3">
 		<div class="row mb-5">
 ';
 
@@ -89,7 +86,7 @@ if($num_rows) : // verifica se existe
 		// Resultados
 		$html .= '
 			<div id="'.$APPTAG.'-item-'.$item->id.'" class="col-sm-3 col-xl-2">
-				<div class="pos-relative rounded b-top-3 b-'.$rowState.' set-shadow">
+				<div class="pos-relative rounded b-top-2 b-'.$rowState.' set-shadow">
 					'.$adminView['list']['check'].'
 					<a href="#" class="d-block text-lg lh-1-2 py-3 px-3 mr-4">'.baseHelper::nameFormat($item->name).'</a>
 					<span class="d-block text-muted py-1 px-1 b-top clearfix">
@@ -129,6 +126,6 @@ if($num_rows) :
 
 endif;
 
-return $htmlFilter.$html;
+return $html;
 
 ?>

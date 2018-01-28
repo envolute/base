@@ -65,7 +65,6 @@
 		#header { }
 
 			#logo-header {
-				width: 75px;
 				text-align: center;
 			}
 			#header-row-3 {
@@ -84,7 +83,7 @@
 	// FULL-CONTENT -> área total do conteúdo incluindo as laterais
 
 		#full-content {
-			padding: $grid-gutter-width 0;
+			padding: $base-space-lg 0;
 		}
 
 	// SECTION BOTTOM

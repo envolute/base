@@ -1,9 +1,6 @@
 <?php
 defined('_JEXEC') or die;
 
-// LOAD FILTER
-require($PATH_APP_FILE.'.filter.php');
-
 // LIST
 
 	// PAGINATION VAR's
@@ -53,7 +50,7 @@ endif;
 
 // VIEW
 $html = '
-	<form id="form-list-'.$APPTAG.'" method="post">
+	<form id="form-list-'.$APPTAG.'" method="post" class="pt-3">
 		<table class="table table-striped table-hover table-sm">
 			<thead>
 				<tr>
@@ -170,6 +167,6 @@ if($num_rows) :
 
 endif;
 
-return $htmlFilter.$html;
+return $html;
 
 ?>

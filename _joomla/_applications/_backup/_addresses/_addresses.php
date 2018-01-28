@@ -395,7 +395,7 @@ jQuery(window).on('load', function() {
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
 					<form name="form-<?php echo $APPTAG?>" id="form-<?php echo $APPTAG?>" method="post" enctype="multipart/form-data">
-						<?php require(JPATH_CORE.DS.'apps/layout/form/modal.header.php'); ?>
+						<?php if($cfg['showFormHeader']) require(JPATH_CORE.DS.'apps/layout/form/modal.header.php'); ?>
 						<div class="modal-body">
 							<fieldset>
 								<?php

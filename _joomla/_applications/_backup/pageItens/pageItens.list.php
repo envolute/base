@@ -57,7 +57,7 @@ if($hasAdmin) :
 endif;
 
 $html = '
-	<form id="form-list-'.$APPTAG.'" method="post">
+	<form id="form-list-'.$APPTAG.'" method="post" class="pt-3">
 		<div class="row '.$APPNAME.'-items list-'.$APPTAG.' listFull mb-2">
 ';
 
@@ -243,6 +243,6 @@ if($num_rows) :
 
 endif;
 
-return $htmlFilter.$html;
+return $html;
 
 ?>

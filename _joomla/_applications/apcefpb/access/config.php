@@ -94,6 +94,9 @@ endif;
 		// list type
 		$cfg['listFull']			= true;
 		if(isset(${$APPTAG.'ListFull'})) $cfg['listFull'] = ${$APPTAG.'ListFull'} ? true : false;
+		// list Ajax File
+		$cfg['listAjax']			= 'list.ajax.php';
+		if(isset(${$APPTAG.'ListAjax'})) $cfg['listAjax'] = ${$APPTAG.'ListAjax'};
 		// toolbar position
 		$cfg['staticToolbar']		= false;
 		if(isset(${$APPTAG.'StaticToolbar'})) $cfg['staticToolbar'] = ${$APPTAG.'StaticToolbar'} ? true : false;
@@ -108,6 +111,9 @@ endif;
 		if(isset(${$APPTAG.'AddClass'})) $cfg['addClass'] = ${$APPTAG.'AddClass'};
 		// show filter opened
 		$cfg['showFilter']			= true;
+		// load filter
+		$cfg['ajaxFilter']			= false;
+		if(isset(${$APPTAG.'AjaxFilter'})) $cfg['ajaxFilter'] = ${$APPTAG.'AjaxFilter'};
 	endif;
 	// list's elements default
 	$cfg['pagLimit']			= 20;
@@ -118,7 +124,12 @@ endif;
 
 // form's
 
-	$cfg['showFormToolbar']		= false;
+	$cfg['showFormHeader']		= true;
+	$cfg['showFormToolbar']		= true;
+	// Form button action
+	// false => save (keep)
+	// true => save and close (remove 'save & keep')
+	$cfg['formBtnAction']		= false;
 
 	// date & price convertions
 	$cfg['dateConvert']			= true;

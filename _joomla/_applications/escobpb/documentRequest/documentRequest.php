@@ -332,7 +332,7 @@ jQuery(window).on('load', function() {
 			<div class="modal fade" id="modal-list-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-list-<?php echo $APPTAG?>Label">
 				<div class="modal-dialog modal-sm" role="document">
 					<div class="modal-content">
-						<?php require(JPATH_CORE.DS.'apps/layout/form/modal.header.php'); ?>
+						<?php if($cfg['showFormHeader']) require(JPATH_CORE.DS.'apps/layout/form/modal.header.php'); ?>
 						<div class="modal-body">
 							<?php echo $addBtn.$list; ?>
 						</div>
@@ -350,7 +350,7 @@ jQuery(window).on('load', function() {
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
 					<form name="form-<?php echo $APPTAG?>" id="form-<?php echo $APPTAG?>" method="post" enctype="multipart/form-data">
-						<?php require(JPATH_CORE.DS.'apps/layout/form/modal.header.php'); ?>
+						<?php if($cfg['showFormHeader']) require(JPATH_CORE.DS.'apps/layout/form/modal.header.php'); ?>
 						<div class="modal-body">
 							<fieldset>
 								<?php

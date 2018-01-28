@@ -63,7 +63,7 @@
 
 // BOOTSTRAP DEFINITIONS
 
-	$base-body-bg:						#F2F2F2;
+	$base-body-bg:						#f8f8f8;
 	$base-text-color:         			#555;
 	$base-link-color:         			$base-color-primary;
 	$base-link-hover-color:				darken($base-link-color, 15%); // copy of 'link-hover-color' bootstrap
@@ -159,9 +159,9 @@
 	$base-space-xl:						($base-space * 2);
 
 	// border radius
-	$base-radius-default:     			.25rem !default;
-	$base-radius-default-sm:  			.3rem !default;
-	$base-radius-default-lg:  			.2rem !default;
+	$base-radius-default:     			.2rem !default;
+	$base-radius-default-sm:  			.2rem !default;
+	$base-radius-default-lg:  			.4rem !default;
 
 // TYPOGRAPHY
 
@@ -296,16 +296,16 @@
 	// -> bordered
 	$fieldset-bordered-form-actions-bg:	$base-gray-100;
 	// -> embed
-	$fieldset-embed-bg:					$base-gray-100;
-	$fieldset-embed-border:				$fieldset-border;
+	$fieldset-embed-bg:					$base-color-white;
+	$fieldset-embed-border:				1px solid $base-gray-200;
 	$fieldset-embed-shadow:				inset 1px 1px 5px rgba(0,0,0,0.06);
-	$fieldset-embed-outline:			4px solid $base-body-bg;
+	$fieldset-embed-outline:			none;
 	$fieldset-embed-legend-bg:			$base-body-bg;
 	$fieldset-embed-legend-padding:		0 1rem 0.3rem;
 	$fieldset-embed-legend-font-size:	.86rem;
 	$fieldset-embed-legend-color:		$base-color-primary;
 	$fieldset-embed-legend-radius:		0 0 $base-radius-default $base-radius-default;
-	$fieldset-embed-legend-shadow:		1px 1px 2px rgba(0,0,0,0.06);
+	$fieldset-embed-legend-shadow:		inset 0px 0px 2px rgba(0,0,0,0.06);
 	$fieldset-embed-striped-color:		$base-body-bg; // optional bootstrap striped color
 
 	// Field Icon

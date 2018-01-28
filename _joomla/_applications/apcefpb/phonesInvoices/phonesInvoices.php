@@ -357,6 +357,8 @@ jQuery(window).on('load', function() {
 						<span class="base-icon-trash"></span> <?php echo JText::_('TEXT_DELETE'); ?>
 					</button>
 				<?php endif; ?>
+			<?php endif; ?>
+			<?php if($cfg['listFull'] || $cfg['ajaxFilter']) :?>
 				<button class="btn btn-sm btn-default toggle-state <?php echo ((isset($_GET[$APPTAG.'_filter']) || $cfg['showFilter']) ? 'active' : '')?>" data-toggle="collapse" data-target="<?php echo '#filter-'.$APPTAG?>" aria-expanded="<?php echo ((isset($_GET[$APPTAG.'_filter']) || $cfg['showFilter']) ? 'true' : '')?>" aria-controls="<?php echo 'filter'.$APPTAG?>">
 					<span class="base-icon-filter"></span> <?php echo JText::_('TEXT_FILTER'); ?> <span class="base-icon-sort"></span>
 				</button>
@@ -367,6 +369,11 @@ jQuery(window).on('load', function() {
 	<?php
 	$list = '';
 	if($cfg['showList']) :
+		// LOAD FILTER
+		$htmlFilter = '';
+		if($cfg['listFull'] || $cfg['ajaxFilter']) require($PATH_APP_FILE.'.filter.php');
+		$where = $where;
+		$orderList = $orderList;
 		$listContent = $cfg['listFull'] ? require($PATH_APP_FILE.'.list.php') : '';
 		if($cfg['showListDesc']) $list .= '<div class="base-list-description">'.JText::_('LIST_DESCRIPTION').'</div>';
 		$list .= '<div id="list-'.$APPTAG.'" class="base-app-list">'.$listContent.'</div>';
@@ -387,7 +394,8 @@ jQuery(window).on('load', function() {
 			</div>
 	<?php
 	else :
-		if($cfg['showApp']) echo $list;
+		// SHOW LIST
+		if($cfg['showApp']) echo $htmlFilter.$list;
 	endif;
 	?>
 
@@ -396,7 +404,7 @@ jQuery(window).on('load', function() {
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<form name="form-<?php echo $APPTAG?>" id="form-<?php echo $APPTAG?>" method="post" enctype="multipart/form-data">
-						<?php require(JPATH_CORE.DS.'apps/layout/form/modal.header.php'); ?>
+						<?php if($cfg['showFormHeader']) require(JPATH_CORE.DS.'apps/layout/form/modal.header.php'); ?>
 						<div class="modal-body">
 							<fieldset>
 								<?php

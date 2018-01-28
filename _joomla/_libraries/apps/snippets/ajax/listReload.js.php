@@ -29,8 +29,9 @@ window.<?php echo $APPTAG?>_listReload = function(reload, remove, ids, onlyChild
 			// pega os dados enviados pelo filtro
 			var dados = (formFilter.length) ? formFilter.serialize() : '';
 			jQuery.ajax({
-				url: "<?php echo $cfg['listAjax'] ?>?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&oCHL="+<?php echo $APPTAG?>oCHL+"&rNID="+<?php echo $APPTAG?>rNID+"&rID="+<?php echo $APPTAG?>rID,
-				type: 'POST',
+				url: "<?php echo $URL_APP_FILE.'.'.$cfg['listAjax'] ?>?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&aFTL=<?php echo $cfg['ajaxFilter']?>&oCHL="+<?php echo $APPTAG?>oCHL+"&rNID="+<?php echo $APPTAG?>rNID+"&rID="+<?php echo $APPTAG?>rID,
+				type: 'GET',
+				method: 'get',
 				data:  dados,
 				cache: false,
 				success: function(data) {

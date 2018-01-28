@@ -20,6 +20,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	// params requests
 	$APPTAG		= $input->get('aTag', $APPTAG, 'str');
 	$RTAG		= $input->get('rTag', $APPTAG, 'str');
+	$aFLT		= $input->get('aFTL', 0, 'bool'); // ajax filter
 	$oCHL		= $input->get('oCHL', 0, 'bool');
 	$oCHL		= $_SESSION[$RTAG.'OnlyChildList'] ? $_SESSION[$RTAG.'OnlyChildList'] : $oCHL;
 	$rNID		= $input->get('rNID', '', 'str');
@@ -48,6 +49,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	// database connect
 	$db		= JFactory::getDbo();
 
+	// LOAD FILTER
+	$fQuery = $PATH_APP_FILE.'.filter.query.php';
+	if($aFLT && file_exists($fQuery)) require($fQuery);
+
 	// GET DATA
 	$noReg	= true;
 	$query	= '
@@ -55,15 +60,14 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			'. $db->quoteName('T1.id') .',
 			'. $db->quoteName('T1.name') .',
 			'. $db->quoteName('T2.name') .' groupName,
-			'. $db->quoteName('T1.note') .',
 			'. $db->quoteName('T1.state') .'
 	';
 	if(!empty($rID) && $rID !== 0) :
 		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
 			$query .= ' FROM '.
 				$db->quoteName($cfg['mainTable']) .' T1
-				JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
-				ON '.$db->quoteName('T2.id') .' = T1.bank_id AND T2.state = 1
+				LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
+				ON '.$db->quoteName('T2.id') .' = T1.group_id AND T2.state = 1
 				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T3
 				ON '.$db->quoteName('T3.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
 			WHERE '.
@@ -71,22 +75,22 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			;
 		else :
 			$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
-				JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
-				ON '.$db->quoteName('T2.id') .' = T1.bank_id AND T2.state = 1
+				LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
+				ON '.$db->quoteName('T2.id') .' = T1.group_id AND T2.state = 1
 				WHERE '. $db->quoteName($rNID) .' = '. $rID
 			;
 		endif;
 	else :
 		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
-			JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
-			ON '.$db->quoteName('T2.id') .' = T1.bank_id AND T2.state = 1
+			LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
+			ON '.$db->quoteName('T2.id') .' = T1.group_id AND T2.state = 1
 		';
 		if($oCHL) :
 			$query .= ' WHERE 1=0';
 			$noReg = false;
 		endif;
 	endif;
-	$query	.= ' ORDER BY '. $db->quoteName('T2.name') .' ASC';
+	$query	.= ' ORDER BY '. $db->quoteName('T1.name') .' ASC';
 	try {
 		$db->setQuery($query);
 		$db->execute();

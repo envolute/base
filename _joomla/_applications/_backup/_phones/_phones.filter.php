@@ -68,7 +68,7 @@ $where = '';
 	$btnClearFilter		= ''; // botão de resetar
 	$textResults		= ''; // Texto informativo
 	// Filtro ativo
-	if($hasFilter) :
+	if($hasFilter || $cfg['ajaxFilter']) :
 		$btnClearFilter = '
 			<a href="'.JURI::current().'" class="btn btn-sm btn-danger base-icon-cancel-circled btn-icon">
 				'.JText::_('TEXT_CLEAR').' '.JText::_('TEXT_FILTER').'

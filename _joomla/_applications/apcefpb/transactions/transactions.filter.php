@@ -281,6 +281,10 @@ $where = '';
 
 	$SETOrder = $APPTAG.'setOrder';
 
+// ACTION
+
+	$btnAction = $cfg['listFull'] ? 'type="submit"' : 'type="button" onclick="'.$APPTAG.'_listReload(false);"';
+
 // FILTER'S DINAMIC FIELDS
 
 	// clients -> select
@@ -339,7 +343,7 @@ $where = '';
 	$textResults		= ''; // Texto informativo
 	$txt 				= JText::_('TEXT_NOT_INVOICED');
 	// Filtro ativo
-	if($hasFilter) :
+	if($hasFilter || $cfg['ajaxFilter']) :
 		$btnClearFilter = '
 			<a href="'.JURI::current().'" class="btn btn-sm btn-danger base-icon-cancel-circled btn-icon">
 				'.JText::_('TEXT_CLEAR').' '.JText::_('TEXT_FILTER').'
@@ -516,7 +520,7 @@ $htmlFilter = '
 				</div>
 				<div class="col-sm text-right">
 					<div class="form-group">
-						<button type="submit" class="btn btn-sm btn-primary base-icon-search btn-icon">
+						<button '.$btnAction.' id="'.$APPTAG.'-submit-filter" class="btn btn-sm btn-primary base-icon-search btn-icon">
 							'.JText::_('TEXT_SEARCH').'
 						</button>
 						'.$btnClearFilter.'

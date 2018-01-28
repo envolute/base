@@ -20,6 +20,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	// params requests
 	$APPTAG		= $input->get('aTag', $APPTAG, 'str');
 	$RTAG		= $input->get('rTag', $APPTAG, 'str');
+	$aFLT		= $input->get('aFTL', 0, 'bool'); // ajax filter
 	$oCHL		= $input->get('oCHL', 0, 'bool');
 	$oCHL		= $_SESSION[$RTAG.'OnlyChildList'] ? $_SESSION[$RTAG.'OnlyChildList'] : $oCHL;
 	$rNID		= $input->get('rNID', '', 'str');
@@ -48,45 +49,23 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	// database connect
 	$db		= JFactory::getDbo();
 
+	// LOAD FILTER
+	$fQuery = $PATH_APP_FILE.'.filter.query.php';
+	if($aFLT && file_exists($fQuery)) require($fQuery);
+
 	// GET DATA
 	$noReg	= true;
-	$query	= '
-		SELECT
-			'. $db->quoteName('T1.id') .',
-			'. $db->quoteName('T1.name') .',
-			'. $db->quoteName('T2.name') .' groupName,
-			'. $db->quoteName('T1.note') .',
-			'. $db->quoteName('T1.state') .'
-	';
-	if(!empty($rID) && $rID !== 0) :
-		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
-			$query .= ' FROM '.
-				$db->quoteName($cfg['mainTable']) .' T1
-				JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
-				ON '.$db->quoteName('T2.id') .' = T1.bank_id AND T2.state = 1
-				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T3
-				ON '.$db->quoteName('T3.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
-			WHERE '.
-				$db->quoteName('T3.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
-			;
-		else :
-			$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
-				JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
-				ON '.$db->quoteName('T2.id') .' = T1.bank_id AND T2.state = 1
-				WHERE '. $db->quoteName($rNID) .' = '. $rID
-			;
-		endif;
-	else :
-		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
-			JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
-			ON '.$db->quoteName('T2.id') .' = T1.bank_id AND T2.state = 1
-		';
-		if($oCHL) :
-			$query .= ' WHERE 1=0';
-			$noReg = false;
-		endif;
-	endif;
-	$query	.= ' ORDER BY '. $db->quoteName('T2.name') .' ASC';
+	$query = '
+		SELECT SQL_CALC_FOUND_ROWS
+			T1.*,
+			'. $db->quoteName('T2.name') .' groupName
+		FROM
+			'. $db->quoteName($cfg['mainTable']) .' T1
+			LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
+			ON T2.id = T1.group_id AND T2.state = 1
+		WHERE
+			'.$where.$orderList;
+	;
 	try {
 		$db->setQuery($query);
 		$db->execute();
@@ -99,14 +78,14 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	$html = '';
 	if($num_rows) : // verifica se existe
-		$html .= '<div class="row mb-5">';
+		$html .= '<div class="row py-4 mb-5">';
 		foreach($res as $item) {
 
 			$rowState = $item->state == 0 ? 'danger bg-light text-muted' : 'primary bg-white';
 			// Resultados
 			$html .= '
-				<div id="'.$APPTAG.'-item-'.$item->id.'" class="col-sm-3 col-xl-2">
-					<div class="pos-relative rounded b-top-3 b-'.$rowState.' set-shadow">
+				<div id="'.$APPTAG.'-item-'.$item->id.'" class="col-sm-3 col-xl-2 pb-3">
+					<div class="pos-relative rounded b-top-2 b-'.$rowState.' set-shadow">
 						<a href="#" class="d-block text-lg lh-1-2 py-3 px-3">'.baseHelper::nameFormat($item->name).'</a>
 						<span class="d-block text-muted py-1 px-1 b-top clearfix">
 							'.baseHelper::nameFormat($item->groupName).'

@@ -20,6 +20,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	// params requests
 	$APPTAG		= $input->get('aTag', $APPTAG, 'str');
 	$RTAG		= $input->get('rTag', $APPTAG, 'str');
+	$aFLT		= $input->get('aFTL', 0, 'bool'); // ajax filter
 	$oCHL		= $input->get('oCHL', 0, 'bool');
 	$oCHL		= $_SESSION[$RTAG.'OnlyChildList'] ? $_SESSION[$RTAG.'OnlyChildList'] : $oCHL;
 	$rNID		= $input->get('rNID', '', 'str');
@@ -47,6 +48,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	// database connect
 	$db		= JFactory::getDbo();
+
+	// LOAD FILTER
+	$fQuery = $PATH_APP_FILE.'.filter.query.php';
+	if($aFLT && file_exists($fQuery)) require($fQuery);
 
 	// GET DATA
 	$noReg	= true;

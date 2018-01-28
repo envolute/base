@@ -10,8 +10,8 @@ $appsDir = 'base-apps';
 define('JPATH_BASE', substr(__DIR__, 0, strpos(__DIR__, $baseDir)));
 define( 'DS', DIRECTORY_SEPARATOR );
 // 'Core' da Base
-define('JPATH_CORE', JPATH_BASE.DS.$baseDir);
-define('JPATH_APPS', JPATH_CORE.DS.$appsDir);
+define('JPATH_CORE', JPATH_BASE.$baseDir);
+define('JPATH_APPS', JPATH_BASE.$appsDir);
 
 // LOAD JOOMLA FRAMEWORK
 define( '_JEXEC', 1 );
