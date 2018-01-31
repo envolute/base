@@ -56,11 +56,11 @@ $html = '
 				<tr>
 					'.$adminView['head']['info'].'
 					<th>'.JText::_('FIELD_LABEL_NAME').'</th>
-					<th width="50" class="d-none d-lg-table-cell text-center">&#160;</td>
+					<th width="50" class="d-none d-lg-table-cell text-center">&#160;</th>
 					<th>'.JText::_('TEXT_TYPE').'</th>
 					<th width="50" class="d-none d-lg-table-cell text-center">
 						<span class="cursor-help hasTooltip" title="'.JText::_('MSG_LIST_ENABLED_DEBIT').'">'.JText::_('TEXT_DEBIT').'</span>
-					</td>
+					</th>
 					<th>'.JText::_('TEXT_STATUS').'</th>
 					<th width="120" class="d-none d-lg-table-cell">'.JText::_('FIELD_LABEL_BIRTHDAY').'</th>
 					'.$adminView['head']['actions'].'

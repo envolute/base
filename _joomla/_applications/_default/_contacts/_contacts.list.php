@@ -153,7 +153,7 @@ if($num_rows) : // verifica se existe
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
-				<td class="d-none d-lg-table-cell">'.baseHelper::nameFormat($item->grp).'<div class="small text-muted">'.baseHelper::nameFormat($item->occupation).'</td>
+				<td class="d-none d-lg-table-cell">'.baseHelper::nameFormat($item->grp).'<div class="small text-muted">'.baseHelper::nameFormat($item->occupation).'</div></td>
 				<td>'.$img.$note.baseHelper::nameFormat($item->name).'<div class="small text-muted">'.$item->email.'</td>
 				<td class="d-none d-lg-table-cell text-center"><a href="'.$urlViewData.'" target="_blank" class="base-icon-doc-text hasTooltip" title="'.JText::_('TEXT_VIEW_DATA').'"></a></td>
 				<td>'.$status.'</td>

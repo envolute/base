@@ -532,8 +532,8 @@ $zindex-tooltip:            1070 !default;
 
 // Navs
 
-$nav-link-padding-y:            .5rem !default;
-$nav-link-padding-x:            1rem !default;
+$nav-link-padding-y:            .4rem !default; // -> {CUSTOM: .5rem}
+$nav-link-padding-x:            .75rem !default; // -> {CUSTOM: 1rem}
 $nav-link-disabled-color:       $base-color-muted !default; // -> {CUSTOM: $gray-600}
 
 $nav-tabs-border-color:                       #ddd !default;

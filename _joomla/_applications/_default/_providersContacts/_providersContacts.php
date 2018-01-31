@@ -331,7 +331,7 @@ jQuery(window).on('load', function() {
 	$list = '';
 	if($cfg['showList']) :
 		// LOAD FILTER
-		$htmlFilter = '';
+		$htmlFilter = $where = $orderList = '';
 		if($cfg['listFull'] || $cfg['ajaxFilter']) require($PATH_APP_FILE.'.filter.php');
 		$where = $where;
 		$orderList = $orderList;

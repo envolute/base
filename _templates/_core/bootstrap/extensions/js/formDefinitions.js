@@ -159,10 +159,8 @@ jQuery(function() {
 	};
 	// END FORM DEFINITIONS ------------------------------------------------------------
 
-});
-
-// CHAMADA GERAL DAS PREDEFINIÇÕES DE FORMULÁRIO
-// -----------------------------------------------------------------------------------
-jQuery(window).on('load', function() {
+	// CHAMADA GERAL DAS PREDEFINIÇÕES DE FORMULÁRIO
+	// -----------------------------------------------------------------------------------
 	setFormDefinitions();
+
 });

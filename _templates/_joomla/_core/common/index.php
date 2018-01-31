@@ -58,6 +58,10 @@ require_once('_init.tpl.php');
 			?>
 				<div id="tmpl-sidebar">
 
+					<span id="tmpl-sidebar-collapse">
+						<a href="#" class="base-icon-resize-horizontal"></a>
+					</span>
+
 					<?php if($this->countModules('sidebar-header') > 0): ?>
 						<!-- Side Bar Header -->
 						<div id="tmpl-sidebar-header">

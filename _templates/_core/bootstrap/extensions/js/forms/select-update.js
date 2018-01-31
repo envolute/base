@@ -8,9 +8,14 @@ jQuery.fn.selectUpdate = function(val, reset) {
 			obj.val(val);
 		} else {
 			// verifica se existe a opção com o valor
-			if(obj.find('option[value="'+val +'"]').length) obj.val(val);
-			// senão atribui o valor 'default'
-			else obj.val(def);
+			var option = obj.find('option[value="'+val +'"]');
+			if(option.length) {
+				if(obj.prop('multiple')) option.prop('selected', true);
+				else obj.val(val);
+			} else {
+				// senão atribui o valor 'default'
+				obj.val(def);
+			}
 		}
 	}
 	// Atualiza o campo e seta o evento 'change'

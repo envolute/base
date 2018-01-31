@@ -27,7 +27,14 @@ window.<?php echo $APPTAG?>_listReload = function(reload, remove, ids, onlyChild
 			<?php echo $APPTAG?>rID = (typeof relId !== "null" && typeof relId !== "undefined" && relId !== 0) ? relId : 0;
 			<?php if(!empty($_SESSION[$RTAG.'RelTable'])) echo $APPTAG.'_setRelation('.$APPTAG.'rID);'; ?>
 			// pega os dados enviados pelo filtro
-			var dados = (formFilter.length) ? formFilter.serialize() : '';
+			var dados = '';
+			if(formFilter.length) {
+				<?php
+				// FORMAT VALUES -> Formatação de valores para inclusão no banco
+				require(JPATH_CORE.DS.'apps/snippets/form/formatValues.js.php');
+				?>
+				dados = formFilter.serialize();
+			}
 			jQuery.ajax({
 				url: "<?php echo $URL_APP_FILE.'.'.$cfg['listAjax'] ?>?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&aFTL=<?php echo $cfg['ajaxFilter']?>&oCHL="+<?php echo $APPTAG?>oCHL+"&rNID="+<?php echo $APPTAG?>rNID+"&rID="+<?php echo $APPTAG?>rID,
 				type: 'GET',
@@ -35,13 +42,12 @@ window.<?php echo $APPTAG?>_listReload = function(reload, remove, ids, onlyChild
 				data:  dados,
 				cache: false,
 				success: function(data) {
-					// encerra o loader
-					toggleLoader();
+					toggleLoader(); // encerra o loader
 					// load content
 					list.html(data);
 				},
 				error: function(xhr, status, error) {
-					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
+					toggleLoader(); // encerra o loader
 					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
 					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
 					?>

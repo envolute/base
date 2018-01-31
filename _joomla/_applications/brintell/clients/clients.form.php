@@ -15,7 +15,7 @@ $groups = $db->loadObjectList();
 <div class="form-group">
 	<label><?php echo JText::_('FIELD_LABEL_GROUP'); ?></label>
 	<div class="input-group">
-		<select name="group_id" id="<?php echo $APPTAG?>-group_id" class="form-control field-id upper auto-tab" data-target="<?php echo $APPTAG?>-agency">
+		<select name="group_id" id="<?php echo $APPTAG?>-group_id" class="form-control field-id">
 			<option value="0">- <?php echo JText::_('TEXT_SELECT'); ?> -</option>
 			<?php
 				foreach ($groups as $obj) {

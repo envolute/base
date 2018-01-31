@@ -49,16 +49,33 @@
 	// SIDEBAR
 
 		#tmpl-sidebar {
-			background-color: $base-sidebar-bg;
+			background-color: $gray-base;
+
+			#tmpl-sidebar-collapse {
+				display: block;
+    			padding: 0.08rem .5rem;
+				text-align: right;
+			}
+			#tmpl-sidebar-collapse > a {
+				color: $white;
+			}
+			#tmpl-sidebar-collapse > a:hover,
+			#tmpl-sidebar-collapse > a:focus {
+				color: $base-color-live;
+			}
+
+			#tmpl-sidebar-content {
+				color: $base-gray-500;
+			}
+			#tmpl-sidebar-content a {
+				color: $base-gray-400;
+			}
+			#tmpl-sidebar-content a:hover,
+			#tmpl-sidebar-content a:focus {
+				color: $base-gray-200;
+			}
+
 		}
-			#tmpl-sidebar-header {
-				height: $base-sidebar-header-height;
-				background-color: $base-sidebar-header-bg;
-			}
-			#tmpl-sidebar-footer {
-				height: $base-sidebar-footer-height;
-				background-color: $base-sidebar-footer-bg;
-			}
 
 	// HEADER
 
@@ -83,7 +100,7 @@
 	// FULL-CONTENT -> área total do conteúdo incluindo as laterais
 
 		#full-content {
-			padding: $base-space-lg 0;
+			padding: 18px 0;
 		}
 
 	// SECTION BOTTOM

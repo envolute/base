@@ -255,7 +255,7 @@ jQuery(function() {
 					}
 					html = path = '';
 				}
-				
+
 				setJsDefinitions(); // core
 				setFileActive();
 			};

@@ -73,7 +73,7 @@ $users = $db->loadObjectList();
 						</div>
 						<div class="col-sm-6 col-md-4">
 							<div class="form-group field-required">
-								<label><?php echo JText::_('FIELD_LABEL_CODE'); ?></label>
+								<label><?php echo JText::_('FIELD_LABEL_CX_CODE'); ?></label>
 								<input type="text" name="cx_code" id="<?php echo $APPTAG?>-cx_code" class="form-control upper" />
 							</div>
 						</div>
@@ -84,7 +84,7 @@ $users = $db->loadObjectList();
 							</div>
 						</div>
 						<div class="col-sm-6 col-md-4">
-							<div class="form-group field-required">
+							<div class="form-group">
 								<label><?php echo JText::_('FIELD_LABEL_ROLE'); ?></label>
 								<input type="text" name="cx_role" id="<?php echo $APPTAG?>-cx_role" class="form-control upper" />
 							</div>

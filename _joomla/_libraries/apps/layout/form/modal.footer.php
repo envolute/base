@@ -1,7 +1,7 @@
 <?php
 $action	= $cfg['saveTrigger'];
 $save_close = '<a class="dropdown-item" href="#" name="btn-'.$APPTAG.'-save-close" id="btn-'.$APPTAG.'-save-close" onclick="'.$APPTAG.'_save(\'close\')"> '.JText::_('TEXT_SAVECLOSE').'</a>';
-$btn_delete = '<button name="btn-'.$APPTAG.'-delete" id="btn-'.$APPTAG.'-delete" class="base-icon-trash btn btn-danger" hidden onclick="'.$APPTAG.'_del(0, true)"> '.JText::_('TEXT_DELETE').'</button>'
+$btn_delete = '<button name="btn-'.$APPTAG.'-delete" id="btn-'.$APPTAG.'-delete" class="base-icon-trash btn btn-danger" hidden onclick="'.$APPTAG.'_del(0, true)"> '.JText::_('TEXT_DELETE').'</button>';
 if($cfg['formBtnAction']) :
 	$action	= 'close';
 	$save_close = $btn_delete = '';

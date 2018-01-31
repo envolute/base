@@ -166,10 +166,10 @@ $htmlFilter = '
 				<div class="col-sm-6 col-md-3 col-lg-2">
 					<div class="form-group">
 						<label class="label-sm">'.JText::_('TEXT_WITH_CHILDREN').'</label>
-						<select name="fAccess" id="fAccess" class="form-control form-control-sm set-filter">
+						<select name="fChild" id="fChild" class="form-control form-control-sm set-filter">
 							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
-							<option value="0"'.($fAccess == 0 ? ' selected' : '').'>'.JText::_('TEXT_NO').'</option>
-							<option value="1"'.($fAccess == 1 ? ' selected' : '').'>'.JText::_('TEXT_YES').'</option>
+							<option value="0"'.($fChild == 0 ? ' selected' : '').'>'.JText::_('TEXT_NO').'</option>
+							<option value="1"'.($fChild == 1 ? ' selected' : '').'>'.JText::_('TEXT_YES').'</option>
 						</select>
 					</div>
 				</div>

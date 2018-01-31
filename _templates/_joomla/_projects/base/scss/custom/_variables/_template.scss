@@ -34,7 +34,7 @@
 	$base-teal:							#20C997 !default;
 	$base-cyan:							#17A2B8 !default;
 	// theme
-	$base-color-primary:				#49C088;
+	$base-color-primary:				#5EAB87; // 568c72;
 	$base-color-primary-dark:			mix(black, $base-color-primary, 15%);
 	$base-color-primary-darker:			mix(black, $base-color-primary, 50%);
 	$base-color-primary-darkest:		mix(black, $base-color-primary, 70%);
@@ -66,7 +66,7 @@
 	$base-body-bg:						#f8f8f8;
 	$base-text-color:         			#555;
 	$base-link-color:         			$base-color-primary;
-	$base-link-hover-color:				darken($base-link-color, 15%); // copy of 'link-hover-color' bootstrap
+	$base-link-hover-color:				#00D036; // lighten($base-link-color, 15%); copy of 'link-hover-color' bootstrap
 	$base-btn-default-color:			$base-color-primary;
 	$base-btn-default-bg:				#fff;
 	$base-btn-default-border:			$base-border-color;
