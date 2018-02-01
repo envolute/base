@@ -67,11 +67,11 @@
 			#tmpl-sidebar-content {
 				color: $base-gray-500;
 			}
-			#tmpl-sidebar-content a {
+			#tmpl-sidebar-content a:not(.btn) {
 				color: $base-gray-400;
 			}
-			#tmpl-sidebar-content a:hover,
-			#tmpl-sidebar-content a:focus {
+			#tmpl-sidebar-content a:not(.btn):hover,
+			#tmpl-sidebar-content a:not(.btn):focus {
 				color: $base-gray-200;
 			}
 
