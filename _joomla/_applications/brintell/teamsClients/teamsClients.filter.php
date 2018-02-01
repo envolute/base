@@ -9,12 +9,12 @@ $where = '';
 	// STATE -> select
 	$active	= $app->input->get('active', 2, 'int');
 	$where .= ($active == 2) ? $db->quoteName('T1.state').' != '.$active : $db->quoteName('T1.state').' = '.$active;
-	// TYPE -> select
-	$fType	= $app->input->get('fType', 0, 'int');
-	$where .= ' AND '.$db->quoteName('T1.type').' = '.$fType;
 	// ROLES -> select
 	$fRole	= $app->input->get('fRole', 0, 'int');
 	if($fRole != 0) $where .= ' AND '.$db->quoteName('T1.role_id').' = '.$fRole;
+	// TYPE -> select
+	$fType	= $app->input->get('fType', 99, 'int');
+	if($fType != 99) $where .= ' AND '.$db->quoteName('T1.type').' = '.$fType;
 	// ACCESS -> select
 	$fAccess = $app->input->get('fAccess', 2, 'int');
 	if($fAccess != 2) $where .= ' AND '.$db->quoteName('T1.access').' = '.$fAccess;
@@ -42,15 +42,15 @@ $where = '';
 	$searchFields = array(
 		'T1.name'				=> 'FIELD_LABEL_NAME',
 		'T1.nickname'			=> '',
+		'T1.tags'				=> 'FIELD_LABEL_TAGS',
 		'T1.email'				=> 'E-mail',
 		'T1.address'			=> 'FIELD_LABEL_ADDRESS',
 		'T1.address_district'	=> '',
 		'T1.address_city'		=> '',
 		'T1.address_state'		=> '',
 		'T1.zip_code'			=> '',
-		'T1.phone1'				=> 'FIELD_LABEL_PHONE',
-		'T1.phone2'				=> '',
-		'T1.phone3'				=> ''
+		'T1.phone'				=> 'FIELD_LABEL_PHONE',
+		'T1.phone_desc'			=> ''
 	);
 	$i = 0;
 	foreach($searchFields as $key => $value) {
@@ -123,7 +123,7 @@ $htmlFilter = '
 			<input type="hidden" name="'.$APPTAG.'_filter" value="1" />
 
 			<div class="row">
-				<div class="col-sm-8 col-lg-3">
+				<div class="col-sm-6 col-lg-4 col-xl-3">
 					<div class="form-group">
 						<label class="label-sm">'.JText::_('FIELD_LABEL_ROLE').'</label>
 						<select name="fRole" id="fRole" class="form-control form-control-sm set-filter">
@@ -132,23 +132,32 @@ $htmlFilter = '
 						</select>
 					</div>
 				</div>
-				<div class="col-sm-6 col-lg-8">
+				<div class="col-sm-6 col-lg-4 col-xl-3">
 					<div class="form-group">
 						<label class="label-sm">'.JText::_('FIELD_LABEL_TYPE').'</label>
-						<span class="btn-group btn-group-justified" data-toggle="buttons">
-							<label class="btn btn-default btn-active-success'.($fType == 0 ? ' active' : '').'">
-								<input type="radio" name="fType" id="fType-0" value="0"'.($fType == 0 ? ' checked' : '').' />
-								'.JText::_('TEXT_BRINTELL').'
-							</label>
-							<label class="btn btn-default btn-active-success'.($fType == 1 ? ' active' : '').'">
-								<input type="radio" name="fType" id="fType-1" value="1"'.($fType == 1 ? ' checked' : '').' />
-								'.JText::_('TEXT_EXTERNAL').'
-							</label>
-							<label class="btn btn-default btn-active-success'.($fType == 2 ? ' active' : '').'">
-								<input type="radio" name="fType" id="fType-2" value="2"'.($fType == 2 ? ' checked' : '').' />
-								'.JText::_('TEXT_CLIENT').'
-							</label>
+						<select name="fType" id="fType" class="form-control form-control-sm set-filter">
+							<option value="99">- '.JText::_('TEXT_SELECT').' -</option>
+							<option value="0"'.($fType == 0 ? ' select' : '').'>'.JText::_('TEXT_TYPE_0').'</option>
+							<option value="1"'.($fType == 1 ? ' select' : '').'>'.JText::_('TEXT_TYPE_1').'</option>
+							<option value="2"'.($fType == 2 ? ' select' : '').'>'.JText::_('TEXT_TYPE_2').'</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-6 col-lg-4 col-xl-3">
+					<div class="form-group">
+						<label class="label-sm">'.JText::_('FIELD_LABEL_BIRTHDAY').'</label>
+						<span class="input-group input-group-sm">
+							<span class="input-group-addon strong">'.JText::_('TEXT_FROM').'</span>
+							<input type="text" name="dateMin" value="'.$dateMin.'" class="form-control field-date" data-width="100%" data-convert="true" />
+							<span class="input-group-addon">'.JText::_('TEXT_TO').'</span>
+							<input type="text" name="dateMax" value="'.$dateMax.'" class="form-control field-date" data-width="100%" data-convert="true" />
 						</span>
+					</div>
+				</div>
+				<div class="col-md-6 col-xl-3">
+					<div class="form-group">
+						<label class="label-sm text-truncate">'.implode(', ', $sLabel).'</label>
+						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />
 					</div>
 				</div>
 				<div class="col-sm-6 col-md-3 col-lg-2">
@@ -202,23 +211,6 @@ $htmlFilter = '
 							<option value="1"'.($active == 1 ? ' selected' : '').'>'.JText::_('TEXT_ACTIVES').'</option>
 							<option value="0"'.($active == 0 ? ' selected' : '').'>'.JText::_('TEXT_INACTIVES').'</option>
 						</select>
-					</div>
-				</div>
-				<div class="col-sm-6 col-lg-4">
-					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_BIRTHDAY').'</label>
-						<span class="input-group input-group-sm">
-							<span class="input-group-addon strong">'.JText::_('TEXT_FROM').'</span>
-							<input type="text" name="dateMin" value="'.$dateMin.'" class="form-control field-date" data-width="100%" data-convert="true" />
-							<span class="input-group-addon">'.JText::_('TEXT_TO').'</span>
-							<input type="text" name="dateMax" value="'.$dateMax.'" class="form-control field-date" data-width="100%" data-convert="true" />
-						</span>
-					</div>
-				</div>
-				<div class="col-md-6 col-xl-3">
-					<div class="form-group">
-						<label class="label-sm text-truncate">'.implode(', ', $sLabel).'</label>
-						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />
 					</div>
 				</div>
 			</div>

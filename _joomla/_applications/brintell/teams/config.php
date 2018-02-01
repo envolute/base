@@ -11,9 +11,9 @@ $cfg['project'] = 'brintell';
 // Informe o $APPNAME da outra. Senão, deixe em branco...
 $cfg['parent']	= '';
 // App Define
-$APPNAME		= 'teamTags';
+$APPNAME		= 'teams';
 $APPPATH		= !empty($cfg['parent']) ? $cfg['parent'] : $APPNAME;
-$MAIN_TB		= '#__'.$cfg['project'].'_team_tags';
+$MAIN_TB		= '#__'.$cfg['project'].'_teams';
 $APPTAG			= isset(${$APPNAME.'AppTag'}) ? ${$APPNAME.'AppTag'} : $APPNAME;
 $newInstance	= ($APPTAG != $APPNAME) ? true : false;
 
@@ -34,17 +34,28 @@ if(!$ajaxRequest && (!isset($_SESSION[$APPTAG.'langDef']) || (isset($_SESSION[$A
 	$_SESSION[$APPTAG.'langDef'] = $lang->getTag(); // define a language
 endif;
 
+// Brintell Access Levels
+// 11 => Manager
+// 12 => Analyst
+// 13 => Developer
+$cfg[$APPTAG.'AccessLevel']['brintell']	= '11, 12, 13';
+// 14 => External
+$cfg[$APPTAG.'AccessLevel']['external']	= '14';
+// 15 => Client Manager
+// 16 => Client
+$cfg[$APPTAG.'AccessLevel']['client']	= '15, 16';
+
 // Crud's permissions
 	$cfg['isPublic']			= false; // Público -> acesso aberto a todos
 	// Restrict Access
 	// $cfg['groupId']['viewer'][]  = apenas visualiza o componente
 	// $cfg['groupId']['admin'][]   = administra o componente
 	// ----------------------------------------------------
-	$cfg['groupId']['viewer'][]	= 0; // '0' pois não pode ser vazio
+	$cfg['groupId']['viewer'][]	= 0;	// '0' pois não pode ser vazio
 	// acesso liberado sempre
-	$cfg['groupId']['admin'][]	= 6; // Gerente
-	$cfg['groupId']['admin'][]	= 7; // Administrador
-	$cfg['groupId']['admin'][]	= 8; // Desenvolvedor
+	$cfg['groupId']['admin'][]	= 11;	// Gerente do Sistema
+	$cfg['groupId']['admin'][]	= 7;	// Administrador
+	$cfg['groupId']['admin'][]	= 8;	// Desenvolvedor
 	// ----------------------------------------------------
 
 // crud's name
@@ -57,6 +68,17 @@ endif;
 // Save Function
 // fuction called after save action
 	$cfg['saveTrigger']			= '';
+
+// form definitions
+	// País default -> preenche o campo com o valor padrão
+	$cfg['countryDef']			= 'BRASIL';
+	if(isset(${$APPTAG.'CountryDef'}) && !empty(${$APPTAG.'CountryDef'})) $cfg['countryDef'] = ${$APPTAG.'CountryDef'};
+	// Estado default -> preenche o campo com o valor padrão
+	$cfg['stateDef']			= '';
+	if(isset(${$APPTAG.'StateDef'}) && !empty(${$APPTAG.'StateDef'})) $cfg['stateDef'] = ${$APPTAG.'StateDef'};
+	// Cidade default -> preenche o campo com o valor padrão
+	$cfg['cityDef']				= '';
+	if(isset(${$APPTAG.'CityDef'}) && !empty(${$APPTAG.'CityDef'})) $cfg['cityDef'] = ${$APPTAG.'CityDef'};
 
 // view
 
@@ -117,22 +139,23 @@ endif;
 
 // form's
 
-	$cfg['showFormHeader']		= false;
-	$cfg['showFormToolbar']		= false;
+	$cfg['showFormHeader']		= true;
+	$cfg['showFormToolbar']		= true;
 	// Form button action
 	// false => save (keep)
 	// true => save and close (remove 'save & keep')
-	$cfg['formBtnAction']		= true;
+	$cfg['formBtnAction']		= false;
 
 	// date & price convertions
-	$cfg['dateConvert']			= false;
+	$cfg['dateConvert']			= true;
 	$cfg['load_UI']				= $cfg['dateConvert'];
 	$cfg['priceDecimal']		= false;
 	$cfg['htmlEditor']			= false;
 	$cfg['htmlEditorFull']		= false;
 
-	// crud's upload config
-	$cfg['hasUpload']			= false;
+// crud's upload config
+
+	$cfg['hasUpload']			= true;
 	$cfg['hasUpload'] = isset(${$APPTAG.'hasUpload'}) ? ${$APPTAG.'hasUpload'} : $cfg['hasUpload'];
 	// habilita a adição dinamica de novos campos do tipo 'file'
 	$cfg['dinamicFiles']		= false;

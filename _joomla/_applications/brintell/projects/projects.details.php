@@ -54,9 +54,8 @@ $query	= '
 	FROM '. $db->quoteName($cfg['mainTable']) .' T1
 		LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
 		ON '.$db->quoteName('T2.id') .' = T1.client_id AND T2.state = 1
-	WHERE T1.id = '.$pID.'
-	ORDER BY '. $db->quoteName('T1.name') .' ASC
-';
+	WHERE T1.id = '.$pID
+;
 try {
 	$db->setQuery($query);
 	$item = $db->loadObject();

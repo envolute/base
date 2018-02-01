@@ -11,9 +11,9 @@ $cfg['project'] = 'brintell';
 // Informe o $APPNAME da outra. Senão, deixe em branco...
 $cfg['parent']	= '';
 // App Define
-$APPNAME		= 'team';
+$APPNAME		= 'teamsClients';
 $APPPATH		= !empty($cfg['parent']) ? $cfg['parent'] : $APPNAME;
-$MAIN_TB		= '#__'.$cfg['project'].'_team';
+$MAIN_TB		= '#__'.$cfg['project'].'_teams';
 $APPTAG			= isset(${$APPNAME.'AppTag'}) ? ${$APPNAME.'AppTag'} : $APPNAME;
 $newInstance	= ($APPTAG != $APPNAME) ? true : false;
 
@@ -34,18 +34,15 @@ if(!$ajaxRequest && (!isset($_SESSION[$APPTAG.'langDef']) || (isset($_SESSION[$A
 	$_SESSION[$APPTAG.'langDef'] = $lang->getTag(); // define a language
 endif;
 
-// Brintell Access Levels
-// 11 => Manager
-// 12 => Analyst
-// 13 => Developer
-$cfg[$APPTAG.'AccessLevel']['brintell']	= '11, 12, 13';
-// 14 => External
-$cfg[$APPTAG.'AccessLevel']['external']	= '14';
-// 15 => Client
-$cfg[$APPTAG.'AccessLevel']['client']	= '15';
+// ACCESS LEVELS
+	// 15 => Client Manager
+	// 16 => Client
+	$cfg[$APPTAG.'AccessLevel']['client']	= '15, 16';
 
-// get user type default in registration
-$_SESSION[$APPTAG.'newUsertype'] = 2; // default 'Associado'
+// CLIENT ID
+
+	$cfg['clientID'] 		= 0;
+	if(isset(${$APPTAG.'ClientID'}) && !empty(${$APPTAG.'ClientID'})) $cfg['clientID'] = ${$APPTAG.'ClientID'};
 
 // Crud's permissions
 	$cfg['isPublic']			= false; // Público -> acesso aberto a todos
@@ -55,7 +52,7 @@ $_SESSION[$APPTAG.'newUsertype'] = 2; // default 'Associado'
 	// ----------------------------------------------------
 	$cfg['groupId']['viewer'][]	= 0;	// '0' pois não pode ser vazio
 	// acesso liberado sempre
-	$cfg['groupId']['admin'][]	= 11;	// Gerente do Sistema
+	$cfg['groupId']['admin'][]	= 15;	// Gerente do Cliente
 	$cfg['groupId']['admin'][]	= 7;	// Administrador
 	$cfg['groupId']['admin'][]	= 8;	// Desenvolvedor
 	// ----------------------------------------------------

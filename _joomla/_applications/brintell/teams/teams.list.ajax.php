@@ -57,17 +57,15 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	$noReg = true;
 	$query = '
 		SELECT
-			'. $db->quoteName('T1.id') .',
-			'. $db->quoteName('T1.name') .',
-			'. $db->quoteName('T2.name') .' grp,
-			'. $db->quoteName('T1.state')
-	;
+			T1.*,
+			'. $db->quoteName('T2.name') .' role
+	';
 	if(!empty($rID) && $rID !== 0) :
 		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
 			$query .= ' FROM '.
 				$db->quoteName($cfg['mainTable']) .' T1
-				JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
-				ON '.$db->quoteName('T2.id') .' = T1.group_id
+				LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_roles') .' T2
+				ON '.$db->quoteName('T2.id') .' = T1.role_id
 				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T3
 				ON '.$db->quoteName('T3.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
 			WHERE '.
@@ -76,14 +74,14 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		else :
 			$query .= '
 			FROM '. $db->quoteName($cfg['mainTable']) .' T1
-				JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
-				ON '.$db->quoteName('T2.id') .' = T1.group_id
+				LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_roles') .' T2
+				ON '.$db->quoteName('T2.id') .' = T1.role_id
 			WHERE '. $db->quoteName($rNID) .' = '. $rID;
 		endif;
 	else :
 		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
-			JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
-			ON '.$db->quoteName('T2.id') .' = T1.group_id
+			LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_roles') .' T2
+			ON '.$db->quoteName('T2.id') .' = T1.role_id
 		';
 		if($oCHL) :
 			$query .= ' WHERE 1=0';
@@ -110,29 +108,31 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 			if($cfg['hasUpload']) :
 				JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
-				$files[$item->id] = uploader::getFiles($cfg['fileTable'], $item->id);
-				$listFiles = '';
-				for($i = 0; $i < count($files[$item->id]); $i++) {
-					if(!empty($files[$item->id][$i]->filename)) :
-						$listFiles .= '
-							<a href="'.$_ROOT.'apps/get-file?fn='.base64_encode($files[$item->id][$i]->filename).'&mt='.base64_encode($files[$item->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
-								<span class="base-icon-attach hasTooltip" title="'.$files[$item->id][$i]->filename.'<br />'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"></span>
-							</a>
-						';
-					endif;
-				}
+				// Imagem Principal -> Primeira imagem (index = 0)
+				$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
+				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 32, 32);
+				else $imgPath = $_ROOT.'images/apps/icons/user_'.$item->gender.'.png';
+				$img = '<img src="'.$imgPath.'" width="32" height="32" class="img-fluid float-left mr-2" />';
 			endif;
 
+			$infoColor = ($item->type == 1) ? 'danger' : ($item->type == 2 ? 'live' : 'success');
+			$info = '<span class="text-'.$infoColor.'">'.JText::_('TEXT_TYPE_'.$item->type).'</span>';
+			if(!empty($item->role)) :
+				$info .= ' <span class="base-icon-right"></span> '.baseHelper::nameFormat($item->role);
+			elseif(!empty($item->occupation)) :
+				$info .= ' <span class="base-icon-right"></span> '.baseHelper::nameFormat($item->occupation);
+			endif;
 			$btnState = $hasAdmin ? '<a href="#" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'"><span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').' hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'"></span></a> ' : '';
 			$btnEdit = $hasAdmin ? '<a href="#" class="base-icon-pencil text-live hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"></a> ' : '';
 			$btnDelete = $hasAdmin ? '<a href="#" class="base-icon-trash text-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"></a>' : '';
 			$rowState = $item->state == 0 ? 'list-danger' : '';
-			$urlViewData = $_ROOT.'apps/base-contacts/view?vID='.$item->id;
+			$urlViewData = $_ROOT.'apps/teams/view?vID='.$item->id;
 			// Resultados
 			$html .= '
 				<li class="'.$rowState.'">
 					<div class="float-right">'.$btnState.$btnEdit.$btnDelete.'</div>
-					<div class="text-truncate"><a href="'.$urlViewData.'" class="new-window" target="_blank">'.baseHelper::nameFormat($item->name).'</a></div><div class="small text-muted">'.baseHelper::nameFormat($item->grp).'</div>
+					'.$img.'
+					<div class="text-truncate"><a href="'.$urlViewData.'" class="new-window" target="_blank">'.baseHelper::nameFormat($item->name).'</a></div><small>'.$info.'</small>
 				</li>
 			';
 		}

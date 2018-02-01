@@ -33,7 +33,6 @@ jQuery(window).on('load', function() {
 
 	// APP FIELDS
 	var type				= mainForm.find('input[name=type]:radio'); // radio group
-	var role_id				= jQuery('#<?php echo $APPTAG?>-role_id');
 	var user_id				= jQuery('#<?php echo $APPTAG?>-user_id');
 	var name 				= jQuery('#<?php echo $APPTAG?>-name');
 	var nickname			= jQuery('#<?php echo $APPTAG?>-nickname');
@@ -41,17 +40,6 @@ jQuery(window).on('load', function() {
 	var cmail				= jQuery('#<?php echo $APPTAG?>-cmail');
 	var gender 				= mainForm.find('input[name=gender]:radio'); // radio group
 	var birthday			= jQuery('#<?php echo $APPTAG?>-birthday');
-	var marital_status		= jQuery('#<?php echo $APPTAG?>-marital_status');
-	var children			= jQuery('#<?php echo $APPTAG?>-children');
-	// Address
-	var zip_code 			= jQuery('#<?php echo $APPTAG?>-zip_code');
-	var address				= jQuery('#<?php echo $APPTAG?>-address');
-	var address_number		= jQuery('#<?php echo $APPTAG?>-address_number');
-	var address_info		= jQuery('#<?php echo $APPTAG?>-address_info');
-	var address_district	= jQuery('#<?php echo $APPTAG?>-address_district');
-	var address_city		= jQuery('#<?php echo $APPTAG?>-address_city');
-	var address_state		= jQuery('#<?php echo $APPTAG?>-address_state');
-	var address_country		= jQuery('#<?php echo $APPTAG?>-address_country');
 	// phones
 	var phone				= jQuery('#<?php echo $APPTAG?>-phone');
 	var wapp				= jQuery('#<?php echo $APPTAG?>-wapp');
@@ -61,11 +49,7 @@ jQuery(window).on('load', function() {
 	var weblink_url			= jQuery('#<?php echo $APPTAG?>-weblink_url');
 	var chat_name			= jQuery('#<?php echo $APPTAG?>-chat_name');
 	var chat_user			= jQuery('#<?php echo $APPTAG?>-chat_user');
-	// extra info
-	var occupation			= jQuery('#<?php echo $APPTAG?>-occupation');
-	var extra_info			= jQuery('#<?php echo $APPTAG?>-extra_info');
-	var tags				= jQuery('#<?php echo $APPTAG?>-tags');
-	var note				= jQuery('#<?php echo $APPTAG?>-note');
+	var chat_user			= jQuery('#<?php echo $APPTAG?>-chat_user');
 	// Joomla Registration
 	var access				= mainForm.find('input[name=access]:radio'); // radio group
 	var newUser				= jQuery('#<?php echo $APPTAG?>-newUser');
@@ -76,6 +60,8 @@ jQuery(window).on('load', function() {
 	var emailConfirm		= jQuery('#<?php echo $APPTAG?>-emailConfirm');
 	var emailInfo			= jQuery('#<?php echo $APPTAG?>-emailInfo');
 	var reasonStatus		= jQuery('#<?php echo $APPTAG?>-reasonStatus');
+	// Client Integration
+	var role				= jQuery('#<?php echo $APPTAG?>-role');
 
 	// PARENT FIELD
 	// informe, se houver, o campo que representa a chave estrangeira principal
@@ -131,8 +117,8 @@ jQuery(window).on('load', function() {
 			// App Fields
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
-			checkOption(type, 0); // radio
-			role_id.selectUpdate(0); // select
+			type.val(2);
+			client_id.val(<?php echo $cfg['clientID']?>);
 			user_id.val('');
 			name.val('');
 			nickname.val('');
@@ -140,16 +126,6 @@ jQuery(window).on('load', function() {
 			cmail.val('');
 			checkOption(gender, ''); // radio
 			birthday.val('');
-			marital_status.selectUpdate(0); // select
-			children.selectUpdate(0); // select
-			zip_code.val('');
-			address.val('');
-			address_number.val('');
-			address_info.val('');
-			address_district.val('');
-			address_city.val('');
-			address_state.val('');
-			address_country.val('<?php echo $cfg['countryDef']?>');
 			phone.phoneMaskUpdate('');
 			checkOption(wapp, 0); // checkbox
 			whatsapp.val('');
@@ -158,13 +134,10 @@ jQuery(window).on('load', function() {
 			chat_user.val('');
 			weblink_text.val('');
 			weblink_url.val('');
-			occupation.val('');
-			extra_info.val('');
-			tags.selectUpdate(''); // select
-			note.val('');
 			usergroup.selectUpdate(0); // select
 			checkOption(access, 0);
 			reasonStatus.val('');
+			role.val('');
 
 			// CUSTOM -> Remove new fields
 			jQuery('.newFieldsGroup').empty();
@@ -235,31 +208,6 @@ jQuery(window).on('load', function() {
 			require(JPATH_CORE.DS.'apps/snippets/form/setParent.def.js.php');
 			?>
 		};
-
-		// CUSTOM -> Set Type
-		// implementa ações de acordo com o tipo do cliente
-		window.<?php echo $APPTAG?>_setType = function(e){
-			// External or Client
-			if(e > 0) {
-				// IMPORTANTE: namter o hide/show para não dar comflito com a propriedade hidden
-				jQuery('.<?php echo $APPTAG?>-group-brintell').hide();
-				jQuery('.<?php echo $APPTAG?>-group-external').show();
-				role_id.selectUpdate(0);
-				// External	=> 14
-				// Client	=> 15
-				if(e == 14) {
-					<?php echo $APPTAG?>_getGroupList('<?php echo $cfg[$APPTAG.'AccessLevel']['external']?>', e);
-				} else {
-					<?php echo $APPTAG?>_getGroupList('<?php echo $cfg[$APPTAG.'AccessLevel']['client']?>', e);
-				}
-			// Brintell
-			} else {
-				// IMPORTANTE: namter o hide/show para não dar comflito com a propriedade hidden
-				jQuery('.<?php echo $APPTAG?>-group-brintell').show();
-				jQuery('.<?php echo $APPTAG?>-group-external').hide();
-				<?php echo $APPTAG?>_getGroupList('<?php echo $cfg[$APPTAG.'AccessLevel']['brintell']?>', 0);
-			}
-		}
 
 		// PHONE ADD -> Adiciona novo campo para telefone
 		window.<?php echo $APPTAG?>PhoneIndex = 1;
@@ -438,8 +386,7 @@ jQuery(window).on('load', function() {
 						?>
 
 						// App Fields
-						checkOption(type, item.type); // radio
-						role_id.selectUpdate(item.role_id);
+						type.val(item.type);
 						user_id.val(item.user_id);
 						usergroup.selectUpdate(item.usergroup); // select
 						name.val(item.name);
@@ -448,16 +395,6 @@ jQuery(window).on('load', function() {
 						cmail.val(item.email);
 						checkOption(gender, item.gender); // radio
 						birthday.val(dateFormat(item.birthday)); // DATE -> conversão de data
-						marital_status.selectUpdate(item.marital_status); // select
-						children.selectUpdate(item.children); // select
-						zip_code.val(item.zip_code);
-						address.val(item.address);
-						address_number.val(item.address_number);
-						address_info.val(item.address_info);
-						address_district.val(item.address_district);
-						address_city.val(item.address_city);
-						address_state.val(item.address_state);
-						address_country.val(item.address_country);
 						// phones
 						var p = item.phone.split(";");
 						var w = item.whatsapp.split(";");
@@ -501,8 +438,7 @@ jQuery(window).on('load', function() {
 						note.val(item.note);
 						checkOption(access, item.access);
 						reasonStatus.val(item.reasonStatus);
-						// mostra o nome do usuário vinculado ao contato
-						jQuery('#<?php echo $APPTAG?>_name_linked').text(item.user);
+						role.val(item.reasonStatus);
 
 						// show relations buttons
 						setHidden('#<?php echo $APPTAG?>-buttons-relations', false, '#<?php echo $APPTAG?>-msg-relations');
@@ -740,7 +676,7 @@ jQuery(window).on('load', function() {
 		if($cfg['showAddBtn'] && !$cfg['showApp']) $addBtn = '<div class="modal-list-toolbar">'.$addBtn.'</div>';
 	?>
 			<div class="modal fade" id="modal-list-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-list-<?php echo $APPTAG?>Label">
-				<div class="modal-dialog modal-sm" role="document">
+				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<?php require(JPATH_CORE.DS.'apps/layout/list/modal.header.php'); ?>
 						<div class="modal-body">

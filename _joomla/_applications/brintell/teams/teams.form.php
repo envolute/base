@@ -11,11 +11,6 @@ $query = 'SELECT * FROM '. $db->quoteName($cfg['mainTable'].'_tags') .' WHERE '.
 $db->setQuery($query);
 $tags = $db->loadObjectList();
 
-// CLIENTS
-$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_clients') .' WHERE '. $db->quoteName('state') .' = 1';
-$db->setQuery($query);
-$clients = $db->loadObjectList();
-
 // USUÁRIOS SEM CONTATOS ASSOCIADOS
 // IMPORTANTE:
 // 1 - Não lista usuários do grupo 'Desenvolvedor' => '8'
@@ -129,15 +124,15 @@ $users = $db->loadObjectList();
 							<span class="btn-group btn-group-justified" data-toggle="buttons">
 								<label class="btn btn-default btn-active-success">
 									<input type="radio" name="type" id="<?php echo $APPTAG?>-type-0" value="0" onchange="<?php echo $APPTAG?>_setType(0)" />
-									<?php echo JText::_('TEXT_BRINTELL'); ?>
+									<?php echo JText::_('TEXT_TYPE_0'); ?>
 								</label>
 								<label class="btn btn-default btn-active-success">
-									<input type="radio" name="type" id="<?php echo $APPTAG?>-type-1" value="14" onchange="<?php echo $APPTAG?>_setType(14)" />
-									<?php echo JText::_('TEXT_EXTERNAL'); ?>
+									<input type="radio" name="type" id="<?php echo $APPTAG?>-type-1" value="1" onchange="<?php echo $APPTAG?>_setType(1)" />
+									<?php echo JText::_('TEXT_TYPE_1'); ?>
 								</label>
 								<label class="btn btn-default btn-active-success">
-									<input type="radio" name="type" id="<?php echo $APPTAG?>-type-2" value="15" onchange="<?php echo $APPTAG?>_setType(15)" />
-									<?php echo JText::_('TEXT_CLIENT'); ?>
+									<input type="radio" name="type" id="<?php echo $APPTAG?>-type-2" value="2" onchange="<?php echo $APPTAG?>_setType(2)" />
+									<?php echo JText::_('TEXT_TYPE_2'); ?>
 								</label>
 							</span>
 						</div>
@@ -423,27 +418,88 @@ $users = $db->loadObjectList();
 	<div class="tab-pane fade" id="<?php echo $APPTAG?>TabExtra" role="tabpanel" aria-labelledby="<?php echo $APPTAG?>Tab-extra">
 
 		<div class="row">
-			<div class="col-sm-6">
-				<div class="form-group">
-					<label><?php echo JText::_('FIELD_LABEL_OCCUPATION'); ?></label>
-					<input type="text" name="occupation" id="<?php echo $APPTAG?>-occupation" class="form-control upper" />
+			<div class="col-sm-8">
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label><?php echo JText::_('FIELD_LABEL_OCCUPATION'); ?></label>
+							<input type="text" name="occupation" id="<?php echo $APPTAG?>-occupation" class="form-control upper" />
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label><?php echo JText::_('FIELD_LABEL_RESUME'); ?></label>
+							<div class="btn-file">
+								<span class="btn-group w-100">
+									<button type="button" class="base-icon-search btn btn-default btn-active-success file-action text-truncate hasTooltip" title="<?php echo JText::_('TEXT_FILE_SELECT'); ?>"> <span><?php echo JText::_('TEXT_FILE_SELECT'); ?></span></button>
+								</span>
+								<input type="file" name="file[1]" id="<?php echo $APPTAG?>-file1" class="form-control" hidden />
+							</div>
+						</div>
+					</div>
 				</div>
-			</div>
-			<div class="col-sm-6">
-				<div class="form-group">
-					<label><?php echo JText::_('FIELD_LABEL_RESUME'); ?></label>
-					<div class="btn-file">
-						<span class="btn-group w-100">
-							<button type="button" class="base-icon-search btn btn-default btn-active-success file-action text-truncate hasTooltip" title="<?php echo JText::_('TEXT_FILE_SELECT'); ?>"> <span><?php echo JText::_('TEXT_FILE_SELECT'); ?></span></button>
-						</span>
-						<input type="file" name="file[1]" id="<?php echo $APPTAG?>-file1" class="form-control" hidden />
+				<hr class="hr-tag" />
+				<span class="badge badge-primary"><?php echo JText::_('TEXT_CONTRACTUAL_DATA'); ?></span>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>CPF</label>
+							<input type="text" name="cpf" id="<?php echo $APPTAG?>-cpf" class="form-control field-cpf" />
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>CNPJ</label>
+							<input type="text" name="cnpj" id="<?php echo $APPTAG?>-cnpj" class="form-control field-cnpj" />
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label><?php echo JText::_('FIELD_LABEL_CONTRACT'); ?></label>
+							<div class="btn-file">
+								<span class="btn-group w-100">
+									<button type="button" class="base-icon-search btn btn-default btn-active-success file-action text-truncate hasTooltip" title="<?php echo JText::_('TEXT_FILE_SELECT'); ?>"> <span><?php echo JText::_('TEXT_FILE_SELECT'); ?></span></button>
+								</span>
+								<input type="file" name="file[2]" id="<?php echo $APPTAG?>-file2" class="form-control" hidden />
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label><?php echo JText::_('FIELD_LABEL_ABOUT'); ?></label>
+					<textarea name="about_me" id="<?php echo $APPTAG?>-about_me" rows="8" class="form-control"></textarea>
+				</div>
+			</div>
 		</div>
-		<div class="form-group">
-			<label><?php echo JText::_('FIELD_LABEL_ABOUT'); ?></label>
-			<textarea name="extra_info" id="<?php echo $APPTAG?>-extra_info" rows="4" class="form-control field-html" data-editor-full="true"></textarea>
+		<hr class="hr-tag" />
+		<span class="badge badge-primary"><?php echo JText::_('TEXT_BANK_ACCOUNT_DATA'); ?></span>
+		<div class="row">
+			<div class="col-sm-6 col-lg-4">
+				<div class="form-group">
+					<label class="field-required"><?php echo JText::_('FIELD_LABEL_BANK'); ?></label>
+					<input type="text" name="bank_name" id="<?php echo $APPTAG?>-bank_name" class="form-control upper" />
+				</div>
+			</div>
+			<div class="col-sm-6 col-lg-2">
+				<div class="form-group">
+					<label class="field-required"><?php echo JText::_('FIELD_LABEL_AGENCY'); ?></label>
+					<input type="text" name="agency" id="<?php echo $APPTAG?>-agency" class="form-control" />
+				</div>
+			</div>
+			<div class="col-sm-6 col-lg-2">
+				<div class="form-group">
+					<label class="field-required"><?php echo JText::_('FIELD_LABEL_OPERATION'); ?></label>
+					<input type="text" name="operation" id="<?php echo $APPTAG?>-operation" class="form-control" />
+				</div>
+			</div>
+			<div class="col-sm-6 col-lg-4">
+				<div class="form-group">
+					<label><?php echo JText::_('FIELD_LABEL_ACCOUNT'); ?></label>
+					<input type="text" name="account" id="<?php echo $APPTAG?>-account" class="form-control" />
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

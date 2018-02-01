@@ -11,9 +11,9 @@ $cfg['project'] = 'brintell';
 // Informe o $APPNAME da outra. Senão, deixe em branco...
 $cfg['parent']	= '';
 // App Define
-$APPNAME		= 'teamRoles';
+$APPNAME		= 'teamsTags';
 $APPPATH		= !empty($cfg['parent']) ? $cfg['parent'] : $APPNAME;
-$MAIN_TB		= '#__'.$cfg['project'].'_team_roles';
+$MAIN_TB		= '#__'.$cfg['project'].'_teams_tags';
 $APPTAG			= isset(${$APPNAME.'AppTag'}) ? ${$APPNAME.'AppTag'} : $APPNAME;
 $newInstance	= ($APPTAG != $APPNAME) ? true : false;
 

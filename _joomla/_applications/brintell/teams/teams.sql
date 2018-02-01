@@ -1,8 +1,8 @@
 --
--- Estrutura da tabela `cms_brintell_team`
+-- Estrutura da tabela `cms_brintell_teams`
 --
 
-CREATE TABLE `cms_brintell_team` (
+CREATE TABLE `cms_brintell_teams` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` tinyint(4) NOT NULL,
   `role_id` int(11) NOT NULL,
@@ -22,7 +22,6 @@ CREATE TABLE `cms_brintell_team` (
   `address_city` varchar(100) NOT NULL,
   `address_state` varchar(100) NOT NULL,
   `address_country` varchar(100) NOT NULL,
-  `onlyBR` tinyint(4) NOT NULL,
   `phone` varchar(255) NOT NULL,
   `whatsapp` varchar(255) NOT NULL,
   `phone_desc` text NOT NULL,
@@ -31,7 +30,13 @@ CREATE TABLE `cms_brintell_team` (
   `weblink_text` varchar(255) NOT NULL,
   `weblink_url` text NOT NULL,
   `occupation` varchar(50) NOT NULL,
-  `extra_info` text NOT NULL,
+  `cpf` varchar(14) NOT NULL,
+  `cnpj` varchar(19) NOT NULL,
+  `about_me` text NOT NULL,
+  `bank_name` varchar(50) NOT NULL,
+  `agency` varchar(10) NOT NULL,
+  `account` varchar(15) NOT NULL,
+  `operation` varchar(10) NOT NULL,
   `tags` text NOT NULL,
   `note` varchar(255) NOT NULL,
   `access` tinyint(4) NOT NULL,
@@ -49,10 +54,10 @@ CREATE TABLE `cms_brintell_team` (
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `cms_brintell_team_files`
+-- Estrutura da tabela `cms_brintell_teams_files`
 --
 
-CREATE TABLE `cms_brintell_team_files` (
+CREATE TABLE `cms_brintell_teams_files` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_parent` int(11) NOT NULL,
   `index` int(11) NOT NULL,

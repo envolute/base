@@ -1,8 +1,8 @@
 --
--- Estrutura da tabela `cms_brintell_team_roles`
+-- Estrutura da tabela `cms_brintell_teams_roles`
 --
 
-CREATE TABLE `cms_brintell_team_roles` (
+CREATE TABLE `cms_brintell_teams_roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `state` tinyint(4) NOT NULL,

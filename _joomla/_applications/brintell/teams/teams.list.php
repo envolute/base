@@ -42,7 +42,7 @@ if($hasAdmin) :
 	';
 	$adminView['head']['actions'] = '
 		<th class="text-center d-none d-lg-table-cell d-print-none" width="60">'.baseAppHelper::linkOrder(JText::_('TEXT_ACTIVE'), 'T1.state', $APPTAG).'</th>
-		<th class="text-center d-print-none" width="70">'.JText::_('TEXT_ACTIONS').'</th>
+		<th class="text-center d-print-none" width="90">'.JText::_('TEXT_ACTIONS').'</th>
 	';
 endif;
 
@@ -56,8 +56,8 @@ $html = '
 					<th class="d-none d-lg-table-cell">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_GROUP'), 'T2.name', $APPTAG).'</th>
 					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_NAME'), 'T1.name', $APPTAG).'</th>
 					<th width="30" class="d-none d-lg-table-cell text-center">&#160;</td>
-					<th>'.JText::_('TEXT_STATUS').'</th>
-					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
+					<th width="70" class="text-center">'.baseAppHelper::linkOrder(JText::_('TEXT_ACCESS'), 'T1.access', $APPTAG).'</th>
+					<th width="120" class="d-none d-lg-table-cell">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_BIRTHDAY'), 'T1.birthday', $APPTAG).'</th>
 					'.$adminView['head']['actions'].'
 				</tr>
 			</thead>
@@ -79,7 +79,7 @@ if($num_rows) : // verifica se existe
 
 			// Imagem Principal -> Primeira imagem (index = 0)
 			$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
-			if(!empty($img)) $img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 32, 32).'" class="d-none d-md-inline img-fluid rounded-circle float-left mr-2" />';
+			if(!empty($img)) $img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 32, 32).'" class="d-none d-md-inline img-fluid rounded float-left mr-2" />';
 
 			// Arquivos -> Grupo de imagens ('#'.$APPTAG.'-files-group')
 			// Obs: para pegar todas as imagens basta remover o 'grupo' ('#'.$APPTAG.'-files-group')
@@ -102,6 +102,15 @@ if($num_rows) : // verifica se existe
 				<td class="check-row d-print-none"><input type="checkbox" name="'.$APPTAG.'_ids[]" class="'.$APPTAG.'-chk" value="'.$item->id.'" /></td>
 				<td class="d-none d-lg-table-cell d-print-none">'.$item->id.'</td>
 			';
+			$regInfo	= 'ID: <span class=&quot;text-live&quot;>#'.$item->id.'</span>';
+			$regInfo	.= '<hr class=&quot;my-1&quot; />';
+			$regInfo	.= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
+			$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
+			if($item->alter_date != '0000-00-00 00:00:00') :
+				$regInfo	.= '<hr class=&quot;my-1&quot; />';
+				$regInfo	.= JText::_('TEXT_ALTER_DATE').': '.baseHelper::dateFormat($item->alter_date, 'd/m/Y H:i').'<br />';
+				$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->alter_by)->name);
+			endif;
 			$adminView['list']['actions'] = '
 				<td class="text-center d-none d-lg-table-cell d-print-none">
 					<a href="#" class="hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'">
@@ -111,23 +120,28 @@ if($num_rows) : // verifica se existe
 				<td class="text-center d-print-none">
 					<a href="#" class="btn btn-xs btn-warning hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil"></span></a>
 					<a href="#" class="btn btn-xs btn-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash"></span></a>
+					<a href="#" class="btn btn-xs btn-outline-primary base-icon-info-circled hasPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top" data-trigger="click focus"></a>
 				</td>
 			';
 		endif;
 
-		$note = !empty($item->note) ? '<span class="base-icon-info-circled cursor-help hasTooltip" title="'.$item->note.'"></span> ' : '';
+		$infoColor = ($item->type == 1) ? 'danger' : ($item->type == 2 ? 'live' : 'success');
+		$info = '<span class="text-'.$infoColor.'">'.JText::_('TEXT_TYPE_'.$item->type).'</span>';
+		if(!empty($item->role)) $info .= '<div class="small text-muted">'.baseHelper::nameFormat($item->role).'</div>';
+		else if(!empty($item->occupation)) $info .= '<div class="small text-muted">'.baseHelper::nameFormat($item->occupation).'</div>';
+
 		if($item->access == 0) :
 			$reason = !empty($item->reasonStatus) ? '<div class="small text-muted text-truncate">'.$item->reasonStatus.'</div>' : '';
 			// Check if user exist
-			if(empty($item->user)) $status = '<span class="base-icon-attention text-live"> '.JText::_('TEXT_NO_ACCESS').'</span>';
-			else $status = '<span class="base-icon-attention text-live"> '.JText::_('TEXT_BLOCKED').'</span>';
+			if(empty($item->user)) $status = '<span class="base-icon-cancel text-danger hasTooltip" title="'.JText::_('TEXT_NO_ACCESS').'"></span>';
+			else $status = '<span class="base-icon-attention text-live hasTooltip" title="'.JText::_('TEXT_BLOCKED').'"></span>';
 			$status .= $reason;
 		else :
 			// Check if user exist
-			if(empty($item->user)) $status = '<span class="base-icon-cancel text-danger"> '.JText::_('TEXT_NO_USER_ASSOC').'</span><div class="small text-muted text-truncate">'.JText::_('TEXT_NO_USER_ASSOC_DESC').'</div>';
-			else $status = '<span class="base-icon-ok text-success"> '.JText::_('TEXT_ALLOWED_ACCESS').'</span>';
+			if(empty($item->user)) $status = '<span class="base-icon-cancel text-danger hasTooltip" title="'.JText::_('TEXT_NO_USER_ASSOC_DESC').'"></span>';
+			else $status = '<span class="base-icon-ok text-success hasTooltip" title="'.JText::_('TEXT_ALLOWED_ACCESS').'"></span>';
 		endif;
-		$urlViewData = JURI::root().'apps/base-contacts/view?vID='.$item->id;
+		$urlViewData = JURI::root().'apps/teams/view?vID='.$item->id;
 		$rowState	= $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
@@ -140,14 +154,11 @@ if($num_rows) : // verifica se existe
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
-				<td class="d-none d-lg-table-cell">'.baseHelper::nameFormat($item->role).'</td>
-				<td>'.$img.$note.baseHelper::nameFormat($item->name).'<div class="small text-muted">'.$item->email.'</td>
+				<td class="d-none d-lg-table-cell">'.$info.'</td>
+				<td>'.$img.baseHelper::nameFormat($item->name).'<div class="small text-muted">'.$item->email.'</td>
 				<td class="d-none d-lg-table-cell text-center"><a href="'.$urlViewData.'" target="_blank" class="base-icon-doc-text hasTooltip" title="'.JText::_('TEXT_VIEW_DATA').'"></a></td>
-				<td>'.$status.'</td>
-				<td class="d-none d-lg-table-cell">
-					'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'
-					<a href="#" class="base-icon-info-circled hasPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top"></a>
-				</td>
+				<td class="text-center">'.$status.'</td>
+				<td class="d-none d-lg-table-cell">'.baseHelper::dateFormat($item->birthday, 'd/m/Y', true, '-').'</td>
 				'.$adminView['list']['actions'].'
 			</tr>
 		';
