@@ -5,7 +5,7 @@ require(JPATH_BASE.'/libraries/envolute/_system.vars.php');
 
 // App Configuration's Vars
 $cfg = array();
-$cfg['project'] = 'brintell';
+$cfg['project']	= 'brintell';
 // PARENT APP:
 // Caso essa aplicação utilize dados de outra (PAI).
 // Informe o $APPNAME da outra. Senão, deixe em branco...
@@ -84,7 +84,7 @@ endif;
 		$cfg['listModal']			= false;
 		if(isset(${$APPTAG.'ListModal'})) $cfg['listModal'] = ${$APPTAG.'ListModal'} ? true : false;
 		// list type
-		$cfg['listFull']			= true;
+		$cfg['listFull']			= false;
 		if(isset(${$APPTAG.'ListFull'})) $cfg['listFull'] = ${$APPTAG.'ListFull'} ? true : false;
 		// list Ajax File
 		$cfg['listAjax']			= 'list.ajax.php';
@@ -116,19 +116,19 @@ endif;
 
 // form's
 
-	$cfg['showFormHeader']		= true;
-	$cfg['showFormToolbar']		= true;
+	$cfg['showFormHeader']		= false;
+	$cfg['showFormToolbar']		= false;
 	// Form button action
 	// false => save (keep)
 	// true => save and close (remove 'save & keep')
-	$cfg['formBtnAction']		= false;
+	$cfg['formBtnAction']		= true;
 
 	// date & price convertions
-	$cfg['dateConvert']			= true;
+	$cfg['dateConvert']			= false;
 	$cfg['load_UI']				= $cfg['dateConvert'];
 	$cfg['priceDecimal']		= false;
-	$cfg['htmlEditor']			= true;
-	$cfg['htmlEditorFull']		= true;
+	$cfg['htmlEditor']			= false;
+	$cfg['htmlEditorFull']		= false;
 
 	// crud's upload config
 	$cfg['hasUpload']			= true;
@@ -138,13 +138,13 @@ endif;
 	// valor inicial do index do arquivo... considerando '0' o campo estático
 	// caso exitam outros campos estáticos, o index será igual ao número de itens estáticos
 	// Ex: 4 itens estáticos => $cfg['indexFileInit'] = 4;
-	$cfg['indexFileInit']		= 2;
+	$cfg['indexFileInit']		= 1;
 
 	if($cfg['hasUpload']) :
 		$cfg['fileField']		= 'file'; // upload's field name
 		$cfg['fileTable']		= $cfg['mainTable'].'_files'; // upload's database table
 		// upload params
-		$cfg['maxFileSize']		= 10485760; // 10MB
+		$cfg['maxFileSize']		= 5242880; // 5MB
 		$cfg['uploadDir']       = JPATH_BASE.DS.'images/apps/'.$APPPATH.'/'; // IMPORTANTE: colocar a barra '/' no fim
 		// file types enabled
 		$cfg['fileTypes']	= array();

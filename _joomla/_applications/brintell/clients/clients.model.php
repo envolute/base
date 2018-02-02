@@ -93,7 +93,15 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['state']				= $input->get('state', 1, 'int');
 		// app
 		$request['group_id']			= $input->get('group_id', 0, 'int');
-	  	$request['name']				= $input->get('name', '', 'string');
+		$request['portfolio']			= $input->get('portfolio', 0, 'int');
+		$request['name']				= $input->get('name', '', 'string');
+		$request['company_name']		= $input->get('company_name', '', 'string');
+		$request['email']				= $input->get('email', '', 'string');
+		$request['cnpj']				= $input->get('cnpj', '', 'string');
+		$request['due_date']			= $input->get('due_date', 0, 'int');
+		$request['start_date']			= $input->get('start_date', '', 'string');
+		$request['website']				= $input->get('website', '', 'string');
+		$request['description']			= $input->get('description', '', 'raw');
 
 		// SAVE CONDITION
 		// Condição para inserção e atualização dos registros
@@ -144,7 +152,16 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'next'				=> $next,
 						// App Fields
 						'group_id'			=> $item->group_id,
-						'name'				=> $item->name
+						'portfolio'			=> $item->portfolio,
+						'name'				=> $item->name,
+						'company_name'		=> $item->company_name,
+						'email'				=> $item->email,
+						'cnpj'				=> $item->cnpj,
+						'due_date'			=> $item->due_date,
+						'start_date'		=> $item->start_date,
+						'website'			=> $item->website,
+						'description'		=> $item->description,
+						'files'				=> $listFiles
 					);
 
 				// UPDATE
@@ -153,7 +170,15 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
 					$query .=
 						$db->quoteName('group_id')			.'='. $request['group_id'] .','.
-						$db->quoteName('name')			.'='. $db->quote($request['name']) .','.
+						$db->quoteName('portfolio')			.'='. $request['portfolio'] .','.
+						$db->quoteName('name')				.'='. $db->quote($request['name']) .','.
+						$db->quoteName('company_name')		.'='. $db->quote($request['company_name']) .','.
+						$db->quoteName('email')				.'='. $db->quote($request['email']) .','.
+						$db->quoteName('cnpj')				.'='. $db->quote($request['cnpj']) .','.
+						$db->quoteName('due_date')			.'='. $request['due_date'] .','.
+						$db->quoteName('start_date')		.'='. $db->quote($request['start_date']) .','.
+						$db->quoteName('website')			.'='. $db->quote($request['website']) .','.
+						$db->quoteName('description')		.'='. $db->quote($request['description']) .','.
 						$db->quoteName('state')				.'='. $request['state'] .','.
 						$db->quoteName('alter_date')		.'= NOW(),'.
 						$db->quoteName('alter_by')			.'='. $user->id
@@ -234,6 +259,33 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						// $query = 'DELETE FROM '. $db->quoteName('#__'.$cfg['project'].'_app_sample') .' WHERE '. $db->quoteName('type_id') .' IN ('.$ids.')';
 						// $db->setQuery($query);
 						// $db->execute();
+
+						$rIDs = explode(',', $ids);
+						foreach ($rIDs as $rID) {
+
+							// ACCOUNT BANKS -> remove os registros relacionados às contas bancárias
+							// $query = '
+							// 	SELECT T2.id
+							// 	FROM '. $db->quoteName('#__base_rel_contacts_banksAccounts') .' T1
+							// 		JOIN '. $db->quoteName('#__base_banks_accounts') .' T2
+							// 		ON  '. $db->quoteName('T2.id') .' = '. $db->quoteName('T1.bankAccount_id') .'
+							// 	WHERE '. $db->quoteName('T1.contact_id') .' = '.$rID
+							// ;
+							// $db->setQuery($query);
+							// $relId = $db->loadColumn();
+							// $dIDs = implode(',', $relId);
+							// if(!empty($dIDs)) :
+							// 	// exclui as contas
+							// 	$query = 'DELETE FROM '. $db->quoteName('#__base_banks_accounts') .' WHERE '. $db->quoteName('id') .' IN ('.$dIDs.')';
+							// 	$db->setQuery($query);
+							// 	$db->execute();
+							// endif;
+							// // exclui o relacionamento
+							// $query = 'DELETE FROM '. $db->quoteName('#__base_rel_contacts_banksAccounts') .' WHERE '. $db->quoteName('contact_id') .' = '.$rID;
+							// $db->setQuery($query);
+							// $db->execute();
+
+						}
 
 						// UPDATE FIELD
 						// executa apenas com valores individuais
@@ -355,12 +407,28 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$query  = '
 						INSERT INTO '. $db->quoteName($cfg['mainTable']) .'('.
 							$db->quoteName('group_id') .','.
+							$db->quoteName('portfolio') .','.
 							$db->quoteName('name') .','.
+							$db->quoteName('company_name') .','.
+							$db->quoteName('email') .','.
+							$db->quoteName('cnpj') .','.
+							$db->quoteName('due_date') .','.
+							$db->quoteName('start_date') .','.
+							$db->quoteName('website') .','.
+							$db->quoteName('description') .','.
 							$db->quoteName('state') .','.
 							$db->quoteName('created_by')
 						.') VALUES ('.
 							$request['group_id'] .','.
+							$request['portfolio'] .','.
 							$db->quote($request['name']) .','.
+							$db->quote($request['company_name']) .','.
+							$db->quote($request['email']) .','.
+							$db->quote($request['cnpj']) .','.
+							$request['due_date'] .','.
+							$db->quote($request['start_date']) .','.
+							$db->quote($request['website']) .','.
+							$db->quote($request['description']) .','.
 							$request['state'] .','.
 							$user->id
 						.')

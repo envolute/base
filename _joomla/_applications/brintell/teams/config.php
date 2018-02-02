@@ -53,8 +53,7 @@ $cfg[$APPTAG.'AccessLevel']['client']	= '15, 16';
 	// ----------------------------------------------------
 	$cfg['groupId']['viewer'][]	= 0;	// '0' pois não pode ser vazio
 	// acesso liberado sempre
-	$cfg['groupId']['admin'][]	= 11;	// Gerente do Sistema
-	$cfg['groupId']['admin'][]	= 7;	// Administrador
+	$cfg['groupId']['admin'][]	= 11;	// Brintel Manager
 	$cfg['groupId']['admin'][]	= 8;	// Desenvolvedor
 	// ----------------------------------------------------
 

@@ -112,7 +112,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
 				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 32, 32);
 				else $imgPath = $_ROOT.'images/apps/icons/user_'.$item->gender.'.png';
-				$img = '<img src="'.$imgPath.'" width="32" height="32" class="img-fluid float-left mr-2" />';
+				$img = '<img src="'.$imgPath.'" class="img-fluid float-left mr-2" style="width:32px; height:32px;" />';
 			endif;
 
 			$infoColor = ($item->type == 1) ? 'danger' : ($item->type == 2 ? 'live' : 'success');
@@ -126,7 +126,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$btnEdit = $hasAdmin ? '<a href="#" class="base-icon-pencil text-live hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"></a> ' : '';
 			$btnDelete = $hasAdmin ? '<a href="#" class="base-icon-trash text-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"></a>' : '';
 			$rowState = $item->state == 0 ? 'list-danger' : '';
-			$urlViewData = $_ROOT.'apps/teams/view?vID='.$item->id;
+			$urlViewData = $_ROOT.'apps/'.$APPPATH.'/view?vID='.$item->id;
 			// Resultados
 			$html .= '
 				<li class="'.$rowState.'">

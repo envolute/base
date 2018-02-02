@@ -37,9 +37,8 @@ window.<?php echo $APPTAG?>_save = function(trigger) {
 							if(trigger == 'close' || trigger == 'reset') {
 								<?php echo $APPTAG?>_formReset();
 								if(trigger == 'close') popup.modal('hide');
-							} else if(typeof(trigger) === 'function') {
-								// Caso haja o "reset", deve ser chamado na função "trigger"
-								trigger(resID);
+							} else if(trigger === '<?php echo $cfg['saveTrigger']?>') {
+								<?php echo !empty($cfg['saveTrigger']) ? $cfg['saveTrigger'].'(resID);' : ''?>;
 							}
 						} else {
 							<?php echo $APPTAG?>_loadEditFields(resID, true, false); // recarrega os dados do form

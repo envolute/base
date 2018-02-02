@@ -9,11 +9,14 @@ defined('_JEXEC') or die;
 	$query = '
 		SELECT SQL_CALC_FOUND_ROWS
 			T1.*,
-			'. $db->quoteName('T2.name') .' groupName
+			'. $db->quoteName('T2.name') .' client,
+			'. $db->quoteName('T3.name') .' member
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
-			LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
-			ON T2.id = T1.group_id AND T2.state = 1
+			JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
+			ON T2.id = T1.client_id
+			JOIN '. $db->quoteName('#__'.$cfg['project'].'_teams') .' T3
+			ON T3.id = T1.team_id
 		WHERE
 			'.$where.$orderList;
 	;
@@ -39,7 +42,7 @@ if($hasAdmin) :
 	';
 	$adminView['head']['actions'] = '
 		<th class="text-center d-none d-lg-table-cell d-print-none" width="60">'.baseAppHelper::linkOrder(JText::_('TEXT_ACTIVE'), 'T1.state', $APPTAG).'</th>
-		<th class="text-center d-print-none" width="90">'.JText::_('TEXT_ACTIONS').'</th>
+		<th class="text-center d-print-none" width="70">'.JText::_('TEXT_ACTIONS').'</th>
 	';
 endif;
 
@@ -50,10 +53,11 @@ $html = '
 			<thead>
 				<tr>
 					'.$adminView['head']['info'].'
-					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_NAME'), 'T1.name', $APPTAG).'</th>
-					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_GROUP'), 'T2.name', $APPTAG).'</th>
-					<th width="100" class="text-center">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_PORTFOLIO'), 'T1.portfolio', $APPTAG).'</th>
-					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_SINCE').'</th>
+					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_CLIENT'), 'T2.name', $APPTAG).'</th>
+					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_TEAM_MEMBER'), 'T3.name', $APPTAG).'</th>
+					<th class="d-none d-lg-table-cell text-center">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_MAIN'), 'T1.main', $APPTAG).'</th>
+					<th class="d-none d-lg-table-cell">'.JText::_('FIELD_LABEL_DEPARTMENT').'</th>
+					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
 					'.$adminView['head']['actions'].'
 				</tr>
 			</thead>
@@ -91,15 +95,6 @@ if($num_rows) : // verifica se existe
 				<td class="check-row d-print-none"><input type="checkbox" name="'.$APPTAG.'_ids[]" class="'.$APPTAG.'-chk" value="'.$item->id.'" /></td>
 				<td class="d-none d-lg-table-cell d-print-none">'.$item->id.'</td>
 			';
-			$regInfo	= 'ID: <span class=&quot;text-live&quot;>#'.$item->id.'</span>';
-			$regInfo	.= '<hr class=&quot;my-1&quot; />';
-			$regInfo	.= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
-			$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
-			if($item->alter_date != '0000-00-00 00:00:00') :
-				$regInfo	.= '<hr class=&quot;my-1&quot; />';
-				$regInfo	.= JText::_('TEXT_ALTER_DATE').': '.baseHelper::dateFormat($item->alter_date, 'd/m/Y H:i').'<br />';
-				$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->alter_by)->name);
-			endif;
 			$adminView['list']['actions'] = '
 				<td class="text-center d-none d-lg-table-cell d-print-none">
 					<a href="#" class="hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'">
@@ -109,27 +104,36 @@ if($num_rows) : // verifica se existe
 				<td class="text-center d-print-none">
 					<a href="#" class="btn btn-xs btn-warning hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil"></span></a>
 					<a href="#" class="btn btn-xs btn-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash"></span></a>
-					<a href="#" class="btn btn-xs btn-outline-primary base-icon-info-circled hasPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top" data-trigger="click focus"></a>
 				</td>
 			';
 		endif;
 
-		$portfolio = '<span class="'.($item->portfolio == 0 ? 'base-icon-cancel text-danger' : 'base-icon-ok text-success').'"></span>';
-		$groupName = !empty($item->groupName) ? baseHelper::nameFormat($item->groupName) : '-';
-		$rowState = $item->state == 0 ? 'table-danger' : '';
-		$urlViewData = JURI::root().'apps/'.$APPPATH.'/view?vID='.$item->id;
+		$main		= $item->main == 1 ? '<span class="base-icon-star text-live cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_MAIN_DESC').'"></span> ' : '';
+		$rowState	= $item->state == 0 ? 'table-danger' : '';
+		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
+		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
+		if($item->alter_date != '0000-00-00 00:00:00') :
+			$regInfo	.= '<hr class=&quot;my-2&quot; />';
+			$regInfo	.= JText::_('TEXT_ALTER_DATE').': '.baseHelper::dateFormat($item->alter_date, 'd/m/Y H:i').'<br />';
+			$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->alter_by)->name);
+		endif;
 		// Resultados
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
+				<td>'.baseHelper::nameFormat($item->client).'</td>
 				<td>
-					<a href="'.$urlViewData.'" target="_blank" class="hasTooltip" title="'.JText::_('TEXT_VIEW_DATA').'">
-						'.baseHelper::nameFormat($item->name).'
-					</a>
+					'.baseHelper::nameFormat($item->member).'
+					<div class="d-lg-none text-muted text-sm">
+						'.$main.baseHelper::nameFormat($item->department).'
+					</div>
 				</td>
-				<td>'.$groupName.'</td>
-				<td class="text-center">'.$portfolio.'</td>
-				<td class="d-none d-lg-table-cell">'.baseHelper::dateFormat($item->start_date).'</td>
+				<td class="d-none d-lg-table-cell text-center">'.$main.'</td>
+				<td class="d-none d-lg-table-cell">'.baseHelper::nameFormat($item->department).'</td>
+				<td class="d-none d-lg-table-cell">
+					'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'
+					<a href="#" class="base-icon-info-circled hasPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top"></a>
+				</td>
 				'.$adminView['list']['actions'].'
 			</tr>
 		';

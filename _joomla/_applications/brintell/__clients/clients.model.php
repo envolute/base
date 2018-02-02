@@ -92,25 +92,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['relationId']   		= $input->get('relationId', 0, 'int');
 		$request['state']				= $input->get('state', 1, 'int');
 		// app
-		$request['isPublic']			= $input->get('isPublic', 0, 'int');
-		$request['title']				= $input->get('title', '', 'string');
-		$request['zip_code']			= $input->get('zip_code', '', 'string');
-		$request['address']				= $input->get('address', '', 'string');
-		$request['address_number']		= $input->get('address_number', '', 'string');
-		$request['address_info']		= $input->get('address_info', '', 'string');
-		$request['address_district']	= $input->get('address_district', '', 'string');
-		$request['address_city']		= $input->get('address_city', $cfg['cityDef'], 'string');
-		$request['address_state']		= $input->get('address_state', $cfg['stateDef'], 'string');
-		$request['address_country']		= $input->get('address_country', $cfg['countryDef'], 'string');
-		$request['onlyBR']				= $input->get('onlyBR', 0, 'int');
-		$request['latitude']			= $input->get('latitude', '', 'string');
-		$request['longitude']			= $input->get('longitude', '', 'string');
-		$request['map_info']			= $input->get('map_info', '', 'string');
-		$request['extra_info']			= $input->get('extra_info', '', 'raw');
+		$request['group_id']			= $input->get('group_id', 0, 'int');
+	  	$request['name']				= $input->get('name', '', 'string');
 
 		// SAVE CONDITION
 		// Condição para inserção e atualização dos registros
-		$save_condition = !empty($request['address']);
+		$save_condition = !empty($request['name']);
 
 		if($id || (!empty($ids) && $ids != 0)) :  //UPDATE OR DELETE
 
@@ -156,21 +143,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'prev'				=> $prev,
 						'next'				=> $next,
 						// App Fields
-						'isPublic'			=> $item->isPublic,
-						'title'				=> $item->title,
-						'zip_code'			=> $item->zip_code,
-						'address'			=> $item->address,
-						'address_number'	=> $item->address_number,
-						'address_info'		=> $item->address_info,
-						'address_district'	=> $item->address_district,
-						'address_city'		=> $item->address_city,
-						'address_state'		=> $item->address_state,
-						'address_country'	=> $item->address_country,
-						'onlyBR'			=> $item->onlyBR,
-						'latitude'			=> $item->latitude,
-						'longitude'			=> $item->longitude,
-						'map_info'			=> $item->map_info,
-						'extra_info'		=> $item->extra_info
+						'group_id'			=> $item->group_id,
+						'name'				=> $item->name,
+						'files'				=> $listFiles
 					);
 
 				// UPDATE
@@ -178,21 +153,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 					$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
 					$query .=
-						$db->quoteName('isPublic')			.'='. $request['isPublic'] .','.
-						$db->quoteName('title')				.'='. $db->quote($request['title']) .','.
-						$db->quoteName('zip_code')			.'='. $db->quote($request['zip_code']) .','.
-						$db->quoteName('address')			.'='. $db->quote($request['address']) .','.
-						$db->quoteName('address_number')	.'='. $db->quote($request['address_number']) .','.
-						$db->quoteName('address_info')		.'='. $db->quote($request['address_info']) .','.
-						$db->quoteName('address_district')	.'='. $db->quote($request['address_district']) .','.
-						$db->quoteName('address_city')		.'='. $db->quote($request['address_city']) .','.
-						$db->quoteName('address_state')		.'='. $db->quote($request['address_state']) .','.
-						$db->quoteName('address_country')	.'='. $db->quote($request['address_country']) .','.
-						$db->quoteName('onlyBR')			.'='. $request['onlyBR'] .','.
-						$db->quoteName('latitude')			.'='. $db->quote($request['latitude']) .','.
-						$db->quoteName('longitude')			.'='. $db->quote($request['longitude']) .','.
-						$db->quoteName('map_info')			.'='. $db->quote($request['map_info']) .','.
-						$db->quoteName('extra_info')		.'='. $db->quote($request['extra_info']) .','.
+						$db->quoteName('group_id')			.'='. $request['group_id'] .','.
+						$db->quoteName('name')			.'='. $db->quote($request['name']) .','.
 						$db->quoteName('state')				.'='. $request['state'] .','.
 						$db->quoteName('alter_date')		.'= NOW(),'.
 						$db->quoteName('alter_by')			.'='. $user->id
@@ -393,39 +355,13 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					// Prepare the insert query
 					$query  = '
 						INSERT INTO '. $db->quoteName($cfg['mainTable']) .'('.
-							$db->quoteName('isPublic') .','.
-							$db->quoteName('title') .','.
-							$db->quoteName('zip_code') .','.
-							$db->quoteName('address') .','.
-							$db->quoteName('address_number') .','.
-							$db->quoteName('address_info') .','.
-							$db->quoteName('address_district') .','.
-							$db->quoteName('address_city') .','.
-							$db->quoteName('address_state') .','.
-							$db->quoteName('address_country') .','.
-							$db->quoteName('onlyBR') .','.
-							$db->quoteName('latitude') .','.
-							$db->quoteName('longitude') .','.
-							$db->quoteName('map_info') .','.
-							$db->quoteName('extra_info') .','.
+							$db->quoteName('group_id') .','.
+							$db->quoteName('name') .','.
 							$db->quoteName('state') .','.
 							$db->quoteName('created_by')
 						.') VALUES ('.
-							$request['isPublic'] .','.
-							$db->quote($request['title']) .','.
-							$db->quote($request['zip_code']) .','.
-							$db->quote($request['address']) .','.
-							$db->quote($request['address_number']) .','.
-							$db->quote($request['address_info']) .','.
-							$db->quote($request['address_district']) .','.
-							$db->quote($request['address_city']) .','.
-							$db->quote($request['address_state']) .','.
-							$db->quote($request['address_country']) .','.
-							$request['onlyBR'] .','.
-							$db->quote($request['latitude']) .','.
-							$db->quote($request['longitude']) .','.
-							$db->quote($request['map_info']) .','.
-							$db->quote($request['extra_info']) .','.
+							$request['group_id'] .','.
+							$db->quote($request['name']) .','.
 							$request['state'] .','.
 							$user->id
 						.')

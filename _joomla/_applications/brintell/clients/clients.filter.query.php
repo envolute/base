@@ -9,16 +9,30 @@ $where = '';
 	// STATE -> select
 	$active	= $app->input->get('active', 2, 'int');
 	$where .= ($active == 2) ? $db->quoteName('T1.state').' != '.$active : $db->quoteName('T1.state').' = '.$active;
-	// GROUP
-	$groupID	= $app->input->get('groupID', 0, 'int');
-	if($groupID != 0) $where .= ' AND '.$db->quoteName('T1.group_id').' = '.$groupID;
+	// PORTFOLIO -> select
+	$fAgree	= $app->input->get('fAgree', 2, 'int');
+	if($fAgree != 2) $where .= ' AND '.$db->quoteName('T1.portfolio').' = '.$fAgree;
+	// GROUPS -> select
+	$fGroup	= $app->input->get('fGroup', 0, 'int');
+	if($fGroup != 0) $where .= ' AND '.$db->quoteName('T1.group_id').' = '.$fGroup;
+	// START DATE
+	$dateMin	= $app->input->get('dateMin', '', 'string');
+	$dateMax	= $app->input->get('dateMax', '', 'string');
+	$dtmin = !empty($dateMin) ? $dateMin : '0000-00-00';
+	$dtmax = !empty($dateMax) ? $dateMax : '9999-12-31';
+	if(!empty($dateMin) || !empty($dateMax)) $where .= ' AND '.$db->quoteName('T1.start_date').' BETWEEN '.$db->quote($dtmin).' AND '.$db->quote($dtmax);
 
 	// Search 'Text fields'
 	$search	= $app->input->get('fSearch', '', 'string');
 	$sQuery = ''; // query de busca
 	$sLabel = array(); // label do campo de busca
 	$searchFields = array(
-		'T1.name'			=> 'FIELD_LABEL_NAME'
+		'T1.name'				=> 'FIELD_LABEL_NAME',
+		'T1.company_name'		=> '',
+		'T1.email'				=> 'FIELD_LABEL_EMAIL',
+		'T1.cnpj'				=> 'CNPJ',
+		'T1.website'			=> 'FIELD_LABEL_WEBSITE',
+		'T1.description'		=> 'FIELD_LABEL_DESCRIPTION'
 	);
 	$i = 0;
 	foreach($searchFields as $key => $value) {

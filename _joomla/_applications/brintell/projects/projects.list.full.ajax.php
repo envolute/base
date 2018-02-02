@@ -87,19 +87,21 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
 				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 48, 48);
 				else $imgPath = $_ROOT.'images/apps/icons/folder_48.png';
-				$img = '<img src="'.$imgPath.'" width="48" height="48" class="img-fluid mr-2" />';
+				$img = '<img src="'.$imgPath.'" class="img-fluid mr-2" style="width:48px; height:48px;" />';
 			endif;
 
 			$rowState = $item->state == 0 ? 'danger bg-light text-muted' : 'primary bg-white';
+			$urlViewData = $_ROOT.'apps/'.$APPPATH.'/view?pID='.$item->id;
+			$urlViewClient = $_ROOT.'apps/clients/view?vID='.$item->client_id;
 			// Resultados
 			$html .= '
 				<div id="'.$APPTAG.'-item-'.$item->id.'" class="col-sm-4 col-md-3 pb-3">
 					<div class="pos-relative rounded b-top-2 b-'.$rowState.' set-shadow">
-						<a href="'.$_BASE.'/apps/projects/view?pID='.$item->id.'" class="d-block text-lg lh-1-2 p-2">
+						<a href="'.$urlViewData.'" class="d-block text-lg lh-1-2 p-2">
 							'.$img.baseHelper::nameFormat($item->name).'
 						</a>
 						<span class="d-flex justify-content-between align-items-center text-muted p-1 b-top">
-							<span class="text-sm pl-1 cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_CLIENT').'">'.baseHelper::nameFormat($item->client).'</span>
+							<a href="'.$urlViewClient.'" class="text-sm pl-1 hasTooltip" title="'.JText::_('FIELD_LABEL_CLIENT').'">'.baseHelper::nameFormat($item->client).'</a>
 							<span class="btn-group">
 								<a href="#" class="btn btn-xs btn-link hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'">
 									<span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').'"></span>

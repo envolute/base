@@ -57,7 +57,7 @@ defined('_JEXEC') or die;
 						</div>
 					</div>
 					<div class="col-sm-4">
-						<div class="form-group field-required">
+						<div class="form-group">
 							<label><?php echo JText::_('FIELD_LABEL_ADDRESS_NUMBER'); ?></label>
 							<input type="text" name="address_number" id="<?php echo $APPTAG?>-address_number" class="form-control upper" />
 						</div>
@@ -77,14 +77,14 @@ defined('_JEXEC') or die;
 					if(!$cfg['onlyBR']) :
 					?>
 						<div class="col-sm-6 col-lg-12">
-							<div class="form-group field-required">
+							<div class="form-group">
 								<label><?php echo JText::_('FIELD_LABEL_ADDRESS_COUNTRY'); ?></label>
 								<input type="text" name="address_country" id="<?php echo $APPTAG?>-address_country" class="form-control upper" />
 								<input type="hidden" name="onlyBR" id="<?php echo $APPTAG?>-onlyBR" value="0" />
 							</div>
 						</div>
 						<div class="col-sm-6 col-lg-12">
-							<div class="form-group field-required">
+							<div class="form-group">
 								<label><?php echo JText::_('FIELD_LABEL_ADDRESS_STATE'); ?></label>
 								<input type="text" name="address_state" id="<?php echo $APPTAG?>-address_state" class="form-control upper" />
 							</div>
@@ -94,7 +94,7 @@ defined('_JEXEC') or die;
 						$col = 5;
 					?>
 						<div class="col-sm-2">
-							<div class="form-group field-required">
+							<div class="form-group">
 								<label>UF</label>
 								<input type="text" name="address_state" id="<?php echo $APPTAG?>-address_state" class="form-control w-auto upper" size="2" maxlength="2" />
 								<input type="hidden" name="address_country" id="<?php echo $APPTAG?>-address_country" />
@@ -103,13 +103,13 @@ defined('_JEXEC') or die;
 						</div>
 					<?php endif; ?>
 					<div class="col-sm-<?php echo $col?> col-lg-12">
-						<div class="form-group field-required">
+						<div class="form-group">
 							<label><?php echo JText::_('FIELD_LABEL_ADDRESS_CITY'); ?></label>
 							<input type="text" name="address_city" id="<?php echo $APPTAG?>-address_city" class="form-control upper" />
 						</div>
 					</div>
 					<div class="col-sm-<?php echo $col?> col-lg-12">
-						<div class="form-group field-required">
+						<div class="form-group">
 							<label><?php echo JText::_('FIELD_LABEL_ADDRESS_DISTRICT'); ?></label>
 							<input type="text" name="address_district" id="<?php echo $APPTAG?>-address_district" class="form-control upper" />
 						</div>

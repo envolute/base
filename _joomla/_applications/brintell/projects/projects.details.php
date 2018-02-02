@@ -7,6 +7,9 @@ defined('_JEXEC') or die;
 $ajaxRequest = false;
 require('config.php');
 
+// ACESSO
+$cfg['isPublic'] = true; // Público -> acesso aberto a todos
+
 // IMPORTANTE:
 // Como outras Apps serão carregadas, através de "require", dentro dessa aplicação.
 // As variáveis php da App principal serão sobrescritas após as chamadas das outras App.
@@ -115,8 +118,12 @@ else :
 
 	// MOSTRA A LISTA DE PROJETOS DO USUÁRIO
 	$query	= '
-		SELECT T1.*
+		SELECT
+			T1.*,
+			'. $db->quoteName('T2.name') .' client
 		FROM '. $db->quoteName($cfg['mainTable']) .' T1
+			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
+			ON '.$db->quoteName('T2.id') .' = T1.client_id AND T2.state = 1
 		WHERE T1.state = 1
 		ORDER BY '. $db->quoteName('T1.name') .' ASC
 	';
@@ -143,15 +150,18 @@ else :
 				JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 				// Imagem Principal -> Primeira imagem (index = 0)
 				$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
-				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 24, 24);
-				else $imgPath = $_ROOT.'images/apps/icons/folder_24.png';
-				$img = '<img src="'.$imgPath.'" width="24" height="24" class="img-fluid" />';
+				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 32, 32);
+				else $imgPath = $_ROOT.'images/apps/icons/folder_32.png';
+				$img = '<img src="'.$imgPath.'" class="img-fluid" style="width:32px; height:32px;" />';
 			endif;
 
 			$html .= '
 				<a href="apps/projects/view?pID='.$item->id.'" class="d-flex align-items-center">
-					<span class="mr-2">'.$img.'</span>
-					<h6 class="m-0">'.baseHelper::nameFormat($item->name).'</h6>
+					<span class="mr-2" style="flex:0 0 28px;">'.$img.'</span>
+					<h6 class="m-0 lh-1">
+						'.baseHelper::nameFormat($item->name).'
+						<div class="small text-muted">'.baseHelper::nameFormat($item->client).'</div>
+					</h6>
 				</a>
 			';
 		}

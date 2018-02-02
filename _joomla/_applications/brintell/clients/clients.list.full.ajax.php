@@ -56,12 +56,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	// GET DATA
 	$noReg	= true;
 	$query = '
-		SELECT SQL_CALC_FOUND_ROWS
+		SELECT
 			T1.*,
 			'. $db->quoteName('T2.name') .' groupName
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
-			LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
+			LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
 			ON T2.id = T1.group_id AND T2.state = 1
 		WHERE
 			'.$where.$orderList;
@@ -81,12 +81,24 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$html .= '<div class="row py-4 mb-5">';
 		foreach($res as $item) {
 
+			if($cfg['hasUpload']) :
+				JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
+				// Imagem Principal -> Primeira imagem (index = 0)
+				$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
+				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 48, 48);
+				else $imgPath = $_ROOT.'images/apps/icons/client.png';
+				$img = '<img src="'.$imgPath.'" class="img-fluid mr-2" style="width:48px; height:48px;" />';
+			endif;
+
 			$rowState = $item->state == 0 ? 'danger bg-light text-muted' : 'primary bg-white';
+			$urlViewData = $_ROOT.'apps/'.$APPPATH.'/view?vID='.$item->id;
 			// Resultados
 			$html .= '
-				<div id="'.$APPTAG.'-item-'.$item->id.'" class="col-sm-3 col-xl-2 pb-3">
+				<div id="'.$APPTAG.'-item-'.$item->id.'" class="col-sm-4 col-md-3 pb-3">
 					<div class="pos-relative rounded b-top-2 b-'.$rowState.' set-shadow">
-						<a href="#" class="d-block text-lg lh-1-2 py-3 px-3">'.baseHelper::nameFormat($item->name).'</a>
+						<a href="'.$urlViewData.'" class="d-block text-lg lh-1-2 p-2">
+							'.$img.baseHelper::nameFormat($item->name).'
+						</a>
 						<span class="d-block text-muted py-1 px-1 b-top clearfix">
 							'.baseHelper::nameFormat($item->groupName).'
 							<span class="btn-group float-right">

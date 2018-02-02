@@ -55,42 +55,17 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	// GET DATA
 	$noReg	= true;
-	$query	= '
-		SELECT
-			'. $db->quoteName('T1.id') .',
-			'. $db->quoteName('T1.name') .',
-			'. $db->quoteName('T2.name') .' groupName,
-			'. $db->quoteName('T1.state') .'
-	';
-	if(!empty($rID) && $rID !== 0) :
-		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
-			$query .= ' FROM '.
-				$db->quoteName($cfg['mainTable']) .' T1
-				LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
-				ON '.$db->quoteName('T2.id') .' = T1.group_id AND T2.state = 1
-				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T3
-				ON '.$db->quoteName('T3.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
-			WHERE '.
-				$db->quoteName('T3.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
-			;
-		else :
-			$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
-				LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
-				ON '.$db->quoteName('T2.id') .' = T1.group_id AND T2.state = 1
-				WHERE '. $db->quoteName($rNID) .' = '. $rID
-			;
-		endif;
-	else :
-		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
-			LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
-			ON '.$db->quoteName('T2.id') .' = T1.group_id AND T2.state = 1
-		';
-		if($oCHL) :
-			$query .= ' WHERE 1=0';
-			$noReg = false;
-		endif;
-	endif;
-	$query	.= ' ORDER BY '. $db->quoteName('T1.name') .' ASC';
+	$query = '
+		SELECT SQL_CALC_FOUND_ROWS
+			T1.*,
+			'. $db->quoteName('T2.name') .' groupName
+		FROM
+			'. $db->quoteName($cfg['mainTable']) .' T1
+			LEFT OUTER JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
+			ON T2.id = T1.group_id AND T2.state = 1
+		WHERE
+			'.$where.$orderList;
+	;
 	try {
 		$db->setQuery($query);
 		$db->execute();
@@ -103,34 +78,42 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	$html = '';
 	if($num_rows) : // verifica se existe
-		$html .= '<ul class="set-list bordered">';
+		$html .= '<div class="row py-4 mb-5">';
 		foreach($res as $item) {
 
 			if($cfg['hasUpload']) :
 				JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 				// Imagem Principal -> Primeira imagem (index = 0)
 				$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
-				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 32, 32);
-				else $imgPath = $_ROOT.'images/apps/icons/client_32.png';
-				$img = '<img src="'.$imgPath.'" class="img-fluid float-left mr-2" style="width:32px; height:32px;" />';
+				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 48, 48);
+				else $imgPath = $_ROOT.'images/apps/icons/client.png';
+				$img = '<img src="'.$imgPath.'" class="img-fluid mr-2" style="width:48px; height:48px;" />';
 			endif;
 
-			$info = ($item->groupName > 0) ? $item->groupName : '';
-			$btnState = $hasAdmin ? '<a href="#" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'"><span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').' hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'"></span></a> ' : '';
-			$btnEdit = $hasAdmin ? '<a href="#" class="base-icon-pencil text-live hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"></a> ' : '';
-			$btnDelete = $hasAdmin ? '<a href="#" class="base-icon-trash text-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"></a>' : '';
-			$rowState = $item->state == 0 ? 'list-danger' : '';
-			$urlViewData = $_ROOT.'apps/'.$APPPATH.'/view?vID='.$item->id;
+			$rowState = $item->state == 0 ? 'danger bg-light text-muted' : 'primary bg-white';
+			$urlViewData = $_ROOT.'apps/'.$APPPATH.'/view?pID='.$item->id;
 			// Resultados
 			$html .= '
-				<li class="'.$rowState.'">
-					<div class="float-right">'.$btnState.$btnEdit.$btnDelete.'</div>
-					'.$img.'
-					<div class="text-truncate"><a href="'.$urlViewData.'" class="new-window" target="_blank">'.baseHelper::nameFormat($item->name).'</a></div><small>'.$info.'</small>
-				</li>
+				<div id="'.$APPTAG.'-item-'.$item->id.'" class="col-sm-4 col-md-3 pb-3">
+					<div class="pos-relative rounded b-top-2 b-'.$rowState.' set-shadow">
+						<a href="'.$urlViewData.'" class="d-block text-lg lh-1-2 p-2">
+							'.$img.baseHelper::nameFormat($item->name).'
+						</a>
+						<span class="d-block text-muted py-1 px-1 b-top clearfix">
+							'.baseHelper::nameFormat($item->groupName).'
+							<span class="btn-group float-right">
+								<a href="#" class="btn btn-xs btn-link hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'">
+									<span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').'"></span>
+								</a>
+								<a href="#" class="btn btn-xs btn-link hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil"></span></a>
+								<a href="#" class="btn btn-xs btn-link hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash"></span></a>
+							</span>
+						</span>
+					</div>
+				</div>
 			';
 		}
-		$html .= '</ul>';
+		$html .= '</div>';
 	else :
 		if($noReg) $html = '<p class="base-icon-info-circled alert alert-info m-0"> '.JText::_('MSG_LISTNOREG').'</p>';
 	endif;

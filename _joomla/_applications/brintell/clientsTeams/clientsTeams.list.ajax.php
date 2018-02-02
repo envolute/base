@@ -56,41 +56,48 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	// GET DATA
 	$noReg	= true;
 	$query	= '
-		SELECT
-			'. $db->quoteName('T1.id') .',
-			'. $db->quoteName('T1.name') .',
-			'. $db->quoteName('T2.name') .' groupName,
-			'. $db->quoteName('T1.state') .'
-	';
+		SELECT SQL_CALC_FOUND_ROWS
+			T1.*,
+			'. $db->quoteName('T2.name') .' client,
+			'. $db->quoteName('T3.name') .' member,
+			'. $db->quoteName('T1.main') .',
+			'. $db->quoteName('T1.department') .',
+			'. $db->quoteName('T1.state')
+	;
 	if(!empty($rID) && $rID !== 0) :
 		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
 			$query .= ' FROM '.
 				$db->quoteName($cfg['mainTable']) .' T1
-				LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
-				ON '.$db->quoteName('T2.id') .' = T1.group_id AND T2.state = 1
-				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T3
-				ON '.$db->quoteName('T3.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
+				JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
+				ON T2.id = T1.client_id
+				JOIN '. $db->quoteName('#__'.$cfg['project'].'_teams') .' T3
+				ON T3.id = T1.team_id
+				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T4
+				ON '.$db->quoteName('T4.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
 			WHERE '.
-				$db->quoteName('T3.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
+				$db->quoteName('T4.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
 			;
 		else :
 			$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
-				LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
-				ON '.$db->quoteName('T2.id') .' = T1.group_id AND T2.state = 1
-				WHERE '. $db->quoteName($rNID) .' = '. $rID
-			;
+				JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
+				ON T2.id = T1.client_id
+				JOIN '. $db->quoteName('#__'.$cfg['project'].'_teams') .' T3
+				ON T3.id = T1.team_id
+			WHERE '. $db->quoteName($rNID) .' = '. $rID;
 		endif;
 	else :
 		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
-			LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
-			ON '.$db->quoteName('T2.id') .' = T1.group_id AND T2.state = 1
+			JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
+			ON T2.id = T1.client_id
+			JOIN '. $db->quoteName('#__'.$cfg['project'].'_teams') .' T3
+			ON T3.id = T1.team_id
 		';
 		if($oCHL) :
 			$query .= ' WHERE 1=0';
 			$noReg = false;
 		endif;
 	endif;
-	$query	.= ' ORDER BY '. $db->quoteName('T1.name') .' ASC';
+	$query	.= ' ORDER BY '. $db->quoteName('T2.name') .', '. $db->quoteName('T1.main') .' DESC, '. $db->quoteName('T3.name');
 	try {
 		$db->setQuery($query);
 		$db->execute();
@@ -106,27 +113,27 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$html .= '<ul class="set-list bordered">';
 		foreach($res as $item) {
 
-			if($cfg['hasUpload']) :
-				JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
-				// Imagem Principal -> Primeira imagem (index = 0)
-				$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
-				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 32, 32);
-				else $imgPath = $_ROOT.'images/apps/icons/client_32.png';
-				$img = '<img src="'.$imgPath.'" class="img-fluid float-left mr-2" style="width:32px; height:32px;" />';
-			endif;
+			// MEMBER TEAM IMAGE
+			JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
+			// Imagem Principal -> Primeira imagem (index = 0)
+			$img = uploader::getFile('#__brintell_teams_files', '', $item->team_id, 0, JPATH_BASE.DS.'images/apps/teams/');
+			if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/teams/'.$img['filename'], 24, 24);
+			else $imgPath = $_ROOT.'images/apps/icons/client_24.png';
+			$img = '<img src="'.$imgPath.'" width="32" height="32" class="img-fluid float-left rounded mr-2" />';
 
-			$info = ($item->groupName > 0) ? $item->groupName : '';
+			$main = $item->main == 1 ? '<span class="base-icon-star text-live cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_MAIN').'"></span> ' : '';
+			$dept = !empty($item->department) ? '<span class="text-sm text-muted cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_DEPARTMENT').'">'.baseHelper::nameFormat($item->department).'</span> ' : '';
 			$btnState = $hasAdmin ? '<a href="#" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'"><span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').' hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'"></span></a> ' : '';
 			$btnEdit = $hasAdmin ? '<a href="#" class="base-icon-pencil text-live hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"></a> ' : '';
 			$btnDelete = $hasAdmin ? '<a href="#" class="base-icon-trash text-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"></a>' : '';
 			$rowState = $item->state == 0 ? 'list-danger' : '';
-			$urlViewData = $_ROOT.'apps/'.$APPPATH.'/view?vID='.$item->id;
+			$urlViewData = $_ROOT.'apps/teams/profile?vID='.$item->team_id;
 			// Resultados
 			$html .= '
 				<li class="'.$rowState.'">
-					<div class="float-right">'.$btnState.$btnEdit.$btnDelete.'</div>
+					<span class="float-right">'.$btnState.$btnEdit.$btnDelete.'</span>
 					'.$img.'
-					<div class="text-truncate"><a href="'.$urlViewData.'" class="new-window" target="_blank">'.baseHelper::nameFormat($item->name).'</a></div><small>'.$info.'</small>
+					<div class="text-truncate"><a href="'.$urlViewData.'" target="_blank">'.$main.baseHelper::nameFormat($item->member).'</a></div>'.$dept.'
 				</li>
 			';
 		}

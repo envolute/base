@@ -9,23 +9,16 @@ $where = '';
 	// STATE -> select
 	$active	= $app->input->get('active', 2, 'int');
 	$where .= ($active == 2) ? $db->quoteName('T1.state').' != '.$active : $db->quoteName('T1.state').' = '.$active;
-	// CLIENT
-	$clientID	= $app->input->get('clientID', 0, 'int');
-	if($clientID != 0) $where .= ' AND '.$db->quoteName('T1.client_id').' = '.$clientID;
-	// START DATE
-	$dateMin	= $app->input->get('dateMin', '', 'string');
-	$dateMax	= $app->input->get('dateMax', '', 'string');
-	$dtmin = !empty($dateMin) ? $dateMin : '0000-00-00';
-	$dtmax = !empty($dateMax) ? $dateMax : '9999-12-31';
-	if(!empty($dateMin) || !empty($dateMax)) $where .= ' AND '.$db->quoteName('T1.start_date').' BETWEEN '.$db->quote($dtmin).' AND '.$db->quote($dtmax);
+	// GROUP
+	$groupID	= $app->input->get('groupID', 0, 'int');
+	if($groupID != 0) $where .= ' AND '.$db->quoteName('T1.group_id').' = '.$groupID;
 
 	// Search 'Text fields'
 	$search	= $app->input->get('fSearch', '', 'string');
 	$sQuery = ''; // query de busca
 	$sLabel = array(); // label do campo de busca
 	$searchFields = array(
-		'T1.name'			=> 'FIELD_LABEL_NAME',
-		'T1.description'	=> 'FIELD_LABEL_DESCRIPTION'
+		'T1.name'			=> 'FIELD_LABEL_NAME'
 	);
 	$i = 0;
 	foreach($searchFields as $key => $value) {

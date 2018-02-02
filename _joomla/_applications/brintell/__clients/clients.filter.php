@@ -27,57 +27,31 @@ require($PATH_APP_FILE.'.filter.query.php');
 
 	// GROUPS -> select
 	$flt_group = '';
-	$query = 'SELECT * FROM '. $db->quoteName($cfg['mainTable'].'_groups') .' ORDER BY name';
+	$query = 'SELECT * FROM '. $db->quoteName($cfg['mainTable'].'_groups') .' WHERE '. $db->quoteName('state') .' = 1 ORDER BY name';
 	$db->setQuery($query);
 	$groups = $db->loadObjectList();
 	foreach ($groups as $obj) {
-		$flt_group .= '<option value="'.$obj->id.'"'.($obj->id == $fGroup ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
+		$flt_group .= '<option value="'.$obj->id.'"'.($obj->id == $groupID ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
 	}
 
-// VISIBILITY
-// Elementos visíveis apenas quando uma consulta é realizada
-
-	$hasFilter = $app->input->get($APPTAG.'_filter', 0, 'int');
-	// Estado inicial dos elementos
-	$btnClearFilter		= ''; // botão de resetar
-	$textResults		= ''; // Texto informativo
-	// Filtro ativo
-	if($hasFilter || $cfg['ajaxFilter']) :
-		$btnClearFilter = '
-			<a href="'.JURI::current().'" class="btn btn-sm btn-danger base-icon-cancel-circled btn-icon">
-				'.JText::_('TEXT_CLEAR').' '.JText::_('TEXT_FILTER').'
-			</a>
-		';
-		$textResults = '<span class="base-icon-down-big text-muted d-none d-sm-inline"> '.JText::_('TEXT_SEARCH_RESULTS').'</span>';
-	endif;
 
 // VIEW
 $htmlFilter = '
 	<form id="filter-'.$APPTAG.'" class="hidden-print collapse '.((isset($_GET[$APPTAG.'_filter']) || $cfg['showFilter']) ? 'show' : '').'" method="get">
-		<fieldset class="fieldset-embed fieldset-sm pt-3 pb-0">
+		<fieldset class="fieldset-embed fieldset-sm pt-2 pb-0">
 			<input type="hidden" name="'.$APPTAG.'_filter" value="1" />
 
 			<div class="row">
-				<div class="col-sm-8 md-6 col-lg-2">
+				<div class="col-sm-6 col-md-4 col-lg-3">
 					<div class="form-group">
 						<label class="label-sm">'.JText::_('FIELD_LABEL_GROUP').'</label>
-						<select name="fGroup" id="fGroup" class="form-control form-control-sm set-filter">
-							<option value="0">- '.JText::_('TEXT_SELECT').' -</option>
+						<select name="groupID" id="groupID" class="form-control form-control-sm set-filter">
+							<option value="0">- '.JText::_('TEXT_ALL').' -</option>
 							'.$flt_group.'
 						</select>
 					</div>
 				</div>
-				<div class="col-sm-4 col-md-3 col-lg-2">
-					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_PORTFOLIO').'</label>
-						<select name="fAgree" id="fAgree" class="form-control form-control-sm set-filter">
-							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
-							<option value="1"'.($active == 1 ? ' selected' : '').'>'.JText::_('TEXT_YES').'</option>
-							<option value="0"'.($active == 0 ? ' selected' : '').'>'.JText::_('TEXT_NO').'</option>
-						</select>
-					</div>
-				</div>
-				<div class="col-sm-4 col-md-3 col-lg-2">
+				<div class="col-sm-6 col-md-2">
 					<div class="form-group">
 						<label class="label-sm">'.JText::_('FIELD_LABEL_ITEM_STATE').'</label>
 						<select name="active" id="active" class="form-control form-control-sm set-filter">
@@ -87,36 +61,19 @@ $htmlFilter = '
 						</select>
 					</div>
 				</div>
-				<div class="col-sm-6 col-lg-4 col-xl-3">
-					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_START_DATE').'</label>
-						<span class="input-group input-group-sm">
-							<span class="input-group-addon strong">'.JText::_('TEXT_FROM').'</span>
-							<input type="text" name="dateMin" value="'.$dateMin.'" class="form-control field-date" data-width="100%" data-convert="true" />
-							<span class="input-group-addon">'.JText::_('TEXT_TO').'</span>
-							<input type="text" name="dateMax" value="'.$dateMax.'" class="form-control field-date" data-width="100%" data-convert="true" />
-						</span>
-					</div>
-				</div>
-				<div class="col-sm-8 col-md-6 col-lg">
+				<div class="col-sm-6 col-md">
 					<div class="form-group">
 						<label class="label-sm text-truncate">'.implode(', ', $sLabel).'</label>
 						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />
 					</div>
 				</div>
-			</div>
-			<div id="base-app-filter-buttons" class="row pt-3 b-top align-items-center">
-				<div class="col-sm">
+				<div class="col-sm col-lg-2 text-right">
 					<div class="form-group">
-						'.$textResults.'
-					</div>
-				</div>
-				<div class="col-sm text-right">
-					<div class="form-group">
+						<label class="label-sm">&#160;</label>
 						<button '.$btnAction.' id="'.$APPTAG.'-submit-filter" class="btn btn-sm btn-primary base-icon-search btn-icon">
 							'.JText::_('TEXT_SEARCH').'
 						</button>
-						'.$btnClearFilter.'
+						<a href="'.JURI::current().'" class="btn btn-sm btn-danger base-icon-cancel-circled hasTooltip" title="'.JText::_('TEXT_RESET').'"></a>
 					</div>
 				</div>
 			</div>

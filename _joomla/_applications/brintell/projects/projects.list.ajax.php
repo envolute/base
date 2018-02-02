@@ -108,32 +108,25 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 			if($cfg['hasUpload']) :
 				JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
-				$files[$item->id] = uploader::getFiles($cfg['fileTable'], $item->id);
-				$listFiles = '';
-				for($i = 0; $i < count($files[$item->id]); $i++) {
-					if(!empty($files[$item->id][$i]->filename)) :
-						$listFiles .= '
-							<a href="'.$_ROOT.'apps/get-file?fn='.base64_encode($files[$item->id][$i]->filename).'&mt='.base64_encode($files[$item->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
-								<span class="base-icon-attach hasTooltip" title="'.$files[$item->id][$i]->filename.'<br />'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"></span>
-							</a>
-						';
-					endif;
-				}
+				// Imagem Principal -> Primeira imagem (index = 0)
+				$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
+				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 32, 32);
+				else $imgPath = $_ROOT.'images/apps/icons/folder_32.png';
+				$img = '<img src="'.$imgPath.'" class="img-fluid float-left mr-2" style="width:32px; height:32px;" />';
 			endif;
 
+			$info = ($item->client > 0) ? $item->client : JText::_('TEXT_BRINTELL');
 			$btnState = $hasAdmin ? '<a href="#" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'"><span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').' hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'"></span></a> ' : '';
 			$btnEdit = $hasAdmin ? '<a href="#" class="base-icon-pencil text-live hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"></a> ' : '';
 			$btnDelete = $hasAdmin ? '<a href="#" class="base-icon-trash text-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"></a>' : '';
 			$rowState = $item->state == 0 ? 'list-danger' : '';
+			$urlViewData = $_ROOT.'apps/'.$APPPATH.'/view?pID='.$item->id;
+			// Resultados
 			$html .= '
 				<li class="'.$rowState.'">
-					<span class="float-right">'.$btnState.$btnEdit.$btnDelete.'</span>
-					'.baseHelper::nameFormat($item->bank).'<br />
-					<span class="text-muted text-sm">
-						'.JText::_('FIELD_LABEL_OPERATION_ABBR').': <span class="text-live">'.$item->operation.'</span>
-						'.JText::_('FIELD_LABEL_AGENCY_ABBR').': <span class="text-live">'.$item->agency.'</span>
-						'.JText::_('FIELD_LABEL_ACCOUNT_ABBR').': <span class="text-live">'.$item->account.'</span>
-					</span>
+					<div class="float-right">'.$btnState.$btnEdit.$btnDelete.'</div>
+					'.$img.'
+					<div class="text-truncate"><a href="'.$urlViewData.'" class="new-window" target="_blank">'.baseHelper::nameFormat($item->name).'</a></div><small>'.$info.'</small>
 				</li>
 			';
 		}

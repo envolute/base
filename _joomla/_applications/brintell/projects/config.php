@@ -37,14 +37,20 @@ endif;
 // Crud's permissions
 	$cfg['isPublic']			= false; // Público -> acesso aberto a todos
 	// Restrict Access
-	// $cfg['groupId']['viewer'][]  = apenas visualiza o componente
+	// $cfg['groupId']['analyst'][]  = Analyst
+	// $cfg['groupId']['client'][]  = Client Developer
+	// $cfg['groupId']['client']['manager'][]  = Client Manager
+	// $cfg['groupId']['viewer'][]  = Client Manager
 	// $cfg['groupId']['admin'][]   = administra o componente
 	// ----------------------------------------------------
-	$cfg['groupId']['viewer'][]	= 0; // '0' pois não pode ser vazio
+	$cfg['groupId']['analyst'][]			= 12; // Brintell Analyst
+	$cfg['groupId']['client'][]				= 16; // Client Developer
+	$cfg['groupId']['client']['manager'][]	= 15; // Client Manager
+	// ----------------------------------------------------
+	$cfg['groupId']['viewer'][]				= 0; // '0' pois não pode ser vazio
 	// acesso liberado sempre
-	$cfg['groupId']['admin'][]	= 6; // Gerente
-	$cfg['groupId']['admin'][]	= 7; // Administrador
-	$cfg['groupId']['admin'][]	= 8; // Desenvolvedor
+	$cfg['groupId']['admin'][]				= 11;	// Brintel Manager
+	$cfg['groupId']['admin'][]				= 8;	// Desenvolvedor
 	// ----------------------------------------------------
 
 // crud's name

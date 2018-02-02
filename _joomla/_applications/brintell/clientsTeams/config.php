@@ -11,9 +11,9 @@ $cfg['project'] = 'brintell';
 // Informe o $APPNAME da outra. Senão, deixe em branco...
 $cfg['parent']	= '';
 // App Define
-$APPNAME		= 'clients';
+$APPNAME		= 'clientsTeams';
 $APPPATH		= !empty($cfg['parent']) ? $cfg['parent'] : $APPNAME;
-$MAIN_TB		= '#__'.$cfg['project'].'_clients';
+$MAIN_TB		= '#__'.$cfg['project'].'_rel_clients_teams';
 $APPTAG			= isset(${$APPNAME.'AppTag'}) ? ${$APPNAME.'AppTag'} : $APPNAME;
 $newInstance	= ($APPTAG != $APPNAME) ? true : false;
 
@@ -124,27 +124,27 @@ endif;
 	$cfg['formBtnAction']		= false;
 
 	// date & price convertions
-	$cfg['dateConvert']			= true;
+	$cfg['dateConvert']			= false;
 	$cfg['load_UI']				= $cfg['dateConvert'];
 	$cfg['priceDecimal']		= false;
-	$cfg['htmlEditor']			= true;
-	$cfg['htmlEditorFull']		= true;
+	$cfg['htmlEditor']			= false;
+	$cfg['htmlEditorFull']		= false;
 
 	// crud's upload config
-	$cfg['hasUpload']			= true;
+	$cfg['hasUpload']			= false;
 	$cfg['hasUpload'] = isset(${$APPTAG.'hasUpload'}) ? ${$APPTAG.'hasUpload'} : $cfg['hasUpload'];
 	// habilita a adição dinamica de novos campos do tipo 'file'
 	$cfg['dinamicFiles']		= false;
 	// valor inicial do index do arquivo... considerando '0' o campo estático
 	// caso exitam outros campos estáticos, o index será igual ao número de itens estáticos
 	// Ex: 4 itens estáticos => $cfg['indexFileInit'] = 4;
-	$cfg['indexFileInit']		= 2;
+	$cfg['indexFileInit']		= 1;
 
 	if($cfg['hasUpload']) :
 		$cfg['fileField']		= 'file'; // upload's field name
 		$cfg['fileTable']		= $cfg['mainTable'].'_files'; // upload's database table
 		// upload params
-		$cfg['maxFileSize']		= 10485760; // 10MB
+		$cfg['maxFileSize']		= 5242880; // 5MB
 		$cfg['uploadDir']       = JPATH_BASE.DS.'images/apps/'.$APPPATH.'/'; // IMPORTANTE: colocar a barra '/' no fim
 		// file types enabled
 		$cfg['fileTypes']	= array();

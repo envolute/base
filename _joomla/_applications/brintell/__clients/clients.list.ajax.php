@@ -112,7 +112,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
 				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 32, 32);
 				else $imgPath = $_ROOT.'images/apps/icons/client_32.png';
-				$img = '<img src="'.$imgPath.'" class="img-fluid float-left mr-2" style="width:32px; height:32px;" />';
+				$img = '<img src="'.$imgPath.'" width="32" height="32" class="img-fluid float-left mr-2" />';
 			endif;
 
 			$info = ($item->groupName > 0) ? $item->groupName : '';

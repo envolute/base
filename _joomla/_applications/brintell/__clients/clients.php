@@ -33,19 +33,11 @@ jQuery(window).on('load', function() {
 
 	// APP FIELDS
 	var group_id			= jQuery('#<?php echo $APPTAG?>-group_id');
-	var portfolio			= mainForm.find('input[name=portfolio]:radio'); // radio group
 	var name				= jQuery('#<?php echo $APPTAG?>-name');
-	var company_name		= jQuery('#<?php echo $APPTAG?>-company_name');
-	var email				= jQuery('#<?php echo $APPTAG?>-email');
-	var cnpj				= jQuery('#<?php echo $APPTAG?>-cnpj');
-	var due_date			= jQuery('#<?php echo $APPTAG?>-due_date');
-	var start_date			= jQuery('#<?php echo $APPTAG?>-start_date');
-	var website				= jQuery('#<?php echo $APPTAG?>-website');
-	var description			= jQuery('#<?php echo $APPTAG?>-description');
 
 	// PARENT FIELD -> Select
 	// informe, se houver, o campo que representa a chave estrangeira principal
-	var parentFieldId		= null; // 'null', caso não exista...
+	var parentFieldId		= group_id; // 'null', caso não exista...
 	var parentFieldGroup	= elementExist(parentFieldId) ? parentFieldId.closest('[class*="col-"]') : null;
 
 	// GROUP RELATION'S BUTTONS -> grupo de botões de relacionamentos no form
@@ -56,7 +48,7 @@ jQuery(window).on('load', function() {
 
 		// ON FOCUS
 		// campo que recebe o focus no carregamento
-		var firstField		= '';
+		var firstField		= name;
 
 		// ON MODAL OPEN -> Ações quando o modal do form é aberto
 		popup.on('shown.bs.modal', function () {
@@ -97,19 +89,7 @@ jQuery(window).on('load', function() {
 			// App Fields
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
-			group_id.selectUpdate(0);
-			checkOption(portfolio, 0); // radio
 			name.val('');
-			company_name.val('');
-			email.val('');
-			cnpj.val('');
-			due_date.selectUpdate(0);
-			start_date.val('');
-			website.val('');
-			description.val('');
-
-			// hide relations buttons
-			setHidden('#<?php echo $APPTAG?>-buttons-relations', true, '#<?php echo $APPTAG?>-msg-relations');
 
 			<?php // Closure Actions
 			require(JPATH_CORE.DS.'apps/snippets/form/formReset.end.js.php');
@@ -157,26 +137,6 @@ jQuery(window).on('load', function() {
 			<?php // Default Actions
 			require(JPATH_CORE.DS.'apps/snippets/form/setParent.def.js.php');
 			?>
-		};
-
-		// CUSTOM -> view locations list
-		window.<?php echo $APPTAG?>_viewLocations = function() {
-			_locations_listReload(false, false, false, false, false, formId.val());
-		};
-		// CUSTOM -> view call centers list
-		window.<?php echo $APPTAG?>_viewCallCenters = function() {
-			_callCenters_listReload(false, false, false, false, false, formId.val());
-		};
-		// CUSTOM -> view banks accounts list
-		window.<?php echo $APPTAG?>_viewBanks = function() {
-			// _banksAccounts_listReload
-			// A TAG para o relacionamento é '_banksAccountsClients' pois existem duas instâncias
-			// Uma para 'Clients' e outra para 'Teams'
-			_banksAccountsClients_listReload(false, false, false, false, false, formId.val());
-		};
-		// CUSTOM -> view contacts list
-		window.<?php echo $APPTAG?>_viewTeams = function() {
-			clientsTeams_listReload(false, false, false, true, 'client_id', formId.val());
 		};
 
 	// LIST CONTROLLERS
@@ -250,19 +210,8 @@ jQuery(window).on('load', function() {
 						?>
 
 						// App Fields
-						group_id.selectUpdate(item.group_id);
-						checkOption(portfolio, item.portfolio); // radio
+						group_id.selectUpdate(item.group_id); // select
 						name.val(item.name);
-						company_name.val(item.company_name);
-						email.val(item.email);
-						cnpj.val(item.cnpj);
-						due_date.selectUpdate(item.due_date, 0);
-						start_date.val(dateFormat(item.start_date)); // DATE -> conversão de data
-						website.val(item.website);
-						description.val(item.description);
-
-						// show relations buttons
-						setHidden('#<?php echo $APPTAG?>-buttons-relations', false, '#<?php echo $APPTAG?>-msg-relations');
 
 						<?php // Closure Actions
 						require(JPATH_CORE.DS.'apps/snippets/form/loadEdit.end.js.php');
@@ -400,21 +349,21 @@ jQuery(window).on('load', function() {
 
 	<?php if($hasAdmin) : ?>
 		<div class="modal fade" id="modal-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-<?php echo $APPTAG?>Label">
-			<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-dialog modal-sm" role="document">
 				<div class="modal-content">
 					<form name="form-<?php echo $APPTAG?>" id="form-<?php echo $APPTAG?>" method="post" enctype="multipart/form-data">
 						<?php if($cfg['showFormHeader']) require(JPATH_CORE.DS.'apps/layout/form/modal.header.php'); ?>
 						<div class="modal-body">
 							<fieldset>
 								<?php
-								require(JPATH_CORE.DS.'apps/layout/form/toolbar.php');
+								require(JPATH_CORE.DS.'apps/layout/form/toolbar.sm.php');
 								if($newInstance) require($PATH_APP_FILE.'.form.php');
 								else require_once($PATH_APP_FILE.'.form.php');
 								?>
 							</fieldset>
 							<?php require(JPATH_CORE.DS.'apps/layout/form/alert.error.php'); ?>
 						</div>
-						<?php require(JPATH_CORE.DS.'apps/layout/form/modal.footer.php'); ?>
+						<?php require(JPATH_CORE.DS.'apps/layout/form/modal.footer.sm.php'); ?>
 					</form>
 				</div>
 			</div>

@@ -4,26 +4,16 @@
 
 CREATE TABLE `cms_brintell_clients` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `group_id` int(11) NOT NULL,
-  `portfolio` tinyint(4) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `company_name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `cnpj` varchar(20) NOT NULL,
-  `due_date` tinyint(4) NOT NULL,
-  `start_date` DATE NOT NULL,
-  `website` varchar(255) NOT NULL,
-  `description` text NOT NULL,
+  `group_id` varchar(10) NOT NULL,
+  `name` varchar(50) NOT NULL,
   `state` tinyint(4) NOT NULL,
   `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` int(11) NOT NULL,
   `alter_date` datetime NOT NULL,
   `alter_by` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `group_id` (`group_id`)
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
 
 --
 -- Estrutura da tabela `cms_brintell_clients_files`
@@ -79,10 +69,10 @@ CREATE TABLE `cms_brintell_rel_clients_callCenters` (
 -- Estrutura da tabela `cms_brintell_rel_clients_contacts`
 --
 
-CREATE TABLE `cms_brintell_rel_clients_teams` (
+CREATE TABLE `cms_brintell_rel_clients_contacts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `client_id` int(11) NOT NULL,
-  `team_id` int(11) NOT NULL,
+  `contact_id` int(11) NOT NULL,
   `main` tinyint(4) NOT NULL,
   `department` varchar(50) NOT NULL,
   `state` tinyint(4) NOT NULL DEFAULT '1',
@@ -91,7 +81,7 @@ CREATE TABLE `cms_brintell_rel_clients_teams` (
   `alter_date` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
   `alter_by` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `client_id` (`client_id`,`team_id`)
+  UNIQUE KEY `client_id` (`client_id`,`contact_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Relação entre conveniados e contatos';
 
 -- --------------------------------------------------------

@@ -34,7 +34,7 @@ $uID = $user->id;
 ?>
 
 <script>
-jQuery(window).on('load', function() {
+jQuery(document).ready(function() {
 
 	<?php // Default 'JS' Vars
 	require(JPATH_CORE.DS.'apps/snippets/initVars.js.php');
@@ -492,9 +492,13 @@ jQuery(window).on('load', function() {
 		echo 'setHidden("#'.$APPTAG.'-form-ajax", false, "#'.$APPTAG.'-form-loader");'; // Mostra o formulário
 		echo $APPTAG.'_loadEditFields('.$rID.', true, true);';
 	else :
-		$app->enqueueMessage(JText::_('MSG_NOT_PERMISSION'), 'warning');
-		$app->redirect(JURI::root(true));
-		exit();
+		if($isAdmin) :
+			echo '<div class="alert alert-warning text-sm mx-2">'.JText::_('MSG_NOT_TEAM_PROFILE').'</div>';
+		else :
+			$app->enqueueMessage(JText::_('MSG_NOT_PERMISSION'), 'warning');
+			$app->redirect(JURI::root(true));
+			exit();
+		endif;
 	endif;
 	?>
 
