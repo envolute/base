@@ -95,6 +95,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['state']				= $input->get('state', 1, 'int');
 		// app
 		$request['newUser']				= $input->get('newUser', 0, 'int');
+		$request['usergroup']			= $input->get('usergroup', 0, 'int');
+		$request['cusergroup']			= $input->get('cusergroup', 0, 'int');
 		$request['user_id']				= $input->get('user_id', 0, 'int');
 			// Define o usuário
 			$userID						= $request['newUser'] ? $request['newUser'] : $request['user_id'];
@@ -239,6 +241,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'type'				=> $item->type,
 						'role_id'			=> $item->role_id,
 						'user_id'			=> $itemUID,
+						'usergroup'			=> $item->usergroup,
 						'user'				=> $itemName,
 						'name'				=> $item->name,
 						'nickname'			=> $item->nickname,
@@ -284,6 +287,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('type')				.'='. $request['type'] .','.
 						$db->quoteName('role_id')			.'='. $request['role_id'] .','.
 						$db->quoteName('user_id')			.'='. $userID .','.
+						$db->quoteName('usergroup')			.'='. $request['usergroup'] .','.
 						$db->quoteName('name')				.'='. $db->quote($request['name']) .','.
 						$db->quoteName('nickname')			.'='. $db->quote($request['nickname']) .','.
 						$db->quoteName('email')				.'='. $db->quote($request['email']) .','.
@@ -383,7 +387,23 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 								$userMsg = '<br />'.$userMsg;
 							// se existir, atualiza os dados 'name' e 'e-mail' para mantê-los sincronizados
 							elseif(($request['newUser'] != 0 && !$isUser) || ($isUser && $userInfoId)) :
-								// verifica se ha atualização de senha
+								// Verifica se há alteração do usergroup
+								if($isUser && $request['usergroup'] != $request['cusergroup']) :
+									$query = 'SELECT COUNT(*) FROM '.$db->quoteName('#__user_usergroup_map') .' WHERE group_id = '.$db->quote($request['cusergroup']).' AND user_id = '.$db->quote($request['user_id']);
+									$db->setQuery($query);
+									$mapOn = $db->loadResult();
+									if($mapOn) : // verifica se o mapeamento existe
+										// Atribui o novo grupo
+										$query = 'UPDATE '. $db->quoteName('#__user_usergroup_map') .' SET group_id = '. $db->quote($request['usergroup']) .' WHERE group_id = '.$db->quote($request['cusergroup']).' AND user_id = '.$db->quote($request['user_id']);
+										$db->setQuery($query);
+									else :
+										// cria o mapeamento e Atribui o novo grupo
+										$query = 'INSERT INTO '. $db->quoteName('#__user_usergroup_map') .' (`user_id`, `group_id`) VALUES ('.$db->quote($request['user_id']).', '. $db->quote($request['usergroup']).')';
+										$db->setQuery($query);
+									endif;
+									if($db->execute()) $userMsg = '<br />'.JText::_('MSG_USERGROUP_CHANGED');
+								endif;
+								// verifica se há atualização de senha
 								$newPass  = '';
 								if(!empty($request['password']) && ($request['password'] == $request['repassword'])) :
 									$newPass  = ', password = '. $db->quote(JUserHelper::hashPassword($request['password']));
@@ -399,7 +419,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 								// Um exemplo disso é quando for utilizado o 'CPF' como nome de usuário
 								if($request['newUser'] != 0) :
 									setClientCode($id, $request['newUser'], $request['username'], $cfg);
-									$userMsg = '<br />'.JText::_('MSG_USER_CREATED');
+									$userMsg .= '<br />'.JText::_('MSG_USER_CREATED');
 								endif;
 							endif;
 						elseif($isUser && $userInfoId) :

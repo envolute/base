@@ -35,6 +35,8 @@ jQuery(window).on('load', function() {
 	var type				= mainForm.find('input[name=type]:radio'); // radio group
 	var role_id				= jQuery('#<?php echo $APPTAG?>-role_id');
 	var user_id				= jQuery('#<?php echo $APPTAG?>-user_id');
+	var usergroup			= jQuery('#<?php echo $APPTAG?>-usergroup');
+	var cusergroup			= jQuery('#<?php echo $APPTAG?>-cusergroup');
 	var name 				= jQuery('#<?php echo $APPTAG?>-name');
 	var nickname			= jQuery('#<?php echo $APPTAG?>-nickname');
 	var email				= jQuery('#<?php echo $APPTAG?>-email');
@@ -137,6 +139,8 @@ jQuery(window).on('load', function() {
 			// App Fields
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
+			usergroup.selectUpdate(0); // select
+			cusergroup.val(0);
 			checkOption(type, 0); // radio
 			role_id.selectUpdate(0); // select
 			user_id.val('');
@@ -173,7 +177,6 @@ jQuery(window).on('load', function() {
 			account.val('');
 			operation.val('');
 			tags.selectUpdate(''); // select
-			usergroup.selectUpdate(0); // select
 			checkOption(access, 0);
 			reasonStatus.val('');
 
@@ -250,6 +253,7 @@ jQuery(window).on('load', function() {
 		// CUSTOM -> Set Type
 		// implementa ações de acordo com o tipo do cliente
 		window.<?php echo $APPTAG?>_setType = function(e){
+			var gID = cusergroup.val();
 			// External or Client
 			if(e > 0) {
 				// IMPORTANTE: namter o hide/show para não dar comflito com a propriedade hidden
@@ -259,16 +263,16 @@ jQuery(window).on('load', function() {
 				// External	=> 1
 				// Client	=> 2
 				if(e == 1) {
-					<?php echo $APPTAG?>_getGroupList('<?php echo $cfg[$APPTAG.'AccessLevel']['external']?>', 0);
+					<?php echo $APPTAG?>_getGroupList('<?php echo $cfg[$APPTAG.'AccessLevel']['external']?>', gID);
 				} else {
-					<?php echo $APPTAG?>_getGroupList('<?php echo $cfg[$APPTAG.'AccessLevel']['client']?>', 0);
+					<?php echo $APPTAG?>_getGroupList('<?php echo $cfg[$APPTAG.'AccessLevel']['client']?>', gID);
 				}
 			// Brintell
 			} else {
 				// IMPORTANTE: namter o hide/show para não dar comflito com a propriedade hidden
 				jQuery('.<?php echo $APPTAG?>-group-brintell').show();
 				jQuery('.<?php echo $APPTAG?>-group-external').hide();
-				<?php echo $APPTAG?>_getGroupList('<?php echo $cfg[$APPTAG.'AccessLevel']['brintell']?>', 0);
+				<?php echo $APPTAG?>_getGroupList('<?php echo $cfg[$APPTAG.'AccessLevel']['brintell']?>', gID);
 			}
 		}
 
@@ -449,10 +453,11 @@ jQuery(window).on('load', function() {
 						?>
 
 						// App Fields
+						usergroup.selectUpdate(item.usergroup); // select
+						cusergroup.val(item.usergroup);
 						checkOption(type, item.type); // radio
 						role_id.selectUpdate(item.role_id);
 						user_id.val(item.user_id);
-						usergroup.selectUpdate(item.usergroup); // select
 						name.val(item.name);
 						nickname.val(item.nickname);
 						email.val(item.email);
@@ -591,7 +596,8 @@ jQuery(window).on('load', function() {
 		// CUSTOM
 		// Set Group List
 		// seta a lista de grupos de acordo com o tipo selecionado
-		window.<?php echo $APPTAG?>_getGroupList = function(grps, gID) {
+		window.<?php echo $APPTAG?>_getGroupList = function(grps, id) {
+			var oID = 0;
 			<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
 			jQuery.ajax({
 				url: "<?php echo $URL_APP_FILE ?>.model.php?task=gList&gIDs="+grps,
@@ -607,8 +613,8 @@ jQuery(window).on('load', function() {
 								if(res.total != 1) usergroup.append('<option value="0">- <?php echo JText::_('TEXT_SELECT'); ?> -</option>');
 							}
 							usergroup.append('<option value="'+res.id+'">'+res.title+'</option>');
-							if(isSet(gID) && gID) usergroup.val(gID);
-							usergroup.selectUpdate(); // atualiza o select
+							if(isSet(id) && id == res.id) oID = res.id;
+							// IMPORTANTE: Atualiza o select no ajax -> 'complete:' abaixo
 						} else {
 							$.baseNotify({ msg: res.msg, type: "danger"});
 						}
@@ -620,6 +626,9 @@ jQuery(window).on('load', function() {
 					?>
 				},
 				complete: function() {
+					// IMPORTANTE: Atualiza o select
+					if(isSet(id) && id > 0 && id == oID) usergroup.val(id);
+					usergroup.selectUpdate(); // atualiza o select
 					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
 				}
 			});
@@ -653,7 +662,7 @@ jQuery(window).on('load', function() {
 					type: 'post'
 				},
 				required: function(el) {
-					return (jQuery('#<?php echo $APPTAG?>-access-1').is(':checked'));
+					return (jQuery('#<?php echo $APPTAG?>-access-1').is(':checked') && jQuery('#<?php echo $APPTAG?>-id').val() == 0);
 				}
 			},
 			password : {

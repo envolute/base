@@ -4,7 +4,13 @@
 	// SMALL
 	.label-sm {
 		display: block;
-		margin-bottom: 0;
-		font-size: .8rem;
-		color: $base-label-sm-color;
+		margin-bottom: $base-label-sm-margin;
+		font-size: $base-label-sm-font-size;
+	}
+
+	// EXTRA SMALL
+	.label-xs {
+		display: block;
+		margin-bottom: $base-label-xs-margin;
+		font-size: $base-label-xs-font-size;
 	}

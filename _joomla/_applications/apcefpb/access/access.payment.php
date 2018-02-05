@@ -50,7 +50,7 @@ if(!empty($item->guestName)) : // verifica se existe
 
 	// CLIENT
 	if($item->client_id > 0 && !empty($item->client)) :
-		$client = '<label class="label-sm">'.JText::_('FIELD_LABEL_CLIENT').': </label>'.baseHelper::nameFormat($item->client);
+		$client = '<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_CLIENT').': </label>'.baseHelper::nameFormat($item->client);
 	else :
 		$text = !empty($item->client_desc) ? $item->client_desc : JText::_('TEXT_SELECT_ACCESS_FREE');
 		$client = '<span class="text-live base-icon-thumbs-up-alt"> '.$text.'</span>'; //$item->client_desc;
@@ -96,7 +96,7 @@ if(!empty($item->guestName)) : // verifica se existe
 	';
 	if(!empty($guests)) :
 		$html .= '
-			<label class="label-sm">Convidado'.$s.':</label>
+			<label class="label-xs text-muted">Convidado'.$s.':</label>
 			<ul class="set-list bordered mb-3">
 				'.$guests.'
 				<li class="text-right text-lg font-weight-bold">Valor Total: R$ '.baseHelper::priceFormat($total_amount).'</li>

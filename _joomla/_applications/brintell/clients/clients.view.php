@@ -87,12 +87,12 @@ if($vID != 0) :
 			';
 		endif;
 
-		$razao	= !empty($item->company_name) ? '<label class="label-sm">'.JText::_('FIELD_LABEL_COMPANY_NAME').'</label><p class="text-truncate">'.baseHelper::nameFormat($item->company_name).'</p>' : '';
-		$site	= !empty($item->website) ? '<label class="label-sm">'.JText::_('FIELD_LABEL_WEBSITE').'</label><p class="text-truncate"><a href="'.$item->website.'" class="new-window" target="_blank">'.$item->website.'</a></p>' : '';
-		$email	= !empty($item->email) ? '<label class="label-sm">'.JText::_('FIELD_LABEL_EMAIL').'</label><p class="text-truncate"><a href="mailto:'.$item->email.'" class="mr-3">'.$item->email.'</a></p>' : '';
-		$cnpj	= !empty($item->cnpj) ? '<label class="label-sm">CNPJ</label><p>'.$item->cnpj.'</p>' : '';
-		$date	= $item->due_date != 0 ? '<label class="label-sm">'.JText::_('FIELD_LABEL_DUE_DATE').'</label><p>'.($item->due_date < 10 ? '0' : '').$item->due_date.'</p>' : '';
-		$since	= $item->start_date != '0000-00-00' ? '<label class="label-sm">'.JText::_('TEXT_SINCE').'</label><p>'.baseHelper::dateFormat($item->due_date).'</p>' : '';
+		$razao	= !empty($item->company_name) ? '<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_COMPANY_NAME').'</label><p class="text-truncate">'.baseHelper::nameFormat($item->company_name).'</p>' : '';
+		$site	= !empty($item->website) ? '<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_WEBSITE').'</label><p class="text-truncate"><a href="'.$item->website.'" class="new-window" target="_blank">'.$item->website.'</a></p>' : '';
+		$email	= !empty($item->email) ? '<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_EMAIL').'</label><p class="text-truncate"><a href="mailto:'.$item->email.'" class="mr-3">'.$item->email.'</a></p>' : '';
+		$cnpj	= !empty($item->cnpj) ? '<label class="label-xs text-muted">CNPJ</label><p>'.$item->cnpj.'</p>' : '';
+		$date	= $item->due_date != 0 ? '<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_DUE_DATE').'</label><p>'.($item->due_date < 10 ? '0' : '').$item->due_date.'</p>' : '';
+		$since	= $item->start_date != '0000-00-00' ? '<label class="label-xs text-muted">'.JText::_('TEXT_SINCE').'</label><p>'.baseHelper::dateFormat($item->due_date).'</p>' : '';
 		$agree	= $item->portfolio == 1 ? '<li><span class="text-success text-uppercase"><span class="base-icon-ok"></span> '.JText::_('FIELD_LABEL_PORTFOLIO').'</span></li>' : '';
 		$gName	= !empty($item->groupName) ? '<li>'.$item->groupName.'</li>' : '';
 		$lProj	= '

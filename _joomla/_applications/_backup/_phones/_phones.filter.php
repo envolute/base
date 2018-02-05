@@ -86,7 +86,7 @@ $htmlFilter = '
 			<div class="row">
 				<div class="col-sm-4 col-md-2">
 					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_MAIN').'</label>
+						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_MAIN').'</label>
 						<select name="fMain" id="fMain" class="form-control form-control-sm set-filter">
 							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
 							<option value="1"'.($fMain == 1 ? ' selected' : '').'>'.JText::_('TEXT_YES').'</option>
@@ -96,7 +96,7 @@ $htmlFilter = '
 				</div>
 				<div class="col-sm-4 col-md-2">
 					<div class="form-group">
-						<label class="label-sm">Whatsapp</label>
+						<label class="label-xs text-muted">Whatsapp</label>
 						<select name="fWapp" id="fWapp" class="form-control form-control-sm set-filter">
 							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
 							<option value="1"'.($fWapp == 1 ? ' selected' : '').'>'.JText::_('TEXT_YES').'</option>
@@ -106,7 +106,7 @@ $htmlFilter = '
 				</div>
 				<div class="col-sm-4 col-md-2">
 					<div class="form-group">
-						<label class="label-sm">'.JText::_('TEXT_STATE').'</label>
+						<label class="label-xs text-muted">'.JText::_('TEXT_STATE').'</label>
 						<select name="active" id="active" class="form-control form-control-sm set-filter">
 							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
 							<option value="1"'.($active == 1 ? ' selected' : '').'>'.JText::_('TEXT_ACTIVES').'</option>
@@ -116,7 +116,7 @@ $htmlFilter = '
 				</div>
 				<div class="col-sm-8 col-lg">
 					<div class="form-group">
-						<label class="label-sm text-truncate">'.implode(', ', $sLabel).'</label>
+						<label class="label-xs text-muted text-truncate">'.implode(', ', $sLabel).'</label>
 						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />
 					</div>
 				</div>

@@ -7,6 +7,7 @@ CREATE TABLE `cms_brintell_teams` (
   `type` tinyint(4) NOT NULL,
   `role_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
+  `usergroup` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `nickname` varchar(50) NOT NULL,
   `email` varchar(255) NOT NULL,

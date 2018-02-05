@@ -329,10 +329,10 @@ jQuery(window).on('load', function() {
 		<? endif; ?>
 
 		// CUSTOM
-		// DESABILITADO => NÃO HÁ CADASTRO DE DEPENDENTES
 		// Set dependents List
 		// seta a lista de dependentes de acordo com o associado selecionado
 		window.<?php echo $APPTAG?>_getDependentList = function(itemID, id) {
+			var oID = 0;
 			<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
 			jQuery.ajax({
 				url: "<?php echo $URL_APP_FILE ?>.model.php?task=cList&cID="+itemID,
@@ -354,8 +354,8 @@ jQuery(window).on('load', function() {
 								}
 							}
 							if(res.status == 1) dependent_id.append('<option value="'+res.id+'">'+res.name+'</option>');
-							if(isSet(id) && id) dependent_id.val(id);
-							dependent_id.selectUpdate(); // atualiza o select
+							if(isSet(id) && id == res.id) oID = res.id;
+							// IMPORTANTE: Atualiza o select no ajax -> 'complete:' abaixo
 						} else {
 							$.baseNotify({ msg: res.msg, type: "danger"});
 						}
@@ -367,6 +367,9 @@ jQuery(window).on('load', function() {
 					?>
 				},
 				complete: function() {
+					// IMPORTANTE: Atualiza o select
+					if(isSet(id) && id > 0 && id == oID) dependent_id.val(id);
+					usergroup.selectUpdate(); // atualiza o select
 					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
 				}
 			});

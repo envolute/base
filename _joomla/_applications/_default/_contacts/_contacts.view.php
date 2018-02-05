@@ -120,7 +120,7 @@ if($vID != 0) :
 		if(!empty($item->email)) :
 			$info1 .= '
 				<div class="col-sm-8">
-					<label class="label-sm">'.JText::_('FIELD_LABEL_EMAIL').':</label>
+					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_EMAIL').':</label>
 					<p>'.$item->email.'</p>
 				</div>
 			';
@@ -128,7 +128,7 @@ if($vID != 0) :
 		if(!empty($item->occupation)) :
 			$info1 .= '
 				<div class="col">
-					<label class="label-sm">'.JText::_('FIELD_LABEL_OCCUPATION').':</label>
+					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_OCCUPATION').':</label>
 					<p> '.baseHelper::nameFormat($item->occupation).'</p>
 				</div>
 			';
@@ -140,7 +140,7 @@ if($vID != 0) :
 		if(!empty($item->birthday) && $item->birthday != '0000-00-00') :
 			$info2 .= '
 				<div class="col-6 col-sm-4">
-					<label class="label-sm">'.JText::_('FIELD_LABEL_BIRTHDAY').':</label>
+					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_BIRTHDAY').':</label>
 					<p>'.baseHelper::dateFormat($item->birthday).'</p>
 				</div>
 			';
@@ -148,7 +148,7 @@ if($vID != 0) :
 		if(!empty($item->cpf)) :
 			$info2 .= '
 				<div class="col-6 col-sm-4">
-					<label class="label-sm">CPF:</label>
+					<label class="label-xs text-muted">CPF:</label>
 					<p>'.$item->cpf.'</p>
 				</div>
 			';
@@ -156,7 +156,7 @@ if($vID != 0) :
 		if(!empty($item->rg)) :
 			$info2 .= '
 				<div class="col-6 col-sm-4">
-					<label class="label-sm">RG:</label>
+					<label class="label-xs text-muted">RG:</label>
 					<p>'.$item->rg.' / '.$item->rg_orgao.'</p>
 				</div>
 			';
@@ -164,7 +164,7 @@ if($vID != 0) :
 		if($item->gender > 0) :
 			$info2 .= '
 				<div class="col-6 col-sm-4">
-					<label class="label-sm">'.JText::_('FIELD_LABEL_GENDER').':</label>
+					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_GENDER').':</label>
 					<p>'.JText::_('TEXT_GENDER_'.$item->gender).'</p>
 				</div>
 			';
@@ -172,7 +172,7 @@ if($vID != 0) :
 		if($item->marital_status > 0) :
 			$info2 .= '
 				<div class="col-6 col-sm-4">
-					<label class="label-sm">'.JText::_('FIELD_LABEL_MARITAL_STATUS').':</label>
+					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_MARITAL_STATUS').':</label>
 					<p>'.JText::_('TEXT_MARITAL_STATUS_'.$item->marital_status).'</p>
 				</div>
 			';
@@ -180,7 +180,7 @@ if($vID != 0) :
 		if($item->children > 0) :
 			$info2 .= '
 				<div class="col-6 col-sm-4">
-					<label class="label-sm">'.JText::_('FIELD_LABEL_CHILDREN').':</label>
+					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_CHILDREN').':</label>
 					<p>'.$item->children.'</p>
 				</div>
 			';
@@ -188,7 +188,7 @@ if($vID != 0) :
 		if(!empty($item->partner)) :
 			$info2 .= '
 				<div class="col-12">
-					<label class="label-sm">'.JText::_('FIELD_LABEL_PARTNER').':</label><p>'.baseHelper::nameFormat($item->partner).'</p>
+					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_PARTNER').':</label><p>'.baseHelper::nameFormat($item->partner).'</p>
 				</div>
 			';
 		endif;
@@ -199,7 +199,7 @@ if($vID != 0) :
 		if(!empty($item->address)) :
 			$address .= '
 				<div class="contact-address">
-					<label class="label-sm">'.JText::_('FIELD_LABEL_ADDRESS').':</label>
+					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_ADDRESS').':</label>
 					<p>
 						'.baseHelper::nameFormat($item->address).$addressNumber.$addressInfo.'<br />
 						'.$addressZip.$addressDistrict.$addressCity.$addressState.$addressCountry.'
@@ -213,7 +213,7 @@ if($vID != 0) :
 		if(!empty($item->extra_info)) :
 			$extra_info .= '
 				<div class="contact-extra-info">
-					<label class="label-sm">'.JText::_('FIELD_LABEL_EXTRA_INFO').':</label>
+					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_EXTRA_INFO').':</label>
 					<div class="mb-4">'.$item->extra_info.'</div>
 				</div>
 			';
@@ -232,11 +232,11 @@ if($vID != 0) :
 						<div class="col-sm">
 							<div class="row">
 								<div class="col-md-8">
-									<label class="label-sm">'.JText::_('FIELD_LABEL_NAME').':</label>
+									<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_NAME').':</label>
 									<p> '.baseHelper::nameFormat($item->name).$access.'</p>
 								</div>
 								<div class="col-md-4">
-									<label class="label-sm">'.JText::_('FIELD_LABEL_GROUP').':</label>
+									<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_GROUP').':</label>
 									<p> '.baseHelper::nameFormat($item->group_name).'</p>
 								</div>
 							</div>

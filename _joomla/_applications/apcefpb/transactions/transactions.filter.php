@@ -142,14 +142,14 @@ $where = '';
 					$listActions = '
 						<div class="col-md-4">
 							<div class="form-group">
-								<label class="label-sm text-live b-bottom mb-3">'.JText::_('FIELD_LABEL_INVOICE').'</label>
+								<label class="label-xs text-muted text-live b-bottom mb-3">'.JText::_('FIELD_LABEL_INVOICE').'</label>
 								<button type="button" class="btn btn-sm btn-success '.$APPTAG.'-btn-action hasTooltip" title="'.JText::_('TEXT_ADD_TO_INVOICE_DESC').'" disabled data-toggle="modal" data-target="#modal-'.$APPTAG.'-invoice" data-backdrop="static" data-keyboard="false">
 									<span class="base-icon-forward btn-icon"></span> '.JText::_('TEXT_ADD_TO_INVOICE').'
 								</button>
 							</div>
 						</div>
 						<div class="col-sm b-left">
-							<label class="label-sm text-live b-bottom mb-3">'.JText::_('TEXT_TO_IMPORT').'</label>
+							<label class="label-xs text-muted text-live b-bottom mb-3">'.JText::_('TEXT_TO_IMPORT').'</label>
 							<div class="form-group d-inline-block">
 								<button type="button" class="btn btn-sm btn-primary hasTooltip" title="'.JText::_('TEXT_ADD_FIXED_DESC').'" data-toggle="modal" data-target="#modal-'.$APPTAG.'-addFixed" data-backdrop="static" data-keyboard="false">
 									<span class="base-icon-download btn-icon"></span> '.JText::_('TEXT_ADD_FIXED').'
@@ -384,7 +384,7 @@ $htmlFilter = '
 					<div class="row">
 						<div class="col-12">
 							<div class="form-group">
-								<label class="label-sm">'.JText::_('TEXT_TRANSACTION_TYPE').'</label>
+								<label class="label-xs text-muted">'.JText::_('TEXT_TRANSACTION_TYPE').'</label>
 								<span class="btn-group btn-group-sm btn-group-justified" data-toggle="buttons">
 									<label class="btn btn-default btn-active-success">
 										<input type="radio" name="isFixed" name="isFixed-0" class="set-filter" value="0"'.($isFixed == 0 ? ' checked' : '').' />
@@ -399,7 +399,7 @@ $htmlFilter = '
 						</div>
 						<div class="col-lg-6">
 							<div id="fSType-group" class="form-group">
-								<label class="label-sm iconTip hasTooltip" title="'.JText::_('TEXT_FIXED_IMPORTED_DESC').'">'.JText::_('TEXT_FIXED_IMPORTED').'</label>
+								<label class="label-xs text-muted iconTip hasTooltip" title="'.JText::_('TEXT_FIXED_IMPORTED_DESC').'">'.JText::_('TEXT_FIXED_IMPORTED').'</label>
 								<select name="fSType" id="fSType" class="form-control form-control-sm set-filter">
 									<option value="1">'.JText::_('TEXT_SHOW').'</option>
 									<option value="0"'.($fSType == 0 ? ' selected' : '').'>'.JText::_('TEXT_HIDE').'</option>
@@ -409,7 +409,7 @@ $htmlFilter = '
 						</div>
 						<div class="col-lg-6">
 							<div id="fSType-group" class="form-group">
-								<label class="label-sm iconTip hasTooltip" title="'.JText::_('TEXT_INSTALLMENTS_TRANSACTIONS_DESC').'">'.JText::_('TEXT_INSTALLMENTS_TRANSACTIONS').'</label>
+								<label class="label-xs text-muted iconTip hasTooltip" title="'.JText::_('TEXT_INSTALLMENTS_TRANSACTIONS_DESC').'">'.JText::_('TEXT_INSTALLMENTS_TRANSACTIONS').'</label>
 								<select name="fInst" id="fInst" class="form-control form-control-sm set-filter">
 									<option value="1">'.JText::_('TEXT_SHOW').'</option>
 									<option value="0"'.($fInst == 0 ? ' selected' : '').'>'.JText::_('TEXT_HIDE').'</option>
@@ -424,7 +424,7 @@ $htmlFilter = '
 					<div class="row">
 						<div class="col-lg-6">
 							<div class="form-group">
-								<label class="label-sm">'.JText::_('FIELD_LABEL_USERGROUP').'</label>
+								<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_USERGROUP').'</label>
 								<select name="fGroup" id="fGroup" class="form-control form-control-sm set-filter">
 									<option value="0">- '.JText::_('TEXT_ALL').' -</option>
 									'.$flt_group.'
@@ -433,7 +433,7 @@ $htmlFilter = '
 						</div>
 						<div class="col-lg-6">
 							<div class="form-group">
-								<label class="label-sm">'.JText::_('FIELD_LABEL_ITEM_STATE').'</label>
+								<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_ITEM_STATE').'</label>
 								<select name="active" id="active" class="form-control form-control-sm set-filter">
 									<option value="2">- '.JText::_('TEXT_ALL').' -</option>
 									<option value="1"'.($active == 1 ? ' selected' : '').'>'.JText::_('TEXT_ACTIVES').'</option>
@@ -445,12 +445,12 @@ $htmlFilter = '
 					<div class="row">
 						<div class="col-lg-6">
 							<div class="form-group">
-								<label class="label-sm text-truncate">'.implode(', ', $sLabel).'</label>
+								<label class="label-xs text-muted text-truncate">'.implode(', ', $sLabel).'</label>
 								<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm field-search" />
 							</div>
 						</div>
 						<div class="col-lg-6">
-							<label class="label-sm">'.JText::_('FIELD_LABEL_IS_CARD').'</label>
+							<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_IS_CARD').'</label>
 							<div class="form-group">
 								<select name="fCard" id="fCard" class="form-control form-control-sm set-filter">
 									<option value="2">- '.JText::_('TEXT_ALL').' -</option>
@@ -463,7 +463,7 @@ $htmlFilter = '
 				</div>
 				<div class="col-md-4 b-left">
 					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_TRANSACTION_DATE').'</label>
+						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_TRANSACTION_DATE').'</label>
 						<span class="input-group input-group-sm">
               				<span class="input-group-addon strong">'.JText::_('TEXT_FROM').'</span>
 							<input type="text" name="dateMin" value="'.$dateMin.'" class="form-control field-date" data-width="100%" data-convert="true" />
@@ -472,7 +472,7 @@ $htmlFilter = '
 						</span>
 					</div>
 					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_PRICE').'</label>
+						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_PRICE').'</label>
 						<span class="input-group input-group-sm">
 							<span class="input-group-addon strong">R$</span>
 							<input type="text" name="priceMin" value="'.$priceMin.'" class="form-control field-price" data-width="100%" data-convert="true" />

@@ -321,7 +321,10 @@
 	$base-field-image-border:			2px;
 
 	// Label
-	$base-label-sm-color:				$base-gray-600;
+	$base-label-xs-margin:				0 !default;
+	$base-label-xs-font-size:			.8rem !default;
+	$base-label-sm-margin:				.2rem !default;
+	$base-label-sm-font-size:			.86rem !default;
 
 // NAVS
 

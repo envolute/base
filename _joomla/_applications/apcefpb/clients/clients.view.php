@@ -79,7 +79,7 @@ if($vID != 0) :
 				$img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 300, 300).'" class="img-fluid b-all b-all-dashed p-1" />';
 				$printCard = '
 					<div class="pt-3">
-						<label class="label-sm">'.JText::_('TEXT_CLIENT_CARD').'</label>
+						<label class="label-xs text-muted">'.JText::_('TEXT_CLIENT_CARD').'</label>
 						<button type="button" class="btn btn-lg btn-block btn-success base-icon-print btn-icon" onclick="'.$APPTAG.'_printCard('.$item->id.')"> '.JText::_('TEXT_PRINT').'</button>
 					</div>
 				';
@@ -94,7 +94,7 @@ if($vID != 0) :
 		if(!empty($item->partner)) :
 			$partner = '
 				<div class="col-12">
-					<label class="label-sm">'.JText::_('FIELD_LABEL_PARTNER').':</label><p>'.baseHelper::nameFormat($item->partner).'</p>
+					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_PARTNER').':</label><p>'.baseHelper::nameFormat($item->partner).'</p>
 				</div>
 			';
 		endif;
@@ -146,30 +146,30 @@ if($vID != 0) :
 					'.$printCard.'
 				</div>
 				<div class="col-sm-8 col-md-6">
-					<label class="label-sm">'.JText::_('FIELD_LABEL_NAME').':</label>
+					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_NAME').':</label>
 					<p> '.baseHelper::nameFormat($item->name).'</p>
-					<label class="label-sm">'.JText::_('FIELD_LABEL_EMAIL').':</label>
+					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_EMAIL').':</label>
 					<p>'.$item->email.'</p>
 					<div class="row">
 						<div class="col-4">
-							<label class="label-sm">'.JText::_('FIELD_LABEL_GENDER').':</label>
+							<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_GENDER').':</label>
 							<p>'.$gender.'</p>
 						</div>
 						<div class="col-4">
-							<label class="label-sm">'.JText::_('FIELD_LABEL_MARITAL_STATUS').':</label>
+							<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_MARITAL_STATUS').':</label>
 							<p>'.$mStatus.'</p>
 						</div>
 						<div class="col-4">
-							<label class="label-sm">'.JText::_('FIELD_LABEL_CHILDREN').':</label>
+							<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_CHILDREN').':</label>
 							<p>'.$item->children.'</p>
 						</div>
 						'.$partner.'
 						<div class="col-lg-6">
-							<label class="label-sm">'.JText::_('FIELD_LABEL_MOTHER_NAME').':</label>
+							<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_MOTHER_NAME').':</label>
 							<p>'.$mother.'</p>
 						</div>
 						<div class="col-lg-6">
-							<label class="label-sm">'.JText::_('FIELD_LABEL_FATHER_NAME').':</label>
+							<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_FATHER_NAME').':</label>
 							<p>'.$father.'</p>
 						</div>
 					</div>
@@ -177,23 +177,23 @@ if($vID != 0) :
 				<div class="col-md-4">
 					<div class="row">
 						<div class="col-6 col-sm-4 col-md-12">
-							<label class="label-sm">'.JText::_('TEXT_USER_TYPE').':</label>
+							<label class="label-xs text-muted">'.JText::_('TEXT_USER_TYPE').':</label>
 							<p> '.baseHelper::nameFormat($item->type).'</p>
 						</div>
 						<div class="col-6 col-sm-4 col-md-12">
-							<label class="label-sm">'.JText::_('FIELD_LABEL_BIRTHDAY').':</label>
+							<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_BIRTHDAY').':</label>
 							<p>'.$birthday.'</p>
 						</div>
 						<div class="col-6 col-sm-4 col-md-12">
-							<label class="label-sm">'.JText::_('FIELD_LABEL_PLACE_BIRTH').':</label>
+							<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_PLACE_BIRTH').':</label>
 							<p>'.$place.'</p>
 						</div>
 						<div class="col-6 col-sm-4 col-md-12">
-							<label class="label-sm">CPF:</label>
+							<label class="label-xs text-muted">CPF:</label>
 							<p>'.$cpf.'</p>
 						</div>
 						<div class="col-6 col-sm-4 col-md-12">
-							<label class="label-sm">RG:</label>
+							<label class="label-xs text-muted">RG:</label>
 							<p>'.$rg.'</p>
 						</div>
 					</div>
@@ -202,11 +202,11 @@ if($vID != 0) :
 			<hr />
 			<div class="row">
 				<div class="col-md-8">
-					<label class="label-sm">'.JText::_('FIELD_LABEL_ADDRESS').':</label>
+					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_ADDRESS').':</label>
 					<p>'.$address.'</p>
 				</div>
 				<div class="col-md">
-					<label class="label-sm">'.JText::_('FIELD_LABEL_PHONE').'(s):</label>
+					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_PHONE').'(s):</label>
 					'.$phones.'
 				</div>
 			</div>
@@ -219,7 +219,7 @@ if($vID != 0) :
 						<span class="badge badge-primary">'.JText::_('TEXT_DATA_EMPLOYEE').'</span>
 						<div class="row">
 							<div class="col-sm-4">
-								<label class="label-sm">'.JText::_('FIELD_LABEL_STATUS_EMPLOYEE').':</label>
+								<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_STATUS_EMPLOYEE').':</label>
 								<p>'.($item->usergroup == 11 ? JText::_('TEXT_EFFECTIVE') : JText::_('TEXT_RETIRED')).'</p>
 							</div>
 			';
@@ -229,11 +229,11 @@ if($vID != 0) :
 			$cx_situated = empty($item->cx_situated) ? $undefined : $item->cx_situated;
 			$html .= '
 							<div class="col-sm-6 col-md-4">
-								<label class="label-sm">'.JText::_('FIELD_LABEL_EMAIL').' Caixa:</label>
+								<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_EMAIL').' Caixa:</label>
 								<p>'.$cx_email.'</p>
 							</div>
 							<div class="col-6 col-sm-4">
-								<label class="label-sm">'.JText::_('FIELD_LABEL_SITUATED').':</label>
+								<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_SITUATED').':</label>
 								<p>'.$cx_situated.'</p>
 							</div>
 			';
@@ -244,15 +244,15 @@ if($vID != 0) :
 			$cx_role = empty($item->cx_role) ? $undefined : $item->cx_role;
 			$html .= '
 							<div class="col-6 col-md-4">
-								<label class="label-sm">'.JText::_('FIELD_LABEL_CODE').':</label>
+								<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_CODE').':</label>
 								<p>'.$cx_code.'</p>
 							</div>
 							<div class="col-6 col-sm-4">
-								<label class="label-sm">'.JText::_('FIELD_LABEL_ADMISSION_DATE').':</label>
+								<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_ADMISSION_DATE').':</label>
 								<p>'.$cx_date.'</p>
 							</div>
 							<div class="col-6 col-sm-4">
-								<label class="label-sm">'.JText::_('FIELD_LABEL_ROLE').':</label>
+								<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_ROLE').':</label>
 								<p>'.$cx_role.'</p>
 							</div>
 						</div>
@@ -262,7 +262,7 @@ if($vID != 0) :
 
 		// DADOS DE COBRANÇA
 		$accountData = '
-			<label class="label-sm">Conta Bancária:</label>
+			<label class="label-xs text-muted">Conta Bancária:</label>
 			<p>
 				'.JText::_('FIELD_LABEL_AGENCY').': <strong>'.$item->agency.'</strong><br />
 				'.JText::_('FIELD_LABEL_ACCOUNT').': <strong>'.$item->account.'</strong><br />

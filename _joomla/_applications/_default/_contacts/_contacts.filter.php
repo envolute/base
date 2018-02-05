@@ -122,7 +122,7 @@ $htmlFilter = '
 			<div class="row">
 				<div class="col-sm-8 col-lg-3">
 					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_GROUP').'</label>
+						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_GROUP').'</label>
 						<select name="fGroup" id="fGroup" class="form-control form-control-sm set-filter">
 							<option value="0">- '.JText::_('TEXT_SELECT').' -</option>
 							'.$flt_group.'
@@ -131,7 +131,7 @@ $htmlFilter = '
 				</div>
 				<div class="col-sm-6 col-md-3 col-lg-2">
 					<div class="form-group">
-						<label class="label-sm">'.JText::_('TEXT_WITH_ACCESS').'</label>
+						<label class="label-xs text-muted">'.JText::_('TEXT_WITH_ACCESS').'</label>
 						<select name="fAccess" id="fAccess" class="form-control form-control-sm set-filter">
 							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
 							<option value="0"'.($fAccess == 0 ? ' selected' : '').'>'.JText::_('TEXT_NO').'</option>
@@ -141,7 +141,7 @@ $htmlFilter = '
 				</div>
 				<div class="col-sm-6 col-md-3 col-lg-2">
 					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_GENDER').'</label>
+						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_GENDER').'</label>
 						<select name="fGender" id="fGender" class="form-control form-control-sm set-filter">
 							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
 							<option value="1"'.($fGender == 1 ? ' selected' : '').'>'.JText::_('TEXT_GENDER_1').'</option>
@@ -151,7 +151,7 @@ $htmlFilter = '
 				</div>
 				<div class="col-sm-6 col-md-3 col-lg-2">
 					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_MARITAL_STATUS').'</label>
+						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_MARITAL_STATUS').'</label>
 						<select name="fMStatus" id="fMStatus" class="form-control form-control-sm set-filter">
 							<option value="0">- '.JText::_('TEXT_ALL').' -</option>
 							<option value="1"'.($fMStatus == 1 ? ' selected' : '').'>'.JText::_('TEXT_MARITAL_STATUS_1').'</option>
@@ -164,7 +164,7 @@ $htmlFilter = '
 				</div>
 				<div class="col-sm-6 col-md-3 col-lg-2">
 					<div class="form-group">
-						<label class="label-sm">'.JText::_('TEXT_WITH_CHILDREN').'</label>
+						<label class="label-xs text-muted">'.JText::_('TEXT_WITH_CHILDREN').'</label>
 						<select name="fChild" id="fChild" class="form-control form-control-sm set-filter">
 							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
 							<option value="0"'.($fChild == 0 ? ' selected' : '').'>'.JText::_('TEXT_NO').'</option>
@@ -174,7 +174,7 @@ $htmlFilter = '
 				</div>
 				<div class="col-sm-6 col-md-3 col-lg-2">
 					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_ITEM_STATE').'</label>
+						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_ITEM_STATE').'</label>
 						<select name="active" id="active" class="form-control form-control-sm set-filter">
 							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
 							<option value="1"'.($active == 1 ? ' selected' : '').'>'.JText::_('TEXT_ACTIVES').'</option>
@@ -184,7 +184,7 @@ $htmlFilter = '
 				</div>
 				<div class="col-sm-6 col-lg-4">
 					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_BIRTHDAY').'</label>
+						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_BIRTHDAY').'</label>
 						<span class="input-group input-group-sm">
 							<span class="input-group-addon strong">'.JText::_('TEXT_FROM').'</span>
 							<input type="text" name="dateMin" value="'.$dateMin.'" class="form-control field-date" data-width="100%" data-convert="true" />
@@ -195,7 +195,7 @@ $htmlFilter = '
 				</div>
 				<div class="col-md-6 col-xl-3">
 					<div class="form-group">
-						<label class="label-sm text-truncate">'.implode(', ', $sLabel).'</label>
+						<label class="label-xs text-muted text-truncate">'.implode(', ', $sLabel).'</label>
 						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />
 					</div>
 				</div>

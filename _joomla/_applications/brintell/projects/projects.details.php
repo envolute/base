@@ -114,6 +114,73 @@ if(!empty($item->name)) :
 		</div>
 	';
 
+	// CLIENT TEAM
+	// MOSTRA A LISTA DE USUÁRIOS DO CLIENTE
+	$query	= '
+		SELECT
+			T1.*,
+			'. $db->quoteName('T3.name') .' role,
+			'. $db->quoteName('T4.session_id') .' online
+		FROM '. $db->quoteName('#__'.$cfg['project'].'_teams') .' T1
+			JOIN '. $db->quoteName('#__'.$cfg['project'].'_rel_clients_teams') .' T2
+			ON '.$db->quoteName('T2.team_id') .' = T1.id
+			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_teams_roles') .' T3
+			ON '.$db->quoteName('T3.id') .' = T1.role_id
+			LEFT JOIN '. $db->quoteName('#__session') .' T4
+			ON '.$db->quoteName('T4.userid') .' = T1.user_id
+		WHERE T1.state = 1
+		ORDER BY '. $db->quoteName('T1.name') .' ASC
+	';
+	try {
+		$db->setQuery($query);
+		$db->execute();
+		$num_rows = $db->getNumRows();
+		$res = $db->loadObjectList();
+	} catch (RuntimeException $e) {
+		echo $e->getMessage();
+		return;
+	}
+
+	if($num_rows) : // verifica se existe
+		$html .= '
+			<div id="'.$APPTAG.'-client-team" class="p-2">
+				<hr class="hr-tag b-top-dashed b-primary" />
+				<span class="badge badge-primary">
+					'.JText::sprintf('TEXT_TEAM_CLIENT', baseHelper::nameFormat($item->client)).'
+				</span>
+				<div class="clearfix">
+		';
+		foreach($res as $obj) {
+
+			$lStatus = JText::_('TEXT_USER_STATUS_'.($obj->online ? '1' : '0'));
+			$cStatus = ($obj->online) ? 'success' : 'gray-700';
+			$name = baseHelper::nameFormat((!empty($obj->nickname) ? $obj->nickname : $obj->name));
+			$role = baseHelper::nameFormat((!empty($obj->role) ? $obj->role : $obj->occupation));
+			if(!empty($role)) $role = '<br />'.$role;
+			$info = baseHelper::nameFormat($obj->name).$role.'<br />'.$lStatus;
+
+			if($cfg['hasUpload']) :
+				JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
+				// Imagem Principal -> Primeira imagem (index = 0)
+				$img = uploader::getFile('#__brintell_teams_files', '', $obj->id, 0, JPATH_BASE.DS.'images/apps/teams/');
+				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/teams/'.$img['filename'], 32, 32);
+				else $imgPath = $_ROOT.'images/apps/icons/user_'.$obj->gender.'.png';
+				$img = '<img src="'.$imgPath.'" class="img-fluid rounded b-all-2 b-'.$cStatus.'" style="width:32px; height:32px;" />';
+			endif;
+
+			$html .= '
+				<a href="apps/teams/profile?vID='.$obj->user_id.'" class="pos-relative hasTooltip" title="'.$info.'">
+					'.$status.$img.'
+				</a>
+			';
+		}
+		$html .= '
+				</div>
+			</div>
+		';
+	endif;
+
+
 else :
 
 	// MOSTRA A LISTA DE PROJETOS DO USUÁRIO

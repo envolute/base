@@ -197,7 +197,7 @@ if($pID > 0) :
 				// Valores adicionais
 				$html .= '
 					<hr class="b-top-2 border-primary mb-1" />
-					<label class="label-sm mb-2">'.JText::_('TEXT_SUMMARY').'</label>
+					<label class="label-xs text-muted mb-2">'.JText::_('TEXT_SUMMARY').'</label>
 					<ul class="set-list bordered font-weight-bold">
 						<li>
 							<div class="row">

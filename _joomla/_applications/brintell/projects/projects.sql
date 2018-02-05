@@ -14,7 +14,7 @@ CREATE TABLE `cms_brintell_projects` (
   `alter_date` datetime NOT NULL,
   `alter_by` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`client_id`,`name`);
+  UNIQUE KEY `name` (`client_id`,`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --

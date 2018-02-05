@@ -107,7 +107,7 @@ $htmlFilter = '
 			<div class="row">
 				<div class="col-sm-6 col-md-4">
 					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_PROVIDER').'</label>
+						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_PROVIDER').'</label>
 						<select name="pID" id="pID" class="form-control input-sm set-filter">
 							<option value="">- '.JText::_('TEXT_ALL').' -</option>
 							'.$flt_provider.'
@@ -116,7 +116,7 @@ $htmlFilter = '
 				</div>
 				<div class="col-sm-6 col-md-4">
 					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_CONTACT').'</label>
+						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_CONTACT').'</label>
 						<select name="cID" id="cID" class="form-control input-sm set-filter">
 							<option value="">- '.JText::_('TEXT_ALL').' -</option>
 							'.$flt_contact.'
@@ -125,7 +125,7 @@ $htmlFilter = '
 				</div>
 				<div class="col-sm-3 col-md-2">
 					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_MAIN').'</label>
+						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_MAIN').'</label>
 						<select name="fMain" id="fMain" class="form-control form-control-sm set-filter">
 							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
 							<option value="1"'.($fMain == 1 ? ' selected' : '').'>'.JText::_('TEXT_YES').'</option>
@@ -135,7 +135,7 @@ $htmlFilter = '
 				</div>
 				<div class="col-sm-3 col-md-2">
 					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_ITEM_STATE').'</label>
+						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_ITEM_STATE').'</label>
 						<select name="active" id="active" class="form-control form-control-sm set-filter">
 							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
 							<option value="1"'.($active == 1 ? ' selected' : '').'>'.JText::_('TEXT_ACTIVES').'</option>

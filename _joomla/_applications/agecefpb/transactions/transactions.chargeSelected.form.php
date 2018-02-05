@@ -21,7 +21,7 @@ $invoices = $db->loadObjectList();
 </div>
 <div class="modal-body">
 	<fieldset id="form-<?php echo $APPTAG?>-chargeSelected" method="post">
-		<label class="label-sm"><?php echo JText::_('TEXT_IMPORT_TO')?>:</label>
+		<label class="label-xs text-muted"><?php echo JText::_('TEXT_IMPORT_TO')?>:</label>
 		<div class="row">
 			<div class="col-sm-8">
 				<div class="form-group">

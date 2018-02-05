@@ -60,6 +60,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			T1.*,
 			'. $db->quoteName('T2.name') .' client,
 			'. $db->quoteName('T3.name') .' member,
+			'. $db->quoteName('T3.user_id') .',
+			'. $db->quoteName('T3.gender') .',
 			'. $db->quoteName('T1.main') .',
 			'. $db->quoteName('T1.department') .',
 			'. $db->quoteName('T1.state')
@@ -118,7 +120,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			// Imagem Principal -> Primeira imagem (index = 0)
 			$img = uploader::getFile('#__brintell_teams_files', '', $item->team_id, 0, JPATH_BASE.DS.'images/apps/teams/');
 			if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/teams/'.$img['filename'], 24, 24);
-			else $imgPath = $_ROOT.'images/apps/icons/client_24.png';
+			else $imgPath = $_ROOT.'images/apps/icons/user_'.$item->gender.'.png';
 			$img = '<img src="'.$imgPath.'" width="32" height="32" class="img-fluid float-left rounded mr-2" />';
 
 			$main = $item->main == 1 ? '<span class="base-icon-star text-live cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_MAIN').'"></span> ' : '';
@@ -127,7 +129,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$btnEdit = $hasAdmin ? '<a href="#" class="base-icon-pencil text-live hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"></a> ' : '';
 			$btnDelete = $hasAdmin ? '<a href="#" class="base-icon-trash text-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"></a>' : '';
 			$rowState = $item->state == 0 ? 'list-danger' : '';
-			$urlViewData = $_ROOT.'apps/teams/profile?vID='.$item->team_id;
+			$urlViewData = $_ROOT.'apps/teams/profile?vID='.$item->user_id;
 			// Resultados
 			$html .= '
 				<li class="'.$rowState.'">

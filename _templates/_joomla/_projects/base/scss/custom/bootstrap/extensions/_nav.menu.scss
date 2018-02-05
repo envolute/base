@@ -100,7 +100,7 @@
 		.mainmenu.nav.menu li:not(.active) > a:hover,
 		.mainmenu.nav.menu li:not(.active) > a:focus,
 		.mainmenu.nav.menu li.parent:not(.active):hover > a {
-			color: $base-text-color;
+			color: $base-link-hover-color;
 			background-color: $base-gray-100!important;
 		}
 		// Item ativo
@@ -115,16 +115,23 @@
 	// SUB MENU
 
 		.mainmenu.nav.menu:not(.nav-stacked) .nav-child {
-
+			background-color: $base-gray-100!important;
 		}
 
 		// Item <a>
+
+			// link
+			.mainmenu.nav.menu .nav-child li:not(.active) > a {
+				padding: 1rem 1.5rem;
+			}
 
 			// Efeito hover
 			.mainmenu.nav.menu .nav-child li:not(.active) > a:hover,
 			.mainmenu.nav.menu .nav-child li:not(.active) > a:focus,
 			.mainmenu.nav.menu .nav-child li.parent:not(.active):hover > a {
-
+				padding: 1rem 1.5rem;
+				color: $base-link-hover-color;
+				background-color: $base-gray-200!important;
 			}
 
 // USERMENU
@@ -142,7 +149,7 @@
 	.usermenu.nav.menu li:not(.active) > a:hover,
 	.usermenu.nav.menu li:not(.active) > a:focus,
 	.usermenu.nav.menu li.parent:not(.active):hover > a {
-		color: $base-link-color;
+		color: $base-link-hover-color;
 		background-color: $white;
 	}
 	// Efeito hover
@@ -158,3 +165,12 @@
 		color: $base-link-color;
 		background-color: $white;
 	}
+
+	// SUB MENU
+
+		.usermenu.nav.menu:not(.nav-stacked) .nav-child {
+			min-width: 9rem!important;
+			padding-right: 1.4rem;
+			background-color: $white!important;
+			box-shadow: -1px 1px 2px rgba(0,0,0,0.2), 1px 1px 2px rgba(0,0,0,0.2), 3px 5px 6px rgba(0,0,0,0.1);
+		}

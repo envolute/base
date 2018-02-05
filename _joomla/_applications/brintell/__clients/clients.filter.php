@@ -44,7 +44,7 @@ $htmlFilter = '
 			<div class="row">
 				<div class="col-sm-6 col-md-4 col-lg-3">
 					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_GROUP').'</label>
+						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_GROUP').'</label>
 						<select name="groupID" id="groupID" class="form-control form-control-sm set-filter">
 							<option value="0">- '.JText::_('TEXT_ALL').' -</option>
 							'.$flt_group.'
@@ -53,7 +53,7 @@ $htmlFilter = '
 				</div>
 				<div class="col-sm-6 col-md-2">
 					<div class="form-group">
-						<label class="label-sm">'.JText::_('FIELD_LABEL_ITEM_STATE').'</label>
+						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_ITEM_STATE').'</label>
 						<select name="active" id="active" class="form-control form-control-sm set-filter">
 							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
 							<option value="1"'.($active == 1 ? ' selected' : '').'>'.JText::_('TEXT_ACTIVES').'</option>
@@ -63,13 +63,13 @@ $htmlFilter = '
 				</div>
 				<div class="col-sm-6 col-md">
 					<div class="form-group">
-						<label class="label-sm text-truncate">'.implode(', ', $sLabel).'</label>
+						<label class="label-xs text-muted text-truncate">'.implode(', ', $sLabel).'</label>
 						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />
 					</div>
 				</div>
 				<div class="col-sm col-lg-2 text-right">
 					<div class="form-group">
-						<label class="label-sm">&#160;</label>
+						<label class="label-xs text-muted">&#160;</label>
 						<button '.$btnAction.' id="'.$APPTAG.'-submit-filter" class="btn btn-sm btn-primary base-icon-search btn-icon">
 							'.JText::_('TEXT_SEARCH').'
 						</button>

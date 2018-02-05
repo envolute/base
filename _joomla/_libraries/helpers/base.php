@@ -59,38 +59,46 @@ class baseHelper {
 	}
 
 	// FORMATA OS NOMES DE PESSOAS
-	public static function nameFormat($nome,$limite = NULL) {
-		$nome = mb_strtolower($nome, 'UTF-8'); // Converter o nome todo para minúsculo
-		$nome = explode(" ", $nome); // Separa o nome por espaços
-		$saida = "";
-		for ($i=0; $i < count($nome); $i++) {
+	public static function nameFormat($nome,$limite = NULL,$emptyFormat = NULL) {
+		if(empty($nome)) :
 
-			// Tratar cada palavra do nome
-			if ($nome[$i] == "a" or $nome[$i] == "e" or $nome[$i] == "o" or $nome[$i] == "de" or $nome[$i] == "do" or $nome[$i] == "da" or $nome[$i] == "dos" or $nome[$i] == "das") {
-				// Se a palavra estiver dentro das complementares mostrar toda em minúsculo
-				$saida .= $nome[$i].' ';
-			}else if ($nome[$i] == "ii" or $nome[$i] == "iii") {
-				// Se a palavra estiver dentro das complementares mostrar toda em maiúsculo
-				$saida .= strtoupper($nome[$i]).' ';
-			}else {
-				// Se for um nome, mostrar a primeira letra maiúscula
-				$saida .= ucfirst($nome[$i]).' ';
+			return !is_null($emptyFormat) ? $emptyFormat : '';
+
+		else :
+
+			$nome = mb_strtolower($nome, 'UTF-8'); // Converter o nome todo para minúsculo
+			$nome = explode(" ", $nome); // Separa o nome por espaços
+			$saida = "";
+			for ($i=0; $i < count($nome); $i++) {
+
+				// Tratar cada palavra do nome
+				if ($nome[$i] == "a" or $nome[$i] == "e" or $nome[$i] == "o" or $nome[$i] == "de" or $nome[$i] == "do" or $nome[$i] == "da" or $nome[$i] == "dos" or $nome[$i] == "das") {
+					// Se a palavra estiver dentro das complementares mostrar toda em minúsculo
+					$saida .= $nome[$i].' ';
+				}else if ($nome[$i] == "ii" or $nome[$i] == "iii") {
+					// Se a palavra estiver dentro das complementares mostrar toda em maiúsculo
+					$saida .= strtoupper($nome[$i]).' ';
+				}else {
+					// Se for um nome, mostrar a primeira letra maiúscula
+					$saida .= ucfirst($nome[$i]).' ';
+				}
+
 			}
 
-		}
+			// tamanho da string
+			$saida = self::textLimit($saida,$limite);
 
-		// tamanho da string
-		$saida = self::textLimit($saida,$limite);
+			// IMPORTANTE
+			// palavras entre chaves "[]" ficam sempre maiúsculas -> ex.: siglas [adsl] = ADSL
+			// obs: as chaves "[]" são retiradas, para mantê-los adicione parenteses internos. ex: [[ADSL]]
+			preg_match('/\\[(.*)\\]/s', $saida ,$matches);
 
-		// IMPORTANTE
-		// palavras entre chaves "[]" ficam sempre maiúsculas -> ex.: siglas [adsl] = ADSL
-		// obs: as chaves "[]" são retiradas, para mantê-los adicione parenteses internos. ex: [[ADSL]]
-		preg_match('/\\[(.*)\\]/s', $saida ,$matches);
+			if(isset($matches[0]) && isset($matches[1]))
+			$saida = str_replace($matches[0],strtoupper($matches[1]),$saida);
 
-		if(isset($matches[0]) && isset($matches[1]))
-		$saida = str_replace($matches[0],strtoupper($matches[1]),$saida);
+			return $saida;
 
-		return $saida;
+		endif;
 	}
 
 	// LIMITA O TAMANHO DA STRING E ACRESCENTA '...' CASO A STRING SEJA MAIOR QUE O TAMANHO PERMITIDO.

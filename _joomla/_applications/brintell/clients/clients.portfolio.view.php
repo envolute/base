@@ -89,7 +89,7 @@ if($vID != 0) :
 		if(!empty($item->company_name)) :
 			$info .= '
 				<div class="col-md-8">
-					<label class="label-sm">'.JText::_('FIELD_LABEL_COMPANY_NAME').'</label>
+					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_COMPANY_NAME').'</label>
 					<p class="text-truncate">'.baseHelper::nameFormat($item->company_name).'</p>
 				</div>
 			';
@@ -97,7 +97,7 @@ if($vID != 0) :
 		if(!empty($item->cnpj)) :
 			$info .= '
 				<div class="col-md">
-					<label class="label-sm">CNPJ</label>
+					<label class="label-xs text-muted">CNPJ</label>
 					<p>'.$item->cnpj.'</p>
 				</div>
 			';
@@ -157,7 +157,7 @@ if($vID != 0) :
 		$website = '';
 		if(!empty($item->website)) :
 			$website .= '
-				<label class="label-sm">'.JText::_('FIELD_LABEL_WEBSITE').'</label>
+				<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_WEBSITE').'</label>
 				<div class="text-truncate mb-4">
 					<a href="'.$item->website.'" class="new-window" target="_blank">'.$item->website.'</a>
 				</div>

@@ -92,7 +92,7 @@ $users = $db->loadObjectList();
 					<div class="col-lg-4">
 						<div class="form-group">
 							<label><?php echo JText::_('FIELD_LABEL_MARITAL_STATUS'); ?></label>
-							<select name="marital_status" id="<?php echo $APPTAG?>-marital_status" class="form-control auto-tab" data-target="<?php echo $APPTAG?>-group-children">
+							<select name="marital_status" id="<?php echo $APPTAG?>-marital_status" class="form-control auto-tab" data-target="<?php echo $APPTAG?>-group-children" data-tab-disabled="true">
 								<option value="0" data-target-display="false"><?php echo JText::_('TEXT_SELECT'); ?></option>
 								<option value="1" data-target-display="false"><?php echo JText::_('TEXT_MARITAL_STATUS_1'); ?></option>
 								<option value="2" data-target-display="true"><?php echo JText::_('TEXT_MARITAL_STATUS_2'); ?></option>
@@ -238,12 +238,13 @@ $users = $db->loadObjectList();
 								</div>
 							</div>
 						</div>
-						<div class="col-sm-6 col-lg-3 new-user-data" hidden>
+						<div class="col-sm-6 col-lg-3">
 							<div class="form-group <?php echo $APPTAG?>-user-create-data field-required">
 								<label class="iconTip hasPopover" title="<?php echo JText::_('TEXT_USER_ACCESS_LEVEL')?>" data-content="<?php echo JText::_('MSG_USER_ACCESS_LEVEL')?>"><?php echo JText::_('FIELD_LABEL_USERGROUP'); ?></label>
-								<select name="usergroup" id="<?php echo $APPTAG?>-usergroup" class="form-control">
+								<select name="usergroup" id="<?php echo $APPTAG?>-usergroup" class="form-control field-id">
 									<option value="0">- <?php echo JText::_('TEXT_SELECT'); ?> -</option>
 								</select>
+								<input type="hidden" name="cusergroup" id="<?php echo $APPTAG?>-cusergroup" />
 							</div>
 						</div>
 						<div class="col-sm-6 col-lg new-user-data" hidden>

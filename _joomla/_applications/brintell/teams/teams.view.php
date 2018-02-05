@@ -105,7 +105,7 @@ if($vID != 0) :
 		if(!empty($item->email)) :
 			$info1 .= '
 				<div class="col-sm-8">
-					<label class="label-sm">'.JText::_('FIELD_LABEL_EMAIL').':</label>
+					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_EMAIL').':</label>
 					<p>'.$item->email.'</p>
 				</div>
 			';
@@ -113,7 +113,7 @@ if($vID != 0) :
 		if(!empty($item->occupation)) :
 			$info1 .= '
 				<div class="col">
-					<label class="label-sm">'.JText::_('FIELD_LABEL_OCCUPATION').':</label>
+					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_OCCUPATION').':</label>
 					<p> '.baseHelper::nameFormat($item->occupation).'</p>
 				</div>
 			';
@@ -125,7 +125,7 @@ if($vID != 0) :
 		if(!empty($item->birthday) && $item->birthday != '0000-00-00') :
 			$info2 .= '
 				<div class="col-6 col-sm-4">
-					<label class="label-sm">'.JText::_('TEXT_BIRTHDAY').':</label>
+					<label class="label-xs text-muted">'.JText::_('TEXT_BIRTHDAY').':</label>
 					<p class="base-icon-birthday text-success"> '.baseHelper::dateFormat($item->birthday, JText::_('TEXT_BIRTHDAY_FORMAT')).'</p>
 				</div>
 			';
@@ -133,7 +133,7 @@ if($vID != 0) :
 		if($hasAdmin && !empty($item->cpf)) :
 			$info2 .= '
 				<div class="col-6 col-sm-4">
-					<label class="label-sm">CPF:</label>
+					<label class="label-xs text-muted">CPF:</label>
 					<p>'.$item->cpf.'</p>
 				</div>
 			';
@@ -142,7 +142,7 @@ if($vID != 0) :
 			$contract = isset($listFiles[2]) ? $listFiles[2] : '';
 			$info2 .= '
 				<div class="col-6 col-sm-4">
-					<label class="label-sm">CNPJ:</label>
+					<label class="label-xs text-muted">CNPJ:</label>
 					<p>'.$item->cnpj.' '.$contract.'</p>
 				</div>
 			';
@@ -150,7 +150,7 @@ if($vID != 0) :
 		if($item->marital_status > 0) :
 			$info2 .= '
 				<div class="col-6 col-sm-4">
-					<label class="label-sm">'.JText::_('FIELD_LABEL_MARITAL_STATUS').':</label>
+					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_MARITAL_STATUS').':</label>
 					<p>'.JText::_('TEXT_MARITAL_STATUS_'.$item->marital_status).'</p>
 				</div>
 			';
@@ -158,7 +158,7 @@ if($vID != 0) :
 		if($item->children > 0) :
 			$info2 .= '
 				<div class="col-6 col-sm-4">
-					<label class="label-sm">'.JText::_('FIELD_LABEL_CHILDREN').':</label>
+					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_CHILDREN').':</label>
 					<p>'.$item->children.'</p>
 				</div>
 			';
@@ -176,28 +176,32 @@ if($vID != 0) :
 		// Contact data
 		$contact = '';
 		// Phones
-		$ph = explode(';', $item->phone);
-		$wp = explode(';', $item->whatsapp);
-		$pd = explode(';', $item->phone_desc);
 		$phones = '';
-		for($i = 0; $i < count($ph); $i++) {
-			$whapps = $wp[$i] == 1 ? ' <span class="base-icon-whatsapp text-success cursor-help hasTooltip" title="'.JText::_('TEXT_HAS_WHATSAPP').'"></span>' : '';
-			$phDesc = !empty($pd[$i]) ? '<div class="small text-muted">'.$pd[$i].'</div>' : '';
-			$phones .= '<div class="lh-1-3 pb-1">'.$ph[$i].$whapps.$phDesc.'</div>';
-		}
+		if(!empty($item->phone)) :
+			$ph = explode(';', $item->phone);
+			$wp = explode(';', $item->whatsapp);
+			$pd = explode(';', $item->phone_desc);
+			for($i = 0; $i < count($ph); $i++) {
+				$whapps = $wp[$i] == 1 ? ' <span class="base-icon-whatsapp text-success cursor-help hasTooltip" title="'.JText::_('TEXT_HAS_WHATSAPP').'"></span>' : '';
+				$phDesc = !empty($pd[$i]) ? '<div class="small text-muted">'.$pd[$i].'</div>' : '';
+				$phones .= '<div class="lh-1-3 pb-1">'.$ph[$i].$whapps.$phDesc.'</div>';
+			}
+		endif;
 		// Chats
-		$cName = explode(';', $item->chat_name);
-		$cUser = explode(';', $item->chat_user);
 		$chats = '';
-		for($i = 0; $i < count($cName); $i++) {
-			if(!empty($cName[$i])) :
-				$chats .= '
-					<div class="pb-1">
-						'.baseHelper::nameFormat($cName[$i]).'<span class="float-right mr-2">'.$cUser[$i].'</span>
-					</div>
-				';
-			endif;
-		}
+		if(!empty($item->chat_user)) :
+			$cName = explode(';', $item->chat_name);
+			$cUser = explode(';', $item->chat_user);
+			for($i = 0; $i < count($cName); $i++) {
+				if(!empty($cName[$i])) :
+					$chats .= '
+						<div class="pb-1">
+							'.baseHelper::nameFormat($cName[$i]).'<span class="float-right mr-2">'.$cUser[$i].'</span>
+						</div>
+					';
+				endif;
+			}
+		endif;
 
 		if(!empty($phones) || !empty($chats)) :
 			$cDiv = (!empty($phones) && !empty($chats)) ? '<hr class="b-top-dashed my-2" />' : '';
@@ -211,14 +215,17 @@ if($vID != 0) :
 		endif;
 
 		// Weblinks
-		$wTxt = explode(';', $item->weblink_text);
-		$wUrl = explode(';', $item->weblink_url);
-		$links = (count($wUrl) > 0) ? '<ul class="set-list bordered">' : '';
-		for($i = 0; $i < count($wUrl); $i++) {
-			$text = !empty($wTxt[$i]) ? $wTxt[$i] : $wUrl[$i];
-			$links .= '<li> <a href="'.$wUrl[$i].'" class="base-icon-link" target="_blank"> '.baseHelper::nameFormat($text).'</a></li>';
-		}
-		if(count($wUrl) > 0) $links .= '</ul>';
+		$links = '';
+		if(!empty($item->weblink_url)) :
+			$wTxt = explode(';', $item->weblink_text);
+			$wUrl = explode(';', $item->weblink_url);
+			$links = (count($wUrl) > 0) ? '<ul class="set-list bordered">' : '';
+			for($i = 0; $i < count($wUrl); $i++) {
+				$text = !empty($wTxt[$i]) ? $wTxt[$i] : $wUrl[$i];
+				$links .= '<li> <a href="'.$wUrl[$i].'" class="base-icon-link" target="_blank"> '.baseHelper::nameFormat($text).'</a></li>';
+			}
+			if(count($wUrl) > 0) $links .= '</ul>';
+		endif;
 
 		// Address
 		$addressInfo = !empty($item->address_info) ? ', '.$item->address_info : '';
@@ -249,15 +256,15 @@ if($vID != 0) :
 				<span class="badge badge-primary text-uppercase"> '.JText::_('TEXT_BANKS_ACCOUNT').'</span>
 				<h6 class="mb-1 base-icon-bank"> '.$item->bank_name.'</h6>
 				<div class="d-flex">
-					<div><label class="label-sm">'.JText::_('FIELD_LABEL_AGENCY').'</label>'.$item->agency.'</div>
-					<div class="px-3"><label class="label-sm">'.JText::_('FIELD_LABEL_OPERATION').'</label>'.$item->operation.'</div>
-					<div><label class="label-sm">'.JText::_('FIELD_LABEL_ACCOUNT').'</label>'.$item->account.'</div>
+					<div><label class="label-xs text-muted">'.JText::_('FIELD_LABEL_AGENCY').'</label>'.$item->agency.'</div>
+					<div class="px-3"><label class="label-xs text-muted">'.JText::_('FIELD_LABEL_OPERATION').'</label>'.$item->operation.'</div>
+					<div><label class="label-xs text-muted">'.JText::_('FIELD_LABEL_ACCOUNT').'</label>'.$item->account.'</div>
 				</div>
 			';
 		endif;
 
 		// Acesso
-		$access = ($item->access == 1 && !empty($item->user_id)) ? ' <span class="base-icon-plug text-success cursor-help hasTooltip" title="'.JText::_('TEXT_CONNECTED_USER').'"></span>' : '';
+		$access = ($item->access == 1 && !empty($item->user_id)) ? ' <span class="base-icon-plug text-live cursor-help hasTooltip" title="'.JText::_('TEXT_HAS_ACCESS').'"></span>' : '';
 
 		$nickname = !empty($item->nickname) ? ' <small>('.baseHelper::nameFormat($item->nickname).')</small>' : '';
 		$resume = ($hasAdmin && isset($listFiles[1])) ? '<hr class="my-2" />'.$listFiles[1] : '';
@@ -288,12 +295,12 @@ if($vID != 0) :
 							'.$about_me.'
 							<div class="row">
 								<div class="col-md-8">
-									<label class="label-sm">'.JText::_('FIELD_LABEL_NAME').': '.$access.'</label>
+									<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_NAME').': '.$access.'</label>
 									<p>'.$gender.baseHelper::nameFormat($item->name).$nickname.'</p>
 								</div>
 								<div class="col-md-4">
-									<label class="label-sm">'.JText::_('FIELD_LABEL_ROLE').':</label>
-									<p>'.baseHelper::nameFormat($item->role).'</p>
+									<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_ROLE').':</label>
+									<p>'.baseHelper::nameFormat($item->role, null, JText::_('TEXT_UNDEFINED')).'</p>
 								</div>
 							</div>
 							'.$info1.$info2.$address.'
