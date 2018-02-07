@@ -36,6 +36,7 @@ endif;
 
 // Crud's permissions
 	$cfg['isPublic']			= false; // Público -> acesso aberto a todos
+	if(isset(${$APPTAG.'IsPublic'})) $cfg['isPublic'] = ${$APPTAG.'IsPublic'} ? true : false;
 	// Restrict Access
 	// $cfg['groupId']['analyst'][]  = Analyst
 	// $cfg['groupId']['client'][]  = Client Developer
@@ -81,11 +82,13 @@ endif;
 		$cfg['showList']		= false;
 		$cfg['listModal']		= false;
 		$cfg['listFull']		= false;
+		$cfg['listAjax']		= false;
 		$cfg['staticToolbar']	= false;
 		$cfg['showAddBtn']		= false;
 		$cfg['addText']			= false;
 		$cfg['addClass']		= false;
 		$cfg['showFilter']		= false;
+		$cfg['ajaxFilter']		= false;
 	else :
 		// show/hidden list
 		$cfg['showList']			= true;

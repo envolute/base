@@ -47,6 +47,7 @@ $cfg[$APPTAG.'AccessLevel']['client']	= '15, 16';
 
 // Crud's permissions
 	$cfg['isPublic']			= false; // Público -> acesso aberto a todos
+	if(isset(${$APPTAG.'IsPublic'})) $cfg['isPublic'] = ${$APPTAG.'IsPublic'} ? true : false;
 	// Restrict Access
 	// $cfg['groupId']['viewer'][]  = apenas visualiza o componente
 	// $cfg['groupId']['admin'][]   = administra o componente
@@ -93,11 +94,13 @@ $cfg[$APPTAG.'AccessLevel']['client']	= '15, 16';
 		$cfg['showList']		= false;
 		$cfg['listModal']		= false;
 		$cfg['listFull']		= false;
+		$cfg['listAjax']		= false;
 		$cfg['staticToolbar']	= false;
 		$cfg['showAddBtn']		= false;
 		$cfg['addText']			= false;
 		$cfg['addClass']		= false;
 		$cfg['showFilter']		= false;
+		$cfg['ajaxFilter']		= false;
 	else :
 		// show/hidden list
 		$cfg['showList']			= true;

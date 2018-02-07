@@ -263,6 +263,7 @@ if($vID != 0) :
 		';
 						// TO DO LIST
 						$tasksTodoListFull		= false;
+						$tasksTodoListAjax		= "list.actions.ajax.php";
 						$tasksTodoRelTag		= 'tasks';
 						$tasksTodoRelListNameId	= 'task_id';
 						$tasksTodoRelListId		= $item->id;

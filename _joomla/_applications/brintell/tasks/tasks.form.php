@@ -183,21 +183,12 @@ foreach ($teams as $obj) {
 							</select>
 						</div>
 					</div>
-					<div class="col-6">
-						<div class="form-group">
-							<label class="label-sm"><?php echo JText::_('FIELD_LABEL_EXECUTED'); ?></label>
-							<div class="input-group">
-								<input type="text" name="executed" id="<?php echo $APPTAG?>-executed" class="form-control field-integer" />
-								<span class="input-group-addon">%</span>
-							</div>
-						</div>
-					</div>
-					<div class="col-6">
-						<div class="form-group">
-							<label class="label-sm"><?php echo JText::_('FIELD_LABEL_ORDER'); ?></label>
-							<input type="number" name="orderer" id="<?php echo $APPTAG?>-orderer" class="form-control field-integer" />
-							<input type="hidden" name="corderer" id="<?php echo $APPTAG?>-corderer" />
-						</div>
+				</div>
+				<div class="form-group">
+					<label class="label-sm"><?php echo JText::_('FIELD_LABEL_EXECUTED'); ?></label>
+					<div class="input-group">
+						<input type="text" name="executed" id="<?php echo $APPTAG?>-executed" class="form-control field-integer" />
+						<span class="input-group-addon">%</span>
 					</div>
 				</div>
 				<div class="form-group">
@@ -213,6 +204,16 @@ foreach ($teams as $obj) {
 						<span class="input-group-btn">
 							<button type="button" class="base-icon-plus btn btn-success hasTooltip" title="<?php echo JText::_('TEXT_ADD')?>" data-toggle="modal" data-target="#modal-<?php echo $APPTAG?>Tags" data-backdrop="static" data-keyboard="false"></button>
 						</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<div id="<?php echo $APPTAG?>-alert-toDo">
+						<label class="label-sm"><?php echo JText::_('TEXT_TODO_LIST'); ?></label>
+						<div class="alert alert-info text-sm p-2"><?php echo JText::_('MSG_TODO_LIST_AFTER_SAVE'); ?></div>
+					</div>
+					<div id="<?php echo $APPTAG?>-btn-toDo" hidden>
+						<hr />
+						<button type="button" class="btn btn-primary btn-block text base-icon-list btn-icon" onclick="<?php echo $APPTAG?>_viewToDo()" data-toggle="modal" data-target="#modal-list-<?php echo $APPTAG?>Todo" data-backdrop="static" data-keyboard="false"> <?php echo JText::_('TEXT_TODO_LIST')?></button>
 					</div>
 				</div>
 			</div>

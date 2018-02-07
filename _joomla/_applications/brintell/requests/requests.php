@@ -28,7 +28,7 @@ $db = JFactory::getDbo();
 ?>
 
 <script>
-jQuery(window).on('load', function() {
+jQuery(document).ready(function() {
 
 	<?php // Default 'JS' Vars
 	require(JPATH_CORE.DS.'apps/snippets/initVars.js.php');
@@ -54,8 +54,6 @@ jQuery(window).on('load', function() {
 	<?php endif;?>
 	var cstatus				= jQuery('#<?php echo $APPTAG?>-cstatus');
 	var status_desc			= jQuery('#<?php echo $APPTAG?>-status_desc');
-	var orderer				= jQuery('#<?php echo $APPTAG?>-orderer');
-	var corderer			= jQuery('#<?php echo $APPTAG?>-corderer');
 
 	// ALTER STATUS
 	var statusId			= jQuery('#<?php echo $APPTAG?>-statusId');
@@ -132,8 +130,6 @@ jQuery(window).on('load', function() {
 			<?php endif;?>
 			cstatus.val('');
 			status_desc.val('');
-			orderer.val('');
-			corderer.val('');
 
 			// TODO LIST
 			setHidden(jQuery('#<?php echo $APPTAG?>-alert-toDo'), false, jQuery('#<?php echo $APPTAG?>-btn-toDo'));
@@ -198,6 +194,11 @@ jQuery(window).on('load', function() {
 				setHidden(jQuery('#<?php echo $APPTAG?>-subject-label'), false);
 			}
 		}
+
+		// CUSTOM -> view ToDo list
+		window.<?php echo $APPTAG?>_viewToDo = function() {
+			<?php echo $APPTAG?>Todo_listReload(false, false, false, false, false, formId.val());
+		};
 
 	// LIST CONTROLLERS
 	// ações & métodos controladores da listagem
@@ -303,8 +304,6 @@ jQuery(window).on('load', function() {
 						<?php endif;?>
 						cstatus.val(item.status);
 						status_desc.val(item.status_desc);
-						orderer.val(item.orderer);
-						corderer.val(item.orderer);
 
 						// TODO LIST
 						setHidden(jQuery('#<?php echo $APPTAG?>-alert-toDo'), true, jQuery('#<?php echo $APPTAG?>-btn-toDo'));

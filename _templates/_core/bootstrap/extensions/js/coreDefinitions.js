@@ -1,7 +1,7 @@
 // initialization of the javascript files for template BASE
 
 //JQUERY
-jQuery(document).ready(function() {
+jQuery(function() {
 
 	// RESPONSIVE DEFINITIONS
 	responsive(_WIDTH_);

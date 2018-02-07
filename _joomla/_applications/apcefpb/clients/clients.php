@@ -25,7 +25,7 @@ $db = JFactory::getDbo();
 ?>
 
 <script>
-jQuery(window).on('load', function() {
+jQuery(function() {
 
 	<?php // Default 'JS' Vars
 	require(JPATH_CORE.DS.'apps/snippets/initVars.js.php');
@@ -586,11 +586,11 @@ jQuery(window).on('load', function() {
 					}
 				}
 			},
-			cx_situated: { // lotação (agencia)
-				required: function(el) {
-					return (jQuery('#<?php echo $APPTAG?>-usergroup option:selected').val() == 11);
-				}
-			},
+			// cx_situated: { // lotação (agencia)
+			// 	required: function(el) {
+			// 		return (jQuery('#<?php echo $APPTAG?>-usergroup option:selected').val() == 11);
+			// 	}
+			// },
 			partner: { // conjuge
 				required: function(el) {
 					return jQuery('#<?php echo $APPTAG?>-marital_status option:selected').data('targetDisplay');

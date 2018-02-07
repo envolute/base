@@ -11,6 +11,11 @@
 		<fieldset name="config" label="COM_BASECONTENT_CONFIG">
 			<field name="app" type="text" filter="string" default="" label="COM_BASECONTENT_APP_LABEL" description="COM_BASECONTENT_APP_DESC" />
 			<field name="appTag" type="text" filter="string" default="" label="COM_BASECONTENT_APPTAG_LABEL" description="COM_BASECONTENT_APPTAG_DESC" />
+			<field name="isPublic" type="radio" class="btn-group" label="COM_BASECONTENT_IS_PUBLIC_LABEL" description="COM_BASECONTENT_IS_PUBLIC_DESC">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+			</field>
 
 			<field name="appView" type="spacer" class="text"
 					label="COM_BASECONTENT_APP_VIEW_LABEL"
@@ -37,6 +42,17 @@
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 			</field>
 			<field name="listFull" type="radio" class="btn-group" label="COM_BASECONTENT_LIST_FULL_LABEL" description="COM_BASECONTENT_LIST_FULL_DESC">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+			</field>
+			<field name="listAjax" type="text" default="list.ajax.php" filter="string" default="" label="COM_BASECONTENT_LIST_AJAX_LABEL" description="COM_BASECONTENT_LIST_AJAX_DESC" />
+			<field name="showFilter" type="radio" class="btn-group" label="COM_BASECONTENT_SHOW_FILTER_LABEL" description="COM_BASECONTENT_SHOW_FILTER_DESC">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+			</field>
+			<field name="ajaxFilter" type="radio" class="btn-group" label="COM_BASECONTENT_FILTER_AJAX_LABEL" description="COM_BASECONTENT_FILTER_AJAX_DESC">
 				<option value="1">JYES</option>
 				<option value="0">JNO</option>
 				<option value="">JGLOBAL_USE_GLOBAL</option>

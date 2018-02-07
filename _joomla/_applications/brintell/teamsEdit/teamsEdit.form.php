@@ -47,7 +47,7 @@ $tags = $db->loadObjectList();
 						</div>
 					</div>
 					<div class="col-sm-6 col-lg-4">
-						<div class="form-group">
+						<div class="form-group field-required">
 							<label><?php echo JText::_('FIELD_LABEL_BIRTHDAY'); ?></label>
 							<input type="text" name="birthday" id="<?php echo $APPTAG?>-birthday" class="form-control field-date birthday" data-convert="true" />
 						</div>

@@ -56,44 +56,33 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	// GET DATA
 	$noReg	= true;
 	$query	= '
-		SELECT
-			T1.*,
-			'. $db->quoteName('T2.id') .' team_id,
-			'. $db->quoteName('T2.name') .',
-			'. $db->quoteName('T2.nickname') .',
-			'. $db->quoteName('T2.gender') .'
+		SELECT T1.*
 	';
 	if(!empty($rID) && $rID !== 0) :
 		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
 			$query .= ' FROM '.
 				$db->quoteName($cfg['mainTable']) .' T1
-				LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_teams') .' T2
-				ON T2.user_id = T1.created_by
-				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T3
-				ON '.$db->quoteName('T3.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
+				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T2
+				ON '.$db->quoteName('T2.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
 			WHERE '.
-				$db->quoteName('T3.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
+				$db->quoteName('T2.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
 			;
 		else :
 			$query .= '
 				FROM '. $db->quoteName($cfg['mainTable']) .' T1
-					LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_teams') .' T2
-					ON T2.user_id = T1.created_by
 				WHERE '. $db->quoteName($rNID) .' = '. $rID
 			;
 		endif;
 	else :
 		$query .= '
 			FROM '. $db->quoteName($cfg['mainTable']) .' T1
-			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_teams') .' T2
-			ON T2.user_id = T1.created_by
 		';
 		if($oCHL) :
 			$query .= ' WHERE 1=0';
 			$noReg = false;
 		endif;
 	endif;
-	$query	.= ' ORDER BY '. $db->quoteName('T1.created_date') .' ASC';
+	$query	.= ' ORDER BY '. $db->quoteName('T1.orderer') .' ASC, '. $db->quoteName('T1.created_date') .' ASC';
 	try {
 		$db->setQuery($query);
 		$db->execute();
@@ -106,6 +95,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	$html = '';
 	if($num_rows) : // verifica se existe
+		$html .= '<ul class="set-list list-trim bordered">';
 		foreach($res as $item) {
 
 			if($cfg['hasUpload']) :
@@ -115,58 +105,27 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				for($i = 0; $i < count($files[$item->id]); $i++) {
 					if(!empty($files[$item->id][$i]->filename)) :
 						$listFiles .= '
-							<a class="d-inline-block mr-3" href="'.$_ROOT.'apps/get-file?fn='.base64_encode($files[$item->id][$i]->filename).'&mt='.base64_encode($files[$item->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
-								<span class="base-icon-attach hasTooltip" title="'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"> '.$files[$item->id][$i]->filename.'</span>
+							<a href="'.$_ROOT.'apps/get-file?fn='.base64_encode($files[$item->id][$i]->filename).'&mt='.base64_encode($files[$item->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
+								<span class="base-icon-attach hasTooltip" title="'.$files[$item->id][$i]->filename.'<br />'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"></span>
 							</a>
 						';
 					endif;
 				}
 			endif;
 
-			$attachs = !empty($listFiles) ? '<div class="font-condensed text-sm pt-1">'.$listFiles.'</div>' : '';
-			$desc = !empty($item->description) ? '<div class="font-condensed text-sm"><hr class="my-2" />'.$item->description.'</div>' : '';
+			$attachs = !empty($listFiles) ? '<div class="text-sm pt-1">'.$listFiles.'</div>' : '';
 
-			$btnState = '';
-			$txtState = ($item->state == 1) ? ' class="text-success"' : ' class="text-danger" style="text-decoration: line-through;"';
-			if($hasAdmin) :
-				$btnState = '
-					<a href="#" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'">
-						<span class="'.($item->state == 1 ? 'base-icon-check-empty text-success' : 'base-icon-check text-danger').' hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'"></span>
-					</a>
-				';
-			endif;
-			$btnEdit = $hasAdmin ? '<a href="#" class="mr-1" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil text-live hasTooltip" title="'.JText::_('TEXT_EDIT').'"></span></a> ' : '';
-			$btnDelete = $hasAdmin ? '<a href="#" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash text-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'"></span></a>' : '';
-
-			$collapse = '';
-			$btnCollapse = '<span class="text-sm float-right">'.$btnEdit.$btnDelete.'</span>';
-			if(!empty($attachs) || !empty($desc)) :
-				$collapse = '
-					<div id="'.$APPTAG.'-taskTodo-item-'.$item->id.'" class="collapse">
-						'.$desc.$attachs.'
-						<div class="pt-2 text-sm">'.$btnEdit.$btnDelete.'</div>
-					</div>
-				';
-				$btnCollapse = '
-					<button class="btn btn-xs btn-link float-right toggle-state" data-toggle="collapse" data-target="#'.$APPTAG.'-taskTodo-item-'.$item->id.'" aria-expanded="" aria-controls="taskTodoItem">
-						<span class="base-icon-sort"></span>
-					</button>
-				';
-			endif;
-
+			$btnEdit = $hasAdmin ? '<a href="#" class="ml-1 base-icon-pencil text-live hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"></a> ' : '';
+			$btnDelete = $hasAdmin ? '<a href="#" class="ml-1 base-icon-trash text-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"></a>' : '';
+			$rowState = $item->state == 0 ? 'list-danger' : '';
 			$html .= '
-				<div class="bg-white p-2 mb-1 rounded b-top-2 b-danger set-shadow-right">
-					<div class="d-flex">
-						<div style="flex:0 0 20px;">'.$btnState.'</div>
-						<div style="flex-grow:1;" class="font-condensed lh-1-3">
-							'.$btnCollapse.'
-							 <span'.$txtState.'>'.$item->title.'</span>
-						</div>
-					</div>
-					'.$collapse.'
-				</div>
+				<li class="'.$rowState.'">
+					<span class="float-right">'.$btnEdit.$btnDelete.'</span>
+					'.baseHelper::nameFormat($item->title).$attachs.'
+				</li>
 			';
 		}
+		$html .= '</ul>';
 	endif;
 
 	echo $html;

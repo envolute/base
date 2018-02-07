@@ -92,9 +92,135 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['relationId']   		= $input->get('relationId', 0, 'int');
 		$request['state']				= $input->get('state', 1, 'int');
 		// app
-		$request['request_id']				= $input->get('request_id', 0, 'int');
+		$request['request_id']			= $input->get('request_id', 0, 'int');
 	  	$request['title']				= $input->get('title', '', 'string');
 	  	$request['description']			= $input->get('description', '', 'raw');
+		$request['orderer']				= $input->get('orderer', 0, 'int');
+		$request['corderer']			= $input->get('corderer', 0, 'int');
+
+	    // CUSTOM -> Set Order
+	    // function setOrder($ID, $pID, $ord, $cord, $cfg) {
+		// 	if(!empty($ID) && $ID != 0) :
+		// 		// database connect
+		// 		$db = JFactory::getDbo();
+		// 		// get last item
+		// 		$query = 'SELECT MAX('.$db->quoteName('orderer').') FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '.$db->quoteName('id').' != '.$ID.' AND '.$db->quoteName('request_id').' != '.$pID;
+		// 		return $query;
+		// 		$db->setQuery($query);
+		// 		$max = $db->loadResult();
+		// 		if(!empty($ord) && $ord != 0 && $ord != $cord) :
+		// 			// verify if exist other item in position
+		// 			$query = 'SELECT COUNT(*) FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '.$db->quoteName('orderer').' = '.$ord.' AND  '. $db->quoteName('id') .' != '. $ID .' AND '.$db->quoteName('request_id').' != '.$pID;
+		// 			$db->setQuery($query);
+		// 			$exist = $db->loadResult();
+		// 			// inside itens order
+		// 			if($ord <= $max) :
+		// 				// define a posição quando a ordem é definida no insert, altera todos a partir da nova ordem
+		// 				if($cord == 0 ) :
+		// 					$query = '
+		// 						UPDATE '.$db->quoteName($cfg['mainTable']).' SET '.
+		// 						$db->quoteName('orderer').' = ('.$db->quoteName('orderer').' + 1)
+		// 						WHERE '.
+		// 						$db->quoteName('orderer') .' >= ' .$ord.' AND '. // ordem ocupada
+		// 						$db->quoteName('id') .' != '. $ID .' AND '.
+		// 						$db->quoteName('request_id') .' = '. $pID
+		// 					;
+		// 					$db->setQuery($query);
+		// 					$db->execute();
+		// 					return true;
+		// 				// se o item subir na ordem, altera todos os que estão entre a nova ordem e a anterior
+		// 				elseif($exist && $ord < $cord) :
+		// 					$query = '
+		// 						UPDATE '.$db->quoteName($cfg['mainTable']).' SET '.
+		// 						$db->quoteName('orderer').' = ('.$db->quoteName('orderer').' + 1)
+		// 						WHERE '.
+		// 						$db->quoteName('orderer') .' >= ' .$ord.' AND '. // ordem ocupada
+		// 						$db->quoteName('orderer') .' < ' .$cord.' AND '. // ordem anterior -> abaixo
+		// 						$db->quoteName('id') .' != '. $ID .' AND '.
+		// 						$db->quoteName('request_id') .' = '. $pID
+		// 					;
+		// 					$db->setQuery($query);
+		// 					$db->execute();
+		// 					return true;
+		// 				// se o item descer na ordem, altera todos os que estão entre a nova ordem e a anterior
+		// 				elseif($exist && $ord > $cord) :
+		// 					$query = '
+		// 						UPDATE '.$db->quoteName($cfg['mainTable']).' SET '.
+		// 						$db->quoteName('orderer').' = ('.$db->quoteName('orderer').' - 1)
+		// 						WHERE '.
+		// 						$db->quoteName('orderer') .' <= ' .$ord.' AND '. // ordem ocupada
+		// 						$db->quoteName('orderer') .' > ' .$cord.' AND '.  // ordem anterior -> acima
+		// 						$db->quoteName('id') .' != '. $ID .' AND '.
+		// 						$db->quoteName('request_id') .' = '. $pID
+		// 					;
+		// 					$db->setQuery($query);
+		// 					$db->execute();
+		// 					return true;
+		// 				else :
+		// 					return false;
+		// 				endif;
+		// 			// se o item for maior do que o máx, seta o máximo e define a ordem
+		// 			else :
+		// 				$nord = ($cord >= $max) ? $max + 1 : $max; // caso exista outro item na mesma posição
+		// 				$query = '
+		// 					UPDATE '.$db->quoteName($cfg['mainTable']).' SET '.
+		// 					$db->quoteName('orderer').' = '.$nord.'
+		// 					WHERE '.
+		// 					$db->quoteName('id') .' = '. $ID .' AND '.
+		// 					$db->quoteName('request_id') .' = '. $pID
+		// 				;
+		// 				$db->setQuery($query);
+		// 				$db->execute();
+		// 				if($cord < $max) setOrder($ID, $pID, $nord, $cord, $cfg);
+		// 				return true;
+		// 			endif;
+		// 		elseif(empty($ord) || $ord == 0) :
+		// 			$query = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET '.$db->quoteName('orderer').' = ('.$max.' + 1) WHERE '. $db->quoteName('id') .' = '. $ID .' AND '. $db->quoteName('request_id') .' = '. $pID;
+		// 			$db->setQuery($query);
+		// 			$db->execute();
+		// 			if($ord != $cord && $cord <= $max) :// this item position
+		// 				// verifica se existe outro item na mesma posição
+		// 				$query = 'SELECT COUNT(*) FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '.$db->quoteName('orderer').' = '.$cord.' AND '. $db->quoteName('id') .' != '. $ID .' AND '. $db->quoteName('request_id') .' = '. $pID;
+		// 				$db->setQuery($query);
+		// 				$cexist = $db->loadResult();
+		// 				if(!$cexist) setOrder($ID, $pID, $max + 1, $cord, $cfg);
+		// 			endif;
+		// 			return true;
+		// 		else :
+		// 			return false;
+		// 		endif;
+		// 	else :
+		// 		return false;
+		// 	endif;
+		// }
+	    // // CUSTOM -> Re-Order after delete item
+	    // function reOrder($ID, $pID, $ord, $cfg) {
+		// 	if(!empty($ID) && $ID != 0) :
+		// 		// database connect
+		// 		$db = JFactory::getDbo();
+		// 		// last item
+		// 		$query = 'SELECT MAX('.$db->quoteName('orderer').') FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '.$db->quoteName('id').' != '.$ID.' AND '.$db->quoteName('request_id').' == '.$pID;
+		// 		$db->setQuery($query);
+		// 		$max = $db->loadResult();
+		// 		if(!empty($ord) && $ord != 0 && $ord < $max) :
+		// 			// altera todos os que estão abaixo
+		// 			$query = '
+		// 				UPDATE '.$db->quoteName($cfg['mainTable']).' SET '.
+		// 				$db->quoteName('orderer').' = ('.$db->quoteName('orderer').' - 1)
+		// 				WHERE '.
+		// 				$db->quoteName('orderer') .' > ' .$ord.' AND '. // ordem ocupada
+		// 				$db->quoteName('request_id') .' = '. $pID
+		// 			;
+		// 			$db->setQuery($query);
+		// 			$db->execute();
+		// 			return true;
+		// 		else :
+		// 			return false;
+		// 		endif;
+		// 	else :
+		// 		return false;
+		// 	endif;
+	    // }
 
 		// SAVE CONDITION
 		// Condição para inserção e atualização dos registros
@@ -144,9 +270,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'prev'				=> $prev,
 						'next'				=> $next,
 						// App Fields
-						'request_id'			=> $item->request_id,
+						'request_id'		=> $item->request_id,
 						'title'				=> $item->title,
 						'description'		=> $item->description,
+						'orderer'			=> $item->orderer,
 						'files'				=> $listFiles
 					);
 
@@ -158,6 +285,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('request_id')			.'='. $request['request_id'] .','.
 						$db->quoteName('title')				.'='. $db->quote($request['title']) .','.
 						$db->quoteName('description')		.'='. $db->quote($request['description']) .','.
+						$db->quoteName('orderer')			.'='. $request['orderer'] .','.
 						$db->quoteName('state')				.'='. $request['state'] .','.
 						$db->quoteName('alter_date')		.'= NOW(),'.
 						$db->quoteName('alter_by')			.'='. $user->id
@@ -183,7 +311,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$elemLabel = $db->loadResult();
 						endif;
 
-						$data[] = array(
+						// SET ORDER
+						// setOrder($id, $request['request_id'], $request['orderer'], $request['corderer'], $cfg);
+
+			            $data[] = array(
 							'status'			=> 2,
 							'msg'				=> JText::_('MSG_SAVED'),
 							'uploadError'		=> $fileMsg,
@@ -215,6 +346,17 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				elseif($task == 'del') :
 
 					$query = 'DELETE FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('id') .' IN ('.$ids.')';
+
+					$setIds = explode(',', $ids);
+					// RE-ORDER ITEMS AFTER DELETE
+					for($i = 0; $i < count($setIds); $i++) {
+						// GET PARENT INFO
+						$queryOrder = 'SELECT request_id, orderer FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('id') .' = '.$setIds[$i];
+						$db->setQuery($queryOrder);
+						$obj = $db->loadObject();
+						// RE-ORDER
+						// reOrder($setIds[$i], $obj->request_id, $obj->orderer, $cfg);
+					}
 
 					try {
 
@@ -361,12 +503,14 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('request_id') .','.
 							$db->quoteName('title') .','.
 							$db->quoteName('description') .','.
+							$db->quoteName('orderer') .','.
 							$db->quoteName('state') .','.
 							$db->quoteName('created_by')
 						.') VALUES ('.
 							$request['request_id'] .','.
 							$db->quote($request['title']) .','.
 							$db->quote($request['description']) .','.
+							$request['orderer'] .','.
 							$request['state'] .','.
 							$user->id
 						.')
@@ -404,6 +548,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->setQuery($query);
 							$elemLabel = $db->loadResult();
 						endif;
+
+						// SET ORDER
+						// setOrder($id, $request['request_id'], $request['orderer'], $request['corderer'], $cfg);
 
 						$data[] = array(
 							'status'			=> 1,

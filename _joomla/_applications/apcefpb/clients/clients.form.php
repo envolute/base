@@ -78,7 +78,7 @@ $users = $db->loadObjectList();
 							</div>
 						</div>
 						<div class="col-sm-6 col-md-4">
-							<div class="form-group field-required">
+							<div class="form-group">
 								<label><?php echo JText::_('FIELD_LABEL_ADMISSION_DATE'); ?></label>
 								<input type="text" name="cx_date" id="<?php echo $APPTAG?>-cx_date" class="form-control field-date" data-convert="true" />
 							</div>
@@ -220,13 +220,13 @@ $users = $db->loadObjectList();
 	<div class="col-lg-9 b-right b-right-dashed">
 		<div class="row">
 			<div class="col-md-9">
-				<div class="form-group field-required">
+				<div class="form-group">
 					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_STREET'); ?></label>
 					<input type="text" name="address" id="<?php echo $APPTAG?>-address" class="form-control upper" />
 				</div>
 			</div>
 			<div class="col-md-3">
-				<div class="form-group field-required">
+				<div class="form-group">
 					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_NUMBER'); ?></label>
 					<input type="text" name="address_number" id="<?php echo $APPTAG?>-address_number" class="form-control upper" />
 				</div>
@@ -244,20 +244,20 @@ $users = $db->loadObjectList();
 				</div>
 			</div>
 			<div class="col-md-2">
-				<div class="form-group field-required">
+				<div class="form-group">
 					<label>UF</label>
 					<input type="text" name="address_state" id="<?php echo $APPTAG?>-address_state" class="form-control upper" size="2" maxlength="2" />
 					<input type="hidden" name="address_country" id="<?php echo $APPTAG?>-address_country" />
 				</div>
 			</div>
 			<div class="col-md-5">
-				<div class="form-group field-required">
+				<div class="form-group">
 					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_CITY'); ?></label>
 					<input type="text" name="address_city" id="<?php echo $APPTAG?>-address_city" class="form-control upper" />
 				</div>
 			</div>
 			<div class="col-md-5">
-				<div class="form-group field-required">
+				<div class="form-group">
 					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_DISTRICT'); ?></label>
 					<input type="text" name="address_district" id="<?php echo $APPTAG?>-address_district" class="form-control upper" />
 				</div>

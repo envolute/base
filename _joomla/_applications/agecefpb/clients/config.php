@@ -39,6 +39,7 @@ $_SESSION[$APPTAG.'newUsertype'] = 11; // default 'Associado->efetivo'
 
 // Crud's permissions
 	$cfg['isPublic']			= false; // Público -> acesso aberto a todos
+	if(isset(${$APPTAG.'IsPublic'})) $cfg['isPublic'] = ${$APPTAG.'IsPublic'} ? true : false;
 	// Restrict Access
 	// $cfg['groupId']['viewer'][]  = apenas visualiza o componente
 	// $cfg['groupId']['admin'][]   = administra o componente
@@ -75,11 +76,13 @@ $_SESSION[$APPTAG.'newUsertype'] = 11; // default 'Associado->efetivo'
 		$cfg['showList']		= false;
 		$cfg['listModal']		= false;
 		$cfg['listFull']		= false;
+		$cfg['listAjax']		= false;
 		$cfg['staticToolbar']	= false;
 		$cfg['showAddBtn']		= false;
 		$cfg['addText']			= false;
 		$cfg['addClass']		= false;
 		$cfg['showFilter']		= false;
+		$cfg['ajaxFilter']		= false;
 	else :
 		// show/hidden list
 		$cfg['showList']			= true;

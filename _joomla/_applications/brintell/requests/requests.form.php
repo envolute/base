@@ -11,6 +11,36 @@ $query = 'SELECT * FROM '. $db->quoteName($cfg['mainTable'].'_tags') .' WHERE '.
 $db->setQuery($query);
 $tags = $db->loadObjectList();
 
+// CREATED BY
+$author = '';
+if($hasAuthor) :
+	$query	= '
+		SELECT
+			T1.*
+		FROM '. $db->quoteName('#__'.$cfg['project'].'_teams') .' T1
+		WHERE T1.user_id = '.$user->id
+	;
+	$db->setQuery($query);
+	$obj = $db->loadObject();
+	if(!empty($obj->name)) : // verifica se existe
+		$name = baseHelper::nameFormat((!empty($obj->nickname) ? $obj->nickname : $obj->name));
+
+		// Imagem Principal -> Primeira imagem (index = 0)
+		JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
+		$img = uploader::getFile('#__brintell_teams_files', '', $obj->id, 0, JPATH_BASE.DS.'images/apps/teams/');
+		if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/teams/'.$img['filename'], 45, 45);
+		else $imgPath = JURI::root().'images/apps/icons/user_'.$obj->gender.'.png';
+		$img = '<img src="'.$imgPath.'" class="img-fluid rounded float-left mr-2 mb-2" style="width:45px; height:45px;" />';
+
+		$author = '
+			<div class="mb-3 b-bottom b-primary-lighter clearfix">
+				'.$img.'
+				<h5 class="font-condensed">'.$name.'</h5>
+			</div>
+		';
+	endif;
+endif;
+
 // FORM
 ?>
 <ul class="nav nav-tabs" id="<?php echo $APPTAG?>Tab" role="tablist">
@@ -25,6 +55,7 @@ $tags = $db->loadObjectList();
 	<div class="tab-pane fade show active" id="<?php echo $APPTAG?>TabGeneral" role="tabpanel" aria-labelledby="<?php echo $APPTAG?>Tab-general">
 		<div class="row">
 			<div class="col-lg-8">
+				<?php echo $author?>
 				<div class="row">
 					<div class="col-lg-6">
 						<div class="form-group field-required">
@@ -70,7 +101,7 @@ $tags = $db->loadObjectList();
 				</div>
 				<div class="form-group">
 					<label class="label-sm"><?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?></label>
-					<textarea rows="12" name="description" id="<?php echo $APPTAG?>-description" class="form-control"></textarea>
+					<textarea rows="8" name="description" id="<?php echo $APPTAG?>-description" class="form-control"></textarea>
 				</div>
 				<?php if($hasAuthor) :?>
 					<input type="hidden" name="status" id="<?php echo $APPTAG?>-status" />
@@ -120,17 +151,10 @@ $tags = $db->loadObjectList();
 					</span>
 				</div>
 				<div class="row">
-					<div class="col-6">
+					<div class="col-xl-6">
 						<div class="form-group">
 							<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_DEADLINE_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_DEADLINE'); ?></label>
 							<input type="text" name="deadline" id="<?php echo $APPTAG?>-deadline" class="form-control field-date" data-convert="true" />
-						</div>
-					</div>
-					<div class="col-6">
-						<div class="form-group">
-							<label class="label-sm"><?php echo JText::_('FIELD_LABEL_ORDER'); ?></label>
-							<input type="number" name="orderer" id="<?php echo $APPTAG?>-orderer" class="form-control field-integer" />
-							<input type="hidden" name="corderer" id="<?php echo $APPTAG?>-corderer" />
 						</div>
 					</div>
 				</div>
@@ -156,7 +180,7 @@ $tags = $db->loadObjectList();
 					</div>
 					<div id="<?php echo $APPTAG?>-btn-toDo" hidden>
 						<hr />
-						<button type="button" class="btn btn-primary btn-block text base-icon-list btn-icon" onclick="<?php echo $APPTAG?>_viewTodo()" data-toggle="modal" data-target="#modal-list-<?php echo $APPTAG?>Todo" data-backdrop="static" data-keyboard="false"> <?php echo JText::_('TEXT_TODO_LIST')?></button>
+						<button type="button" class="btn btn-primary btn-block text base-icon-list btn-icon" onclick="<?php echo $APPTAG?>_viewToDo()" data-toggle="modal" data-target="#modal-list-<?php echo $APPTAG?>Todo" data-backdrop="static" data-keyboard="false"> <?php echo JText::_('TEXT_TODO_LIST')?></button>
 					</div>
 				</div>
 			</div>

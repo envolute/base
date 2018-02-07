@@ -25,7 +25,7 @@ $db = JFactory::getDbo();
 ?>
 
 <script>
-jQuery(window).on('load', function() {
+jQuery(function() {
 
 	<?php // Default 'JS' Vars
 	require(JPATH_CORE.DS.'apps/snippets/initVars.js.php');
@@ -35,6 +35,8 @@ jQuery(window).on('load', function() {
 	var task_id				= jQuery('#<?php echo $APPTAG?>-task_id');
 	var title				= jQuery('#<?php echo $APPTAG?>-title');
 	var description			= jQuery('#<?php echo $APPTAG?>-description');
+	var orderer				= jQuery('#<?php echo $APPTAG?>-orderer');
+	var corderer			= jQuery('#<?php echo $APPTAG?>-corderer');
 
 	// PARENT FIELD -> Select
 	// informe, se houver, o campo que representa a chave estrangeira principal
@@ -92,6 +94,8 @@ jQuery(window).on('load', function() {
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
 			title.val('');
 			description.val('');
+			orderer.val('');
+			corderer.val('');
 
 			<?php // Closure Actions
 			require(JPATH_CORE.DS.'apps/snippets/form/formReset.end.js.php');
@@ -215,6 +219,8 @@ jQuery(window).on('load', function() {
 						task_id.val(item.task_id);
 						title.val(item.title);
 						description.val(item.description);
+						orderer.val(item.orderer);
+						corderer.val(item.orderer);
 
 						<?php // Closure Actions
 						require(JPATH_CORE.DS.'apps/snippets/form/loadEdit.end.js.php');

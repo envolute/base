@@ -13,7 +13,6 @@ CREATE TABLE `cms_brintell_requests` (
   `tags` varchar(255) NOT NULL,
   `status` tinyint(4) NOT NULL,
   `status_desc` varchar(255) NOT NULL,
-  `orderer` tinyint(4) NOT NULL,
   `closing_date` DATETIME NOT NULL,
   `state` tinyint(4) NOT NULL,
   `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,

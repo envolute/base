@@ -14,7 +14,7 @@
 			<li>Chamados Recentes</li>
 			<li>Tarefas Recentes</li>
 			<li>Alertas</li>
-			<li>Lista de Membros da Equipe Brintell (motrando online/offline)</li>
+			<li>Lista de Membros da Equipe Brintell (online/offline)</li>
 			<li>
 				Ações Extras de CRM:
 				<ul>
@@ -31,7 +31,7 @@
 			<li>Quantidade de tarefas relacionadas</li>
 			<li>Quantidade de tarefas atribuídas (mês)</li>
 			<li>Quantidade de tarefas finalizadas (mês)</li>
-			<li>Lista de Membros da Equipe Brintell (motrando online/offline)</li>
+			<li>Lista de Membros da Equipe Brintell (online/offline)</li>
 			<li>Tarefas Recentes (do usuário)</li>
 			<li>Alertas</li>
 		</ul>
@@ -43,7 +43,7 @@
 			<li>Quantidade de chamados ativos</li>
 			<li>Quantidade de chamados abertos (mês)</li>
 			<li>Quantidade de chamados finalizados (mês)</li>
-			<li>Lista de Membros da Equipe do Cliente (motrando online/offline)</li>
+			<li>Lista de Membros da Equipe do Cliente (online/offline)</li>
 			<li>Lista de clientes (os quais o usuário está cadastrado)</li>
 			<li>Alertas do usuário/todos</li>
 		</ul>

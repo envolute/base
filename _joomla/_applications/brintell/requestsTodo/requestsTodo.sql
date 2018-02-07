@@ -7,6 +7,7 @@ CREATE TABLE `cms_brintell_requests_todo` (
   `request_id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
   `description` text NOT NULL,
+  `orderer` tinyint(4) NOT NULL,
   `state` tinyint(4) NOT NULL,
   `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` int(11) NOT NULL,

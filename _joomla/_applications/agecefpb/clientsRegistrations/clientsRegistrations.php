@@ -29,7 +29,7 @@ $db = JFactory::getDbo();
 ?>
 
 <script>
-jQuery(window).on('load', function() {
+jQuery(function() {
 
 	<?php // Default 'JS' Vars
 	require(JPATH_CORE.DS.'apps/snippets/initVars.js.php');
