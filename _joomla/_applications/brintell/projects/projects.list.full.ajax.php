@@ -66,6 +66,36 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		WHERE
 			'.$where.$orderList;
 	;
+	$query	= '
+		SELECT
+			T1.*,
+			'. $db->quoteName('T2.name') .' client
+	';
+	if(!empty($rID) && $rID !== 0) :
+		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
+			$query .= ' FROM '.
+				$db->quoteName($cfg['mainTable']) .' T1
+				LEFT OUTER JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
+				ON T2.id = T1.client_id AND T2.state = 1
+				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T3
+				ON '.$db->quoteName('T3.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
+			WHERE '.$where.' AND '. $db->quoteName('T3.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID.$orderList
+			;
+		else :
+			$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
+				LEFT OUTER JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
+				ON T2.id = T1.client_id AND T2.state = 1
+				WHERE '.$where.' AND '. $db->quoteName($rNID) .' = '. $rID.$orderList
+			;
+		endif;
+	else :
+		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
+			LEFT OUTER JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
+			ON T2.id = T1.client_id AND T2.state = 1
+			WHERE '.$where.$orderList
+		;
+		if($oCHL) $noReg = false;
+	endif;
 	try {
 		$db->setQuery($query);
 		$db->execute();
@@ -87,7 +117,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
 				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 48, 48);
 				else $imgPath = $_ROOT.'images/apps/icons/folder_48.png';
-				$img = '<img src="'.$imgPath.'" class="img-fluid mr-2" style="width:48px; height:48px;" />';
+				$img = '<img src="'.$imgPath.'" class="img-fluid b-all-2 b-white" style="width:48px; height:48px;" />';
 			endif;
 
 			$rowState = $item->state == 0 ? 'danger bg-light text-muted' : 'primary bg-white';
@@ -97,10 +127,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$html .= '
 				<div id="'.$APPTAG.'-item-'.$item->id.'" class="col-sm-4 col-md-3 pb-3">
 					<div class="pos-relative rounded b-top-2 b-'.$rowState.' set-shadow">
-						<a href="'.$urlViewData.'" class="d-block text-lg lh-1-2 p-2">
-							'.$img.baseHelper::nameFormat($item->name).'
+						<a href="'.$urlViewData.'" class="d-flex align-items-center">
+							'.$img.'
+							<h6 class="px-2 m-0">'.baseHelper::nameFormat($item->name).'</h6>
 						</a>
-						<span class="d-flex justify-content-between align-items-center text-muted p-1 b-top">
+						<span class="d-flex justify-content-between align-items-center text-muted px-1 b-top">
 							<a href="'.$urlViewClient.'" class="text-sm pl-1 hasTooltip" title="'.JText::_('FIELD_LABEL_CLIENT').'">'.baseHelper::nameFormat($item->client).'</a>
 							<span class="btn-group">
 								<a href="#" class="btn btn-xs btn-link hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'">

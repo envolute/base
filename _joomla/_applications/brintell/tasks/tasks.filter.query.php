@@ -83,7 +83,7 @@ $myID = $db->loadResult();
 	$ordf	= $app->input->get($APPTAG.'oF', '', 'string'); // campo a ser ordenado
 	$ordt	= $app->input->get($APPTAG.'oT', '', 'string'); // tipo de ordem: 0 = 'ASC' default, 1 = 'DESC'
 
-	$orderDef = 'T1.orderer, T1.created_date DESC'; // não utilizar vírgula no inicio ou fim
+	$orderDef = 'T1.priority DESC, T1.created_date DESC'; // não utilizar vírgula no inicio ou fim
 	if(!isset($_SESSION[$APPTAG.'oF'])) : // DEFAULT ORDER
 		$_SESSION[$APPTAG.'oF'] = 'T1.status';
 		$_SESSION[$APPTAG.'oT'] = 'ASC';

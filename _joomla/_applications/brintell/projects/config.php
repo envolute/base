@@ -45,9 +45,12 @@ endif;
 	// ----------------------------------------------------
 	$cfg['groupId']['analyst'][]			= 12; // Brintell Analyst
 	$cfg['groupId']['client'][]				= 16; // Client Developer
-	$cfg['groupId']['client']['manager'][]	= 15; // Client Manager
+	$cfg['groupId']['clientManager'][]		= 15; // Client Manager
 	// ----------------------------------------------------
-	$cfg['groupId']['viewer'][]				= 0; // '0' pois não pode ser vazio
+	$cfg['groupId']['viewer'][]				= 12; // Brintell Analyst
+	$cfg['groupId']['viewer'][]				= 13; // Brintel Developer
+	$cfg['groupId']['viewer'][]				= 16; // Client Developer
+	$cfg['groupId']['viewer'][]				= 15; // Client Manager
 	// acesso liberado sempre
 	$cfg['groupId']['admin'][]				= 11;	// Brintel Manager
 	$cfg['groupId']['admin'][]				= 8;	// Desenvolvedor

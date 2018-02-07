@@ -42,9 +42,8 @@ endif;
 	// ----------------------------------------------------
 	$cfg['groupId']['viewer'][]	= 0; // '0' pois não pode ser vazio
 	// acesso liberado sempre
-	$cfg['groupId']['admin'][]	= 6; // Gerente
-	$cfg['groupId']['admin'][]	= 7; // Administrador
-	$cfg['groupId']['admin'][]	= 8; // Desenvolvedor
+	$cfg['groupId']['admin'][]	= 11;	// Brintel Manager
+	$cfg['groupId']['admin'][]	= 8;	// Desenvolvedor
 	// ----------------------------------------------------
 
 // crud's name

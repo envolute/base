@@ -53,14 +53,11 @@ jQuery(window).on('load', function() {
 	var visibility			= mainForm.find('input[name=visibility]:radio'); // radio group
 	var status				= mainForm.find('input[name=status]:radio'); // radio group
 	var cstatus				= jQuery('#<?php echo $APPTAG?>-cstatus');
-	var status_desc			= jQuery('#<?php echo $APPTAG?>-status_desc');
 	var orderer				= jQuery('#<?php echo $APPTAG?>-orderer');
 	var corderer			= jQuery('#<?php echo $APPTAG?>-corderer');
 
 	// ALTER STATUS
 	var statusId			= jQuery('#<?php echo $APPTAG?>-statusId');
-	var statusOn			= jQuery('#<?php echo $APPTAG?>-statusOn');
-	var statusDs			= jQuery('#<?php echo $APPTAG?>-statusDs');
 	var new_status			= formStatus.find('input[name=new_status]:radio');
 
 	// PARENT FIELD -> Select
@@ -132,7 +129,6 @@ jQuery(window).on('load', function() {
 			checkOption(visibility, 0);
 			checkOption(status, 1);
 			cstatus.val('');
-			status_desc.val('<?php echo JText::_('TEXT_STATUS_DESC_INIT')?>');
 			orderer.val('');
 			corderer.val('');
 
@@ -299,7 +295,6 @@ jQuery(window).on('load', function() {
 						checkOption(visibility, item.visibility);
 						checkOption(status, item.status);
 						cstatus.val(item.status);
-						status_desc.val(item.status_desc);
 						orderer.val(item.orderer);
 						corderer.val(item.orderer);
 

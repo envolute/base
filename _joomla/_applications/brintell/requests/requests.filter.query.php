@@ -4,21 +4,51 @@ defined('_JEXEC') or die;
 // QUERY FOR LIST
 $where = '';
 
+$query = 'SELECT id FROM '. $db->quoteName('#__'.$cfg['project'].'_teams') .' WHERE user_id = '.$user->id;
+$db->setQuery($query);
+$myID = $db->loadResult();
+
 // filter params
 
 	// STATE -> select
-	$active	= $app->input->get('active', 2, 'int');
-	$where .= ($active == 2) ? $db->quoteName('T1.state').' != '.$active : $db->quoteName('T1.state').' = '.$active;
+	$active	= $app->input->get('active', 1, 'int');
+	$where .= $db->quoteName('T1.state').' = '.$active;
 	// PROJECT
-	$pID = $app->input->get('pID', 0, 'int');
-	if($pID != 0) $where .= ' AND '.$db->quoteName('T1.project_id').' = '.$pID;
+	$pID	= $app->input->get('pID', 0, 'int');
+	$fProj	= ($pID > 0) ? $pID : $app->input->get('fProj', 0, 'int');
+	if($fProj != 0) $where .= ' AND '.$db->quoteName('T1.project_id').' = '.$fProj;
+	// CREATED BY
+	$createdBy = '';
+	if($hasAdmin || $pID > 0) :
+		$fCreated = $app->input->get('fCreated', array(), 'array');
+		for($i = 0; $i < count($fCreated); $i++) {
+			$createdBy .= ($i == 0) ? ' AND (' : ' OR ';
+			$createdBy .= 'FIND_IN_SET ('.$fCreated[$i].', T1.created_by)';
+			$createdBy .= ($i == (count($fCreated) - 1)) ? ')' : '';
+		}
+	// Visão geral das requests pelo dev
+	// Mostra apenas as requests do próprio usuário
+	else :
+		$fCreated = $myID;
+		$createdBy = ' AND FIND_IN_SET ('.$fCreated.', '.$db->quoteName('T1.created_by').')';
+	endif;
+	$where .= $createdBy;
+	// TYPE
+	$fType	= $app->input->get('fType', 9, 'int');
+	if($fType != 9) $where .= ' AND '.$db->quoteName('T1.priority').' = '.$fType;
 	// PRIORITY
 	$fPrior	= $app->input->get('fPrior', 9, 'int');
 	if($fPrior != 9) $where .= ' AND '.$db->quoteName('T1.priority').' = '.$fPrior;
-	// VISIBILITY
-	$fView	= $app->input->get('fView', 2, 'int');
-	if($fView != 2) $where .= ' AND '.$db->quoteName('T1.visibility').' = '.$fView;
-	// START DATE
+	// TAGS
+	$fTags = $app->input->get('fTags', array(), 'array');
+	$tags = '';
+	for($i = 0; $i < count($fTags); $i++) {
+		$tags .= ($i == 0) ? ' AND (' : ' OR ';
+		$tags .= 'FIND_IN_SET ("'.$fTags[$i].'", '.$db->quoteName('T1.tags').')';
+		$tags .= ($i == (count($fTags) - 1)) ? ')' : '';
+	}
+	$where .= $tags;
+	// DEADLINE DATE
 	$dateMin	= $app->input->get('dateMin', '', 'string');
 	$dateMax	= $app->input->get('dateMax', '', 'string');
 	$dtmin = !empty($dateMin) ? $dateMin : '0000-00-00';
@@ -30,7 +60,7 @@ $where = '';
 	$sQuery = ''; // query de busca
 	$sLabel = array(); // label do campo de busca
 	$searchFields = array(
-		'T1.name'			=> 'FIELD_LABEL_NAME',
+		'T1.subject'		=> 'FIELD_LABEL_SUBJECT',
 		'T1.description'	=> 'FIELD_LABEL_DESCRIPTION'
 	);
 	$i = 0;
@@ -47,7 +77,8 @@ $where = '';
 	$ordf	= $app->input->get($APPTAG.'oF', '', 'string'); // campo a ser ordenado
 	$ordt	= $app->input->get($APPTAG.'oT', '', 'string'); // tipo de ordem: 0 = 'ASC' default, 1 = 'DESC'
 
-	$orderDef = 'T1.orderer, T1.created_date DESC'; // não utilizar vírgula no inicio ou fim
+	unset($_SESSION[$APPTAG.'oF']);
+	$orderDef = 'T1.priority DESC, T1.created_date DESC'; // não utilizar vírgula no inicio ou fim
 	if(!isset($_SESSION[$APPTAG.'oF'])) : // DEFAULT ORDER
 		$_SESSION[$APPTAG.'oF'] = 'T1.status';
 		$_SESSION[$APPTAG.'oT'] = 'ASC';

@@ -38,16 +38,17 @@ endif;
 	$cfg['isPublic']			= false; // Público -> acesso aberto a todos
 	// Restrict Access
 	// $cfg['groupId']['analyst'][]  = Analyst
-	// $cfg['groupId']['client'][]  = Client Developer
-	// $cfg['groupId']['client']['manager'][]  = Client Manager
 	// $cfg['groupId']['viewer'][]  = Client Manager
 	// $cfg['groupId']['admin'][]   = administra o componente
 	// ----------------------------------------------------
 	// ----------------------------------------------------
-	$cfg['groupId']['viewer'][]	= 0; // '0' pois não pode ser vazio
+	$cfg['groupId']['viewer'][]	= 0;
+	// ----------------------------------------------------
+	$cfg['groupId']['author'][]	= 15;	// Client
+	$cfg['groupId']['author'][]	= 16;	// Client Manager
 	// acesso liberado sempre
-	$cfg['groupId']['admin'][]	= 16;	// Client Team
-	$cfg['groupId']['admin'][]	= 15;	// Client Manager
+	$cfg['groupId']['admin'][]	= 15;	// Client
+	$cfg['groupId']['admin'][]	= 16;	// Client Manager
 	$cfg['groupId']['admin'][]	= 12;	// Brintell Analyst
 	$cfg['groupId']['admin'][]	= 11;	// Brintel Manager
 	$cfg['groupId']['admin'][]	= 8;	// Desenvolvedor

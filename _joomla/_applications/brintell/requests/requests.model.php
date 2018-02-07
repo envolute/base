@@ -93,27 +93,32 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['state']				= $input->get('state', 1, 'int');
 		// app
 		$request['project_id']			= $input->get('project_id', 0, 'int');
+		$request['type']				= $input->get('type', 0, 'int');
 	  	$request['subject']				= $input->get('subject', '', 'string');
 	  	$request['description']			= $input->get('description', '', 'string');
 		$request['priority']			= $input->get('priority', 0, 'int');
 	  	$request['deadline']			= $input->get('deadline', '', 'string');
-	  	$request['estimate']			= $input->get('estimate', 0, 'int');
-	  	$request['executed']			= $input->get('executed', 0, 'int');
-	  	$request['visibility']			= $input->get('visibility', 0, 'int');
-	  	$request['status']				= $input->get('status', 0, 'int');
-	  	$request['cstatus']				= $input->get('cstatus', 0, 'int');
-	  	$request['status_desc']			= $input->get('status_desc', '', 'string');
-			// alter status form
-			$request['statusOn']     = $input->get('statusOn', 0, 'int');
-			$request['statusDs']     = $input->get('statusDs', '', 'string');
-			// fechamento
-			$closing_date = '0000-00-00 00:00:00';
-			if($request['status'] == 3) :
-				$request['executed'] = 100;
-			elseif($request['status'] == 4) :
-				$request['executed'] = 100;
-				$closing_date = date('Y-m-d H:i:s');
-			endif;
+		$tags							= $input->get('tags', array(), 'array');
+		$request['tags']				= implode(',', $tags); // FIND_IN_SET
+		$request['status']				= $input->get('status', 0, 'int');
+		$request['cstatus']				= $input->get('cstatus', 0, 'int');
+		$request['status_desc']			= $input->get('status_desc', '', 'string');
+	  	$request['setClose']			= $input->get('setClose', 0, 'int');
+		if($request['setClose'] == 1) :
+		  	$request['status']			= 3;
+	  		$request['status_desc']		= '';
+		endif;
+		// alter status form
+		$request['statusOn']     = $input->get('statusOn', 0, 'int');
+		$request['statusDs']     = $input->get('statusDs', '', 'string');
+		// fechamento
+		$closing_date = '0000-00-00 00:00:00';
+		if($request['status'] == 3) :
+			$request['executed'] = 100;
+		elseif($request['status'] == 4) :
+			$request['executed'] = 100;
+			$closing_date = date('Y-m-d H:i:s');
+		endif;
 	  	$request['orderer']				= $input->get('orderer', 0, 'int');
 	    $request['corderer']      		= $input->get('corderer', 0, 'int');
 
@@ -277,13 +282,15 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			endif;
 	    }
 	    // CUSTOM -> Copy Task from Request
-	    function createTaskFromRequest($requestID, $pID, $userID, $cfg) {
+	    function createTaskFromRequest($requestID, $requestType, $pID, $userID, $cfg) {
 			if(!empty($requestID) && $requestID != 0) :
 				// database connect
 				$db = JFactory::getDbo();
 				$query = '
 					INSERT INTO '. $db->quoteName($cfg['mainTable']) .' (
 						project_id,
+						type,
+						requests,
 						subject,
 						description,
 						priority,
@@ -292,6 +299,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					)
 					SELECT
 						'.$pID.',
+						'.$requestID.',
+						'.$requestType.',
 						subject,
 						description,
 						priority,
@@ -359,13 +368,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'next'				=> $next,
 						// App Fields
 						'project_id'		=> $item->project_id,
+						'type'				=> $item->type,
 						'subject'			=> $item->subject,
 						'description'		=> $item->description,
 						'priority'			=> $item->priority,
 						'deadline'			=> $item->deadline,
-						'estimate'			=> $item->estimate,
-						'executed'			=> $item->executed,
-						'visibility'		=> $item->visibility,
+						'tags'				=> explode(',', $item->tags),
 						'status'			=> $item->status,
 						'status_desc'		=> $item->status_desc,
 						'orderer'			=> $item->orderer,
@@ -378,13 +386,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
 					$query .=
 						$db->quoteName('project_id')		.'='. $request['project_id'] .','.
+						$db->quoteName('type')				.'='. $request['type'] .','.
 						$db->quoteName('subject')			.'='. $db->quote($request['subject']) .','.
 						$db->quoteName('description')		.'='. $db->quote($request['description']) .','.
 						$db->quoteName('priority')			.'='. $request['priority'] .','.
 						$db->quoteName('deadline')			.'='. $db->quote($request['deadline']) .','.
-						$db->quoteName('estimate')			.'='. $request['estimate'] .','.
-						$db->quoteName('executed')			.'='. $request['executed'] .','.
-						$db->quoteName('visibility')		.'='. $request['visibility'] .','.
+						$db->quoteName('tags')				.'='. $db->quote($request['tags']) .','.
 						$db->quoteName('status')			.'='. $request['status'] .','.
 						$db->quoteName('status_desc')		.'='. $db->quote($request['status_desc']) .','.
 						$db->quoteName('orderer')			.'='. $request['orderer'] .','.
@@ -606,7 +613,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->setQuery($query);
 							$pID = $db->loadResult();
 							// CREATE TASK
-							createTaskFromRequest($setIds[$i], $pID, $user->id, $cfg);
+							createTaskFromRequest($setIds[$i], $state, $pID, $user->id, $cfg);
 						}
 
 						$data[] = array(
@@ -626,29 +633,16 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				// STATUS
 				elseif($task == 'status') :
 
-					$date = $ds = '';
-					$sDate = '';
-					$sDesc = ', '.$db->quoteName('status_desc').' = '.$db->quote($request['statusDs']);
-					$nDesc = ', '.$db->quoteName('status_desc').' = '.$db->quote('');
-					if($state == 0) : // aguardando início
-						$date = ', '.$db->quoteName('closing_date').' = '.$db->quote('0000-00-00 00:00:00').', '.$db->quoteName('executed').' = 0';
-						$ds = $sDesc;
-						$sDesc = $request['statusDs'];
-					elseif($state == 1 || $state == 2) : // em produção ou pausado
-						$date = $sDate.', '.$db->quoteName('closing_date').' = '.$db->quote('0000-00-00 00:00:00');
-						$ds = ($state == 1) ? $nDesc : $sDesc;
-						$sDesc = ($state == 1) ? '' : $request['statusDs'];
-					elseif($state == 3) : // finalizado
-						$date = $sDate.', '.$db->quoteName('closing_date').' = '.$db->quote(date('Y-m-d H:i:s')).', '.$db->quoteName('executed').' = 100';
-						$ds = $nDesc;
-						$sDesc = '';
-					else : // cancelado
-						$date = ', '.$db->quoteName('closing_date').' = '.$db->quote(date('Y-m-d H:i:s'));
-						$ds = $sDesc;
-						$sDesc = $request['statusDs'];
+					$date = '';
+					$exec = '';
+					if($state < 3) : // backlog, todo, doing
+						if($state < 2) $exec = ', '.$db->quoteName('executed').' = 0';
+						$date = $db->quote('0000-00-00 00:00:00');
+					else : // done
+						$exec = ', '.$db->quoteName('executed').' = 100';
+						$date = $db->quote(date('Y-m-d H:i:s'));
 					endif;
-
-					$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '. $db->quoteName('status') .' = '.$state.$date.$ds.' WHERE '. $db->quoteName('id') .' = '.$id;
+					$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '. $db->quoteName('status') .' = '.$state.', '.$db->quoteName('closing_date').' = '.$date.$exec.' WHERE '. $db->quoteName('id') .' = '.$id;
 
 					try {
 						$db->setQuery($query);
@@ -657,7 +651,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$data[] = array(
 							'status'		=> 1,
 							'newStatus'		=> $state,
-							'statusDesc'	=> $sDesc,
 							'id'			=> $id,
 							'msg'			=> ''
 						);
@@ -687,13 +680,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$query  = '
 						INSERT INTO '. $db->quoteName($cfg['mainTable']) .'('.
 							$db->quoteName('project_id') .','.
+							$db->quoteName('type') .','.
 							$db->quoteName('subject') .','.
 							$db->quoteName('description') .','.
 							$db->quoteName('priority') .','.
 							$db->quoteName('deadline') .','.
-							$db->quoteName('estimate') .','.
-							$db->quoteName('executed') .','.
-							$db->quoteName('visibility') .','.
+							$db->quoteName('tags') .','.
 							$db->quoteName('status') .','.
 							$db->quoteName('status_desc') .','.
 							$db->quoteName('orderer') .','.
@@ -701,13 +693,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('created_by')
 						.') VALUES ('.
 							$request['project_id'] .','.
+							$request['type'] .','.
 							$db->quote($request['subject']) .','.
 							$db->quote($request['description']) .','.
 							$request['priority'] .','.
 							$db->quote($request['deadline']) .','.
-							$request['estimate'] .','.
-							$request['executed'] .','.
-							$request['visibility'] .','.
+							$db->quote($request['tags']) .','.
 							$request['status'] .','.
 							$db->quote($request['status_desc']) .','.
 							$request['orderer'] .','.

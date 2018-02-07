@@ -55,17 +55,37 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	// GET DATA
 	$noReg	= true;
-	$query = '
+	$query	= '
 		SELECT
 			T1.*,
 			'. $db->quoteName('T2.name') .' project
-		FROM
-			'. $db->quoteName($cfg['mainTable']) .' T1
-			LEFT OUTER JOIN '. $db->quoteName('#__'.$cfg['project'].'_projects') .' T2
-			ON T2.id = T1.project_id AND T2.state = 1
-		WHERE
-			'.$where.$orderList;
-	;
+	';
+	if(!empty($rID) && $rID !== 0) :
+		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
+			$query .= ' FROM '.
+				$db->quoteName($cfg['mainTable']) .' T1
+				LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_projects') .' T2
+				ON '.$db->quoteName('T2.id') .' = T1.project_id AND T2.state = 1
+				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T3
+				ON '.$db->quoteName('T3.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
+			WHERE '.$where.' AND '. $db->quoteName('T3.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID.$orderList
+			;
+		else :
+			$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
+				LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_projects') .' T2
+				ON '.$db->quoteName('T2.id') .' = T1.project_id AND T2.state = 1
+				WHERE '.$where.' AND '. $db->quoteName($rNID) .' = '. $rID.$orderList
+			;
+		endif;
+	else :
+		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
+			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_projects') .' T2
+			ON '.$db->quoteName('T2.id') .' = T1.project_id AND T2.state = 1
+			WHERE '.$where.$orderList
+		;
+		if($oCHL) $noReg = false;
+	endif;
+
 	try {
 		$db->setQuery($query);
 		$db->execute();
@@ -93,8 +113,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$img = '<img src="'.$imgPath.'" class="img-fluid mr-2" style="width:48px; height:48px;" />';
 			endif;
 
-			$urlViewData = $_ROOT.'apps/'.$APPPATH.'/view?pID='.$item->id;
-			$urlViewProject = $_ROOT.'apps/projects/view?vID='.$item->project_id;
+			$urlViewData = $_ROOT.'apps/'.$APPPATH.'/view?vID='.$item->id;
+			$urlViewProject = $_ROOT.'apps/projects/view?pID='.$item->project_id;
 			// $rowState = $item->state == 0 ? 'danger bg-light text-muted' : 'primary bg-white';
 			$itemStatus = '';
 			switch($item->status) {
@@ -119,7 +139,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			if($status !== $item->status) :
 				if($counter > 0) $html .= '</div>';
 				$html .= '
-					<div id="'.$APPTAG.'-item-status-'.$item->status.'" class="tasks-col col-md pb-3">
+					<div id="'.$APPTAG.'-item-status-'.$item->status.'" class="tasks-col col-md-3 pb-3">
 						<h6 class="text-center bg-'.$itemStatus.' rounded py-2 set-shadow-right">
 							<span class="base-icon-'.$iconStatus.'"></span> '.JText::_('TEXT_STATUS_'.$item->status).'
 						</h6>
@@ -127,7 +147,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$status = $item->status;
 			endif;
 
-			$deadline = $item->deadline != '0000-00-00' ? '<small class="badge badge-secondary text-danger pos-absolute pos-top-0 pos-right-0 m-1 cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_DEADLINE').'">'.baseHelper::dateFormat($item->deadline).'</small>' : '';
+			$priority = '';
+			if($item->priority == 1) $priority = ' <small class="base-icon-attention text-live cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_1').'"></small> ';
+			else if($item->priority == 2) $priority = ' <small class="base-icon-attention text-danger cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_2').'"></small> ';
+
+			$deadline = $item->deadline != '0000-00-00' ? '<small class="text-muted cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_DEADLINE').'">'.baseHelper::dateFormat($item->deadline).'</small>' : '';
 
 			$btnActions = '';
 			if($hasAdmin || ($item->created_by == $user->id)) :
@@ -141,9 +165,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			endif;
 
 			$regInfo	= 'Task ID: <span class=&quot;text-live&quot;>#'.$item->id.'</span>';
-			if(!empty($item->request)):
-				$r = str_replace(',', ', #', $item->request);
-				$regInfo = 'Issue ID: <span class=&quot;text-live&quot;>#'.$r.'</span>';
+			if(!empty($item->requests)) :
+				$r = str_replace(',', ', #', $item->requests);
+				$regInfo .= '<div>Req. ID: <span class=&quot;text-live&quot;>#'.$r.'</span></div>';
 			endif;
 			$regInfo	.= '<hr class=&quot;my-1&quot; />';
 			$regInfo	.= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
@@ -153,6 +177,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$regInfo	.= JText::_('TEXT_ALTER_DATE').': '.baseHelper::dateFormat($item->alter_date, 'd/m/Y H:i').'<br />';
 				$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->alter_by)->name);
 			endif;
+			$regInfo = '<div class=&quot;small&quot;>'.$regInfo.'</div>';
 
 			// Assigned
 			$assigned = '';
@@ -175,7 +200,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					<div class="d-flex d-justify-content lh-1-2">
 						<a href="#" id="'.$APPTAG.'-item-'.$item->id.'-status" class="py-3 px-2 bg-gray-200 base-icon-'.$iconStatus.' text-'.$itemStatus.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$item->status).'" data-id="'.$item->id.'" data-status="'.$item->status.'" onclick="'.$APPTAG.'_setStatusModal(this)"></a>
 						<a href="'.$urlViewData.'" class="py-3 px-2">
-							'.baseHelper::nameFormat($item->subject).$deadline.'
+							'.baseHelper::nameFormat($item->subject).'
+							<div class="pos-absolute pos-top-0 pos-right-0 mx-1">
+								'.$priority.$deadline.'
+							</div>
 						</a>
 					</div>
 					<span class="d-flex justify-content-between align-items-center text-muted pl-2 b-top">
@@ -184,7 +212,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						</a>
 						<span class="btn-group">
 							'.$assigned.$btnActions.'
-							<a href="#" class="btn btn-xs btn-link base-icon-info-circled hasPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top" data-trigger="click focus"></a>
+							<a href="#" class="btn btn-xs btn-link text-info base-icon-info-circled hasPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top" data-trigger="click focus"></a>
 						</span>
 					</span>
 				</div>

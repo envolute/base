@@ -87,7 +87,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
 				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 48, 48);
 				else $imgPath = $_ROOT.'images/apps/icons/client.png';
-				$img = '<img src="'.$imgPath.'" class="img-fluid mr-2" style="width:48px; height:48px;" />';
+				$img = '<img src="'.$imgPath.'" class="img-fluid b-all-2 b-white" style="width:48px; height:48px;" />';
 			endif;
 
 			$rowState = $item->state == 0 ? 'danger bg-light text-muted' : 'primary bg-white';
@@ -96,10 +96,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$html .= '
 				<div id="'.$APPTAG.'-item-'.$item->id.'" class="col-sm-4 col-md-3 pb-3">
 					<div class="pos-relative rounded b-top-2 b-'.$rowState.' set-shadow">
-						<a href="'.$urlViewData.'" class="d-block text-lg lh-1-2 p-2">
-							'.$img.baseHelper::nameFormat($item->name).'
+						<a href="'.$urlViewData.'" class="d-flex align-items-center">
+							'.$img.'
+							<h6 class="px-2 m-0">'.baseHelper::nameFormat($item->name).'</h6>
 						</a>
-						<span class="d-block text-muted py-1 px-1 b-top clearfix">
+						<span class="d-block text-muted px-1 b-top clearfix">
 							'.baseHelper::nameFormat($item->groupName).'
 							<span class="btn-group float-right">
 								<a href="#" class="btn btn-xs btn-link hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'">

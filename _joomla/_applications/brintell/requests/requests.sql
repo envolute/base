@@ -4,14 +4,13 @@
 
 CREATE TABLE `cms_brintell_requests` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `project_id` varchar(10) NOT NULL,
+  `project_id` int(11) NOT NULL,
+  `type` tinyint(4) NOT NULL,
   `subject` varchar(50) NOT NULL,
   `description` TEXT NOT NULL,
   `priority` tinyint(4) NOT NULL,
   `deadline` DATE NOT NULL,
-  `estimate` tinyint(4) NOT NULL,
-  `executed` tinyint(4) NOT NULL,
-  `visibility` tinyint(4) NOT NULL,
+  `tags` varchar(255) NOT NULL,
   `status` tinyint(4) NOT NULL,
   `status_desc` varchar(255) NOT NULL,
   `orderer` tinyint(4) NOT NULL,
@@ -22,7 +21,8 @@ CREATE TABLE `cms_brintell_requests` (
   `alter_date` datetime NOT NULL,
   `alter_by` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `project_id` (`project_id`)
+  KEY `project_id` (`project_id`),
+  KEY `type` (`type`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

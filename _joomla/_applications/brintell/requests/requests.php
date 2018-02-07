@@ -19,6 +19,9 @@ $groups = $user->groups;
 // init general css/js files
 require(JPATH_CORE.DS.'apps/_init.app.php');
 
+// verifica o acesso
+$hasAuthor	= array_intersect($groups, $cfg['groupId']['author']); // se está na lista de administradores permitidos
+
 // DATABASE CONNECT
 $db = JFactory::getDbo();
 
@@ -37,14 +40,18 @@ jQuery(window).on('load', function() {
 
 	// APP FIELDS
 	var project_id			= jQuery('#<?php echo $APPTAG?>-project_id');
-	var subject				= jQuery('#<?php echo $APPTAG?>-name');
+	var type				= mainForm.find('input[name=type]:radio'); // radio group
+	var subject				= jQuery('#<?php echo $APPTAG?>-subject');
 	var description			= jQuery('#<?php echo $APPTAG?>-description');
 	var priority			= mainForm.find('input[name=priority]:radio'); // radio group
 	var deadline			= jQuery('#<?php echo $APPTAG?>-deadline');
-	var estimate			= jQuery('#<?php echo $APPTAG?>-estimate');
-	var executed			= jQuery('#<?php echo $APPTAG?>-executed');
-	var visibility			= mainForm.find('input[name=visibility]:radio'); // radio group
-	var status				= mainForm.find('input[name=status]:radio'); // radio group
+	var tags				= jQuery('#<?php echo $APPTAG?>-tags');
+	<?php if($hasAuthor) :?>
+		var setClose		= jQuery('#<?php echo $APPTAG?>-setClose');
+		var status			= jQuery('#<?php echo $APPTAG?>-status');
+	<?php else :?>
+		var status			= mainForm.find('input[name=status]:radio'); // radio group
+	<?php endif;?>
 	var cstatus				= jQuery('#<?php echo $APPTAG?>-cstatus');
 	var status_desc			= jQuery('#<?php echo $APPTAG?>-status_desc');
 	var orderer				= jQuery('#<?php echo $APPTAG?>-orderer');
@@ -110,18 +117,26 @@ jQuery(window).on('load', function() {
 			// App Fields
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
+			checkOption(type, 0);
 			subject.val('');
 			description.val('');
 			checkOption(priority, 0);
 			deadline.val('');
-			estimate.val('');
-			executed.val(0);
-			checkOption(visibility, 0);
-			checkOption(status, 0);
+			tags.selectUpdate(''); // select
+			<?php if($hasAuthor) :?>
+				setHidden(setClose, true);
+				checkOption(setClose, 0);
+				status.val(0);
+			<?php else :?>
+				checkOption(status, 0);
+			<?php endif;?>
 			cstatus.val('');
-			status_desc.val('<?php echo JText::_('TEXT_STATUS_DESC_INIT')?>');
+			status_desc.val('');
 			orderer.val('');
 			corderer.val('');
+
+			// TODO LIST
+			setHidden(jQuery('#<?php echo $APPTAG?>-alert-toDo'), false, jQuery('#<?php echo $APPTAG?>-btn-toDo'));
 
 			<?php // Closure Actions
 			require(JPATH_CORE.DS.'apps/snippets/form/formReset.end.js.php');
@@ -171,6 +186,19 @@ jQuery(window).on('load', function() {
 			?>
 		};
 
+		// CUSTOM -> Set Type
+		// implementa ações de acordo com o tipo de tarefa
+		window.<?php echo $APPTAG?>_setType = function(e) {
+			setHidden(jQuery('[class*="<?php echo $APPTAG?>-groupType"]'), true);
+			// show type fields
+			if(e !== 0) {
+				setHidden(jQuery('.<?php echo $APPTAG?>-groupType-'+e), false);
+				if(e == 1) setHidden(jQuery('#<?php echo $APPTAG?>-component-label'), false, jQuery('#<?php echo $APPTAG?>-subject-label'));
+			} else {
+				setHidden(jQuery('#<?php echo $APPTAG?>-subject-label'), false);
+			}
+		}
+
 	// LIST CONTROLLERS
 	// ações & métodos controladores da listagem
 
@@ -213,21 +241,15 @@ jQuery(window).on('load', function() {
 		window.<?php echo $APPTAG?>_setStatusModal = function(e) {
 			var obj = jQuery(e);
 			var id = obj.data('id');
-			var so = obj.data('on');
-			var sd = obj.data('content');
 			var val = obj.data('status');
 			statusPopup.modal();
 			statusId.val(id);
-			statusOn.val(so);
-			statusDs.val(sd);
 			checkOption(new_status, val); // radio
 			setFormDefinitions();
 		};
 		// On Modal Close -> Ações quando o modal é fechado
 		statusPopup.on('hidden.bs.modal', function () {
 			statusId.val('');
-			statusOn.val('');
-			statusDs.val('');
 			checkOption(new_status, 0); // radio
 			setFormDefinitions();
 		});
@@ -266,18 +288,26 @@ jQuery(window).on('load', function() {
 
 						// App Fields
 						project_id.selectUpdate(item.project_id); // select
+						checkOption(type, item.type);
 						subject.val(item.subject);
 						description.val(item.description);
 						checkOption(priority, item.priority);
 						deadline.val(dateFormat(item.deadline)); // DATE -> conversão de data
-						estimate.selectUpdate(item.estimate);
-						executed.val(item.executed);
-						checkOption(visibility, item.visibility);
-						checkOption(status, item.status);
+						tags.selectUpdate(item.tags); // select
+						<?php if($hasAuthor) :?>
+							setHidden(setClose, true);
+							checkOption(setClose, (item.status == 3 ? 1 : 0));
+							status.val(item.status);
+						<?php else :?>
+							checkOption(status, item.status);
+						<?php endif;?>
 						cstatus.val(item.status);
 						status_desc.val(item.status_desc);
 						orderer.val(item.orderer);
 						corderer.val(item.orderer);
+
+						// TODO LIST
+						setHidden(jQuery('#<?php echo $APPTAG?>-alert-toDo'), true, jQuery('#<?php echo $APPTAG?>-btn-toDo'));
 
 						<?php // Closure Actions
 						require(JPATH_CORE.DS.'apps/snippets/form/loadEdit.end.js.php');
@@ -322,12 +352,10 @@ jQuery(window).on('load', function() {
 		// seta o valor do campo 'status' do registro
 		window.<?php echo $APPTAG?>_setStatus = function(status) {
 			var cod = '&id='+statusId.val();
-			var so = '&statusOn='+statusOn.val();
-			var sd = '&statusDs='+statusDs.val();
 			var st = '&st='+status;
 			<?php echo $APPTAG?>_formExecute(true, false, true); // inicia o loader
 			jQuery.ajax({
-				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=status"+cod+so+sd+st,
+				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=status"+cod+st,
 				dataType: 'json',
 				type: 'POST',
 				cache: false,
@@ -335,11 +363,10 @@ jQuery(window).on('load', function() {
 					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
 					jQuery.map( data, function( res ) {
 						if(res.status == 1) {
-							if(res.newStatus == 0) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_0')?>').attr('data-content',res.statusDesc).data('content',res.statusDesc).removeClass().addClass('base-icon-clock text-live hasPopover');
-							else if(res.newStatus == 1) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_0')?>').attr('data-content',res.statusDesc).data('content',res.statusDesc).removeClass().addClass('base-icon-off text-success hasPopover');
-							else if(res.newStatus == 2) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_0')?>').attr('data-content',res.statusDesc).data('content',res.statusDesc).removeClass().addClass('base-icon-pause text-live hasPopover');
-							else if(res.newStatus == 3) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_0')?>').attr('data-content',res.statusDesc).data('content',res.statusDesc).removeClass().addClass('base-icon-ok text-success hasPopover');
-							else if(res.newStatus == 4) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_0')?>').attr('data-content',res.statusDesc).data('content',res.statusDesc).removeClass().addClass('base-icon-cancel text-success hasPopover');
+							if(res.newStatus == 0) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_0')?>').removeClass().addClass('base-icon-clock text-live hasPopover');
+							else if(res.newStatus == 1) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_1')?>').removeClass().addClass('base-icon-off text-live hasPopover');
+							else if(res.newStatus == 2) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_2')?>').removeClass().addClass('base-icon-off text-primary hasPopover');
+							else if(res.newStatus == 3) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_3')?>').removeClass().addClass('base-icon-ok text-success hasPopover');
 							jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').data('status', res.newStatus);
 							setTips();
 						}
@@ -397,7 +424,7 @@ jQuery(window).on('load', function() {
 	<?php if($cfg['showApp']) :?>
 		<div class="list-toolbar<?php echo ($cfg['staticToolbar'] ? '' : ' floating')?> hidden-print">
 			<?php
-			if($cfg['showAddBtn'] && $hasAdmin) echo $addBtn;
+			if($cfg['showAddBtn'] && ($hasAdmin || $hasAuthor)) echo $addBtn;
 			if($cfg['showList'] && $cfg['listFull']) :
 			?>
 				<?php if($hasAdmin) : ?>
@@ -453,7 +480,7 @@ jQuery(window).on('load', function() {
 	endif;
 	?>
 
-	<?php if($hasAdmin) : ?>
+	<?php if($hasAdmin || $hasAuthor) : ?>
 		<div class="modal fade" id="modal-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-<?php echo $APPTAG?>Label">
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">

@@ -45,6 +45,8 @@ require($PATH_APP_FILE.'.filter.query.php');
 				</div>
 			</div>
 		';
+	else :
+		$flt_project = '<input type="hidden" name="pID" id="pID" value="'.$pID.'" />';
 	endif;
 
 	// ASSIGN TO -> select

@@ -8,7 +8,7 @@ $ajaxRequest = false;
 require('config.php');
 
 // ACESSO
-$cfg['isPublic'] = true; // Público -> acesso aberto a todos
+// $cfg['isPublic'] = true; // Público -> acesso aberto a todos
 
 // IMPORTANTE:
 // Como outras Apps serão carregadas, através de "require", dentro dessa aplicação.
@@ -94,19 +94,19 @@ if(!empty($item->name)) :
 		// Imagem Principal -> Primeira imagem (index = 0)
 		$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
 		if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 64, 64);
-		else $imgPath = $_ROOT.'images/apps/icons/folder_48.png';
-		$img = '<img src="'.$imgPath.'" width="48" height="48" class="img-fluid float-left mr-2" />';
+		else $imgPath = $_ROOT.'images/apps/icons/folder_64.png';
+		$img = '<img src="'.$imgPath.'" class="img-fluid rounded mb-1" style="width:64px; height:64px;" />';
 	endif;
 
 	$since = (!empty($item->start_date) && $item->start_date != '0000-00-00') ? JText::_('TEXT_SINCE').': '.baseHelper::dateFormat($item->start_date) : '';
 	$desc = !empty($item->description) ? '<div>'.$item->description.'</div>' : '';
-	$info = (!empty($since) || !empty($desc)) ? '<div class="small py-2 b-top b-top-dashed b-gray-900">'.$since.$desc.'</div>' : '';
+	$info = (!empty($since) || !empty($desc)) ? '<div class="small text-center py-2 b-top b-top-dashed b-gray-900">'.$since.$desc.'</div>' : '';
 	$html .= '
-		<div id="'.$APPTAG.'-details-view">
-			<div class="p-2">
+		<div id="'.$APPTAG.'-details-view" class="text-center">
+			<div class="px-2 pt-3">
 				<div class="pb-2 clearfix">
 					'.$img.'
-					<h5 class="text-gray-200 m-0 lh-1">'.baseHelper::nameFormat($item->name).'</h5>
+					<h4 class="text-gray-200 mb-1 lh-1-1">'.baseHelper::nameFormat($item->name).'</h4>
 					<div class="small text-muted">'.baseHelper::nameFormat($item->client).'</div>
 				</div>
 				'.$info.'
@@ -127,7 +127,7 @@ if(!empty($item->name)) :
 			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_teams_roles') .' T3
 			ON '.$db->quoteName('T3.id') .' = T1.role_id
 			LEFT JOIN '. $db->quoteName('#__session') .' T4
-			ON '.$db->quoteName('T4.userid') .' = T1.user_id
+			ON '.$db->quoteName('T4.userid') .' = T1.user_id AND T4.client_id = 0
 		WHERE T1.state = 1
 		ORDER BY '. $db->quoteName('T1.name') .' ASC
 	';
@@ -143,7 +143,7 @@ if(!empty($item->name)) :
 
 	if($num_rows) : // verifica se existe
 		$html .= '
-			<div id="'.$APPTAG.'-client-team" class="p-2">
+			<div id="'.$APPTAG.'-client-team" class="text-center px-2 pb-2">
 				<hr class="hr-tag b-top-dashed b-primary" />
 				<span class="badge badge-primary">
 					'.JText::sprintf('TEXT_TEAM_CLIENT', baseHelper::nameFormat($item->client)).'
@@ -152,25 +152,29 @@ if(!empty($item->name)) :
 		';
 		foreach($res as $obj) {
 
-			$lStatus = JText::_('TEXT_USER_STATUS_'.($obj->online ? '1' : '0'));
-			$cStatus = ($obj->online) ? 'success' : 'gray-700';
+			if($obj->online) :
+				$lStatus = JText::_('TEXT_USER_STATUS_1');
+				$iStatus = '<small class="base-icon-circle text-success pos-absolute pos-right-0" style="bottom:-5px;"></small>';
+			else :
+				$lStatus = JText::_('TEXT_USER_STATUS_0');
+				$iStatus = '';
+			endif;
 			$name = baseHelper::nameFormat((!empty($obj->nickname) ? $obj->nickname : $obj->name));
 			$role = baseHelper::nameFormat((!empty($obj->role) ? $obj->role : $obj->occupation));
 			if(!empty($role)) $role = '<br />'.$role;
-			$info = baseHelper::nameFormat($obj->name).$role.'<br />'.$lStatus;
+			$info = baseHelper::nameFormat($name).$role.'<br />'.$lStatus;
 
 			if($cfg['hasUpload']) :
-				JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 				// Imagem Principal -> Primeira imagem (index = 0)
 				$img = uploader::getFile('#__brintell_teams_files', '', $obj->id, 0, JPATH_BASE.DS.'images/apps/teams/');
 				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/teams/'.$img['filename'], 32, 32);
 				else $imgPath = $_ROOT.'images/apps/icons/user_'.$obj->gender.'.png';
-				$img = '<img src="'.$imgPath.'" class="img-fluid rounded b-all-2 b-'.$cStatus.'" style="width:32px; height:32px;" />';
+				$img = '<img src="'.$imgPath.'" class="img-fluid rounded mb-2" style="width:32px; height:32px;" />';
 			endif;
 
 			$html .= '
-				<a href="apps/teams/profile?vID='.$obj->user_id.'" class="pos-relative hasTooltip" title="'.$info.'">
-					'.$status.$img.'
+				<a href="apps/teams/profile?vID='.$obj->user_id.'" class="d-inline-block pos-relative hasTooltip" title="'.$info.'">
+					'.$img.$iStatus.'
 				</a>
 			';
 		}
@@ -207,7 +211,7 @@ else :
 	if($num_rows) : // verifica se existe
 		$html .= '
 			<div id="'.$APPTAG.'-details-select">
-				'.JText::_('TEXT_SELECT_PROJECT').'
+				'.JText::_('TEXT_PROJECTS').'
 			</div>
 			<div id="'.$APPTAG.'-details-view">
 		';
@@ -224,7 +228,7 @@ else :
 
 			$html .= '
 				<a href="apps/projects/view?pID='.$item->id.'" class="d-flex align-items-center">
-					<span class="mr-2" style="flex:0 0 28px;">'.$img.'</span>
+					<span class="mr-2" style="flex:0 0 32px;">'.$img.'</span>
 					<h6 class="m-0 lh-1">
 						'.baseHelper::nameFormat($item->name).'
 						<div class="small text-muted">'.baseHelper::nameFormat($item->client).'</div>

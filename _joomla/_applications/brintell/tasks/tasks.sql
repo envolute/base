@@ -17,7 +17,6 @@ CREATE TABLE `cms_brintell_tasks` (
   `tags` varchar(255) NOT NULL,
   `visibility` tinyint(4) NOT NULL,
   `status` tinyint(4) NOT NULL,
-  `status_desc` varchar(255) NOT NULL,
   `orderer` tinyint(4) NOT NULL,
   `closing_date` DATETIME NOT NULL,
   `state` tinyint(4) NOT NULL,
@@ -28,7 +27,7 @@ CREATE TABLE `cms_brintell_tasks` (
   PRIMARY KEY (`id`),
   KEY `project_id` (`project_id`),
   KEY `type` (`type`),
-  KEY `team` (`team`),
+  KEY `assign_to` (`assign_to`),
   KEY `requests` (`requests`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 

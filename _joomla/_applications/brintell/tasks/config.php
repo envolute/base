@@ -43,6 +43,7 @@ endif;
 	// ----------------------------------------------------
 	// ----------------------------------------------------
 	$cfg['groupId']['viewer'][]	= 14;	// Externo
+	$cfg['groupId']['viewer'][]	= 13;	// Brintell Developer
 	// acesso liberado sempre
 	$cfg['groupId']['author'][]	= 13;	// Brintell Developer
 	// acesso liberado sempre

@@ -108,10 +108,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	  	$request['visibility']			= $input->get('visibility', 0, 'int');
 	  	$request['status']				= $input->get('status', 0, 'int');
 	  	$request['cstatus']				= $input->get('cstatus', 0, 'int');
-	  	$request['status_desc']			= $input->get('status_desc', '', 'string');
-			// alter status form
-			$request['statusOn']     = $input->get('statusOn', 0, 'int');
-			$request['statusDs']     = $input->get('statusDs', '', 'string');
 			// fechamento
 			$closing_date = '0000-00-00 00:00:00';
 			if($request['status'] == 3) :
@@ -381,7 +377,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'tags'				=> explode(',', $item->tags),
 						'visibility'		=> $item->visibility,
 						'status'			=> $item->status,
-						'status_desc'		=> $item->status_desc,
 						'orderer'			=> $item->orderer,
 						'files'				=> $listFiles
 					);
@@ -404,7 +399,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('tags')				.'='. $db->quote($request['tags']) .','.
 						$db->quoteName('visibility')		.'='. $request['visibility'] .','.
 						$db->quoteName('status')			.'='. $request['status'] .','.
-						$db->quoteName('status_desc')		.'='. $db->quote($request['status_desc']) .','.
 						$db->quoteName('orderer')			.'='. $request['orderer'] .','.
 	  					$db->quoteName('closing_date')		.'='. $db->quote($closing_date) .','.
 						$db->quoteName('state')				.'='. $request['state'] .','.
@@ -703,7 +697,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('tags') .','.
 							$db->quoteName('visibility') .','.
 							$db->quoteName('status') .','.
-							$db->quoteName('status_desc') .','.
 							$db->quoteName('orderer') .','.
 							$db->quoteName('state') .','.
 							$db->quoteName('created_by')
@@ -721,7 +714,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quote($request['tags']) .','.
 							$request['visibility'] .','.
 							$request['status'] .','.
-							$db->quote($request['status_desc']) .','.
 							$request['orderer'] .','.
 							$request['state'] .','.
 							$user->id

@@ -7,9 +7,6 @@ defined('_JEXEC') or die;
 $ajaxRequest = false;
 require('config.php');
 
-// ACESSO
-$cfg['isPublic'] = true; // Público -> acesso aberto a todos
-
 // IMPORTANTE:
 // Como outras Apps serão carregadas, através de "require", dentro dessa aplicação.
 // As variáveis php da App principal serão sobrescritas após as chamadas das outras App.
@@ -31,13 +28,7 @@ $groups = $user->groups;
 require(JPATH_CORE.DS.'apps/_init.app.php');
 
 // Get request data
-$pID = $app->input->get('pID', 0, 'int'); // PROJECT 'ID'
 $vID = $app->input->get('vID', 0, 'int'); // VIEW 'ID'
-
-// verifica o acesso
-$hasAnalyst		= array_intersect($groups, $cfg['groupId']['analyst']); // se está na lista de grupos permitidos
-$hasClient		= array_intersect($groups, $cfg['groupId']['client']); // se está na lista de grupos permitidos
-$hasCManager	= array_intersect($groups, $cfg['groupId']['client']['manager']); // se está na lista de grupos permitidos
 
 // Carrega o arquivo de tradução
 // OBS: para arquivos externos com o carregamento do framework '_init.joomla.php' (geralmente em 'ajax')
@@ -49,139 +40,209 @@ if(isset($_SESSION[$MAINTAG.'langDef'])) :
 	$lang->load('base_'.$APPNAME, JPATH_BASE, $_SESSION[$MAINTAG.'langDef'], true);
 endif;
 
-$p = ($pID > 0) ? 'pID='.$pID.'&' : '';
-$a[0] = ($vID == 0) ? ' active' : '';
-$a[1] = ($vID == 1) ? ' active' : '';
-$a[2] = ($vID == 2) ? ' active' : '';
-$a[3] = ($vID == 3) ? ' active' : '';
-$l[0] = JText::_('TEXT_DASHBOARD');
-$l[1] = JText::_('TEXT_REQUESTS');
-$l[2] = JText::_('TEXT_TASKS');
-$l[3] = JText::_('TEXT_TIMESHEET');
-$icon[0] = 'gauge';
-$icon[1] = 'megaphone';
-$icon[2] = 'menu';
-$icon[3] = 'clock';
+// Admin Actions
+// require_once('_contacts.select.php');
 
-$tabs = array();
-$x = 0;
-$tabs[] = '<li class="nav-item"><a href="apps/projects/view?'.$p.'vID='.$x.'" class="nav-link'.$a[$x].' base-icon-'.$icon[$x].'" href="#"> '.$l[$x].'</a></li>';
-if($hasAdmin || $hasAnalyst || $hasCManager) :
-	$x = 1;
-	$tabs[] = '<li class="nav-item"><a href="apps/projects/view?'.$p.'vID='.$x.'" class="nav-link'.$a[$x].' base-icon-'.$icon[$x].'" href="#"> '.$l[$x].'</a></li>';
-endif;
-if(!$hasClient) :
-	$x = 2;
-	$tabs[] = '<li class="nav-item"><a href="apps/projects/view?'.$p.'vID='.$x.'" class="nav-link'.$a[$x].' base-icon-'.$icon[$x].'" href="#"> '.$l[$x].'</a></li>';
-	$x = 3;
-	$tabs[] = '<li class="nav-item"><a href="apps/projects/view?'.$p.'vID='.$x.'" class="nav-link'.$a[$x].' base-icon-'.$icon[$x].'" href="#"> '.$l[$x].'</a></li>';
-endif;
+if($vID != 0) :
 
-if($pID > 0 || $hasAdmin || $hasAnalyst || $hasCManager) :
-		echo '<ul class="nav nav-tabs mt-3 text-sm">';
-		for($i = 0; $i < count($tabs); $i++) {
-			echo $tabs[$i];
+	// DATABASE CONNECT
+	$db = JFactory::getDbo();
+
+	// GET DATA
+	$query = '
+		SELECT
+			T1.*,
+			'. $db->quoteName('T2.name') .' project
+		FROM
+			'.$db->quoteName($cfg['mainTable']).' T1
+			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_projects') .' T2
+			ON '.$db->quoteName('T2.id') .' = T1.project_id AND T2.state = 1
+		WHERE '.$db->quoteName('T1.id') .' = '. $vID
+	;
+	try {
+		$db->setQuery($query);
+		$item = $db->loadObject();
+	} catch (RuntimeException $e) {
+		echo $e->getMessage();
+		return;
+	}
+
+	if(!empty($item->subject)) : // verifica se existe
+
+		if($cfg['hasUpload']) :
+			JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
+			$files[$item->id] = uploader::getFiles($cfg['fileTable'], $item->id);
+			$listFiles = '';
+			for($i = 0; $i < count($files[$item->id]); $i++) {
+				if(!empty($files[$item->id][$i]->filename)) :
+					$listFiles .= '
+						<a class="d-inline-block mr-3" href="'.JURI::root(true).'/apps/get-file?fn='.base64_encode($files[$item->id][$i]->filename).'&mt='.base64_encode($files[$item->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
+							<span class="base-icon-attach hasTooltip" title="'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"> '.$files[$item->id][$i]->filename.'</span>
+						</a>
+					';
+				endif;
+			}
+		endif;
+		$attachs = '';
+		if(!empty($listFiles)) :
+			$attachs = '
+				<hr class="hr-tag" /><span class="badge badge-primary"> '.JText::_('TEXT_ATTACHMENTS').'</span>
+				<div class="font-condensed text-sm mb-4">'.$listFiles.'</div>
+			';
+		endif;
+
+		$itemStatus = ($item->status == 0) ? 'warning' : JText::_('TEXT_COLOR_STATUS_'.$item->status);
+		$iconStatus = JText::_('TEXT_ICON_STATUS_'.$item->status);
+		$statusAction = $hasAdmin ? ' onclick="'.$APPTAG.'_setStatusModal(this)"' : '';
+		$status = '<a href="#" id="'.$APPTAG.'-item-'.$item->id.'-status" class="badge badge-'.$itemStatus.' base-icon-'.$iconStatus.'" data-id="'.$item->id.'" data-status="'.$item->status.'"'.$statusAction.'> '.JText::_('TEXT_STATUS_'.$item->status).'</a>';
+
+		$type = ' <span class="badge badge-primary cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_TYPE').'">'.JText::_('TEXT_TYPE_'.$item->type).'</span>';
+
+		switch ($item->priority) {
+			case 1:
+				$priority = ' <span class="badge badge-warning base-icon-attention"> '.JText::_('TEXT_PRIORITY_DESC_1').'</span>';
+				break;
+			case 2:
+				$priority = ' <span class="badge badge-danger base-icon-attention"> '.JText::_('TEXT_PRIORITY_DESC_2').'</span>';
+				break;
+			default :
+				$priority = ' <span class="badge badge-primary">'.JText::_('TEXT_PRIORITY_DESC_0').'</span>';
 		}
-		echo '</ul>';
+
+		$desc = !empty($item->description) ? '<div class="font-condensed mb-4">'.$item->description.'</div>' : '';
+		$urlViewProject = JURI::root().'apps/projects/view?pID='.$item->project_id;
+
+		// CREATED BY
+		$createdBy = '';
+		if(!empty($item->created_by)) :
+			$query	= '
+				SELECT
+					T1.*,
+					'. $db->quoteName('T2.name') .' role,
+					'. $db->quoteName('T3.session_id') .' online
+				FROM '. $db->quoteName('#__'.$cfg['project'].'_teams') .' T1
+					LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_teams_roles') .' T2
+					ON '.$db->quoteName('T2.id') .' = T1.role_id
+					LEFT JOIN '. $db->quoteName('#__session') .' T3
+					ON '.$db->quoteName('T3.userid') .' = T1.user_id AND T3.client_id = 0
+				WHERE T1.user_id = '.$item->created_by
+			;
+			$db->setQuery($query);
+			$obj = $db->loadObject();
+			if(!empty($obj->name)) : // verifica se existe
+				if($obj->online) :
+					$lStatus = JText::_('TEXT_USER_STATUS_1');
+					$iStatus = '<small class="base-icon-circle text-success pos-absolute pos-right-0 pos-bottom-0"></small>';
+				else :
+					$lStatus = JText::_('TEXT_USER_STATUS_0');
+					$iStatus = '';
+				endif;
+				$name = baseHelper::nameFormat((!empty($obj->nickname) ? $obj->nickname : $obj->name));
+				$role = baseHelper::nameFormat($obj->occupation);
+				if(!empty($role)) $role = '<br />'.$role;
+				$info = baseHelper::nameFormat($name).$role.'<br />'.$lStatus;
+
+				// Imagem Principal -> Primeira imagem (index = 0)
+				$img = uploader::getFile('#__brintell_teams_files', '', $obj->id, 0, JPATH_BASE.DS.'images/apps/teams/');
+				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/teams/'.$img['filename'], 24, 24);
+				else $imgPath = JURI::root().'images/apps/icons/user_'.$obj->gender.'.png';
+				$img = '<img src="'.$imgPath.'" class="img-fluid rounded mb-2" style="width:24px; height:24px;" />';
+
+				$createdBy .= '
+					<a href="apps/teams/profile?vID='.$obj->user_id.'" class="d-inline-block pos-relative hasTooltip" title="'.$info.'">
+						'.$img.$iStatus.'
+					</a>
+				';
+			endif;
+		endif;
+
+		$tags = '';
+		if(!empty($item->tags)) :
+			$t = explode(',', $item->tags);
+			for($i = 0; $i < count($t); $i++) {
+				$tags .= ' <span class="badge badge-secondary"><small class="base-icon-tag text-primary align-middle"></small> '.$t[$i].'</span>';
+			}
+			$tags = '<span class="d-inline-block pl-3 ml-3 b-left">'.$tags.'</span>';
+		endif;
+
+		$btnActions = '';
+		if($hasAdmin || ($item->created_by == $user->id)) :
+			$btnActions = '
+				<div class="float-right">
+					<a href="#" class="btn btn-lg btn-link py-0 px-2" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'">
+						<span class="'.($item->state == 1 ? 'base-icon-toggle-on text-success' : 'base-icon-toggle-on text-muted').' hasTooltip" title="'.JText::_(($item->state == 1 ? 'MSG_ARCHIVE_ITEM' : 'MSG_ACTIVATE_ITEM')).'"></span>
+					</a>
+					<a href="#" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil text-live"></span></a>
+					<a href="#" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash text-danger"></span></a>
+				</div>
+			';
+		endif;
+
+		echo '
+			<div id="'.$APPTAG.'-request-pageitem">
+				<div id="'.$APPTAG.'-request-pageitem-header" class="mb-3 b-bottom-2 b-primary">
+					<div class="pb-1 mb-2 b-bottom">'.$status.$type.$priority.'</div>
+					<h2 class="font-condensed text-primary">
+						'.$item->subject.'
+					</h2>
+					<div class="font-condensed text-sm text-muted mb-2">
+						<a href="'.$urlViewProject.'" target="_blank">'.baseHelper::nameFormat($item->project).'</a> - '.JText::_('TEXT_SINCE').' '.baseHelper::dateFormat($item->created_date).
+						' <span class="text-live">'.$deadline.'</span>
+					</div>
+					'.$btnActions.$createdBy.$tags.'
+				</div>
+				<div class="row">
+					<div class="col-md-8 b-right">
+						'.$desc.$attachs
+		;
+						// COMMENTS
+						$requestsCommentsListFull		= false;
+						$requestsCommentsRelTag			= 'requests';
+						$requestsCommentsRelListNameId	= 'request_id';
+						$requestsCommentsRelListId		= $item->id;
+						$requestsCommentsOnlyChildList	= true;
+						$requestsCommentsShowAddBtn		= false;
+						echo '
+							<h4 class="font-condensed text-live mb-3">
+								'.JText::_('TEXT_COMMENTS').'
+								<a href="#" class="btn btn-xs btn-success base-icon-plus float-right" onclick="requestsComments_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-requestsComments" data-backdrop="static" data-keyboard="false"></a>
+								<a href="#" class="btn btn-xs btn-info base-icon-arrows-cw mx-1 float-right" onclick="requestsComments_listReload(false, false, false, requestsCommentsoCHL, requestsCommentsrNID, requestsCommentsrID)"></a>
+							</h4>
+						';
+						require(JPATH_APPS.DS.'requestsComments/requestsComments.php');
+						echo '<hr class="my-1" /><a href="#" class="btn btn-xs btn-success base-icon-plus" onclick="requestsComments_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-requestsComments" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_ADD').'</a>';
+		echo '
+					</div>
+					<div class="col-md-4">
+		';
+						// TO DO LIST
+						$requestsTodoListFull		= false;
+						$requestsTodoRelTag			= 'requests';
+						$requestsTodoRelListNameId	= 'request_id';
+						$requestsTodoRelListId		= $item->id;
+						$requestsTodoOnlyChildList	= true;
+						$requestsTodoShowAddBtn		= false;
+						echo '
+							<h4 class="font-condensed text-danger mb-3">
+								'.JText::_('TEXT_TODO_LIST').'
+								<a href="#" class="btn btn-xs btn-success base-icon-plus float-right" onclick="requestsTodo_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-requestsTodo" data-backdrop="static" data-keyboard="false"></a>
+							</h4>
+						';
+						require(JPATH_APPS.DS.'requestsTodo/requestsTodo.php');
+						echo '<hr class="my-1" /><a href="#" class="btn btn-xs btn-success base-icon-plus" onclick="requestsTodo_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-requestsTodo" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_ADD').'</a>';
+		echo '
+					</div>
+				</div>
+			</div>
+		';
+
+	else :
+		echo '<p class="base-icon-info-circled alert alert-info m-0"> '.JText::_('MSG_ITEM_NOT_AVAILABLE').'</p>';
+	endif;
+
 else :
-	echo '<h1 class="display-1 font-condensed text-gray-400 text-embed text-center py-4">'.JText::_('TEXT_SELECT_PROJECT').'</h1>';
-	return;
-endif;
 
-// DASHBOARD: All Team
-if($vID == 0) :
-
-	// Manager, Analyst & Client Manager
-	if($pID == 0) :
-		if($hasCManager) :
-			// CLIENT MANAGER DASHBOARD
-			// require($PATH_APP_FILE.'.dashboard.client.php');
-			echo 'Dashboard do Cliente: Visualiza todas as solicitações do cliente';
-		else :
-			// MANAGER DASHBOARD
-			// require($PATH_APP_FILE.'.dashboard.php');
-			echo 'Dashboard Geral: Visão geral de todos os projetos';
-		endif;
-	// All Team
-	else :
-		if($hasCManager) :
-			// PROJECT DASHBOARD
-			// require($PATH_APP_FILE.'.dashboard.project.client.php');
-			echo 'Dashboard do cliente no Projeto: Visualiza solicitações do cliente no projeto';
-		elseif($hasAdmin || $hasAnalyst) :
-			// PROJECT DASHBOARD
-			// require($PATH_APP_FILE.'.dashboard.project.php');
-			echo 'Dashboard do Projeto: Visão geral do projeto';
-		// developer, external, client
-		else :
-			// USER DASHBOARD
-			// require($PATH_APP_FILE.'.dashboard.user.php');
-			echo 'Dashboard do Usuário: Visão geral do usuário no projeto';
-		endif;
-	endif;
-
-// REQUESTS: Manager, Analyst & Client Manager
-elseif($vID == 1 && ($hasAdmin || $hasAnalyst || $hasCManager)) :
-
-	// Manager, Analyst & Client Manager
-	// REQUESTS
-	// $requestsListFull		= false;
-	// $requestsShowAddBtn	= false;
-	// $requestsRelTag		= 'projects';
-	// $requestsRelListNameId= 'projects_id';
-	// $requestsRelListId	= $pID;
-	// $requestsOnlyChildList= true;
-	echo '
-		<h4 class="page-header base-icon-users pt-5">
-			'.JText::_('TEXT_REQUESTS').'
-			<a href="#" class="btn btn-xs btn-success float-right base-icon-plus" onclick="requests_setParent('.$pID.')" data-toggle="modal" data-target="#modal-requests" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_ADD').'</a>
-		</h4>
-	';
-	if($hasCManager) :
-		// REQUESTS OF CLIENT
-		// require(JPATH_APPS.DS.'requests/requests.client.php');
-		echo 'Solicitações do Cliente: Todos os projetos do cliente';
-	else :
-		// ALL REQUESTS
-		// require(JPATH_APPS.DS.'requests/requests.projects.php');
-		echo 'Solicitações Gerais: Todos os projetos';
-	endif;
-
-// TASKS: Brintell Team, Bloqueado para Clients
-elseif($vID == 2 && !$hasClient) :
-
-	// Brintell Team
-	// TASKS
-	// $tasksListFull		= false;
-	// $tasksShowAddBtn	= false;
-	// $tasksRelTag		= 'projects';
-	// $tasksRelListNameId	= 'projects_id';
-	// $tasksRelListId		= $pID;
-	// $tasksOnlyChildList	= true;
-	echo '
-		<h4 class="page-header base-icon-users pt-5">
-			'.JText::_('TEXT_TASKS').'
-			<a href="#" class="btn btn-xs btn-success float-right base-icon-plus" onclick="tasks_setParent('.$pID.')" data-toggle="modal" data-target="#modal-tasks" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_ADD').'</a>
-		</h4>
-	';
-	if($hasAdmin || $hasAnalyst) :
-		// require(JPATH_APPS.DS.'tasks/tasks.php');
-		echo 'Tarefas: Geral e do projeto';
-	else :
-		// require(JPATH_APPS.DS.'tasks/tasks.user.php');
-		echo 'Tarefas do usuário: Todas do usuário no projeto';
-	endif;
-
-// Bloqueado para Clients
-elseif($vID == 3 && !$hasClient) : // TIMESHEET
-
-	if($hasAdmin || $hasAnalyst) :
-		// require($PATH_APP_FILE.'.timesheet.php');
-		echo 'Timesheet: Visão Geral e do projeto';
-	else :
-		// require($PATH_APP_FILE.'.timesheet.user.php');
-		echo 'Timesheet: Visão do usuário no projeto';
-	endif;
+	echo '<h4 class="alert alert-warning">'.JText::_('MSG_NO_ITEM_SELECTED').'</h4>';
 
 endif;
 ?>

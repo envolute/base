@@ -2,7 +2,7 @@
 // Obs: 'legacy' serve para manter o estilo caso a tab esteja no formato da versão anterior
 // sem as classes '.nav-item' e '.nav-link'
 
-.nav-tabs { border-bottom: 1px solid theme-color("primary"); }
+.nav-tabs { border-bottom: 2px solid theme-color("primary"); }
 .nav-tabs > li, // legacy V3
 .nav-tabs .nav-item {
   float: left;
@@ -14,6 +14,7 @@
   display: block;
   padding: $nav-link-padding-y $nav-link-padding-x;
   border-width: 0px;
+  line-height: 1;
 }
 .nav-tabs > li.active > a,        // legacy V3
 .nav-tabs > li.active > a:focus,  // legacy V3
