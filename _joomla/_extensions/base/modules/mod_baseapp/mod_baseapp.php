@@ -43,12 +43,16 @@ defined('_JEXEC') or die;
 		${$app.'AppTag'} = $params->get('appTag', $app);
 		$appTag = ${$app.'AppTag'};
 		${$appTag.'RelTag'} = $params->get('relTag');
+		${$appTag.'IsPublic'} = $params->get('isPublic');
 		// LIST
 		${$appTag.'ItemView'} = $params->get('itemView');
 		${$appTag.'ShowApp'} = $params->get('showApp');
 		${$appTag.'ShowList'} = $params->get('showList');
 		${$appTag.'ListModal'} = $params->get('listModal');
 		${$appTag.'ListFull'} = $params->get('listFull');
+		${$appTag.'ListAjax'} = $params->get('listAjax');
+		${$appTag.'OpenFilter'} = $params->get('openFilter');
+		${$appTag.'AjaxFilter'} = $params->get('ajaxFilter');
 		${$appTag.'StaticToolbar'} = $params->get('staticToolbar');
 		${$appTag.'ShowAddBtn'} = $params->get('showAddBtn');
 		${$appTag.'AddText'} = $params->get('addText');

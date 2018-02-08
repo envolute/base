@@ -865,7 +865,7 @@ jQuery(window).on('load', function() {
 						<span class="base-icon-trash"></span> <?php echo JText::_('TEXT_DELETE'); ?>
 					</button>
 				<?php endif; ?>
-				<button class="btn btn-sm btn-default <?php echo ((isset($_GET[$APPTAG.'_filter']) || $cfg['showFilter']) ? 'active' : '')?>" onclick="toggleFieldsetEmbed(this, '#filter-<?php echo $APPTAG?> .fieldset-embed')">
+				<button class="btn btn-sm btn-default <?php echo ((isset($_GET[$APPTAG.'_filter']) || $cfg['openFilter']) ? 'active' : '')?>" onclick="toggleFieldsetEmbed(this, '#filter-<?php echo $APPTAG?> .fieldset-embed')">
 					<span class="base-icon-filter"></span> <?php echo JText::_('TEXT_FILTER'); ?> <span class="base-icon-sort"></span>
 				</button>
 			<?php endif; ?>

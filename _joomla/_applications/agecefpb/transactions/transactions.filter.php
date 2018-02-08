@@ -372,7 +372,7 @@ $where = '';
 // VIEW
 $htmlFilter = '
 	<form id="filter-'.$APPTAG.'" class="hidden-print" method="get">
-		<fieldset id="filter-container-'.$APPTAG.'" class="fieldset-embed fieldset-sm pt-3 pb-0 collapse '.((isset($_GET[$APPTAG.'_filter']) || $cfg['showFilter']) ? 'show' : '').'">
+		<fieldset id="filter-container-'.$APPTAG.'" class="fieldset-embed fieldset-sm pt-3 pb-0 collapse '.((isset($_GET[$APPTAG.'_filter']) || $cfg['openFilter']) ? 'show' : '').'">
 			<input type="hidden" name="'.$APPTAG.'_filter" value="1" />
 
 			<div class="row">

@@ -83,7 +83,7 @@ require($PATH_APP_FILE.'.filter.query.php');
 
 // VIEW
 $htmlFilter = '
-	<form id="filter-'.$APPTAG.'" class="hidden-print collapse '.((isset($_GET[$APPTAG.'_filter']) || $cfg['showFilter']) ? 'show' : '').'" method="get">
+	<form id="filter-'.$APPTAG.'" class="hidden-print collapse '.((isset($_GET[$APPTAG.'_filter']) || $cfg['openFilter']) ? 'show' : '').'" method="get">
 		<fieldset class="fieldset-embed fieldset-sm pt-2 pb-0">
 			<input type="hidden" name="'.$APPTAG.'_filter" value="1" />
 			<div class="row">

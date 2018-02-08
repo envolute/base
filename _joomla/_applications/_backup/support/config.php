@@ -73,7 +73,7 @@ $cfg = array();
   $cfg['addText']           = true;
   if(isset(${$APPTAG.'AddText'})) $cfg['addText'] = ${$APPTAG.'AddText'} ? true : false;
   // show filter opened
-  $cfg['showFilter']        = false;
+  $cfg['openFilter']        = false;
   // list's elements default
   $cfg['pagLimit']          = 20;
 

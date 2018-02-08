@@ -85,7 +85,7 @@ endif;
 		$cfg['showAddBtn']		= false;
 		$cfg['addText']			= false;
 		$cfg['addClass']		= false;
-		$cfg['showFilter']		= false;
+		$cfg['openFilter']		= false;
 		$cfg['ajaxFilter']		= false;
 	else :
 		// show/hidden list
@@ -113,7 +113,8 @@ endif;
 		$cfg['addClass']			= '';
 		if(isset(${$APPTAG.'AddClass'})) $cfg['addClass'] = ${$APPTAG.'AddClass'};
 		// show filter opened
-		$cfg['showFilter']			= false;
+		$cfg['openFilter']			= false;
+		if(isset(${$APPTAG.'OpenFilter'})) $cfg['openFilter'] = ${$APPTAG.'OpenFilter'};
 		// load filter
 		$cfg['ajaxFilter']			= false;
 		if(isset(${$APPTAG.'AjaxFilter'})) $cfg['ajaxFilter'] = ${$APPTAG.'AjaxFilter'};

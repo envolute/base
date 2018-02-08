@@ -28,12 +28,17 @@ defined('_JEXEC') or die;
 		// TAGS - evita conflito entre instâncias da mesma APP
 		${$this->app.'AppTag'} = $this->appTag;
 		${$this->appTag.'RelTag'} = $this->relTag;
+		${$this->appTag.'IsPublic'} = $this->isPublic;
 		// LIST
+
 		${$this->appTag.'ItemView'} = $this->itemView;
 		${$this->appTag.'ShowApp'} = $this->showApp;
 		${$this->appTag.'ShowList'} = $this->showList;
 		${$this->appTag.'ListModal'} = $this->listModal;
 		${$this->appTag.'ListFull'} = $this->listFull;
+		${$this->appTag.'ListAjax'} = $this->listAjax;
+		${$this->appTag.'OpenFilter'} = $this->openFilter;
+		${$this->appTag.'AjaxFilter'} = $this->ajaxFilter;
 		${$this->appTag.'StaticToolbar'} = $this->staticToolbar;
 		${$this->appTag.'ShowAddBtn'} = $this->showAddBtn;
 		${$this->appTag.'AddText'} = $this->addText;

@@ -108,7 +108,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	$html = '';
 	if($num_rows) : // verifica se existe
-		$html .= '<div class="row py-4 mb-5">';
+		$html .= '<div class="row py-3 mb-5">';
 		foreach($res as $item) {
 
 			if($cfg['hasUpload']) :

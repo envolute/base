@@ -15,7 +15,7 @@ jQuery(function() {
 		var btn = setElement(button, '.btn.toggle-state');
 		btn.each(function() {
 			var obj = jQuery(this);
-			obj.on('click',function(e) {
+			obj.off('click').on('click',function(e) {
 				obj.not(':disabled').not('.disabled').toggleClass('active');
 				// Desativa o botão 'buttonOff'
 				var target = isSet(buttonOff) ? buttonOff : false;
