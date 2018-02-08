@@ -5,21 +5,21 @@ defined('_JEXEC') or die;
 <form name="form-status-<?php echo $APPTAG?>" id="form-status-<?php echo $APPTAG?>" method="post">
 
 	<div class="modal-body">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	    <input type="hidden" name="statusId" id="<?php echo $APPTAG?>-statusId" />
-		<div class="form-group no-margin">
+		<div class="form-group m-0">
 			<div class="btn-group btn-group-justified" data-toggle="buttons">
-				<label class="base-icon-lightbulb btn btn-outline-info btn-active-info hasTooltip" title="<?php echo JText::_('TEXT_STATUS_0'); ?>" onclick="<?php echo $APPTAG?>_setStatus(0);">
-					<input type="radio" name="new_status" value="0" />
-				</label>
-				<label class="base-icon-clock btn btn-outline-danger btn-active-danger hasTooltip" title="<?php echo JText::_('TEXT_STATUS_1'); ?>" onclick="<?php echo $APPTAG?>_setStatus(1);">
-					<input type="radio" name="new_status" value="1" />
-				</label>
-				<label class="base-icon-off btn btn-outline-warning btn-active-warning hasTooltip" title="<?php echo JText::_('TEXT_STATUS_2'); ?>" onclick="<?php echo $APPTAG?>_setStatus(2);">
-					<input type="radio" name="new_status" value="2" />
-				</label>
-				<label class="base-icon-ok btn btn-outline-success btn-active-success hasTooltip" title="<?php echo JText::_('TEXT_STATUS_3'); ?>" onclick="<?php echo $APPTAG?>_setStatus(3);">
-					<input type="radio" name="new_status" value="3" />
-				</label>
+				<?php
+				for($i = 0; $i < 4; $i++) {
+					$icon	= JText::_('TEXT_ICON_STATUS_'.$i);
+					$color	= ($i == 2) ? 'warning' : JText::_('TEXT_COLOR_STATUS_'.$i);
+					echo '
+						<label class="base-icon-'.$icon.' btn btn-outline-'.$color.' btn-active-'.$color.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$i).'" onclick="'.$APPTAG.'_setStatus('.$i.');">
+							<input type="radio" name="new_status" value="'.$i.'" />
+						</label>
+					';
+				}
+				?>
 			</div>
 		</div>
 	</div>

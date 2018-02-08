@@ -140,7 +140,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$btnActions = '';
 			if($hasAdmin || ($item->created_by == $user->id)) :
 				$btnActions = '
-					<a href="#" class="btn btn-xs btn-link" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'">
+					<a href="#" class="btn btn-xs btn-link" onclick="'.$APPTAG.'_setState('.$item->id.', null, false, \'base-icon-toggle-on\', \'base-icon-toggle-on\', \'text-success\', \'text-muted\')" id="'.$APPTAG.'-state-'.$item->id.'">
 						<span class="'.($item->state == 1 ? 'base-icon-toggle-on text-success' : 'base-icon-toggle-on text-muted').' hasTooltip" title="'.JText::_(($item->state == 1 ? 'MSG_ARCHIVE_ITEM' : 'MSG_ACTIVATE_ITEM')).'"></span>
 					</a>
 					<a href="#" class="btn btn-xs btn-link hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil text-live"></span></a>
@@ -173,7 +173,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$html .= '
 				<div id="'.$APPTAG.'-item-'.$item->id.'" class="pos-relative rounded b-top-2 b-'.$itemStatus.' bg-white mb-3 set-shadow">
 					<div class="d-flex d-justify-content lh-1-2">
-						<a href="#" id="'.$APPTAG.'-item-'.$item->id.'-status" class="py-3 px-2 bg-gray-200 base-icon-'.$iconStatus.' text-'.$itemStatus.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$item->status).'" data-id="'.$item->id.'" data-status="'.$item->status.'" onclick="'.$APPTAG.'_setStatusModal(this)"></a>
+						<div class="py-3 px-2 bg-gray-200">
+							<a href="#" id="'.$APPTAG.'-item-'.$item->id.'-status" class="base-icon-'.$iconStatus.' text-'.$itemStatus.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$item->status).'" data-id="'.$item->id.'" data-status="'.$item->status.'" onclick="'.$APPTAG.'_setStatusModal(this)"></a>
+						</div>
 						<a href="'.$urlViewData.'" class="py-3 px-2">
 							'.baseHelper::nameFormat($item->subject).'
 							<div class="pos-absolute pos-top-0 pos-right-0 mx-1">

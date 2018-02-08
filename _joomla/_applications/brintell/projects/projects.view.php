@@ -12,6 +12,7 @@ require('config.php');
 // As variáveis php da App principal serão sobrescritas após as chamadas das outras App.
 // Dessa forma, para manter as variáveis, necessárias, da aplicação principal é necessário
 // atribuir à variáveis personalizadas. Caso seja necessário, declare essas variáveis abaixo...
+$MAINAPP	= $APPNAME;
 $MAINTAG	= $APPTAG;
 
 // IMPORTANTE: Carrega o arquivo 'helper' do template

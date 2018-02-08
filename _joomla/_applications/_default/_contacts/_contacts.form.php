@@ -226,7 +226,7 @@ $userGrps = $db->loadObjectList();
 						<div id="<?php echo $APPTAG?>-reasonStatus-group" class="<?php echo $APPTAG?>-is-user" hidden>
 							<input type="text" name="reasonStatus" id="<?php echo $APPTAG?>-reasonStatus" class="form-control" maxlength="50" placeholder="<?php echo JText::_('FIELD_LABEL_REASON'); ?>" />
 						</div>
-						<div class="form-group no-margin <?php echo $APPTAG?>-user-fields" hidden>
+						<div class="form-group m-0 <?php echo $APPTAG?>-user-fields" hidden>
 							<div class="input-group">
 								<select name="newUser" id="<?php echo $APPTAG?>-newUser" class="form-control auto-tab" data-target="<?php echo $APPTAG?>newUser-group" data-tab-disabled="true">
 									<option value="0" data-target-display="true"><?php echo JText::_('TEXT_NEW').' '.JText::_('TEXT_USER'); ?></option>

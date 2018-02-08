@@ -425,41 +425,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						elseif($isUser && $userInfoId) :
 							baseUserHelper::stateToJoomlaUser($userInfoId, 0);
 						endif;
-						if($request['access'] == 1 && !$isUser) :
-							// email de confirmação
-							$mailHtml = '';
-							if($request['emailConfirm'] == 1) :
-
-							endif;
-							if($userID == 0) :
-								// define a senha
-								$pwd = ($request['password'] && !empty($request['password'])) ? $request['password'] : baseHelper::randomPassword();
-								// prepara os dados
-								$isBlock = ($request['state'] == 1) ? 0 : 1;
-								// cria o usuário
-								$newUserId = baseUserHelper::createJoomlaUser($request['name'], $request['username'], $request['email'], $pwd, $request['usergroup'], $isBlock, $request['emailConfirm'], $mailFrom, $subject, $mailHtml);
-								// atribui o usuário ao cliente
-								if(is_int($newUserId) && $newUserId > 0) :
-									$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET user_id = '. $newUserId .' WHERE id = '.$id;
-									$db->setQuery($query);
-									$db->execute();
-									$userMsg = JText::_('MSG_USER_CREATED');
-								else :
-									$userMsg = !is_int($newUserId) ? JText::_($newUserId) : $userMsg = JText::_('MSG_USER_NOT_CREATED');
-								endif;
-							// se for selecionado um usuário já existente, atribui o 'user_id'
-							else :
-								$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET user_id = '. $userID .' WHERE id = '.$id;
-								$db->setQuery($query);
-								$db->execute();
-								if($request['emailConfirm']) baseHelper::sendMail($mailFrom, $request['email'], $subject, $mailHtml);
-								$userMsg = JText::_('MSG_USER_ATTRIBUTED');
-							endif;
-							$userMsg = '<br />'.$userMsg;
-						// permite o bloqueio do acesso
-						elseif($isUser && $userInfoId) :
-							baseUserHelper::stateToJoomlaUser($userInfoId, $request['access']);
-						endif;
 
 						$data[] = array(
 							'status'			=> 2,

@@ -12,6 +12,7 @@ require('config.php');
 // As variáveis php da App principal serão sobrescritas após as chamadas das outras App.
 // Dessa forma, para manter as variáveis, necessárias, da aplicação principal é necessário
 // atribuir à variáveis personalizadas. Caso seja necessário, declare essas variáveis abaixo...
+$MAINAPP	= $APPNAME;
 $MAINTAG	= $APPTAG;
 
 // IMPORTANTE: Carrega o arquivo 'helper' do template
@@ -93,8 +94,7 @@ if($vID != 0) :
 
 		$itemStatus = ($item->status == 0) ? 'warning' : JText::_('TEXT_COLOR_STATUS_'.$item->status);
 		$iconStatus = JText::_('TEXT_ICON_STATUS_'.$item->status);
-		$statusAction = $hasAdmin ? ' onclick="'.$APPTAG.'_setStatusModal(this)"' : '';
-		$status = '<a href="#" id="'.$APPTAG.'-item-'.$item->id.'-status" class="badge badge-'.$itemStatus.' base-icon-'.$iconStatus.'" data-id="'.$item->id.'" data-status="'.$item->status.'"'.$statusAction.'> '.JText::_('TEXT_STATUS_'.$item->status).'</a>';
+		$status = '<span class="badge badge-'.$itemStatus.' base-icon-'.$iconStatus.'"> '.JText::_('TEXT_STATUS_'.$item->status).'</span>';
 
 		$type = ' <span class="badge badge-primary cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_TYPE').'">'.JText::_('TEXT_TYPE_'.$item->type).'</span>';
 
@@ -169,7 +169,7 @@ if($vID != 0) :
 		if($hasAdmin || ($item->created_by == $user->id)) :
 			$btnActions = '
 				<div class="float-right">
-					<a href="#" class="btn btn-lg btn-link py-0 px-2" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'">
+					<a href="#" class="btn btn-lg btn-link py-0 px-2" onclick="'.$APPTAG.'_setState('.$item->id.', null, false, \'base-icon-toggle-on\', \'base-icon-toggle-on\', \'text-success\', \'text-muted\')" id="'.$APPTAG.'-state-'.$item->id.'">
 						<span class="'.($item->state == 1 ? 'base-icon-toggle-on text-success' : 'base-icon-toggle-on text-muted').' hasTooltip" title="'.JText::_(($item->state == 1 ? 'MSG_ARCHIVE_ITEM' : 'MSG_ACTIVATE_ITEM')).'"></span>
 					</a>
 					<a href="#" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil text-live"></span></a>
@@ -205,12 +205,12 @@ if($vID != 0) :
 						echo '
 							<h4 class="font-condensed text-live mb-3">
 								'.JText::_('TEXT_COMMENTS').'
-								<a href="#" class="btn btn-xs btn-success base-icon-plus float-right" onclick="requestsComments_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-requestsComments" data-backdrop="static" data-keyboard="false"></a>
-								<a href="#" class="btn btn-xs btn-info base-icon-arrows-cw mx-1 float-right" onclick="requestsComments_listReload(false, false, false, requestsCommentsoCHL, requestsCommentsrNID, requestsCommentsrID)"></a>
+								<a href="#" class="btn btn-xs btn-success base-icon-plus float-right" onclick="'.$MAINAPP.'Comments_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-'.$MAINAPP.'Comments" data-backdrop="static" data-keyboard="false"></a>
+								<a href="#" class="btn btn-xs btn-info base-icon-arrows-cw mx-1 float-right" onclick="'.$MAINAPP.'Comments_listReload(false, false, false, '.$MAINAPP.'CommentsoCHL, '.$MAINAPP.'CommentsrNID, '.$MAINAPP.'CommentsrID)"></a>
 							</h4>
 						';
-						require(JPATH_APPS.DS.'requestsComments/requestsComments.php');
-						echo '<hr class="my-1" /><a href="#" class="btn btn-xs btn-success base-icon-plus" onclick="requestsComments_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-requestsComments" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_ADD').'</a>';
+						require(JPATH_APPS.DS.''.$MAINAPP.'Comments/'.$MAINAPP.'Comments.php');
+						echo '<hr class="my-1" /><a href="#" class="btn btn-xs btn-success base-icon-plus" onclick="'.$MAINAPP.'Comments_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-'.$MAINAPP.'Comments" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_ADD').'</a>';
 		echo '
 					</div>
 					<div class="col-md-4">
@@ -226,11 +226,12 @@ if($vID != 0) :
 						echo '
 							<h4 class="font-condensed text-danger mb-3">
 								'.JText::_('TEXT_TODO_LIST').'
-								<a href="#" class="btn btn-xs btn-success base-icon-plus float-right" onclick="requestsTodo_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-requestsTodo" data-backdrop="static" data-keyboard="false"></a>
+								<a href="#" class="btn btn-xs btn-success base-icon-plus float-right" onclick="'.$MAINAPP.'Todo_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-'.$MAINAPP.'Todo" data-backdrop="static" data-keyboard="false"></a>
+								<a href="#" class="btn btn-xs btn-info base-icon-arrows-cw mx-1 float-right" onclick="'.$MAINAPP.'Todo_listReload(false, false, false, '.$MAINAPP.'TodooCHL, '.$MAINAPP.'TodorNID, '.$MAINAPP.'TodorID)"></a>
 							</h4>
 						';
-						require(JPATH_APPS.DS.'requestsTodo/requestsTodo.php');
-						echo '<hr class="my-1" /><a href="#" class="btn btn-xs btn-success base-icon-plus" onclick="requestsTodo_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-requestsTodo" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_ADD').'</a>';
+						require(JPATH_APPS.DS.''.$MAINAPP.'Todo/'.$MAINAPP.'Todo.php');
+						echo '<hr class="my-1" /><a href="#" class="btn btn-xs btn-success base-icon-plus" onclick="'.$MAINAPP.'Todo_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-'.$MAINAPP.'Todo" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_ADD').'</a>';
 		echo '
 					</div>
 				</div>

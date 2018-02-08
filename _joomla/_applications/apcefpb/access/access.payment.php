@@ -118,7 +118,7 @@ if(!empty($item->guestName)) : // verifica se existe
 	';
 
 else :
-	$html = '<p class="alert alert-info alert-icon no-margin">'.JText::_('MSG_ACCESS_NO_GUESTS').'</p>';
+	$html = '<p class="alert alert-info alert-icon m-0">'.JText::_('MSG_ACCESS_NO_GUESTS').'</p>';
 endif;
 
 echo $html;

@@ -651,28 +651,33 @@ jQuery(window).on('load', function() {
 		<div class="list-toolbar<?php echo ($cfg['staticToolbar'] ? '' : ' floating')?> hidden-print">
 			<?php
 			if($cfg['showAddBtn'] && $hasAdmin) echo $addBtn;
-			if($cfg['showList'] && $cfg['listFull']) :
-			?>
-				<?php if($hasAdmin) : ?>
-					<button class="btn btn-sm btn-success <?php echo $APPTAG?>-btn-action" disabled onclick="<?php echo $APPTAG?>_setState(0, 1)">
-						<span class="base-icon-ok-circled"></span> <?php echo JText::_('TEXT_ACTIVE'); ?>
+			if($cfg['showList']) :
+				if($cfg['listFull']) :
+					if($hasAdmin) : ?>
+						<button class="btn btn-sm btn-success <?php echo $APPTAG?>-btn-action" disabled onclick="<?php echo $APPTAG?>_setState(0, 1)">
+							<span class="base-icon-ok-circled"></span> <?php echo JText::_('TEXT_ACTIVE'); ?>
+						</button>
+						<button class="btn btn-sm btn-warning <?php echo $APPTAG?>-btn-action" disabled onclick="<?php echo $APPTAG?>_setState(0, 0)">
+							<span class="base-icon-cancel"></span> <?php echo JText::_('TEXT_INACTIVE'); ?>
+						</button>
+						<button class="btn btn-sm btn-danger <?php echo $APPTAG?>-btn-action d-none d-sm-inline-block" disabled onclick="<?php echo $APPTAG?>_del(0)">
+							<span class="base-icon-trash"></span> <?php echo JText::_('TEXT_DELETE'); ?>
+						</button>
+						<button type="button" class="btn btn-sm btn-success hasTooltip" onclick="<?php echo $APPTAG?>_userSync()" title="<?php echo JText::_('TEXT_USER_SYNC_DESC')?>">
+							<span class="base-icon-arrows-cw"></span> <?php echo JText::_('TEXT_USER_SYNC')?>
+						</button>
+					<?php endif;?>
+				<?php else :?>
+					<?php if(!$cfg['listModal'] || $cfg['showAddBtn']) :?>
+						<a href="#" class="btn btn-sm btn-info base-icon-arrows-cw" onclick="<?php echo $APPNAME?>_listReload(false, false, false)"></a>
+					<?php endif;?>
+				<?php endif;?>
+				<?php if($cfg['listFull'] || $cfg['ajaxFilter']) :?>
+					<button class="btn btn-sm btn-default toggle-state <?php echo ((isset($_GET[$APPTAG.'_filter']) || $cfg['openFilter']) ? 'active' : '')?>" data-toggle="collapse" data-target="<?php echo '#filter-'.$APPTAG?>" aria-expanded="<?php echo ((isset($_GET[$APPTAG.'_filter']) || $cfg['openFilter']) ? 'true' : '')?>" aria-controls="<?php echo 'filter'.$APPTAG?>">
+						<span class="base-icon-filter"></span> <?php echo JText::_('TEXT_FILTER'); ?> <span class="base-icon-sort"></span>
 					</button>
-					<button class="btn btn-sm btn-warning <?php echo $APPTAG?>-btn-action" disabled onclick="<?php echo $APPTAG?>_setState(0, 0)">
-						<span class="base-icon-cancel"></span> <?php echo JText::_('TEXT_INACTIVE'); ?>
-					</button>
-					<button class="btn btn-sm btn-danger <?php echo $APPTAG?>-btn-action d-none d-sm-inline-block" disabled onclick="<?php echo $APPTAG?>_del(0)">
-						<span class="base-icon-trash"></span> <?php echo JText::_('TEXT_DELETE'); ?>
-					</button>
-					<button type="button" class="btn btn-sm btn-success hasTooltip" onclick="<?php echo $APPTAG?>_userSync()" title="<?php echo JText::_('TEXT_USER_SYNC_DESC')?>">
-						<span class="base-icon-arrows-cw"></span> <?php echo JText::_('TEXT_USER_SYNC')?>
-					</button>
-				<?php endif; ?>
-			<?php endif; ?>
-			<?php if($cfg['listFull'] || $cfg['ajaxFilter']) :?>
-				<button class="btn btn-sm btn-default toggle-state <?php echo ((isset($_GET[$APPTAG.'_filter']) || $cfg['openFilter']) ? 'active' : '')?>" data-toggle="collapse" data-target="<?php echo '#filter-'.$APPTAG?>" aria-expanded="<?php echo ((isset($_GET[$APPTAG.'_filter']) || $cfg['openFilter']) ? 'true' : '')?>" aria-controls="<?php echo 'filter'.$APPTAG?>">
-					<span class="base-icon-filter"></span> <?php echo JText::_('TEXT_FILTER'); ?> <span class="base-icon-sort"></span>
-				</button>
-			<?php endif; ?>
+				<?php endif;?>
+			<?php endif;?>
 		</div>
 
 	<?php endif; // showApp ?>

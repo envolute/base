@@ -223,7 +223,7 @@ $users = $db->loadObjectList();
 					<hr class="mt-0 new-user-data" hidden />
 					<div class="row">
 						<div class="col-lg-6 new-user-data" hidden>
-							<div class="form-group no-margin">
+							<div class="form-group m-0">
 								<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_USER_ACCESS_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_USER_ACCESS'); ?></label>
 								<div class="input-group">
 									<select name="newUser" id="<?php echo $APPTAG?>-newUser" class="form-control auto-tab" data-target=".<?php echo $APPTAG?>-user-create-data">

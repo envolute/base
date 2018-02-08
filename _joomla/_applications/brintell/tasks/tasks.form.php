@@ -119,18 +119,17 @@ foreach ($teams as $obj) {
 				<div class="form-group mb-1">
 					<label class="label-sm"><?php echo JText::_('FIELD_LABEL_STATUS'); ?></label>
 					<span class="btn-group btn-group-justified" data-toggle="buttons">
-						<label class="base-icon-lightbulb btn btn-outline-info btn-active-info hasTooltip" title="<?php echo JText::_('TEXT_STATUS_0'); ?>">
-							<input type="radio" name="status" id="<?php echo $APPTAG?>-status-0" value="0" />
-						</label>
-						<label class="base-icon-clock btn btn-outline-danger btn-active-danger hasTooltip" title="<?php echo JText::_('TEXT_STATUS_1'); ?>">
-							<input type="radio" name="status" id="<?php echo $APPTAG?>-status-1" value="1" />
-						</label>
-						<label class="base-icon-off btn btn-outline-warning btn-active-warning hasTooltip" title="<?php echo JText::_('TEXT_STATUS_2'); ?>">
-							<input type="radio" name="status" id="<?php echo $APPTAG?>-status-2" value="2" />
-						</label>
-						<label class="base-icon-ok btn btn-outline-success btn-active-primary hasTooltip" title="<?php echo JText::_('TEXT_STATUS_3'); ?>">
-							<input type="radio" name="status" id="<?php echo $APPTAG?>-status-3" value="3" />
-						</label>
+						<?php
+						for($i = 0; $i < 4; $i++) {
+							$icon	= JText::_('TEXT_ICON_STATUS_'.$i);
+							$color	= ($i == 2) ? 'warning' : JText::_('TEXT_COLOR_STATUS_'.$i);
+							echo '
+								<label class="base-icon-'.$icon.' btn btn-outline-'.$color.' btn-active-'.$color.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$i).'">
+									<input type="radio" name="status" id="'.$APPTAG.'-status-'.$i.'" value="'.$i.'" />
+								</label>
+							';
+						}
+						?>
 					</span>
 				</div>
 			</div>

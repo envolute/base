@@ -5,8 +5,9 @@ defined('_JEXEC') or die;
 <form name="form-status-<?php echo $APPTAG?>" id="form-status-<?php echo $APPTAG?>" method="post">
 
 	<div class="modal-body">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	    <input type="hidden" name="statusId" id="<?php echo $APPTAG?>-statusId" />
-		<div class="form-group no-margin">
+		<div class="form-group m-0">
 			<div class="btn-group btn-group-justified" data-toggle="buttons">
 				<?php
 				for($i = 0; $i < 4; $i++) {

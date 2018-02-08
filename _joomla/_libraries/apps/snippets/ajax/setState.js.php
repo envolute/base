@@ -2,12 +2,16 @@
 // Set State
 // seta o valor do campo 'state' do registro
 ?>
-window.<?php echo $APPTAG?>_setState = function(itemID, state, recursive) {
+window.<?php echo $APPTAG?>_setState = function(itemID, state, recursive, iconOn, iconOff, colorOn, colorOff) {
 
 	var dados = cod = st = e = '';
 	var msg = '<?php echo JText::_('MSG_LIST0CONFIRM'); ?>';
 	if(state === 1) msg = '<?php echo JText::_('MSG_LIST1CONFIRM'); ?>';
-	if(typeof state !== "null" && typeof state !== "undefined") st = '&st='+state;
+	if(isSet(state)) st = '&st='+state;
+	var icon = (isSet(iconOn) && !isEmpty(iconOn)) ? iconOn : 'base-icon-ok';
+	var icoff = (isSet(iconOn) && !isEmpty(iconOn)) ? iconOn : 'base-icon-cancel';
+	var colon = (isSet(colorOn) && !isEmpty(colorOn)) ? colorOn : 'text-success';
+	var coloff = (isSet(colorOff) && !isEmpty(colorOff)) ? colorOff : 'text-danger';
 
 	if(itemID) {
 
@@ -40,12 +44,12 @@ window.<?php echo $APPTAG?>_setState = function(itemID, state, recursive) {
 						// item individual
 						if(itemID) {
 							// formata as linhas da listagem
-							e = list.find('#<?php echo $APPTAG?>-state-'+res.ids[i]+' > span');
-							if((res.state == 2 && e.hasClass('base-icon-ok')) || res.state == 0) {
-								e.removeClass('base-icon-ok text-success').addClass('base-icon-cancel text-danger');
+							e = jQuery('#<?php echo $APPTAG?>-state-'+res.ids[i]+' > span');
+							if((res.state == 2 && e.hasClass(icon+' '+colon)) || res.state == 0) {
+								e.removeClass(icon+' '+colon).addClass(icoff+' '+coloff);
 								<?php
-								if($cfg['listFull']) echo 'e.parents("tr").addClass("table-danger");';
-								else echo 'e.parents("li").addClass("list-danger");';
+								if($cfg['listFull']) echo 'e.closest("tr").addClass("table-danger");';
+								else echo 'e.closest("li").addClass("list-danger");';
 								?>
 								// remove parent field option
 								if(res.parentField != '' && res.parentFieldVal != '') {
@@ -53,10 +57,10 @@ window.<?php echo $APPTAG?>_setState = function(itemID, state, recursive) {
 									jQuery(res.parentField).selectUpdate(); // atualiza o select
 								}
 							} else {
-								e.removeClass('base-icon-cancel text-danger').addClass('base-icon-ok text-success');
+								e.removeClass(icoff+' '+coloff).addClass(icon+' '+colon);
 								<?php
-								if($cfg['listFull']) echo 'e.parents("tr").removeClass("table-danger");';
-								else echo 'e.parents("li").removeClass("list-danger");';
+								if($cfg['listFull']) echo 'e.closest("tr").removeClass("table-danger");';
+								else echo 'e.closest("li").removeClass("list-danger");';
 								?>
 								// add parent field option
 								if(res.parentField != '' && res.parentFieldVal != '') {
@@ -84,7 +88,7 @@ window.<?php echo $APPTAG?>_setState = function(itemID, state, recursive) {
 								// verifica quantos estão selecionados
 								var listChecks	= formList.find('input[type="checkbox"]:checked').length;
 								// Verifica se o envio excede o limite de 1000 para o parâmetro 'max_input_vars' do PHP
-								if(inputVars > maxInputVars && listChecks > 0) <?php echo $APPTAG?>_setState(itemID, state, true); // executa novamente com os itens restantes
+								if(inputVars > maxInputVars && listChecks > 0) <?php echo $APPTAG?>_setState(itemID, state, true, icon, icoff, colon, coloff); // executa novamente com os itens restantes
 								else <?php echo $APPTAG?>_listReload(true, false); // recarrega a página
 							}, 300);
 						}

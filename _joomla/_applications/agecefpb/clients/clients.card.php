@@ -88,7 +88,7 @@ if(!empty($item->name)) : // verifica se existe
 	</div>
 	';
 else :
-	$html = '<p class="alert alert-info alert-icon no-margin">'.JText::_('MSG_EMPTY_CARD').'</p>';
+	$html = '<p class="alert alert-info alert-icon m-0">'.JText::_('MSG_EMPTY_CARD').'</p>';
 endif;
 
 echo $html;
