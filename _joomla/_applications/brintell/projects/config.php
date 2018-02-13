@@ -46,6 +46,7 @@ endif;
 	// ----------------------------------------------------
 	$cfg['groupId']['analyst'][]			= 12; // Brintell Analyst
 	$cfg['groupId']['client'][]				= 16; // Client Developer
+	$cfg['groupId']['client'][]				= 15; // Client Developer
 	$cfg['groupId']['clientManager'][]		= 15; // Client Manager
 	// ----------------------------------------------------
 	$cfg['groupId']['viewer'][]				= 12; // Brintell Analyst
@@ -102,6 +103,9 @@ endif;
 		// list Ajax File
 		$cfg['listAjax']			= 'list.ajax.php';
 		if(isset(${$APPTAG.'ListAjax'})) $cfg['listAjax'] = ${$APPTAG.'ListAjax'};
+		// show button to list ajax reload
+		$cfg['ajaxReload']			= false;
+		if(isset(${$APPTAG.'AjaxReload'})) $cfg['ajaxReload'] = ${$APPTAG.'AjaxReload'};
 		// toolbar position
 		$cfg['staticToolbar']		= false;
 		if(isset(${$APPTAG.'StaticToolbar'})) $cfg['staticToolbar'] = ${$APPTAG.'StaticToolbar'} ? true : false;

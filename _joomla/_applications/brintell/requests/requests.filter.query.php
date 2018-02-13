@@ -4,7 +4,7 @@ defined('_JEXEC') or die;
 // QUERY FOR LIST
 $where = '';
 
-$query = 'SELECT id FROM '. $db->quoteName('#__'.$cfg['project'].'_teams') .' WHERE user_id = '.$user->id;
+$query = 'SELECT id FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE user_id = '.$user->id;
 $db->setQuery($query);
 $myID = $db->loadResult();
 

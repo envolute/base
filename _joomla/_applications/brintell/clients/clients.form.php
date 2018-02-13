@@ -149,7 +149,7 @@ $groups = $db->loadObjectList();
 </div>
 <?php if(!$cfg['itemView']) :?>
 	<div id="<?php echo $APPTAG?>-msg-relations" class="alert alert-info base-icon-info-circled">
-		<span class="text-live font-featured"><?php echo JText::_('TEXT_TEAMS')?></span>,
+		<span class="text-live font-featured"><?php echo JText::_('TEXT_STAFF')?></span>,
 		<span class="text-live font-featured"><?php echo JText::_('TEXT_LOCATIONS')?></span>,
 		<span class="text-live font-featured"><?php echo JText::_('TEXT_CALL_CENTERS')?></span>,
 		<span class="text-live font-featured"><?php echo JText::_('TEXT_BANKS_ACCOUNTS')?></span>
@@ -159,7 +159,7 @@ $groups = $db->loadObjectList();
 		<hr />
 		<div class="row">
 			<div class="col-6 col-lg-3 py-1">
-				<button type="button" class="btn btn-primary btn-block base-icon-user-add btn-icon" onclick="<?php echo $APPTAG?>_viewTeams()" data-toggle="modal" data-target="#modal-list-clientsTeams" data-backdrop="static" data-keyboard="false"> <?php echo JText::_('TEXT_TEAMS')?></button>
+				<button type="button" class="btn btn-primary btn-block base-icon-user-add btn-icon" onclick="<?php echo $APPTAG?>_viewStaff()" data-toggle="modal" data-target="#modal-list-clientsStaff" data-backdrop="static" data-keyboard="false"> <?php echo JText::_('TEXT_STAFF')?></button>
 			</div>
 			<div class="col-6 col-lg-3 py-1">
 				<button type="button" class="btn btn-primary btn-block base-icon-location btn-icon" onclick="<?php echo $APPTAG?>_viewLocations()" data-toggle="modal" data-target="#modal-list-_locations" data-backdrop="static" data-keyboard="false"> <?php echo JText::_('TEXT_LOCATIONS')?></button>

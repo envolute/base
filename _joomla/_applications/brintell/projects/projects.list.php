@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 			'. $db->quoteName('T2.name') .' client
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
-			LEFT OUTER JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
+			JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
 			ON T2.id = T1.client_id AND T2.state = 1
 		WHERE
 			'.$where.$orderList;

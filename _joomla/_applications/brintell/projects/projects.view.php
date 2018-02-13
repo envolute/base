@@ -65,7 +65,7 @@ $a[0] = $a[1] = $a[2] = '';
 // REQUESTS: Manager, Analyst & Client Manager
 if($vID == 0 && ($hasAdmin || $hasAnalyst || $hasClient)) :
 	$a[0] = ' active';
-// TASKS: Brintell Team, Bloqueado para Clients
+// TASKS: Brintell Staff, Bloqueado para Clients
 elseif(!$hasClient) :
 	$a[1] = ' active';
 	if($vID == 2) $a[2] = ' active';
@@ -111,7 +111,7 @@ if(!empty($a[0])) :
 elseif(!empty($a[1])) :
 
 	// TASKS
-	// Brintell Team
+	// Brintell Staff
 	$tasksListFull		= false;
 	$tasksListAjax		= "list.full.ajax.php";
 	$tasksAjaxFilter	= 1;

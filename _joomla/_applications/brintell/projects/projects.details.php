@@ -31,6 +31,9 @@ $groups = $user->groups;
 // init general css/js files
 require(JPATH_CORE.DS.'apps/_init.app.php');
 
+// verifica o acesso
+$hasClient	= array_intersect($groups, $cfg['groupId']['client']);
+
 //joomla get request data
 $input		= $app->input;
 
@@ -50,155 +53,204 @@ endif;
 // database connect
 $db		= JFactory::getDbo();
 
-// GET DATA
-$query	= '
-	SELECT
-		T1.*,
-		'. $db->quoteName('T2.name') .' client
-	FROM '. $db->quoteName($cfg['mainTable']) .' T1
-		LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
-		ON '.$db->quoteName('T2.id') .' = T1.client_id AND T2.state = 1
-	WHERE T1.id = '.$pID
-;
-try {
-	$db->setQuery($query);
-	$item = $db->loadObject();
-} catch (RuntimeException $e) {
-	echo $e->getMessage();
-	return;
-}
-
 $html = '';
-if(!empty($item->name)) :
-	// PROJECTS
-	$query = 'SELECT * FROM '. $db->quoteName($cfg['mainTable']) .' WHERE state = 1 ORDER BY name';
-	$db->setQuery($query);
-	$projects = $db->loadObjectList();
+if($pID > 0) :
 
-	$html .= '
-		<div id="'.$APPTAG.'-details-select">
-			<select name="pID" id="'.$APPTAG.'-pID" class="form-control" onchange="location.href=\''.JURI::root().'apps/projects/view?pID=\'+this.value">
-				<option value="0">'.JText::_('TEXT_PROJECT').'</option>
-	';
-				$clientName = '';
-				foreach ($projects as $obj) {
-					$html .= '<option value="'.$obj->id.'">'.baseHelper::nameFormat($obj->name).'</option>';
-				}
-
-	$html .= '
-			</select>
-		</div>
-	';
-
-	if($cfg['hasUpload']) :
-		JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
-		// Imagem Principal -> Primeira imagem (index = 0)
-		$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
-		if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 64, 64);
-		else $imgPath = $_ROOT.'images/apps/icons/folder_64.png';
-		$img = '<img src="'.$imgPath.'" class="img-fluid rounded mb-1" style="width:64px; height:64px;" />';
-	endif;
-
-	$since = (!empty($item->start_date) && $item->start_date != '0000-00-00') ? JText::_('TEXT_SINCE').': '.baseHelper::dateFormat($item->start_date) : '';
-	$desc = !empty($item->description) ? '<div>'.$item->description.'</div>' : '';
-	$info = (!empty($since) || !empty($desc)) ? '<div class="small text-center py-2 b-top b-top-dashed b-gray-900">'.$since.$desc.'</div>' : '';
-	$html .= '
-		<div id="'.$APPTAG.'-details-view" class="text-center">
-			<div class="px-2 pt-3">
-				<div class="pb-2 clearfix">
-					'.$img.'
-					<h4 class="text-gray-200 mb-1 lh-1-1">'.baseHelper::nameFormat($item->name).'</h4>
-					<div class="small text-muted">'.baseHelper::nameFormat($item->client).'</div>
-				</div>
-				'.$info.'
-			</div>
-		</div>
-	';
-
-	// CLIENT TEAM
-	// MOSTRA A LISTA DE USUÁRIOS DO CLIENTE
-	$query	= '
-		SELECT
-			T1.*,
-			'. $db->quoteName('T3.name') .' role,
-			'. $db->quoteName('T4.session_id') .' online
-		FROM '. $db->quoteName('#__'.$cfg['project'].'_teams') .' T1
-			JOIN '. $db->quoteName('#__'.$cfg['project'].'_rel_clients_teams') .' T2
-			ON '.$db->quoteName('T2.team_id') .' = T1.id
-			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_teams_roles') .' T3
-			ON '.$db->quoteName('T3.id') .' = T1.role_id
-			LEFT JOIN '. $db->quoteName('#__session') .' T4
-			ON '.$db->quoteName('T4.userid') .' = T1.user_id AND T4.client_id = 0
-		WHERE T1.state = 1
-		ORDER BY '. $db->quoteName('T1.name') .' ASC
-	';
-	try {
-		$db->setQuery($query);
-		$db->execute();
-		$num_rows = $db->getNumRows();
-		$res = $db->loadObjectList();
-	} catch (RuntimeException $e) {
-		echo $e->getMessage();
-		return;
-	}
-
-	if($num_rows) : // verifica se existe
-		$html .= '
-			<div id="'.$APPTAG.'-client-team" class="text-center px-2 pb-2">
-				<hr class="hr-tag b-top-dashed b-primary" />
-				<span class="badge badge-primary">
-					'.JText::sprintf('TEXT_TEAM_CLIENT', baseHelper::nameFormat($item->client)).'
-				</span>
-				<div class="clearfix">
-		';
-		foreach($res as $obj) {
-
-			if($obj->online) :
-				$lStatus = JText::_('TEXT_USER_STATUS_1');
-				$iStatus = '<small class="base-icon-circle text-success pos-absolute pos-right-0" style="bottom:-5px;"></small>';
-			else :
-				$lStatus = JText::_('TEXT_USER_STATUS_0');
-				$iStatus = '';
-			endif;
-			$name = baseHelper::nameFormat((!empty($obj->nickname) ? $obj->nickname : $obj->name));
-			$role = baseHelper::nameFormat((!empty($obj->role) ? $obj->role : $obj->occupation));
-			if(!empty($role)) $role = '<br />'.$role;
-			$info = baseHelper::nameFormat($name).$role.'<br />'.$lStatus;
-
-			if($cfg['hasUpload']) :
-				// Imagem Principal -> Primeira imagem (index = 0)
-				$img = uploader::getFile('#__brintell_teams_files', '', $obj->id, 0, JPATH_BASE.DS.'images/apps/teams/');
-				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/teams/'.$img['filename'], 32, 32);
-				else $imgPath = $_ROOT.'images/apps/icons/user_'.$obj->gender.'.png';
-				$img = '<img src="'.$imgPath.'" class="img-fluid rounded mb-2" style="width:32px; height:32px;" />';
-			endif;
-
-			$html .= '
-				<a href="apps/teams/profile?vID='.$obj->user_id.'" class="d-inline-block pos-relative hasTooltip" title="'.$info.'">
-					'.$img.$iStatus.'
-				</a>
-			';
-		}
-		$html .= '
-				</div>
-			</div>
-		';
-	endif;
-
-
-else :
-
-	// MOSTRA A LISTA DE PROJETOS DO USUÁRIO
+	// GET DATA
 	$query	= '
 		SELECT
 			T1.*,
 			'. $db->quoteName('T2.name') .' client
 		FROM '. $db->quoteName($cfg['mainTable']) .' T1
-			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
+			JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
 			ON '.$db->quoteName('T2.id') .' = T1.client_id AND T2.state = 1
-		WHERE T1.state = 1
-		ORDER BY '. $db->quoteName('T1.name') .' ASC
-	';
+		WHERE T1.id = '.$pID
+	;
+	try {
+		$db->setQuery($query);
+		$item = $db->loadObject();
+	} catch (RuntimeException $e) {
+		echo $e->getMessage();
+		return;
+	}
+
+	if(!empty($item->name)) :
+
+		// GET PROJECTS LIST
+		$query = 'SELECT * FROM '. $db->quoteName($cfg['mainTable']) .' WHERE state = 1 ORDER BY name';
+		$db->setQuery($query);
+		$projects = $db->loadObjectList();
+
+		$html .= '
+			<div id="'.$APPTAG.'-details-select">
+				<select name="pID" id="'.$APPTAG.'-pID" class="form-control" onchange="location.href=\''.JURI::root().'apps/projects/view?pID=\'+this.value">
+					<option value="0">'.JText::_('TEXT_PROJECT').'</option>
+		';
+					$clientName = '';
+					foreach ($projects as $obj) {
+						$html .= '<option value="'.$obj->id.'">'.baseHelper::nameFormat($obj->name).'</option>';
+					}
+
+		$html .= '
+				</select>
+			</div>
+		';
+
+		if($cfg['hasUpload']) :
+			JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
+			// Imagem Principal -> Primeira imagem (index = 0)
+			$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
+			if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 64, 64);
+			else $imgPath = $_ROOT.'images/apps/icons/folder_64.png';
+			$img = '<img src="'.$imgPath.'" class="img-fluid rounded mb-1" style="width:64px; height:64px;" />';
+		endif;
+
+		$since = (!empty($item->start_date) && $item->start_date != '0000-00-00') ? JText::_('TEXT_SINCE').': '.baseHelper::dateFormat($item->start_date) : '';
+		$desc = !empty($item->description) ? '<div>'.$item->description.'</div>' : '';
+		$info = (!empty($since) || !empty($desc)) ? '<div class="small text-center py-2 b-top b-top-dashed b-gray-900">'.$since.$desc.'</div>' : '';
+		$html .= '
+			<div id="'.$APPTAG.'-details-view" class="text-center">
+				<div class="px-2 pt-3">
+					<div class="pb-2 clearfix">
+						'.$img.'
+						<h4 class="text-gray-200 mb-1 lh-1-1">'.baseHelper::nameFormat($item->name).'</h4>
+						<div class="small text-muted">'.baseHelper::nameFormat($item->client).'</div>
+					</div>
+					'.$info.'
+				</div>
+			</div>
+		';
+
+		// CLIENT STAFF
+		// MOSTRA A LISTA DE USUÁRIOS DO CLIENTE
+		if($item->client_id == 1) : // Brintell
+			$query	= '
+				SELECT
+					T1.*,
+					'. $db->quoteName('T2.name') .' role,
+					'. $db->quoteName('T3.session_id') .' online
+				FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' T1
+					LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_staff_roles') .' T2
+					ON '.$db->quoteName('T2.id') .' = T1.role_id
+					LEFT JOIN '. $db->quoteName('#__session') .' T3
+					ON '.$db->quoteName('T3.userid') .' = T1.user_id AND T3.client_id = 0
+				WHERE '. $db->quoteName('T1.type') .' = 0 AND T1.state = 1
+				ORDER BY '. $db->quoteName('T1.name') .' ASC
+			';
+		else :
+			$query	= '
+				SELECT
+					T1.*,
+					'. $db->quoteName('T2.department') .' role,
+					'. $db->quoteName('T3.session_id') .' online
+				FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' T1
+					JOIN '. $db->quoteName('#__'.$cfg['project'].'_rel_clients_staff') .' T2
+					ON '.$db->quoteName('T2.client_id') .' = '.$item->client_id.' AND '.$db->quoteName('T2.staff_id') .' = '.$db->quoteName('T1.id') .'
+					LEFT JOIN '. $db->quoteName('#__session') .' T3
+					ON '.$db->quoteName('T3.userid') .' = T1.user_id AND T3.client_id = 0
+				WHERE T1.state = 1
+				ORDER BY '. $db->quoteName('T1.name') .' ASC
+			';
+		endif;
+		try {
+			$db->setQuery($query);
+			$db->execute();
+			$num_rows = $db->getNumRows();
+			$res = $db->loadObjectList();
+		} catch (RuntimeException $e) {
+			echo $e->getMessage();
+			return;
+		}
+
+		if($num_rows) : // verifica se existe
+			$html .= '
+				<div id="'.$APPTAG.'-client-staff" class="text-center px-2 pb-2">
+					<hr class="hr-tag b-top-dashed b-primary" />
+					<span class="badge badge-primary">
+						'.JText::sprintf('TEXT_STAFF_CLIENT', baseHelper::nameFormat($item->client)).'
+					</span>
+					<div class="clearfix">
+			';
+			foreach($res as $obj) {
+
+				if($obj->online) :
+					$lStatus = JText::_('TEXT_USER_STATUS_1');
+					$iStatus = '<small class="base-icon-circle text-success pos-absolute pos-right-0 pos-bottom-0"></small>';
+				else :
+					$lStatus = JText::_('TEXT_USER_STATUS_0');
+					$iStatus = '';
+				endif;
+				$name = baseHelper::nameFormat((!empty($obj->nickname) ? $obj->nickname : $obj->name));
+				$role = baseHelper::nameFormat((!empty($obj->role) ? $obj->role : $obj->occupation));
+				if(!empty($role)) $role = '<br />'.$role;
+				$info = baseHelper::nameFormat($name).$role.'<br />'.$lStatus;
+
+				if($cfg['hasUpload']) :
+					// Imagem Principal -> Primeira imagem (index = 0)
+					$img = uploader::getFile('#__brintell_staff_files', '', $obj->id, 0, JPATH_BASE.DS.'images/apps/staff/');
+					if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/staff/'.$img['filename'], 32, 32);
+					else $imgPath = $_ROOT.'images/apps/icons/user_'.$obj->gender.'.png';
+					$img = '<img src="'.$imgPath.'" class="img-fluid rounded mb-2" style="width:32px; height:32px;" />';
+				endif;
+
+				$html .= '
+					<a href="apps/staff/profile?vID='.$obj->user_id.'" class="d-inline-block pos-relative hasTooltip" title="'.$info.'">
+						'.$img.$iStatus.'
+					</a>
+				';
+			}
+			$html .= '
+					</div>
+				</div>
+			';
+		endif;
+
+	else :
+
+		$html = '<div class="alert alert-warning text-sm mx-2">'.JText::_('MSG_NOT_PROJECTS_TO_VIEW').'</div>';
+
+	endif;
+
+
+else :
+
+	if($hasClient) :
+
+		// GET STAFF MEMBER ID
+		$query = 'SELECT id FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '.$db->quoteName('user_id') .' = '.$user->id;
+		$db->setQuery($query);
+		$staffID = $db->loadResult();
+		// GET USER'S CLIENTS LIST
+		$query = 'SELECT GROUP_CONCAT(client_id) id FROM '. $db->quoteName('#__'.$cfg['project'].'_rel_clients_staff') .' WHERE '.$db->quoteName('staff_id') .' = '.$staffID.' AND state = 1';
+		$db->setQuery($query);
+		$clients = $db->loadResult();
+		// MOSTRA A LISTA DE PROJETOS DO USUÁRIO
+		$query	= '
+			SELECT
+				T1.*,
+				'. $db->quoteName('T2.name') .' client
+			FROM '. $db->quoteName($cfg['mainTable']) .' T1
+				LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
+				ON '.$db->quoteName('T2.id') .' = T1.client_id AND T2.state = 1
+			WHERE '.$db->quoteName('T2.id') .' IN ('.$clients.') AND T1.state = 1
+			ORDER BY '. $db->quoteName('T1.name') .' ASC
+		';
+
+	else :
+
+		// MOSTRA A LISTA COMPLETA DE PROJETOS
+		$query	= '
+			SELECT
+				T1.*,
+				'. $db->quoteName('T2.name') .' client
+			FROM '. $db->quoteName($cfg['mainTable']) .' T1
+				LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
+				ON '.$db->quoteName('T2.id') .' = T1.client_id AND T2.state = 1
+			WHERE T1.state = 1
+			ORDER BY '. $db->quoteName('T1.name') .' ASC
+		';
+
+	endif;
 	try {
 		$db->setQuery($query);
 		$db->execute();
@@ -224,7 +276,7 @@ else :
 				$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
 				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 32, 32);
 				else $imgPath = $_ROOT.'images/apps/icons/folder_32.png';
-				$img = '<img src="'.$imgPath.'" class="img-fluid" style="width:32px; height:32px;" />';
+				$img = '<img src="'.$imgPath.'" class="img-fluid rounded" style="width:32px; height:32px;" />';
 			endif;
 
 			$html .= '

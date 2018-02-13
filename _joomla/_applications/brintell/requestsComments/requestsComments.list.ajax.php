@@ -58,7 +58,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	$query	= '
 		SELECT
 			T1.*,
-			'. $db->quoteName('T2.id') .' team_id,
+			'. $db->quoteName('T2.id') .' staff_id,
+			'. $db->quoteName('T2.user_id') .',
 			'. $db->quoteName('T2.name') .',
 			'. $db->quoteName('T2.nickname') .',
 			'. $db->quoteName('T2.gender') .',
@@ -68,7 +69,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
 			$query .= ' FROM '.
 				$db->quoteName($cfg['mainTable']) .' T1
-				LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_teams') .' T2
+				LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_staff') .' T2
 				ON T2.user_id = T1.created_by
 				LEFT JOIN '. $db->quoteName('#__session') .' T3
 				ON '.$db->quoteName('T3.userid') .' = T1.created_by AND T3.client_id = 0
@@ -80,7 +81,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		else :
 			$query .= '
 				FROM '. $db->quoteName($cfg['mainTable']) .' T1
-					LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_teams') .' T2
+					LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_staff') .' T2
 					ON T2.user_id = T1.created_by
 					LEFT JOIN '. $db->quoteName('#__session') .' T3
 					ON '.$db->quoteName('T3.userid') .' = T1.created_by AND T3.client_id = 0
@@ -90,7 +91,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	else :
 		$query .= '
 			FROM '. $db->quoteName($cfg['mainTable']) .' T1
-			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_teams') .' T2
+			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_staff') .' T2
 			ON T2.user_id = T1.created_by
 			LEFT JOIN '. $db->quoteName('#__session') .' T3
 			ON '.$db->quoteName('T3.userid') .' = T1.created_by AND T3.client_id = 0
@@ -131,8 +132,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				}
 
 				// Imagem do usuário
-				$img = uploader::getFile('#__brintell_teams_files', '', $item->id, 0, JPATH_BASE.DS.'images/apps/teams/');
-				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/teams/'.$img['filename'], 41, 41);
+				$img = uploader::getFile('#__brintell_staff_files', '', $item->staff_id, 0, JPATH_BASE.DS.'images/apps/staff/');
+				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/staff/'.$img['filename'], 41, 41);
 				else $imgPath = $_ROOT.'images/apps/icons/user_'.$item->gender.'.png';
 				$img = '<img src="'.$imgPath.'" class="img-fluid rounded mb-2" style="width:41px; height:41px;" />';
 			endif;
@@ -154,7 +155,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$html .= '
 				<li class="d-flex">
 					<div class="pr-3" style="flex:0 0 42px;">
-						<a href="'.$_ROOT.'apps/teams/profile?vID='.$item->team_id.'">'.$img.'</a>
+						<a href="'.$_ROOT.'apps/staff/profile?vID='.$item->user_id.'">'.$img.'</a>
 						<div class="btn-group btn-group-justified">'.$btnEdit.$btnDelete.'</div>
 					</div>
 					<div style="flex-grow:1;" class="font-condensed text-sm mb-2 lh-1-3">

@@ -11,23 +11,23 @@ $query = 'SELECT * FROM '. $db->quoteName($cfg['mainTable'].'_tags') .' WHERE '.
 $db->setQuery($query);
 $tags = $db->loadObjectList();
 
-// TEAM
-$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_teams') .' WHERE '. $db->quoteName('type') .' IN (0, 1) AND '. $db->quoteName('access') .' = 1 AND '. $db->quoteName('state') .' = 1 ORDER BY name';
+// STAFF
+$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('type') .' IN (0, 1) AND '. $db->quoteName('access') .' = 1 AND '. $db->quoteName('state') .' = 1 ORDER BY name';
 $db->setQuery($query);
-$teams = $db->loadObjectList();
+$staff = $db->loadObjectList();
 // current user
 $myID		= 0;
-$teamList	= '';
-foreach ($teams as $obj) {
+$staffList	= '';
+foreach ($staff as $obj) {
 	$name = !empty($obj->nickname) ? $obj->nickname : $obj->name;
-	$team = ($obj->type == 1) ? '*' : '';
+	$staff = ($obj->type == 1) ? '*' : '';
 	if($obj->user_id == $user->id) :
 		$myID = $obj->id;
 		$me = ' ('.JText::_('TEXT_TO_ME').')';
 	else :
 		$me = '';
 	endif;
-	$teamList .= '<option value="'.$obj->id.'">'.$team.baseHelper::nameFormat($name).$me.'</option>';
+	$staffList .= '<option value="'.$obj->id.'">'.$staff.baseHelper::nameFormat($name).$me.'</option>';
 }
 
 // FORM
@@ -139,7 +139,7 @@ foreach ($teams as $obj) {
 						<label class="label-sm"><?php echo JText::_('FIELD_LABEL_ASSIGN_TO'); ?></label>
 						<div class="input-group">
 							<select name="assign_to[]" id="<?php echo $APPTAG?>-assign_to" class="form-control" multiple>
-								<?php echo $teamList?>
+								<?php echo $staffList?>
 							</select>
 							<span class="input-group-btn">
 								<button type="button" class="base-icon-sitemap btn btn-success hasTooltip" title="<?php echo JText::_('TEXT_ACTIVITY_BOARD')?>" data-toggle="modal" data-target="#modal-<?php echo $APPTAG?>activityBoard" data-backdrop="static" data-keyboard="false"></button>
@@ -162,13 +162,20 @@ foreach ($teams as $obj) {
 						</label>
 					</span>
 				</div>
-				<div class="row">
-					<div class="col-6">
-						<div class="form-group">
-							<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_DEADLINE_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_DEADLINE'); ?></label>
-							<input type="text" name="deadline" id="<?php echo $APPTAG?>-deadline" class="form-control field-date" data-convert="true" />
-						</div>
+				<div class="form-group">
+					<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_DEADLINE_DESC'); ?>">
+						<?php echo JText::_('FIELD_LABEL_DEADLINE'); ?>
+						[ <?php echo JText::_('TEXT_TIME_IN_BRAZIL'); ?>: <iframe src="//free.timeanddate.com/clock/i63smlsf/n45/fs13/fcf80/tct/pct/ahl/ftb/ts1" frameborder="0" width="58" height="13" allowTransparency="true"></iframe> ]
+					</label>
+					<div class="form-inline">
+						<input type="text" name="deadline" id="<?php echo $APPTAG?>-deadline" class="field-date mr-1" data-width="142px" data-time="true" data-seconds="false" data-tab-disable="true" data-convert="true" />
+						<select name="timePeriod" id="<?php echo $APPTAG?>-timePeriod">
+							<option value="<?php echo JText::_('TEXT_AM'); ?>"><?php echo JText::_('TEXT_AM'); ?></option>
+							<option value="<?php echo JText::_('TEXT_PM'); ?>"><?php echo JText::_('TEXT_PM'); ?></option>
+						</select>
 					</div>
+				</div>
+				<div class="row">
 					<div class="col-6">
 						<div class="form-group">
 							<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_ESTIMATE_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_ESTIMATE'); ?> (<?php echo JText::_('FIELD_LABEL_ESTIMATE_UNIT'); ?>)</label>
@@ -182,12 +189,14 @@ foreach ($teams as $obj) {
 							</select>
 						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label class="label-sm"><?php echo JText::_('FIELD_LABEL_EXECUTED'); ?></label>
-					<div class="input-group">
-						<input type="text" name="executed" id="<?php echo $APPTAG?>-executed" class="form-control field-integer" />
-						<span class="input-group-addon">%</span>
+					<div class="col-6">
+						<div class="form-group">
+							<label class="label-sm"><?php echo JText::_('FIELD_LABEL_EXECUTED'); ?></label>
+							<div class="input-group">
+								<input type="text" name="executed" id="<?php echo $APPTAG?>-executed" class="form-control field-integer" />
+								<span class="input-group-addon">%</span>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="form-group">
@@ -212,7 +221,7 @@ foreach ($teams as $obj) {
 					</div>
 					<div id="<?php echo $APPTAG?>-btn-toDo" hidden>
 						<hr />
-						<button type="button" class="btn btn-primary btn-block text base-icon-list btn-icon" onclick="<?php echo $APPTAG?>_viewToDo()" data-toggle="modal" data-target="#modal-list-<?php echo $APPTAG?>Todo" data-backdrop="static" data-keyboard="false"> <?php echo JText::_('TEXT_TODO_LIST')?></button>
+						<button type="button" class="btn btn-primary btn-block text-left base-icon-list btn-icon" onclick="<?php echo $APPTAG?>_viewToDo()" data-toggle="modal" data-target="#modal-list-<?php echo $APPTAG?>Todo" data-backdrop="static" data-keyboard="false"> <?php echo JText::_('TEXT_TODO_LIST')?></button>
 					</div>
 				</div>
 			</div>

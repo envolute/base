@@ -52,13 +52,13 @@ require($PATH_APP_FILE.'.filter.query.php');
 	// ASSIGN TO -> select
 	$flt_assign = '';
 	if($hasAdmin || $pID > 0) :
-		$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_teams') .' WHERE '. $db->quoteName('type') .' IN (0, 1) AND '. $db->quoteName('access') .' = 1 AND '. $db->quoteName('state') .' = 1 ORDER BY name';
+		$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('type') .' IN (0, 1) AND '. $db->quoteName('access') .' = 1 AND '. $db->quoteName('state') .' = 1 ORDER BY name';
 		$db->setQuery($query);
 		$assigned = $db->loadObjectList();
 		foreach ($assigned as $obj) {
 			$name = !empty($obj->nickname) ? $obj->nickname : $obj->name;
-			$team = ($obj->type == 1) ? '*' : '';
-			$flt_assign .= '<option value="'.$obj->id.'"'.($obj->id == $fAssign ? ' selected = "selected"' : '').'>'.$team.baseHelper::nameFormat($name).'</option>';
+			$staff = ($obj->type == 1) ? '*' : '';
+			$flt_assign .= '<option value="'.$obj->id.'"'.($obj->id == $fAssign ? ' selected = "selected"' : '').'>'.$staff.baseHelper::nameFormat($name).'</option>';
 		}
 		$flt_assign = '
 			<div class="col-sm-6 col-md-3">

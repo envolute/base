@@ -59,7 +59,7 @@ window.<?php echo $APPTAG?>_listReload = function(reload, remove, ids, onlyChild
 					setCoreDefinitions(); // core
 					setCustomDefinitions(); // custom
 					// TODO: Reload Modal 'Regular Labs'
-					// RegularLabsModals.init();
+					RegularLabsModals.init();
 				}
 			});
 		<?php endif; ?>

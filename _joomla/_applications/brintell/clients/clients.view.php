@@ -163,21 +163,22 @@ if($vID != 0) :
 						<div class="col-lg-4">
 		';
 
-							// Teams
-							$clientsTeamsListFull		= false;
-							$clientsTeamsAddText		= false;
-							$clientsTeamsShowAddBtn		= false;
-							$clientsTeamsRelTag			= 'clients';
-							$clientsTeamsRelListNameId	= 'client_id';
-							$clientsTeamsRelListId		= $item->id;
-							$clientsTeamsOnlyChildList	= true;
+							// Staff
+							$clientsStaffListFull			= false;
+							$clientsStaffAddText			= false;
+							$clientsStaffShowAddBtn			= false;
+							$clientsStaffRelTag				= 'clients';
+							$clientsStaffRelListNameId		= 'client_id';
+							$clientsStaffRelListId			= $item->id;
+							$clientsStaffOnlyChildList		= true;
+							$clientsStaffHideParentField	= true;
 							echo '
 								<h6 class="page-header base-icon-users-alt">
-									'.JText::_('TEXT_TEAM').'
-									<a href="#" class="btn btn-xs btn-success float-right" onclick="clientsTeams_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-clientsTeams" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_TEAM_MEMBER').'"></span></a>
+									'.JText::_('TEXT_STAFF').'
+									<a href="#" class="btn btn-xs btn-success float-right" onclick="clientsStaff_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-clientsStaff" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_STAFF_MEMBER').'"></span></a>
 								</h6>
 							';
-							require(JPATH_APPS.DS.'clientsTeams/clientsTeams.php');
+							require(JPATH_APPS.DS.'clientsStaff/clientsStaff.php');
 
 							// Phones
 							$_callCentersListFull				= false;

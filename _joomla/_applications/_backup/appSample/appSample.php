@@ -388,7 +388,7 @@ jQuery(window).on('load', function() {
 	endif; // end noList
 
 	if($cfg['listModal']) :
-		if($cfg['showAddBtn'] && !$cfg['showApp']) $addBtn = '<div class="modal-list-toolbar">'.$addBtn.'</div>';
+		$addBtn = $cfg['showAddBtn'] ? '<div class="modal-list-toolbar">'.$addBtn.'</div>' : '';
 	?>
 			<div class="modal fade" id="modal-list-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-list-<?php echo $APPTAG?>Label">
 				<div class="modal-dialog modal-sm" role="document">

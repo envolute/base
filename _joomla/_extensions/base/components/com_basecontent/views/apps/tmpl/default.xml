@@ -47,14 +47,19 @@
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 			</field>
 			<field name="listAjax" type="text" filter="string" default="list.ajax.php" label="COM_BASECONTENT_AJAX_VIEW_LABEL" description="COM_BASECONTENT_AJAX_VIEW_DESC" />
-			<field name="openFilter" type="radio" class="btn-group" label="COM_BASECONTENT_FILTER_LABEL" description="COM_BASECONTENT_FILTER_DESC">
-				<option value="1">COM_BASECONTENT_FILTER_OPENED</option>
-				<option value="0">COM_BASECONTENT_FILTER_CLOSED</option>
+			<field name="ajaxReload" type="radio" class="btn-group" label="COM_BASECONTENT_AJAX_RELOAD_LABEL" description="COM_BASECONTENT_AJAX_RELOAD_DESC">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 			</field>
 			<field name="ajaxFilter" type="radio" class="btn-group" label="COM_BASECONTENT_AJAX_FILTER_LABEL" description="COM_BASECONTENT_AJAX_FILTER_DESC">
 				<option value="1">JYES</option>
 				<option value="0">JNO</option>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+			</field>
+			<field name="openFilter" type="radio" class="btn-group" label="COM_BASECONTENT_FILTER_LABEL" description="COM_BASECONTENT_FILTER_DESC">
+				<option value="1">COM_BASECONTENT_FILTER_OPENED</option>
+				<option value="0">COM_BASECONTENT_FILTER_CLOSED</option>
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 			</field>
 			<field name="staticToolbar" type="radio" class="btn-group" label="COM_BASECONTENT_STATIC_TOOLBAR_LABEL" description="COM_BASECONTENT_STATIC_TOOLBAR_DESC">

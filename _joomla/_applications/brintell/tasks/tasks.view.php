@@ -125,12 +125,12 @@ if($vID != 0) :
 			$requests = '<div class="float-right text-muted">Req ID: '.$requests.'</div>';
 		endif;
 		$estimate = ($item->estimate > 0) ? $item->estimate.JText::_('TEXT_ESTIMATED_UNIT').' ' : '';
-		$estimate .= ($item->deadline != '0000-00-00') ? JText::_('TEXT_UNTIL').' '.baseHelper::dateFormat($item->deadline) : '';
+		$estimate .= ($item->deadline != '0000-00-00 00:00:00') ? JText::_('TEXT_UNTIL').' '.baseHelper::dateFormat($item->deadline, 'd/m/y H:i').$item->timePeriod : '';
 		$estimate = !empty($estimate) ? ' - '.JText::_('TEXT_ESTIMATED').' '.$estimate : '';
 		$desc = !empty($item->description) ? '<div class="font-condensed mb-4">'.$item->description.'</div>' : '';
 		$urlViewProject = JURI::root().'apps/projects/view?pID='.$item->project_id;
 
-		// CLIENT TEAM
+		// CLIENT STAFF
 		// MOSTRA A LISTA DE USUÁRIOS DA TAREFA
 		$assigned = '';
 		if(!empty($item->assign_to)) :
@@ -139,8 +139,8 @@ if($vID != 0) :
 					T1.*,
 					'. $db->quoteName('T2.name') .' role,
 					'. $db->quoteName('T3.session_id') .' online
-				FROM '. $db->quoteName('#__'.$cfg['project'].'_teams') .' T1
-					LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_teams_roles') .' T2
+				FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' T1
+					LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_staff_roles') .' T2
 					ON '.$db->quoteName('T2.id') .' = T1.role_id
 					LEFT JOIN '. $db->quoteName('#__session') .' T3
 					ON '.$db->quoteName('T3.userid') .' = T1.user_id AND T3.client_id = 0
@@ -173,13 +173,13 @@ if($vID != 0) :
 					$info = baseHelper::nameFormat($name).$role.'<br />'.$lStatus;
 
 					// Imagem Principal -> Primeira imagem (index = 0)
-					$img = uploader::getFile('#__brintell_teams_files', '', $obj->id, 0, JPATH_BASE.DS.'images/apps/teams/');
-					if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/teams/'.$img['filename'], 24, 24);
+					$img = uploader::getFile('#__brintell_staff_files', '', $obj->id, 0, JPATH_BASE.DS.'images/apps/staff/');
+					if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/staff/'.$img['filename'], 24, 24);
 					else $imgPath = JURI::root().'images/apps/icons/user_'.$obj->gender.'.png';
 					$img = '<img src="'.$imgPath.'" class="img-fluid rounded mb-2" style="width:24px; height:24px;" />';
 
 					$assigned .= '
-						<a href="apps/teams/profile?vID='.$obj->user_id.'" class="d-inline-block pos-relative hasTooltip" title="'.$info.'">
+						<a href="apps/staff/profile?vID='.$obj->user_id.'" class="d-inline-block pos-relative hasTooltip" title="'.$info.'">
 							'.$img.$iStatus.'
 						</a>
 					';
@@ -210,7 +210,7 @@ if($vID != 0) :
 		endif;
 
 		echo '
-			<div id="'.$APPTAG.'-task-pageitem">
+			<div id="'.$APPTAG.'-task-pageitem" class="py-3">
 				<div id="'.$APPTAG.'-task-pageitem-header" class="mb-3 b-bottom-2 b-primary">
 					<div class="pb-1 mb-2 b-bottom">'.$status.$type.$priority.$visible.$requests.'</div>
 					<h2 class="font-condensed text-primary">
@@ -246,14 +246,39 @@ if($vID != 0) :
 					</div>
 					<div class="col-md-4">
 		';
-						// TO DO LIST
+						// APP ACTIONS
+						// Carrega o app diretamente ná página,
+						// pois como está sendo chamada no template 'component', não carrega os módulos
+						// REQUESTS => FORM
+						$tasksShowApp			= false;
+						$tasksShowList			= false;
+						$tasksListFull			= false;
+						require(JPATH_APPS.DS.$MAINAPP.'/'.$MAINAPP.'.php');
+						// TAGS => FORM
+						$tasksTagsShowApp		= false;
+						$tasksTagsShowList		= false;
+						$tasksTagsListFull		= false;
+						$tasksTagsRelTag		= 'tasks';
+						$tasksTagsFieldUpdated	= '#tasks-tags';
+						$tasksTagsTableField	= 'name';
+						require(JPATH_APPS.DS.$MAINAPP.'Tags/'.$MAINAPP.'Tags.php');
+						// TO DO LIST => (instância do FORM)
+						$tasksTodoShowApp		= false;
+						$tasksTodoShowList		= true;
+						$tasksTodoListModal		= true;
 						$tasksTodoListFull		= false;
-						$tasksTodoListAjax		= "list.actions.ajax.php";
-						$tasksTodoRelTag		= 'tasks';
 						$tasksTodoRelListNameId	= 'task_id';
-						$tasksTodoRelListId		= $item->id;
-						$tasksTodoOnlyChildList	= true;
-						$tasksTodoShowAddBtn	= false;
+						require(JPATH_APPS.DS.$MAINAPP.'Todo/'.$MAINAPP.'Todo.php');
+
+						// TO DO LIST => (instância da VIEW)
+						$tasksTodoAppTag			= 'todoView';
+						$todoViewListFull			= false;
+						$todoViewListAjax			= "list.actions.ajax.php";
+						$todoViewRelTag				= 'tasks';
+						$todoViewRelListNameId		= 'task_id';
+						$todoViewRelListId			= $item->id;
+						$todoViewOnlyChildList		= true;
+						$todoViewShowAddBtn			= false;
 						echo '
 							<h4 class="font-condensed text-danger mb-3">
 								'.JText::_('TEXT_TODO_LIST').'

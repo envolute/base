@@ -27,6 +27,7 @@ $doc = JFactory::getDocument();
 $doc->addStyleSheet(JURI::base(true).'/templates/base/css/style.app.css');
 $doc->addScript(JURI::base(true).'/templates/base/js/forms.js');
 $doc->addScript(JURI::base(true).'/templates/base/js/validate.js');
+
 // Carrega Jquery.ui datepicker;
 if($cfg['dateConvert'] || $cfg['load_UI']) {
 	$doc->addStyleSheet(JURI::base(true).'/templates/base/libs/template/jquery/jquery-ui.min.css');

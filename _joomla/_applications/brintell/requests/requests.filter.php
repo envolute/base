@@ -52,7 +52,7 @@ require($PATH_APP_FILE.'.filter.query.php');
 	// CREATED BY -> select
 	$flt_creator = '';
 	if($hasAdmin || $pID > 0) :
-		$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_teams') .' WHERE '. $db->quoteName('type') .' = 2 AND '. $db->quoteName('access') .' = 1 AND '. $db->quoteName('state') .' = 1 ORDER BY name';
+		$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('type') .' = 2 AND '. $db->quoteName('access') .' = 1 AND '. $db->quoteName('state') .' = 1 ORDER BY name';
 		$db->setQuery($query);
 		$created = $db->loadObjectList();
 		foreach ($created as $obj) {

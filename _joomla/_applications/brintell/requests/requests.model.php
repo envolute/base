@@ -98,6 +98,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	  	$request['description']			= $input->get('description', '', 'string');
 		$request['priority']			= $input->get('priority', 0, 'int');
 	  	$request['deadline']			= $input->get('deadline', '', 'string');
+	  	$request['timePeriod']			= $input->get('timePeriod', '', 'string');
 		$tags							= $input->get('tags', array(), 'array');
 		$request['tags']				= implode(',', $tags); // FIND_IN_SET
 		$request['status']				= $input->get('status', 0, 'int');
@@ -164,6 +165,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						description,
 						priority,
 						deadline,
+						timePeriod,
 						created_by
 					)
 					SELECT
@@ -174,6 +176,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						description,
 						priority,
 						deadline,
+						timePeriod,
 						'.$userID.'
 					FROM '. $db->quoteName('#__'.$cfg['project'].'_requests_todo') .'
 					WHERE id = '.$requestID
@@ -242,6 +245,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'description'		=> $item->description,
 						'priority'			=> $item->priority,
 						'deadline'			=> $item->deadline,
+						'timePeriod'		=> $item->timePeriod,
 						'tags'				=> explode(',', $item->tags),
 						'status'			=> $item->status,
 						'status_desc'		=> $item->status_desc,
@@ -259,6 +263,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('description')		.'='. $db->quote($request['description']) .','.
 						$db->quoteName('priority')			.'='. $request['priority'] .','.
 						$db->quoteName('deadline')			.'='. $db->quote($request['deadline']) .','.
+						$db->quoteName('timePeriod')		.'='. $db->quote($request['timePeriod']) .','.
 						$db->quoteName('tags')				.'='. $db->quote($request['tags']) .','.
 						$db->quoteName('status')			.'='. $request['status'] .','.
 						$db->quoteName('status_desc')		.'='. $db->quote($request['status_desc']) .','.
@@ -537,6 +542,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('description') .','.
 							$db->quoteName('priority') .','.
 							$db->quoteName('deadline') .','.
+							$db->quoteName('timePeriod') .','.
 							$db->quoteName('tags') .','.
 							$db->quoteName('status') .','.
 							$db->quoteName('status_desc') .','.
@@ -549,6 +555,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quote($request['description']) .','.
 							$request['priority'] .','.
 							$db->quote($request['deadline']) .','.
+							$db->quote($request['timePeriod']) .','.
 							$db->quote($request['tags']) .','.
 							$request['status'] .','.
 							$db->quote($request['status_desc']) .','.

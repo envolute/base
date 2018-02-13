@@ -41,9 +41,6 @@ if(isset($_SESSION[$MAINTAG.'langDef'])) :
 	$lang->load('base_'.$APPNAME, JPATH_BASE, $_SESSION[$MAINTAG.'langDef'], true);
 endif;
 
-// Admin Actions
-// require_once('_contacts.select.php');
-
 if($vID != 0) :
 
 	// DATABASE CONNECT
@@ -92,7 +89,7 @@ if($vID != 0) :
 			';
 		endif;
 
-		$itemStatus = ($item->status == 0) ? 'warning' : JText::_('TEXT_COLOR_STATUS_'.$item->status);
+		$itemStatus = ($item->status == 1) ? 'warning' : JText::_('TEXT_COLOR_STATUS_'.$item->status);
 		$iconStatus = JText::_('TEXT_ICON_STATUS_'.$item->status);
 		$status = '<span class="badge badge-'.$itemStatus.' base-icon-'.$iconStatus.'"> '.JText::_('TEXT_STATUS_'.$item->status).'</span>';
 
@@ -120,8 +117,8 @@ if($vID != 0) :
 					T1.*,
 					'. $db->quoteName('T2.name') .' role,
 					'. $db->quoteName('T3.session_id') .' online
-				FROM '. $db->quoteName('#__'.$cfg['project'].'_teams') .' T1
-					LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_teams_roles') .' T2
+				FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' T1
+					LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_staff_roles') .' T2
 					ON '.$db->quoteName('T2.id') .' = T1.role_id
 					LEFT JOIN '. $db->quoteName('#__session') .' T3
 					ON '.$db->quoteName('T3.userid') .' = T1.user_id AND T3.client_id = 0
@@ -143,18 +140,20 @@ if($vID != 0) :
 				$info = baseHelper::nameFormat($name).$role.'<br />'.$lStatus;
 
 				// Imagem Principal -> Primeira imagem (index = 0)
-				$img = uploader::getFile('#__brintell_teams_files', '', $obj->id, 0, JPATH_BASE.DS.'images/apps/teams/');
-				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/teams/'.$img['filename'], 24, 24);
+				$img = uploader::getFile('#__brintell_staff_files', '', $obj->id, 0, JPATH_BASE.DS.'images/apps/staff/');
+				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/staff/'.$img['filename'], 24, 24);
 				else $imgPath = JURI::root().'images/apps/icons/user_'.$obj->gender.'.png';
 				$img = '<img src="'.$imgPath.'" class="img-fluid rounded mb-2" style="width:24px; height:24px;" />';
 
 				$createdBy .= '
-					<a href="apps/teams/profile?vID='.$obj->user_id.'" class="d-inline-block pos-relative hasTooltip" title="'.$info.'">
+					<a href="apps/staff/profile?vID='.$obj->user_id.'" class="d-inline-block pos-relative hasTooltip" title="'.$info.'">
 						'.$img.$iStatus.'
 					</a>
 				';
 			endif;
 		endif;
+
+		$deadline = ($item->deadline != '0000-00-00 00:00:00') ? '- '.JText::_('FIELD_LABEL_DEADLINE').' '.baseHelper::dateFormat($item->deadline, 'd/m/y H:i').$item->timePeriod : '';
 
 		$tags = '';
 		if(!empty($item->tags)) :
@@ -179,7 +178,7 @@ if($vID != 0) :
 		endif;
 
 		echo '
-			<div id="'.$APPTAG.'-request-pageitem">
+			<div id="'.$APPTAG.'-request-pageitem" class="py-3">
 				<div id="'.$APPTAG.'-request-pageitem-header" class="mb-3 b-bottom-2 b-primary">
 					<div class="pb-1 mb-2 b-bottom">'.$status.$type.$priority.'</div>
 					<h2 class="font-condensed text-primary">
@@ -215,23 +214,49 @@ if($vID != 0) :
 					</div>
 					<div class="col-md-4">
 		';
-						// TO DO LIST
+
+						// APP ACTIONS
+						// Carrega o app diretamente ná página,
+						// pois como está sendo chamada no template 'component', não carrega os módulos
+						// REQUESTS => FORM
+						$requestsShowApp			= false;
+						$requestsShowList			= false;
+						$requestsListFull			= false;
+						require(JPATH_APPS.DS.$MAINAPP.'/'.$MAINAPP.'.php');
+						// TAGS => FORM
+						$requestsTagsShowApp		= false;
+						$requestsTagsShowList		= false;
+						$requestsTagsListFull		= false;
+						$requestsTagsRelTag			= 'requests';
+						$requestsTagsFieldUpdated	= '#requests-tags';
+						$requestsTagsTableField		= 'name';
+						require(JPATH_APPS.DS.$MAINAPP.'Tags/'.$MAINAPP.'Tags.php');
+						// TO DO LIST => (instância do FORM)
+						$requestsTodoShowApp		= false;
+						$requestsTodoShowList		= true;
+						$requestsTodoListModal		= true;
 						$requestsTodoListFull		= false;
-						$requestsTodoListAjax		= "list.actions.ajax.php";
-						$requestsTodoRelTag			= 'requests';
 						$requestsTodoRelListNameId	= 'request_id';
-						$requestsTodoRelListId		= $item->id;
-						$requestsTodoOnlyChildList	= true;
-						$requestsTodoShowAddBtn		= false;
+						require(JPATH_APPS.DS.$MAINAPP.'Todo/'.$MAINAPP.'Todo.php');
+
+						// TO DO LIST => (instância da VIEW)
+						$requestsTodoAppTag			= 'todoView';
+						$todoViewListFull			= false;
+						$todoViewListAjax			= "list.actions.ajax.php";
+						$todoViewRelTag				= 'requests';
+						$todoViewRelListNameId		= 'request_id';
+						$todoViewRelListId			= $item->id;
+						$todoViewOnlyChildList		= true;
+						$todoViewShowAddBtn			= false;
 						echo '
 							<h4 class="font-condensed text-danger mb-3">
 								'.JText::_('TEXT_TODO_LIST').'
-								<a href="#" class="btn btn-xs btn-success base-icon-plus float-right" onclick="'.$MAINAPP.'Todo_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-'.$MAINAPP.'Todo" data-backdrop="static" data-keyboard="false"></a>
-								<a href="#" class="btn btn-xs btn-info base-icon-arrows-cw mx-1 float-right" onclick="'.$MAINAPP.'Todo_listReload(false, false, false, '.$MAINAPP.'TodooCHL, '.$MAINAPP.'TodorNID, '.$MAINAPP.'TodorID)"></a>
+								<a href="#" class="btn btn-xs btn-success base-icon-plus float-right" onclick="'.$requestsTodoAppTag.'_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-'.$requestsTodoAppTag.'" data-backdrop="static" data-keyboard="false"></a>
+								<a href="#" class="btn btn-xs btn-info base-icon-arrows-cw mx-1 float-right" onclick="'.$requestsTodoAppTag.'_listReload(false, false, false, '.$requestsTodoAppTag.'oCHL, '.$requestsTodoAppTag.'rNID, '.$requestsTodoAppTag.'rID)"></a>
 							</h4>
 						';
 						require(JPATH_APPS.DS.''.$MAINAPP.'Todo/'.$MAINAPP.'Todo.php');
-						echo '<hr class="my-1" /><a href="#" class="btn btn-xs btn-success base-icon-plus" onclick="'.$MAINAPP.'Todo_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-'.$MAINAPP.'Todo" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_ADD').'</a>';
+						echo '<hr class="my-1" /><a href="#" class="btn btn-xs btn-success base-icon-plus" onclick="'.$requestsTodoAppTag.'_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-'.$requestsTodoAppTag.'" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_ADD').'</a>';
 		echo '
 					</div>
 				</div>

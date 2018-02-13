@@ -66,7 +66,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
 			$query .= ' FROM '.
 				$db->quoteName($cfg['mainTable']) .' T1
-				LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
+				JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
 				ON '.$db->quoteName('T2.id') .' = T1.client_id AND T2.state = 1
 				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T3
 				ON '.$db->quoteName('T3.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id

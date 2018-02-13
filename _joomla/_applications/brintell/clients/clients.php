@@ -171,12 +171,12 @@ jQuery(function() {
 		window.<?php echo $APPTAG?>_viewBanks = function() {
 			// _banksAccounts_listReload
 			// A TAG para o relacionamento é '_banksAccountsClients' pois existem duas instâncias
-			// Uma para 'Clients' e outra para 'Teams'
+			// Uma para 'Clients' e outra para 'Staff'
 			_banksAccountsClients_listReload(false, false, false, false, false, formId.val());
 		};
 		// CUSTOM -> view contacts list
-		window.<?php echo $APPTAG?>_viewTeams = function() {
-			clientsTeams_listReload(false, false, false, true, 'client_id', formId.val());
+		window.<?php echo $APPTAG?>_viewStaff = function() {
+			clientsStaff_listReload(false, false, false, true, 'client_id', formId.val());
 		};
 
 	// LIST CONTROLLERS
@@ -357,7 +357,7 @@ jQuery(window).on('load', function() {
 						</button>
 					<?php endif;?>
 				<?php else :?>
-					<?php if(!$cfg['listModal'] || $cfg['showAddBtn']) :?>
+					<?php if(!$cfg['listModal'] && !$cfg['listFull'] && $cfg['ajaxReload']) :?>
 						<a href="#" class="btn btn-sm btn-info base-icon-arrows-cw" onclick="<?php echo $APPNAME?>_listReload(false, false, false)"></a>
 					<?php endif;?>
 				<?php endif;?>
@@ -384,7 +384,7 @@ jQuery(window).on('load', function() {
 	endif; // end noList
 
 	if($cfg['listModal']) :
-		if($cfg['showAddBtn'] && !$cfg['showApp']) $addBtn = '<div class="modal-list-toolbar">'.$addBtn.'</div>';
+		$addBtn = $cfg['showAddBtn'] ? '<div class="modal-list-toolbar">'.$addBtn.'</div>' : '';
 	?>
 			<div class="modal fade" id="modal-list-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-list-<?php echo $APPTAG?>Label">
 				<div class="modal-dialog modal-sm" role="document">

@@ -58,7 +58,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	$query	= '
 		SELECT
 			T1.*,
-			'. $db->quoteName('T2.id') .' team_id,
+			'. $db->quoteName('T2.id') .' staff_id,
 			'. $db->quoteName('T2.name') .',
 			'. $db->quoteName('T2.nickname') .',
 			'. $db->quoteName('T2.gender') .'
@@ -67,7 +67,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
 			$query .= ' FROM '.
 				$db->quoteName($cfg['mainTable']) .' T1
-				LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_teams') .' T2
+				LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_staff') .' T2
 				ON T2.user_id = T1.created_by
 				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T3
 				ON '.$db->quoteName('T3.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
@@ -77,7 +77,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		else :
 			$query .= '
 				FROM '. $db->quoteName($cfg['mainTable']) .' T1
-					LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_teams') .' T2
+					LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_staff') .' T2
 					ON T2.user_id = T1.created_by
 				WHERE '. $db->quoteName($rNID) .' = '. $rID
 			;
@@ -85,7 +85,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	else :
 		$query .= '
 			FROM '. $db->quoteName($cfg['mainTable']) .' T1
-			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_teams') .' T2
+			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_staff') .' T2
 			ON T2.user_id = T1.created_by
 		';
 		if($oCHL) :

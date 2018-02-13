@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 				<?php
 				for($i = 0; $i < 4; $i++) {
 					$icon	= JText::_('TEXT_ICON_STATUS_'.$i);
-					$color	= ($i == 0) ? 'warning' : JText::_('TEXT_COLOR_STATUS_'.$i);
+					$color	= ($i == 1) ? 'warning' : JText::_('TEXT_COLOR_STATUS_'.$i);
 					echo '
 						<label class="base-icon-'.$icon.' btn btn-outline-'.$color.' btn-active-'.$color.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$i).'" onclick="'.$APPTAG.'_setStatus('.$i.');">
 							<input type="radio" name="new_status" value="'.$i.'" />

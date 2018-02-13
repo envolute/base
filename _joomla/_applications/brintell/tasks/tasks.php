@@ -47,6 +47,7 @@ jQuery(document).ready(function() {
 	var description			= jQuery('#<?php echo $APPTAG?>-description');
 	var priority			= mainForm.find('input[name=priority]:radio'); // radio group
 	var deadline			= jQuery('#<?php echo $APPTAG?>-deadline');
+	var timePeriod			= jQuery('#<?php echo $APPTAG?>-timePeriod');
 	var estimate			= jQuery('#<?php echo $APPTAG?>-estimate');
 	var executed			= jQuery('#<?php echo $APPTAG?>-executed');
 	var tags				= jQuery('#<?php echo $APPTAG?>-tags');
@@ -121,6 +122,7 @@ jQuery(document).ready(function() {
 			description.val('');
 			checkOption(priority, 0);
 			deadline.val('');
+			timePeriod.selectUpdate('<?php echo JText::_('TEXT_PM'); ?>'); // select
 			estimate.val('');
 			executed.val(0);
 			tags.selectUpdate(''); // select
@@ -196,6 +198,20 @@ jQuery(document).ready(function() {
 		window.<?php echo $APPTAG?>_viewToDo = function() {
 			<?php echo $APPTAG?>Todo_listReload(false, false, false, false, false, formId.val());
 		};
+
+		// CUSTOM -> Set Item View
+		// Mostra a view em um modal
+		var <?php echo $APPTAG?>ItemView = jQuery("#<?php echo $APPTAG?>-item-view");
+		var <?php echo $APPTAG?>ItemViewContent = jQuery("#<?php echo $APPTAG?>-view-content");
+
+		window.<?php echo $APPTAG?>_setItemView = function(itemID) {
+			var urlView = "<?php echo JURI::root(true)?>/apps/<?php echo $APPPATH?>/view?vID="+itemID+"&tmpl=component";
+			<?php echo $APPTAG?>ItemViewContent.attr('src', urlView);
+		}
+		// ON MODAL CLOSE -> Ações quando o modal da listagem é fechado
+		<?php echo $APPTAG?>ItemView.on('hidden.bs.modal', function () {
+			<?php echo $APPTAG?>ItemViewContent.attr('src', '');
+		});
 
 	// LIST CONTROLLERS
 	// ações & métodos controladores da listagem
@@ -293,6 +309,7 @@ jQuery(document).ready(function() {
 						description.val(item.description);
 						checkOption(priority, item.priority);
 						deadline.val(dateFormat(item.deadline)); // DATE -> conversão de data
+						timePeriod.selectUpdate(item.timePeriod); // select
 						estimate.selectUpdate(item.estimate);
 						executed.val(item.executed);
 						tags.selectUpdate(item.tags); // select
@@ -434,7 +451,7 @@ jQuery(window).on('load', function() {
 						</button>
 					<?php endif;?>
 				<?php else :?>
-					<?php if(!$cfg['listModal'] || $cfg['showAddBtn']) :?>
+					<?php if(!$cfg['listModal'] && !$cfg['listFull'] && $cfg['ajaxReload']) :?>
 						<a href="#" class="btn btn-sm btn-info base-icon-arrows-cw" onclick="<?php echo $APPNAME?>_listReload(false, false, false)"></a>
 					<?php endif;?>
 				<?php endif;?>
@@ -461,7 +478,7 @@ jQuery(window).on('load', function() {
 	endif; // end noList
 
 	if($cfg['listModal']) :
-		if($cfg['showAddBtn'] && !$cfg['showApp']) $addBtn = '<div class="modal-list-toolbar">'.$addBtn.'</div>';
+		$addBtn = $cfg['showAddBtn'] ? '<div class="modal-list-toolbar">'.$addBtn.'</div>' : '';
 	?>
 			<div class="modal fade" id="modal-list-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-list-<?php echo $APPTAG?>Label">
 				<div class="modal-dialog modal-sm" role="document">
@@ -502,6 +519,15 @@ jQuery(window).on('load', function() {
 			</div>
 		</div>
 	<?php endif; ?>
+
+	<div class="modal fade" id="<?php echo $APPTAG?>-item-view" tabindex="-1" role="dialog" aria-labelledby="task-view-<?php echo $APPTAG?>Label">
+		<div class="modal-dialog mw-100 m-0" role="document">
+			<div class="modal-content">
+				<button type="button" class="close pos-absolute pos-right-gutter mt-2" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<iframe width="100%" id="<?php echo $APPTAG?>-view-content" class="set-height" data-offset="4"></iframe>
+			</div>
+		</div>
+	</div>
 
 	<div class="modal fade" id="modal-status-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-status-<?php echo $APPTAG?>Label">
 		<div class="modal-dialog modal-sm" role="document">

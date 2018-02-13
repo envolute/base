@@ -59,8 +59,9 @@ class BaseContentViewApps extends JViewLegacy {
 		$this->listModal = $params->get('listModal');
 		$this->listFull = $params->get('listFull');
 		$this->listAjax = $params->get('listAjax');
-		$this->openFilter = $params->get('openFilter');
+		$this->ajaxReload = $params->get('ajaxReload');
 		$this->ajaxFilter = $params->get('ajaxFilter');
+		$this->openFilter = $params->get('openFilter');
 		$this->staticToolbar = $params->get('staticToolbar');
 		$this->showAddBtn = $params->get('showAddBtn');
 		$this->addText = $params->get('addText');

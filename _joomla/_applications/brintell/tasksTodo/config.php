@@ -97,6 +97,9 @@ endif;
 		// list Ajax File
 		$cfg['listAjax']			= 'list.ajax.php';
 		if(isset(${$APPTAG.'ListAjax'})) $cfg['listAjax'] = ${$APPTAG.'ListAjax'};
+		// show button to list ajax reload
+		$cfg['ajaxReload']			= false;
+		if(isset(${$APPTAG.'AjaxReload'})) $cfg['ajaxReload'] = ${$APPTAG.'AjaxReload'};
 		// toolbar position
 		$cfg['staticToolbar']		= false;
 		if(isset(${$APPTAG.'StaticToolbar'})) $cfg['staticToolbar'] = ${$APPTAG.'StaticToolbar'} ? true : false;

@@ -151,7 +151,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			if($item->priority == 1) $priority = ' <small class="base-icon-attention text-live cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_1').'"></small> ';
 			else if($item->priority == 2) $priority = ' <small class="base-icon-attention text-danger cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_2').'"></small> ';
 
-			$deadline = $item->deadline != '0000-00-00' ? '<small class="text-muted cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_DEADLINE').'">'.baseHelper::dateFormat($item->deadline).'</small>' : '';
+			$deadline = $item->deadline != '0000-00-00 00:00:00' ? '<small class="text-muted cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_DEADLINE').'">'.baseHelper::dateFormat($item->deadline, 'd/m/y H:i').$item->timePeriod.'</small>' : '';
 
 			$btnActions = '';
 			if($hasAdmin || ($item->created_by == $user->id)) :
@@ -182,12 +182,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			// Assigned
 			$assigned = '';
 			if(!empty($item->assign_to)) :
-				$query = 'SELECT name, nickname FROM '. $db->quoteName('#__'.$cfg['project'].'_teams') .' WHERE '. $db->quoteName('id') .' IN ('.$item->assign_to.') ORDER BY name';
+				$query = 'SELECT name, nickname FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('id') .' IN ('.$item->assign_to.') ORDER BY name';
 				$db->setQuery($query);
-				$team = $db->loadObjectList();
+				$staff = $db->loadObjectList();
 				$uName = '';
 				$i = 0;
-				foreach ($team as $obj) {
+				foreach ($staff as $obj) {
 					$uName .= '<div class=&quot;small&quot;>'.baseHelper::nameFormat(!empty($obj->nickname) ? $obj->nickname : $obj->name).'</div>';
 					$i++;
 				}
@@ -201,7 +201,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						<div class="py-3 px-2 bg-gray-200">
 							<a href="#" id="'.$APPTAG.'-item-'.$item->id.'-status" class="base-icon-'.$iconStatus.' text-'.$itemStatus.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$item->status).'" data-id="'.$item->id.'" data-status="'.$item->status.'" onclick="'.$APPTAG.'_setStatusModal(this)"></a>
 						</div>
-						<a href="'.$urlViewData.'" class="py-3 px-2">
+						<a href="#'.$APPTAG.'-item-view" class="set-base-modal py-3 px-2" onclick="'.$APPTAG.'_setItemView('.$item->id.')">
 							'.baseHelper::nameFormat($item->subject).'
 							<div class="pos-absolute pos-top-0 pos-right-0 mx-1">
 								'.$priority.$deadline.'
