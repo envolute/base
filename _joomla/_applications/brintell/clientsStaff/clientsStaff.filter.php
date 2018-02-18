@@ -9,22 +9,25 @@ $where = '';
 	// STATE -> select
 	$active	= $app->input->get('active', 2, 'int');
 	$where .= ($active == 2) ? $db->quoteName('T1.state').' != '.$active : $db->quoteName('T1.state').' = '.$active;
-	// MAIN -> checkbox
-	$fMain	= $app->input->get('fMain', 0, 'int');
-	if($fMain == 1) $where .= ' AND '.$db->quoteName('T1.main').' = 1';
-	// STAFF MEMBER -> select
-	$fStaff	= $app->input->get('tID', 0, 'int');
-	if($fStaff > 0) $where .= ' AND '.$db->quoteName('T1.staff_id').' = '.$fStaff;
-	// CLIENT
-	$clientID	= $app->input->get('cID', 0, 'int');
-	if($clientID > 0) $where .= ' AND '.$db->quoteName('T1.client_id').' = '.$clientID;
+	// ROLES -> select
+	$fClient	= $app->input->get('fClient', 0, 'int');
+	if($fClient != 0) $where .= ' AND '.$db->quoteName('T1.client_id').' = '.$fClient;
+	// ACCESS -> select
+	$fAccess = $app->input->get('fAccess', 2, 'int');
+	if($fAccess != 2) $where .= ' AND '.$db->quoteName('T1.access').' = '.$fAccess;
+	// GENDER -> select
+	$fGender = $app->input->get('fGender', 2, 'int');
+	if($fGender != 2) $where .= ' AND '.$db->quoteName('T1.gender').' = '.$fGender;
 
 	// Search 'Text fields'
 	$search	= $app->input->get('fSearch', '', 'string');
 	$sQuery = ''; // query de busca
 	$sLabel = array(); // label do campo de busca
 	$searchFields = array(
-		'T1.department'				=> 'FIELD_LABEL_DEPARTMENT'
+		'T1.name'				=> 'FIELD_LABEL_NAME',
+		'T3.username'			=> 'FIELD_LABEL_USERNAME',
+		'T1.email'				=> 'E-mail',
+		'T1.role'				=> 'FIELD_LABEL_OCCUPATION'
 	);
 	$i = 0;
 	foreach($searchFields as $key => $value) {
@@ -40,9 +43,9 @@ $where = '';
 	$ordf	= $app->input->get($APPTAG.'oF', '', 'string'); // campo a ser ordenado
 	$ordt	= $app->input->get($APPTAG.'oT', '', 'string'); // tipo de ordem: 0 = 'ASC' default, 1 = 'DESC'
 
-	$orderDef = 'T2.name'; // não utilizar vírgula no inicio ou fim
+	$orderDef = 'T1.name'; // não utilizar vírgula no inicio ou fim
 	if(!isset($_SESSION[$APPTAG.'oF'])) : // DEFAULT ORDER
-		$_SESSION[$APPTAG.'oF'] = 'T3.name';
+		$_SESSION[$APPTAG.'oF'] = 'T2.name';
 		$_SESSION[$APPTAG.'oT'] = 'ASC';
 	endif;
 	if(!empty($ordf)) :
@@ -64,21 +67,13 @@ $where = '';
 
 // FILTER'S DINAMIC FIELDS
 
-	// clients -> select
+	// CLIENTS -> select
 	$flt_client = '';
 	$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_clients') .' ORDER BY name';
 	$db->setQuery($query);
 	$clients = $db->loadObjectList();
 	foreach ($clients as $obj) {
-		$flt_client .= '<option value="'.$obj->id.'"'.($obj->id == $clientID ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
-	}
-	// staff -> select
-	$flt_staff = '';
-	$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE type = 2 ORDER BY name';
-	$db->setQuery($query);
-	$staff = $db->loadObjectList();
-	foreach ($staff as $obj) {
-		$flt_staff .= '<option value="'.$obj->id.'"'.($obj->id == $fStaff ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
+		$flt_client .= '<option value="'.$obj->id.'"'.($obj->id == $fClient ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
 	}
 
 // VISIBILITY
@@ -105,35 +100,42 @@ $htmlFilter = '
 			<input type="hidden" name="'.$APPTAG.'_filter" value="1" />
 
 			<div class="row">
-				<div class="col-sm-6 col-md-4">
+				<div class="col-sm-6 col-lg-4 col-xl-3">
 					<div class="form-group">
 						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_CLIENT').'</label>
-						<select name="cID" id="cID" class="form-control input-sm set-filter">
-							<option value="">- '.JText::_('TEXT_ALL').' -</option>
+						<select name="fClient" id="fClient" class="form-control form-control-sm set-filter">
+							<option value="0">- '.JText::_('TEXT_SELECT').' -</option>
 							'.$flt_client.'
 						</select>
 					</div>
 				</div>
-				<div class="col-sm-6 col-md-4">
+				<div class="col-md-6 col-xl-3">
 					<div class="form-group">
-						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_STAFF_MEMBER').'</label>
-						<select name="tID" id="tID" class="form-control input-sm set-filter">
-							<option value="">- '.JText::_('TEXT_ALL').' -</option>
-							'.$flt_staff.'
-						</select>
+						<label class="label-xs text-muted text-truncate">'.implode(', ', $sLabel).'</label>
+						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />
 					</div>
 				</div>
-				<div class="col-sm-3 col-md-2">
+				<div class="col-sm-6 col-md-3 col-lg-2">
 					<div class="form-group">
-						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_MAIN').'</label>
-						<select name="fMain" id="fMain" class="form-control form-control-sm set-filter">
+						<label class="label-xs text-muted">'.JText::_('TEXT_WITH_ACCESS').'</label>
+						<select name="fAccess" id="fAccess" class="form-control form-control-sm set-filter">
 							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
-							<option value="1"'.($fMain == 1 ? ' selected' : '').'>'.JText::_('TEXT_YES').'</option>
-							<option value="0"'.($fMain == 0 ? ' selected' : '').'>'.JText::_('TEXT_NO').'</option>
+							<option value="0"'.($fAccess == 0 ? ' selected' : '').'>'.JText::_('TEXT_NO').'</option>
+							<option value="1"'.($fAccess == 1 ? ' selected' : '').'>'.JText::_('TEXT_YES').'</option>
 						</select>
 					</div>
 				</div>
-				<div class="col-sm-3 col-md-2">
+				<div class="col-sm-6 col-md-3 col-lg-2">
+					<div class="form-group">
+						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_GENDER').'</label>
+						<select name="fGender" id="fGender" class="form-control form-control-sm set-filter">
+							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
+							<option value="1"'.($fGender == 1 ? ' selected' : '').'>'.JText::_('TEXT_GENDER_1').'</option>
+							<option value="0"'.($fGender == 0 ? ' selected' : '').'>'.JText::_('TEXT_GENDER_2').'</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md-3 col-lg-2">
 					<div class="form-group">
 						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_ITEM_STATE').'</label>
 						<select name="active" id="active" class="form-control form-control-sm set-filter">

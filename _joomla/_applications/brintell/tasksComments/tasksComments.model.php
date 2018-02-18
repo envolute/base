@@ -95,6 +95,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['task_id']				= $input->get('task_id', 0, 'int');
 	  	$request['comment']				= $input->get('comment', '', 'raw');
 
+		// CUSTOM -> default vars for registration e-mail
+		$config			= JFactory::getConfig();
+		$sitename		= $config->get('sitename');
+		$domain			= baseHelper::getDomain();
+		$mailFrom		= $config->get('mailfrom');
+
 		// SAVE CONDITION
 		// Condição para inserção e atualização dos registros
 		$save_condition = ($request['task_id'] > 0 && !empty($request['comment']));
@@ -400,9 +406,44 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$elemLabel = $db->loadResult();
 						endif;
 
+						// NOTIFY USERS ATTRIBUTED
+						// get users in comments
+						$query = 'SELECT GROUP_CONCAT(DISTINCT created_by) FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('task_id') .' = '. $request['task_id'] .' AND '. $db->quoteName('created_by') .' <> '.$user->id ;
+						$db->setQuery($query);
+						$commentators = $db->loadResult();
+
+						if(!empty($commentators)) {
+
+							// get task data
+							$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_tasks') .' WHERE '. $db->quoteName('id') .' = '. $request['task_id'];
+							$db->setQuery($query);
+							$item = $db->loadObject();
+
+							$query = 'SELECT name, email FROM '. $db->quoteName('#__users') .' WHERE '. $db->quoteName('id') .' IN ('.$commentators.')';
+							$db->setQuery($query);
+							$users = $db->loadObjectList();
+
+							// Email Template
+							$boxStyle	= array('bg' => '#fafafa', 'color' => '#555', 'border' => 'border: 4px solid #eee');
+							$headStyle	= array('bg' => '#fff', 'color' => '#5EAB87', 'border' => '1px solid #eee');
+							$bodyStyle	= array('bg' => '');
+							$mailLogo	= 'logo-news.png';
+
+							foreach ($users as $obj) {
+								// se a senha for gerada pelo sistema, envia a senha. Senão, não envia...
+								$url = $_ROOT.'/apps/tasks/view?vID='.$item->id;
+							    $subject = JText::sprintf('MSG_EMAIL_NOTIFY_SUBJECT', $sitename, $item->id);
+								$eBody = JText::sprintf('MSG_EMAIL_NOTIFY_BODY', baseHelper::nameFormat($user->name), $item->id, $item->subject, $url);
+								$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_EMAIL_NOTIFY_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle, $domain);
+								// envia o email
+								baseHelper::sendMail($mailFrom, $obj->email, $subject, $mailHtml);
+							}
+
+						}
+
 						$data[] = array(
 							'status'			=> 1,
-							'msg'				=> JText::_('MSG_SAVED'),
+							'msg'				=> JText::_('MSG_SAVED').'<br>commenters:'.$commentators.'<br>task:'.$item->subject.'<br>url:'.$url,
 							'regID'				=> $id,
 							'uploadError'		=> $fileMsg,
 							'parentField'		=> $element,

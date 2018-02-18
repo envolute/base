@@ -95,6 +95,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['request_id']				= $input->get('request_id', 0, 'int');
 	  	$request['comment']				= $input->get('comment', '', 'raw');
 
+		// CUSTOM -> default vars for registration e-mail
+		$config			= JFactory::getConfig();
+		$sitename		= $config->get('sitename');
+		$domain			= baseHelper::getDomain();
+		$mailFrom		= $config->get('mailfrom');
+
 		// SAVE CONDITION
 		// Condição para inserção e atualização dos registros
 		$save_condition = ($request['request_id'] > 0 && !empty($request['comment']));
@@ -399,6 +405,44 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->setQuery($query);
 							$elemLabel = $db->loadResult();
 						endif;
+
+						// NOTIFY ANALYSTS AND CLIENT
+
+						// get request data
+						$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_requests') .' WHERE '. $db->quoteName('id') .' = '. $request['request_id'];
+						$db->setQuery($query);
+						$item = $db->loadObject();
+
+						// Get brintell analysts data
+						$query = 'SELECT GROUP_CONCAT(email) FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('usergroup') .' IN (11, 12) AND ' . $db->quoteName('user_id') .' <> '.$user->id.' AND ' . $db->quoteName('access') .' = 1 AND ' . $db->quoteName('state') .' = 1';
+						$db->setQuery($query);
+						$emails = $db->loadResult();
+						// Se o comentário não for do cliente (client = item cretator)
+						// envia para o cliente
+						if($item->created_by != $user->id) {
+							$query = 'SELECT email FROM '. $db->quoteName('#__'.$cfg['project'].'_clients_staff') .' WHERE '. $db->quoteName('user_id') .' = '.$item->created_by.' AND ' . $db->quoteName('access') .' = 1 AND ' . $db->quoteName('state') .' = 1';
+							$db->setQuery($query);
+							$emails .= (!empty($emails) ? ',' : '').$db->loadResult();
+						}
+						if(!empty($emails)) {
+							$users = explode(',', $emails);
+
+							// Email Template
+							$boxStyle	= array('bg' => '#fafafa', 'color' => '#555', 'border' => 'border: 4px solid #eee');
+							$headStyle	= array('bg' => '#fff', 'color' => '#5EAB87', 'border' => '1px solid #eee');
+							$bodyStyle	= array('bg' => '');
+							$mailLogo	= 'logo-news.png';
+
+							for ($i = 0; $i < count($users); $i++) {
+								// se a senha for gerada pelo sistema, envia a senha. Senão, não envia...
+								$url = $_ROOT.'/apps/requests/view?vID='.$item->id;
+							    $subject = JText::sprintf('MSG_EMAIL_NOTIFY_SUBJECT', $sitename, $item->id);
+								$eBody = JText::sprintf('MSG_EMAIL_NOTIFY_BODY', baseHelper::nameFormat($user->name), $item->id, $item->subject, $url);
+								$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_EMAIL_NOTIFY_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle, $domain);
+								// envia o email
+								baseHelper::sendMail($mailFrom, $users[$i], $subject, $mailHtml);
+							}
+						}
 
 						$data[] = array(
 							'status'			=> 1,

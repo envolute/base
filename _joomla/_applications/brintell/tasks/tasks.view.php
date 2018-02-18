@@ -124,8 +124,16 @@ if($vID != 0) :
 			}
 			$requests = '<div class="float-right text-muted">Req ID: '.$requests.'</div>';
 		endif;
+
+		$deadline = '';
+		if($item->deadline != '0000-00-00 00:00:00') {
+			$dt = explode(' ', $item->deadline);
+			$dlDate = baseHelper::dateFormat($dt[0], 'd/m/y');
+			$dlTime = ($dt[1] != '00:00:00') ? ' '.substr($dt[1], 0, 5).$item->timePeriod : '';
+			$deadline = JText::_('TEXT_UNTIL').' '.$dlDate.$dlTime;
+		}
 		$estimate = ($item->estimate > 0) ? $item->estimate.JText::_('TEXT_ESTIMATED_UNIT').' ' : '';
-		$estimate .= ($item->deadline != '0000-00-00 00:00:00') ? JText::_('TEXT_UNTIL').' '.baseHelper::dateFormat($item->deadline, 'd/m/y H:i').$item->timePeriod : '';
+		$estimate .= $deadline;
 		$estimate = !empty($estimate) ? ' - '.JText::_('TEXT_ESTIMATED').' '.$estimate : '';
 		$desc = !empty($item->description) ? '<div class="font-condensed mb-4">'.$item->description.'</div>' : '';
 		$urlViewProject = JURI::root().'apps/projects/view?pID='.$item->project_id;
@@ -218,7 +226,7 @@ if($vID != 0) :
 					</h2>
 					<div class="font-condensed text-sm text-muted mb-2">
 						<a href="'.$urlViewProject.'" target="_blank">'.baseHelper::nameFormat($item->project).'</a> - '.JText::_('TEXT_SINCE').' '.baseHelper::dateFormat($item->created_date).
-						' <span class="text-live">'.$estimate.$deadline.'</span>
+						' <span class="text-live">'.$estimate.'</span>
 					</div>
 					'.$btnActions.$assigned.$tags.'
 				</div>

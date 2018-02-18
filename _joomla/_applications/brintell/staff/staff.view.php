@@ -31,9 +31,16 @@ $groups = $user->groups;
 // init general css/js files
 require(JPATH_CORE.DS.'apps/_init.app.php');
 
+$hasClient = array_intersect($groups, $cfg['groupId']['client']); // se está na lista de grupos permitidos
+
 // Get request data
 $vID = $app->input->get('vID', 0, 'int'); // VIEW 'ID'
-if($vID == 0) $vID = $user->id;
+if($hasClient && $vID == 0) {
+	$app->redirect(JURI::root(true).'/apps/clients/clientsstaff/profile');
+	exit();
+} else {
+	$vID = $user->id;
+}
 
 // Carrega o arquivo de tradução
 // OBS: para arquivos externos com o carregamento do framework '_init.joomla.php' (geralmente em 'ajax')
@@ -44,9 +51,6 @@ if(isset($_SESSION[$MAINTAG.'langDef'])) :
 	$lang->load('base_apps', JPATH_BASE, $_SESSION[$MAINTAG.'langDef'], true);
 	$lang->load('base_'.$APPNAME, JPATH_BASE, $_SESSION[$MAINTAG.'langDef'], true);
 endif;
-
-// Admin Actions
-// require_once('_contacts.select.php');
 
 if($vID != 0) :
 
@@ -275,23 +279,16 @@ if($vID != 0) :
 			$gender = '<span class="'.$gIcon.' cursor-help hasTooltip" title="'.JText::_('TEXT_GENDER_'.$item->gender).'"></span> ';
 		endif;
 
-		$avatar = '';
-		if($vID != $user->id) :
-			$avatar = '
-				<div class="col-4 col-sm-2 mb-4 mb-md-0">
-					<div style="max-width: 300px">'.$img.'</div>
-					<div class="text-sm text-live pt-2">
-						'.(!empty($item->username) ? '@'.$item->username : '').$resume.'
-					</div>
-				</div>
-			';
-		endif;
-
 		echo '
 			<div class="row">
 				<div class="col-lg-9">
 					<div class="row">
-						'.$avatar.'
+						<div class="col-4 col-sm-2 mb-4 mb-md-0">
+							<div style="max-width: 300px">'.$img.'</div>
+							<div class="text-sm text-live pt-2">
+								'.(!empty($item->username) ? $item->username : '').$resume.'
+							</div>
+						</div>
 						<div class="col-sm">
 							'.$about_me.'
 							<div class="row">

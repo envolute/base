@@ -91,36 +91,20 @@ endif;
 		</div>
 		<div class="form-group field-required">
 			<label class="label-sm"><?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?></label>
-			<textarea rows="10" name="description" id="<?php echo $APPTAG?>-description" class="form-control"></textarea>
+			<textarea rows="9" name="description" id="<?php echo $APPTAG?>-description" class="form-control"></textarea>
 		</div>
-		<?php if($hasAuthor) :?>
-			<input type="hidden" name="status" id="<?php echo $APPTAG?>-status" />
-			<div class="form-group mb-1" hidden>
-				<span class="btn-group" data-toggle="buttons">
-					<label class="base-icon-danger btn btn-outline-danger btn-active-danger hasTooltip" title="<?php echo JText::_('FIELD_LABEL_MARK_AS_CLOSED_DESC')?>">
-						<input type="checkbox" name="setClose" id="<?php echo $APPTAG?>-setClose" value="1" />
-						<?php echo JText::_('FIELD_LABEL_MARK_AS_CLOSED')?>
-					</label>
+		<div class="form-group">
+			<hr class="hr-tag" />
+			<span class="badge badge-primary base-icon-attach"> <?php echo JText::_('TEXT_ATTACHMENTS'); ?></span>
+			<button type="button" class="base-icon-plus btn btn-success float-right hasTooltip" title="<?php echo JText::_('TEXT_ADD'); ?>" onclick="<?php echo $APPTAG?>_setNewFile('#<?php echo $APPTAG?>-files-group', 'file', 'col-sm-6 col-lg-4')"></button>
+			<div class="btn-file">
+				<span class="btn-group">
+					<button type="button" class="base-icon-search btn btn-default btn-active-success file-action text-truncate hasTooltip" title="<?php echo JText::_('TEXT_FILE_SELECT'); ?>"> <span><?php echo JText::_('TEXT_FILE_SELECT'); ?></span></button>
 				</span>
+				<input type="file" name="file[0]" id="<?php echo $APPTAG?>-file0" class="form-control" hidden />
 			</div>
-		<?php else :?>
-			<div class="form-group mb-1">
-				<label class="label-sm"><?php echo JText::_('FIELD_LABEL_STATUS'); ?></label>
-				<span class="btn-group btn-group-justified" data-toggle="buttons">
-					<?php
-					for($i = 0; $i < 4; $i++) {
-						$icon	= JText::_('TEXT_ICON_STATUS_'.$i);
-						$color	= ($i == 1) ? 'warning' : JText::_('TEXT_COLOR_STATUS_'.$i);
-						echo '
-							<label class="base-icon-'.$icon.' btn btn-outline-'.$color.' btn-active-'.$color.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$i).'">
-								<input type="radio" name="status" id="'.$APPTAG.'-status-'.$i.'" value="'.$i.'" />
-							</label>
-						';
-					}
-					?>
-				</span>
-			</div>
-		<?php endif;?>
+		</div>
+		<div id="<?php echo $APPTAG?>-files-group" class="row"></div>
 	</div>
 	<div class="col-lg-4 b-left b-left-dashed">
 		<div class="form-group">
@@ -143,7 +127,7 @@ endif;
 		<div class="form-group">
 			<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_DEADLINE_DESC'); ?>">
 				<?php echo JText::_('FIELD_LABEL_DEADLINE'); ?>
-				[ <?php echo JText::_('TEXT_TIME_IN_BRAZIL'); ?>: <iframe src="//free.timeanddate.com/clock/i63smlsf/n45/fs13/fcf80/tct/pct/ahl/ftb/ts1" frameborder="0" width="58" height="13" allowTransparency="true"></iframe> ]
+				[ <?php echo JText::_('TEXT_TIME_IN_BRAZIL'); ?>: <iframe src="//free.timeanddate.com/clock/i63smlsf/n45/fs13/fcf80/tct/pct/ahl/ftb/ts1" frameborder="0" width="58" height="16" style="margin-bottom:-3px;" allowTransparency="true"></iframe> ]
 			</label>
 			<div class="form-inline">
 				<input type="text" name="deadline" id="<?php echo $APPTAG?>-deadline" class="field-date mr-1" data-width="142px" data-time="true" data-seconds="false" data-tab-disable="true" data-convert="true" />
@@ -153,6 +137,34 @@ endif;
 				</select>
 			</div>
 		</div>
+		<?php if($hasAuthor) :?>
+			<input type="hidden" name="status" id="<?php echo $APPTAG?>-status" />
+			<div class="form-group mb-1" hidden>
+				<span class="btn-group" data-toggle="buttons">
+					<label class="base-icon-danger btn btn-outline-danger btn-active-danger hasTooltip" title="<?php echo JText::_('FIELD_LABEL_MARK_AS_CLOSED_DESC')?>">
+						<input type="checkbox" name="setClose" id="<?php echo $APPTAG?>-setClose" value="1" />
+						<?php echo JText::_('FIELD_LABEL_MARK_AS_CLOSED')?>
+					</label>
+				</span>
+			</div>
+		<?php else :?>
+			<div class="form-group">
+				<label class="label-sm"><?php echo JText::_('FIELD_LABEL_STATUS'); ?></label>
+				<span class="btn-group btn-group-justified" data-toggle="buttons">
+					<?php
+					for($i = 0; $i < 4; $i++) {
+						$icon	= JText::_('TEXT_ICON_STATUS_'.$i);
+						$color	= ($i == 1) ? 'warning' : JText::_('TEXT_COLOR_STATUS_'.$i);
+						echo '
+							<label class="base-icon-'.$icon.' btn btn-outline-'.$color.' btn-active-'.$color.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$i).'">
+								<input type="radio" name="status" id="'.$APPTAG.'-status-'.$i.'" value="'.$i.'" />
+							</label>
+						';
+					}
+					?>
+				</span>
+			</div>
+		<?php endif;?>
 		<div class="form-group">
 			<label class="label-sm"><?php echo JText::_('FIELD_LABEL_TAGS'); ?></label>
 			<div class="input-group">
@@ -170,7 +182,8 @@ endif;
 		</div>
 		<div class="form-group">
 			<div id="<?php echo $APPTAG?>-alert-toDo">
-				<label class="label-sm"><?php echo JText::_('TEXT_TODO_LIST'); ?></label>
+				<hr class="hr-tag" />
+				<span class="badge badge-primary base-icon-menu"> <?php echo JText::_('TEXT_TODO_LIST'); ?></span>
 				<div class="alert alert-info text-sm p-2"><?php echo JText::_('MSG_TODO_LIST_AFTER_SAVE'); ?></div>
 			</div>
 			<div id="<?php echo $APPTAG?>-btn-toDo" hidden>
@@ -178,16 +191,5 @@ endif;
 				<button type="button" class="btn btn-primary btn-block text base-icon-list btn-icon" onclick="<?php echo $APPTAG?>_viewToDo()" data-toggle="modal" data-target="#modal-list-<?php echo $APPTAG?>Todo" data-backdrop="static" data-keyboard="false"> <?php echo JText::_('TEXT_TODO_LIST')?></button>
 			</div>
 		</div>
-		<div class="form-group">
-			<label class="label-sm base-icon-attach"> <?php echo JText::_('TEXT_ATTACHMENTS'); ?></label>
-			<button type="button" class="base-icon-plus btn btn-sm btn-success float-right hasTooltip" title="<?php echo JText::_('TEXT_ADD'); ?>" onclick="<?php echo $APPTAG?>_setNewFile('#<?php echo $APPTAG?>-files-group', 'file')"></button>
-			<div class="btn-file">
-				<span class="btn-group">
-					<button type="button" class="base-icon-search btn btn-default btn-active-success file-action text-truncate hasTooltip" title="<?php echo JText::_('TEXT_FILE_SELECT'); ?>"> <span><?php echo JText::_('TEXT_FILE_SELECT'); ?></span></button>
-				</span>
-				<input type="file" name="file[0]" id="<?php echo $APPTAG?>-file0" class="form-control" hidden />
-			</div>
-		</div>
-		<div id="<?php echo $APPTAG?>-files-group"></div>
 	</div>
 </div>

@@ -33,16 +33,17 @@ window.<?php echo $APPTAG?>_save = function(trigger) {
 						// res.status = 1 ? 'novo' : 'atualizado';
 						var resID = (res.status == 1) ? res.regID : formId.val();
 
-						if(isSet(trigger)) {
+						var formReload = true;
+						if(isSet(trigger) && !isEmpty(trigger)) {
 							if(trigger == 'close' || trigger == 'reset') {
 								<?php echo $APPTAG?>_formReset();
 								if(trigger == 'close') popup.modal('hide');
+								formReload = false;
 							} else if(trigger === '<?php echo $cfg['saveTrigger']?>') {
 								<?php echo !empty($cfg['saveTrigger']) ? $cfg['saveTrigger'].'(resID);' : ''?>;
 							}
-						} else {
-							<?php echo $APPTAG?>_loadEditFields(resID, true, false); // recarrega os dados do form
 						}
+						if(formReload) <?php echo $APPTAG?>_loadEditFields(resID, true, false); // recarrega os dados do form
 
 						// Update Parent field
 						if(res.parentField != '' && res.parentFieldVal != '') {

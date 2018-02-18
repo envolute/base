@@ -1,12 +1,4 @@
 <?php
-// IMPORTANTE:
-// Esse App usitliza a mesma estrutura de "clientsStaff".
-// Dessa forma, os dois sistemas utilizam a mesma tabela `cms_brintell_rel_clients_staff`
-// DIFERENÇAS:
-// 1 - 'staffClients' o parentFieldId aponta para o usuário 'staff' ao invés do 'cliente'.
-// 2 - No form, em 'staffClients', o campo 'staff_id' vem antes de 'client_id'.
-// PS: É importante lembrar de manter o mesmo código, com exceção das diferenças apontadas acima...
-
 defined('_JEXEC') or die;
 // SYSTEM VARIABLES
 require(JPATH_BASE.'/libraries/envolute/_system.vars.php');
@@ -19,9 +11,9 @@ $cfg['project'] = 'brintell';
 // Informe o $APPNAME da outra. Senão, deixe em branco...
 $cfg['parent']	= '';
 // App Define
-$APPNAME		= 'staffClients';
+$APPNAME		= 'requestsTags';
 $APPPATH		= !empty($cfg['parent']) ? $cfg['parent'] : $APPNAME;
-$MAIN_TB		= '#__'.$cfg['project'].'_rel_clients_staff';
+$MAIN_TB		= '#__'.$cfg['project'].'_requests_tags';
 $APPTAG			= isset(${$APPNAME.'AppTag'}) ? ${$APPNAME.'AppTag'} : $APPNAME;
 $newInstance	= ($APPTAG != $APPNAME) ? true : false;
 
@@ -43,7 +35,7 @@ if(!$ajaxRequest && (!isset($_SESSION[$APPTAG.'langDef']) || (isset($_SESSION[$A
 endif;
 
 // Crud's permissions
-	$cfg['isPublic']			= false; // Público -> acesso aberto a todos
+	$cfg['isPublic']			= true; // Público -> acesso aberto a todos
 	if(isset(${$APPTAG.'IsPublic'})) $cfg['isPublic'] = ${$APPTAG.'IsPublic'} ? true : false;
 	// Restrict Access
 	// $cfg['groupId']['viewer'][]  = apenas visualiza o componente
@@ -51,8 +43,9 @@ endif;
 	// ----------------------------------------------------
 	$cfg['groupId']['viewer'][]	= 0; // '0' pois não pode ser vazio
 	// acesso liberado sempre
-	$cfg['groupId']['admin'][]	= 11;	// Brintel Manager
-	$cfg['groupId']['admin'][]	= 8;	// Desenvolvedor
+	$cfg['groupId']['admin'][]	= 6; // Gerente
+	$cfg['groupId']['admin'][]	= 7; // Administrador
+	$cfg['groupId']['admin'][]	= 8; // Desenvolvedor
 	// ----------------------------------------------------
 
 // crud's name
@@ -132,11 +125,11 @@ endif;
 // form's
 
 	$cfg['showFormHeader']		= true;
-	$cfg['showFormToolbar']		= false;
+	$cfg['showFormToolbar']		= true;
 	// Form button action
 	// false => save (keep)
 	// true => save and close (remove 'save & keep')
-	$cfg['formBtnAction']		= false;
+	$cfg['formBtnAction']		= true;
 
 	// date & price convertions
 	$cfg['dateConvert']			= false;

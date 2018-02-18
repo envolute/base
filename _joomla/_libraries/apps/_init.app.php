@@ -8,9 +8,10 @@ if(!$cfg['isPublic'] && isset($cfg['groupId']) && ($cfg['groupId']['viewer'][0] 
 	$hasAdmin = array_intersect($groups, $cfg['groupId']['admin']); // se está na lista de administradores permitidos
 // Se o acesso não for público e os grupos não forem definidos
 // indica que o acesso é disponível a qualquer grupo restrito
-elseif(isset($user) && !$user->guest) :
-	$hasGroup = $hasAdmin = true;
-endif;
+elseif(isset($user) && !$user->guest) {
+	if($cfg['isPublic'] == 1) $hasGroup = true;
+	else if($cfg['isPublic'] == 2) $hasAdmin = true;
+}
 if(!$cfg['isPublic']) :
 	if(isset($user) && $user->guest) :
 		$app->redirect(JURI::root(true).'/login?return='.urlencode(base64_encode(JURI::current())));

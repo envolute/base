@@ -111,7 +111,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				// Imagem Principal -> Primeira imagem (index = 0)
 				$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
 				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 32, 32);
-				else $imgPath = $_ROOT.'images/apps/icons/client_32.png';
+				else $imgPath = $_ROOT.'images/apps/icons/client.png';
 				$img = '<img src="'.$imgPath.'" class="img-fluid float-left mr-2" style="width:32px; height:32px;" />';
 			endif;
 
@@ -123,9 +123,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$urlViewData = $_ROOT.'apps/'.$APPPATH.'/view?vID='.$item->id;
 			// Resultados
 			$html .= '
-				<li class="'.$rowState.'">
+				<li class="'.$rowState.' clearfix">
 					<div class="float-right">'.$btnState.$btnEdit.$btnDelete.'</div>
-					'.$img.'
 					<div class="text-truncate"><a href="'.$urlViewData.'" class="new-window" target="_blank">'.baseHelper::nameFormat($item->name).'</a></div><small>'.$info.'</small>
 				</li>
 			';

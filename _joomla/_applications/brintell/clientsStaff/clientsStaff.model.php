@@ -34,6 +34,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	JLoader::register('baseHelper', JPATH_CORE.DS.'helpers/base.php');
     // classes customizadas para usuários Joomla
     JLoader::register('baseUserHelper',  JPATH_CORE.DS.'helpers/user.php');
+	$lang->load('lib_joomla', JPATH_ADMINISTRATOR, $_SESSION[$APPTAG.'langDef'], true);
 
 	// get current user's data
 	$user		= JFactory::getUser();
@@ -69,6 +70,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		// fields 'List' requests
 		$listIds    = $input->get($APPTAG.'_ids', array(), 'array');
 		$ids        = (count($listIds) > 0) ? implode($listIds, ',') : $id;
+		$groupIDs	= $input->get('gIDs', '', 'string');
 		$state      = $input->get('st', 2, 'int');
 
 		// upload actions
@@ -89,27 +91,62 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		// fields 'Form' requests
 		$request						= array();
 		// default
-		$request['relationId']   		= $input->get('relationId', 0, 'int');
+		$request['relationId']			= $input->get('relationId', 0, 'int');
 		$request['state']				= $input->get('state', 1, 'int');
 		// app
-	  	$request['client_id']			= $input->get('client_id', 0, 'int');
-	  	$request['staff_id']				= $input->get('staff_id', 0, 'int');
-	  	$request['main']				= $input->get('main', 0, 'int');
-	  	$request['department']			= $input->get('department', '', 'str');
+		$request['usergroup']			= $input->get('usergroup', 0, 'int');
+		$request['cusergroup']			= $input->get('cusergroup', 0, 'int');
+		$request['user_id']				= $input->get('user_id', 0, 'int');
+		$request['client_id']			= $input->get('client_id', 0, 'int');
+		$request['name']				= $input->get('name', '', 'string');
+		$request['email']				= $input->get('email', '', 'string');
+		$request['gender']				= $input->get('gender', 1, 'int');
+		$request['role']				= $input->get('role', '', 'string');
+	    // user registration action
+	  	$request['access']				= $input->get('access', 0, 'int');
+	    $request['username']			= $input->get('username', '', 'string');
+		$request['usergroup']			= $input->get('usergroup', 0, 'int');
+		$request['password']			= $input->get('password', '', 'string');
+	  	$request['repassword']			= $input->get('repassword', '', 'string');
+	  	$request['emailConfirm']		= $input->get('emailConfirm', 0, 'int');
+	  	$request['emailInfo']			= $input->get('emailInfo', '', 'string');
+	  	$request['reasonStatus']		= $input->get('reasonStatus', '', 'string');
+		// Se o acesso for liberado, limpa o valor do campo 'motivo'
+		$reason = $request['access'] == 1 ? '' : $request['reasonStatus'];
+
+	    // CUSTOM -> default vars for registration e-mail
+	    $config			= JFactory::getConfig();
+	    $sitename		= $config->get('sitename');
+	    $domain			= baseHelper::getDomain();
+	    $subject		= JText::sprintf('MSG_ACTIVATION_EMAIL_SUBJECT', $sitename);
+	    $mailFrom		= $config->get('mailfrom');
 
 		// SAVE CONDITION
 		// Condição para inserção e atualização dos registros
-		$save_condition = ($request['client_id'] > 0 && $request['staff_id'] > 0);
+		$save_condition = (!empty($request['name']) && !empty($request['email']));
 
 		if($id || (!empty($ids) && $ids != 0)) :  //UPDATE OR DELETE
 
 			$exist = 0;
 			if($id) :
 				// GET FORM DATA
-				$query = 'SELECT * FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('id') .' = '. $id;
+				$query	= 'SELECT * FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('id') .' = '. $id;
 				$db->setQuery($query);
 				$item	= $db->loadObject();
 	    		$exist	= (isset($item->id) && !empty($item->id) && $item->id > 0);
+				// CUSTOM -> VERIFY IF IS REGISTERED USER
+				$isUser = $userInfoId = $userInfoBlock = $userGroups = 0;
+				$userInfoName = $userInfoEmail = '';
+				if($item->user_id != 0) :
+					$usr			= baseUserHelper::getUserData($item->user_id);
+					$isUser         = $usr['exist'];
+					$userInfo       = $usr['obj'];
+					// $usr['id']      =
+					$userInfoId     = isset($userInfo[0]['id']) ? $userInfo[0]['id'] : 0;
+					$userInfoName   = isset($userInfo[0]['name']) ? $userInfo[0]['name'] : '';
+					$userInfoEmail  = isset($userInfo[0]['email']) ? $userInfo[0]['email'] : '';
+			        $userInfoBlock  = isset($userInfo[0]['block']) ? $userInfo[0]['block'] : 0;
+				endif;
 				// get previous ID
 				$query = 'SELECT MAX(id) FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('id') .' < '. $id;
 				$db->setQuery($query);
@@ -135,8 +172,17 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 			if($exist) : // verifica se existe
 
-				// GET DATA
+				// GET FORM DATA
 				if($task == 'get') :
+
+					$itemUID    = ($isUser) ? $userInfoId : 0;
+					$itemName   = ($isUser) ? baseHelper::nameFormat($userInfoName) : '';
+					$itemEmail  = ($isUser) ? $userInfoEmail : $item->email;
+					$itemBlock  = ($isUser) ? $userInfoBlock : 1; // inverso do 'access'
+					// Obs: Se 'block' = 1 / 'access' = 0;
+					// O padrão do 'Acesso' na edição é 'Não => 0' ('block = 1'),
+					// pois caso não exista um usuário associado ao cliente
+					// o campo de acesso aparece como falso 'Não'
 
 					$data[] = array(
 						// Default Fields
@@ -146,9 +192,16 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'next'				=> $next,
 						// App Fields
 						'client_id'			=> $item->client_id,
-	      				'staff_id'			=> $item->staff_id,
-	      				'main'				=> $item->main,
-	      				'department'		=> $item->department
+						'user_id'			=> $itemUID,
+						'usergroup'			=> $item->usergroup,
+						'user'				=> $itemName,
+						'name'				=> $item->name,
+						'email'				=> $itemEmail,
+						'gender'			=> $item->gender,
+						'role'				=> $item->role,
+						'access'			=> ($itemBlock ? 0 : 1),
+						'reasonStatus'		=> $item->reasonStatus,
+						'files'				=> $listFiles
 					);
 
 				// UPDATE
@@ -157,9 +210,14 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
 					$query .=
 						$db->quoteName('client_id')			.'='. $request['client_id'] .','.
-						$db->quoteName('staff_id')			.'='. $request['staff_id'] .','.
-						$db->quoteName('main')				.'='. $request['main'] .','.
-						$db->quoteName('department')		.'='. $db->quote($request['department']) .','.
+						$db->quoteName('user_id')			.'='. $request['user_id'] .','.
+						$db->quoteName('usergroup')			.'='. $request['usergroup'] .','.
+						$db->quoteName('name')				.'='. $db->quote($request['name']) .','.
+						$db->quoteName('email')				.'='. $db->quote($request['email']) .','.
+						$db->quoteName('gender')			.'='. $request['gender'] .','.
+						$db->quoteName('role')				.'='. $db->quote($request['role']) .','.
+						$db->quoteName('access')			.'='. $request['access'] .','.
+						$db->quoteName('reasonStatus')		.'='. $db->quote($reason) .','.
 						$db->quoteName('state')				.'='. $request['state'] .','.
 						$db->quoteName('alter_date')		.'= NOW(),'.
 						$db->quoteName('alter_by')			.'='. $user->id
@@ -185,9 +243,82 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$elemLabel = $db->loadResult();
 						endif;
 
+						// CUSTOM -> user registration
+						// cria o usuário se não existir
+						$userMsg = '';
+						if($request['access'] == 1) :
+							if($request['user_id'] == 0 && !$isUser) :
+								// define a senha
+								$pwd = ($request['password'] && !empty($request['password'])) ? $request['password'] : baseHelper::randomPassword();
+								// prepara os dados
+								$isBlock = ($request['state'] == 1) ? 0 : 1;
+								// email de confirmação
+								$mailHtml = '';
+								if($request['emailConfirm'] == 1) :
+									// se a senha for gerada pelo sistema, envia a senha. Senão, não envia...
+									$bodyData = empty($request['password']) ? JText::sprintf('MSG_ACTIVATION_EMAIL_PWD', $pwd) : JText::_('MSG_ACTIVATION_EMAIL_NOPWD');
+									$emailInfo = !empty($request['emailInfo']) ? '<p>'.$request['emailInfo'].'</p>' : '';
+									$eBody = JText::sprintf('MSG_ACTIVATION_EMAIL_BODY', baseHelper::nameFormat($request['name']), $emailInfo, $domain, $request['email'], $request['username'], $bodyData);
+									// Email Template
+									$boxStyle	= array('bg' => '#fafafa', 'color' => '#555', 'border' => 'border: 4px solid #eee');
+									$headStyle	= array('bg' => '#fff', 'color' => '#5EAB87', 'border' => '1px solid #eee');
+									$bodyStyle	= array('bg' => '');
+									$mailLogo	= 'logo-news.png';
+									$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_ACTIVATION_EMAIL_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle, $domain);
+								endif;
+								// cria o usuário
+								$newUserId = baseUserHelper::createJoomlaUser($request['name'], $request['username'], $request['email'], $pwd, $request['usergroup'], $isBlock, $request['emailConfirm'], $mailFrom, $subject, $mailHtml);
+								if(is_int($newUserId) && $newUserId > 0) {
+									$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET user_id = '. $newUserId .' WHERE id = '.$id;
+									$db->setQuery($query);
+									$db->execute();
+									setClientCode($id, $newUserId, $request['username'], $cfg);
+									$userMsg = JText::_('MSG_USER_CREATED');
+									// envia email de confirmação
+									if($request['emailConfirm']) baseHelper::sendMail($mailFrom, $request['email'], $subject, $mailHtml);
+								} else {
+									$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '.$db->quoteName('access').' = 0 WHERE id = '.$id;
+									$db->setQuery($query);
+									$db->execute();
+									$userMsg = JText::_('MSG_USER_NOT_CREATED');
+									if(!is_int($newUserId)) $userMsg .= ': '.JText::_($newUserId);
+								}
+								$userMsg = '<br />'.$userMsg;
+							// se existir, atualiza os dados 'name' e 'e-mail' para mantê-los sincronizados
+							elseif($isUser && $userInfoId) :
+								// Verifica se há alteração do usergroup
+								if($isUser && $request['usergroup'] != $request['cusergroup'] && $request['cusergroup'] > 0) :
+									$query = 'SELECT COUNT(*) FROM '.$db->quoteName('#__user_usergroup_map') .' WHERE group_id = '.$db->quote($request['cusergroup']).' AND user_id = '.$db->quote($request['user_id']);
+									$db->setQuery($query);
+									$mapOn = $db->loadResult();
+									if($mapOn) : // verifica se o mapeamento existe
+										// Atribui o novo grupo
+										$query = 'UPDATE '. $db->quoteName('#__user_usergroup_map') .' SET group_id = '. $db->quote($request['usergroup']) .' WHERE group_id = '.$db->quote($request['cusergroup']).' AND user_id = '.$db->quote($request['user_id']);
+										$db->setQuery($query);
+									else :
+										// cria o mapeamento e Atribui o novo grupo
+										$query = 'INSERT INTO '. $db->quoteName('#__user_usergroup_map') .' (`user_id`, `group_id`) VALUES ('.$db->quote($request['user_id']).', '. $db->quote($request['usergroup']).')';
+										$db->setQuery($query);
+									endif;
+									if($db->execute()) $userMsg = '<br />'.JText::_('MSG_USERGROUP_CHANGED');
+								endif;
+								// verifica se há atualização de senha
+								$newPass  = '';
+								if(!empty($request['password']) && ($request['password'] == $request['repassword'])) :
+									$newPass  = ', password = '. $db->quote(JUserHelper::hashPassword($request['password']));
+								endif;
+								// Atualiza os dados do usuário
+								$query = 'UPDATE '. $db->quoteName('#__users') .' SET name = '. $db->quote($request['name']) .', email = '. $db->quote($request['email']). $newPass .', block = 0 WHERE id = '.$userInfoId;
+								$db->setQuery($query);
+								$db->execute();
+							endif;
+						elseif($isUser && $userInfoId) :
+							baseUserHelper::stateToJoomlaUser($userInfoId, 0);
+						endif;
+
 						$data[] = array(
 							'status'			=> 2,
-							'msg'				=> JText::_('MSG_SAVED'),
+							'msg'				=> JText::_('MSG_SAVED').$userMsg,
 							'uploadError'		=> $fileMsg,
 							'parentField'		=> $element,
 							'parentFieldVal'	=> $elemVal,
@@ -216,6 +347,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				// DELETE
 				elseif($task == 'del') :
 
+					// Lista os usuários associados aos clientes
+		            $query = 'SELECT '. $db->quoteName('user_id') .' FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('id') .' IN ('.$ids.')';
+					$db->setQuery($query);
+					$uList = $db->loadObjectList();
+
 					$query = 'DELETE FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('id') .' IN ('.$ids.')';
 
 					try {
@@ -236,10 +372,37 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						// FORCE DELETE RELATIONSHIPS
 						// força a exclusão do(s) relacionamento(s) caso os parâmetros não sejam setados
 						// isso é RECOMENDÁVEL sempre que houver um ou mais relacionamentos
-						// SAMPLES -> remove os registros relacionados aos exemplos
-						// $query = 'DELETE FROM '. $db->quoteName('#__'.$cfg['project'].'_app_sample') .' WHERE '. $db->quoteName('type_id') .' IN ('.$ids.')';
-						// $db->setQuery($query);
+						// PROVIDERS -> remove os registros relacionados aos conveniados
+		                // $query = 'DELETE FROM '. $db->quoteName('#__'.$cfg['project'].'_rel_providers_contacts') .' WHERE '. $db->quoteName('contact_id') .' IN ('.$ids.')';
+		                // $db->setQuery($query);
 						// $db->execute();
+
+						// $rIDs = explode(',', $ids);
+						// foreach ($rIDs as $rID) {
+
+							// ACCOUNT BANKS -> remove os registros relacionados às contas bancárias
+							// $query = '
+							// 	SELECT T2.id
+							// 	FROM '. $db->quoteName('#__base_rel_contacts_banksAccounts') .' T1
+							// 		JOIN '. $db->quoteName('#__base_banks_accounts') .' T2
+							// 		ON  '. $db->quoteName('T2.id') .' = '. $db->quoteName('T1.bankAccount_id') .'
+							// 	WHERE '. $db->quoteName('T1.contact_id') .' = '.$rID
+							// ;
+							// $db->setQuery($query);
+							// $relId = $db->loadColumn();
+							// $dIDs = implode(',', $relId);
+							// if(!empty($dIDs)) :
+							// 	// exclui as contas
+							// 	$query = 'DELETE FROM '. $db->quoteName('#__base_banks_accounts') .' WHERE '. $db->quoteName('id') .' IN ('.$dIDs.')';
+							// 	$db->setQuery($query);
+							// 	$db->execute();
+							// endif;
+							// // exclui o relacionamento
+							// $query = 'DELETE FROM '. $db->quoteName('#__base_rel_contacts_banksAccounts') .' WHERE '. $db->quoteName('contact_id') .' = '.$rID;
+							// $db->setQuery($query);
+							// $db->execute();
+
+						// }
 
 						// UPDATE FIELD
 						// executa apenas com valores individuais
@@ -248,6 +411,14 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$element = $_SESSION[$RTAG.'FieldUpdated'];
 							$elemVal = $ids;
 						endif;
+
+			            // DELETE USER REGISTERED
+			            $userMsg = '';
+						foreach ($uList as $usr) {
+							if($usr->user_id != 0) {
+								if(baseUserHelper::deleteJoomlaUser($usr->user_id)) $userMsg = '<br />'.JText::_('MSG_USER_DELETED');
+							}
+						}
 
 						$setIds = explode(',', $ids);
 						if(count($setIds) > 1) :
@@ -258,7 +429,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$data[] = array(
 							'status'			=> 3,
 							'ids'				=> $setIds,
-							'msg'				=> JText::_('MSG_DELETED'),
+							'msg'				=> JText::_('MSG_DELETED').$userMsg,
 							'uploadError'		=> $fileMsg,
 							'parentField'		=> $element,
 							'parentFieldVal'	=> $elemVal
@@ -327,14 +498,21 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					// FILE: remove o arquivo
 					$fileMsg = uploader::deleteFile($fname, $cfg['fileTable'], $cfg['uploadDir'], JText::_('MSG_FILEERRODEL'));
 
+					if(empty($fileMsg)) {
+						// IMPORTANTE: Reorganiza a ordem
+						// remove os saltos entre os "index", pois não deve haver!!
+						$sIndex = $cfg['indexFileInit'] - 1;
+						uploader::rebuildIndexFiles($cfg['fileTable'], $id, $sIndex);
+					}
+
 					$data[] = array(
 						'status'				=> 5,
 						'msg'					=> JText::_('MSG_FILE_DELETED'),
 						'uploadError'			=> $fileMsg
 					);
 
-					// DELETE FILES
-					elseif($cfg['hasUpload'] && $task == 'delFiles' && $fileId) :
+				// DELETE FILES
+				elseif($cfg['hasUpload'] && $task == 'delFiles' && $fileId) :
 
 					// FILE: remove o arquivo
 					$fileMsg = uploader::deleteFiles($fileId, $cfg['fileTable'], $cfg['uploadDir'], JText::_('MSG_FILEERRODEL'));
@@ -361,16 +539,26 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$query  = '
 						INSERT INTO '. $db->quoteName($cfg['mainTable']) .'('.
 							$db->quoteName('client_id') .','.
-							$db->quoteName('staff_id') .','.
-							$db->quoteName('main') .','.
-							$db->quoteName('department') .','.
+							$db->quoteName('user_id') .','.
+							$db->quoteName('usergroup') .','.
+							$db->quoteName('name') .','.
+							$db->quoteName('email') .','.
+							$db->quoteName('gender') .','.
+							$db->quoteName('role') .','.
+							$db->quoteName('access') .','.
+							$db->quoteName('reasonStatus') .','.
 							$db->quoteName('state') .','.
 							$db->quoteName('created_by')
 						.') VALUES ('.
 							$request['client_id'] .','.
-							$request['staff_id'] .','.
-							$request['main'] .','.
-							$db->quote($request['department']) .','.
+							$request['user_id'] .','.
+							$request['usergroup'] .','.
+							$db->quote($request['name']) .','.
+							$db->quote($request['email']) .','.
+							$request['gender'] .','.
+							$db->quote($request['role']) .','.
+							$request['access'] .','.
+							$db->quote($reason) .','.
 							$request['state'] .','.
 							$user->id
 						.')
@@ -389,12 +577,13 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						if(!empty($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelNameId']) && !empty($_SESSION[$RTAG.'AppNameId']) && !empty($request['relationId'])) :
 							$query  = '
 								INSERT INTO '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .'('.
-								$db->quoteName($_SESSION[$RTAG.'AppNameId']) .','.
-								$db->quoteName($_SESSION[$RTAG.'RelNameId'])
+									$db->quoteName($_SESSION[$RTAG.'AppNameId']) .','.
+									$db->quoteName($_SESSION[$RTAG.'RelNameId'])
 								.') VALUES ('.
-								$id .','.
-								$request['relationId']
-							.')';
+									$id .','.
+									$request['relationId']
+								.')
+							';
 							$db->setQuery($query);
 							$db->execute();
 						endif;
@@ -409,9 +598,47 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$elemLabel = $db->loadResult();
 						endif;
 
+						// CUSTOM -> user registration
+						// cria o usuário se não existir
+						$userMsg = '';
+						if($request['access'] == 1) :
+							// define a senha
+							$pwd = ($request['password'] && !empty($request['password'])) ? $request['password'] : baseHelper::randomPassword();
+							// email de confirmação
+							$mailHtml = '';
+							if($request['emailConfirm'] == 1) :
+								// se a senha for gerada pelo sistema, envia a senha. Senão, não envia...
+								$bodyData = empty($request['password']) ? JText::sprintf('MSG_ACTIVATION_EMAIL_PWD', $pwd) : JText::_('MSG_ACTIVATION_EMAIL_NOPWD');
+								$emailInfo = !empty($request['emailInfo']) ? '<p>'.$request['emailInfo'].'</p>' : '';
+								$eBody = JText::sprintf('MSG_ACTIVATION_EMAIL_BODY', baseHelper::nameFormat($request['name']), $emailInfo, $domain, $request['email'], $request['username'], $bodyData);
+								// Email Template
+								$boxStyle	= array('bg' => '#fafafa', 'color' => '#555', 'border' => 'border: 4px solid #eee');
+								$headStyle	= array('bg' => '#fff', 'color' => '#5EAB87', 'border' => '1px solid #eee');
+								$bodyStyle	= array('bg' => '');
+								$mailLogo	= 'logo-news.png';
+								$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_ACTIVATION_EMAIL_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle, $domain);
+							endif;
+							// prepara os dados
+							$isBlock = ($request['state'] == 1) ? 0 : 1;
+							// cria o usuário
+							$newUserId = baseUserHelper::createJoomlaUser($request['name'], $request['username'], $request['email'], $pwd, $request['usergroup'], $isBlock, $request['emailConfirm'], $mailFrom, $subject, $mailHtml);
+							// atribui o usuário ao cliente
+							if(is_int($newUserId) && $newUserId > 0) {
+								$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET user_id = '. $newUserId .' WHERE id = '.$id;
+								$db->setQuery($query);
+								$db->execute();
+								$userMsg = JText::_('MSG_USER_CREATED');
+								// envia email de confirmação
+								if($request['emailConfirm']) baseHelper::sendMail($mailFrom, $request['email'], $subject, $mailHtml);
+							} else {
+								$userMsg = !is_int($newUserId) ? JText::_($newUserId) : $userMsg = JText::_('MSG_USER_NOT_CREATED');
+							}
+							$userMsg = '<br />'.$userMsg;
+						endif;
+
 						$data[] = array(
 							'status'			=> 1,
-							'msg'				=> JText::_('MSG_SAVED'),
+							'msg'				=> JText::_('MSG_SAVED').$userMsg,
 							'regID'				=> $id,
 							'uploadError'		=> $fileMsg,
 							'parentField'		=> $element,
@@ -447,6 +674,76 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					);
 
 				endif; // end validation
+
+			// USERS SYNCRONIZE
+			elseif($task == 'userSync') :
+
+				// seleciona os contatos com relação
+				$query = '
+					SELECT
+						'. $db->quoteName('T1.id') .',
+						'. $db->quoteName('T2.name') .' uName
+					FROM
+						'. $db->quoteName($cfg['mainTable']).' T1
+						LEFT JOIN '. $db->quoteName('#__users').' T2
+						ON T2.id = T1.user_id
+					WHERE T1.user_id != 0
+				';
+				$db->setQuery($query);
+				$cUsers = $db->loadObjectList();
+				foreach ($cUsers as $usr) {
+					// se o nome do usuário vier vazio significa que o usuário não existe
+					if(empty($usr->uName)) :
+						// reseta o user_id
+						$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET user_id = 0 WHERE id = '.$usr->id;
+						$db->setQuery($query);
+						$db->execute();
+					endif;
+				}
+
+				$data[] = array(
+					'status'	=> 1,
+					'msg'		=> JText::_('MSG_SYNCHRONIZED')
+				);
+
+			// CUSTOM: get group list of type
+			elseif($task == 'gList' && !empty($groupIDs)) :
+
+				// get client_id of project
+				// get contacts list of project's client
+				$query = 'SELECT * FROM '. $db->quoteName('#__usergroups') .' WHERE '. $db->quoteName('id') .' IN ('.$groupIDs.')';
+
+				try {
+					$db->setQuery($query);
+					$db->execute();
+					$num_itens = $db->getNumRows();
+					$list = $db->loadObjectList();
+
+					if($num_itens) :
+						foreach($list as $item) {
+							$data[] = array(
+								// Default Fields
+								'status'		=> 1,
+								// App Fields
+								'id'			=> $item->id,
+								'title'			=> baseHelper::nameFormat($item->title),
+								'total'			=> $num_itens
+							);
+						}
+					else :
+						$data[] = array(
+							'status'			=> 0
+						);
+					endif;
+
+				} catch (RuntimeException $e) {
+
+					$data[] = array(
+						'status'				=> 0,
+						'msg'					=> $e->getMessage()
+					);
+
+				}
 
 			endif; // end 'task'
 

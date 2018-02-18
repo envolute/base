@@ -537,7 +537,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$userMsg = '';
 						foreach ($uList as $usr) {
 							if($usr->user_id != 0) {
-								if(baseUserHelper::deleteJoomlaUser($usr->user_id)) $userMsg = JText::_('MSG_USER_DELETED');
+								if(baseUserHelper::deleteJoomlaUser($usr->user_id)) $userMsg = '<br />'.JText::_('MSG_USER_DELETED');
 							}
 						}
 

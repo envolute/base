@@ -121,7 +121,7 @@ jQuery(function() {
 			description.val('');
 			checkOption(priority, 0);
 			deadline.val('');
-			timePeriod.selectUpdate('<?php echo JText::_('TEXT_PM'); ?>'); // select
+			timePeriod.selectUpdate('<?php echo JText::_('TEXT_AM'); ?>'); // select
 			tags.selectUpdate(''); // select
 			<?php if($hasAuthor) :?>
 				setHidden(setClose, true);

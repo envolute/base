@@ -35,8 +35,6 @@ jQuery(function() {
 	var type				= mainForm.find('input[name=type]:radio'); // radio group
 	var role_id				= jQuery('#<?php echo $APPTAG?>-role_id');
 	var user_id				= jQuery('#<?php echo $APPTAG?>-user_id');
-	var usergroup			= jQuery('#<?php echo $APPTAG?>-usergroup');
-	var cusergroup			= jQuery('#<?php echo $APPTAG?>-cusergroup');
 	var name 				= jQuery('#<?php echo $APPTAG?>-name');
 	var nickname			= jQuery('#<?php echo $APPTAG?>-nickname');
 	var email				= jQuery('#<?php echo $APPTAG?>-email');
@@ -78,6 +76,7 @@ jQuery(function() {
 	var access				= mainForm.find('input[name=access]:radio'); // radio group
 	var newUser				= jQuery('#<?php echo $APPTAG?>-newUser');
 	var usergroup 			= jQuery('#<?php echo $APPTAG?>-usergroup');
+	var cusergroup			= jQuery('#<?php echo $APPTAG?>-cusergroup');
 	var username 			= jQuery('#<?php echo $APPTAG?>-username');
 	var password			= jQuery('#<?php echo $APPTAG?>-password');
 	var repassword			= jQuery('#<?php echo $APPTAG?>-repassword');
@@ -180,9 +179,6 @@ jQuery(function() {
 			checkOption(access, 0);
 			reasonStatus.val('');
 
-			// CLIENTS
-			setHidden(jQuery('#<?php echo $APPTAG?>-alert-clients'), false, jQuery('#<?php echo $APPTAG?>-btn-clients'));
-
 			// CUSTOM -> Remove new fields
 			jQuery('.newFieldsGroup').empty();
 
@@ -254,28 +250,12 @@ jQuery(function() {
 		};
 
 		// CUSTOM -> Set Type
-		// implementa ações de acordo com o tipo do cliente
 		window.<?php echo $APPTAG?>_setType = function(e){
 			var gID = cusergroup.val();
-			jQuery('[class*="<?php echo $APPTAG?>-groupType"]').hide();
-			// External or Client
-			if(e > 0) {
-				// IMPORTANTE: namter o hide/show para não dar comflito com a propriedade hidden
-				role_id.selectUpdate(0);
-				// External	=> 1
-				// Client	=> 2
-				if(e == 1) {
-					<?php echo $APPTAG?>_getGroupList('<?php echo $cfg[$APPTAG.'AccessLevel']['external']?>', gID);
-					jQuery('.<?php echo $APPTAG?>-groupType-external').show();
-				} else {
-					<?php echo $APPTAG?>_getGroupList('<?php echo $cfg[$APPTAG.'AccessLevel']['client']?>', gID);
-					jQuery('.<?php echo $APPTAG?>-groupType-client').show();
-				}
-			// Brintell
-			} else {
-				// IMPORTANTE: namter o hide/show para não dar comflito com a propriedade hidden
-				jQuery('.<?php echo $APPTAG?>-groupType-brintell').show();
+			if(e == 0) { // Brintell
 				<?php echo $APPTAG?>_getGroupList('<?php echo $cfg[$APPTAG.'AccessLevel']['brintell']?>', gID);
+			} else { // External
+				<?php echo $APPTAG?>_getGroupList('<?php echo $cfg[$APPTAG.'AccessLevel']['external']?>', gID);
 			}
 		}
 
@@ -379,11 +359,6 @@ jQuery(function() {
 		window.<?php echo $APPTAG?>_linkRemove = function(id) {
 			if(confirm('<?php echo JText::_('MSG_CONFIRM_REMOVE_WEBLINK')?>')) jQuery(id).remove();
 		}
-
-		// CUSTOM -> view clients list
-		window.<?php echo $APPTAG?>_viewClients = function() {
-			<?php echo $APPTAG?>Clients_listReload(false, false, false, false, false, formId.val());
-		};
 
 	// LIST CONTROLLERS
 	// ações & métodos controladores da listagem
@@ -531,9 +506,6 @@ jQuery(function() {
 						checkOption(access, item.access);
 						reasonStatus.val(item.reasonStatus);
 
-						// CLIENTS
-						setHidden(jQuery('#<?php echo $APPTAG?>-alert-clients'), true, jQuery('#<?php echo $APPTAG?>-btn-clients'));
-
 						// show relations buttons
 						setHidden('#<?php echo $APPTAG?>-buttons-relations', false, '#<?php echo $APPTAG?>-msg-relations');
 
@@ -669,7 +641,7 @@ jQuery(window).on('load', function() {
 			},
 			username: {
 				remote: {
-					url: '<?php echo _CORE_?>helpers/users/checkEmail.php',
+					url: '<?php echo _CORE_?>helpers/users/checkUsername.php',
 					type: 'post'
 				},
 				required: function(el) {

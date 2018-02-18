@@ -44,6 +44,8 @@ defined('_JEXEC') or die;
 		$appTag = ${$app.'AppTag'};
 		${$appTag.'RelTag'} = $params->get('relTag');
 		${$appTag.'IsPublic'} = $params->get('isPublic');
+		${$appTag.'ViewerGroups'} = $params->get('viewerGroups');
+		${$appTag.'AdminGroups'} = $params->get('adminGroups');
 		// LIST
 		${$appTag.'ItemView'} = $params->get('itemView');
 		${$appTag.'ShowApp'} = $params->get('showApp');

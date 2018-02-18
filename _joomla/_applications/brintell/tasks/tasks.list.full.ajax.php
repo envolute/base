@@ -147,11 +147,17 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$status = $item->status;
 			endif;
 
-			$priority = '';
-			if($item->priority == 1) $priority = ' <small class="base-icon-attention text-live cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_1').'"></small> ';
-			else if($item->priority == 2) $priority = ' <small class="base-icon-attention text-danger cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_2').'"></small> ';
+			$deadline = '';
+			if($item->deadline != '0000-00-00 00:00:00') {
+				$dt = explode(' ', $item->deadline);
+				$dlDate = baseHelper::dateFormat($dt[0], 'd/m/y');
+				$dlTime = ($dt[1] != '00:00:00') ? ' '.substr($dt[1], 0, 5).$item->timePeriod : '';
+				$deadline = '<br />'.JText::_('FIELD_LABEL_DEADLINE').'<br />'.$dlDate.$dlTime;
+			}
 
-			$deadline = $item->deadline != '0000-00-00 00:00:00' ? '<small class="text-muted cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_DEADLINE').'">'.baseHelper::dateFormat($item->deadline, 'd/m/y H:i').$item->timePeriod.'</small>' : '';
+			$priority = !empty($deadline) ? ' <small class="base-icon-attention text-primary cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_0').$deadline.'"></small>' : '';
+			if($item->priority == 1) $priority = ' <small class="base-icon-attention text-live cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_1').$deadline.'"></small>';
+			else if($item->priority == 2) $priority = ' <small class="base-icon-attention text-danger cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_2').$deadline.'"></small>';
 
 			$btnActions = '';
 			if($hasAdmin || ($item->created_by == $user->id)) :
@@ -197,14 +203,14 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			// Resultados
 			$html .= '
 				<div id="'.$APPTAG.'-item-'.$item->id.'" class="pos-relative rounded b-top-2 b-'.$itemStatus.' bg-white mb-3 set-shadow">
-					<div class="d-flex d-justify-content lh-1-2">
-						<div class="py-3 px-2 bg-gray-200">
+					<div class="d-flex d-justify-content align-items-center lh-1-2">
+						<div class="align-self-stretch py-3 px-2 bg-gray-200">
 							<a href="#" id="'.$APPTAG.'-item-'.$item->id.'-status" class="base-icon-'.$iconStatus.' text-'.$itemStatus.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$item->status).'" data-id="'.$item->id.'" data-status="'.$item->status.'" onclick="'.$APPTAG.'_setStatusModal(this)"></a>
 						</div>
-						<a href="#'.$APPTAG.'-item-view" class="set-base-modal py-3 px-2" onclick="'.$APPTAG.'_setItemView('.$item->id.')">
+						<a href="#'.$APPTAG.'-item-view" class="set-base-modal py-1 px-2" onclick="'.$APPTAG.'_setItemView('.$item->id.')">
 							'.baseHelper::nameFormat($item->subject).'
 							<div class="pos-absolute pos-top-0 pos-right-0 mx-1">
-								'.$priority.$deadline.'
+								'.$priority.'
 							</div>
 						</a>
 					</div>

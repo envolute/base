@@ -43,6 +43,7 @@ jQuery(document).ready(function() {
 	var type				= mainForm.find('input[name=type]:radio'); // radio group
 	var requests			= jQuery('#<?php echo $APPTAG?>-requests');
 	var assign_to			= jQuery('#<?php echo $APPTAG?>-assign_to');
+	var cassign_to			= jQuery('#<?php echo $APPTAG?>-cassign_to');
 	var subject				= jQuery('#<?php echo $APPTAG?>-subject');
 	var description			= jQuery('#<?php echo $APPTAG?>-description');
 	var priority			= mainForm.find('input[name=priority]:radio'); // radio group
@@ -114,15 +115,16 @@ jQuery(document).ready(function() {
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
 			checkOption(type, 0);
-			requests.val('');
+			requests.selectUpdate(''); // select
 			<?php if($hasAdmin) :?>
 				assign_to.selectUpdate(''); // select
+				cassign_to.selectUpdate(''); // select
 			<?php endif;?>
 			subject.val('');
 			description.val('');
 			checkOption(priority, 0);
 			deadline.val('');
-			timePeriod.selectUpdate('<?php echo JText::_('TEXT_PM'); ?>'); // select
+			timePeriod.selectUpdate('<?php echo JText::_('TEXT_AM'); ?>'); // select
 			estimate.val('');
 			executed.val(0);
 			tags.selectUpdate(''); // select
@@ -303,8 +305,9 @@ jQuery(document).ready(function() {
 						// App Fields
 						project_id.selectUpdate(item.project_id); // select
 						checkOption(type, item.type);
-						requests.val(item.requests);
+						requests.selectUpdate(item.requests); // select
 						assign_to.selectUpdate(item.assign_to); // select
+						cassign_to.selectUpdate(item.assign_to); // select
 						subject.val(item.subject);
 						description.val(item.description);
 						checkOption(priority, item.priority);

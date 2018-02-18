@@ -41,6 +41,9 @@ endif;
 	// $cfg['groupId']['admin'][]   = administra o componente
 	// ----------------------------------------------------
 	$cfg['groupId']['viewer'][]	= 0;	// '0' pois não pode ser vazio
+	// ----------------------------------------------------
+	$cfg['groupId']['client'][]	= 15;	// Client
+	$cfg['groupId']['client'][]	= 16;	// Client Manager
 	// acesso liberado sempre
 	$cfg['groupId']['admin'][]	= 10;	// All Staff
 	// ----------------------------------------------------

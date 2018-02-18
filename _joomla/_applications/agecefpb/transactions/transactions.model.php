@@ -113,6 +113,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	    // price
 	    $price = $request['total'] != 0 ? ($request['price'] / $request['total']) : 0;
+	    $price = str_replace(',', '.', $price);
 
 		// CUSTOM -> Gera arquivo de débito
 		// se informar apenas o nome da tabela, fará uma consulta em todas as colunas;

@@ -26,10 +26,13 @@
 				<field name="app" type="text" filter="string" default="" label="MOD_BASEAPP_APP_LABEL" description="MOD_BASEAPP_APP_DESC" />
 				<field name="appTag" type="text" filter="string" default="" label="MOD_BASEAPP_APPTAG_LABEL" description="MOD_BASEAPP_APPTAG_DESC" />
 				<field name="isPublic" type="radio" class="btn-group" label="MOD_BASEAPP_ACCESS_LABEL" description="MOD_BASEAPP_ACCESS_DESC">
-					<option value="1">MOD_BASEAPP_ACCESS_PUBLIC</option>
 					<option value="0">MOD_BASEAPP_ACCESS_RESTRICT</option>
+					<option value="1">MOD_BASEAPP_ACCESS_VIEW_PUBLIC</option>
+					<option value="2">MOD_BASEAPP_ACCESS_ADMIN_PUBLIC</option>
 					<option value="">JGLOBAL_USE_GLOBAL</option>
 				</field>
+				<field name="viewerGroups" type="usergroup" label="MOD_BASEAPP_ACCESS_VIEWER_GROUP_LABEL" description="MOD_BASEAPP_ACCESS_VIEWER_GROUP_DESC" multiple="true" />
+				<field name="adminGroups" type="usergroup" label="MOD_BASEAPP_ACCESS_ADMIN_GROUP_LABEL" description="MOD_BASEAPP_ACCESS_ADMIN_GROUP_DESC" multiple="true" />
 
 				<field name="appView" type="spacer" class="text"
 						label="MOD_BASEAPP_APP_VIEW_LABEL"

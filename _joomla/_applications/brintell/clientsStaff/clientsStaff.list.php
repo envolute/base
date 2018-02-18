@@ -10,13 +10,13 @@ defined('_JEXEC') or die;
 		SELECT SQL_CALC_FOUND_ROWS
 			T1.*,
 			'. $db->quoteName('T2.name') .' client,
-			'. $db->quoteName('T3.name') .' member
+			'. $db->quoteName('T3.name') .' user
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
-			JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
+			LEFT OUTER JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
 			ON T2.id = T1.client_id
-			JOIN '. $db->quoteName('#__'.$cfg['project'].'_staff') .' T3
-			ON T3.id = T1.staff_id
+			LEFT OUTER JOIN '. $db->quoteName('#__users') .' T3
+			ON T3.id = T1.user_id
 		WHERE
 			'.$where.$orderList;
 	;
@@ -42,7 +42,7 @@ if($hasAdmin) :
 	';
 	$adminView['head']['actions'] = '
 		<th class="text-center d-none d-lg-table-cell d-print-none" width="60">'.baseAppHelper::linkOrder(JText::_('TEXT_ACTIVE'), 'T1.state', $APPTAG).'</th>
-		<th class="text-center d-print-none" width="70">'.JText::_('TEXT_ACTIONS').'</th>
+		<th class="text-center d-print-none" width="90">'.JText::_('TEXT_ACTIONS').'</th>
 	';
 endif;
 
@@ -53,11 +53,10 @@ $html = '
 			<thead>
 				<tr>
 					'.$adminView['head']['info'].'
-					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_CLIENT'), 'T2.name', $APPTAG).'</th>
-					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_STAFF_MEMBER'), 'T3.name', $APPTAG).'</th>
-					<th class="d-none d-lg-table-cell text-center">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_MAIN'), 'T1.main', $APPTAG).'</th>
-					<th class="d-none d-lg-table-cell">'.JText::_('FIELD_LABEL_DEPARTMENT').'</th>
-					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
+					<th class="d-none d-lg-table-cell">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_CLIENT'), 'T2.name', $APPTAG).'</th>
+					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_NAME'), 'T1.name', $APPTAG).'</th>
+					<th width="30" class="d-none d-lg-table-cell text-center">&#160;</td>
+					<th width="70" class="text-center">'.baseAppHelper::linkOrder(JText::_('TEXT_ACCESS'), 'T1.access', $APPTAG).'</th>
 					'.$adminView['head']['actions'].'
 				</tr>
 			</thead>
@@ -76,7 +75,14 @@ if($num_rows) : // verifica se existe
 
 		if($cfg['hasUpload']) :
 			JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
-			$files[$item->id] = uploader::getFiles($cfg['fileTable'], $item->id);
+
+			// Imagem Principal -> Primeira imagem (index = 0)
+			$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
+			if(!empty($img)) $img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 32, 32).'" class="d-none d-md-inline img-fluid rounded float-left mr-2" />';
+
+			// Arquivos -> Grupo de imagens ('#'.$APPTAG.'-files-group')
+			// Obs: para pegar todas as imagens basta remover o 'grupo' ('#'.$APPTAG.'-files-group')
+			$files[$item->id] = uploader::getFiles($cfg['fileTable'], $item->id, '#'.$APPTAG.'-files-group');
 			$listFiles = '';
 			for($i = 0; $i < count($files[$item->id]); $i++) {
 				if(!empty($files[$item->id][$i]->filename)) :
@@ -95,6 +101,15 @@ if($num_rows) : // verifica se existe
 				<td class="check-row d-print-none"><input type="checkbox" name="'.$APPTAG.'_ids[]" class="'.$APPTAG.'-chk" value="'.$item->id.'" /></td>
 				<td class="d-none d-lg-table-cell d-print-none">'.$item->id.'</td>
 			';
+			$regInfo	= 'ID: <span class=&quot;text-live&quot;>#'.$item->id.'</span>';
+			$regInfo	.= '<hr class=&quot;my-1&quot; />';
+			$regInfo	.= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
+			$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
+			if($item->alter_date != '0000-00-00 00:00:00') :
+				$regInfo	.= '<hr class=&quot;my-1&quot; />';
+				$regInfo	.= JText::_('TEXT_ALTER_DATE').': '.baseHelper::dateFormat($item->alter_date, 'd/m/Y H:i').'<br />';
+				$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->alter_by)->name);
+			endif;
 			$adminView['list']['actions'] = '
 				<td class="text-center d-none d-lg-table-cell d-print-none">
 					<a href="#" class="hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'">
@@ -104,11 +119,25 @@ if($num_rows) : // verifica se existe
 				<td class="text-center d-print-none">
 					<a href="#" class="btn btn-xs btn-warning hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil"></span></a>
 					<a href="#" class="btn btn-xs btn-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash"></span></a>
+					<a href="#" class="btn btn-xs btn-outline-primary base-icon-info-circled hasPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top" data-trigger="click focus"></a>
 				</td>
 			';
 		endif;
 
-		$main		= $item->main == 1 ? '<span class="base-icon-star text-live cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_MAIN_DESC').'"></span> ' : '';
+		$role = !empty($item->role) ? '<div class="small text-muted">'.baseHelper::nameFormat($item->role).'</div>' : '';
+
+		if($item->access == 0) :
+			$reason = !empty($item->reasonStatus) ? '<div class="small text-muted text-truncate">'.$item->reasonStatus.'</div>' : '';
+			// Check if user exist
+			if(empty($item->user)) $status = '<span class="base-icon-cancel text-danger hasTooltip" title="'.JText::_('TEXT_NO_ACCESS').'"></span>';
+			else $status = '<span class="base-icon-attention text-live hasTooltip" title="'.JText::_('TEXT_BLOCKED').'"></span>';
+			$status .= $reason;
+		else :
+			// Check if user exist
+			if(empty($item->user)) $status = '<span class="base-icon-cancel text-danger hasTooltip" title="'.JText::_('TEXT_NO_USER_ASSOC_DESC').'"></span>';
+			else $status = '<span class="base-icon-ok text-success hasTooltip" title="'.JText::_('TEXT_ALLOWED_ACCESS').'"></span>';
+		endif;
+		$urlViewData = JURI::root().'apps/clients/staff/view?vID='.$item->id;
 		$rowState	= $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
@@ -121,19 +150,10 @@ if($num_rows) : // verifica se existe
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
-				<td>'.baseHelper::nameFormat($item->client).'</td>
-				<td>
-					'.baseHelper::nameFormat($item->member).'
-					<div class="d-lg-none text-muted text-sm">
-						'.$main.baseHelper::nameFormat($item->department).'
-					</div>
-				</td>
-				<td class="d-none d-lg-table-cell text-center">'.$main.'</td>
-				<td class="d-none d-lg-table-cell">'.baseHelper::nameFormat($item->department).'</td>
-				<td class="d-none d-lg-table-cell">
-					'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'
-					<a href="#" class="base-icon-info-circled hasPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top"></a>
-				</td>
+				<td class="d-none d-lg-table-cell">'.baseHelper::nameFormat($item->client).$role.'</td>
+				<td>'.$img.baseHelper::nameFormat($item->name).'<div class="small text-muted">'.$item->email.'</td>
+				<td class="d-none d-lg-table-cell text-center"><a href="'.$urlViewData.'" target="_blank" class="base-icon-doc-text hasTooltip" title="'.JText::_('TEXT_VIEW_DATA').'"></a></td>
+				<td class="text-center">'.$status.'</td>
 				'.$adminView['list']['actions'].'
 			</tr>
 		';
@@ -143,7 +163,7 @@ else : // num_rows = 0
 
 	$html .= '
 		<tr>
-			<td colspan="9">
+			<td colspan="8">
 				<div class="alert alert-warning alert-icon m-0">'.JText::_('MSG_LISTNOREG').'</div>
 			</td>
 		</tr>

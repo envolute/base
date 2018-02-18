@@ -120,16 +120,12 @@ if(!empty($item->name)) :
 	$query	= '
 		SELECT
 			T1.*,
-			'. $db->quoteName('T3.name') .' role,
-			'. $db->quoteName('T4.session_id') .' online
-		FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' T1
-			JOIN '. $db->quoteName('#__'.$cfg['project'].'_rel_clients_staff') .' T2
-			ON '.$db->quoteName('T2.staff_id') .' = T1.id
-			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_staff_roles') .' T3
-			ON '.$db->quoteName('T3.id') .' = T1.role_id
-			LEFT JOIN '. $db->quoteName('#__session') .' T4
-			ON '.$db->quoteName('T4.userid') .' = T1.user_id
-		WHERE T1.state = 1
+			'. $db->quoteName('T1.role') .',
+			'. $db->quoteName('T2.session_id') .' online
+		FROM '. $db->quoteName('#__'.$cfg['project'].'_clients_staff') .' T1
+			LEFT JOIN '. $db->quoteName('#__session') .' T2
+			ON '.$db->quoteName('T2.userid') .' = T1.user_id AND T2.client_id = 0
+		WHERE '.$db->quoteName('T1.client_id') .' = '.$item->client_id.' AND T1.state = 1
 		ORDER BY '. $db->quoteName('T1.name') .' ASC
 	';
 	try {

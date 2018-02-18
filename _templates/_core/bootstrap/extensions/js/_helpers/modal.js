@@ -15,13 +15,13 @@ jQuery(function() {
 	// SET BASE MODAL
 	// Chama a modal padrão...
 	window.setBaseModal = function() {
-
 		jQuery('.set-base-modal').each(function() {
 			var trg = isSet(jQuery(this).data('target')) ? jQuery(this).data('target') : jQuery(this).attr('href');
 			var obj = setElement(trg);
 			var input = jQuery(this).data('inputFocus');
 			if(isSet(obj)) {
-				jQuery(this).click(function() {
+				jQuery(this).click(function(e) {
+					e.preventDefault();
 					obj.modal('show');
 				});
 				obj.on('shown.bs.modal', function () {

@@ -7,6 +7,9 @@ defined('_JEXEC') or die;
 $ajaxRequest = false;
 require('config.php');
 
+// ACESSO
+$cfg['isPublic'] = true; // Público -> acesso aberto a todos
+
 // IMPORTANTE:
 // Como outras Apps serão carregadas, através de "require", dentro dessa aplicação.
 // As variáveis php da App principal serão sobrescritas após as chamadas das outras App.
@@ -109,9 +112,9 @@ if($vID != 0) :
 		if(!empty($info1))	$info1 = '<div class="col-sm-8">'.$info1.'</div>';
 
 		$info2 = '';
-		if(!empty($cnpj))	$info2 .= $cnpj;
-		if(!empty($since))	$info2 .= $since;
-		if(!empty($date))	$info2 .= $date;
+		if(!empty($cnpj) && $hasAdmin)	$info2 .= $cnpj;
+		if(!empty($since) && $hasAdmin)	$info2 .= $since;
+		if(!empty($date) && $hasAdmin)	$info2 .= $date;
 		if(!empty($info2))	$info2 = '<div class="col-sm">'.$info2.'</div>';
 
 		// Info Container
@@ -180,41 +183,45 @@ if($vID != 0) :
 							';
 							require(JPATH_APPS.DS.'clientsStaff/clientsStaff.php');
 
-							// Phones
-							$_callCentersListFull				= false;
-							$_callCentersAddText				= false;
-							$_callCentersShowAddBtn				= false;
-							$_callCentersRelTag					= 'clients';
-							$_callCentersRelTable				= '#__'.$PROJECT.'_rel_clients_callCenters';
-							$_callCentersAppNameId				= 'callCenter_id';
-							$_callCentersRelNameId				= 'client_id';
-							$_callCentersRelListNameId			= 'client_id';
-							$_callCentersRelListId				= $item->id;
-							echo '
-								<h6 class="page-header base-icon-phone-squared pt-2">
-									'.JText::_('TEXT_CALL_CENTERS').'
-									<a href="#" class="btn btn-xs btn-success float-right" onclick="_callCenters_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-_callCenters" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_CALL_CENTER').'"></span></a>
-								</h6>
-							';
-							require(JPATH_APPS.DS.'_callCenters/_callCenters.php');
+							if($hasAdmin) {
+								// Phones
+								$_callCentersListFull				= false;
+								$_callCentersAddText				= false;
+								$_callCentersShowAddBtn				= false;
+								$_callCentersRelTag					= 'clients';
+								$_callCentersRelTable				= '#__'.$PROJECT.'_rel_clients_callCenters';
+								$_callCentersAppNameId				= 'callCenter_id';
+								$_callCentersRelNameId				= 'client_id';
+								$_callCentersRelListNameId			= 'client_id';
+								$_callCentersRelListId				= $item->id;
+								echo '
+									<h6 class="page-header base-icon-phone-squared pt-2">
+										'.JText::_('TEXT_CALL_CENTERS').'
+										<a href="#" class="btn btn-xs btn-success float-right" onclick="_callCenters_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-_callCenters" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_CALL_CENTER').'"></span></a>
+									</h6>
+								';
+								require(JPATH_APPS.DS.'_callCenters/_callCenters.php');
+							}
 
-							// Banks Accounts
-							$_banksAccountsListFull			= false;
-							$_banksAccountsAddText			= false;
-							$_banksAccountsShowAddBtn		= false;
-							$_banksAccountsRelTag			= 'clients';
-							$_banksAccountsRelTable			= '#__'.$PROJECT.'_rel_clients_banksAccounts';
-							$_banksAccountsAppNameId		= 'bankAccount_id';
-							$_banksAccountsRelNameId		= 'client_id';
-							$_banksAccountsRelListNameId	= 'client_id';
-							$_banksAccountsRelListId		= $item->id;
-							echo '
-								<h6 class="page-header base-icon-bank pt-2">
-									'.JText::_('TEXT_BANKS_ACCOUNTS').'
-									<a href="#" class="btn btn-xs btn-success float-right" onclick="_banksAccounts_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-_banksAccounts" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_BANK_ACCOUNT').'"></span></a>
-								</h6>
-							';
-							require(JPATH_APPS.DS.'_banksAccounts/_banksAccounts.php');
+							if($hasAdmin) {
+								// Banks Accounts
+								$_banksAccountsListFull			= false;
+								$_banksAccountsAddText			= false;
+								$_banksAccountsShowAddBtn		= false;
+								$_banksAccountsRelTag			= 'clients';
+								$_banksAccountsRelTable			= '#__'.$PROJECT.'_rel_clients_banksAccounts';
+								$_banksAccountsAppNameId		= 'bankAccount_id';
+								$_banksAccountsRelNameId		= 'client_id';
+								$_banksAccountsRelListNameId	= 'client_id';
+								$_banksAccountsRelListId		= $item->id;
+								echo '
+									<h6 class="page-header base-icon-bank pt-2">
+										'.JText::_('TEXT_BANKS_ACCOUNTS').'
+										<a href="#" class="btn btn-xs btn-success float-right" onclick="_banksAccounts_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-_banksAccounts" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_BANK_ACCOUNT').'"></span></a>
+									</h6>
+								';
+								require(JPATH_APPS.DS.'_banksAccounts/_banksAccounts.php');
+							}
 
 		echo '
 						</div>

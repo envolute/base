@@ -95,8 +95,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['project_id']			= $input->get('project_id', 0, 'int');
 		$request['type']				= $input->get('type', 0, 'int');
 		$request['requests']			= $input->get('requests', '', 'string');
+		$requests						= $input->get('requests', array(), 'array');
+		$request['requests']			= implode(',', $requests); // FIND_IN_SET
 	  	$assign_to						= $input->get('assign_to', array(), 'array');
 		$request['assign_to']			= implode(',', $assign_to); // FIND_IN_SET
+		$request['cassign_to']			= $input->get('cassign_to', '', 'string');
 	  	$request['subject']				= $input->get('subject', '', 'string');
 	  	$request['description']			= $input->get('description', '', 'string');
 		$request['priority']			= $input->get('priority', 0, 'int');
@@ -117,6 +120,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$request['executed'] = 100;
 				$closing_date = date('Y-m-d H:i:s');
 			endif;
+
+	    // CUSTOM -> default vars for registration e-mail
+	    $config			= JFactory::getConfig();
+	    $sitename		= $config->get('sitename');
+	    $domain			= baseHelper::getDomain();
+	    $mailFrom		= $config->get('mailfrom');
 
 		// SAVE CONDITION
 		// Condição para inserção e atualização dos registros
@@ -168,7 +177,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						// App Fields
 						'project_id'		=> $item->project_id,
 						'type'				=> $item->type,
-						'requests'			=> $item->requests,
+						'requests'			=> explode(',', $item->requests),
 						'assign_to'			=> explode(',', $item->assign_to),
 						'subject'			=> $item->subject,
 						'description'		=> $item->description,
@@ -227,6 +236,41 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->setQuery($query);
 							$elemLabel = $db->loadResult();
 						endif;
+
+						// NOTIFY USERS ATTRIBUTED
+						if(!empty($request['assign_to'])) {
+
+							if(!empty($request['cassign_to'])) {
+								$assign		= explode(',', $request['assign_to']);
+								$cassign	= explode(',', $request['cassign_to']);
+								$diff		= array_diff($assign, $cassign);
+								$newAssign	= implode(',', $diff);
+							} else {
+								$newAssign	= $request['assign_to'];
+							}
+							if(!empty($newAssign)) {
+								$query = 'SELECT name, nickname, email FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('id') .' IN ('.$newAssign.')';
+								$db->setQuery($query);
+								$users = $db->loadObjectList();
+
+								// Email Template
+								$boxStyle	= array('bg' => '#fafafa', 'color' => '#555', 'border' => 'border: 4px solid #eee');
+								$headStyle	= array('bg' => '#fff', 'color' => '#5EAB87', 'border' => '1px solid #eee');
+								$bodyStyle	= array('bg' => '');
+								$mailLogo	= 'logo-news.png';
+
+								foreach ($users as $obj) {
+									// se a senha for gerada pelo sistema, envia a senha. Senão, não envia...
+									$name = !empty($obj->nickname) ? $obj->nickname : $obj->name;
+									$url = $_ROOT.'/apps/tasks/view?vID='.$id;
+								    $subject = JText::sprintf('MSG_EMAIL_NOTIFY_SUBJECT', $sitename, $id);
+									$eBody = JText::sprintf('MSG_EMAIL_NOTIFY_BODY', baseHelper::nameFormat($name), $id, $request['subject'], $url);
+									$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_EMAIL_NOTIFY_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle, $domain);
+									// envia o email
+									baseHelper::sendMail($mailFrom, $obj->email, $subject, $mailHtml);
+								}
+							}
+						}
 
 			            $data[] = array(
 							'status'			=> 2,
@@ -506,6 +550,30 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->setQuery($query);
 							$elemLabel = $db->loadResult();
 						endif;
+
+						// NOTIFY USERS ATTRIBUTED
+						if(!empty($request['assign_to'])) {
+							$query = 'SELECT name, nickname, email FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('id') .' IN ('.$request['assign_to'].')';
+							$db->setQuery($query);
+							$users = $db->loadObjectList();
+
+							// Email Template
+							$boxStyle	= array('bg' => '#fafafa', 'color' => '#555', 'border' => 'border: 4px solid #eee');
+							$headStyle	= array('bg' => '#fff', 'color' => '#5EAB87', 'border' => '1px solid #eee');
+							$bodyStyle	= array('bg' => '');
+							$mailLogo	= 'logo-news.png';
+
+							foreach ($users as $obj) {
+								// se a senha for gerada pelo sistema, envia a senha. Senão, não envia...
+								$name = !empty($obj->nickname) ? $obj->nickname : $obj->name;
+								$url = $_ROOT.'/apps/tasks/view?vID='.$id;
+							    $subject = JText::sprintf('MSG_EMAIL_NOTIFY_SUBJECT', $sitename, $id);
+								$eBody = JText::sprintf('MSG_EMAIL_NOTIFY_BODY', baseHelper::nameFormat($name), $id, $request['subject'], $url);
+								$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_EMAIL_NOTIFY_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle, $domain);
+								// envia o email
+								baseHelper::sendMail($mailFrom, $obj->email, $subject, $mailHtml);
+							}
+						}
 
 						$data[] = array(
 							'status'			=> 1,

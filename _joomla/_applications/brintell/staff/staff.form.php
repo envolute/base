@@ -83,38 +83,6 @@ $users = $db->loadObjectList();
 							</span>
 						</div>
 					</div>
-					<div class="col-sm-6 col-lg-4">
-						<div class="form-group">
-							<label><?php echo JText::_('FIELD_LABEL_BIRTHDAY'); ?></label>
-							<input type="text" name="birthday" id="<?php echo $APPTAG?>-birthday" class="form-control field-date birthday" data-convert="true" />
-						</div>
-					</div>
-					<div class="col-lg-4">
-						<div class="form-group">
-							<label><?php echo JText::_('FIELD_LABEL_MARITAL_STATUS'); ?></label>
-							<select name="marital_status" id="<?php echo $APPTAG?>-marital_status" class="form-control auto-tab" data-target="<?php echo $APPTAG?>-group-children" data-tab-disabled="true">
-								<option value="0" data-target-display="false"><?php echo JText::_('TEXT_SELECT'); ?></option>
-								<option value="1" data-target-display="false"><?php echo JText::_('TEXT_MARITAL_STATUS_1'); ?></option>
-								<option value="2" data-target-display="true"><?php echo JText::_('TEXT_MARITAL_STATUS_2'); ?></option>
-								<option value="3" data-target-display="true"><?php echo JText::_('TEXT_MARITAL_STATUS_3'); ?></option>
-								<option value="4" data-target-display="false"><?php echo JText::_('TEXT_MARITAL_STATUS_4'); ?></option>
-								<option value="5" data-target-display="false"><?php echo JText::_('TEXT_MARITAL_STATUS_5'); ?></option>
-							</select>
-						</div>
-					</div>
-					<div id="<?php echo $APPTAG?>-group-children" class="col-lg-4" hidden>
-						<div class="form-group">
-							<label><?php echo JText::_('FIELD_LABEL_CHILDREN'); ?></label>
-							<select type="text" name="children" id="<?php echo $APPTAG?>-children" class="form-control">
-								<option value="0"><?php echo JText::_('TEXT_SELECT'); ?></option>
-								<?php
-									for($i = 1; $i < 50; $i++) {
-										echo '<option value="'.$i.'">'.$i.'</option>';
-									}
-								?>
-							</select>
-						</div>
-					</div>
 				</div>
 				<hr class="mt-0 b-primary-lighter" />
 				<div class="row">
@@ -130,18 +98,14 @@ $users = $db->loadObjectList();
 									<input type="radio" name="type" id="<?php echo $APPTAG?>-type-1" value="1" onchange="<?php echo $APPTAG?>_setType(1)" />
 									<?php echo JText::_('TEXT_TYPE_1'); ?>
 								</label>
-								<label class="btn btn-default btn-active-success">
-									<input type="radio" name="type" id="<?php echo $APPTAG?>-type-2" value="2" onchange="<?php echo $APPTAG?>_setType(2)" />
-									<?php echo JText::_('TEXT_TYPE_2'); ?>
-								</label>
 							</span>
 						</div>
 					</div>
-					<div class="col-lg-6 <?php echo $APPTAG?>-groupType-brintell">
+					<div class="col-lg-6">
 						<div class="form-group">
 							<label><?php echo JText::_('FIELD_LABEL_ROLE'); ?></label>
 							<div class="input-group">
-								<select name="role_id" id="<?php echo $APPTAG?>-role_id" class="form-control field-id auto-tab" data-target="#<?php echo $APPTAG?>-name">
+								<select name="role_id" id="<?php echo $APPTAG?>-role_id" class="form-control field-id">
 									<option value="0">- <?php echo JText::_('TEXT_SELECT'); ?> -</option>
 									<?php
 										foreach ($roles as $obj) {
@@ -153,17 +117,6 @@ $users = $db->loadObjectList();
 									<button type="button" class="base-icon-plus btn btn-success hasTooltip" title="<?php echo JText::_('TEXT_ADD')?>" data-toggle="modal" data-target="#modal-<?php echo $APPTAG?>Roles" data-backdrop="static" data-keyboard="false"></button>
 									<button type="button" class="base-icon-cog btn btn-primary hasTooltip" title="<?php echo JText::_('TEXT_EDIT')?>" onclick="<?php echo $APPTAG?>Roles_listReload(false)" data-toggle="modal" data-target="#modal-list-<?php echo $APPTAG?>Roles" data-backdrop="static" data-keyboard="false"></button>
 								</span>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-6 <?php echo $APPTAG?>-groupType-client">
-						<div class="form-group">
-							<label>&#160;</label>
-							<div id="<?php echo $APPTAG?>-alert-clients">
-								<div class="alert alert-info text-sm p-2"><?php echo JText::_('MSG_ADD_CLIENTS_AFTER_SAVE'); ?></div>
-							</div>
-							<div id="<?php echo $APPTAG?>-btn-clients" hidden>
-								<button type="button" class="btn btn-primary btn-block text-left base-icon-list btn-icon" onclick="<?php echo $APPTAG?>_viewClients()" data-toggle="modal" data-target="#modal-list-<?php echo $APPTAG?>Clients" data-backdrop="static" data-keyboard="false"> <?php echo JText::_('TEXT_ASSIGN_TO_CLIENTS')?></button>
 							</div>
 						</div>
 					</div>
@@ -234,7 +187,7 @@ $users = $db->loadObjectList();
 					<hr class="mt-0 new-user-data" hidden />
 					<div class="row">
 						<div class="col-lg-6 new-user-data" hidden>
-							<div class="form-group m-0">
+							<div class="form-group">
 								<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_USER_ACCESS_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_USER_ACCESS'); ?></label>
 								<div class="input-group">
 									<select name="newUser" id="<?php echo $APPTAG?>-newUser" class="form-control auto-tab" data-target=".<?php echo $APPTAG?>-user-create-data">
@@ -432,13 +385,45 @@ $users = $db->loadObjectList();
 		<div class="row">
 			<div class="col-sm-8">
 				<div class="row">
-					<div class="col-sm-6">
+					<div class="col-sm-6 col-lg-4">
+						<div class="form-group">
+							<label><?php echo JText::_('FIELD_LABEL_BIRTHDAY'); ?></label>
+							<input type="text" name="birthday" id="<?php echo $APPTAG?>-birthday" class="form-control field-date birthday" data-convert="true" />
+						</div>
+					</div>
+					<div class="col-sm-6 col-lg-4">
+						<div class="form-group">
+							<label><?php echo JText::_('FIELD_LABEL_MARITAL_STATUS'); ?></label>
+							<select name="marital_status" id="<?php echo $APPTAG?>-marital_status" class="form-control auto-tab" data-target="<?php echo $APPTAG?>-group-children" data-tab-disabled="true">
+								<option value="0" data-target-display="false"><?php echo JText::_('TEXT_SELECT'); ?></option>
+								<option value="1" data-target-display="false"><?php echo JText::_('TEXT_MARITAL_STATUS_1'); ?></option>
+								<option value="2" data-target-display="true"><?php echo JText::_('TEXT_MARITAL_STATUS_2'); ?></option>
+								<option value="3" data-target-display="true"><?php echo JText::_('TEXT_MARITAL_STATUS_3'); ?></option>
+								<option value="4" data-target-display="false"><?php echo JText::_('TEXT_MARITAL_STATUS_4'); ?></option>
+								<option value="5" data-target-display="false"><?php echo JText::_('TEXT_MARITAL_STATUS_5'); ?></option>
+							</select>
+						</div>
+					</div>
+					<div id="<?php echo $APPTAG?>-group-children" class="col-sm-6 col-lg-4" hidden>
+						<div class="form-group">
+							<label><?php echo JText::_('FIELD_LABEL_CHILDREN'); ?></label>
+							<select type="text" name="children" id="<?php echo $APPTAG?>-children" class="form-control">
+								<option value="0"><?php echo JText::_('TEXT_SELECT'); ?></option>
+								<?php
+									for($i = 1; $i < 50; $i++) {
+										echo '<option value="'.$i.'">'.$i.'</option>';
+									}
+								?>
+							</select>
+						</div>
+					</div>
+					<div class="col-sm-6 col-lg-8">
 						<div class="form-group">
 							<label><?php echo JText::_('FIELD_LABEL_OCCUPATION'); ?></label>
 							<input type="text" name="occupation" id="<?php echo $APPTAG?>-occupation" class="form-control upper" />
 						</div>
 					</div>
-					<div class="col-sm-6">
+					<div class="col-sm-6 col-lg-4">
 						<div class="form-group">
 							<label><?php echo JText::_('FIELD_LABEL_RESUME'); ?></label>
 							<div class="btn-file">
@@ -453,19 +438,19 @@ $users = $db->loadObjectList();
 				<hr class="hr-tag" />
 				<span class="badge badge-primary"><?php echo JText::_('TEXT_CONTRACTUAL_DATA'); ?></span>
 				<div class="row">
-					<div class="col-sm-6">
+					<div class="col-sm-6 col-lg-4">
 						<div class="form-group">
 							<label>CPF</label>
 							<input type="text" name="cpf" id="<?php echo $APPTAG?>-cpf" class="form-control field-cpf" />
 						</div>
 					</div>
-					<div class="col-sm-6">
+					<div class="col-sm-6 col-lg-4">
 						<div class="form-group">
 							<label>CNPJ</label>
 							<input type="text" name="cnpj" id="<?php echo $APPTAG?>-cnpj" class="form-control field-cnpj" />
 						</div>
 					</div>
-					<div class="col-sm-6">
+					<div class="col-sm-6 col-lg-4">
 						<div class="form-group">
 							<label><?php echo JText::_('FIELD_LABEL_CONTRACT'); ?></label>
 							<div class="btn-file">
@@ -481,7 +466,7 @@ $users = $db->loadObjectList();
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label><?php echo JText::_('FIELD_LABEL_ABOUT'); ?></label>
-					<textarea name="about_me" id="<?php echo $APPTAG?>-about_me" rows="8" class="form-control"></textarea>
+					<textarea name="about_me" id="<?php echo $APPTAG?>-about_me" rows="12" class="form-control"></textarea>
 				</div>
 			</div>
 		</div>

@@ -5,9 +5,12 @@
 	#tmpl-sidebar-content {
 
 		#projects-details-select {
+			display: flex;
+			align-items: center;
 			height: 52px;
-			padding: 1.1rem .5rem;
+			padding: 0 .5rem;
 			color: #fff;
+			font-size: 1.3rem;
 			background: $base-color-primary;
 
 			.chosen-container > a.chosen-single {
@@ -37,8 +40,15 @@
 
 		// SIDEBAR LIST
 
-		#projects-details-view > a {
-			padding: .75rem .5rem;
+		#projects-details-view .projects-selector  {
+		    position: absolute;
+		    right: -2px;
+		    top: 48px;
+		    font-size: 3rem;
+		    color: $base-body-bg;
+		}
+		#projects-sidebar-list-view > a {
+			padding: .62rem .5rem;
 			border-bottom: 1px solid $base-gray-900;
 
 			&:hover,

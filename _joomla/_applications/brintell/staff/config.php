@@ -41,9 +41,6 @@ endif;
 $cfg[$APPTAG.'AccessLevel']['brintell']	= '11, 12, 13';
 // 14 => External
 $cfg[$APPTAG.'AccessLevel']['external']	= '14';
-// 15 => Client Manager
-// 16 => Client
-$cfg[$APPTAG.'AccessLevel']['client']	= '15, 16';
 
 // Crud's permissions
 	$cfg['isPublic']			= false; // Público -> acesso aberto a todos
@@ -53,6 +50,9 @@ $cfg[$APPTAG.'AccessLevel']['client']	= '15, 16';
 	// $cfg['groupId']['admin'][]   = administra o componente
 	// ----------------------------------------------------
 	$cfg['groupId']['viewer'][]	= 0;	// '0' pois não pode ser vazio
+	// ----------------------------------------------------
+	$cfg['groupId']['client'][]	= 15;	// Client
+	$cfg['groupId']['client'][]	= 16;	// Client Manager
 	// acesso liberado sempre
 	$cfg['groupId']['admin'][]	= 11;	// Brintel Manager
 	$cfg['groupId']['admin'][]	= 8;	// Desenvolvedor

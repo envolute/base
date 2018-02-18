@@ -94,16 +94,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['relationId']			= $input->get('relationId', 0, 'int');
 		$request['state']				= $input->get('state', 1, 'int');
 		// app
-		$request['newUser']				= $input->get('newUser', 0, 'int');
-		$request['user_id']				= $input->get('user_id', 0, 'int');
-			// Define o usuário
-			$userID						= $request['newUser'] ? $request['newUser'] : $request['user_id'];
-		$request['type']				= $input->get('type', 0, 'int');
-		$request['role_id']				= $input->get('role_id', 0, 'int');
 		$request['name']				= $input->get('name', '', 'string');
 		$request['nickname']			= $input->get('nickname', '', 'string');
 		$request['email']				= $input->get('email', '', 'string');
-		$request['gender']				= $input->get('gender', 1, 'int');
 		$request['birthday']			= $input->get('birthday', '', 'string');
 		$request['marital_status']		= $input->get('marital_status', 0, 'int');
 		$request['children']			= $input->get('children', 0, 'int');
@@ -115,7 +108,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['address_city']		= $input->get('address_city', '', 'string');
 		$request['address_state']		= $input->get('address_state', '', 'string');
 		$request['address_country']		= $input->get('address_country', '', 'string');
-		$request['onlyBR']				= $input->get('onlyBR', 0, 'int');
 		$phone							= $input->get('phone', array(), 'array');
 		$phone							= str_replace(';', '.', $phone); // formata
 		$request['phone']				= implode(';', $phone);
@@ -143,16 +135,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$tags							= str_replace(';', '.', $tags); // formata
 		$request['tags']				= implode(';', $tags);
 	    // user registration action
-	  	// $request['access']				= $input->get('access', 0, 'int');
-	    // $request['username']			= $input->get('username', '', 'string');
-		// $request['usergroup']			= $input->get('usergroup', 0, 'int');
 		$request['password']			= $input->get('password', '', 'string');
 	  	$request['repassword']			= $input->get('repassword', '', 'string');
-	  	// $request['emailConfirm']		= $input->get('emailConfirm', 0, 'int');
-	  	// $request['emailInfo']			= $input->get('emailInfo', '', 'string');
-	  	// $request['reasonStatus']		= $input->get('reasonStatus', '', 'string');
-		// Se o acesso for liberado, limpa o valor do campo 'motivo'
-		// $reason = $request['access'] == 1 ? '' : $request['reasonStatus'];
 
 		// SAVE CONDITION
 		// Condição para inserção e atualização dos registros
@@ -224,14 +208,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'prev'				=> $prev,
 						'next'				=> $next,
 						// App Fields
-						'type'				=> $item->type,
-						'role_id'			=> $item->role_id,
-						'user_id'			=> $itemUID,
-						'user'				=> $itemName,
 						'name'				=> $item->name,
 						'nickname'			=> $item->nickname,
 						'email'				=> $itemEmail,
-						'gender'			=> $item->gender,
 						'birthday'			=> $item->birthday,
 						'marital_status'	=> $item->marital_status,
 						'children'			=> $item->children,
@@ -243,7 +222,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'address_city'		=> $item->address_city,
 						'address_state'		=> $item->address_state,
 						'address_country'	=> $item->address_country,
-						'onlyBR'			=> $item->onlyBR,
 						'phone'				=> $item->phone,
 						'whatsapp'			=> $item->whatsapp,
 						'phone_desc'		=> $item->phone_desc,
@@ -252,10 +230,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'weblink_text'		=> $item->weblink_text,
 						'weblink_url'		=> $item->weblink_url,
 						'occupation'		=> $item->occupation,
-						'about_me'		=> $item->about_me,
+						'about_me'			=> $item->about_me,
 						'tags'				=> explode(';', $item->tags),
-						'access'			=> ($itemBlock ? 0 : 1),
-						'reasonStatus'		=> $item->reasonStatus,
 						'files'				=> $listFiles
 					);
 
@@ -264,13 +240,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 					$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
 					$query .=
-						// $db->quoteName('type')				.'='. $request['type'] .','.
-						// $db->quoteName('role_id')			.'='. $request['role_id'] .','.
-						// $db->quoteName('user_id')			.'='. $userID .','.
 						$db->quoteName('name')				.'='. $db->quote($request['name']) .','.
 						$db->quoteName('nickname')			.'='. $db->quote($request['nickname']) .','.
 						$db->quoteName('email')				.'='. $db->quote($request['email']) .','.
-						// $db->quoteName('gender')			.'='. $request['gender'] .','.
 						$db->quoteName('birthday')			.'='. $db->quote($request['birthday']) .','.
 						$db->quoteName('marital_status') 	.'='. $request['marital_status'] .','.
 						$db->quoteName('children')			.'='. $request['children'] .','.
@@ -292,9 +264,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('occupation')		.'='. $db->quote($request['occupation']) .','.
 						$db->quoteName('about_me')		.'='. $db->quote($request['about_me']) .','.
 						$db->quoteName('tags')				.'='. $db->quote($request['tags']) .','.
-						// $db->quoteName('access')			.'='. $request['access'] .','.
-						// $db->quoteName('reasonStatus')		.'='. $db->quote($reason) .','.
-						// $db->quoteName('state')				.'='. $request['state'] .','.
 						$db->quoteName('alter_date')		.'= NOW(),'.
 						$db->quoteName('alter_by')			.'='. $user->id
 					;
@@ -320,15 +289,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$query = 'UPDATE '. $db->quoteName('#__users') .' SET name = '. $db->quote($request['name']) .', email = '. $db->quote($request['email']). $newPass .', block = 0 WHERE id = '.$userInfoId;
 							$db->setQuery($query);
 							$db->execute();
-							// Atribui o usuário ao cliente
-							// Obs: atribui o 'username' do cliente ao usuário para manter o padrão. Para isso,
-							// Utiliza "$request['username']" ao invés de "$username", porque "$username" passa por validação
-							// e como o usuário já existe, caso já esteja no padrão, não passará na validação, pois já existirá
-							// Um exemplo disso é quando for utilizado o 'CPF' como nome de usuário
-							if($request['newUser'] != 0) :
-								setClientCode($id, $request['newUser'], $request['username'], $cfg);
-								$userMsg = '<br />'.JText::_('MSG_USER_CREATED');
-							endif;
 						endif;
 
 						$data[] = array(

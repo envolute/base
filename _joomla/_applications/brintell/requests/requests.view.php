@@ -115,13 +115,10 @@ if($vID != 0) :
 			$query	= '
 				SELECT
 					T1.*,
-					'. $db->quoteName('T2.name') .' role,
-					'. $db->quoteName('T3.session_id') .' online
-				FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' T1
-					LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_staff_roles') .' T2
-					ON '.$db->quoteName('T2.id') .' = T1.role_id
-					LEFT JOIN '. $db->quoteName('#__session') .' T3
-					ON '.$db->quoteName('T3.userid') .' = T1.user_id AND T3.client_id = 0
+					'. $db->quoteName('T2.session_id') .' online
+				FROM '. $db->quoteName('#__'.$cfg['project'].'_clients_staff') .' T1
+					LEFT JOIN '. $db->quoteName('#__session') .' T2
+					ON '.$db->quoteName('T2.userid') .' = T1.user_id AND T2.client_id = 0
 				WHERE T1.user_id = '.$item->created_by
 			;
 			$db->setQuery($query);
@@ -134,26 +131,32 @@ if($vID != 0) :
 					$lStatus = JText::_('TEXT_USER_STATUS_0');
 					$iStatus = '';
 				endif;
-				$name = baseHelper::nameFormat((!empty($obj->nickname) ? $obj->nickname : $obj->name));
-				$role = baseHelper::nameFormat($obj->occupation);
+				$name = baseHelper::nameFormat($obj->name);
+				$role = baseHelper::nameFormat($obj->role);
 				if(!empty($role)) $role = '<br />'.$role;
 				$info = baseHelper::nameFormat($name).$role.'<br />'.$lStatus;
 
 				// Imagem Principal -> Primeira imagem (index = 0)
-				$img = uploader::getFile('#__brintell_staff_files', '', $obj->id, 0, JPATH_BASE.DS.'images/apps/staff/');
-				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/staff/'.$img['filename'], 24, 24);
+				$img = uploader::getFile('#__brintell_clients_staff_files', '', $obj->id, 0, JPATH_BASE.DS.'images/apps/clientsStaff/');
+				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/clientsStaff/'.$img['filename'], 24, 24);
 				else $imgPath = JURI::root().'images/apps/icons/user_'.$obj->gender.'.png';
 				$img = '<img src="'.$imgPath.'" class="img-fluid rounded mb-2" style="width:24px; height:24px;" />';
-
+				$urlProfile = 'apps/clientsStaff/profile?vID='.$obj->user_id;
 				$createdBy .= '
-					<a href="apps/staff/profile?vID='.$obj->user_id.'" class="d-inline-block pos-relative hasTooltip" title="'.$info.'">
+					<a href="'.$urlProfile.'" class="d-inline-block pos-relative hasTooltip" title="'.$info.'">
 						'.$img.$iStatus.'
 					</a>
 				';
 			endif;
 		endif;
 
-		$deadline = ($item->deadline != '0000-00-00 00:00:00') ? '- '.JText::_('FIELD_LABEL_DEADLINE').' '.baseHelper::dateFormat($item->deadline, 'd/m/y H:i').$item->timePeriod : '';
+		$deadline = '';
+		if($item->deadline != '0000-00-00 00:00:00') {
+			$dt = explode(' ', $item->deadline);
+			$dlDate = baseHelper::dateFormat($dt[0], 'd/m/y');
+			$dlTime = ($dt[1] != '00:00:00') ? ' '.substr($dt[1], 0, 5).$item->timePeriod : '';
+			$deadline = '- '.JText::_('FIELD_LABEL_DEADLINE').' '.$dlDate.$dlTime;
+		}
 
 		$tags = '';
 		if(!empty($item->tags)) :
@@ -185,7 +188,7 @@ if($vID != 0) :
 						'.$item->subject.'
 					</h2>
 					<div class="font-condensed text-sm text-muted mb-2">
-						<a href="'.$urlViewProject.'" target="_blank">'.baseHelper::nameFormat($item->project).'</a> - '.JText::_('TEXT_SINCE').' '.baseHelper::dateFormat($item->created_date).
+						'.JText::_('TEXT_BY').' <a href="'.$urlProfile.'">'.$name.'</a> - <a href="'.$urlViewProject.'" target="_blank">'.baseHelper::nameFormat($item->project).'</a> - '.JText::_('TEXT_SINCE').' '.baseHelper::dateFormat($item->created_date).
 						' <span class="text-live">'.$deadline.'</span>
 					</div>
 					'.$btnActions.$createdBy.$tags.'

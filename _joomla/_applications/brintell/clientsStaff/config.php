@@ -13,7 +13,7 @@ $cfg['parent']	= '';
 // App Define
 $APPNAME		= 'clientsStaff';
 $APPPATH		= !empty($cfg['parent']) ? $cfg['parent'] : $APPNAME;
-$MAIN_TB		= '#__'.$cfg['project'].'_rel_clients_staff';
+$MAIN_TB		= '#__'.$cfg['project'].'_clients_staff';
 $APPTAG			= isset(${$APPNAME.'AppTag'}) ? ${$APPNAME.'AppTag'} : $APPNAME;
 $newInstance	= ($APPTAG != $APPNAME) ? true : false;
 
@@ -41,9 +41,13 @@ endif;
 	// $cfg['groupId']['viewer'][]  = apenas visualiza o componente
 	// $cfg['groupId']['admin'][]   = administra o componente
 	// ----------------------------------------------------
-	$cfg['groupId']['viewer'][]	= 0; // '0' pois não pode ser vazio
+	$cfg['groupId']['viewer'][]	= 13;	// Brintell Developer
+	$cfg['groupId']['viewer'][]	= 14;	// External
+	$cfg['groupId']['viewer'][]	= 16;	// Client
 	// acesso liberado sempre
+	$cfg['groupId']['admin'][]	= 15;	// Client Manager
 	$cfg['groupId']['admin'][]	= 11;	// Brintel Manager
+	$cfg['groupId']['admin'][]	= 12;	// Brintel Analyst
 	$cfg['groupId']['admin'][]	= 8;	// Desenvolvedor
 	// ----------------------------------------------------
 
@@ -57,6 +61,17 @@ endif;
 // Save Function
 // fuction called after save action
 	$cfg['saveTrigger']			= '';
+
+// form definitions
+	// País default -> preenche o campo com o valor padrão
+	$cfg['countryDef']			= 'BRASIL';
+	if(isset(${$APPTAG.'CountryDef'}) && !empty(${$APPTAG.'CountryDef'})) $cfg['countryDef'] = ${$APPTAG.'CountryDef'};
+	// Estado default -> preenche o campo com o valor padrão
+	$cfg['stateDef']			= '';
+	if(isset(${$APPTAG.'StateDef'}) && !empty(${$APPTAG.'StateDef'})) $cfg['stateDef'] = ${$APPTAG.'StateDef'};
+	// Cidade default -> preenche o campo com o valor padrão
+	$cfg['cityDef']				= '';
+	if(isset(${$APPTAG.'CityDef'}) && !empty(${$APPTAG.'CityDef'})) $cfg['cityDef'] = ${$APPTAG.'CityDef'};
 
 // view
 
@@ -124,21 +139,22 @@ endif;
 // form's
 
 	$cfg['showFormHeader']		= true;
-	$cfg['showFormToolbar']		= false;
+	$cfg['showFormToolbar']		= true;
 	// Form button action
 	// false => save (keep)
 	// true => save and close (remove 'save & keep')
 	$cfg['formBtnAction']		= false;
 
 	// date & price convertions
-	$cfg['dateConvert']			= false;
+	$cfg['dateConvert']			= true;
 	$cfg['load_UI']				= $cfg['dateConvert'];
 	$cfg['priceDecimal']		= false;
 	$cfg['htmlEditor']			= false;
 	$cfg['htmlEditorFull']		= false;
 
-	// crud's upload config
-	$cfg['hasUpload']			= false;
+// crud's upload config
+
+	$cfg['hasUpload']			= true;
 	$cfg['hasUpload'] = isset(${$APPTAG.'hasUpload'}) ? ${$APPTAG.'hasUpload'} : $cfg['hasUpload'];
 	// habilita a adição dinamica de novos campos do tipo 'file'
 	$cfg['dinamicFiles']		= false;

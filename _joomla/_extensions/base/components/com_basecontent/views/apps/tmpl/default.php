@@ -29,6 +29,8 @@ defined('_JEXEC') or die;
 		${$this->app.'AppTag'} = $this->appTag;
 		${$this->appTag.'RelTag'} = $this->relTag;
 		${$this->appTag.'IsPublic'} = $this->isPublic;
+		${$this->appTag.'ViewerGroups'} = $this->viewerGroups;
+		${$this->appTag.'AdminGroups'} = $this->adminGroups;
 		// LIST
 
 		${$this->appTag.'ItemView'} = $this->itemView;

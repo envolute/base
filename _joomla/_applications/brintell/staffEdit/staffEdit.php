@@ -6,6 +6,14 @@
 defined('_JEXEC') or die;
 $ajaxRequest = false;
 require('config.php');
+
+// Redireciona para o perfil do cliente
+$hasClient = array_intersect($groups, $cfg['groupId']['client']); // se está na lista de grupos permitidos
+if($hasClient) {
+	$app->redirect(JURI::root(true).'/apps/clients/clientsstaff/edit-profile');
+	exit();
+}
+
 // IMPORTANTE: Carrega o arquivo 'helper' do template
 JLoader::register('baseHelper', JPATH_CORE.DS.'helpers/base.php');
 JLoader::register('baseAppHelper', JPATH_CORE.DS.'helpers/apps.php');
@@ -117,14 +125,10 @@ jQuery(document).ready(function() {
 			// App Fields
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
-			// type.val('');
-			// role_id.val('');
-			// user_id.val('');
 			name.val('');
 			nickname.val('');
 			email.val('');
 			cmail.val('');
-			// checkOption(gender, ''); // radio
 			birthday.val('');
 			marital_status.selectUpdate(0); // select
 			children.selectUpdate(0); // select
@@ -147,9 +151,6 @@ jQuery(document).ready(function() {
 			occupation.val('');
 			about_me.val('');
 			tags.selectUpdate(''); // select
-			// usergroup.selectUpdate(0); // select
-			// checkOption(access, 0);
-			// reasonStatus.val('');
 			password.val('');
 			repassword.val('');
 
@@ -328,15 +329,10 @@ jQuery(document).ready(function() {
 						?>
 
 						// App Fields
-						// type.selectUpdate(item.type);
-						// role_id.selectUpdate(item.role_id);
-						// user_id.val(item.user_id);
-						// usergroup.selectUpdate(item.usergroup); // select
 						name.val(item.name);
 						nickname.val(item.nickname);
 						email.val(item.email);
 						cmail.val(item.email);
-						// checkOption(gender, item.gender); // radio
 						birthday.val(dateFormat(item.birthday)); // DATE -> conversão de data
 						marital_status.selectUpdate(item.marital_status); // select
 						children.selectUpdate(item.children); // select
@@ -388,8 +384,6 @@ jQuery(document).ready(function() {
 						occupation.val(item.occupation);
 						about_me.val(item.about_me);
 						tags.selectUpdate(item.tags); // select
-						// checkOption(access, item.access);
-						// reasonStatus.val(item.reasonStatus);
 						password.val('');
 						repassword.val('');
 

@@ -283,7 +283,14 @@ if($vID != 0) :
 
 else :
 
-	echo '<h4 class="alert alert-warning">'.JText::_('MSG_NO_ITEM_SELECTED').'</h4>';
+	// Redireciona para o perfil do cliente
+	$hasClient = array_intersect($groups, $cfg['groupId']['client']); // se está na lista de grupos permitidos
+	if($hasClient) {
+		$app->redirect(JURI::root(true).'/apps/clients/clientsstaff/profile');
+		exit();
+	} else {
+		echo '<h4 class="alert alert-warning">'.JText::_('MSG_NO_ITEM_SELECTED').'</h4>';
+	}
 
 endif;
 ?>

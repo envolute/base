@@ -52,64 +52,60 @@ $tags = $db->loadObjectList();
 							<input type="text" name="birthday" id="<?php echo $APPTAG?>-birthday" class="form-control field-date birthday" data-convert="true" />
 						</div>
 					</div>
-					<?php if(!$client) :?>
-						<div class="col-sm-4">
-							<div class="form-group">
-								<label><?php echo JText::_('FIELD_LABEL_OCCUPATION'); ?></label>
-								<input type="text" name="occupation" id="<?php echo $APPTAG?>-occupation" class="form-control upper" />
-							</div>
+					<div class="col-sm-4">
+						<div class="form-group">
+							<label><?php echo JText::_('FIELD_LABEL_OCCUPATION'); ?></label>
+							<input type="text" name="occupation" id="<?php echo $APPTAG?>-occupation" class="form-control upper" />
 						</div>
-						<div class="col-lg-4">
-							<div class="form-group">
-								<label><?php echo JText::_('FIELD_LABEL_MARITAL_STATUS'); ?></label>
-								<select name="marital_status" id="<?php echo $APPTAG?>-marital_status" class="form-control auto-tab" data-target="<?php echo $APPTAG?>-group-children">
-									<option value="0" data-target-display="false"><?php echo JText::_('TEXT_SELECT'); ?></option>
-									<option value="1" data-target-display="false"><?php echo JText::_('TEXT_MARITAL_STATUS_1'); ?></option>
-									<option value="2" data-target-display="true"><?php echo JText::_('TEXT_MARITAL_STATUS_2'); ?></option>
-									<option value="3" data-target-display="true"><?php echo JText::_('TEXT_MARITAL_STATUS_3'); ?></option>
-									<option value="4" data-target-display="false"><?php echo JText::_('TEXT_MARITAL_STATUS_4'); ?></option>
-									<option value="5" data-target-display="false"><?php echo JText::_('TEXT_MARITAL_STATUS_5'); ?></option>
-								</select>
-							</div>
-						</div>
-						<div id="<?php echo $APPTAG?>-group-children" class="col-lg-4" hidden>
-							<div class="form-group">
-								<label><?php echo JText::_('FIELD_LABEL_CHILDREN'); ?></label>
-								<select type="text" name="children" id="<?php echo $APPTAG?>-children" class="form-control">
-									<option value="0"><?php echo JText::_('TEXT_SELECT'); ?></option>
-									<?php
-										for($i = 1; $i < 50; $i++) {
-											echo '<option value="'.$i.'">'.$i.'</option>';
-										}
-									?>
-								</select>
-							</div>
-						</div>
-					<?php endif;?>
-				</div>
-				<?php if(!$client) :?>
-					<hr class="mt-0 b-primary-lighter" />
-					<div class="form-group">
-						<label><?php echo JText::_('FIELD_LABEL_ABOUT'); ?></label>
-						<textarea name="about_me" id="<?php echo $APPTAG?>-about_me" rows="2" class="form-control"></textarea>
 					</div>
-					<div class="form-group">
-						<label><?php echo JText::_('FIELD_LABEL_TAGS'); ?></label>
-						<div class="input-group">
-							<select name="tags[]" id="<?php echo $APPTAG?>-tags" class="form-control" multiple>
+					<div class="col-lg-4">
+						<div class="form-group">
+							<label><?php echo JText::_('FIELD_LABEL_MARITAL_STATUS'); ?></label>
+							<select name="marital_status" id="<?php echo $APPTAG?>-marital_status" class="form-control auto-tab" data-target="<?php echo $APPTAG?>-group-children">
+								<option value="0" data-target-display="false"><?php echo JText::_('TEXT_SELECT'); ?></option>
+								<option value="1" data-target-display="false"><?php echo JText::_('TEXT_MARITAL_STATUS_1'); ?></option>
+								<option value="2" data-target-display="true"><?php echo JText::_('TEXT_MARITAL_STATUS_2'); ?></option>
+								<option value="3" data-target-display="true"><?php echo JText::_('TEXT_MARITAL_STATUS_3'); ?></option>
+								<option value="4" data-target-display="false"><?php echo JText::_('TEXT_MARITAL_STATUS_4'); ?></option>
+								<option value="5" data-target-display="false"><?php echo JText::_('TEXT_MARITAL_STATUS_5'); ?></option>
+							</select>
+						</div>
+					</div>
+					<div id="<?php echo $APPTAG?>-group-children" class="col-lg-4" hidden>
+						<div class="form-group">
+							<label><?php echo JText::_('FIELD_LABEL_CHILDREN'); ?></label>
+							<select type="text" name="children" id="<?php echo $APPTAG?>-children" class="form-control">
+								<option value="0"><?php echo JText::_('TEXT_SELECT'); ?></option>
 								<?php
-									foreach ($tags as $obj) {
-										echo '<option value="'.$obj->name.'">'.baseHelper::nameFormat($obj->name).'</option>';
+									for($i = 1; $i < 50; $i++) {
+										echo '<option value="'.$i.'">'.$i.'</option>';
 									}
 								?>
 							</select>
-							<span class="input-group-btn">
-								<button type="button" class="base-icon-plus btn btn-success hasTooltip" title="<?php echo JText::_('TEXT_ADD')?>" data-toggle="modal" data-target="#modal-<?php echo $APPTAG?>Tags" data-backdrop="static" data-keyboard="false"></button>
-								<button type="button" class="base-icon-cog btn btn-primary hasTooltip" title="<?php echo JText::_('TEXT_EDIT')?>" onclick="<?php echo $APPTAG?>Tags_listReload(false)" data-toggle="modal" data-target="#modal-list-<?php echo $APPTAG?>Tags" data-backdrop="static" data-keyboard="false"></button>
-							</span>
 						</div>
 					</div>
-				<?php endif;?>
+				</div>
+				<hr class="mt-0 b-primary-lighter" />
+				<div class="form-group">
+					<label><?php echo JText::_('FIELD_LABEL_ABOUT'); ?></label>
+					<textarea name="about_me" id="<?php echo $APPTAG?>-about_me" rows="2" class="form-control"></textarea>
+				</div>
+				<div class="form-group">
+					<label><?php echo JText::_('FIELD_LABEL_TAGS'); ?></label>
+					<div class="input-group">
+						<select name="tags[]" id="<?php echo $APPTAG?>-tags" class="form-control" multiple>
+							<?php
+								foreach ($tags as $obj) {
+									echo '<option value="'.$obj->name.'">'.baseHelper::nameFormat($obj->name).'</option>';
+								}
+							?>
+						</select>
+						<span class="input-group-btn">
+							<button type="button" class="base-icon-plus btn btn-success hasTooltip" title="<?php echo JText::_('TEXT_ADD')?>" data-toggle="modal" data-target="#modal-<?php echo $APPTAG?>Tags" data-backdrop="static" data-keyboard="false"></button>
+							<button type="button" class="base-icon-cog btn btn-primary hasTooltip" title="<?php echo JText::_('TEXT_EDIT')?>" onclick="<?php echo $APPTAG?>Tags_listReload(false)" data-toggle="modal" data-target="#modal-list-<?php echo $APPTAG?>Tags" data-backdrop="static" data-keyboard="false"></button>
+						</span>
+					</div>
+				</div>
 			</div>
 			<div class="col-sm-3 b-left b-left-dashed">
 				<div class="form-group">
@@ -228,62 +224,60 @@ $tags = $db->loadObjectList();
 			</div>
 		</div>
 	</div>
-	<?php if(!$client) :?>
-		<div class="tab-pane fade" id="<?php echo $APPTAG?>TabLocation" role="tabpanel" aria-labelledby="<?php echo $APPTAG?>Tab-location">
-			<div class="row">
-				<div class="col-sm-8 col-lg-7">
-					<div class="form-group field-required">
-						<label><?php echo JText::_('FIELD_LABEL_ADDRESS_STREET'); ?></label>
-						<input type="text" name="address" id="<?php echo $APPTAG?>-address" class="form-control upper" />
-					</div>
-				</div>
-				<div class="col-sm-4 col-lg-3">
-					<div class="form-group field-required">
-						<label><?php echo JText::_('FIELD_LABEL_ADDRESS_NUMBER'); ?></label>
-						<input type="text" name="address_number" id="<?php echo $APPTAG?>-address_number" class="form-control upper" />
-					</div>
-				</div>
-				<div class="col-sm-8 col-lg-7">
-					<div class="form-group">
-						<label><?php echo JText::_('FIELD_LABEL_ADDRESS_INFO'); ?></label>
-						<input type="text" name="address_info" id="<?php echo $APPTAG?>-address_info" class="form-control" />
-					</div>
-				</div>
-				<div class="col-sm-4 col-lg-3">
-					<div class="form-group">
-						<label><?php echo JText::_('FIELD_LABEL_ADDRESS_ZIP_CODE'); ?></label>
-						<input type="text" name="zip_code" id="<?php echo $APPTAG?>-zip_code" class="form-control field-cep" />
-					</div>
+	<div class="tab-pane fade" id="<?php echo $APPTAG?>TabLocation" role="tabpanel" aria-labelledby="<?php echo $APPTAG?>Tab-location">
+		<div class="row">
+			<div class="col-sm-8 col-lg-7">
+				<div class="form-group field-required">
+					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_STREET'); ?></label>
+					<input type="text" name="address" id="<?php echo $APPTAG?>-address" class="form-control upper" />
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-sm-6 col-lg">
-					<div class="form-group field-required">
-						<label><?php echo JText::_('FIELD_LABEL_ADDRESS_STATE'); ?></label>
-						<input type="text" name="address_state" id="<?php echo $APPTAG?>-address_state" class="form-control upper" />
-					</div>
+			<div class="col-sm-4 col-lg-3">
+				<div class="form-group field-required">
+					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_NUMBER'); ?></label>
+					<input type="text" name="address_number" id="<?php echo $APPTAG?>-address_number" class="form-control upper" />
 				</div>
-				<div class="col-sm-6 col-lg">
-					<div class="form-group field-required">
-						<label><?php echo JText::_('FIELD_LABEL_ADDRESS_CITY'); ?></label>
-						<input type="text" name="address_city" id="<?php echo $APPTAG?>-address_city" class="form-control upper" />
-					</div>
+			</div>
+			<div class="col-sm-8 col-lg-7">
+				<div class="form-group">
+					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_INFO'); ?></label>
+					<input type="text" name="address_info" id="<?php echo $APPTAG?>-address_info" class="form-control" />
 				</div>
-				<div class="col-sm-6 col-lg">
-					<div class="form-group">
-						<label><?php echo JText::_('FIELD_LABEL_ADDRESS_DISTRICT'); ?></label>
-						<input type="text" name="address_district" id="<?php echo $APPTAG?>-address_district" class="form-control upper" />
-					</div>
-				</div>
-				<div class="col-sm-6 col-lg field-required">
-					<div class="form-group">
-						<label><?php echo JText::_('FIELD_LABEL_ADDRESS_COUNTRY'); ?></label>
-						<input type="text" name="address_country" id="<?php echo $APPTAG?>-address_country" class="form-control upper" />
-					</div>
+			</div>
+			<div class="col-sm-4 col-lg-3">
+				<div class="form-group">
+					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_ZIP_CODE'); ?></label>
+					<input type="text" name="zip_code" id="<?php echo $APPTAG?>-zip_code" class="form-control field-cep" />
 				</div>
 			</div>
 		</div>
-	<?php endif;?>
+		<div class="row">
+			<div class="col-sm-6 col-lg">
+				<div class="form-group field-required">
+					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_STATE'); ?></label>
+					<input type="text" name="address_state" id="<?php echo $APPTAG?>-address_state" class="form-control upper" />
+				</div>
+			</div>
+			<div class="col-sm-6 col-lg">
+				<div class="form-group field-required">
+					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_CITY'); ?></label>
+					<input type="text" name="address_city" id="<?php echo $APPTAG?>-address_city" class="form-control upper" />
+				</div>
+			</div>
+			<div class="col-sm-6 col-lg">
+				<div class="form-group">
+					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_DISTRICT'); ?></label>
+					<input type="text" name="address_district" id="<?php echo $APPTAG?>-address_district" class="form-control upper" />
+				</div>
+			</div>
+			<div class="col-sm-6 col-lg field-required">
+				<div class="form-group">
+					<label><?php echo JText::_('FIELD_LABEL_ADDRESS_COUNTRY'); ?></label>
+					<input type="text" name="address_country" id="<?php echo $APPTAG?>-address_country" class="form-control upper" />
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <hr class="mt-5" />
 <button name="btn-<?php echo $APPTAG?>-save" id="btn-<?php echo $APPTAG?>-save" class="btn btn-lg btn-success base-icon-ok btn-icon" onclick="<?php echo $APPTAG?>_save('<?php echo $cfg['saveTrigger']?>');"> <?php echo JText::_('TEXT_SAVE'); ?></button>

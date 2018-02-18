@@ -20,7 +20,8 @@ CREATE TABLE `cms_brintell_clients` (
   `alter_date` datetime NOT NULL,
   `alter_by` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `group_id` (`group_id`)
+  KEY `group_id` (`group_id`),
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

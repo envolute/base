@@ -33,14 +33,27 @@ jQuery(function() {
 
 	// APP FIELDS
 	var client_id			= jQuery('#<?php echo $APPTAG?>-client_id');
-	var staff_id			= jQuery('#<?php echo $APPTAG?>-staff_id');
-	var main				= jQuery('#<?php echo $APPTAG?>-main');
-	var department			= jQuery('#<?php echo $APPTAG?>-department');
+	var user_id				= jQuery('#<?php echo $APPTAG?>-user_id');
+	var name 				= jQuery('#<?php echo $APPTAG?>-name');
+	var email				= jQuery('#<?php echo $APPTAG?>-email');
+	var cmail				= jQuery('#<?php echo $APPTAG?>-cmail');
+	var gender 				= mainForm.find('input[name=gender]:radio'); // radio group
+	var role				= jQuery('#<?php echo $APPTAG?>-role');
+	// Joomla Registration
+	var access				= mainForm.find('input[name=access]:radio'); // radio group
+	var usergroup 			= mainForm.find('input[name=usergroup]:radio'); // radio group
+	var cusergroup			= jQuery('#<?php echo $APPTAG?>-cusergroup');
+	var username 			= jQuery('#<?php echo $APPTAG?>-username');
+	var password			= jQuery('#<?php echo $APPTAG?>-password');
+	var repassword			= jQuery('#<?php echo $APPTAG?>-repassword');
+	var emailConfirm		= jQuery('#<?php echo $APPTAG?>-emailConfirm');
+	var emailInfo			= jQuery('#<?php echo $APPTAG?>-emailInfo');
+	var reasonStatus		= jQuery('#<?php echo $APPTAG?>-reasonStatus');
 
-	// PARENT FIELD -> Select
+	// PARENT FIELD
 	// informe, se houver, o campo que representa a chave estrangeira principal
 	var parentFieldId		= client_id; // 'null', caso não exista...
-	var parentFieldGroup	= elementExist(parentFieldId) ? parentFieldId.closest('[class*="col-"]') : null;
+	var parentFieldGroup	= elementExist(parentFieldId) ? parentFieldId.closest('[class*="col"]') : null;
 
 	// GROUP RELATION'S BUTTONS -> grupo de botões de relacionamentos no form
 	var groupRelations		= jQuery('#<?php echo $APPTAG?>-group-relation');
@@ -50,7 +63,7 @@ jQuery(function() {
 
 		// ON FOCUS
 		// campo que recebe o focus no carregamento
-		var firstField		= client_id;
+		var firstField		= '';
 
 		// ON MODAL OPEN -> Ações quando o modal do form é aberto
 		popup.on('shown.bs.modal', function () {
@@ -79,7 +92,7 @@ jQuery(function() {
 			<?php // Default Actions
 			require(JPATH_CORE.DS.'apps/snippets/form/formExecute.def.js.php');
 			?>
-		};
+	 	};
 
 		// FORM RESET -> Reseta o form e limpa as mensagens de validação
 		window.<?php echo $APPTAG?>_formReset = function() {
@@ -91,14 +104,46 @@ jQuery(function() {
 			// App Fields
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
-			staff_id.selectUpdate(0); // select;
-			checkOption(main, 0); // checkbox
-			department.val('');
+			user_id.val('');
+			name.val('');
+			email.val('');
+			cmail.val('');
+			checkOption(gender, ''); // radio
+			role.val('');
+			checkOption(access, 1);
+			setHidden(jQuery('#<?php echo $APPTAG?>-access-group'), true);
+			checkOption(usergroup, 16);
+			cusergroup.val(0);
+			reasonStatus.val('');
+
+			// CLIENTS
+			setHidden(jQuery('#<?php echo $APPTAG?>-alert-clients'), false, jQuery('#<?php echo $APPTAG?>-btn-clients'));
+
+			// CUSTOM -> Remove new fields
+			jQuery('.newFieldsGroup').empty();
+
+			// hide relations buttons
+			setHidden('#<?php echo $APPTAG?>-buttons-relations', true, '#<?php echo $APPTAG?>-msg-relations');
 
 			<?php // Closure Actions
 			require(JPATH_CORE.DS.'apps/snippets/form/formReset.end.js.php');
 			?>
 
+		};
+
+		// CUSTOM -> Reset Registration Fields
+		window.<?php echo $APPTAG?>_accessForm = function(val) {
+			var isUser = (user_id.val() == 0) ? false : true;
+			username.val('');
+			password.val('');
+			repassword.val('');
+			emailInfo.val('');
+			var mailConfirm = 0;
+			checkOption(emailConfirm, mailConfirm);
+			jQuery('#<?php echo $APPTAG?>-accessFields').collapse((val ? 'show' : 'hide'));
+			jQuery('#<?php echo $APPTAG?>-reasonStatus-group').collapse((!val ? 'show' : 'hide'));
+			setHidden('.new-user', (val && isUser), '.edit-user');
+			setHidden('.<?php echo $APPTAG?>-no-user', isUser, '.<?php echo $APPTAG?>-is-user');
 		};
 
 		<?php if($cfg['hasUpload']) : ?>
@@ -141,13 +186,6 @@ jQuery(function() {
 			<?php // Default Actions
 			require(JPATH_CORE.DS.'apps/snippets/form/setParent.def.js.php');
 			?>
-		};
-
-		// CUSTOM -> edit from select
-		window.<?php echo $APPTAG?>_editStaff = function() {
-			var itemID = staff_id.val();
-			if(itemID != '' && itemID != 0) staff_loadEditFields(itemID, false, false);
-			else alert('<?php echo JText::_('MSG_SELECT_ITEM_FROM_LIST')?>');
 		};
 
 	// LIST CONTROLLERS
@@ -195,13 +233,18 @@ jQuery(function() {
 		require(JPATH_CORE.DS.'apps/snippets/ajax/listReload.js.php');
 		?>
 
-		// Load Edit Data -> Prepara o formulário para a edição dos dados
+		// LOAD EDIT
+		// Prepara o formulário para a edição dos dados
 		window.<?php echo $APPTAG?>_loadEditFields = function(appID, reload, formDisable) {
 			var id = (appID ? appID : displayId.val());
 			if(isEmpty(id) || id == 0) {
 				<?php echo $APPTAG?>_formReset();
 				return false;
 			}
+
+			// CUSTOM -> Remove new fields
+			jQuery('.newFieldsGroup').empty();
+
 			<?php echo $APPTAG?>_formExecute(true, formDisable, true); // inicia o loader
 			jQuery.ajax({
 				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=get&id="+id,
@@ -221,10 +264,24 @@ jQuery(function() {
 						?>
 
 						// App Fields
-						client_id.selectUpdate(item.client_id); // select;
-						staff_id.selectUpdate(item.staff_id); // select;
-						checkOption(main, item.main); // checkbox
-						department.val(item.department);
+						client_id.selectUpdate(item.client_id);
+						user_id.val(item.user_id);
+						name.val(item.name);
+						email.val(item.email);
+						cmail.val(item.email);
+						checkOption(gender, item.gender); // radio
+						role.val(item.role);
+						checkOption(access, item.access);
+						setHidden(jQuery('#<?php echo $APPTAG?>-access-group'), false);
+						checkOption(usergroup, item.usergroup); // radio
+						cusergroup.val(item.usergroup);
+						reasonStatus.val(item.reasonStatus);
+
+						// CLIENTS
+						setHidden(jQuery('#<?php echo $APPTAG?>-alert-clients'), true, jQuery('#<?php echo $APPTAG?>-btn-clients'));
+
+						// show relations buttons
+						setHidden('#<?php echo $APPTAG?>-buttons-relations', false, '#<?php echo $APPTAG?>-msg-relations');
 
 						<?php // Closure Actions
 						require(JPATH_CORE.DS.'apps/snippets/form/loadEdit.end.js.php');
@@ -232,7 +289,7 @@ jQuery(function() {
 
 					});
 					// mostra dos botões 'salvar & novo' e 'delete'
-					jQuery('#btn-<?php echo $APPTAG?>-delete').prop('hidden', false);
+					setHidden('#btn-<?php echo $APPTAG?>-delete', false);
 					// limpa as mensagens de erro de validação
 					<?php echo $APPTAG?>_clearValidation(mainForm);
 				},
@@ -265,11 +322,82 @@ jQuery(function() {
 
 		<? endif; ?>
 
+		// CUSTOM -> Sincroniza com os contatos
+		// Essa sincronização apenas verifica se os usuários atribuídos ainda existem e se estão ativos
+		window.<?php echo $APPTAG?>_userSync = function() {
+			<?php echo $APPTAG?>_formExecute(true, true, false); // inicia o loader
+			jQuery.ajax({
+				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=userSync",
+				dataType: 'json',
+				type: 'POST',
+				cache: false,
+				success: function(data) {
+					<?php echo $APPTAG?>_formExecute(true, true, false); // encerra o loader
+					jQuery.map( data, function( res ) {
+						setTimeout(function() {
+							<?php $redir = baseHelper::setUrlParam(JURI::current(), 'sync=1'); ?>
+							window.location.href = "<?php echo $redir?>";
+						}, 1000);
+					});
+				},
+				error: function(xhr, status, error) {
+					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
+					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
+					?>
+					<?php echo $APPTAG?>_formExecute(true, formDisable, false); // encerra o loader
+				}
+			});
+			return false;
+		};
+
 }); // CLOSE JQUERY->READY
 
 jQuery(window).on('load', function() {
-	// Jquery Validation
+
+	// JQUERY VALIDATION
 	window.<?php echo $APPTAG?>_validator = mainForm_<?php echo $APPTAG?>.validate({
+		rules: {
+			email: {
+				remote: {
+					url: '<?php echo _CORE_?>helpers/users/checkEmail.php',
+					type: 'post',
+					data: {
+						cmail: function() {
+							return jQuery('#<?php echo $APPTAG?>-email').val();
+						},
+						cmail: function() {
+							return jQuery('#<?php echo $APPTAG?>-cmail').val();
+						}
+					}
+				}
+			},
+			username: {
+				remote: {
+					url: '<?php echo _CORE_?>helpers/users/checkUsername.php',
+					type: 'post'
+				},
+				required: function(el) {
+					return (jQuery('#<?php echo $APPTAG?>-access-1').is(':checked') && jQuery('#<?php echo $APPTAG?>-id').val() == 0);
+				}
+			},
+			password : {
+				minlength : 6
+			},
+			repassword: {
+				equalTo: '#<?php echo $APPTAG?>-password'
+			}
+		},
+		messages: {
+			email: {
+				remote: '<?php echo JText::_('MSG_EMAIL_EXISTS')?>'
+			},
+			username : {
+				remote: '<?php echo JText::_('MSG_USERNAME_EXISTS')?>'
+			},
+			repassword: {
+				equalTo: '<?php echo JText::_('MSG_PASS_NOT_EQUAL')?>'
+			}
+		},
 		//don't remove this
 		invalidHandler: function(event, validator) {
 			//if there is error,
@@ -317,6 +445,9 @@ jQuery(window).on('load', function() {
 						<button class="btn btn-sm btn-danger <?php echo $APPTAG?>-btn-action d-none d-sm-inline-block" disabled onclick="<?php echo $APPTAG?>_del(0)">
 							<span class="base-icon-trash"></span> <?php echo JText::_('TEXT_DELETE'); ?>
 						</button>
+						<button type="button" class="btn btn-sm btn-success hasTooltip" onclick="<?php echo $APPTAG?>_userSync()" title="<?php echo JText::_('TEXT_USER_SYNC_DESC')?>">
+							<span class="base-icon-arrows-cw"></span> <?php echo JText::_('TEXT_USER_SYNC')?>
+						</button>
 					<?php endif;?>
 				<?php else :?>
 					<?php if(!$cfg['listModal'] && !$cfg['listFull'] && $cfg['ajaxReload']) :?>
@@ -349,7 +480,7 @@ jQuery(window).on('load', function() {
 		$addBtn = $cfg['showAddBtn'] ? '<div class="modal-list-toolbar">'.$addBtn.'</div>' : '';
 	?>
 			<div class="modal fade" id="modal-list-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-list-<?php echo $APPTAG?>Label">
-				<div class="modal-dialog modal-sm" role="document">
+				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<?php require(JPATH_CORE.DS.'apps/layout/list/modal.header.php'); ?>
 						<div class="modal-body">
@@ -367,7 +498,7 @@ jQuery(window).on('load', function() {
 
 	<?php if($hasAdmin) : ?>
 		<div class="modal fade" id="modal-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-<?php echo $APPTAG?>Label">
-			<div class="modal-dialog" role="document">
+			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
 					<form name="form-<?php echo $APPTAG?>" id="form-<?php echo $APPTAG?>" method="post" enctype="multipart/form-data">
 						<?php if($cfg['showFormHeader']) require(JPATH_CORE.DS.'apps/layout/form/modal.header.php'); ?>

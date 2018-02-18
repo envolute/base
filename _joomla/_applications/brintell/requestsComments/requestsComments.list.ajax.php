@@ -59,11 +59,15 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		SELECT
 			T1.*,
 			'. $db->quoteName('T2.id') .' staff_id,
-			'. $db->quoteName('T2.user_id') .',
+			'. $db->quoteName('T2.user_id') .' staff_user_id,
 			'. $db->quoteName('T2.name') .',
 			'. $db->quoteName('T2.nickname') .',
 			'. $db->quoteName('T2.gender') .',
-			'. $db->quoteName('T3.session_id') .' online
+			'. $db->quoteName('T3.id') .' client_id,
+			'. $db->quoteName('T3.user_id') .' client_user_id,
+			'. $db->quoteName('T3.name') .' client,
+			'. $db->quoteName('T3.gender') .',
+			'. $db->quoteName('T4.session_id') .' online
 	';
 	if(!empty($rID) && $rID !== 0) :
 		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
@@ -71,20 +75,24 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$db->quoteName($cfg['mainTable']) .' T1
 				LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_staff') .' T2
 				ON T2.user_id = T1.created_by
-				LEFT JOIN '. $db->quoteName('#__session') .' T3
-				ON '.$db->quoteName('T3.userid') .' = T1.created_by AND T3.client_id = 0
-				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T4
-				ON '.$db->quoteName('T4.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
+				LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients_staff') .' T3
+				ON T3.user_id = T1.created_by
+				LEFT JOIN '. $db->quoteName('#__session') .' T4
+				ON '.$db->quoteName('T4.userid') .' = T1.created_by AND T3.client_id = 0
+				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T5
+				ON '.$db->quoteName('T5.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
 			WHERE '.
-				$db->quoteName('T4.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
+				$db->quoteName('T5.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
 			;
 		else :
 			$query .= '
 				FROM '. $db->quoteName($cfg['mainTable']) .' T1
 					LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_staff') .' T2
 					ON T2.user_id = T1.created_by
-					LEFT JOIN '. $db->quoteName('#__session') .' T3
-					ON '.$db->quoteName('T3.userid') .' = T1.created_by AND T3.client_id = 0
+					LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients_staff') .' T3
+					ON T3.user_id = T1.created_by
+					LEFT JOIN '. $db->quoteName('#__session') .' T4
+					ON '.$db->quoteName('T4.userid') .' = T1.created_by AND T3.client_id = 0
 				WHERE '. $db->quoteName($rNID) .' = '. $rID
 			;
 		endif;
@@ -93,8 +101,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			FROM '. $db->quoteName($cfg['mainTable']) .' T1
 			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_staff') .' T2
 			ON T2.user_id = T1.created_by
-			LEFT JOIN '. $db->quoteName('#__session') .' T3
-			ON '.$db->quoteName('T3.userid') .' = T1.created_by AND T3.client_id = 0
+			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients_staff') .' T3
+			ON T3.user_id = T1.created_by
+			LEFT JOIN '. $db->quoteName('#__session') .' T4
+			ON '.$db->quoteName('T4.userid') .' = T1.created_by AND T3.client_id = 0
 		';
 		if($oCHL) :
 			$query .= ' WHERE 1=0';
@@ -132,9 +142,16 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				}
 
 				// Imagem do usuário
-				$img = uploader::getFile('#__brintell_staff_files', '', $item->staff_id, 0, JPATH_BASE.DS.'images/apps/staff/');
-				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/staff/'.$img['filename'], 41, 41);
-				else $imgPath = $_ROOT.'images/apps/icons/user_'.$item->gender.'.png';
+				$imgPath = $_ROOT.'images/apps/icons/user_'.$item->gender.'.png';
+				if(!$item->client) {
+					$img = uploader::getFile('#__brintell_staff_files', '', $item->staff_id, 0, JPATH_BASE.DS.'images/apps/staff/');
+					if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/staff/'.$img['filename'], 41, 41);
+					$urlProfile = $_ROOT.'apps/staff/profile?vID='.$item->staff_user_id;
+				} else {
+					$img = uploader::getFile('#__brintell_clients_staff_files', '', $item->client_id, 0, JPATH_BASE.DS.'images/apps/clientsStaff/');
+					if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/clientsStaff/'.$img['filename'], 41, 41);
+					$urlProfile = $_ROOT.'apps/clientsStaff/profile?vID='.$item->client_user_id;
+				}
 				$img = '<img src="'.$imgPath.'" class="img-fluid rounded mb-2" style="width:41px; height:41px;" />';
 			endif;
 
@@ -154,8 +171,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 			$html .= '
 				<li class="d-flex">
-					<div class="pr-3" style="flex:0 0 42px;">
-						<a href="'.$_ROOT.'apps/staff/profile?vID='.$item->user_id.'">'.$img.'</a>
+					<div class="mr-3" style="flex:0 0 42px;">
+						<a href="'.$urlProfile.'">'.$img.'</a>
 						<div class="btn-group btn-group-justified">'.$btnEdit.$btnDelete.'</div>
 					</div>
 					<div style="flex-grow:1;" class="font-condensed text-sm mb-2 lh-1-3">

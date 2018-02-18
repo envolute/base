@@ -228,7 +228,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$itemBlock  = ($isUser) ? $userInfoBlock : 1; // inverso do 'access'
 					// Obs: Se 'block' = 1 / 'access' = 0;
 					// O padrão do 'Acesso' na edição é 'Não => 0' ('block = 1'),
-					// pois caso não exista um usuário associado ao cliente
+					// pois caso não exista um usuário associado
 					// o campo de acesso aparece como falso 'Não'
 
 					$data[] = array(
@@ -361,34 +361,36 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 									// se a senha for gerada pelo sistema, envia a senha. Senão, não envia...
 									$bodyData = empty($request['password']) ? JText::sprintf('MSG_ACTIVATION_EMAIL_PWD', $pwd) : JText::_('MSG_ACTIVATION_EMAIL_NOPWD');
 									$emailInfo = !empty($request['emailInfo']) ? '<p>'.$request['emailInfo'].'</p>' : '';
-									$eBody = JText::sprintf('MSG_ACTIVATION_EMAIL_BODY', baseHelper::nameFormat($request['name']), $domain, $request['email'], $bodyData, $emailInfo);
+									$name = !empty($request['nickname']) ? $request['nickname'] : $request['name'];
+									$eBody = JText::sprintf('MSG_ACTIVATION_EMAIL_BODY', baseHelper::nameFormat($name), $emailInfo, $domain, $request['email'], $request['username'], $bodyData);
 									// Email Template
-									$boxStyle	= array('bg' => '#eee', 'color' => '#555', 'border' => '3px solid #303b4d');
-									$headStyle	= array('bg' => '#303b4d', 'color' => '#fff', 'border' => 'none');
-									$bodyStyle	= array('bg' => '#fff');
+									$boxStyle	= array('bg' => '#fafafa', 'color' => '#555', 'border' => 'border: 4px solid #eee');
+									$headStyle	= array('bg' => '#fff', 'color' => '#5EAB87', 'border' => '1px solid #eee');
+									$bodyStyle	= array('bg' => '');
 									$mailLogo	= 'logo-news.png';
-									$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_ACTIVATION_EMAIL_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle);
+									$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_ACTIVATION_EMAIL_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle, $domain);
 								endif;
 								// cria o usuário
-								$newUserId = baseUserHelper::createJoomlaUser($request['name'], $username, $request['email'], $pwd, $request['usergroup'], $isBlock, $request['emailConfirm'], $mailFrom, $subject, $mailHtml);
-								if(is_int($newUserId) && $newUserId > 0) :
+								$newUserId = baseUserHelper::createJoomlaUser($request['name'], $request['username'], $request['email'], $pwd, $request['usergroup'], $isBlock, $request['emailConfirm'], $mailFrom, $subject, $mailHtml);
+								if(is_int($newUserId) && $newUserId > 0) {
 									$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET user_id = '. $newUserId .' WHERE id = '.$id;
 									$db->setQuery($query);
 									$db->execute();
-									setClientCode($id, $newUserId, $username, $cfg);
 									$userMsg = JText::_('MSG_USER_CREATED');
-								else :
+									// envia email de confirmação
+									if($request['emailConfirm']) baseHelper::sendMail($mailFrom, $request['email'], $subject, $mailHtml);
+								} else {
 									$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '.$db->quoteName('access').' = 0 WHERE id = '.$id;
 									$db->setQuery($query);
 									$db->execute();
 									$userMsg = JText::_('MSG_USER_NOT_CREATED');
 									if(!is_int($newUserId)) $userMsg .= ': '.JText::_($newUserId);
-								endif;
+								}
 								$userMsg = '<br />'.$userMsg;
 							// se existir, atualiza os dados 'name' e 'e-mail' para mantê-los sincronizados
 							elseif(($request['newUser'] != 0 && !$isUser) || ($isUser && $userInfoId)) :
 								// Verifica se há alteração do usergroup
-								if($isUser && $request['usergroup'] != $request['cusergroup']) :
+								if($isUser && $request['usergroup'] != $request['cusergroup'] && $request['cusergroup'] > 0) :
 									$query = 'SELECT COUNT(*) FROM '.$db->quoteName('#__user_usergroup_map') .' WHERE group_id = '.$db->quote($request['cusergroup']).' AND user_id = '.$db->quote($request['user_id']);
 									$db->setQuery($query);
 									$mapOn = $db->loadResult();
@@ -412,15 +414,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 								$query = 'UPDATE '. $db->quoteName('#__users') .' SET name = '. $db->quote($request['name']) .', email = '. $db->quote($request['email']). $newPass .', block = 0 WHERE id = '.$userInfoId;
 								$db->setQuery($query);
 								$db->execute();
-								// Atribui o usuário ao cliente
-								// Obs: atribui o 'username' do cliente ao usuário para manter o padrão. Para isso,
-								// Utiliza "$request['username']" ao invés de "$username", porque "$username" passa por validação
-								// e como o usuário já existe, caso já esteja no padrão, não passará na validação, pois já existirá
-								// Um exemplo disso é quando for utilizado o 'CPF' como nome de usuário
-								if($request['newUser'] != 0) :
-									setClientCode($id, $request['newUser'], $request['username'], $cfg);
-									$userMsg .= '<br />'.JText::_('MSG_USER_CREATED');
-								endif;
 							endif;
 						elseif($isUser && $userInfoId) :
 							baseUserHelper::stateToJoomlaUser($userInfoId, 0);
@@ -456,6 +449,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 				// DELETE
 				elseif($task == 'del') :
+
+					// Lista os usuários associados aos clientes
+		            $query = 'SELECT '. $db->quoteName('user_id') .' FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('id') .' IN ('.$ids.')';
+					$db->setQuery($query);
+					$uList = $db->loadObjectList();
 
 					$query = 'DELETE FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('id') .' IN ('.$ids.')';
 
@@ -521,7 +519,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			            $userMsg = '';
 						foreach ($uList as $usr) {
 							if($usr->user_id != 0) {
-								if(baseUserHelper::deleteJoomlaUser($usr->user_id)) $userMsg = JText::_('MSG_USER_DELETED');
+								if(baseUserHelper::deleteJoomlaUser($usr->user_id)) $userMsg = '<br />'.JText::_('MSG_USER_DELETED');
 							}
 						}
 
@@ -646,6 +644,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('type') .','.
 							$db->quoteName('role_id') .','.
 							$db->quoteName('user_id') .','.
+							$db->quoteName('usergroup') .','.
 							$db->quoteName('name') .','.
 							$db->quoteName('nickname') .','.
 							$db->quoteName('email') .','.
@@ -685,6 +684,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$request['type'] .','.
 							$request['role_id'] .','.
 							$userID .','.
+							$request['usergroup'] .','.
 							$db->quote($request['name']) .','.
 							$db->quote($request['nickname']) .','.
 							$db->quote($request['email']) .','.
@@ -761,44 +761,48 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						// cria o usuário se não existir
 						$userMsg = '';
 						if($request['access'] == 1) :
+							// define a senha
+							$pwd = ($request['password'] && !empty($request['password'])) ? $request['password'] : baseHelper::randomPassword();
 							// email de confirmação
 							$mailHtml = '';
 							if($request['emailConfirm'] == 1) :
 								// se a senha for gerada pelo sistema, envia a senha. Senão, não envia...
 								$bodyData = empty($request['password']) ? JText::sprintf('MSG_ACTIVATION_EMAIL_PWD', $pwd) : JText::_('MSG_ACTIVATION_EMAIL_NOPWD');
 								$emailInfo = !empty($request['emailInfo']) ? '<p>'.$request['emailInfo'].'</p>' : '';
-								$eBody = JText::sprintf('MSG_ACTIVATION_EMAIL_BODY', baseHelper::nameFormat($request['name']), $domain, $request['email'], $bodyData, $emailInfo);
+								$name = !empty($request['nickname']) ? $request['nickname'] : $request['name'];
+								$eBody = JText::sprintf('MSG_ACTIVATION_EMAIL_BODY', baseHelper::nameFormat($name), $emailInfo, $domain, $request['email'], $request['username'], $bodyData);
 								// Email Template
-								$boxStyle	= array('bg' => '#eee', 'color' => '#555', 'border' => '3px solid #303b4d');
-								$headStyle	= array('bg' => '#303b4d', 'color' => '#fff', 'border' => 'none');
-								$bodyStyle	= array('bg' => '#fff');
+								$boxStyle	= array('bg' => '#fafafa', 'color' => '#555', 'border' => 'border: 4px solid #eee');
+								$headStyle	= array('bg' => '#fff', 'color' => '#5EAB87', 'border' => '1px solid #eee');
+								$bodyStyle	= array('bg' => '');
 								$mailLogo	= 'logo-news.png';
-								$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_ACTIVATION_EMAIL_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle);
+								$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_ACTIVATION_EMAIL_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle, $domain);
 							endif;
-							if($userID == 0) :
-								// define a senha
-								$pwd = ($request['password'] && !empty($request['password'])) ? $request['password'] : baseHelper::randomPassword();
+							if($userID == 0) {
 								// prepara os dados
 								$isBlock = ($request['state'] == 1) ? 0 : 1;
 								// cria o usuário
 								$newUserId = baseUserHelper::createJoomlaUser($request['name'], $request['username'], $request['email'], $pwd, $request['usergroup'], $isBlock, $request['emailConfirm'], $mailFrom, $subject, $mailHtml);
-								// atribui o usuário ao cliente
-								if(is_int($newUserId) && $newUserId > 0) :
+								// atribui o usuário ao funcionário
+								if(is_int($newUserId) && $newUserId > 0) {
 									$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET user_id = '. $newUserId .' WHERE id = '.$id;
 									$db->setQuery($query);
 									$db->execute();
 									$userMsg = JText::_('MSG_USER_CREATED');
-								else :
+									// envia email de confirmação
+									if($request['emailConfirm']) baseHelper::sendMail($mailFrom, $request['email'], $subject, $mailHtml);
+								} else {
 									$userMsg = !is_int($newUserId) ? JText::_($newUserId) : $userMsg = JText::_('MSG_USER_NOT_CREATED');
-								endif;
+								}
 							// se for selecionado um usuário já existente, atribui o 'user_id'
-							else :
+							} else {
 								$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET user_id = '. $userID .' WHERE id = '.$id;
 								$db->setQuery($query);
 								$db->execute();
-								if($request['emailConfirm']) baseHelper::sendMail($mailFrom, $request['email'], $subject, $mailHtml);
 								$userMsg = JText::_('MSG_USER_ATTRIBUTED');
-							endif;
+								// envia email de confirmação
+								if($request['emailConfirm']) baseHelper::sendMail($mailFrom, $request['email'], $subject, $mailHtml);
+							}
 							$userMsg = '<br />'.$userMsg;
 						endif;
 
@@ -875,8 +879,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			// CUSTOM: get group list of type
 			elseif($task == 'gList' && !empty($groupIDs)) :
 
-				// get client_id of project
-				// get contacts list of project's client
 				$query = 'SELECT * FROM '. $db->quoteName('#__usergroups') .' WHERE '. $db->quoteName('id') .' IN ('.$groupIDs.')';
 
 				try {
