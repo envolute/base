@@ -43,18 +43,18 @@ $_SESSION[$APPTAG.'cardLimit'] = '300,00'; // default
 	$cfg['isEdit']				= isset(${$APPTAG.'IsEdit'}) ? ${$APPTAG.'IsEdit'} : false;
 
 // Crud's permissions
+
 	$cfg['isPublic']			= $cfg['isEdit'] ? false : true; // Público -> acesso aberto a todos
-	// Restrict Access
-	// $cfg['groupId']['viewer'][]  = apenas visualiza o componente
-	// $cfg['groupId']['admin'][]   = administra o componente
+	if(isset(${$APPTAG.'IsPublic'})) $cfg['isPublic'] = ${$APPTAG.'IsPublic'} ? true : false;
+
+// Restrict Access
+
+	// Acesso default, quando não for definido no componente ou módulo
+	$viewerDef	= array(11,12,13); // 'default' (efetivo,aposentado,contribuinte) apenas visualiza o componente. IMPORTANTE: não deve ser vazio. Então => '0'
+	$adminDef	= array(6,7,8); // 'default' Gerente, Administrador, Desenvolvedor
 	// ----------------------------------------------------
-	$cfg['groupId']['viewer'][]	= 11; // Associado -> Efetivo
-	$cfg['groupId']['viewer'][]	= 12; // Associado -> Aposentado
-	$cfg['groupId']['viewer'][]	= 13; // Associado -> Contribuinte
-	// acesso liberado sempre
-	$cfg['groupId']['admin'][]	= 6; // Gerente
-	$cfg['groupId']['admin'][]	= 7; // Administrador
-	$cfg['groupId']['admin'][]	= 8; // Desenvolvedor
+	$cfg['groupId']['viewer']	= (isset(${$APPTAG.'ViewerGroups'}) && count(${$APPTAG.'ViewerGroups'})) ? array_unique(array_merge($viewerDef,${$APPTAG.'ViewerGroups'})) : $viewerDef;
+	$cfg['groupId']['admin']	= (isset(${$APPTAG.'AdminGroups'}) && count(${$APPTAG.'AdminGroups'})) ? array_unique(array_merge($adminDef,${$APPTAG.'AdminGroups'})) : $adminDef;
 
 // crud's name
 	$cfg['APPNAME']				= $APPNAME;

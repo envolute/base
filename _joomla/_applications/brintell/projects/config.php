@@ -35,28 +35,23 @@ if(!$ajaxRequest && (!isset($_SESSION[$APPTAG.'langDef']) || (isset($_SESSION[$A
 endif;
 
 // Crud's permissions
+
 	$cfg['isPublic']			= false; // Público -> acesso aberto a todos
 	if(isset(${$APPTAG.'IsPublic'})) $cfg['isPublic'] = ${$APPTAG.'IsPublic'} ? true : false;
-	// Restrict Access
-	// $cfg['groupId']['analyst'][]  = Analyst
-	// $cfg['groupId']['client'][]  = Client Developer
-	// $cfg['groupId']['client']['manager'][]  = Client Manager
-	// $cfg['groupId']['viewer'][]  = Client Manager
-	// $cfg['groupId']['admin'][]   = administra o componente
+
+// Restrict Access
+
+	// Acesso default, quando não for definido no componente ou módulo
+	$viewerDef	= array(0); // 'default' apenas visualiza o componente. IMPORTANTE: não deve ser vazio. Então => '0'
+	$adminDef	= array(8, 11); // 'default' Desenvolvedor, Brintell Manager
+	// ----------------------------------------------------
+	$cfg['groupId']['viewer']	= (isset(${$APPTAG.'ViewerGroups'}) && count(${$APPTAG.'ViewerGroups'})) ? array_unique(array_merge($viewerDef,${$APPTAG.'ViewerGroups'})) : $viewerDef;
+	$cfg['groupId']['admin']	= (isset(${$APPTAG.'AdminGroups'}) && count(${$APPTAG.'AdminGroups'})) ? array_unique(array_merge($viewerDef,${$APPTAG.'AdminGroups'})) : $adminDef;
 	// ----------------------------------------------------
 	$cfg['groupId']['analyst'][]			= 12; // Brintell Analyst
 	$cfg['groupId']['client'][]				= 16; // Client Developer
-	$cfg['groupId']['client'][]				= 15; // Client Developer
+	$cfg['groupId']['client'][]				= 15; // Client Manager
 	$cfg['groupId']['clientManager'][]		= 15; // Client Manager
-	// ----------------------------------------------------
-	$cfg['groupId']['viewer'][]				= 12; // Brintell Analyst
-	$cfg['groupId']['viewer'][]				= 13; // Brintel Developer
-	$cfg['groupId']['viewer'][]				= 16; // Client Developer
-	$cfg['groupId']['viewer'][]				= 15; // Client Manager
-	// acesso liberado sempre
-	$cfg['groupId']['admin'][]				= 11;	// Brintel Manager
-	$cfg['groupId']['admin'][]				= 8;	// Desenvolvedor
-	// ----------------------------------------------------
 
 // crud's name
 	$cfg['APPNAME']				= $APPNAME;

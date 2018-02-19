@@ -8,7 +8,7 @@ $ajaxRequest = false;
 require('config.php');
 
 // ACESSO
-$cfg['isPublic'] = true; // Público -> acesso aberto a todos
+$cfg['isPublic'] = 1; // Público -> acesso aberto a todos
 
 // IMPORTANTE:
 // Como outras Apps serão carregadas, através de "require", dentro dessa aplicação.
@@ -83,9 +83,9 @@ if($vID != 0) :
 
 		// Contrato -> (index = 1)
 		$doc = uploader::getFile($cfg['fileTable'], '', $item->id, 1, $cfg['uploadDir']);
-		if(!empty($doc)) :
+		if(!empty($doc) && $hasAdmin) :
 			$doc = '
-				<a class="btn btn-info btn-sm btn-block" href="'.JURI::root(true).'/apps/get-file?fn='.base64_encode($doc['filename']).'&mt='.base64_encode($doc['mimetype']).'&tag='.base64_encode($APPNAME).'">
+				<a class="btn btn-info btn-sm btn-block my-1" href="'.JURI::root(true).'/apps/get-file?fn='.base64_encode($doc['filename']).'&mt='.base64_encode($doc['mimetype']).'&tag='.base64_encode($APPNAME).'">
 					<span class="base-icon-doc-text hasTooltip" title="'.$doc['filename'].'<br />'.((int)($doc['filesize'] / 1024)).'kb"> '.JText::_('FIELD_LABEL_DOC').'</span>
 				</a>
 			';
@@ -100,7 +100,7 @@ if($vID != 0) :
 		$agree	= $item->portfolio == 1 ? '<li><span class="text-success text-uppercase"><span class="base-icon-ok"></span> '.JText::_('FIELD_LABEL_PORTFOLIO').'</span></li>' : '';
 		$gName	= !empty($item->groupName) ? '<li>'.$item->groupName.'</li>' : '';
 		$lProj	= '
-			<a class="btn btn-success btn-lg btn-block base-icon-cogs" href="apps/projects?clients_filter=1&clientID='.$item->id.'">
+			<a class="btn btn-success btn-block my-1 base-icon-cogs" href="apps/projects?clients_filter=1&clientID='.$item->id.'">
 				'.JText::_('TEXT_PROJECTS').'
 			</a>
 		';
@@ -145,17 +145,18 @@ if($vID != 0) :
 							<div id="'.$MAINTAG.'TabViewLocation">
 		';
 								// Locations
-								$_locationsOnlyBR				= false;
-								$_locationsStateDef				= '';
-								$_locationsListFull				= false;
-								$_locationsAddText				= false;
-								$_locationsShowAddBtn			= false;
-								$_locationsRelTag				= 'clients';
-								$_locationsRelTable				= '#__'.$PROJECT.'_rel_clients_locations';
-								$_locationsAppNameId			= 'location_id';
-								$_locationsRelNameId			= 'client_id';
-								$_locationsRelListNameId		= 'client_id';
-								$_locationsRelListId			= $item->id;
+								$_locationsIsPublic			= 1; // public view
+								$_locationsOnlyBR			= false;
+								$_locationsStateDef			= '';
+								$_locationsListFull			= false;
+								$_locationsAddText			= false;
+								$_locationsShowAddBtn		= false;
+								$_locationsRelTag			= 'clients';
+								$_locationsRelTable			= '#__'.$PROJECT.'_rel_clients_locations';
+								$_locationsAppNameId		= 'location_id';
+								$_locationsRelNameId		= 'client_id';
+								$_locationsRelListNameId	= 'client_id';
+								$_locationsRelListId		= $item->id;
 
 								require(JPATH_APPS.DS.'_locations/_locations.php');
 								echo '	<a href="#" class="btn btn-sm btn-success base-icon-plus" onclick="_locations_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-_locations" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_INSERT_LOCATION').'</a>';
@@ -167,6 +168,8 @@ if($vID != 0) :
 		';
 
 							// Staff
+							$clientsStaffIsPublic			= 1; // public view
+							$clientsStaffAdminGroups		= array(12,15); // Analyst, Client Manager
 							$clientsStaffListFull			= false;
 							$clientsStaffAddText			= false;
 							$clientsStaffShowAddBtn			= false;

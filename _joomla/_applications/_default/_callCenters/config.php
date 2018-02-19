@@ -38,8 +38,6 @@ endif;
 
 	$cfg['isPublic']			= false; // Público -> acesso como 'admin' aberto a todos
 	if(isset(${$APPTAG.'IsPublic'})) $cfg['isPublic'] = ${$APPTAG.'IsPublic'} ? true : false;
-	$cfg['isViewPublic']		= false; // View Pública -> acesso como 'viewer' aberto a todos
-	if(isset(${$APPTAG.'IsPublic'})) $cfg['isPublic'] = ${$APPTAG.'IsPublic'} ? true : false;
 
 // Restrict Access
 
@@ -47,8 +45,8 @@ endif;
 	$viewerDef	= array(0); // 'default' apenas visualiza o componente. IMPORTANTE: não deve ser vazio. Então => '0'
 	$adminDef	= array(6,7,8); // 'default' Gerente, Administrador, Desenvolvedor
 	// ----------------------------------------------------
-	$cfg['groupId']['viewer']	= (isset(${$APPTAG.'ViewerGroups'}) && count(${$APPTAG.'ViewerGroups'})) ? ${$APPTAG.'ViewerGroups'} : $viewerDef;
-	$cfg['groupId']['admin']	= (isset(${$APPTAG.'AdminGroups'}) && count(${$APPTAG.'AdminGroups'})) ? ${$APPTAG.'AdminGroups'} : $adminDef;
+	$cfg['groupId']['viewer']	= (isset(${$APPTAG.'ViewerGroups'}) && count(${$APPTAG.'ViewerGroups'})) ? array_unique(array_merge($viewerDef,${$APPTAG.'ViewerGroups'})) : $viewerDef;
+	$cfg['groupId']['admin']	= (isset(${$APPTAG.'AdminGroups'}) && count(${$APPTAG.'AdminGroups'})) ? array_unique(array_merge($adminDef,${$APPTAG.'AdminGroups'})) : $adminDef;
 
 // crud's name
 	$cfg['APPNAME']				= $APPNAME;

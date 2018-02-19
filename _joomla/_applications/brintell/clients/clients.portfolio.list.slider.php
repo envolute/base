@@ -8,7 +8,7 @@ $ajaxRequest = false;
 require('config.php');
 
 // ACESSO
-$cfg['isPublic'] = true; // Público -> acesso aberto a todos
+$cfg['isPublic'] = 1; // Público -> acesso aberto a todos
 
 // IMPORTANTE: Carrega o arquivo 'helper' do template
 JLoader::register('baseHelper', JPATH_CORE.DS.'helpers/base.php');

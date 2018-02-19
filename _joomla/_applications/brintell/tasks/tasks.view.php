@@ -224,11 +224,13 @@ if($vID != 0) :
 					<h2 class="font-condensed text-primary">
 						'.$item->subject.'
 					</h2>
-					<div class="font-condensed text-sm text-muted mb-2">
-						<a href="'.$urlViewProject.'" target="_blank">'.baseHelper::nameFormat($item->project).'</a> - '.JText::_('TEXT_SINCE').' '.baseHelper::dateFormat($item->created_date).
-						' <span class="text-live">'.$estimate.'</span>
+					<div class="clearfix">
+						<div class="font-condensed text-sm text-muted mb-2">
+							<a href="'.$urlViewProject.'" target="_blank">'.baseHelper::nameFormat($item->project).'</a> - '.JText::_('TEXT_SINCE').' '.baseHelper::dateFormat($item->created_date).
+							' <span class="text-live">'.$estimate.'</span>
+						</div>
+						'.$btnActions.$assigned.$tags.'
 					</div>
-					'.$btnActions.$assigned.$tags.'
 				</div>
 				<div class="row">
 					<div class="col-md-8 b-right">

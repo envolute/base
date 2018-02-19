@@ -155,7 +155,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			endif;
 
 			$html .= '
-				<div class="bg-white p-2 mb-1 rounded b-top-2 b-danger set-shadow-right">
+				<div class="bg-white p-2 mb-1 rounded b-top-2 b-danger set-shadow">
 					<div class="d-flex">
 						<div style="flex:0 0 20px;">'.$btnState.'</div>
 						<div style="flex-grow:1;" class="font-condensed lh-1-3">

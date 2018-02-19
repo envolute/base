@@ -8,7 +8,7 @@ $ajaxRequest = false;
 require('config.php');
 
 // ACESSO
-$cfg['isPublic'] = true; // Público -> acesso aberto a todos
+$cfg['isPublic'] = 1; // Público -> acesso aberto a todos
 
 // init general css/js files
 require(JPATH_CORE.DS.'apps/_init.app.php');

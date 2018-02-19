@@ -35,22 +35,18 @@ if(!$ajaxRequest && (!isset($_SESSION[$APPTAG.'langDef']) || (isset($_SESSION[$A
 endif;
 
 // Crud's permissions
-	$cfg['isPublic']			= true; // Público -> acesso aberto a todos
+
+	$cfg['isPublic']			= false; // Público -> acesso aberto a todos
 	if(isset(${$APPTAG.'IsPublic'})) $cfg['isPublic'] = ${$APPTAG.'IsPublic'} ? true : false;
-	// Restrict Access
-	// $cfg['groupId']['analyst'][]  = Analyst
-	// $cfg['groupId']['viewer'][]  = Client Manager
-	// $cfg['groupId']['admin'][]   = administra o componente
+
+// Restrict Access
+
+	// Acesso default, quando não for definido no componente ou módulo
+	$viewerDef	= array(0); // 'default' apenas visualiza o componente. IMPORTANTE: não deve ser vazio. Então => '0'
+	$adminDef	= array(8, 11); // 'default' Desenvolvedor, Brintell Manager
 	// ----------------------------------------------------
-	// ----------------------------------------------------
-	$cfg['groupId']['viewer'][]	= 14;	// Externo
-	// acesso liberado sempre
-	$cfg['groupId']['author'][]	= 13;	// Brintell Developer
-	// acesso liberado sempre
-	$cfg['groupId']['admin'][]	= 12;	// Brintell Analyst
-	$cfg['groupId']['admin'][]	= 11;	// Brintel Manager
-	$cfg['groupId']['admin'][]	= 8;	// Desenvolvedor
-	// ----------------------------------------------------
+	$cfg['groupId']['viewer']	= (isset(${$APPTAG.'ViewerGroups'}) && count(${$APPTAG.'ViewerGroups'})) ? array_unique(array_merge($viewerDef,${$APPTAG.'ViewerGroups'})) : $viewerDef;
+	$cfg['groupId']['admin']	= (isset(${$APPTAG.'AdminGroups'}) && count(${$APPTAG.'AdminGroups'})) ? array_unique(array_merge($adminDef,${$APPTAG.'AdminGroups'})) : $adminDef;
 
 // crud's name
 	$cfg['APPNAME']				= $APPNAME;
