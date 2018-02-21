@@ -53,6 +53,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	$fQuery = $PATH_APP_FILE.'.filter.query.php';
 	if($aFLT && file_exists($fQuery)) require($fQuery);
 
+	// Set visibility
+	// OR (visibility = project) OR (created_by = current user)
+	$where .= ' AND ('.$db->quoteName('T1.visibility').' = 0 OR '.$db->quoteName('T1.created_by').' = '.$user->id.')';
+
 	// GET DATA
 	$noReg	= true;
 	$query	= '
@@ -220,7 +224,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						</a>
 						<span class="btn-group">
 							'.$assigned.$btnActions.'
-							<a href="#" class="btn btn-xs btn-link text-info base-icon-info-circled hasPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top" data-trigger="click focus"></a>
+							<a href="#" class="btn btn-xs btn-link text-info base-icon-info-circled hasPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top"></a>
 						</span>
 					</span>
 				</div>

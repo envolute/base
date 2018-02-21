@@ -11,6 +11,7 @@ CREATE TABLE `cms_brintell_requests` (
   `priority` tinyint(4) NOT NULL,
   `deadline` DATETIME NOT NULL,
   `timePeriod` char(2) NOT NULL,
+  `executed` tinyint(4) NOT NULL,
   `tags` varchar(255) NOT NULL,
   `status` tinyint(4) NOT NULL,
   `status_desc` varchar(255) NOT NULL,

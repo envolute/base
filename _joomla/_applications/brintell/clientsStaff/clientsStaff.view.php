@@ -70,32 +70,32 @@ if($vID != 0) :
 	;
 	try {
 		$db->setQuery($query);
-		$item = $db->loadObject();
+		$view = $db->loadObject();
 	} catch (RuntimeException $e) {
 		echo $e->getMessage();
 		return;
 	}
 
-	if(!empty($item->name)) : // verifica se existe
+	if(!empty($view->name)) : // verifica se existe
 
 		if($cfg['hasUpload']) :
 			JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 			// Imagem Principal -> Primeira imagem (index = 0)
-			$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
+			$img = uploader::getFile($cfg['fileTable'], '', $view->id, 0, $cfg['uploadDir']);
 			if(!empty($img)) $img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 300, 300).'" class="img-fluid b-all b-all-dashed p-1" />';
 			else $img = '<div class="image-file"><div class="image-action"><div class="image-file-label"><span class="base-icon-file-image"></span></div></div></div>';
 
 			// Arquivos -> Grupo de imagens ('#'.$APPTAG.'-files-group')
 			// Obs: para pegar todas as imagens basta remover o 'grupo' ('#'.$APPTAG.'-files-group')
-			$files[$item->id] = uploader::getFiles($cfg['fileTable'], $item->id);
+			$files[$view->id] = uploader::getFiles($cfg['fileTable'], $view->id);
 			$listFiles = array();
-			for($i = 1; $i < count($files[$item->id]); $i++) {
-				if(!empty($files[$item->id][$i]->filename)) :
-					$fLab = ($files[$item->id][$i]->index == 1) ? JText::_('FIELD_LABEL_RESUME') : '';
-					$fTip = ($files[$item->id][$i]->index == 2) ? JText::_('FIELD_LABEL_CONTRACT') : $files[$item->id][$i]->filename;
-					$listFiles[$files[$item->id][$i]->index] .= '
-						<a href="'.JURI::root(true).'/apps/get-file?fn='.base64_encode($files[$item->id][$i]->filename).'&mt='.base64_encode($files[$item->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
-							<span class="base-icon-attach hasTooltip" title="'.$fTip.'<br />'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"> '.$fLab.'</span>
+			for($i = 1; $i < count($files[$view->id]); $i++) {
+				if(!empty($files[$view->id][$i]->filename)) :
+					$fLab = ($files[$view->id][$i]->index == 1) ? JText::_('FIELD_LABEL_RESUME') : '';
+					$fTip = ($files[$view->id][$i]->index == 2) ? JText::_('FIELD_LABEL_CONTRACT') : $files[$view->id][$i]->filename;
+					$listFiles[$files[$view->id][$i]->index] .= '
+						<a href="'.JURI::root(true).'/apps/get-file?fn='.base64_encode($files[$view->id][$i]->filename).'&mt='.base64_encode($files[$view->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
+							<span class="base-icon-attach hasTooltip" title="'.$fTip.'<br />'.((int)($files[$view->id][$i]->filesize / 1024)).'kb"> '.$fLab.'</span>
 						</a>
 					';
 				endif;
@@ -108,23 +108,23 @@ if($vID != 0) :
 					<div style="max-width: 300px">'.$img.'</div>
 				</div>
 				<div class="col-sm">
-					<h3 class="page-header">'.JText::sprintf('TEXT_BELONGS_TO', $item->clientID, baseHelper::nameFormat($item->client)).'</h4>
+					<h3 class="page-header">'.JText::sprintf('TEXT_BELONGS_TO', $view->clientID, baseHelper::nameFormat($view->client)).'</h4>
 					<div class="row">
 						<div class="col-sm-8">
 							<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_NAME').':</label>
-							<p>'.baseHelper::nameFormat($item->name).' ('.(!empty($item->username) ? $item->username : '').')</p>
+							<p>'.baseHelper::nameFormat($view->name).' ('.(!empty($view->username) ? $view->username : '').')</p>
 						</div>
 						<div class="col-sm">
 							<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_GENDER').':</label>
-							<p>'.JText::_('TEXT_GENDER_'.$item->gender).'</p>
+							<p>'.JText::_('TEXT_GENDER_'.$view->gender).'</p>
 						</div>
 						<div class="col-sm-8">
 							<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_EMAIL').':</label>
-							<p>'.$item->email.'</p>
+							<p>'.$view->email.'</p>
 						</div>
 						<div class="col-sm">
 							<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_ROLE').':</label>
-							<p>'.baseHelper::nameFormat($item->role, null, JText::_('TEXT_UNDEFINED')).'</p>
+							<p>'.baseHelper::nameFormat($view->role, null, JText::_('TEXT_UNDEFINED')).'</p>
 						</div>
 					</div>
 				</div>

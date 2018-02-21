@@ -41,9 +41,6 @@ if(isset($_SESSION[$MAINTAG.'langDef'])) :
 	$lang->load('base_'.$APPNAME, JPATH_BASE, $_SESSION[$MAINTAG.'langDef'], true);
 endif;
 
-// Admin Actions
-// require_once('_contacts.select.php');
-
 if($vID != 0) :
 
 	// DATABASE CONNECT
@@ -62,23 +59,23 @@ if($vID != 0) :
 	;
 	try {
 		$db->setQuery($query);
-		$item = $db->loadObject();
+		$view = $db->loadObject();
 	} catch (RuntimeException $e) {
 		echo $e->getMessage();
 		return;
 	}
 
-	if(!empty($item->subject)) : // verifica se existe
+	if(!empty($view->subject)) : // verifica se existe
 
 		if($cfg['hasUpload']) :
 			JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
-			$files[$item->id] = uploader::getFiles($cfg['fileTable'], $item->id);
+			$files[$view->id] = uploader::getFiles($cfg['fileTable'], $view->id);
 			$listFiles = '';
-			for($i = 0; $i < count($files[$item->id]); $i++) {
-				if(!empty($files[$item->id][$i]->filename)) :
+			for($i = 0; $i < count($files[$view->id]); $i++) {
+				if(!empty($files[$view->id][$i]->filename)) :
 					$listFiles .= '
-						<a class="d-inline-block mr-3" href="'.JURI::root(true).'/apps/get-file?fn='.base64_encode($files[$item->id][$i]->filename).'&mt='.base64_encode($files[$item->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
-							<span class="base-icon-attach hasTooltip" title="'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"> '.$files[$item->id][$i]->filename.'</span>
+						<a class="d-inline-block mr-3" href="'.JURI::root(true).'/apps/get-file?fn='.base64_encode($files[$view->id][$i]->filename).'&mt='.base64_encode($files[$view->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
+							<span class="base-icon-attach hasTooltip" title="'.((int)($files[$view->id][$i]->filesize / 1024)).'kb"> '.$files[$view->id][$i]->filename.'</span>
 						</a>
 					';
 				endif;
@@ -92,13 +89,12 @@ if($vID != 0) :
 			';
 		endif;
 
-		$itemStatus = ($item->status == 2) ? 'warning' : JText::_('TEXT_COLOR_STATUS_'.$item->status);
-		$iconStatus = JText::_('TEXT_ICON_STATUS_'.$item->status);
-		$status = '<span class="badge badge-'.$itemStatus.' base-icon-'.$iconStatus.'"> '.JText::_('TEXT_STATUS_'.$item->status).'</span>';
+		$itemStatus = ($view->status == 2) ? 'warning' : JText::_('TEXT_COLOR_STATUS_'.$view->status);
+		$iconStatus = JText::_('TEXT_ICON_STATUS_'.$view->status);
 
-		$type = ' <span class="badge badge-primary cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_TYPE').'">'.JText::_('TEXT_TYPE_'.$item->type).'</span>';
+		$type = ' <span class="badge badge-primary cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_TYPE').'">'.JText::_('TEXT_TYPE_'.$view->type).'</span>';
 
-		switch ($item->priority) {
+		switch ($view->priority) {
 			case 1:
 				$priority = ' <span class="badge badge-warning">'.JText::_('TEXT_PRIORITY_DESC_1').'</span>';
 				break;
@@ -108,15 +104,15 @@ if($vID != 0) :
 			default :
 				$priority = ' <span class="badge badge-primary">'.JText::_('TEXT_PRIORITY_DESC_0').'</span>';
 		}
-		if($item->visibility == 0) :
+		if($view->visibility == 0) :
 			$visible = ' <span class="badge badge-primary base-icon-lock-open-alt cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_VISIBILITY').'"> '.JText::_('TEXT_PROJECT').'</span>';
 		else :
 			$visible = ' <span class="badge badge-danger base-icon-lock cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_VISIBILITY').'"> '.JText::_('TEXT_PRIVATE').'</span>';
 		endif;
 
 		$requests = '';
-		if(!empty($item->requests)) :
-			$r = explode(',', $item->requests);
+		if(!empty($view->requests)) :
+			$r = explode(',', $view->requests);
 			for($i = 0; $i < count($r); $i++) {
 				if($i > 0) $requests .= ', ';
 				if($hasAdmin) $requests .= '<a href="'.JURI::root().'apps/requests/view?vID='.$r[$i].'">#'.$r[$i].'</a>';
@@ -126,22 +122,22 @@ if($vID != 0) :
 		endif;
 
 		$deadline = '';
-		if($item->deadline != '0000-00-00 00:00:00') {
-			$dt = explode(' ', $item->deadline);
+		if($view->deadline != '0000-00-00 00:00:00') {
+			$dt = explode(' ', $view->deadline);
 			$dlDate = baseHelper::dateFormat($dt[0], 'd/m/y');
-			$dlTime = ($dt[1] != '00:00:00') ? ' '.substr($dt[1], 0, 5).$item->timePeriod : '';
+			$dlTime = ($dt[1] != '00:00:00') ? ' '.substr($dt[1], 0, 5).$view->timePeriod : '';
 			$deadline = JText::_('TEXT_UNTIL').' '.$dlDate.$dlTime;
 		}
-		$estimate = ($item->estimate > 0) ? $item->estimate.JText::_('TEXT_ESTIMATED_UNIT').' ' : '';
+		$estimate = ($view->estimate > 0) ? $view->estimate.JText::_('TEXT_ESTIMATED_UNIT').' ' : '';
 		$estimate .= $deadline;
 		$estimate = !empty($estimate) ? ' - '.JText::_('TEXT_ESTIMATED').' '.$estimate : '';
-		$desc = !empty($item->description) ? '<div class="font-condensed mb-4">'.$item->description.'</div>' : '';
-		$urlViewProject = JURI::root().'apps/projects/view?pID='.$item->project_id;
+		$desc = !empty($view->description) ? '<div class="font-condensed mb-4">'.$view->description.'</div>' : '';
+		$urlViewProject = JURI::root().'apps/projects/view?pID='.$view->project_id;
 
 		// CLIENT STAFF
 		// MOSTRA A LISTA DE USUÁRIOS DA TAREFA
 		$assigned = '';
-		if(!empty($item->assign_to)) :
+		if(!empty($view->assign_to)) :
 			$query	= '
 				SELECT
 					T1.*,
@@ -152,7 +148,7 @@ if($vID != 0) :
 					ON '.$db->quoteName('T2.id') .' = T1.role_id
 					LEFT JOIN '. $db->quoteName('#__session') .' T3
 					ON '.$db->quoteName('T3.userid') .' = T1.user_id AND T3.client_id = 0
-				WHERE T1.id IN ('.$item->assign_to.')
+				WHERE T1.id IN ('.$view->assign_to.')
 				ORDER BY '. $db->quoteName('T1.name') .' ASC
 			';
 			try {
@@ -196,8 +192,8 @@ if($vID != 0) :
 		endif;
 
 		$tags = '';
-		if(!empty($item->tags)) :
-			$t = explode(',', $item->tags);
+		if(!empty($view->tags)) :
+			$t = explode(',', $view->tags);
 			for($i = 0; $i < count($t); $i++) {
 				$tags .= ' <span class="badge badge-secondary"><small class="base-icon-tag text-primary align-middle"></small> '.$t[$i].'</span>';
 			}
@@ -205,28 +201,36 @@ if($vID != 0) :
 		endif;
 
 		$btnActions = '';
-		if($hasAdmin || ($item->created_by == $user->id)) :
+		if($hasAdmin || ($view->created_by == $user->id)) :
 			$btnActions = '
 				<div class="float-right">
-					<a href="#" class="btn btn-lg btn-link py-0 px-2" onclick="'.$APPTAG.'_setState('.$item->id.', null, false, \'base-icon-toggle-on\', \'base-icon-toggle-on\', \'text-success\', \'text-muted\')" id="'.$APPTAG.'-state-'.$item->id.'">
-						<span class="'.($item->state == 1 ? 'base-icon-toggle-on text-success' : 'base-icon-toggle-on text-muted').' hasTooltip" title="'.JText::_(($item->state == 1 ? 'MSG_ARCHIVE_ITEM' : 'MSG_ACTIVATE_ITEM')).'"></span>
+					<a href="#" class="btn btn-lg btn-link py-0 px-2" onclick="'.$MAINTAG.'_setState('.$view->id.', null, false, \'base-icon-toggle-on\', \'base-icon-toggle-on\', \'text-success\', \'text-muted\')" id="'.$MAINTAG.'-state-'.$view->id.'">
+						<span class="'.($view->state == 1 ? 'base-icon-toggle-on text-success' : 'base-icon-toggle-on text-muted').' hasTooltip" title="'.JText::_(($view->state == 1 ? 'MSG_ARCHIVE_ITEM' : 'MSG_ACTIVATE_ITEM')).'"></span>
 					</a>
-					<a href="#" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil text-live"></span></a>
-					<a href="#" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash text-danger"></span></a>
+					<a href="#" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$MAINTAG.'_loadEditFields('.$view->id.', false, false)"><span class="base-icon-pencil text-live"></span></a>
+					<a href="#" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$MAINTAG.'_del('.$view->id.', false)"><span class="base-icon-trash text-danger"></span></a>
 				</div>
 			';
 		endif;
 
+		// Hide loader
+		$doc = JFactory::getDocument();
+		$doc->addScriptDeclaration('jQuery(window).on("load", function(){ jQuery("#'.$MAINTAG.'-form-loader").hide() });');
+
 		echo '
-			<div id="'.$APPTAG.'-task-pageitem" class="py-3">
-				<div id="'.$APPTAG.'-task-pageitem-header" class="mb-3 b-bottom-2 b-primary">
-					<div class="pb-1 mb-2 b-bottom">'.$status.$type.$priority.$visible.$requests.'</div>
+			<div id="'.$MAINTAG.'-form-loader" class="text-center">
+				<img src="'.JURI::root().'templates/base/images/core/loader-active.gif">
+			</div>
+			<div id="'.$MAINTAG.'-task-pageitem" class="py-3">
+				<div id="'.$MAINTAG.'-task-pageitem-header" class="mb-3 b-bottom-2 b-primary">
+					<div class="pb-1 mb-2 b-bottom">'.$type.$priority.$visible.$requests.'</div>
 					<h2 class="font-condensed text-primary">
-						'.$item->subject.'
+						<span class="badge bg-gray-200"><a href="#" id="'.$MAINTAG.'-item-'.$view->id.'-status" class="base-icon-'.$iconStatus.' text-'.$itemStatus.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$view->status).'" data-id="'.$view->id.'" data-status="'.$view->status.'" onclick="'.$MAINTAG.'_setStatusModal(this)"></a></span>
+						'.$view->subject.'
 					</h2>
 					<div class="clearfix">
 						<div class="font-condensed text-sm text-muted mb-2">
-							<a href="'.$urlViewProject.'" target="_blank">'.baseHelper::nameFormat($item->project).'</a> - '.JText::_('TEXT_SINCE').' '.baseHelper::dateFormat($item->created_date).
+							<a href="'.$urlViewProject.'" target="_blank">'.baseHelper::nameFormat($view->project).'</a> - '.JText::_('TEXT_SINCE').' '.baseHelper::dateFormat($view->created_date).
 							' <span class="text-live">'.$estimate.'</span>
 						</div>
 						'.$btnActions.$assigned.$tags.'
@@ -240,18 +244,18 @@ if($vID != 0) :
 						$tasksCommentsListFull		= false;
 						$tasksCommentsRelTag		= 'tasks';
 						$tasksCommentsRelListNameId	= 'task_id';
-						$tasksCommentsRelListId		= $item->id;
+						$tasksCommentsRelListId		= $view->id;
 						$tasksCommentsOnlyChildList	= true;
 						$tasksCommentsShowAddBtn	= false;
 						echo '
 							<h4 class="font-condensed text-live mb-3">
 								'.JText::_('TEXT_COMMENTS').'
-								<a href="#" class="btn btn-xs btn-success base-icon-plus float-right" onclick="'.$MAINAPP.'Comments_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-'.$MAINAPP.'Comments" data-backdrop="static" data-keyboard="false"></a>
+								<a href="#" class="btn btn-xs btn-success base-icon-plus float-right" onclick="'.$MAINAPP.'Comments_setParent('.$view->id.')" data-toggle="modal" data-target="#modal-'.$MAINAPP.'Comments" data-backdrop="static" data-keyboard="false"></a>
 								<a href="#" class="btn btn-xs btn-info base-icon-arrows-cw mx-1 float-right" onclick="'.$MAINAPP.'Comments_listReload(false, false, false, '.$MAINAPP.'CommentsoCHL, '.$MAINAPP.'CommentsrNID, '.$MAINAPP.'CommentsrID)"></a>
 							</h4>
 						';
 						require(JPATH_APPS.DS.''.$MAINAPP.'Comments/'.$MAINAPP.'Comments.php');
-						echo '<hr class="my-1" /><a href="#" class="btn btn-xs btn-success base-icon-plus" onclick="'.$MAINAPP.'Comments_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-'.$MAINAPP.'Comments" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_ADD').'</a>';
+						echo '<hr class="my-1" /><a href="#" class="btn btn-xs btn-success base-icon-plus" onclick="'.$MAINAPP.'Comments_setParent('.$view->id.')" data-toggle="modal" data-target="#modal-'.$MAINAPP.'Comments" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_ADD').'</a>';
 		echo '
 					</div>
 					<div class="col-md-4">
@@ -259,45 +263,46 @@ if($vID != 0) :
 						// APP ACTIONS
 						// Carrega o app diretamente ná página,
 						// pois como está sendo chamada no template 'component', não carrega os módulos
-						// REQUESTS => FORM
-						$tasksShowApp			= false;
-						$tasksShowList			= false;
-						$tasksListFull			= false;
+						// TASKS => FORM
+						$tasksAppTag				= $MAINTAG;
+						${$tasksAppTag.'ShowApp'}	= false;
+						${$tasksAppTag.'ShowList'}	= false;
+						${$tasksAppTag.'ListFull'}	= true;
 						require(JPATH_APPS.DS.$MAINAPP.'/'.$MAINAPP.'.php');
 						// TAGS => FORM
-						$tasksTagsShowApp		= false;
-						$tasksTagsShowList		= false;
-						$tasksTagsListFull		= false;
-						$tasksTagsRelTag		= 'tasks';
-						$tasksTagsFieldUpdated	= '#tasks-tags';
-						$tasksTagsTableField	= 'name';
+						$tasksTagsShowApp			= false;
+						$tasksTagsShowList			= false;
+						$tasksTagsListFull			= false;
+						$tasksTagsRelTag			= 'tasks';
+						$tasksTagsFieldUpdated		= '#tasks-tags';
+						$tasksTagsTableField		= 'name';
 						require(JPATH_APPS.DS.$MAINAPP.'Tags/'.$MAINAPP.'Tags.php');
 						// TO DO LIST => (instância do FORM)
-						$tasksTodoShowApp		= false;
-						$tasksTodoShowList		= true;
-						$tasksTodoListModal		= true;
-						$tasksTodoListFull		= false;
-						$tasksTodoRelListNameId	= 'task_id';
+						$tasksTodoShowApp			= false;
+						$tasksTodoShowList			= true;
+						$tasksTodoListModal			= true;
+						$tasksTodoListFull			= false;
+						$tasksTodoRelListNameId		= 'task_id';
 						require(JPATH_APPS.DS.$MAINAPP.'Todo/'.$MAINAPP.'Todo.php');
 
 						// TO DO LIST => (instância da VIEW)
-						$tasksTodoAppTag			= 'todoView';
-						$todoViewListFull			= false;
-						$todoViewListAjax			= "list.actions.ajax.php";
-						$todoViewRelTag				= 'tasks';
-						$todoViewRelListNameId		= 'task_id';
-						$todoViewRelListId			= $item->id;
-						$todoViewOnlyChildList		= true;
-						$todoViewShowAddBtn			= false;
+						$tasksTodoAppTag					= 'todoView';
+						${$tasksTodoAppTag.'ListFull'}		= false;
+						${$tasksTodoAppTag.'ListAjax'}		= "list.actions.ajax.php";
+						${$tasksTodoAppTag.'RelTag'}		= 'tasks';
+						${$tasksTodoAppTag.'RelListNameId'}	= 'task_id';
+						${$tasksTodoAppTag.'RelListId'}		= $view->id;
+						${$tasksTodoAppTag.'OnlyChildList'}	= true;
+						${$tasksTodoAppTag.'ShowAddBtn'}	= false;
 						echo '
 							<h4 class="font-condensed text-danger mb-3">
 								'.JText::_('TEXT_TODO_LIST').'
-								<a href="#" class="btn btn-xs btn-success base-icon-plus float-right" onclick="'.$MAINAPP.'Todo_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-'.$MAINAPP.'Todo" data-backdrop="static" data-keyboard="false"></a>
-								<a href="#" class="btn btn-xs btn-info base-icon-arrows-cw mx-1 float-right" onclick="'.$MAINAPP.'Todo_listReload(false, false, false, '.$MAINAPP.'TodooCHL, '.$MAINAPP.'TodorNID, '.$MAINAPP.'TodorID)"></a>
+								<a href="#" class="btn btn-xs btn-success base-icon-plus float-right" onclick="'.$tasksTodoAppTag.'_setParent('.$view->id.')" data-toggle="modal" data-target="#modal-'.$tasksTodoAppTag.'" data-backdrop="static" data-keyboard="false"></a>
+								<a href="#" class="btn btn-xs btn-info base-icon-arrows-cw mx-1 float-right" onclick="'.$tasksTodoAppTag.'_listReload(false, false, false, '.$tasksTodoAppTag.'oCHL, '.$tasksTodoAppTag.'rNID, '.$tasksTodoAppTag.'rID)"></a>
 							</h4>
 						';
 						require(JPATH_APPS.DS.'tasksTodo/tasksTodo.php');
-						echo '<hr class="my-1" /><a href="#" class="btn btn-xs btn-success base-icon-plus" onclick="'.$MAINAPP.'Todo_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-'.$MAINAPP.'Todo" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_ADD').'</a>';
+						echo '<hr class="my-1" /><a href="#" class="btn btn-xs btn-success base-icon-plus" onclick="'.$tasksTodoAppTag.'_setParent('.$view->id.')" data-toggle="modal" data-target="#modal-'.$tasksTodoAppTag.'" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_ADD').'</a>';
 		echo '
 					</div>
 				</div>

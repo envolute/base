@@ -63,14 +63,14 @@ if($vID != 0) :
 	;
 	try {
 		$db->setQuery($query);
-		$item = $db->loadObject();
+		$view = $db->loadObject();
 	} catch (RuntimeException $e) {
 		echo $e->getMessage();
 		return;
 	}
 
 	$html = '';
-	if(!empty($item->name)) : // verifica se existe
+	if(!empty($view->name)) : // verifica se existe
 
 		if($cfg['hasUpload']) :
 			JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');

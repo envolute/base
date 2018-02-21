@@ -60,7 +60,7 @@ endif;
 
 // Save Function
 // fuction called after save action
-	$cfg['saveTrigger']			= $APPPATH.'_sidebarReload';
+	$cfg['saveTrigger']			= '';
 
 // data definitions
 

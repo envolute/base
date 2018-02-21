@@ -62,23 +62,23 @@ if($vID != 0) :
 	;
 	try {
 		$db->setQuery($query);
-		$item = $db->loadObject();
+		$view = $db->loadObject();
 	} catch (RuntimeException $e) {
 		echo $e->getMessage();
 		return;
 	}
 
 	$provider = '';
-	if(!empty($item->name)) : // verifica se existe
+	if(!empty($view->name)) : // verifica se existe
 
 		JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 		// Imagem Principal -> (index = 0)
-		$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
+		$img = uploader::getFile($cfg['fileTable'], '', $view->id, 0, $cfg['uploadDir']);
 		if(!empty($img)) $img = '<img src="images/apps/'.$APPPATH.'/'.$img['filename'].'" class="w-100 img-fluid b-all p-1" />';
 		else $img = '<div class="image-file"><div class="image-action"><div class="image-file-label"><span class="base-icon-file-image"><small>'.JText::_('TEXT_NO_IMAGE').'</small></span></div></div></div>';
 
 		// Contrato -> (index = 1)
-		$doc = uploader::getFile($cfg['fileTable'], '', $item->id, 1, $cfg['uploadDir']);
+		$doc = uploader::getFile($cfg['fileTable'], '', $view->id, 1, $cfg['uploadDir']);
 		if(!empty($doc)) :
 			$doc = '
 				<a class="nav-link" href="'.JURI::root(true).'/apps/get-file?fn='.base64_encode($doc['filename']).'&mt='.base64_encode($doc['mimetype']).'&tag='.base64_encode($APPNAME).'">
@@ -87,14 +87,14 @@ if($vID != 0) :
 			';
 		endif;
 
-		$razao	= !empty($item->company_name) ? '<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_COMPANY_NAME').'</label><p class="text-truncate">'.baseHelper::nameFormat($item->company_name).'</p>' : '';
-		$site	= !empty($item->website) ? '<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_WEBSITE').'</label><p class="text-truncate"><a href="'.$item->website.'" class="new-window" target="_blank">'.$item->website.'</a></p>' : '';
-		$email	= !empty($item->email) ? '<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_EMAIL').'</label><p class="text-truncate"><a href="mailto:'.$item->email.'" class="mr-3">'.$item->email.'</a></p>' : '';
-		$cnpj	= !empty($item->cnpj) ? '<label class="label-xs text-muted">CNPJ</label><p>'.$item->cnpj.'</p>' : '';
-		$insM	= !empty($item->insc_municipal) ? '<label class="label-xs text-muted">Inscrição Municipal</label><p>'.$item->insc_municipal.'</p>' : '';
-		$insE	= !empty($item->insc_estadual) ? '<label class="label-xs text-muted">Inscrição Estadual</label><p>'.$item->insc_estadual.'</p>' : '';
-		$date	= $item->due_date != 0 ? '<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_DUE_DATE').'</label><p>'.($item->due_date < 10 ? '0' : '').$item->due_date.'</p>' : '';
-		$agree	= $item->agreement == 1 ? '<span class="text-success text-uppercase"><span class="base-icon-ok"></span> '.JText::_('FIELD_LABEL_AGREEMENT').'</span>' : '';
+		$razao	= !empty($view->company_name) ? '<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_COMPANY_NAME').'</label><p class="text-truncate">'.baseHelper::nameFormat($view->company_name).'</p>' : '';
+		$site	= !empty($view->website) ? '<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_WEBSITE').'</label><p class="text-truncate"><a href="'.$view->website.'" class="new-window" target="_blank">'.$view->website.'</a></p>' : '';
+		$email	= !empty($view->email) ? '<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_EMAIL').'</label><p class="text-truncate"><a href="mailto:'.$view->email.'" class="mr-3">'.$view->email.'</a></p>' : '';
+		$cnpj	= !empty($view->cnpj) ? '<label class="label-xs text-muted">CNPJ</label><p>'.$view->cnpj.'</p>' : '';
+		$insM	= !empty($view->insc_municipal) ? '<label class="label-xs text-muted">Inscrição Municipal</label><p>'.$view->insc_municipal.'</p>' : '';
+		$insE	= !empty($view->insc_estadual) ? '<label class="label-xs text-muted">Inscrição Estadual</label><p>'.$view->insc_estadual.'</p>' : '';
+		$date	= $view->due_date != 0 ? '<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_DUE_DATE').'</label><p>'.($view->due_date < 10 ? '0' : '').$view->due_date.'</p>' : '';
+		$agree	= $view->agreement == 1 ? '<span class="text-success text-uppercase"><span class="base-icon-ok"></span> '.JText::_('FIELD_LABEL_AGREEMENT').'</span>' : '';
 
 		// contrato
 		$docs = !empty($doc) ? '<li class="nav-item">'.$doc.'</li>' : '';
@@ -116,7 +116,7 @@ if($vID != 0) :
 		if(!empty($info1) || !empty($info2)) $info = '<div class="row">'.$info1.$info2.'</div>';
 
 		// description
-		$description = !empty($item->description) ? '<div id="'.$MAINTAG.'-desc">'.$item->description.'</div>' : '';
+		$description = !empty($view->description) ? '<div id="'.$MAINTAG.'-desc">'.$view->description.'</div>' : '';
 
 		echo '
 			<div class="row">
@@ -126,10 +126,10 @@ if($vID != 0) :
 				<div class="col">
 					<ul class="set-list inline bordered list-trim text-muted small mb-2 pb-1 b-bottom b-bottom-dotted">
 						<li>'.$agree.'</li>
-						<li>'.$item->grp.'</li>
+						<li>'.$view->grp.'</li>
 					</ul>
 					<h1 class="mt-0">
-						'.baseHelper::nameFormat($item->name).'
+						'.baseHelper::nameFormat($view->name).'
 					</h1>
 					'.$description.'
 					<hr class="mt-2" />
@@ -166,18 +166,18 @@ if($vID != 0) :
 									$_locationsAppNameId			= 'location_id';
 									$_locationsRelNameId			= 'provider_id';
 									$_locationsRelListNameId		= 'provider_id';
-									$_locationsRelListId			= $item->id;
+									$_locationsRelListId			= $view->id;
 
 									require(JPATH_APPS.DS.'_locations/_locations.php');
-									echo '	<a href="#" class="btn btn-sm btn-success base-icon-plus" onclick="_locations_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-_locations" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_INSERT_LOCATION').'</a>';
+									echo '	<a href="#" class="btn btn-sm btn-success base-icon-plus" onclick="_locations_setRelation('.$view->id.')" data-toggle="modal" data-target="#modal-_locations" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_INSERT_LOCATION').'</a>';
 		echo '
 								</div>
 								<div class="tab-pane fade" id="'.$MAINTAG.'TabViewService" role="tabpanel" aria-labelledby="'.$MAINTAG.'TabView-service">
 		';
 									// Termos da parceria
-									if(!empty($item->service_desc)) :
+									if(!empty($view->service_desc)) :
 										echo '<h4 class="mt-4 page-header">'.JText::_('FIELD_LABEL_SERVICE').'</h4>';
-										echo $item->service_desc;
+										echo $view->service_desc;
 									endif;
 		echo '
 								</div>
@@ -193,12 +193,12 @@ if($vID != 0) :
 							$_providersContactsShowAddBtn	= false;
 							$_providersContactsRelTag		= 'providers';
 							$_providersContactsRelListNameId= 'provider_id';
-							$_providersContactsRelListId	= $item->id;
+							$_providersContactsRelListId	= $view->id;
 							$_providersContactsOnlyChildList= true;
 							echo '
 								<h6 class="page-header base-icon-user">
 									'.JText::_('TEXT_CONTACTS').'
-									<a href="#" class="btn btn-xs btn-success float-right" onclick="_providersContacts_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-_providersContacts" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_CONTACT').'"></span></a>
+									<a href="#" class="btn btn-xs btn-success float-right" onclick="_providersContacts_setParent('.$view->id.')" data-toggle="modal" data-target="#modal-_providersContacts" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_CONTACT').'"></span></a>
 								</h6>
 							';
 							require(JPATH_APPS.DS.'_providersContacts/_providersContacts.php');
@@ -212,11 +212,11 @@ if($vID != 0) :
 							$_callCentersAppNameId				= 'callCenter_id';
 							$_callCentersRelNameId				= 'provider_id';
 							$_callCentersRelListNameId			= 'provider_id';
-							$_callCentersRelListId				= $item->id;
+							$_callCentersRelListId				= $view->id;
 							echo '
 								<h6 class="page-header base-icon-phone-squared pt-2">
 									'.JText::_('TEXT_CALL_CENTERS').'
-									<a href="#" class="btn btn-xs btn-success float-right" onclick="_callCenters_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-_callCenters" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_CALL_CENTER').'"></span></a>
+									<a href="#" class="btn btn-xs btn-success float-right" onclick="_callCenters_setRelation('.$view->id.')" data-toggle="modal" data-target="#modal-_callCenters" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_CALL_CENTER').'"></span></a>
 								</h6>
 							';
 							require(JPATH_APPS.DS.'_callCenters/_callCenters.php');
@@ -230,11 +230,11 @@ if($vID != 0) :
 							$_banksAccountsAppNameId		= 'bankAccount_id';
 							$_banksAccountsRelNameId		= 'provider_id';
 							$_banksAccountsRelListNameId	= 'provider_id';
-							$_banksAccountsRelListId		= $item->id;
+							$_banksAccountsRelListId		= $view->id;
 							echo '
 								<h6 class="page-header base-icon-bank pt-2">
 									'.JText::_('TEXT_BANKS_ACCOUNTS').'
-									<a href="#" class="btn btn-xs btn-success float-right" onclick="_banksAccounts_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-_banksAccounts" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_BANK_ACCOUNT').'"></span></a>
+									<a href="#" class="btn btn-xs btn-success float-right" onclick="_banksAccounts_setRelation('.$view->id.')" data-toggle="modal" data-target="#modal-_banksAccounts" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_BANK_ACCOUNT').'"></span></a>
 								</h6>
 							';
 							require(JPATH_APPS.DS.'_banksAccounts/_banksAccounts.php');

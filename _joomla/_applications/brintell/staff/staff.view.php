@@ -31,6 +31,7 @@ $groups = $user->groups;
 // init general css/js files
 require(JPATH_CORE.DS.'apps/_init.app.php');
 
+// Verifica se o acesso é feito por um cliente
 $hasClient = array_intersect($groups, $cfg['groupId']['client']); // se está na lista de grupos permitidos
 
 // Get request data
@@ -73,32 +74,32 @@ if($vID != 0) :
 	;
 	try {
 		$db->setQuery($query);
-		$item = $db->loadObject();
+		$view = $db->loadObject();
 	} catch (RuntimeException $e) {
 		echo $e->getMessage();
 		return;
 	}
 
-	if(!empty($item->name)) : // verifica se existe
+	if(!empty($view->name)) : // verifica se existe
 
 		if($cfg['hasUpload']) :
 			JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 			// Imagem Principal -> Primeira imagem (index = 0)
-			$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
+			$img = uploader::getFile($cfg['fileTable'], '', $view->id, 0, $cfg['uploadDir']);
 			if(!empty($img)) $img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 300, 300).'" class="img-fluid b-all b-all-dashed p-1" />';
 			else $img = '<div class="image-file"><div class="image-action"><div class="image-file-label"><span class="base-icon-file-image"></span></div></div></div>';
 
 			// Arquivos -> Grupo de imagens ('#'.$APPTAG.'-files-group')
 			// Obs: para pegar todas as imagens basta remover o 'grupo' ('#'.$APPTAG.'-files-group')
-			$files[$item->id] = uploader::getFiles($cfg['fileTable'], $item->id);
+			$files[$view->id] = uploader::getFiles($cfg['fileTable'], $view->id);
 			$listFiles = array();
-			for($i = 1; $i < count($files[$item->id]); $i++) {
-				if(!empty($files[$item->id][$i]->filename)) :
-					$fLab = ($files[$item->id][$i]->index == 1) ? JText::_('FIELD_LABEL_RESUME') : '';
-					$fTip = ($files[$item->id][$i]->index == 2) ? JText::_('FIELD_LABEL_CONTRACT') : $files[$item->id][$i]->filename;
-					$listFiles[$files[$item->id][$i]->index] .= '
-						<a href="'.JURI::root(true).'/apps/get-file?fn='.base64_encode($files[$item->id][$i]->filename).'&mt='.base64_encode($files[$item->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
-							<span class="base-icon-attach hasTooltip" title="'.$fTip.'<br />'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"> '.$fLab.'</span>
+			for($i = 1; $i < count($files[$view->id]); $i++) {
+				if(!empty($files[$view->id][$i]->filename)) :
+					$fLab = ($files[$view->id][$i]->index == 1) ? JText::_('FIELD_LABEL_RESUME') : '';
+					$fTip = ($files[$view->id][$i]->index == 2) ? JText::_('FIELD_LABEL_CONTRACT') : $files[$view->id][$i]->filename;
+					$listFiles[$files[$view->id][$i]->index] .= '
+						<a class="btn btn-sm btn-primary btn-block my-2" href="'.JURI::root(true).'/apps/get-file?fn='.base64_encode($files[$view->id][$i]->filename).'&mt='.base64_encode($files[$view->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
+							<span class="base-icon-attach hasTooltip" title="'.$fTip.'<br />'.((int)($files[$view->id][$i]->filesize / 1024)).'kb"> '.$fLab.'</span>
 						</a>
 					';
 				endif;
@@ -107,19 +108,19 @@ if($vID != 0) :
 
 		// Email, profissão
 		$info1 = '';
-		if(!empty($item->email)) :
+		if(!empty($view->email)) :
 			$info1 .= '
 				<div class="col-sm-8">
 					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_EMAIL').':</label>
-					<p>'.$item->email.'</p>
+					<p>'.$view->email.'</p>
 				</div>
 			';
 		endif;
-		if(!empty($item->occupation)) :
+		if(!empty($view->occupation)) :
 			$info1 .= '
 				<div class="col">
 					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_OCCUPATION').':</label>
-					<p> '.baseHelper::nameFormat($item->occupation).'</p>
+					<p> '.baseHelper::nameFormat($view->occupation).'</p>
 				</div>
 			';
 		endif;
@@ -127,44 +128,43 @@ if($vID != 0) :
 
 		// Birthday, CPF, RG, gênero, estado civil, filhos, conjuge
 		$info2 = '';
-		if(!empty($item->birthday) && $item->birthday != '0000-00-00') :
+		if(!empty($view->birthday) && $view->birthday != '0000-00-00') :
 			$info2 .= '
 				<div class="col-6 col-sm-4">
 					<label class="label-xs text-muted">'.JText::_('TEXT_BIRTHDAY').':</label>
-					<p class="base-icon-birthday text-success"> '.baseHelper::dateFormat($item->birthday, JText::_('TEXT_BIRTHDAY_FORMAT')).'</p>
+					<p class="base-icon-birthday text-success"> '.baseHelper::dateFormat($view->birthday, JText::_('TEXT_BIRTHDAY_FORMAT')).'</p>
 				</div>
 			';
 		endif;
-		if($hasAdmin && !empty($item->cpf)) :
+		if($hasAdmin && !empty($view->cpf)) :
 			$info2 .= '
 				<div class="col-6 col-sm-4">
 					<label class="label-xs text-muted">CPF:</label>
-					<p>'.$item->cpf.'</p>
+					<p>'.$view->cpf.'</p>
 				</div>
 			';
 		endif;
-		if($hasAdmin && !empty($item->cnpj)) :
-			$contract = isset($listFiles[2]) ? $listFiles[2] : '';
+		if($hasAdmin && !empty($view->cnpj)) :
 			$info2 .= '
 				<div class="col-6 col-sm-4">
 					<label class="label-xs text-muted">CNPJ:</label>
-					<p>'.$item->cnpj.' '.$contract.'</p>
+					<p>'.$view->cnpj.'</p>
 				</div>
 			';
 		endif;
-		if($item->marital_status > 0) :
+		if($view->marital_status > 0) :
 			$info2 .= '
 				<div class="col-6 col-sm-4">
 					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_MARITAL_STATUS').':</label>
-					<p>'.JText::_('TEXT_MARITAL_STATUS_'.$item->marital_status).'</p>
+					<p>'.JText::_('TEXT_MARITAL_STATUS_'.$view->marital_status).'</p>
 				</div>
 			';
 		endif;
-		if($item->children > 0) :
+		if($view->children > 0) :
 			$info2 .= '
 				<div class="col-6 col-sm-4">
 					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_CHILDREN').':</label>
-					<p>'.$item->children.'</p>
+					<p>'.$view->children.'</p>
 				</div>
 			';
 		endif;
@@ -172,20 +172,18 @@ if($vID != 0) :
 
 		// Extra Info
 		$about_me = '';
-		if(!empty($item->about_me)) :
+		if(!empty($view->about_me)) :
 			$about_me .= '
-				<div class="'.$APPTAG.'-profile-about font-condensed text-primary px-3 py-2 mb-3 bg-white rounded set-shadow">'.$item->about_me.'</div>
+				<div class="'.$APPTAG.'-profile-about font-condensed text-primary px-3 py-2 mb-3 bg-white rounded set-shadow">'.$view->about_me.'</div>
 			';
 		endif;
 
-		// Contact data
-		$contact = '';
 		// Phones
 		$phones = '';
-		if(!empty($item->phone)) :
-			$ph = explode(';', $item->phone);
-			$wp = explode(';', $item->whatsapp);
-			$pd = explode(';', $item->phone_desc);
+		if(!empty($view->phone)) :
+			$ph = explode(';', $view->phone);
+			$wp = explode(';', $view->whatsapp);
+			$pd = explode(';', $view->phone_desc);
 			for($i = 0; $i < count($ph); $i++) {
 				$whapps = $wp[$i] == 1 ? ' <span class="base-icon-whatsapp text-success cursor-help hasTooltip" title="'.JText::_('TEXT_HAS_WHATSAPP').'"></span>' : '';
 				$phDesc = !empty($pd[$i]) ? '<div class="small text-muted">'.$pd[$i].'</div>' : '';
@@ -194,9 +192,9 @@ if($vID != 0) :
 		endif;
 		// Chats
 		$chats = '';
-		if(!empty($item->chat_user)) :
-			$cName = explode(';', $item->chat_name);
-			$cUser = explode(';', $item->chat_user);
+		if(!empty($view->chat_user) && !$hasClient) :
+			$cName = explode(';', $view->chat_name);
+			$cUser = explode(';', $view->chat_user);
 			for($i = 0; $i < count($cName); $i++) {
 				if(!empty($cName[$i])) :
 					$chats .= '
@@ -207,8 +205,9 @@ if($vID != 0) :
 				endif;
 			}
 		endif;
-
-		if(!empty($phones) || !empty($chats)) :
+		// Contact data
+		$contact = '';
+		if((!empty($phones) || !empty($chats)) && !$hasClient) :
 			$cDiv = (!empty($phones) && !empty($chats)) ? '<hr class="b-top-dashed my-2" />' : '';
 			$contact .= '
 				<div class="pb-2 mb-2 b-bottom b-bottom-dashed">
@@ -221,9 +220,9 @@ if($vID != 0) :
 
 		// Weblinks
 		$links = '';
-		if(!empty($item->weblink_url)) :
-			$wTxt = explode(';', $item->weblink_text);
-			$wUrl = explode(';', $item->weblink_url);
+		if(!empty($view->weblink_url)) :
+			$wTxt = explode(';', $view->weblink_text);
+			$wUrl = explode(';', $view->weblink_url);
 			$links = (count($wUrl) > 0) ? '<ul class="set-list bordered">' : '';
 			for($i = 0; $i < count($wUrl); $i++) {
 				$text = !empty($wTxt[$i]) ? $wTxt[$i] : $wUrl[$i];
@@ -233,50 +232,59 @@ if($vID != 0) :
 		endif;
 
 		// Address
-		$addressInfo = !empty($item->address_info) ? ', '.$item->address_info : '';
-		$addressNumber = !empty($item->address_number) ? ', '.$item->address_number : '';
-		$addressZip = !empty($item->zip_code) ? $item->zip_code.', ' : '';
-		$addressDistrict = !empty($item->address_district) ? baseHelper::nameFormat($item->address_district) : '';
-		$addressCity = !empty($item->address_city) ? ', '.baseHelper::nameFormat($item->address_city) : '';
-		$addressState = !empty($item->address_state) ? ', '.baseHelper::nameFormat($item->address_state) : '';
-		$addressCountry = !empty($item->address_country) ? ', '.baseHelper::nameFormat($item->address_country) : '';
+		$addressInfo = !empty($view->address_info) ? ', '.$view->address_info : '';
+		$addressNumber = !empty($view->address_number) ? ', '.$view->address_number : '';
+		$addressZip = !empty($view->zip_code) ? $view->zip_code.', ' : '';
+		$addressDistrict = !empty($view->address_district) ? baseHelper::nameFormat($view->address_district) : '';
+		$addressCity = !empty($view->address_city) ? ', '.baseHelper::nameFormat($view->address_city) : '';
+		$addressState = !empty($view->address_state) ? ', '.baseHelper::nameFormat($view->address_state) : '';
+		$addressCountry = !empty($view->address_country) ? ', '.baseHelper::nameFormat($view->address_country) : '';
 
 		// Endereço
 		$address = '';
-		if(!empty($item->address)) :
+		if(!empty($view->address)) :
 			$address .= '
 				<hr class="hr-tag b-top-dashed">
 				<span class="badge badge-primary"> '.JText::_('FIELD_LABEL_ADDRESS').'</span>
 				<p>
-						'.baseHelper::nameFormat($item->address).$addressNumber.$addressInfo.'<br />
+						'.baseHelper::nameFormat($view->address).$addressNumber.$addressInfo.'<br />
 						'.$addressZip.$addressDistrict.$addressCity.$addressState.$addressCountry.'
 				</p>
 			';
 		endif;
 
 		$bankAccount_info = '';
-		if($hasAdmin && !empty($item->bank_name) && !empty($item->account)) :
+		if($hasAdmin && !empty($view->bank_name) && !empty($view->account)) :
 			$bankAccount_info = '
 				<hr class="hr-tag b-top-dashed">
 				<span class="badge badge-primary text-uppercase"> '.JText::_('TEXT_BANKS_ACCOUNT').'</span>
-				<h6 class="mb-1 base-icon-bank"> '.$item->bank_name.'</h6>
+				<h6 class="mb-1 base-icon-bank"> '.$view->bank_name.'</h6>
 				<div class="d-flex">
-					<div><label class="label-xs text-muted">'.JText::_('FIELD_LABEL_AGENCY').'</label>'.$item->agency.'</div>
-					<div class="px-3"><label class="label-xs text-muted">'.JText::_('FIELD_LABEL_OPERATION').'</label>'.$item->operation.'</div>
-					<div><label class="label-xs text-muted">'.JText::_('FIELD_LABEL_ACCOUNT').'</label>'.$item->account.'</div>
+					<div><label class="label-xs text-muted">'.JText::_('FIELD_LABEL_AGENCY').'</label>'.$view->agency.'</div>
+					<div class="px-3"><label class="label-xs text-muted">'.JText::_('FIELD_LABEL_OPERATION').'</label>'.$view->operation.'</div>
+					<div><label class="label-xs text-muted">'.JText::_('FIELD_LABEL_ACCOUNT').'</label>'.$view->account.'</div>
 				</div>
 			';
 		endif;
 
 		// Acesso
-		$access = ($item->access == 1 && !empty($item->user_id)) ? ' <span class="base-icon-plug text-live cursor-help hasTooltip" title="'.JText::_('TEXT_HAS_ACCESS').'"></span>' : '';
+		$access = ($view->access == 1 && !empty($view->user_id)) ? ' <span class="base-icon-plug text-live cursor-help hasTooltip" title="'.JText::_('TEXT_HAS_ACCESS').'"></span>' : '';
 
-		$nickname = !empty($item->nickname) ? ' <small>('.baseHelper::nameFormat($item->nickname).')</small>' : '';
-		$resume = ($hasAdmin && isset($listFiles[1])) ? '<hr class="my-2" />'.$listFiles[1] : '';
+		$nickname = !empty($view->nickname) ? ' <small>('.baseHelper::nameFormat($view->nickname).')</small>' : '';
+		// files info
+		$files = '';
+		if($hasAdmin || $view->user_id == $user->id) {
+			if(isset($listFiles[1])) $files .= $listFiles[1]; // currículo
+			if(isset($listFiles[2])) $files .= $listFiles[2]; // contrato
+		}
+		if(!empty($files)) $files = '<hr class="my-2" />'.$files;
+
+		$edit = ($hasAdmin || $view->user_id == $user->id) ? '<hr class="my-2" /><a href="'.JURI::root().'apps/'.$APPNAME.'/edit-profile" class="btn btn-sm btn-warning btn-block base-icon-pencil"> '.JText::_('TEXT_EDIT').'</a>' : '';
+
 		$gender = '';
-		if($item->gender > 0) :
-			$gIcon = ($item->gender == 1) ? 'base-icon-male text-blue' : 'base-icon-female text-pink';
-			$gender = '<span class="'.$gIcon.' cursor-help hasTooltip" title="'.JText::_('TEXT_GENDER_'.$item->gender).'"></span> ';
+		if($view->gender > 0) :
+			$gIcon = ($view->gender == 1) ? 'base-icon-male text-blue' : 'base-icon-female text-pink';
+			$gender = '<span class="'.$gIcon.' cursor-help hasTooltip" title="'.JText::_('TEXT_GENDER_'.$view->gender).'"></span> ';
 		endif;
 
 		echo '
@@ -285,8 +293,11 @@ if($vID != 0) :
 					<div class="row">
 						<div class="col-4 col-sm-2 mb-4 mb-md-0">
 							<div style="max-width: 300px">'.$img.'</div>
-							<div class="text-sm text-live pt-2">
-								'.(!empty($item->username) ? $item->username : '').$resume.'
+							<div class="text-live text-center pt-2">
+								'.(!empty($view->username) ? '<span class="badge badge-primary cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_USERNAME').'">'.$view->username.'</span>' : '').'
+							</div>
+							<div class="text-sm">
+								'.$files.$edit.'
 							</div>
 						</div>
 						<div class="col-sm">
@@ -294,11 +305,11 @@ if($vID != 0) :
 							<div class="row">
 								<div class="col-md-8">
 									<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_NAME').': '.$access.'</label>
-									<p>'.$gender.baseHelper::nameFormat($item->name).$nickname.'</p>
+									<p>'.$gender.baseHelper::nameFormat($view->name).$nickname.'</p>
 								</div>
 								<div class="col-md-4">
 									<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_ROLE').':</label>
-									<p>'.baseHelper::nameFormat($item->role, null, JText::_('TEXT_UNDEFINED')).'</p>
+									<p>'.baseHelper::nameFormat($view->role, null, JText::_('TEXT_UNDEFINED')).'</p>
 								</div>
 							</div>
 							'.$info1.$info2.$address.'

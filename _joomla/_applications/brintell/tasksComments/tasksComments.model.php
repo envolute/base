@@ -443,7 +443,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 						$data[] = array(
 							'status'			=> 1,
-							'msg'				=> JText::_('MSG_SAVED').'<br>commenters:'.$commentators.'<br>task:'.$item->subject.'<br>url:'.$url,
+							'msg'				=> JText::_('MSG_SAVED'),
 							'regID'				=> $id,
 							'uploadError'		=> $fileMsg,
 							'parentField'		=> $element,

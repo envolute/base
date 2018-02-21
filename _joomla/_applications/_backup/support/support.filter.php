@@ -7,7 +7,7 @@ $where = '';
 // filter params
 
 	// STATE -> select
-	$active	= $app->input->get('active', 2, 'int');
+	$active	= $app->input->get('active', ($hasAdmin ? 2 : 1), 'int');
 	$db->quoteName('T1.state');
 	$where .= ($active == 2) ? $db->quoteName('T1.state').' != '.$active : $db->quoteName('T1.state').' = '.$active;
 	// TYPE -> select

@@ -21,6 +21,9 @@ $tags = $db->loadObjectList();
 			<a class="nav-link" id="<?php echo $APPTAG?>Tab-location" data-toggle="tab" href="#<?php echo $APPTAG?>TabLocation" role="tab" aria-controls="location"><?php echo JText::_('TEXT_LOCATION_DATA'); ?></a>
 		</li>
 	<?php endif;?>
+	<li class="nav-item ml-auto">
+		<a class="nav-link active base-icon-left-big" href="<?php echo JURI::root().'apps/'.$APPPATH.'/profile'?>"> <?php echo JText::_('TEXT_BACK_TO_PROFILE'); ?></a>
+	</li>
 </ul>
 <div class="tab-content" id="<?php echo $APPTAG?>TabContent">
 	<div class="tab-pane fade show active" id="<?php echo $APPTAG?>TabGeneral" role="tabpanel" aria-labelledby="<?php echo $APPTAG?>Tab-general">
@@ -101,8 +104,10 @@ $tags = $db->loadObjectList();
 							?>
 						</select>
 						<span class="input-group-btn">
-							<button type="button" class="base-icon-plus btn btn-success hasTooltip" title="<?php echo JText::_('TEXT_ADD')?>" data-toggle="modal" data-target="#modal-<?php echo $APPTAG?>Tags" data-backdrop="static" data-keyboard="false"></button>
-							<button type="button" class="base-icon-cog btn btn-primary hasTooltip" title="<?php echo JText::_('TEXT_EDIT')?>" onclick="<?php echo $APPTAG?>Tags_listReload(false)" data-toggle="modal" data-target="#modal-list-<?php echo $APPTAG?>Tags" data-backdrop="static" data-keyboard="false"></button>
+							<button type="button" class="base-icon-plus btn btn-success hasTooltip" title="<?php echo JText::_('TEXT_ADD')?>" data-toggle="modal" data-target="#modal-<?php echo $APPPATH?>Tags" data-backdrop="static" data-keyboard="false"></button>
+							<?php if($hasAdmin) :?>
+								<button type="button" class="base-icon-cog btn btn-primary hasTooltip" title="<?php echo JText::_('TEXT_EDIT')?>" onclick="<?php echo $APPPATH?>Tags_listReload(false)" data-toggle="modal" data-target="#modal-list-<?php echo $APPPATH?>Tags" data-backdrop="static" data-keyboard="false"></button>
+							<?php endif;?>
 						</span>
 					</div>
 				</div>

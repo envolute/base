@@ -149,6 +149,13 @@ endif;
 			</div>
 		<?php else :?>
 			<div class="form-group">
+				<label class="label-sm"><?php echo JText::_('FIELD_LABEL_EXECUTED'); ?></label>
+				<div class="input-group">
+					<input type="text" name="executed" id="<?php echo $APPTAG?>-executed" class="form-control field-integer" />
+					<span class="input-group-addon">%</span>
+				</div>
+			</div>
+			<div class="form-group">
 				<label class="label-sm"><?php echo JText::_('FIELD_LABEL_STATUS'); ?></label>
 				<span class="btn-group btn-group-justified" data-toggle="buttons">
 					<?php

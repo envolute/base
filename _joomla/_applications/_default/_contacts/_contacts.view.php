@@ -62,34 +62,34 @@ if($vID != 0) :
 	;
 	try {
 		$db->setQuery($query);
-		$item = $db->loadObject();
+		$view = $db->loadObject();
 	} catch (RuntimeException $e) {
 		echo $e->getMessage();
 		return;
 	}
 
-	if(!empty($item->name)) : // verifica se existe
+	if(!empty($view->name)) : // verifica se existe
 
 		if($cfg['hasUpload']) :
 			JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 			// Imagem Principal -> Primeira imagem (index = 0)
-			$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
+			$img = uploader::getFile($cfg['fileTable'], '', $view->id, 0, $cfg['uploadDir']);
 			if(!empty($img)) $img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 300, 300).'" class="img-fluid b-all b-all-dashed p-1" />';
 			else $img = '<div class="image-file"><div class="image-action"><div class="image-file-label"><span class="base-icon-file-image"></span></div></div></div>';
 		endif;
 
 		// Address
-		$addressInfo = !empty($item->address_info) ? ', '.$item->address_info : '';
-		$addressNumber = !empty($item->address_number) ? ', '.$item->address_number : '';
-		$addressZip = !empty($item->zip_code) ? $item->zip_code.', ' : '';
-		$addressDistrict = !empty($item->address_district) ? baseHelper::nameFormat($item->address_district) : '';
-		$addressCity = !empty($item->address_city) ? ', '.baseHelper::nameFormat($item->address_city) : '';
-		$addressState = !empty($item->address_state) ? ', '.($item->onlyBR ? $item->address_state : baseHelper::nameFormat($item->address_state)) : '';
-		$addressCountry = (!empty($item->address_country) && !$item->onlyBR) ? ', '.baseHelper::nameFormat($item->address_country) : '';
+		$addressInfo = !empty($view->address_info) ? ', '.$view->address_info : '';
+		$addressNumber = !empty($view->address_number) ? ', '.$view->address_number : '';
+		$addressZip = !empty($view->zip_code) ? $view->zip_code.', ' : '';
+		$addressDistrict = !empty($view->address_district) ? baseHelper::nameFormat($view->address_district) : '';
+		$addressCity = !empty($view->address_city) ? ', '.baseHelper::nameFormat($view->address_city) : '';
+		$addressState = !empty($view->address_state) ? ', '.($view->onlyBR ? $view->address_state : baseHelper::nameFormat($view->address_state)) : '';
+		$addressCountry = (!empty($view->address_country) && !$view->onlyBR) ? ', '.baseHelper::nameFormat($view->address_country) : '';
 		// Phones
-		$ph = explode(';', $item->phone);
-		$wp = explode(';', $item->whatsapp);
-		$pd = explode(';', $item->phone_desc);
+		$ph = explode(';', $view->phone);
+		$wp = explode(';', $view->whatsapp);
+		$pd = explode(';', $view->phone_desc);
 		$phones = '';
 		for($i = 0; $i < count($ph); $i++) {
 			$whapps = $wp[$i] == 1 ? ' <span class="base-icon-whatsapp text-success cursor-help hasTooltip" title="'.JText::_('TEXT_HAS_WHATSAPP').'"></span>' : '';
@@ -97,15 +97,15 @@ if($vID != 0) :
 			$phones .= '<div class="pb-1">'.$ph[$i].$whapps.$phDesc.'</div>';
 		}
 		// Chats
-		$cName = explode(';', $item->chat_name);
-		$cUser = explode(';', $item->chat_user);
+		$cName = explode(';', $view->chat_name);
+		$cUser = explode(';', $view->chat_user);
 		$chats = '';
 		for($i = 0; $i < count($cName); $i++) {
 			if(!empty($cName[$i])) $chats .= '<div class="pb-1"><strong>'.$cName[$i].'</strong>: '.$cUser[$i].'</div>';
 		}
 		// Weblinks
-		$wTxt = explode(';', $item->weblink_text);
-		$wUrl = explode(';', $item->weblink_url);
+		$wTxt = explode(';', $view->weblink_text);
+		$wUrl = explode(';', $view->weblink_url);
 		$links = '';
 		for($i = 0; $i < count($wUrl); $i++) {
 			$text = !empty($wTxt[$i]) ? $wTxt[$i] : $wUrl[$i];
@@ -118,19 +118,19 @@ if($vID != 0) :
 
 		// Email, profissão
 		$info1 = '';
-		if(!empty($item->email)) :
+		if(!empty($view->email)) :
 			$info1 .= '
 				<div class="col-sm-8">
 					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_EMAIL').':</label>
-					<p>'.$item->email.'</p>
+					<p>'.$view->email.'</p>
 				</div>
 			';
 		endif;
-		if(!empty($item->occupation)) :
+		if(!empty($view->occupation)) :
 			$info1 .= '
 				<div class="col">
 					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_OCCUPATION').':</label>
-					<p> '.baseHelper::nameFormat($item->occupation).'</p>
+					<p> '.baseHelper::nameFormat($view->occupation).'</p>
 				</div>
 			';
 		endif;
@@ -138,58 +138,58 @@ if($vID != 0) :
 
 		// Birthday, CPF, RG, gênero, estado civil, filhos, conjuge
 		$info2 = '';
-		if(!empty($item->birthday) && $item->birthday != '0000-00-00') :
+		if(!empty($view->birthday) && $view->birthday != '0000-00-00') :
 			$info2 .= '
 				<div class="col-6 col-sm-4">
 					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_BIRTHDAY').':</label>
-					<p>'.baseHelper::dateFormat($item->birthday).'</p>
+					<p>'.baseHelper::dateFormat($view->birthday).'</p>
 				</div>
 			';
 		endif;
-		if(!empty($item->cpf)) :
+		if(!empty($view->cpf)) :
 			$info2 .= '
 				<div class="col-6 col-sm-4">
 					<label class="label-xs text-muted">CPF:</label>
-					<p>'.$item->cpf.'</p>
+					<p>'.$view->cpf.'</p>
 				</div>
 			';
 		endif;
-		if(!empty($item->rg)) :
+		if(!empty($view->rg)) :
 			$info2 .= '
 				<div class="col-6 col-sm-4">
 					<label class="label-xs text-muted">RG:</label>
-					<p>'.$item->rg.' / '.$item->rg_orgao.'</p>
+					<p>'.$view->rg.' / '.$view->rg_orgao.'</p>
 				</div>
 			';
 		endif;
-		if($item->gender > 0) :
+		if($view->gender > 0) :
 			$info2 .= '
 				<div class="col-6 col-sm-4">
 					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_GENDER').':</label>
-					<p>'.JText::_('TEXT_GENDER_'.$item->gender).'</p>
+					<p>'.JText::_('TEXT_GENDER_'.$view->gender).'</p>
 				</div>
 			';
 		endif;
-		if($item->marital_status > 0) :
+		if($view->marital_status > 0) :
 			$info2 .= '
 				<div class="col-6 col-sm-4">
 					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_MARITAL_STATUS').':</label>
-					<p>'.JText::_('TEXT_MARITAL_STATUS_'.$item->marital_status).'</p>
+					<p>'.JText::_('TEXT_MARITAL_STATUS_'.$view->marital_status).'</p>
 				</div>
 			';
 		endif;
-		if($item->children > 0) :
+		if($view->children > 0) :
 			$info2 .= '
 				<div class="col-6 col-sm-4">
 					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_CHILDREN').':</label>
-					<p>'.$item->children.'</p>
+					<p>'.$view->children.'</p>
 				</div>
 			';
 		endif;
-		if(!empty($item->partner)) :
+		if(!empty($view->partner)) :
 			$info2 .= '
 				<div class="col-12">
-					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_PARTNER').':</label><p>'.baseHelper::nameFormat($item->partner).'</p>
+					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_PARTNER').':</label><p>'.baseHelper::nameFormat($view->partner).'</p>
 				</div>
 			';
 		endif;
@@ -197,12 +197,12 @@ if($vID != 0) :
 
 		// Endereço
 		$address = '';
-		if(!empty($item->address)) :
+		if(!empty($view->address)) :
 			$address .= '
 				<div class="contact-address">
 					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_ADDRESS').':</label>
 					<p>
-						'.baseHelper::nameFormat($item->address).$addressNumber.$addressInfo.'<br />
+						'.baseHelper::nameFormat($view->address).$addressNumber.$addressInfo.'<br />
 						'.$addressZip.$addressDistrict.$addressCity.$addressState.$addressCountry.'
 					</p>
 				</div>
@@ -211,17 +211,17 @@ if($vID != 0) :
 
 		// Extra Info
 		$extra_info = '';
-		if(!empty($item->extra_info)) :
+		if(!empty($view->extra_info)) :
 			$extra_info .= '
 				<div class="contact-extra-info">
 					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_EXTRA_INFO').':</label>
-					<div class="mb-4">'.$item->extra_info.'</div>
+					<div class="mb-4">'.$view->extra_info.'</div>
 				</div>
 			';
 		endif;
 
 		// Acesso
-		$access = ($item->access == 1 && !empty($item->user_id)) ? ' <span class="base-icon-plug text-success cursor-help hasTooltip" title="'.JText::_('TEXT_CONNECTED_USER').'"></span>' : '';
+		$access = ($view->access == 1 && !empty($view->user_id)) ? ' <span class="base-icon-plug text-success cursor-help hasTooltip" title="'.JText::_('TEXT_CONNECTED_USER').'"></span>' : '';
 
 		echo '
 			<div class="row">
@@ -234,11 +234,11 @@ if($vID != 0) :
 							<div class="row">
 								<div class="col-md-8">
 									<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_NAME').':</label>
-									<p> '.baseHelper::nameFormat($item->name).$access.'</p>
+									<p> '.baseHelper::nameFormat($view->name).$access.'</p>
 								</div>
 								<div class="col-md-4">
 									<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_GROUP').':</label>
-									<p> '.baseHelper::nameFormat($item->group_name).'</p>
+									<p> '.baseHelper::nameFormat($view->group_name).'</p>
 								</div>
 							</div>
 							'.$info1.$info2.$address.$extra_info.'
@@ -266,11 +266,11 @@ if($vID != 0) :
 					$_banksAccountsAppNameId		= 'bankAccount_id';
 					$_banksAccountsRelNameId		= 'contact_id';
 					$_banksAccountsRelListNameId	= 'contact_id';
-					$_banksAccountsRelListId		= $item->id;
+					$_banksAccountsRelListId		= $view->id;
 					echo '
 						<h6 class="page-header base-icon-bank">
 							'.JText::_('TEXT_BANKS_ACCOUNTS').'
-							<a href="#" class="btn btn-xs btn-success float-right" onclick="_banksAccounts_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-_banksAccounts" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_BANK_ACCOUNT').'"></span></a>
+							<a href="#" class="btn btn-xs btn-success float-right" onclick="_banksAccounts_setRelation('.$view->id.')" data-toggle="modal" data-target="#modal-_banksAccounts" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_BANK_ACCOUNT').'"></span></a>
 						</h6>
 					';
 					require(JPATH_APPS.DS.'_banksAccounts/_banksAccounts.php');

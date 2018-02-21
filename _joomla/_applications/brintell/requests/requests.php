@@ -46,6 +46,7 @@ jQuery(function() {
 	var priority			= mainForm.find('input[name=priority]:radio'); // radio group
 	var deadline			= jQuery('#<?php echo $APPTAG?>-deadline');
 	var timePeriod			= jQuery('#<?php echo $APPTAG?>-timePeriod');
+	var executed			= jQuery('#<?php echo $APPTAG?>-executed');
 	var tags				= jQuery('#<?php echo $APPTAG?>-tags');
 	<?php if($hasAuthor) :?>
 		var setClose		= jQuery('#<?php echo $APPTAG?>-setClose');
@@ -122,6 +123,7 @@ jQuery(function() {
 			checkOption(priority, 0);
 			deadline.val('');
 			timePeriod.selectUpdate('<?php echo JText::_('TEXT_AM'); ?>'); // select
+			executed.val(0);
 			tags.selectUpdate(''); // select
 			<?php if($hasAuthor) :?>
 				setHidden(setClose, true);
@@ -133,7 +135,7 @@ jQuery(function() {
 			cstatus.val('');
 			status_desc.val('');
 
-			// TODO LIST
+			// TO DO LIST
 			setHidden(jQuery('#<?php echo $APPTAG?>-alert-toDo'), false, jQuery('#<?php echo $APPTAG?>-btn-toDo'));
 
 			<?php // Closure Actions
@@ -214,6 +216,7 @@ jQuery(function() {
 		// ON MODAL CLOSE -> Ações quando o modal da listagem é fechado
 		<?php echo $APPTAG?>ItemView.on('hidden.bs.modal', function () {
 			<?php echo $APPTAG?>ItemViewContent.attr('src', '');
+			<?php echo $APPTAG?>_listReload(false, false, false);
 		});
 
 	// LIST CONTROLLERS
@@ -311,6 +314,7 @@ jQuery(function() {
 						checkOption(priority, item.priority);
 						deadline.val(dateFormat(item.deadline)); // DATE -> conversão de data
 						timePeriod.selectUpdate(item.timePeriod); // select
+						executed.val(item.executed);
 						tags.selectUpdate(item.tags); // select
 						<?php if($hasAuthor) :?>
 							setHidden(setClose, true);
@@ -379,12 +383,15 @@ jQuery(function() {
 					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
 					jQuery.map( data, function( res ) {
 						if(res.status == 1) {
-							if(res.newStatus == 0) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_0')?>').removeClass().addClass('base-icon-clock text-live hasPopover');
-							else if(res.newStatus == 1) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_1')?>').removeClass().addClass('base-icon-off text-live hasPopover');
-							else if(res.newStatus == 2) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_2')?>').removeClass().addClass('base-icon-off text-primary hasPopover');
-							else if(res.newStatus == 3) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_3')?>').removeClass().addClass('base-icon-ok text-success hasPopover');
+							console.log(res.newStatus);
+							if(res.newStatus == 0) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_0')?>').removeClass().addClass('base-icon-clock text-live hasTooltip');
+							else if(res.newStatus == 1) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_1')?>').removeClass().addClass('base-icon-off text-live hasTooltip');
+							else if(res.newStatus == 2) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_2')?>').removeClass().addClass('base-icon-off text-primary hasTooltip');
+							else if(res.newStatus == 3) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_3')?>').removeClass().addClass('base-icon-ok text-success hasTooltip');
 							jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').data('status', res.newStatus);
 							setTips();
+						} else {
+							console.log(res.status);
 						}
 					});
 				},

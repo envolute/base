@@ -60,45 +60,45 @@ if($vID != 0) :
 	';
 	try {
 		$db->setQuery($query);
-		$item = $db->loadObject();
+		$view = $db->loadObject();
 	} catch (RuntimeException $e) {
 		echo $e->getMessage();
 		return;
 	}
 
 	$provider = '';
-	if(!empty($item->name)) : // verifica se existe
+	if(!empty($view->name)) : // verifica se existe
 
 		JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 		// Imagem Principal -> Primeira imagem (index = 0)
-		$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
+		$img = uploader::getFile($cfg['fileTable'], '', $view->id, 0, $cfg['uploadDir']);
 		if(!empty($img)) $img = '<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 120, 80, true).'" class="img-fluid float-left b-all bg-white p-1 mr-3" />';
 
-		$site	= !empty($item->website) ? '<a href="'.$item->website.'" class="new-window base-icon-globe" target="_blank"> '.JText::_('FIELD_LABEL_WEBSITE').'</a>' : '';
+		$site	= !empty($view->website) ? '<a href="'.$view->website.'" class="new-window base-icon-globe" target="_blank"> '.JText::_('FIELD_LABEL_WEBSITE').'</a>' : '';
 		$logo	= '';
 		if(!empty($img)) :
-			if(!empty($item->website)) $logo .= '<a href="'.$item->website.'" target="_blank">';
+			if(!empty($view->website)) $logo .= '<a href="'.$view->website.'" target="_blank">';
 			$logo .= $img;
-			if(!empty($item->website)) $logo .= '</a>';
+			if(!empty($view->website)) $logo .= '</a>';
 		endif;
-		$agree	= $item->agreement == 1 ? '<span class="badge badge-success float-right">'.JText::_('FIELD_LABEL_AGREEMENT').'</span>' : '';
+		$agree	= $view->agreement == 1 ? '<span class="badge badge-success float-right">'.JText::_('FIELD_LABEL_AGREEMENT').'</span>' : '';
 		// DESCRIPTION
-		$description = !empty($item->description) ? $item->description : '';
+		$description = !empty($view->description) ? $view->description : '';
 
 		$info = '';
-		if(!empty($item->company_name)) :
+		if(!empty($view->company_name)) :
 			$info .= '
 				<div class="col-md-8">
 					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_COMPANY_NAME').'</label>
-					<p class="text-truncate">'.baseHelper::nameFormat($item->company_name).'</p>
+					<p class="text-truncate">'.baseHelper::nameFormat($view->company_name).'</p>
 				</div>
 			';
 		endif;
-		if(!empty($item->cnpj)) :
+		if(!empty($view->cnpj)) :
 			$info .= '
 				<div class="col-md">
 					<label class="label-xs text-muted">CNPJ</label>
-					<p>'.$item->cnpj.'</p>
+					<p>'.$view->cnpj.'</p>
 				</div>
 			';
 		endif;
@@ -155,11 +155,11 @@ if($vID != 0) :
 		endif;
 
 		$website = '';
-		if(!empty($item->website)) :
+		if(!empty($view->website)) :
 			$website .= '
 				<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_WEBSITE').'</label>
 				<div class="text-truncate mb-4">
-					<a href="'.$item->website.'" class="new-window" target="_blank">'.$item->website.'</a>
+					<a href="'.$view->website.'" class="new-window" target="_blank">'.$view->website.'</a>
 				</div>
 			';
 		endif;
@@ -249,11 +249,11 @@ if($vID != 0) :
 
 		// TERMOS DE SERVIÇO
 		$terms = '';
-		if(!empty($item->service_desc)) : // verifica se existe
+		if(!empty($view->service_desc)) : // verifica se existe
 			$terms .= '
 			<div class="agreement-locations p-3 bg-light b-all">
 				<h4 class="page-header mb-3">'.JText::_('FIELD_LABEL_SERVICE').'</h4>
-				'.$item->service_desc.'
+				'.$view->service_desc.'
 			</div>
 			';
 		endif;
@@ -261,14 +261,14 @@ if($vID != 0) :
 		$provider .= '
 			<ul class="set-list inline bordered list-trim b-bottom b-bottom-dotted text-muted small mb-3 pb-2">
 				<li><a href="'.$urlToList.'" class="text-uppercase base-icon-reply"> '.JText::_('TEXT_AGREEMENTS').'</a></li>
-				<li><a href="'.$urlToList.'?gID='.$item->group_id.'">'.$item->group_name.'</a></li>
+				<li><a href="'.$urlToList.'?gID='.$view->group_id.'">'.$view->group_name.'</a></li>
 			</ul>
 			<div id="agreement-header" class="row">
 				<div class="col">
 					<div class="clearfix">
 						'.$logo.'
 						<h1 class="mt-0">
-							'.baseHelper::nameFormat($item->name).'
+							'.baseHelper::nameFormat($view->name).'
 						</h1>
 						'.$description.'
 					</div>

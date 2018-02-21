@@ -170,10 +170,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$element = $elemVal = $elemLabel = '';
 						if(!empty($_SESSION[$RTAG.'FieldUpdated']) && !empty($_SESSION[$RTAG.'TableField'])) :
 							$element = $_SESSION[$RTAG.'FieldUpdated'];
-							$elemVal = $id;
+							// $elemVal = $id;
 							$query = 'SELECT '. $db->quoteName($_SESSION[$RTAG.'TableField']) .' FROM '. $db->quoteName($cfg['mainTable']).' WHERE '. $db->quoteName('id') .' = '.$id.' AND state = 1';
 							$db->setQuery($query);
 							$elemLabel = $db->loadResult();
+							$elemVal = $elemLabel; // CUSTOM: Seta o label como valor do elemento
 						endif;
 
 						$data[] = array(
@@ -281,10 +282,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$element = $elemVal = $elemLabel = '';
 						if(!empty($_SESSION[$RTAG.'FieldUpdated']) && !empty($_SESSION[$RTAG.'TableField'])) :
 							$element = $_SESSION[$RTAG.'FieldUpdated'];
-							$elemVal = $ids;
+							// $elemVal = $ids;
 							$query = 'SELECT '. $db->quoteName($_SESSION[$RTAG.'TableField']) .' FROM '. $db->quoteName($cfg['mainTable']).' WHERE '. $db->quoteName('id') .' = '.$ids;
 							$db->setQuery($query);
 							$elemLabel = $db->loadResult();
+							$elemVal = $elemLabel; // CUSTOM: Seta o label como valor do elemento
 						endif;
 
 						$setIds = explode(',', $ids);
@@ -388,10 +390,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$element = $elemVal = $elemLabel = '';
 						if(!empty($_SESSION[$RTAG.'FieldUpdated']) && !empty($_SESSION[$RTAG.'TableField'])) :
 							$element = $_SESSION[$RTAG.'FieldUpdated'];
-							$elemVal = $id;
+							// $elemVal = $id;
 							$query = 'SELECT '. $db->quoteName($_SESSION[$RTAG.'TableField']) .' FROM '. $db->quoteName($cfg['mainTable']).' WHERE '. $db->quoteName('id') .' = '.$id.' AND state = 1';
 							$db->setQuery($query);
 							$elemLabel = $db->loadResult();
+							$elemVal = $elemLabel; // CUSTOM: Seta o label como valor do elemento
 						endif;
 
 						$data[] = array(

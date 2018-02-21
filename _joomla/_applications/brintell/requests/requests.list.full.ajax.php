@@ -194,7 +194,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						</a>
 						<span class="btn-group">
 							'.$createdBy.$btnActions.'
-							<a href="#" class="btn btn-xs btn-link text-info base-icon-info-circled hasPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top" data-trigger="click focus"></a>
+							<a href="#" class="btn btn-xs btn-link text-info base-icon-info-circled hasPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top"></a>
 						</span>
 					</span>
 				</div>

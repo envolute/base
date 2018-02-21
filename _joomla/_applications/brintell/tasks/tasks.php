@@ -132,7 +132,7 @@ jQuery(document).ready(function() {
 			checkOption(status, 1);
 			cstatus.val('');
 
-			// TODO LIST
+			// TO DO LIST
 			setHidden(jQuery('#<?php echo $APPTAG?>-alert-toDo'), false, jQuery('#<?php echo $APPTAG?>-btn-toDo'));
 
 			<?php // Closure Actions
@@ -213,6 +213,7 @@ jQuery(document).ready(function() {
 		// ON MODAL CLOSE -> Ações quando o modal da listagem é fechado
 		<?php echo $APPTAG?>ItemView.on('hidden.bs.modal', function () {
 			<?php echo $APPTAG?>ItemViewContent.attr('src', '');
+			<?php echo $APPTAG?>_listReload(false, false, false);
 		});
 
 	// LIST CONTROLLERS
@@ -320,7 +321,7 @@ jQuery(document).ready(function() {
 						checkOption(status, item.status);
 						cstatus.val(item.status);
 
-						// TODO LIST
+						// TO DO LIST
 						setHidden(jQuery('#<?php echo $APPTAG?>-alert-toDo'), true, jQuery('#<?php echo $APPTAG?>-btn-toDo'));
 
 						<?php // Closure Actions
@@ -377,10 +378,10 @@ jQuery(document).ready(function() {
 					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
 					jQuery.map( data, function( res ) {
 						if(res.status == 1) {
-							if(res.newStatus == 0) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_0')?>').removeClass().addClass('base-icon-lightbulb text-info hasPopover');
-							else if(res.newStatus == 1) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_1')?>').removeClass().addClass('base-icon-clock text-danger hasPopover');
-							else if(res.newStatus == 2) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_2')?>').removeClass().addClass('base-icon-off text-live hasPopover');
-							else if(res.newStatus == 3) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_3')?>').removeClass().addClass('base-icon-ok text-success hasPopover');
+							if(res.newStatus == 0) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_0')?>').removeClass().addClass('base-icon-lightbulb text-info hasTooltip');
+							else if(res.newStatus == 1) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_1')?>').removeClass().addClass('base-icon-clock text-danger hasTooltip');
+							else if(res.newStatus == 2) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_2')?>').removeClass().addClass('base-icon-off text-live hasTooltip');
+							else if(res.newStatus == 3) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_3')?>').removeClass().addClass('base-icon-ok text-success hasTooltip');
 							jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').data('status', res.newStatus);
 							setTips();
 						}

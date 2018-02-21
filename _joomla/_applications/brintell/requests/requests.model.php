@@ -99,19 +99,13 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['priority']			= $input->get('priority', 0, 'int');
 	  	$request['deadline']			= $input->get('deadline', '', 'string');
 	  	$request['timePeriod']			= $input->get('timePeriod', '', 'string');
+	  	$request['executed']			= $input->get('executed', 0, 'int');
 		$tags							= $input->get('tags', array(), 'array');
 		$request['tags']				= implode(',', $tags); // FIND_IN_SET
 		$request['status']				= $input->get('status', 0, 'int');
 		$request['cstatus']				= $input->get('cstatus', 0, 'int');
-		$request['status_desc']			= $input->get('status_desc', '', 'string');
 	  	$request['setClose']			= $input->get('setClose', 0, 'int');
-		if($request['setClose'] == 1) :
-		  	$request['status']			= 3;
-	  		$request['status_desc']		= '';
-		endif;
-		// alter status form
-		$request['statusOn']     = $input->get('statusOn', 0, 'int');
-		$request['statusDs']     = $input->get('statusDs', '', 'string');
+		if($request['setClose'] == 1) $request['status'] = 3;
 		// fechamento
 		$closing_date = '0000-00-00 00:00:00';
 		if($request['status'] == 3) :
@@ -252,6 +246,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'priority'			=> $item->priority,
 						'deadline'			=> $item->deadline,
 						'timePeriod'		=> $item->timePeriod,
+						'executed'			=> $item->executed,
 						'tags'				=> explode(',', $item->tags),
 						'status'			=> $item->status,
 						'status_desc'		=> $item->status_desc,
@@ -270,6 +265,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('priority')			.'='. $request['priority'] .','.
 						$db->quoteName('deadline')			.'='. $db->quote($request['deadline']) .','.
 						$db->quoteName('timePeriod')		.'='. $db->quote($request['timePeriod']) .','.
+						$db->quoteName('executed')			.'='. $request['executed'] .','.
 						$db->quoteName('tags')				.'='. $db->quote($request['tags']) .','.
 						$db->quoteName('status')			.'='. $request['status'] .','.
 						$db->quoteName('status_desc')		.'='. $db->quote($request['status_desc']) .','.
@@ -521,7 +517,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					} catch (RuntimeException $e) {
 
 						$data[] = array(
-							'status'=> 0,
+							'status'=> $query,
 							'msg'	=> $e->getMessage()
 						);
 
@@ -549,6 +545,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('priority') .','.
 							$db->quoteName('deadline') .','.
 							$db->quoteName('timePeriod') .','.
+							$db->quoteName('executed') .','.
 							$db->quoteName('tags') .','.
 							$db->quoteName('status') .','.
 							$db->quoteName('status_desc') .','.
@@ -562,6 +559,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$request['priority'] .','.
 							$db->quote($request['deadline']) .','.
 							$db->quote($request['timePeriod']) .','.
+							$request['executed'] .','.
 							$db->quote($request['tags']) .','.
 							$request['status'] .','.
 							$db->quote($request['status_desc']) .','.

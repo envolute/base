@@ -66,23 +66,23 @@ if($vID != 0) :
 	;
 	try {
 		$db->setQuery($query);
-		$item = $db->loadObject();
+		$view = $db->loadObject();
 	} catch (RuntimeException $e) {
 		echo $e->getMessage();
 		return;
 	}
 
 	$client = '';
-	if(!empty($item->name)) : // verifica se existe
+	if(!empty($view->name)) : // verifica se existe
 
 		JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 		// Imagem Principal -> (index = 0)
-		$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
+		$img = uploader::getFile($cfg['fileTable'], '', $view->id, 0, $cfg['uploadDir']);
 		if(!empty($img)) $img = '<img src="images/apps/'.$APPPATH.'/'.$img['filename'].'" class="w-100 img-fluid b-all p-1 mb-3" />';
 		else $img = '<div class="image-file"><div class="image-action"><div class="image-file-label"><span class="base-icon-file-image"><small>'.JText::_('TEXT_NO_IMAGE').'</small></span></div></div></div>';
 
 		// Contrato -> (index = 1)
-		$doc = uploader::getFile($cfg['fileTable'], '', $item->id, 1, $cfg['uploadDir']);
+		$doc = uploader::getFile($cfg['fileTable'], '', $view->id, 1, $cfg['uploadDir']);
 		if(!empty($doc) && $hasAdmin) :
 			$doc = '
 				<a class="btn btn-info btn-sm btn-block my-1" href="'.JURI::root(true).'/apps/get-file?fn='.base64_encode($doc['filename']).'&mt='.base64_encode($doc['mimetype']).'&tag='.base64_encode($APPNAME).'">
@@ -91,16 +91,16 @@ if($vID != 0) :
 			';
 		endif;
 
-		$razao	= !empty($item->company_name) ? '<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_COMPANY_NAME').'</label><p class="text-truncate">'.baseHelper::nameFormat($item->company_name).'</p>' : '';
-		$site	= !empty($item->website) ? '<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_WEBSITE').'</label><p class="text-truncate"><a href="'.$item->website.'" class="new-window" target="_blank">'.$item->website.'</a></p>' : '';
-		$email	= !empty($item->email) ? '<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_EMAIL').'</label><p class="text-truncate"><a href="mailto:'.$item->email.'" class="mr-3">'.$item->email.'</a></p>' : '';
-		$cnpj	= !empty($item->cnpj) ? '<label class="label-xs text-muted">CNPJ</label><p>'.$item->cnpj.'</p>' : '';
-		$date	= $item->due_date != 0 ? '<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_DUE_DATE').'</label><p>'.($item->due_date < 10 ? '0' : '').$item->due_date.'</p>' : '';
-		$since	= $item->start_date != '0000-00-00' ? '<label class="label-xs text-muted">'.JText::_('TEXT_SINCE').'</label><p>'.baseHelper::dateFormat($item->due_date).'</p>' : '';
-		$agree	= $item->portfolio == 1 ? '<li><span class="text-success text-uppercase"><span class="base-icon-ok"></span> '.JText::_('FIELD_LABEL_PORTFOLIO').'</span></li>' : '';
-		$gName	= !empty($item->groupName) ? '<li>'.$item->groupName.'</li>' : '';
+		$razao	= !empty($view->company_name) ? '<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_COMPANY_NAME').'</label><p class="text-truncate">'.baseHelper::nameFormat($view->company_name).'</p>' : '';
+		$site	= !empty($view->website) ? '<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_WEBSITE').'</label><p class="text-truncate"><a href="'.$view->website.'" class="new-window" target="_blank">'.$view->website.'</a></p>' : '';
+		$email	= !empty($view->email) ? '<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_EMAIL').'</label><p class="text-truncate"><a href="mailto:'.$view->email.'" class="mr-3">'.$view->email.'</a></p>' : '';
+		$cnpj	= !empty($view->cnpj) ? '<label class="label-xs text-muted">CNPJ</label><p>'.$view->cnpj.'</p>' : '';
+		$date	= $view->due_date != 0 ? '<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_DUE_DATE').'</label><p>'.($view->due_date < 10 ? '0' : '').$view->due_date.'</p>' : '';
+		$since	= $view->start_date != '0000-00-00' ? '<label class="label-xs text-muted">'.JText::_('TEXT_SINCE').'</label><p>'.baseHelper::dateFormat($view->due_date).'</p>' : '';
+		$agree	= $view->portfolio == 1 ? '<li><span class="text-success text-uppercase"><span class="base-icon-ok"></span> '.JText::_('FIELD_LABEL_PORTFOLIO').'</span></li>' : '';
+		$gName	= !empty($view->groupName) ? '<li>'.$view->groupName.'</li>' : '';
 		$lProj	= '
-			<a class="btn btn-success btn-block my-1 base-icon-cogs" href="apps/projects?clients_filter=1&clientID='.$item->id.'">
+			<a class="btn btn-success btn-block my-1 base-icon-cogs" href="'.JURI::root().'dashboard">
 				'.JText::_('TEXT_PROJECTS').'
 			</a>
 		';
@@ -121,7 +121,7 @@ if($vID != 0) :
 		if(!empty($info1) || !empty($info2)) $info = '<div class="row">'.$info1.$info2.'</div>';
 
 		// description
-		$description = !empty($item->description) ? '<div id="'.$MAINTAG.'-desc">'.$item->description.'</div>' : '';
+		$description = !empty($view->description) ? '<div id="'.$MAINTAG.'-desc">'.$view->description.'</div>' : '';
 
 		echo '
 			<div class="row">
@@ -133,7 +133,7 @@ if($vID != 0) :
 						'.$agree.$gName.'
 					</ul>
 					<h1 class="mt-0">
-						'.baseHelper::nameFormat($item->name).'
+						'.baseHelper::nameFormat($view->name).'
 					</h1>
 					'.$description.'
 					<hr class="mt-2" />
@@ -156,10 +156,10 @@ if($vID != 0) :
 								$_locationsAppNameId		= 'location_id';
 								$_locationsRelNameId		= 'client_id';
 								$_locationsRelListNameId	= 'client_id';
-								$_locationsRelListId		= $item->id;
+								$_locationsRelListId		= $view->id;
 
 								require(JPATH_APPS.DS.'_locations/_locations.php');
-								echo '	<a href="#" class="btn btn-sm btn-success base-icon-plus" onclick="_locations_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-_locations" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_INSERT_LOCATION').'</a>';
+								echo '	<a href="#" class="btn btn-sm btn-success base-icon-plus" onclick="_locations_setRelation('.$view->id.')" data-toggle="modal" data-target="#modal-_locations" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_INSERT_LOCATION').'</a>';
 		echo '
 							</div>
 							<hr class="d-sm-none" />
@@ -175,13 +175,13 @@ if($vID != 0) :
 							$clientsStaffShowAddBtn			= false;
 							$clientsStaffRelTag				= 'clients';
 							$clientsStaffRelListNameId		= 'client_id';
-							$clientsStaffRelListId			= $item->id;
+							$clientsStaffRelListId			= $view->id;
 							$clientsStaffOnlyChildList		= true;
 							$clientsStaffHideParentField	= true;
 							echo '
 								<h6 class="page-header base-icon-users-alt">
 									'.JText::_('TEXT_STAFF').'
-									<a href="#" class="btn btn-xs btn-success float-right" onclick="clientsStaff_setParent('.$item->id.')" data-toggle="modal" data-target="#modal-clientsStaff" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_STAFF_MEMBER').'"></span></a>
+									<a href="#" class="btn btn-xs btn-success float-right" onclick="clientsStaff_setParent('.$view->id.')" data-toggle="modal" data-target="#modal-clientsStaff" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_STAFF_MEMBER').'"></span></a>
 								</h6>
 							';
 							require(JPATH_APPS.DS.'clientsStaff/clientsStaff.php');
@@ -196,11 +196,11 @@ if($vID != 0) :
 								$_callCentersAppNameId				= 'callCenter_id';
 								$_callCentersRelNameId				= 'client_id';
 								$_callCentersRelListNameId			= 'client_id';
-								$_callCentersRelListId				= $item->id;
+								$_callCentersRelListId				= $view->id;
 								echo '
 									<h6 class="page-header base-icon-phone-squared pt-2">
 										'.JText::_('TEXT_CALL_CENTERS').'
-										<a href="#" class="btn btn-xs btn-success float-right" onclick="_callCenters_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-_callCenters" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_CALL_CENTER').'"></span></a>
+										<a href="#" class="btn btn-xs btn-success float-right" onclick="_callCenters_setRelation('.$view->id.')" data-toggle="modal" data-target="#modal-_callCenters" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_CALL_CENTER').'"></span></a>
 									</h6>
 								';
 								require(JPATH_APPS.DS.'_callCenters/_callCenters.php');
@@ -216,11 +216,11 @@ if($vID != 0) :
 								$_banksAccountsAppNameId		= 'bankAccount_id';
 								$_banksAccountsRelNameId		= 'client_id';
 								$_banksAccountsRelListNameId	= 'client_id';
-								$_banksAccountsRelListId		= $item->id;
+								$_banksAccountsRelListId		= $view->id;
 								echo '
 									<h6 class="page-header base-icon-bank pt-2">
 										'.JText::_('TEXT_BANKS_ACCOUNTS').'
-										<a href="#" class="btn btn-xs btn-success float-right" onclick="_banksAccounts_setRelation('.$item->id.')" data-toggle="modal" data-target="#modal-_banksAccounts" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_BANK_ACCOUNT').'"></span></a>
+										<a href="#" class="btn btn-xs btn-success float-right" onclick="_banksAccounts_setRelation('.$view->id.')" data-toggle="modal" data-target="#modal-_banksAccounts" data-backdrop="static" data-keyboard="false"><span class="base-icon-plus hasTooltip" title="'.JText::_('TEXT_INSERT_BANK_ACCOUNT').'"></span></a>
 									</h6>
 								';
 								require(JPATH_APPS.DS.'_banksAccounts/_banksAccounts.php');
