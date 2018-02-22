@@ -1,5 +1,5 @@
 <?
-if($hasAdmin) :
+if($hasEditor) :
 
 	// Carrega o arquivo de tradução
 	if(isset($_SESSION[$APPTAG.'langDef'])) :

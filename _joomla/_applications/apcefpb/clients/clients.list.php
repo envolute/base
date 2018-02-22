@@ -34,41 +34,6 @@ defined('_JEXEC') or die;
 		 return;
 	}
 
-// ADMIN VIEW
-$adminView = array();
-$adminView['head']['info'] = $adminView['head']['actions'] = '';
-if($hasAdmin) :
-	$adminView['head']['info'] = '
-		<th width="30" class="d-print-none"><input type="checkbox" id="'.$APPTAG.'_checkAll" /></th>
-		<th width="50" class="d-none d-lg-table-cell d-print-none">'.baseAppHelper::linkOrder('#', 'T1.id', $APPTAG).'</th>
-	';
-	$adminView['head']['actions'] = '
-		<th class="text-center d-none d-lg-table-cell d-print-none" width="60">'.baseAppHelper::linkOrder(JText::_('TEXT_ACTIVE'), 'T1.state', $APPTAG).'</th>
-		<th colspan="2" class="text-center d-print-none">'.JText::_('TEXT_ACTIONS').'</th>
-	';
-endif;
-
-// VIEW
-$html = '
-	<form id="form-list-'.$APPTAG.'" method="post" class="pt-3">
-		<table class="table table-striped table-hover table-sm">
-			<thead>
-				<tr>
-					'.$adminView['head']['info'].'
-					<th>'.JText::_('FIELD_LABEL_NAME').'</th>
-					<th width="50" class="d-none d-lg-table-cell text-center">&#160;</th>
-					<th>'.JText::_('TEXT_TYPE').'</th>
-					<th width="50" class="d-none d-lg-table-cell text-center">
-						<span class="cursor-help hasTooltip" title="'.JText::_('MSG_LIST_ENABLED_DEBIT').'">'.JText::_('TEXT_DEBIT').'</span>
-					</th>
-					<th>'.JText::_('TEXT_STATUS').'</th>
-					<th width="120" class="d-none d-lg-table-cell">'.JText::_('FIELD_LABEL_BIRTHDAY').'</th>
-					'.$adminView['head']['actions'].'
-				</tr>
-			</thead>
-			<tbody>
-';
-
 if($num_rows) : // verifica se existe
 
 	// pagination
@@ -77,11 +42,51 @@ if($num_rows) : // verifica se existe
 	$found_rows = $db->loadResult();
 	$pageNav = new JPagination($found_rows , $lim0, $lim );
 
+	$listCount = 0;
 	foreach($res as $item) {
 
 		// define permissões de execução
 		$canEdit	= ($cfg['canEdit'] || $item->created_by == $user->id);
 		$canDelete	= ($cfg['canDelete'] || $item->created_by == $user->id);
+		$listCount++;
+
+		if($listCount == 1) {
+
+			// ADMIN VIEW
+			$adminView = array();
+			$adminView['head']['info'] = $adminView['head']['actions'] = '';
+			if($canEdit) :
+				$adminView['head']['info'] = '
+					<th width="30" class="d-print-none"><input type="checkbox" id="'.$APPTAG.'_checkAll" /></th>
+					<th width="50" class="d-none d-lg-table-cell d-print-none">'.baseAppHelper::linkOrder('#', 'T1.id', $APPTAG).'</th>
+				';
+				$adminView['head']['actions'] = '
+					<th class="text-center d-none d-lg-table-cell d-print-none" width="60">'.baseAppHelper::linkOrder(JText::_('TEXT_ACTIVE'), 'T1.state', $APPTAG).'</th>
+					<th colspan="2" class="text-center d-print-none">'.JText::_('TEXT_ACTIONS').'</th>
+				';
+			endif;
+
+			// VIEW
+			$html = '
+				<form id="form-list-'.$APPTAG.'" method="post" class="pt-3">
+					<table class="table table-striped table-hover table-sm">
+						<thead>
+							<tr>
+								'.$adminView['head']['info'].'
+								<th>'.JText::_('FIELD_LABEL_NAME').'</th>
+								<th width="50" class="d-none d-lg-table-cell text-center">&#160;</th>
+								<th>'.JText::_('TEXT_TYPE').'</th>
+								<th width="50" class="d-none d-lg-table-cell text-center">
+									<span class="cursor-help hasTooltip" title="'.JText::_('MSG_LIST_ENABLED_DEBIT').'">'.JText::_('TEXT_DEBIT').'</span>
+								</th>
+								<th>'.JText::_('TEXT_STATUS').'</th>
+								<th width="120" class="d-none d-lg-table-cell">'.JText::_('FIELD_LABEL_BIRTHDAY').'</th>
+								'.$adminView['head']['actions'].'
+							</tr>
+						</thead>
+						<tbody>
+			';
+		}
 
 		// só permite a impressão da carteira de associado com foto
 		$printCard = '<button type="button" class="btn btn-lg btn-default base-icon-print hasTooltip disabled" title="'.JText::_('MSG_CARD_NO_PHOTO').'"></button>';
@@ -112,7 +117,7 @@ if($num_rows) : // verifica se existe
 		endif;
 
 		$adminView['list']['info'] = $adminView['list']['actions'] = '';
-		if($hasAdmin) :
+		if($canEdit) :
 			$adminView['list']['info'] = '
 				<td class="check-row d-print-none"><input type="checkbox" name="'.$APPTAG.'_ids[]" class="'.$APPTAG.'-chk" value="'.$item->id.'" /></td>
 				<td class="d-none d-lg-table-cell d-print-none">'.$item->id.'</td>

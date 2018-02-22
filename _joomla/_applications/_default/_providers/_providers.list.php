@@ -36,38 +36,6 @@ defined('_JEXEC') or die;
 		 return;
 	}
 
-// ADMIN VIEW
-$adminView = array();
-$adminView['head']['info'] = $adminView['head']['actions'] = '';
-if($hasAdmin) :
-	$adminView['head']['info'] = '
-		<th width="30" class="d-print-none"><input type="checkbox" id="'.$APPTAG.'_checkAll" /></th>
-		<th width="50" class="d-none d-lg-table-cell d-print-none">'.baseAppHelper::linkOrder('#', 'T1.id', $APPTAG).'</th>
-	';
-	$adminView['head']['actions'] = '
-		<th class="text-center d-none d-lg-table-cell d-print-none" width="60">'.baseAppHelper::linkOrder(JText::_('TEXT_ACTIVE'), 'T1.state', $APPTAG).'</th>
-		<th class="text-center d-print-none" width="70">'.JText::_('TEXT_ACTIONS').'</th>
-	';
-endif;
-
-// VIEW
-$html = '
-	<form id="form-list-'.$APPTAG.'" method="post" class="pt-3">
-		<table class="table table-striped table-hover table-sm">
-			<thead>
-				<tr>
-					'.$adminView['head']['info'].'
-					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_NAME'), 'T1.name', $APPTAG).'</th>
-					<th width="30" class="d-none d-lg-table-cell text-center">&#160;</td>
-					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_GROUP'), 'T2.name', $APPTAG).'</th>
-					<th width="100" class="text-center">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_AGREEMENT'), 'T1.agreement', $APPTAG).'</th>
-					<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
-					'.$adminView['head']['actions'].'
-				</tr>
-			</thead>
-			<tbody>
-';
-
 if($num_rows) : // verifica se existe
 
 	// pagination
@@ -76,11 +44,48 @@ if($num_rows) : // verifica se existe
 	$found_rows = $db->loadResult();
 	$pageNav = new JPagination($found_rows , $lim0, $lim );
 
+	$listCount = 0;
 	foreach($res as $item) {
 
 		// define permissões de execução
 		$canEdit	= ($cfg['canEdit'] || $item->created_by == $user->id);
 		$canDelete	= ($cfg['canDelete'] || $item->created_by == $user->id);
+		$listCount++;
+
+		if($listCount == 1) {
+
+			// ADMIN VIEW
+			$adminView = array();
+			$adminView['head']['info'] = $adminView['head']['actions'] = '';
+			if($canEdit) :
+				$adminView['head']['info'] = '
+					<th width="30" class="d-print-none"><input type="checkbox" id="'.$APPTAG.'_checkAll" /></th>
+					<th width="50" class="d-none d-lg-table-cell d-print-none">'.baseAppHelper::linkOrder('#', 'T1.id', $APPTAG).'</th>
+				';
+				$adminView['head']['actions'] = '
+					<th class="text-center d-none d-lg-table-cell d-print-none" width="60">'.baseAppHelper::linkOrder(JText::_('TEXT_ACTIVE'), 'T1.state', $APPTAG).'</th>
+					<th class="text-center d-print-none" width="70">'.JText::_('TEXT_ACTIONS').'</th>
+				';
+			endif;
+
+			// VIEW
+			$html = '
+				<form id="form-list-'.$APPTAG.'" method="post" class="pt-3">
+					<table class="table table-striped table-hover table-sm">
+						<thead>
+							<tr>
+								'.$adminView['head']['info'].'
+								<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_NAME'), 'T1.name', $APPTAG).'</th>
+								<th width="30" class="d-none d-lg-table-cell text-center">&#160;</td>
+								<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_GROUP'), 'T2.name', $APPTAG).'</th>
+								<th width="100" class="text-center">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_AGREEMENT'), 'T1.agreement', $APPTAG).'</th>
+								<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
+								'.$adminView['head']['actions'].'
+							</tr>
+						</thead>
+						<tbody>
+			';
+		}
 
 		if($cfg['hasUpload']) :
 			JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
@@ -98,7 +103,8 @@ if($num_rows) : // verifica se existe
 		endif;
 
 		$adminView['list']['info'] = $adminView['list']['actions'] = '';
-		if($hasAdmin) :
+		$btnDelete = $canDelete ? '<a href="#" class="btn btn-xs btn-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash"></span></a>' : '';
+		if($canEdit) :
 			$adminView['list']['info'] = '
 				<td class="check-row d-print-none"><input type="checkbox" name="'.$APPTAG.'_ids[]" class="'.$APPTAG.'-chk" value="'.$item->id.'" /></td>
 				<td class="d-none d-lg-table-cell d-print-none">'.$item->id.'</td>
@@ -111,7 +117,7 @@ if($num_rows) : // verifica se existe
 				</td>
 				<td class="text-center d-print-none">
 					<a href="#" class="btn btn-xs btn-warning hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil"></span></a>
-					<a href="#" class="btn btn-xs btn-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash"></span></a>
+					'.$btnDelete.'
 				</td>
 			';
 		endif;

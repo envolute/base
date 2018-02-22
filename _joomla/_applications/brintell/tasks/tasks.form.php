@@ -142,7 +142,7 @@ foreach ($staff as $obj) {
 				<div id="<?php echo $APPTAG?>-files-group" class="row"></div>
 			</div>
 			<div class="col-lg-4 b-left b-left-dashed">
-				<?php if($hasAdmin) :?>
+				<?php if($canEdit) :?>
 					<div class="form-group">
 						<label class="label-sm"><?php echo JText::_('FIELD_LABEL_ASSIGN_TO'); ?></label>
 						<div class="input-group">

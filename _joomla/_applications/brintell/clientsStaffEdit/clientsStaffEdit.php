@@ -300,7 +300,7 @@ jQuery(window).on('load', function() {
 		echo 'setHidden("#'.$APPTAG.'-form-ajax", false, "#'.$APPTAG.'-form-loader");'; // Mostra o formulário
 		echo $APPTAG.'_loadEditFields('.$rID.', true, true);';
 	else :
-		if($isAdmin) :
+		if($hasAdmin) :
 			echo '<div class="alert alert-warning text-sm mx-2">'.JText::_('MSG_NOT_STAFF_PROFILE').'</div>';
 		else :
 			$app->enqueueMessage(JText::_('MSG_NOT_PERMISSION'), 'warning');

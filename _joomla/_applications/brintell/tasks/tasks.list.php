@@ -29,26 +29,6 @@ defined('_JEXEC') or die;
 		 return;
 	}
 
-// ADMIN VIEW
-$adminView = array();
-$adminView['head']['info'] = $adminView['head']['actions'] = '';
-if($hasAdmin) :
-	$adminView['head']['info'] = '
-		<th width="30" class="d-print-none"><input type="checkbox" id="'.$APPTAG.'_checkAll" /></th>
-		<th width="50" class="d-none d-lg-table-cell d-print-none">'.baseAppHelper::linkOrder('#', 'T1.id', $APPTAG).'</th>
-	';
-	$adminView['head']['actions'] = '
-		<th class="text-center d-none d-lg-table-cell d-print-none" width="60">'.baseAppHelper::linkOrder(JText::_('TEXT_ACTIVE'), 'T1.state', $APPTAG).'</th>
-		<th class="text-center d-print-none" width="70">'.JText::_('TEXT_ACTIONS').'</th>
-	';
-endif;
-
-// VIEW
-$html = '
-	<form id="form-list-'.$APPTAG.'" method="post" class="pt-3">
-		<div class="row mb-5">
-';
-
 if($num_rows) : // verifica se existe
 
 	// pagination
@@ -57,14 +37,39 @@ if($num_rows) : // verifica se existe
 	$found_rows = $db->loadResult();
 	$pageNav = new JPagination($found_rows , $lim0, $lim );
 
+	$listCount = 0;
 	foreach($res as $item) {
 
 		// define permissões de execução
 		$canEdit	= ($cfg['canEdit'] || $item->created_by == $user->id);
 		$canDelete	= ($cfg['canDelete'] || $item->created_by == $user->id);
+		$listCount++;
+
+		if($listCount == 1) {
+
+			// ADMIN VIEW
+			$adminView = array();
+			$adminView['head']['info'] = $adminView['head']['actions'] = '';
+			if($canEdit) :
+				$adminView['head']['info'] = '
+					<th width="30" class="d-print-none"><input type="checkbox" id="'.$APPTAG.'_checkAll" /></th>
+					<th width="50" class="d-none d-lg-table-cell d-print-none">'.baseAppHelper::linkOrder('#', 'T1.id', $APPTAG).'</th>
+				';
+				$adminView['head']['actions'] = '
+					<th class="text-center d-none d-lg-table-cell d-print-none" width="60">'.baseAppHelper::linkOrder(JText::_('TEXT_ACTIVE'), 'T1.state', $APPTAG).'</th>
+					<th class="text-center d-print-none" width="70">'.JText::_('TEXT_ACTIONS').'</th>
+				';
+			endif;
+
+			// VIEW
+			$html = '
+				<form id="form-list-'.$APPTAG.'" method="post" class="pt-3">
+					<div class="row mb-5">
+			';
+		}
 
 		$adminView['list']['check'] = $adminView['list']['actions'] = '';
-		if($hasAdmin) :
+		if($canEdit) :
 			$adminView['list']['check'] = '
 				<input type="checkbox" name="'.$APPTAG.'_ids[]" class="'.$APPTAG.'-chk pos-absolute pos-right-0 m-1" value="'.$item->id.'" />
 			';

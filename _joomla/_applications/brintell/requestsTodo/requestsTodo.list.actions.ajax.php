@@ -138,7 +138,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 			$btnState = '';
 			$txtState = ($item->state == 1) ? ' class="text-success"' : ' class="text-danger" style="text-decoration: line-through;"';
-			if($hasAdmin) :
+			if($canEdit) :
 				$btnState = '
 					<a href="#" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'">
 						<span class="'.($item->state == 1 ? 'base-icon-check-empty text-success' : 'base-icon-check text-danger').' hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'"></span>

@@ -544,7 +544,6 @@ jQuery(window).on('load', function() {
 				// Usuários administradores "$hasAdmin" (não associados) só podem
 				// visualizar seus dados ou editar seu perfil, na administração...
 				// => Mostra a mensagem...
-				echo 'console.log("'.$query.'");';
 				echo 'setHidden("#'.$APPTAG.'-is-admin", false, "#'.$APPTAG.'-form-loader");';
 			else :
 				$app->enqueueMessage(JText::_('MSG_NOT_PERMISSION'), 'warning');

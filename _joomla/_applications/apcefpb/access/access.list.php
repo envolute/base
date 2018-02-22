@@ -1,4 +1,4 @@
-<?php
+if($canEdit) :<?php
 defined('_JEXEC') or die;
 
 // LIST
@@ -29,39 +29,6 @@ defined('_JEXEC') or die;
 		 return;
 	}
 
-// ADMIN VIEW
-$adminView = array();
-$adminView['head']['info'] = $adminView['head']['actions'] = '';
-if($hasAdmin) :
-	$adminView['head']['info'] = '
-		<th width="30" class="d-print-none"><input type="checkbox" id="'.$APPTAG.'_checkAll" /></th>
-	';
-	$adminView['head']['actions'] = '
-		<th class="text-center d-none d-lg-table-cell d-print-none" width="60">'.baseAppHelper::linkOrder(JText::_('TEXT_ACTIVE'), 'T1.state', $APPTAG).'</th>
-		<th class="text-center d-print-none" width="90">'.JText::_('TEXT_ACTIONS').'</th>
-	';
-endif;
-
-// VIEW
-$html = '
-	<form id="form-list-'.$APPTAG.'" method="post" class="pt-3">
-		<table class="table table-striped table-hover table-sm">
-			<thead>
-				<tr>
-					'.$adminView['head']['info'].'
-					<th>'.JText::_('FIELD_LABEL_DATE').'</th>
-					<th>'.JText::_('FIELD_LABEL_CLIENT').'</th>
-					<th>'.JText::_('TEXT_DEPENDENTS').'</th>
-					<th>'.JText::_('TEXT_GUESTS').'</th>
-					<th width="70">'.JText::_('TEXT_EXAMS').'</th>
-					<th>'.JText::_('TEXT_TAX_S').'</th>
-					<th>'.JText::_('TEXT_TOTAL_TAX').'</th>
-					'.$adminView['head']['actions'].'
-				</tr>
-			</thead>
-			<tbody>
-';
-
 if($num_rows) : // verifica se existe
 
 	// pagination
@@ -76,11 +43,49 @@ if($num_rows) : // verifica se existe
 	$exam_total = 0;
 	$tax_total = 0;
 	$tax_amount = 0;
+	$listCount = 0;
 	foreach($res as $item) {
 
 		// define permissões de execução
 		$canEdit	= ($cfg['canEdit'] || $item->created_by == $user->id);
 		$canDelete	= ($cfg['canDelete'] || $item->created_by == $user->id);
+		$listCount++;
+
+		if($listCount == 1) {
+
+			// ADMIN VIEW
+			$adminView = array();
+			$adminView['head']['info'] = $adminView['head']['actions'] = '';
+			if($canEdit) :
+				$adminView['head']['info'] = '
+					<th width="30" class="d-print-none"><input type="checkbox" id="'.$APPTAG.'_checkAll" /></th>
+				';
+				$adminView['head']['actions'] = '
+					<th class="text-center d-none d-lg-table-cell d-print-none" width="60">'.baseAppHelper::linkOrder(JText::_('TEXT_ACTIVE'), 'T1.state', $APPTAG).'</th>
+					<th class="text-center d-print-none" width="90">'.JText::_('TEXT_ACTIONS').'</th>
+				';
+			endif;
+
+			// VIEW
+			$html = '
+				<form id="form-list-'.$APPTAG.'" method="post" class="pt-3">
+					<table class="table table-striped table-hover table-sm">
+						<thead>
+							<tr>
+								'.$adminView['head']['info'].'
+								<th>'.JText::_('FIELD_LABEL_DATE').'</th>
+								<th>'.JText::_('FIELD_LABEL_CLIENT').'</th>
+								<th>'.JText::_('TEXT_DEPENDENTS').'</th>
+								<th>'.JText::_('TEXT_GUESTS').'</th>
+								<th width="70">'.JText::_('TEXT_EXAMS').'</th>
+								<th>'.JText::_('TEXT_TAX_S').'</th>
+								<th>'.JText::_('TEXT_TOTAL_TAX').'</th>
+								'.$adminView['head']['actions'].'
+							</tr>
+						</thead>
+						<tbody>
+			';
+		}
 
 		$query = '
 			SELECT T1.*, T2.name rel
@@ -115,7 +120,8 @@ if($num_rows) : // verifica se existe
 		endif;
 
 		$adminView['list']['info'] = $adminView['list']['actions'] = '';
-		if($hasAdmin) :
+		$btnDelete = $canDelete ? '<a href="#" class="btn btn-xs btn-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash"></span></a>' : '';
+		if($canEdit) :
 			$adminView['list']['info'] = '
 				<td class="check-row d-print-none"><input type="checkbox" name="'.$APPTAG.'_ids[]" class="'.$APPTAG.'-chk" value="'.$item->id.'" /></td>
 			';
@@ -136,7 +142,7 @@ if($num_rows) : // verifica se existe
 				</td>
 				<td class="text-center d-print-none">
 					<a href="#" class="btn btn-xs btn-warning hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil"></span></a>
-					<a href="#" class="btn btn-xs btn-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash"></span></a>
+					'.$btnDelete.'
 					<a href="#" class="btn btn-xs btn-outline-primary base-icon-info-circled hasPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top" data-trigger="click focus"></a>
 				</td>
 			';

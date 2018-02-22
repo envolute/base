@@ -1,5 +1,5 @@
 <?
-if($hasAdmin) :
+if($canEdit) :
 
 	// database connect
 	$db = JFactory::getDbo();

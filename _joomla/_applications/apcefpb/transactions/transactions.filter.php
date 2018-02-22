@@ -7,7 +7,7 @@ $where = '';
 // filter params
 
 	// STATE -> select
-	$active	= $app->input->get('active', ($hasAdmin ? 2 : 1), 'int');
+	$active	= $app->input->get('active', ($canEdit ? 2 : 1), 'int');
 	$where .= ($active == 2) ? $db->quoteName('T1.state').' != '.$active : $db->quoteName('T1.state').' = '.$active;
 	// USERGROUP -> select
 	$fGroup	= $app->input->get('fGroup', 0, 'int');

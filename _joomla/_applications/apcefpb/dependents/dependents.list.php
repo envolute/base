@@ -34,37 +34,6 @@ defined('_JEXEC') or die;
 		 return;
 	}
 
-// ADMIN VIEW
-$adminView = array();
-$adminView['head']['info'] = $adminView['head']['actions'] = '';
-if($hasAdmin) :
-	$adminView['head']['info'] = '
-		<th width="30" class="d-print-none"><input type="checkbox" id="'.$APPTAG.'_checkAll" /></th>
-		<th width="50" class="d-none d-lg-table-cell d-print-none">'.baseAppHelper::linkOrder('#', 'T1.id', $APPTAG).'</th>
-	';
-	$adminView['head']['actions'] = '
-		<th class="text-center d-none d-lg-table-cell d-print-none" width="60">'.baseAppHelper::linkOrder(JText::_('TEXT_ACTIVE'), 'T1.state', $APPTAG).'</th>
-		<th width="70" class="text-center d-print-none">'.JText::_('TEXT_ACTIONS').'</th>
-	';
-endif;
-
-// VIEW
-$html = '
-	<form id="form-list-'.$APPTAG.'" method="post" class="pt-3">
-		<table class="table table-striped table-hover table-sm">
-			<thead>
-				<tr>
-					'.$adminView['head']['info'].'
-					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_NAME'), 'T1.name', $APPTAG).'</th>
-					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_CLIENT'), 'T3.name', $APPTAG).'</th>
-					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_BIRTHDAY'), 'T2.name', $APPTAG).'</th>
-					<th class="d-none d-lg-table-cell text-center">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_DOCUMENTS'), 'T1.docs', $APPTAG).'</th>
-					'.$adminView['head']['actions'].'
-				</tr>
-			</thead>
-			<tbody>
-';
-
 if($num_rows) : // verifica se existe
 
 	// pagination
@@ -73,11 +42,47 @@ if($num_rows) : // verifica se existe
 	$found_rows = $db->loadResult();
 	$pageNav = new JPagination($found_rows , $lim0, $lim );
 
+	$listCount = 0;
 	foreach($res as $item) {
 
 		// define permissões de execução
 		$canEdit	= ($cfg['canEdit'] || $item->created_by == $user->id);
 		$canDelete	= ($cfg['canDelete'] || $item->created_by == $user->id);
+		$listCount++;
+
+		if($listCount == 1) {
+
+			// ADMIN VIEW
+			$adminView = array();
+			$adminView['head']['info'] = $adminView['head']['actions'] = '';
+			if($canEdit) :
+				$adminView['head']['info'] = '
+					<th width="30" class="d-print-none"><input type="checkbox" id="'.$APPTAG.'_checkAll" /></th>
+					<th width="50" class="d-none d-lg-table-cell d-print-none">'.baseAppHelper::linkOrder('#', 'T1.id', $APPTAG).'</th>
+				';
+				$adminView['head']['actions'] = '
+					<th class="text-center d-none d-lg-table-cell d-print-none" width="60">'.baseAppHelper::linkOrder(JText::_('TEXT_ACTIVE'), 'T1.state', $APPTAG).'</th>
+					<th width="70" class="text-center d-print-none">'.JText::_('TEXT_ACTIONS').'</th>
+				';
+			endif;
+
+			// VIEW
+			$html = '
+				<form id="form-list-'.$APPTAG.'" method="post" class="pt-3">
+					<table class="table table-striped table-hover table-sm">
+						<thead>
+							<tr>
+								'.$adminView['head']['info'].'
+								<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_NAME'), 'T1.name', $APPTAG).'</th>
+								<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_CLIENT'), 'T3.name', $APPTAG).'</th>
+								<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_BIRTHDAY'), 'T2.name', $APPTAG).'</th>
+								<th class="d-none d-lg-table-cell text-center">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_DOCUMENTS'), 'T1.docs', $APPTAG).'</th>
+								'.$adminView['head']['actions'].'
+							</tr>
+						</thead>
+						<tbody>
+			';
+		}
 
 		// só permite a impressão da carteira de associado com foto
 		$printCard = '<button type="button" class="btn btn-xs btn-default base-icon-print hasTooltip disabled" title="'.JText::_('MSG_CARD_NO_PHOTO').'"></button>';
@@ -108,7 +113,7 @@ if($num_rows) : // verifica se existe
 		endif;
 
 		$adminView['list']['info'] = $adminView['list']['actions'] = '';
-		if($hasAdmin) :
+		if($canEdit) :
 			$adminView['list']['info'] = '
 				<td class="check-row d-print-none"><input type="checkbox" name="'.$APPTAG.'_ids[]" class="'.$APPTAG.'-chk" value="'.$item->id.'" /></td>
 				<td class="d-none d-lg-table-cell d-print-none">'.$item->id.'</td>

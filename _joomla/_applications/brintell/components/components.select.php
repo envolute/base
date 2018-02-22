@@ -30,7 +30,7 @@
 				}
 			?>
 		</select>
-		<?php if($hasAdmin) :?>
+		<?php if($canEdit) :?>
 			<span class="input-group-btn">
 				<?php if(isset($vID) && !empty($vID)) :?>
 					<button class="btn btn-warning base-icon-pencil float-right" onclick="<?php echo $APPTAG?>_loadEditFields(<?php echo $vID?>, false, false)"><span class="d-none d-sm-inline"> <?php echo JText::_('TEXT_EDIT')?></span></button>

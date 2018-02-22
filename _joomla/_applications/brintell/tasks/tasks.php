@@ -117,7 +117,7 @@ jQuery(document).ready(function() {
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
 			checkOption(type, 0);
 			requests.selectUpdate(''); // select
-			<?php if($hasAdmin) :?>
+			<?php if($canEdit) :?>
 				assign_to.selectUpdate(''); // select
 				cassign_to.selectUpdate(''); // select
 			<?php endif;?>
