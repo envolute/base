@@ -35,8 +35,12 @@ if(!$ajaxRequest && (!isset($_SESSION[$APPTAG.'langDef']) || (isset($_SESSION[$A
 endif;
 
 // Crud's permissions
+
 	$cfg['isPublic']			= 0; // Público -> acesso aberto a todos
-	if(isset(${$APPTAG.'IsPublic'})) $cfg['isPublic'] = ${$APPTAG.'IsPublic'} ? ${$APPTAG.'IsPublic'} : 0;
+	// Registra os parâmetros na session para os arquivos 'ajax'
+	if(!$ajaxRequest && isset(${$APPTAG.'IsPublic'})) $_SESSION[$APPTAG.'IsPublic'] = ${$APPTAG.'IsPublic'};
+	// Caso os parâmtros sejam enviados, redefine a variável
+	if(isset($_SESSION[$APPTAG.'IsPublic']) && $_SESSION[$APPTAG.'IsPublic']) $cfg['isPublic'] = $_SESSION[$APPTAG.'IsPublic'];
 
 // Restrict Access
 
@@ -44,10 +48,21 @@ endif;
 	$group_ambulatorio			= 20; // Ambulatório
 	// Acesso default, quando não for definido no componente ou módulo
 	$viewerDef	= array(0); // 'default' apenas visualiza o componente. IMPORTANTE: não deve ser vazio. Então => '0'
+	$authorDef	= array(0); // 'default' cria, mas só edita ou deleta o seu. IMPORTANTE: não deve ser vazio. Então => '0'
+	$editorDef	= array(0); // 'default' cria e edita, mas só deleta o seu. IMPORTANTE: não deve ser vazio. Então => '0'
 	$adminDef	= array(6,7,8,$group_portaria,$group_ambulatorio); // 'default' Gerente, Administrador, Desenvolvedor
+	// Registra os parâmetros na session para os arquivos 'ajax'
+	if(!$ajaxRequest) {
+		$_SESSION[$APPTAG.'ViewerGroups'] = (isset(${$APPTAG.'ViewerGroups'}) && count(${$APPTAG.'ViewerGroups'})) ? array_unique(array_merge($viewerDef,${$APPTAG.'ViewerGroups'})) : $viewerDef;
+		$_SESSION[$APPTAG.'AuthorGroups'] = (isset(${$APPTAG.'AuthorGroups'}) && count(${$APPTAG.'AuthorGroups'})) ? array_unique(array_merge($adminDef,${$APPTAG.'AuthorGroups'})) : $authorDef;
+		$_SESSION[$APPTAG.'EditorGroups'] = (isset(${$APPTAG.'EditorGroups'}) && count(${$APPTAG.'EditorGroups'})) ? array_unique(array_merge($adminDef,${$APPTAG.'EditorGroups'})) : $editorDef;
+		$_SESSION[$APPTAG.'AdminGroups'] = (isset(${$APPTAG.'AdminGroups'}) && count(${$APPTAG.'AdminGroups'})) ? array_unique(array_merge($adminDef,${$APPTAG.'AdminGroups'})) : $adminDef;
+	}
 	// ----------------------------------------------------
-	$cfg['groupId']['viewer']	= (isset(${$APPTAG.'ViewerGroups'}) && count(${$APPTAG.'ViewerGroups'})) ? array_unique(array_merge($viewerDef,${$APPTAG.'ViewerGroups'})) : $viewerDef;
-	$cfg['groupId']['admin']	= (isset(${$APPTAG.'AdminGroups'}) && count(${$APPTAG.'AdminGroups'})) ? array_unique(array_merge($adminDef,${$APPTAG.'AdminGroups'})) : $adminDef;
+	$cfg['groupId']['viewer']	= isset($_SESSION[$APPTAG.'ViewerGroups']) ? $_SESSION[$APPTAG.'ViewerGroups'] : $viewerDef;
+	$cfg['groupId']['author']	= isset($_SESSION[$APPTAG.'AuthorGroups']) ? $_SESSION[$APPTAG.'AuthorGroups'] : $authorDef;
+	$cfg['groupId']['editor']	= isset($_SESSION[$APPTAG.'EditorGroups']) ? $_SESSION[$APPTAG.'EditorGroups'] : $editorDef;
+	$cfg['groupId']['admin']	= isset($_SESSION[$APPTAG.'AdminGroups']) ? $_SESSION[$APPTAG.'AdminGroups'] : $adminDef;
 
 // crud's name
 	$cfg['APPNAME']				= $APPNAME;

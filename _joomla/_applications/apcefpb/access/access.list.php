@@ -78,6 +78,10 @@ if($num_rows) : // verifica se existe
 	$tax_amount = 0;
 	foreach($res as $item) {
 
+		// define permissões de execução
+		$canEdit	= ($cfg['canEdit'] || $item->created_by == $user->id);
+		$canDelete	= ($cfg['canDelete'] || $item->created_by == $user->id);
+
 		$query = '
 			SELECT T1.*, T2.name rel
 			FROM  '. $db->quoteName('#__'.$cfg['project'].'_dependents') .' T1

@@ -71,6 +71,10 @@ if($vID != 0) :
 	$provider = '';
 	if(!empty($view->name)) : // verifica se existe
 
+		// define permissões de execução
+		$canEdit	= ($cfg['canEdit'] || $view->created_by == $user->id);
+		$canDelete	= ($cfg['canDelete'] || $view->created_by == $user->id);
+
 		JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 		// Imagem Principal -> (index = 0)
 		$img = uploader::getFile($cfg['fileTable'], '', $view->id, 0, $cfg['uploadDir']);

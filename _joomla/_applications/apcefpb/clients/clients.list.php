@@ -79,6 +79,10 @@ if($num_rows) : // verifica se existe
 
 	foreach($res as $item) {
 
+		// define permissões de execução
+		$canEdit	= ($cfg['canEdit'] || $item->created_by == $user->id);
+		$canDelete	= ($cfg['canDelete'] || $item->created_by == $user->id);
+
 		// só permite a impressão da carteira de associado com foto
 		$printCard = '<button type="button" class="btn btn-lg btn-default base-icon-print hasTooltip disabled" title="'.JText::_('MSG_CARD_NO_PHOTO').'"></button>';
 

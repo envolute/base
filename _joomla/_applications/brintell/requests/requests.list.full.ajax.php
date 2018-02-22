@@ -28,6 +28,13 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	$rID		= $input->get('rID', 0, 'int');
 	$rID		= !empty($_SESSION[$RTAG.'RelListId']) ? $_SESSION[$RTAG.'RelListId'] : $rID;
 
+	// Define as variáveis se houver parâmetros dinâmicos
+	if(isset($_SESSION[$APPTAG.'IsPublic'])) $cfg['isPublic'] = $_SESSION[$APPTAG.'IsPublic'];
+	if(isset($_SESSION[$APPTAG.'ViewerGroups'])) $cfg['groupId']['viewer'] = $_SESSION[$APPTAG.'ViewerGroups'];
+	if(isset($_SESSION[$APPTAG.'AuthorGroups'])) $cfg['groupId']['author'] = $_SESSION[$APPTAG.'AuthorGroups'];
+	if(isset($_SESSION[$APPTAG.'EditorGroups'])) $cfg['groupId']['editor'] = $_SESSION[$APPTAG.'EditorGroups'];
+	if(isset($_SESSION[$APPTAG.'AdminGroups'])) $cfg['groupId']['admin'] = $_SESSION[$APPTAG.'AdminGroups'];
+
 	// Carrega o arquivo de tradução
 	// OBS: para arquivos externos com o carregamento do framework '_init.joomla.php' (geralmente em 'ajax')
 	// a language 'default' não é reconhecida. Sendo assim, carrega apenas 'en-GB'
@@ -43,8 +50,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	$groups		= $user->groups;
 
 	// verifica o acesso
-	$hasGroup	= array_intersect($groups, $cfg['groupId']['viewer']); // se está na lista de grupos permitidos
-	$hasAdmin	= array_intersect($groups, $cfg['groupId']['admin']); // se está na lista de administradores permitidos
+	require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxAccess.php');
 
 	// database connect
 	$db		= JFactory::getDbo();
@@ -103,6 +109,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$status		= 9;
 		$counter	= 0;
 		foreach($res as $item) {
+
+			// define permissões de execução
+			$canEdit	= ($cfg['canEdit'] || $item->created_by == $user->id);
+			$canDelete	= ($cfg['canDelete'] || $item->created_by == $user->id);
 
 			if($cfg['hasUpload']) :
 				JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');

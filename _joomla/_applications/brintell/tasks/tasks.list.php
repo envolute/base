@@ -59,6 +59,10 @@ if($num_rows) : // verifica se existe
 
 	foreach($res as $item) {
 
+		// define permissões de execução
+		$canEdit	= ($cfg['canEdit'] || $item->created_by == $user->id);
+		$canDelete	= ($cfg['canDelete'] || $item->created_by == $user->id);
+
 		$adminView['list']['check'] = $adminView['list']['actions'] = '';
 		if($hasAdmin) :
 			$adminView['list']['check'] = '

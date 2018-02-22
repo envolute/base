@@ -69,6 +69,10 @@ if($vID != 0) :
 
 	if(!empty($view->subject)) : // verifica se existe
 
+		// define permissões de execução
+		$canEdit	= ($cfg['canEdit'] || $view->created_by == $user->id);
+		$canDelete	= ($cfg['canDelete'] || $view->created_by == $user->id);
+
 		if($cfg['hasUpload']) :
 			JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 			$files[$view->id] = uploader::getFiles($cfg['fileTable'], $view->id);

@@ -289,7 +289,7 @@ jQuery(window).on('load', function() {
 	<?php if($cfg['showApp']) :?>
 		<div class="list-toolbar<?php echo ($cfg['staticToolbar'] ? '' : ' floating')?> hidden-print">
 			<?php
-			if($cfg['showAddBtn'] && $hasAdmin) echo $addBtn;
+			if($cfg['showAddBtn'] && $cfg['canAdd']) echo $addBtn;
 			if($cfg['showList']) :
 				if($cfg['listFull']) :
 					if($hasAdmin) : ?>

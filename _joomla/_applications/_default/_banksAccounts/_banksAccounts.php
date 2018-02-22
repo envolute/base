@@ -300,16 +300,18 @@ jQuery(window).on('load', function() {
 	<?php if($cfg['showApp']) :?>
 		<div class="list-toolbar<?php echo ($cfg['staticToolbar'] ? '' : ' floating')?> hidden-print">
 			<?php
-			if($cfg['showAddBtn'] && $hasAdmin) echo $addBtn;
+			if($cfg['showAddBtn'] && $cfg['canAdd']) echo $addBtn;
 			if($cfg['showList']) :
 				if($cfg['listFull']) :
-					if($hasAdmin) : ?>
+					if($cfg['canEdit']) : ?>
 						<button class="btn btn-sm btn-success <?php echo $APPTAG?>-btn-action" disabled onclick="<?php echo $APPTAG?>_setState(0, 1)">
 							<span class="base-icon-ok-circled"></span> <?php echo JText::_('TEXT_ACTIVE'); ?>
 						</button>
 						<button class="btn btn-sm btn-warning <?php echo $APPTAG?>-btn-action" disabled onclick="<?php echo $APPTAG?>_setState(0, 0)">
 							<span class="base-icon-cancel"></span> <?php echo JText::_('TEXT_INACTIVE'); ?>
 						</button>
+					<?php endif;?>
+					<?php if($cfg['canDelete']) :?>
 						<button class="btn btn-sm btn-danger <?php echo $APPTAG?>-btn-action d-none d-sm-inline-block" disabled onclick="<?php echo $APPTAG?>_del(0)">
 							<span class="base-icon-trash"></span> <?php echo JText::_('TEXT_DELETE'); ?>
 						</button>
@@ -361,7 +363,7 @@ jQuery(window).on('load', function() {
 	endif;
 	?>
 
-	<?php if($hasAdmin) : ?>
+	<?php if($cfg['canAdd'] || $cfg['canEdit']) : ?>
 		<div class="modal fade" id="modal-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-<?php echo $APPTAG?>Label">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
