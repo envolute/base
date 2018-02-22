@@ -85,23 +85,23 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 				// Imagem Principal -> Primeira imagem (index = 0)
 				$img = uploader::getFile($cfg['fileTable'], '', $item->id, 0, $cfg['uploadDir']);
-				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 48, 48);
-				else $imgPath = $_ROOT.'images/apps/icons/client.png';
-				$img = '<img src="'.$imgPath.'" class="img-fluid b-all-2 b-white" style="width:48px; height:48px;" />';
+				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$img['filename'], 300, 225);
+				else $imgPath = $_ROOT.'images/apps/icons/component.svg';
+				$img = '<img src="'.$imgPath.'" class="img-fluid b-bottom b-primary" style="width:300px;" />';
 			endif;
 
 			$rowState = $item->state == 0 ? 'danger bg-light text-muted' : 'primary bg-white';
 			$urlViewData = $_ROOT.'apps/'.$APPPATH.'/view?vID='.$item->id;
 			// Resultados
 			$html .= '
-				<div id="'.$APPTAG.'-item-'.$item->id.'" class="col-sm-4 col-md-3 pb-3">
+				<div id="'.$APPTAG.'-item-'.$item->id.'" class="col-sm-4 col-md-3 col-xl-2 pb-3">
 					<div class="pos-relative rounded b-top-2 b-'.$rowState.' set-shadow">
-						<a href="'.$urlViewData.'" class="d-flex align-items-center">
+						<a href="'.$urlViewData.'" class="d-block">
 							'.$img.'
-							<h6 class="px-2 m-0">'.baseHelper::nameFormat($item->name).'</h6>
+							<h6 class="pt-2 px-2 m-0 text-truncate">'.baseHelper::nameFormat($item->name).'</h6>
 						</a>
-						<span class="d-flex justify-content-between align-items-center text-muted px-1 b-top">
-							<span class="text-sm pl-1 hasTooltip">'.baseHelper::nameFormat($item->groupName).'</span>
+						<span class="d-flex justify-content-between text-muted px-1">
+							<span class="small pl-1 hasTooltip">'.baseHelper::nameFormat($item->groupName).'</span>
 							<span class="btn-group">
 								<a href="#" class="btn btn-xs btn-link hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'">
 									<span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').'"></span>
@@ -116,7 +116,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		}
 		$html .= '</div>';
 	else :
-		if($noReg) $html = '<p class="base-icon-info-circled alert alert-info m-0"> '.JText::_('MSG_LISTNOREG').'</p>';
+		if($noReg) $html = '<div class="base-icon-info-circled alert alert-info m-0"> '.JText::_('MSG_LISTNOREG').'</div>';
 	endif;
 
 	echo $html;

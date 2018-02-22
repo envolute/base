@@ -10,13 +10,17 @@ defined('_JEXEC') or die;
 		SELECT SQL_CALC_FOUND_ROWS
 			T1.*,
 			'. $db->quoteName('T2.name') .' client,
-			'. $db->quoteName('T3.name') .' user
+			'. $db->quoteName('T3.title') .' usergroup,
+			'. $db->quoteName('T4.name') .' user,
+			'. $db->quoteName('T4.username') .'
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
 			LEFT OUTER JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
 			ON T2.id = T1.client_id
-			LEFT OUTER JOIN '. $db->quoteName('#__users') .' T3
-			ON T3.id = T1.user_id
+			LEFT OUTER JOIN '. $db->quoteName('#__usergroups') .' T3
+			ON T3.id = T1.usergroup
+			LEFT OUTER JOIN '. $db->quoteName('#__users') .' T4
+			ON T4.id = T1.user_id
 		WHERE
 			'.$where.$orderList;
 	;
@@ -53,10 +57,10 @@ $html = '
 			<thead>
 				<tr>
 					'.$adminView['head']['info'].'
-					<th class="d-none d-lg-table-cell">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_CLIENT'), 'T2.name', $APPTAG).'</th>
-					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_NAME'), 'T1.name', $APPTAG).'</th>
 					<th width="30" class="d-none d-lg-table-cell text-center">&#160;</td>
-					<th width="70" class="text-center">'.baseAppHelper::linkOrder(JText::_('TEXT_ACCESS'), 'T1.access', $APPTAG).'</th>
+					<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_NAME'), 'T1.name', $APPTAG).'</th>
+					<th class="d-none d-lg-table-cell">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_CLIENT'), 'T2.name', $APPTAG).'</th>
+					<th>'.baseAppHelper::linkOrder(JText::_('TEXT_ACCESS'), 'T1.access', $APPTAG).'</th>
 					'.$adminView['head']['actions'].'
 				</tr>
 			</thead>
@@ -129,13 +133,19 @@ if($num_rows) : // verifica se existe
 		if($item->access == 0) :
 			$reason = !empty($item->reasonStatus) ? '<div class="small text-muted text-truncate">'.$item->reasonStatus.'</div>' : '';
 			// Check if user exist
-			if(empty($item->user)) $status = '<span class="base-icon-cancel text-danger hasTooltip" title="'.JText::_('TEXT_NO_ACCESS').'"></span>';
-			else $status = '<span class="base-icon-attention text-live hasTooltip" title="'.JText::_('TEXT_BLOCKED').'"></span>';
+			if(empty($item->user)) $status = '<span class="base-icon-cancel text-danger cursor-help hasTooltip" title="'.JText::_('TEXT_NO_ACCESS').'"></span>';
+			else $status = '<span class="base-icon-attention text-live cursor-help hasTooltip" title="'.JText::_('TEXT_BLOCKED').'"></span>';
 			$status .= $reason;
 		else :
 			// Check if user exist
-			if(empty($item->user)) $status = '<span class="base-icon-cancel text-danger hasTooltip" title="'.JText::_('TEXT_NO_USER_ASSOC_DESC').'"></span>';
-			else $status = '<span class="base-icon-ok text-success hasTooltip" title="'.JText::_('TEXT_ALLOWED_ACCESS').'"></span>';
+			if(empty($item->user)) {
+				$status = '<span class="base-icon-cancel text-danger cursor-help hasTooltip" title="'.JText::_('TEXT_NO_USER_ASSOC_DESC').'"></span>';
+			} else {
+				$status = '
+					<span class="base-icon-ok text-success cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_USERNAME').'"> '.$item->username.'</span>
+					<div class="small text-muted"><span class="cursor-help hasTooltip" title="'.JText::_('TEXT_ACCESS_GROUP').'">'.$item->usergroup.'</div>
+				';
+			}
 		endif;
 		$urlViewData = JURI::root().'apps/clients/staff/view?vID='.$item->id;
 		$rowState	= $item->state == 0 ? 'table-danger' : '';
@@ -150,10 +160,10 @@ if($num_rows) : // verifica se existe
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
-				<td class="d-none d-lg-table-cell">'.baseHelper::nameFormat($item->client).$role.'</td>
-				<td>'.$img.baseHelper::nameFormat($item->name).'<div class="small text-muted">'.$item->email.'</td>
 				<td class="d-none d-lg-table-cell text-center"><a href="'.$urlViewData.'" target="_blank" class="base-icon-doc-text hasTooltip" title="'.JText::_('TEXT_VIEW_DATA').'"></a></td>
-				<td class="text-center">'.$status.'</td>
+				<td>'.$img.baseHelper::nameFormat($item->name).'<div class="small text-muted">'.$item->email.'</td>
+				<td class="d-none d-lg-table-cell">'.baseHelper::nameFormat($item->client).$role.'</td>
+				<td>'.$status.'</td>
 				'.$adminView['list']['actions'].'
 			</tr>
 		';

@@ -20,7 +20,8 @@ $groups = $user->groups;
 require(JPATH_CORE.DS.'apps/_init.app.php');
 
 // verifica o acesso
-$hasAuthor	= array_intersect($groups, $cfg['groupId']['author']); // se está na lista de administradores permitidos
+$hasAuthor		= array_intersect($groups, $cfg['groupId']['author']); // se está na lista de administradores permitidos
+$hasExternal	= array_intersect($groups, $cfg['groupId']['external']); // se está na lista de administradores permitidos
 
 // DATABASE CONNECT
 $db = JFactory::getDbo();

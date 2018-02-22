@@ -22,17 +22,18 @@ $db->setQuery($query);
 $staff = $db->loadObjectList();
 // current user
 $myID		= 0;
-$staffList	= '';
+$staffList	= $selected = '';
 foreach ($staff as $obj) {
 	$name = !empty($obj->nickname) ? $obj->nickname : $obj->name;
 	$staff = ($obj->type == 1) ? '*' : '';
-	if($obj->user_id == $user->id) :
+	if($obj->user_id == $user->id) {
 		$myID = $obj->id;
 		$me = ' ('.JText::_('TEXT_TO_ME').')';
-	else :
+		if($hasAuthor) $selected = ' selected';
+	} else {
 		$me = '';
-	endif;
-	$staffList .= '<option value="'.$obj->id.'">'.$staff.baseHelper::nameFormat($name).$me.'</option>';
+	}
+	$staffList .= '<option value="'.$obj->id.'"'.$selected.'>'.$staff.baseHelper::nameFormat($name).$me.'</option>';
 }
 
 // FORM

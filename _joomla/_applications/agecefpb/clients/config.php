@@ -39,8 +39,8 @@ $_SESSION[$APPTAG.'newUsertype'] = 11; // default 'Associado->efetivo'
 
 // Crud's permissions
 
-	$cfg['isPublic']			= false; // Público -> acesso aberto a todos
-	if(isset(${$APPTAG.'IsPublic'})) $cfg['isPublic'] = ${$APPTAG.'IsPublic'} ? true : false;
+	$cfg['isPublic']			= 0; // Público -> acesso aberto a todos
+	if(isset(${$APPTAG.'IsPublic'})) $cfg['isPublic'] = ${$APPTAG.'IsPublic'} ? ${$APPTAG.'IsPublic'} : 0;
 
 // Restrict Access
 

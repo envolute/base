@@ -35,8 +35,8 @@ if(!$ajaxRequest && (!isset($_SESSION[$APPTAG.'langDef']) || (isset($_SESSION[$A
 endif;
 
 // Crud's permissions
-	$cfg['isPublic']			= false; // Público -> acesso aberto a todos
-	if(isset(${$APPTAG.'IsPublic'})) $cfg['isPublic'] = ${$APPTAG.'IsPublic'} ? true : false;
+	$cfg['isPublic']			= 0; // Público -> acesso aberto a todos
+	if(isset(${$APPTAG.'IsPublic'})) $cfg['isPublic'] = ${$APPTAG.'IsPublic'} ? ${$APPTAG.'IsPublic'} : 0;
 
 // Restrict Access
 

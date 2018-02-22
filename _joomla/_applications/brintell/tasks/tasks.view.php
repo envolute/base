@@ -14,6 +14,8 @@ require('config.php');
 // atribuir à variáveis personalizadas. Caso seja necessário, declare essas variáveis abaixo...
 $MAINAPP	= $APPNAME;
 $MAINTAG	= $APPTAG;
+$cfgViewer	= $cfg['groupId']['viewer'];
+$cfgAdmin	= $cfg['groupId']['admin'];
 
 // IMPORTANTE: Carrega o arquivo 'helper' do template
 JLoader::register('baseHelper', JPATH_CORE.DS.'helpers/base.php');
@@ -241,6 +243,7 @@ if($vID != 0) :
 						'.$desc.$attachs
 		;
 						// COMMENTS
+						$tasksCommentsIsPublic		= 2;
 						$tasksCommentsListFull		= false;
 						$tasksCommentsRelTag		= 'tasks';
 						$tasksCommentsRelListNameId	= 'task_id';
@@ -264,12 +267,22 @@ if($vID != 0) :
 						// Carrega o app diretamente ná página,
 						// pois como está sendo chamada no template 'component', não carrega os módulos
 						// TASKS => FORM
-						$tasksAppTag				= $MAINTAG;
-						${$tasksAppTag.'ShowApp'}	= false;
-						${$tasksAppTag.'ShowList'}	= false;
-						${$tasksAppTag.'ListFull'}	= true;
+						$tasksAppTag					= $MAINTAG;
+						// get the same group access of main APP
+						${$tasksAppTag.'ViewerGroups'}	= $cfgViewer;
+						${$tasksAppTag.'AuthorGroups'}	= $cfgAuthor;
+						${$tasksAppTag.'EditorGroups'}	= $cfgEditor;
+						${$tasksAppTag.'AdminGroups'}	= $cfgAdmin;
+						${$tasksAppTag.'ShowApp'}		= false;
+						${$tasksAppTag.'ShowList'}		= false;
+						${$tasksAppTag.'ListFull'}		= true;
 						require(JPATH_APPS.DS.$MAINAPP.'/'.$MAINAPP.'.php');
 						// TAGS => FORM
+						// get the same group access of main APP
+						$tasksTagsViewerGroups		= $cfgViewer;
+						$tasksTagsAuthorGroups		= $cfgAuthor;
+						$tasksTagsEditorGroups		= $cfgEditor;
+						$tasksTagsAdminGroups		= $cfgAdmin;
 						$tasksTagsShowApp			= false;
 						$tasksTagsShowList			= false;
 						$tasksTagsListFull			= false;
@@ -278,6 +291,7 @@ if($vID != 0) :
 						$tasksTagsTableField		= 'name';
 						require(JPATH_APPS.DS.$MAINAPP.'Tags/'.$MAINAPP.'Tags.php');
 						// TO DO LIST => (instância do FORM)
+						$tasksTodoIsPublic			= 3; // 'Editor' + 'Admin'
 						$tasksTodoShowApp			= false;
 						$tasksTodoShowList			= true;
 						$tasksTodoListModal			= true;
@@ -287,6 +301,7 @@ if($vID != 0) :
 
 						// TO DO LIST => (instância da VIEW)
 						$tasksTodoAppTag					= 'todoView';
+						${$tasksTodoAppTag.'IsPublic'}		= 3; // 'Editor' + 'Admin'
 						${$tasksTodoAppTag.'ListFull'}		= false;
 						${$tasksTodoAppTag.'ListAjax'}		= "list.actions.ajax.php";
 						${$tasksTodoAppTag.'RelTag'}		= 'tasks';

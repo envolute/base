@@ -29,7 +29,7 @@ if(!$ajaxRequest && (!isset($_SESSION[$APPTAG.'langDef']) || (isset($_SESSION[$A
 endif;
 
 // Crud's permissions
-	$cfg['isPublic']			= false; // Público -> acesso aberto a todos
+	$cfg['isPublic']			= 0; // Público -> acesso aberto a todos
 	// Restrict Access
 	// $cfg['groupId']['viewer'][]  = apenas visualiza o componente
 	// $cfg['groupId']['admin'][]   = administra o componente

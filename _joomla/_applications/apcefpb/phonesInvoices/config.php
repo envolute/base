@@ -38,8 +38,8 @@ $cfg['serviceTax'] = '10,00';
 
 // Crud's permissions
 
-	$cfg['isPublic']			= false; // Público -> acesso aberto a todos
-	if(isset(${$APPTAG.'IsPublic'})) $cfg['isPublic'] = ${$APPTAG.'IsPublic'} ? true : false;
+	$cfg['isPublic']			= 0; // Público -> acesso aberto a todos
+	if(isset(${$APPTAG.'IsPublic'})) $cfg['isPublic'] = ${$APPTAG.'IsPublic'} ? ${$APPTAG.'IsPublic'} : 0;
 
 // Restrict Access
 

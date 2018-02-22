@@ -36,7 +36,7 @@ endif;
 
 // Crud's permissions
 	$cfg['isPublic']			= true; // Público -> acesso aberto a todos
-	if(isset(${$APPTAG.'IsPublic'})) $cfg['isPublic'] = ${$APPTAG.'IsPublic'} ? true : false;
+	if(isset(${$APPTAG.'IsPublic'})) $cfg['isPublic'] = ${$APPTAG.'IsPublic'} ? ${$APPTAG.'IsPublic'} : 0;
 	// Restrict Access
 	// $cfg['groupId']['viewer'][]  = apenas visualiza o componente
 	// $cfg['groupId']['admin'][]   = administra o componente

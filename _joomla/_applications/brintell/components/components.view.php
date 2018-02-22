@@ -77,8 +77,15 @@ if($vID != 0) :
 		JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 		// Imagem Principal -> (index = 0)
 		$img = uploader::getFile($cfg['fileTable'], '', $view->id, 0, $cfg['uploadDir']);
-		if(!empty($img)) $img = '<img src="images/apps/'.$APPPATH.'/'.$img['filename'].'" class="w-100 img-fluid b-all p-1 mb-3 bg-white" />';
-		else $img = '<div class="image-file"><div class="image-action"><div class="image-file-label"><span class="base-icon-file-image"><small>'.JText::_('TEXT_NO_IMAGE').'</small></span></div></div></div>';
+		if(!empty($img)) {
+			$img = '
+				<a href="'.JURI::root(true).'/images/apps/'.$APPPATH.'/'.$img['filename'].'" class="set-modal" rel="component-view">
+					<img src="images/apps/'.$APPPATH.'/'.$img['filename'].'" class="w-100 img-fluid b-all p-1 mb-3 bg-white" />
+				</a>
+			';
+		} else {
+			$img = '<div class="image-file"><div class="image-action"><div class="image-file-label"><span class="base-icon-file-image"><small>'.JText::_('TEXT_NO_IMAGE').'</small></span></div></div></div>';
+		}
 
 		// Variations
 		$files[$view->id] = uploader::getFiles($cfg['fileTable'], $view->id);
@@ -94,23 +101,25 @@ if($vID != 0) :
 				';
 			endif;
 		}
-		$listImages = !empty($listImages) ? '<hr class="hr-tag" /><span class="badge badge-primary">'.JText::_('TEXT_VARIATIONS').'</span><div class="row">'.$listImages.'</div>' : '<hr class="mt-2" />';
+		$listImages = !empty($listImages) ? '<hr class="hr-tag" /><span class="badge badge-primary">'.JText::_('TEXT_VARIATIONS').'</span><div class="row">'.$listImages.'</div>' : '';
 
-		$iframe = !empty($view->url) ? '<hr class="hr-tag" /><span class="badge badge-primary">'.JText::_('TEXT_IN_EXECUTION').'</span><iframe src="'.$view->url.'" width="100%" id="'.$APPTAG.'-view-url"></iframe>' : '';
+		$docs = !empty($view->url) ? '<hr /><a href="'.$view->url.'" target="_blank" class="btn btn-primary"><span class="base-icon-docs btn-icon"></span> '.JText::_('TEXT_DOCUMENTATION').'</a>' : '';
 
 		// description
 		$description = !empty($view->description) ? '<div id="'.$MAINTAG.'-desc">'.$view->description.'</div>' : '';
 
 		echo '
+			<h1 class="mt-0">
+				<div class="text-sm text-muted">'.baseHelper::nameFormat($view->groupName).'</div>
+				'.baseHelper::nameFormat($view->name).'
+			</h1>
+			'.$description.'
 			<div class="row">
-				<div class="col-sm-2 col-md-3 col-xl-2 d-none d-sm-block">
+				<div class="col-sm-2 col-md-3 col-xl-2 pt-3">
 					'.$img.'
 				</div>
 				<div class="col">
-					<h1 class="mt-0">
-						'.baseHelper::nameFormat($view->name).'
-					</h1>
-					'.$description.$listImages.$iframe.'
+					'.$listImages.$docs.'
 				</div>
 			</div>
 		';

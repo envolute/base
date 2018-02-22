@@ -115,13 +115,13 @@
 	// SUB MENU
 
 		.mainmenu.nav.menu:not(.nav-stacked) .nav-child {
-			background-color: $base-gray-100!important;
+			background-color: white!important;
 		}
 
 		// Item <a>
 
 			// link
-			.mainmenu.nav.menu .nav-child li:not(.active) > a {
+			.mainmenu.nav.menu .nav-child li > a {
 				padding: 1rem 1.5rem;
 			}
 
@@ -131,7 +131,7 @@
 			.mainmenu.nav.menu .nav-child li.parent:not(.active):hover > a {
 				padding: 1rem 1.5rem;
 				color: $base-link-hover-color;
-				background-color: $base-gray-200!important;
+				background-color: $base-gray-100!important;
 			}
 
 // USERMENU

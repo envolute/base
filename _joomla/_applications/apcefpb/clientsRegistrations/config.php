@@ -45,7 +45,7 @@ $_SESSION[$APPTAG.'cardLimit'] = '300,00'; // default
 // Crud's permissions
 
 	$cfg['isPublic']			= $cfg['isEdit'] ? false : true; // Público -> acesso aberto a todos
-	if(isset(${$APPTAG.'IsPublic'})) $cfg['isPublic'] = ${$APPTAG.'IsPublic'} ? true : false;
+	if(isset(${$APPTAG.'IsPublic'})) $cfg['isPublic'] = ${$APPTAG.'IsPublic'} ? ${$APPTAG.'IsPublic'} : 0;
 
 // Restrict Access
 

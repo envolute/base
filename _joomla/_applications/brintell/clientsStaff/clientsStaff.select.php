@@ -21,7 +21,7 @@ if($hasAdmin) :
 	});
 	</script>
 
-	<div class="hidden-print b-bottom my-3 pb-3 clearfix">
+	<div class="hidden-print b-bottom mb-3 pb-3 clearfix">
 		<div class="input-group float-left mw-100" style="width:500px">
 			<select name="vID" id="<?php echo $APPTAG?>-vID" class="form-control" onchange="<?php echo $APPTAG?>_selectItem(this)">
 				<option value="0">- <?php echo JText::_('TEXT_SELECT')?> -</option>

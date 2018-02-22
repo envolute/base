@@ -43,8 +43,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	$groups		= $user->groups;
 
 	// verifica o acesso
-	$hasGroup	= array_intersect($groups, $cfg['groupId']['viewer']); // se está na lista de grupos permitidos
-	$hasAdmin	= array_intersect($groups, $cfg['groupId']['admin']); // se está na lista de administradores permitidos
+	$hasGroup		= array_intersect($groups, $cfg['groupId']['viewer']); // se está na lista de grupos permitidos
+	$hasAdmin		= array_intersect($groups, $cfg['groupId']['admin']); // se está na lista de administradores permitidos
+	$hasAuthor		= array_intersect($groups, $cfg['groupId']['author']); // se está na lista de administradores permitidos
+	$hasExternal	= array_intersect($groups, $cfg['groupId']['external']); // se está na lista de administradores permitidos
 
 	// database connect
 	$db		= JFactory::getDbo();
@@ -52,10 +54,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	// LOAD FILTER
 	$fQuery = $PATH_APP_FILE.'.filter.query.php';
 	if($aFLT && file_exists($fQuery)) require($fQuery);
-
-	// Set visibility
-	// OR (visibility = project) OR (created_by = current user)
-	$where .= ' AND ('.$db->quoteName('T1.visibility').' = 0 OR '.$db->quoteName('T1.created_by').' = '.$user->id.')';
 
 	// GET DATA
 	$noReg	= true;
@@ -234,7 +232,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		}
 		$html .= '</div>';
 	else :
-		if($noReg) $html = '<p class="base-icon-info-circled alert alert-info m-0"> '.JText::_('MSG_LISTNOREG').'</p>';
+		if($noReg) $html = '<div class="base-icon-info-circled alert alert-info m-0"> '.JText::_('MSG_LISTNOREG').'</div>';
 	endif;
 
 	echo $html;
