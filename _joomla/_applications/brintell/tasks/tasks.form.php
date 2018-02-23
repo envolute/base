@@ -142,7 +142,7 @@ foreach ($staff as $obj) {
 				<div id="<?php echo $APPTAG?>-files-group" class="row"></div>
 			</div>
 			<div class="col-lg-4 b-left b-left-dashed">
-				<?php if($canEdit) :?>
+				<?php if($cfg['canEdit']) :?>
 					<div class="form-group">
 						<label class="label-sm"><?php echo JText::_('FIELD_LABEL_ASSIGN_TO'); ?></label>
 						<div class="input-group">
@@ -153,11 +153,11 @@ foreach ($staff as $obj) {
 								<button type="button" class="base-icon-sitemap btn btn-success hasTooltip" title="<?php echo JText::_('TEXT_ACTIVITY_BOARD')?>" data-toggle="modal" data-target="#modal-<?php echo $APPTAG?>activityBoard" data-backdrop="static" data-keyboard="false"></button>
 							</span>
 						</div>
-						<input type="hidden" name="cassign_to" id="<?php echo $APPTAG?>-cassign_to" />
 					</div>
 				<?php elseif($hasAuthor) :?>
 					<input type="hidden" name="assign_to[]" id="<?php echo $APPTAG?>-assign_to" value="<?php echo $myID?>" />
 				<?php endif;?>
+				<input type="hidden" name="cassign_to" id="<?php echo $APPTAG?>-cassign_to" />
 				<div class="form-group">
 					<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_DEADLINE_DESC'); ?>">
 						<?php echo JText::_('FIELD_LABEL_DEADLINE'); ?>

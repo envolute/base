@@ -21,7 +21,7 @@ if(!$cfg['isPublic']) :
 	if(isset($user) && $user->guest) :
 		$app->redirect(JURI::root(true).'/login?return='.urlencode(base64_encode(JURI::current())));
 		exit();
-	elseif(!$hasGroup && !$hasAdmin) :
+	elseif(!$hasGroup && !$hasAuthor && !$hasEditor && !$hasAdmin) :
 		$app->enqueueMessage(JText::_('MSG_NOT_PERMISSION'), 'warning');
 		$app->redirect(JURI::root(true));
 		exit();

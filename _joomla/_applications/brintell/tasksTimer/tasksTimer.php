@@ -159,6 +159,13 @@ jQuery(function() {
 			?>
 		};
 
+		// CUSTOM -> edit from select
+		window.<?php echo $APPTAG?>_editTask = function() {
+			var itemID = task_id.val();
+			if(itemID != '' && itemID != 0) tasks_loadEditFields(itemID, false, false);
+			else alert('<?php echo JText::_('MSG_SELECT_ITEM_FROM_LIST')?>');
+		};
+
 	// LIST CONTROLLERS
 	// ações & métodos controladores da listagem
 

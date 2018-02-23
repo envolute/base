@@ -1,3 +1,5 @@
+<input type="hidden" name="id" id="<?php echo $APPTAG?>-id" />
+<input type="hidden" name="relationId" id="<?php echo $APPTAG?>-relationId" value="<?php echo $_SESSION[$RTAG.'RelId']?>" />
 <?php
 if($cfg['canEdit']) :
 	$hideToolbar = (isset($cfg['showFormToolbar']) && !$cfg['showFormToolbar']) ? ' hidden' : '';
@@ -9,9 +11,7 @@ if($cfg['canEdit']) :
 					<span class="input-group-btn">
 						<button id="btn-<?php echo $APPTAG?>-prev" class="base-icon-left-open btn btn-sm btn-default" disabled></button>
 					</span>
-					<input type="text" name="displayId" id="<?php echo $APPTAG?>-displayId" class="form-control form-control-sm" placeholder="ID" />
-					<input type="hidden" name="id" id="<?php echo $APPTAG?>-id" />
-					<input type="hidden" name="relationId" id="<?php echo $APPTAG?>-relationId" value="<?php echo $_SESSION[$RTAG.'RelId']?>" />
+					<input type="number" name="displayId" id="<?php echo $APPTAG?>-displayId" class="form-control form-control-sm" placeholder="ID" />
 					<input type="hidden" name="<?php echo $APPTAG?>-prev" id="<?php echo $APPTAG?>-prev" />
 					<input type="hidden" name="<?php echo $APPTAG?>-next" id="<?php echo $APPTAG?>-next" />
 					<span class="input-group-btn">

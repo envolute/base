@@ -182,7 +182,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$element = $_SESSION[$RTAG.'FieldUpdated'];
 							$elemVal = $id;
 							// CUSTOM
-							// $query = 'SELECT '. $db->quoteName($_SESSION[$RTAG.'TableField']) .' FROM '. $db->quoteName($cfg['mainTable']).' WHERE '. $db->quoteName('id') .' = '.$id.' AND state = 1';
+							// $query = 'SELECT '. (preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $_SESSION[$RTAG.'TableField']) ? $db->quoteName($_SESSION[$RTAG.'TableField']) : $_SESSION[$RTAG.'TableField']) .' FROM '. $db->quoteName($cfg['mainTable']).' WHERE '. $db->quoteName('id') .' = '.$id.' AND state = 1';
 							$query = 'SELECT CONCAT(DATE_FORMAT('.$db->quoteName('due_date').', "%d/%m/%Y"), " - ", IF('.$db->quoteName('custom_desc').' <> "", '.$db->quoteName('custom_desc').', '.$db->quoteName('description').')) FROM '. $db->quoteName($cfg['mainTable']).' WHERE id='.$id.' AND state = 1';
 							$db->setQuery($query);
 							$elemLabel = $db->loadResult();
@@ -295,7 +295,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$element = $_SESSION[$RTAG.'FieldUpdated'];
 							$elemVal = $ids;
 							// CUSTOM
-							// $query = 'SELECT '. $db->quoteName($_SESSION[$RTAG.'TableField']) .' FROM '. $db->quoteName($cfg['mainTable']).' WHERE '. $db->quoteName('id') .' = '.$ids;
+							// $query = 'SELECT '. (preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $_SESSION[$RTAG.'TableField']) ? $db->quoteName($_SESSION[$RTAG.'TableField']) : $_SESSION[$RTAG.'TableField']) .' FROM '. $db->quoteName($cfg['mainTable']).' WHERE '. $db->quoteName('id') .' = '.$ids;
 							$query = 'SELECT CONCAT(DATE_FORMAT('.$db->quoteName('due_date').', "%d/%m/%Y"), " - ", IF('.$db->quoteName('custom_desc').' <> "", '.$db->quoteName('custom_desc').', '.$db->quoteName('description').')) FROM '. $db->quoteName($cfg['mainTable']).' WHERE id = '.$ids;
 							$db->setQuery($query);
 							$elemLabel = $db->loadResult();
@@ -410,7 +410,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$element = $_SESSION[$RTAG.'FieldUpdated'];
 							$elemVal = $id;
 							// CUSTOM
-							// $query = 'SELECT '. $db->quoteName($_SESSION[$RTAG.'TableField']) .' FROM '. $db->quoteName($cfg['mainTable']).' WHERE '. $db->quoteName('id') .' = '.$id.' AND state = 1';
+							// $query = 'SELECT '. (preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $_SESSION[$RTAG.'TableField']) ? $db->quoteName($_SESSION[$RTAG.'TableField']) : $_SESSION[$RTAG.'TableField']) .' FROM '. $db->quoteName($cfg['mainTable']).' WHERE '. $db->quoteName('id') .' = '.$id.' AND state = 1';
 							$query = 'SELECT CONCAT(DATE_FORMAT('.$db->quoteName('due_date').', "%d/%m/%Y"), " - ", IF('.$db->quoteName('custom_desc').' <> "", '.$db->quoteName('custom_desc').', '.$db->quoteName('description').')) FROM '. $db->quoteName($cfg['mainTable']).' WHERE id='.$id.' AND state = 1';
 							$db->setQuery($query);
 							$elemLabel = $db->loadResult();

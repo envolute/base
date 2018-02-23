@@ -7,7 +7,7 @@ $where = '';
 // filter params
 
 	// STATE -> select
-	$active	= $app->input->get('active', ($canEdit ? 2 : 1), 'int');
+	$active	= $app->input->get('active', ($cfg['canEdit'] ? 2 : 1), 'int');
 	$where .= ($active == 2) ? $db->quoteName('T1.state').' != '.$active : $db->quoteName('T1.state').' = '.$active;
 	// ACCESS -> select
 	$fAccess = $app->input->get('fAccess', 9, 'int');

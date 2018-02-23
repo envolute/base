@@ -1,5 +1,5 @@
 <?
-if($canEdit) :
+if($cfg['canEdit']) :
 
 	// database connect
 	$db = JFactory::getDbo();

@@ -1,5 +1,5 @@
 <?
-if($canEdit) :
+if($cfg['canEdit']) :
 
 	// Carrega o arquivo de tradução
 	if(isset($_SESSION[$APPTAG.'langDef'])) :

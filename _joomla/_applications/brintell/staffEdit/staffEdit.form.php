@@ -105,7 +105,7 @@ $tags = $db->loadObjectList();
 						</select>
 						<span class="input-group-btn">
 							<button type="button" class="base-icon-plus btn btn-success hasTooltip" title="<?php echo JText::_('TEXT_ADD')?>" data-toggle="modal" data-target="#modal-<?php echo $APPPATH?>Tags" data-backdrop="static" data-keyboard="false"></button>
-							<?php if($canEdit) :?>
+							<?php if($cfg['canEdit']) :?>
 								<button type="button" class="base-icon-cog btn btn-primary hasTooltip" title="<?php echo JText::_('TEXT_EDIT')?>" onclick="<?php echo $APPPATH?>Tags_listReload(false)" data-toggle="modal" data-target="#modal-list-<?php echo $APPPATH?>Tags" data-backdrop="static" data-keyboard="false"></button>
 							<?php endif;?>
 						</span>
