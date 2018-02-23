@@ -46,7 +46,7 @@ jQuery(function() {
 	// PARENT FIELD -> Select
 	// informe, se houver, o campo que representa a chave estrangeira principal
 	var parentFieldId		= task_id; // 'null', caso não exista...
-	var parentFieldGroup	= elementExist(parentFieldId) ? parentFieldId.closest('[class*="col-"]') : null;
+	var parentFieldGroup	= elementExist(parentFieldId) ? jQuery('#<?php echo $APPTAG?>-task-group') : null;
 
 	// GROUP RELATION'S BUTTONS -> grupo de botões de relacionamentos no form
 	var groupRelations		= jQuery('#<?php echo $APPTAG?>-group-relation');

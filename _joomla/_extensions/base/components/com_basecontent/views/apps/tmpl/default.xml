@@ -14,10 +14,14 @@
 			<field name="isPublic" type="radio" class="btn-group" label="COM_BASECONTENT_ACCESS_LABEL" description="COM_BASECONTENT_ACCESS_DESC">
 				<option value="0">COM_BASECONTENT_ACCESS_RESTRICT</option>
 				<option value="1">COM_BASECONTENT_ACCESS_VIEW_PUBLIC</option>
-				<option value="2">COM_BASECONTENT_ACCESS_ADMIN_PUBLIC</option>
+				<option value="2">COM_BASECONTENT_ACCESS_AUTHOR_PUBLIC</option>
+				<option value="3">COM_BASECONTENT_ACCESS_EDITOR_PUBLIC</option>
+				<option value="4">COM_BASECONTENT_ACCESS_ADMIN_PUBLIC</option>
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 			</field>
 			<field name="viewerGroups" type="usergroup" label="COM_BASECONTENT_ACCESS_VIEWER_GROUP_LABEL" description="COM_BASECONTENT_ACCESS_VIEWER_GROUP_DESC" multiple="true" />
+			<field name="authorGroups" type="usergroup" label="COM_BASECONTENT_ACCESS_AUTHOR_GROUP_LABEL" description="COM_BASECONTENT_ACCESS_AUTHOR_GROUP_DESC" multiple="true" />
+			<field name="editorGroups" type="usergroup" label="COM_BASECONTENT_ACCESS_EDITOR_GROUP_LABEL" description="COM_BASECONTENT_ACCESS_EDITOR_GROUP_DESC" multiple="true" />
 			<field name="adminGroups" type="usergroup" label="COM_BASECONTENT_ACCESS_ADMIN_GROUP_LABEL" description="COM_BASECONTENT_ACCESS_ADMIN_GROUP_DESC" multiple="true" />
 
 			<field name="appView" type="spacer" class="text"

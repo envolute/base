@@ -152,7 +152,7 @@ endif;
 // form's
 
 	$cfg['showFormHeader']		= true;
-	$cfg['showFormToolbar']		= true;
+	$cfg['showFormToolbar']		= false;
 	// Form button action
 	// false => save (keep)
 	// true => save and close (remove 'save & keep')

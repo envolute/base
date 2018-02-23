@@ -30,6 +30,8 @@ defined('_JEXEC') or die;
 		${$this->appTag.'RelTag'} = $this->relTag;
 		${$this->appTag.'IsPublic'} = $this->isPublic;
 		${$this->appTag.'ViewerGroups'} = $this->viewerGroups;
+		${$this->appTag.'AuthorGroups'} = $this->authorGroups;
+		${$this->appTag.'EditorGroups'} = $this->editorGroups;
 		${$this->appTag.'AdminGroups'} = $this->adminGroups;
 		// LIST
 

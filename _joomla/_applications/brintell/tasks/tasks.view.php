@@ -210,6 +210,7 @@ if($vID != 0) :
 		if($hasAdmin || ($view->created_by == $user->id)) :
 			$btnActions = '
 				<div class="float-right">
+					<a href="#modal-tasksTimer" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_INSERT_TIME').'" onclick="tasksTimer_setParent('.$view->id.')" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-original-title="'.JText::_('TEXT_ADD').'"><span class="base-icon-clock text-primary text-live"></span></a>
 					<a href="#" class="btn btn-lg btn-link py-0 px-2" onclick="'.$MAINTAG.'_setState('.$view->id.', null, false, \'base-icon-toggle-on\', \'base-icon-toggle-on\', \'text-success\', \'text-muted\')" id="'.$MAINTAG.'-state-'.$view->id.'">
 						<span class="'.($view->state == 1 ? 'base-icon-toggle-on text-success' : 'base-icon-toggle-on text-muted').' hasTooltip" title="'.JText::_(($view->state == 1 ? 'MSG_ARCHIVE_ITEM' : 'MSG_ACTIVATE_ITEM')).'"></span>
 					</a>
@@ -270,6 +271,21 @@ if($vID != 0) :
 						// APP ACTIONS
 						// Carrega o app diretamente ná página,
 						// pois como está sendo chamada no template 'component', não carrega os módulos
+						// TASKSTIMER (timesheet) => FORM
+						// get the same group access of main APP
+						$tasksTimerViewerGroups		= $cfgViewer;
+						$tasksTimerAuthorGroups		= $cfgAuthor;
+						$tasksTimerEditorGroups		= $cfgEditor;
+						$tasksTimerAdminGroups		= $cfgAdmin;
+						$tasksTimerShowApp			= false;
+						$tasksTimerShowList			= false;
+						$tasksTimerListFull			= false;
+						$tasksTimerRelTag			= 'tasks';
+						$tasksTimerRelListNameId	= 'task_id';
+						$tasksTimerRelListId		= $view->id;
+						$tasksTimerOnlyChildList	= true;
+						$tasksTimerHideParentField	= true;
+						require(JPATH_APPS.DS.$MAINAPP.'Timer/'.$MAINAPP.'Timer.php');
 						// TASKS => FORM
 						$tasksAppTag					= $MAINTAG;
 						// get the same group access of main APP
@@ -292,7 +308,6 @@ if($vID != 0) :
 						$tasksTagsListFull			= false;
 						$tasksTagsRelTag			= 'tasks';
 						$tasksTagsFieldUpdated		= '#tasks-tags';
-						$tasksTagsTableField		= 'name';
 						require(JPATH_APPS.DS.$MAINAPP.'Tags/'.$MAINAPP.'Tags.php');
 						// TO DO LIST => (instância do FORM)
 						$tasksTodoIsPublic			= 3; // 'Editor' + 'Admin'

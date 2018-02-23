@@ -21,7 +21,7 @@ $users = $db->loadObjectList();
 
 // FORM
 ?>
-<div class="form-group field-required">
+<div id="<?php echo $APPTAG?>-task-group" class="form-group field-required">
 	<label class="label-sm"><?php echo JText::_('FIELD_LABEL_TASK'); ?></label>
 	<div class="input-group">
 		<select name="task_id" id="<?php echo $APPTAG?>-task_id" class="form-control field-id">

@@ -54,6 +54,8 @@ class BaseContentViewApps extends JViewLegacy {
 		$this->appTag = $params->get('appTag', $this->app);
 		$this->isPublic = $params->get('isPublic');
 		$this->viewerGroups = $params->get('viewerGroups');
+		$this->authorGroups = $params->get('authorGroups');
+		$this->editorGroups = $params->get('editorGroups');
 		$this->adminGroups = $params->get('adminGroups');
 		$this->itemView = $params->get('itemView');
 		$this->showApp = $params->get('showApp');

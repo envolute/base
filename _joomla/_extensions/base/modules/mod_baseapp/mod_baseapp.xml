@@ -28,10 +28,14 @@
 				<field name="isPublic" type="radio" class="btn-group" label="MOD_BASEAPP_ACCESS_LABEL" description="MOD_BASEAPP_ACCESS_DESC">
 					<option value="0">MOD_BASEAPP_ACCESS_RESTRICT</option>
 					<option value="1">MOD_BASEAPP_ACCESS_VIEW_PUBLIC</option>
-					<option value="2">MOD_BASEAPP_ACCESS_ADMIN_PUBLIC</option>
+					<option value="2">MOD_BASEAPP_ACCESS_AUTHOR_PUBLIC</option>
+					<option value="3">MOD_BASEAPP_ACCESS_EDITOR_PUBLIC</option>
+					<option value="4">MOD_BASEAPP_ACCESS_ADMIN_PUBLIC</option>
 					<option value="">JGLOBAL_USE_GLOBAL</option>
 				</field>
 				<field name="viewerGroups" type="usergroup" label="MOD_BASEAPP_ACCESS_VIEWER_GROUP_LABEL" description="MOD_BASEAPP_ACCESS_VIEWER_GROUP_DESC" multiple="true" />
+				<field name="authorGroups" type="usergroup" label="MOD_BASEAPP_ACCESS_AUTHOR_GROUP_LABEL" description="MOD_BASEAPP_ACCESS_AUTHOR_GROUP_DESC" multiple="true" />
+				<field name="editorGroups" type="usergroup" label="MOD_BASEAPP_ACCESS_EDITOR_GROUP_LABEL" description="MOD_BASEAPP_ACCESS_EDITOR_GROUP_DESC" multiple="true" />
 				<field name="adminGroups" type="usergroup" label="MOD_BASEAPP_ACCESS_ADMIN_GROUP_LABEL" description="MOD_BASEAPP_ACCESS_ADMIN_GROUP_DESC" multiple="true" />
 
 				<field name="appView" type="spacer" class="text"
