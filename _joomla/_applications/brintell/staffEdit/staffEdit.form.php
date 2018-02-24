@@ -22,7 +22,7 @@ $tags = $db->loadObjectList();
 		</li>
 	<?php endif;?>
 	<li class="nav-item ml-auto">
-		<a class="nav-link active base-icon-left-big" href="<?php echo JURI::root().'apps/'.$APPPATH.'/profile'?>"> <?php echo JText::_('TEXT_BACK_TO_PROFILE'); ?></a>
+		<a class="nav-link active base-icon-left-big" href="<?php echo JURI::root().'apps/'.$APPPATH.'/view'?>"> <?php echo JText::_('TEXT_BACK_TO_PROFILE'); ?></a>
 	</li>
 </ul>
 <div class="tab-content" id="<?php echo $APPTAG?>TabContent">

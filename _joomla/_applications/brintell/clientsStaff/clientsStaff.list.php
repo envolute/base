@@ -157,7 +157,7 @@ if($num_rows) : // verifica se existe
 				';
 			}
 		endif;
-		$urlViewData = JURI::root().'apps/clients/staff/view?vID='.$item->id;
+		$urlViewData = JURI::root().'apps/clients/staff/view?vID='.$item->user_id;
 		$rowState	= $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);

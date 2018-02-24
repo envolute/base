@@ -8,7 +8,7 @@ $ajaxRequest = false;
 require('config.php');
 
 // ACESSO
-$cfg['isPublic'] = 1; // Público -> acesso aberto a todos
+$cfg['isPublic'] = 1; // Público -> Todos podem visualizar
 
 // IMPORTANTE:
 // Como outras Apps serão carregadas, através de "require", dentro dessa aplicação.

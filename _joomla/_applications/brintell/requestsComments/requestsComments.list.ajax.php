@@ -156,11 +156,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				if(!$item->client) {
 					$img = uploader::getFile('#__brintell_staff_files', '', $item->staff_id, 0, JPATH_BASE.DS.'images/apps/staff/');
 					if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/staff/'.$img['filename'], 41, 41);
-					$urlProfile = $_ROOT.'apps/staff/profile?vID='.$item->staff_user_id;
+					$urlProfile = $_ROOT.'apps/staff/view?vID='.$item->staff_user_id;
 				} else {
 					$img = uploader::getFile('#__brintell_clients_staff_files', '', $item->client_id, 0, JPATH_BASE.DS.'images/apps/clientsStaff/');
 					if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/clientsStaff/'.$img['filename'], 41, 41);
-					$urlProfile = $_ROOT.'apps/clientsStaff/profile?vID='.$item->client_user_id;
+					$urlProfile = $_ROOT.'apps/clients/staff/view?vID='.$item->client_user_id;
 				}
 				$img = '<img src="'.$imgPath.'" class="img-fluid rounded mb-2" style="width:41px; height:41px;" />';
 			endif;

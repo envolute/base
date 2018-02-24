@@ -8,7 +8,7 @@ $ajaxRequest = false;
 require('config.php');
 
 // ACESSO
-$cfg['isPublic'] = 1; // Público -> acesso aberto a todos
+$cfg['isPublic'] = 1; // Público -> Todos podem visualizar
 
 // IMPORTANTE:
 // Como outras Apps serão carregadas, através de "require", dentro dessa aplicação.
@@ -44,9 +44,6 @@ if(isset($_SESSION[$MAINTAG.'langDef'])) :
 	$lang->load('base_apps', JPATH_BASE, $_SESSION[$MAINTAG.'langDef'], true);
 	$lang->load('base_'.$APPNAME, JPATH_BASE, $_SESSION[$MAINTAG.'langDef'], true);
 endif;
-
-// Admin Actions
-// require_once('_contacts.select.php');
 
 if($vID != 0) :
 
@@ -106,13 +103,15 @@ if($vID != 0) :
 			}
 		endif;
 
+		$edit = ($view->user_id == $user->id) ? '<a href="'.JURI::root().'apps/clients/staff/edit-profile" class="btn btn-sm btn-warning float-right base-icon-pencil"> '.JText::_('TEXT_EDIT').'</a>' : '';
+
 		echo '
 			<div class="row">
 				<div class="col-4 col-sm-2 mb-4 mb-md-0">
 					<div style="max-width: 300px">'.$img.'</div>
 				</div>
 				<div class="col-sm">
-					<h3 class="page-header">'.JText::sprintf('TEXT_BELONGS_TO', $view->clientID, baseHelper::nameFormat($view->client)).'</h4>
+					<h3 class="page-header">'.JText::sprintf('TEXT_BELONGS_TO', JURI::root(true).'/apps/clients/view?vID='.$view->clientID, baseHelper::nameFormat($view->client)).$edit.'</h4>
 					<div class="row">
 						<div class="col-sm-8">
 							<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_NAME').':</label>

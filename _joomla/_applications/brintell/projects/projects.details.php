@@ -192,7 +192,7 @@ if($pID > 0) :
 		// 		endif;
 		//
 		// 		$html .= '
-		// 			<a href="apps/staff/profile?vID='.$obj->user_id.'" class="d-inline-block pos-relative hasTooltip" title="'.$info.'">
+		// 			<a href="apps/staff/view?vID='.$obj->user_id.'" class="d-inline-block pos-relative hasTooltip" title="'.$info.'">
 		// 				'.$img.$iStatus.'
 		// 			</a>
 		// 		';

@@ -5,52 +5,42 @@ defined('_JEXEC') or die;
 ?>
 <input type="hidden" name="id" id="<?php echo $APPTAG?>-id" />
 <div class="row">
-	<div class="col-sm-9">
+	<div class="col-sm-9 col-lg-10">
 		<div class="row">
-			<div class="col-lg-8">
+			<div class="col-lg-6">
 				<div class="form-group field-required">
 					<label><?php echo JText::_('FIELD_LABEL_NAME'); ?></label>
 					<input type="text" name="name" id="<?php echo $APPTAG?>-name" class="form-control upper" />
 				</div>
 			</div>
-			<div class="col-lg-8">
+			<div class="col-lg-6">
 				<div class="form-group field-required">
 					<label>E-mail</label>
 					<input type="email" name="email" id="<?php echo $APPTAG?>-email" class="form-control field-email" />
 					<input type="hidden" name="cmail" id="<?php echo $APPTAG?>-cmail" />
 				</div>
 			</div>
-			<div class="col-sm-4">
+			<div class="col-lg-6">
 				<div class="form-group">
 					<label><?php echo JText::_('FIELD_LABEL_ROLE'); ?></label>
 					<input type="text" name="role" id="<?php echo $APPTAG?>-role" class="form-control upper" />
 				</div>
 			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-6">
+			<div class="col-sm-6 col-lg-3">
 				<div class="form-group">
-					<label class="d-block">
-						<?php echo JText::_('FIELD_LABEL_PASSWORD'); ?>
-						<small class="text-live font-condensed float-right pt-1"><?php echo JText::_('TEXT_OPTIONAL'); ?></small>
-					</label>
-					<div class="input-group">
-						<input type="password" name="password" id="<?php echo $APPTAG?>-password" class="form-control" />
-						<span class="input-group-addon hasPopover" data-content="<?php echo JText::_('MSG_PASSWORD_INFO'); ?>" data-placement="top">
-							<span class="base-icon-info-circled"></span>
-						</span>
-					</div>
+					<label class="d-block text-danger"><?php echo JText::_('FIELD_LABEL_PASSWORD'); ?></label>
+					<input type="password" name="password" id="<?php echo $APPTAG?>-password" class="form-control" />
 				</div>
 			</div>
-			<div class="col-lg-6">
+			<div class="col-sm-6 col-lg-3">
 				<div class="form-group">
-					<label class="iconTip hasTooltip" title="<?php echo JText::_('MSG_REPASSWORD'); ?>"><?php echo JText::_('FIELD_LABEL_REPASSWORD'); ?></label>
+					<label class="text-danger iconTip hasTooltip" title="<?php echo JText::_('MSG_REPASSWORD'); ?>"><?php echo JText::_('FIELD_LABEL_REPASSWORD'); ?></label>
 					<input type="password" name="repassword" id="<?php echo $APPTAG?>-repassword" class="form-control" />
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="col-sm-3">
+	<div class="col-sm">
 		<div class="form-group">
 			<label><?php echo JText::_('FIELD_LABEL_PHOTO'); ?></label>
 			<div class="image-file">

@@ -7,6 +7,9 @@ defined('_JEXEC') or die;
 $ajaxRequest = false;
 require('config.php');
 
+// ACESSO
+$cfg['isPublic'] = 1; // Público -> Todos podem visualizar
+
 // IMPORTANTE:
 // Como outras Apps serão carregadas, através de "require", dentro dessa aplicação.
 // As variáveis php da App principal serão sobrescritas após as chamadas das outras App.

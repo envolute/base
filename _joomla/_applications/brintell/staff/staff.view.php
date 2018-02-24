@@ -8,7 +8,7 @@ $ajaxRequest = false;
 require('config.php');
 
 // ACESSO
-$cfg['isPublic'] = 1; // Público -> acesso aberto a todos
+$cfg['isPublic'] = 3; // Público -> Todos podem Editar
 
 // IMPORTANTE:
 // Como outras Apps serão carregadas, através de "require", dentro dessa aplicação.
@@ -37,7 +37,7 @@ $hasClient = array_intersect($groups, $cfg['groupId']['client']); // se está na
 // Get request data
 $vID = $app->input->get('vID', 0, 'int'); // VIEW 'ID'
 if($hasClient && $vID == 0) {
-	$app->redirect(JURI::root(true).'/apps/clients/clientsstaff/profile');
+	$app->redirect(JURI::root(true).'/apps/clients/staff/view');
 	exit();
 } else {
 	$vID = $user->id;

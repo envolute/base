@@ -166,7 +166,7 @@ if(!empty($item->name)) :
 			endif;
 
 			$html .= '
-				<a href="apps/staff/profile?vID='.$obj->user_id.'" class="pos-relative hasTooltip" title="'.$info.'">
+				<a href="apps/staff/view?vID='.$obj->user_id.'" class="pos-relative hasTooltip" title="'.$info.'">
 					'.$status.$img.'
 				</a>
 			';

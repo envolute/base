@@ -3,19 +3,24 @@
 // ACCESS
 // Grupos de acesso declarados
 $hasGroup = $hasAuthor = $hasEditor = $hasAdmin = false;
-if(!$cfg['isPublic'] && isset($cfg['groupId']) && ($cfg['groupId']['viewer'][0] != 0 || $cfg['groupId']['admin'][0] != 0)) {
-	$viewer = array_merge($cfg['groupId']['viewer'], $cfg['groupId']['admin']);
-	$hasGroup = array_intersect($groups, $viewer); // se está na lista de grupos permitidos
-	$hasAuthor = array_intersect($groups, $cfg['groupId']['author']); // se está na lista de autores permitidos
-	$hasEditor = array_intersect($groups, $cfg['groupId']['editor']); // se está na lista de editores permitidos
-	$hasAdmin = array_intersect($groups, $cfg['groupId']['admin']); // se está na lista de administradores permitidos
-// Se o acesso não for público e os grupos não forem definidos
-// indica que o acesso é disponível a qualquer grupo restrito
-} else if(isset($user) && !$user->guest) {
-	if($cfg['isPublic'] == 1) $hasGroup = true;			// visualizador
-	else if($cfg['isPublic'] == 2) $hasAuthor = true;	// autor
-	else if($cfg['isPublic'] == 3) $hasEditor = true;	// editor
-	else if($cfg['isPublic'] == 4) $hasAdmin = true;	// admin
+if($cfg['isPublic']) {
+	if($cfg['isPublic'] == 1) {
+		$hasGroup = true;			// visualizador
+	} else if(isset($user) && !$user->guest) {
+		if($cfg['isPublic'] == 2) $hasAuthor = true;	// autor
+		else if($cfg['isPublic'] == 3) $hasEditor = true;	// editor
+		else if($cfg['isPublic'] == 4) $hasAdmin = true;	// admin
+	}
+}
+if(isset($cfg['groupId'])) {
+	//$viewer = array_merge($cfg['groupId']['viewer'], $cfg['groupId']['admin']);
+	if($cfg['isPublic'] != 1 && $cfg['groupId']['viewer'][0] != 0) {
+		$hasGroup = array_intersect($groups, $cfg['groupId']['viewer']); // se está na lista de grupos permitidos
+	} else if(isset($user) && !$user->guest) {
+		if($cfg['isPublic'] != 2 && $cfg['groupId']['author'][0] != 0) $hasAuthor = array_intersect($groups, $cfg['groupId']['author']); // se está na lista de autores permitidos
+		if($cfg['isPublic'] != 3 && $cfg['groupId']['editor'][0] != 0) $hasEditor = array_intersect($groups, $cfg['groupId']['editor']); // se está na lista de editores permitidos
+		if($cfg['isPublic'] != 4 && $cfg['groupId']['admin'][0] != 0) $hasAdmin = array_intersect($groups, $cfg['groupId']['admin']); // se está na lista de administradores permitidos
+	}
 }
 if(!$cfg['isPublic']) :
 	if(isset($user) && $user->guest) :

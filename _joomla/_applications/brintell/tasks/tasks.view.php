@@ -5,6 +5,9 @@
 */
 defined('_JEXEC') or die;
 $ajaxRequest = false;
+// access's definitions
+${'tasksAuthorGroups'}	= array(13, 14);	// developer + external
+${'tasksAdminGroups'}	= array(12);		// analyst + manager
 require('config.php');
 
 // IMPORTANTE:
@@ -189,7 +192,7 @@ if($vID != 0) :
 					$img = '<img src="'.$imgPath.'" class="img-fluid rounded mb-2" style="width:24px; height:24px;" />';
 
 					$assigned .= '
-						<a href="apps/staff/profile?vID='.$obj->user_id.'" class="d-inline-block pos-relative hasTooltip" title="'.$info.'">
+						<a href="apps/staff/view?vID='.$obj->user_id.'" class="d-inline-block pos-relative hasTooltip" title="'.$info.'">
 							'.$img.$iStatus.'
 						</a>
 					';

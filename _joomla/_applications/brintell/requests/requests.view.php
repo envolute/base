@@ -5,6 +5,9 @@
 */
 defined('_JEXEC') or die;
 $ajaxRequest = false;
+// access's definitions
+${'requestsEditorGroups'}	= array(16);		// client
+${'requestsAdminGroups'}	= array(12, 15);	// analyst + client manager + manager
 require('config.php');
 
 // IMPORTANTE:
@@ -137,14 +140,14 @@ if($vID != 0) :
 				$name = baseHelper::nameFormat($obj->name);
 				$role = baseHelper::nameFormat($obj->role);
 				if(!empty($role)) $role = '<br />'.$role;
-				$info = baseHelper::nameFormat($name).$role.'<br />'.$lStatus;
+				$info = $name.$role.'<br />'.$lStatus;
 
 				// Imagem Principal -> Primeira imagem (index = 0)
 				$img = uploader::getFile('#__brintell_clients_staff_files', '', $obj->id, 0, JPATH_BASE.DS.'images/apps/clientsStaff/');
 				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/clientsStaff/'.$img['filename'], 24, 24);
 				else $imgPath = JURI::root().'images/apps/icons/user_'.$obj->gender.'.png';
 				$img = '<img src="'.$imgPath.'" class="img-fluid rounded mb-2" style="width:24px; height:24px;" />';
-				$urlProfile = 'apps/clientsStaff/profile?vID='.$obj->user_id;
+				$urlProfile = 'apps/clients/staff/view?vID='.$obj->user_id;
 				$createdBy .= '
 					<a href="'.$urlProfile.'" class="d-inline-block pos-relative hasTooltip" title="'.$info.'">
 						'.$img.$iStatus.'

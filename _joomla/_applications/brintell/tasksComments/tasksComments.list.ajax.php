@@ -165,7 +165,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$html .= '
 				<li class="d-flex">
 					<div class="mr-3" style="flex:0 0 42px;">
-						<a href="'.$_ROOT.'apps/staff/profile?vID='.$item->user_id.'">'.$img.'</a>
+						<a href="'.$_ROOT.'apps/staff/view?vID='.$item->user_id.'">'.$img.'</a>
 						<div class="btn-group btn-group-justified">'.$btnEdit.$btnDelete.'</div>
 					</div>
 					<div style="flex-grow:1;" class="font-condensed text-sm mb-2 lh-1-3">

@@ -7,13 +7,6 @@ defined('_JEXEC') or die;
 $ajaxRequest = false;
 require('config.php');
 
-// Redireciona para o perfil do cliente
-$hasClient = array_intersect($groups, $cfg['groupId']['client']); // se está na lista de grupos permitidos
-if(!$hasClient) {
-	$app->redirect(JURI::root(true).'/apps/staff/edit-profile');
-	exit();
-}
-
 // IMPORTANTE: Carrega o arquivo 'helper' do template
 JLoader::register('baseHelper', JPATH_CORE.DS.'helpers/base.php');
 JLoader::register('baseAppHelper', JPATH_CORE.DS.'helpers/apps.php');
@@ -24,17 +17,19 @@ $app = JFactory::getApplication('site');
 $user = JFactory::getUser();
 $groups = $user->groups;
 
+// Verifica se é um cliente
+$hasClient = array_intersect($groups, $cfg['groupId']['client']);
+// Se não for, redireciona para o perfil do funcionário
+if(!$hasClient) {
+	$app->redirect(JURI::root(true).'/apps/staff/edit-profile');
+	exit();
+}
+
 // init general css/js files
 require(JPATH_CORE.DS.'apps/_init.app.php');
 
 // DATABASE CONNECT
 $db = JFactory::getDbo();
-
-// TYPE
-$query = 'SELECT '.$db->quoteName('type').' FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('user_id') .' = '.$user->id;
-$db->setQuery($query);
-$type = $db->loadResult();
-$client = ($type == 2) ? true : false;
 
 // Get request data
 $uID = $user->id;
