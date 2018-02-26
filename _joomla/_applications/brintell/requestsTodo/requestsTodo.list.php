@@ -9,8 +9,7 @@ defined('_JEXEC') or die;
 	$query = '
 		SELECT SQL_CALC_FOUND_ROWS
 			T1.*,
-			'. $db->quoteName('T2.name') .',
-			'. $db->quoteName('T2.nickname') .'
+			'. $db->quoteName('T2.name') .'
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
 			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2

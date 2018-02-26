@@ -199,7 +199,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			// Assigned
 			$assigned = '';
 			if(!empty($item->assign_to)) :
-				$query = 'SELECT name, nickname FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('id') .' IN ('.$item->assign_to.') ORDER BY name';
+				$query = 'SELECT name, nickname FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('user_id') .' IN ('.$item->assign_to.') ORDER BY name';
 				$db->setQuery($query);
 				$staff = $db->loadObjectList();
 				$uName = '';

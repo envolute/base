@@ -13,6 +13,7 @@ defined('_JEXEC') or die;
 			'. $db->quoteName('T2.subject') .' task,
 			'. $db->quoteName('T3.name') .',
 			'. $db->quoteName('T3.nickname') .',
+			'. $db->quoteName('T3.price_hour') .',
 			'. $db->quoteName('T4.id') .' project_id,
 			'. $db->quoteName('T4.name') .' project,
 			'. $db->quoteName('T5.name') .' client
@@ -41,13 +42,28 @@ defined('_JEXEC') or die;
 		 return;
 	}
 
-if($num_rows) : // verifica se existe
+if($num_rows) { // verifica se existe
 
 	// pagination
 	$db->setQuery('SELECT FOUND_ROWS();');  //no reloading the query! Just asking for total without limit
 	jimport('joomla.html.pagination');
 	$found_rows = $db->loadResult();
 	$pageNav = new JPagination($found_rows , $lim0, $lim );
+
+	$times = array();
+	$sumHours = 0;
+	function sumTime($times) {
+	    $minutes = 0;
+	    foreach ($times as $time) {
+	        list($hour, $minute) = explode(':', $time);
+	        $minutes += $hour * 60;
+	        $minutes += $minute;
+	    }
+	    $hours = floor($minutes / 60);
+	    $minutes -= $hours * 60;
+	    // returns the time already formatted
+	    return sprintf('%02d:%02d', $hours, $minutes);
+	}
 
 	$listCount = 0;
 	foreach($res as $item) {
@@ -68,7 +84,6 @@ if($num_rows) : // verifica se existe
 					<th width="50" class="d-none d-lg-table-cell d-print-none">'.baseAppHelper::linkOrder('#', 'T1.id', $APPTAG).'</th>
 				';
 				$adminView['head']['actions'] = '
-					<th class="text-center d-none d-lg-table-cell d-print-none" width="60">'.baseAppHelper::linkOrder(JText::_('TEXT_ACTIVE'), 'T1.state', $APPTAG).'</th>
 					<th class="text-center d-print-none" width="70">'.JText::_('TEXT_ACTIONS').'</th>
 				';
 			endif;
@@ -82,7 +97,7 @@ if($num_rows) : // verifica se existe
 								'.$adminView['head']['info'].'
 								<th>'.JText::_('FIELD_LABEL_USER').'</th>
 								<th width="80">'.JText::_('FIELD_LABEL_TIME').'</th>
-								<th>'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_DATE'), 'T1.date', $APPTAG).'</th>
+								<th width="120">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_DATE'), 'T1.date', $APPTAG).'</th>
 								<th>'.JText::_('FIELD_LABEL_TASK').'</th>
 								<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
 								'.$adminView['head']['actions'].'
@@ -115,11 +130,6 @@ if($num_rows) : // verifica se existe
 				<td class="d-none d-lg-table-cell d-print-none">'.$item->id.'</td>
 			';
 			$adminView['list']['actions'] = '
-				<td class="text-center d-none d-lg-table-cell d-print-none">
-					<a href="#" class="hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'">
-						<span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').'"></span>
-					</a>
-				</td>
 				<td class="text-center d-print-none">
 					<a href="#" class="btn btn-xs btn-warning hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil"></span></a>
 					'.$btnDelete.'
@@ -131,6 +141,10 @@ if($num_rows) : // verifica se existe
 		$info .= !empty($item->client) ? ' [ <span class="cursor-help hasTooltip" title="'.JText::_('TEXT_CLIENT').'">'.baseHelper::nameFormat($item->client).'</span> ]' : '';
 		if(!empty($info)) $info = '<div class="small text-muted">'.$info.'</div>';
 		$user = !empty($item->nickname) ? $item->nickname : $item->name;
+
+		$time		= substr($item->total_time, 0, 5);	// tempo total do registro
+		$times[]	= $time;							// Guarda o tempo para o somatório no fim da listagem
+		$sumHours	+= $item->hours;					// Tempo em formato numérico
 
 		$rowState = $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
@@ -147,8 +161,8 @@ if($num_rows) : // verifica se existe
 				'.$adminView['list']['info'].'
 				<td>'.baseHelper::nameFormat($user).'</td>
 				<td>
-					<div class="text-live lh-1"><span class="text-sm base-icon-clock"></span> '.substr($item->total_time, 0, 5).'</div>
-					<small class="text-primary ml-1 base-icon-level-down cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_TIME_COUNT').'"> '.$item->hours.'</small>
+					<div class="text-live lh-1"><span class="text-sm base-icon-clock"></span> '.$time.'</div>
+					<div class="small text-primary ml-1"><span class="base-icon-level-down cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_TIME_COUNT').'"> '.$item->hours.'</span></div>
 				</td>
 				<td>'.baseHelper::dateFormat($item->date, 'd/m/Y').'</td>
 				<td>#'.$item->task_id.' - '.baseHelper::nameFormat($item->task).$info.'</td>
@@ -161,17 +175,60 @@ if($num_rows) : // verifica se existe
 		';
 	}
 
-else : // num_rows = 0
+	if(count($times)) {
+		$workValue = '';
+		if($fAssign != 0) {
+			if($item->price_hour > 0) {
+				$workValue = '
+					<div class="float-left text-muted">
+						<div>R$ '.baseHelper::priceFormat($item->price_hour).'</div>
+						<div class="small">'.JText::_('TEXT_HOUR_WORKED_VALUE').'</div>
+					</div>
+				';
+				if($sumHours > 0) {
+					$workValue .= '
+						<div class="float-left px-4 text-muted base-icon-right-big"></div>
+						<div class="float-left">
+							<div class="text-primary">R$ '.baseHelper::priceFormat(($item->price_hour * $sumHours)).'</div>
+							<div class="small text-muted">'.JText::_('TEXT_TOTAL_WORKED_VALUE').'</div>
+						</div>
+					';
+				}
+			}
+		}
+		$period = '';
+		if(!empty($dateMin) && !empty($dateMax)) {
+			$period = '
+				<div class="text-sm font-weight-normal">
+					<span class="badge badge-primary"> '.baseHelper::dateFormat($dateMin).'</span><br />
+					<span class="badge badge-danger"> '.baseHelper::dateFormat($dateMax).'</span>
+				</div>
+			';
+		}
+		$html .= '
+			<tr class="table-warning b-top-2 b-gray-500 text-lg">
+				<th colspan="3" class="text-uppercase py-3 font-weight-normal">'.JText::_('TEXT_TOTAL').'</th>
+				<th class="py-3 font-weight-normal">
+					<div class="text-live"><span class="base-icon-clock"></span> '.sumTime($times).'</div>
+					<div class="small text-primary ml-1"><span class="base-icon-level-down cursor-help hasTooltip" title="'.JText::_('TEXT_TOTAL_TIME_COUNT').'"> '.$sumHours.'</span></div>
+				</th>
+				<th class="py-3 font-weight-normal">'.$period.'</th>
+				<th colspan="3" class="py-3 text-right font-weight-normal">'.$workValue.$btnGetFile.'</th>
+			</tr>
+		';
+	}
+
+} else { // num_rows = 0
 
 	$html .= '
 		<tr>
-			<td colspan="6">
+			<td colspan="8">
 				<div class="alert alert-warning alert-icon m-0">'.JText::_('MSG_LISTNOREG').'</div>
 			</td>
 		</tr>
 	';
 
-endif;
+}
 
 $html .= '
 			</tbody>

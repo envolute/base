@@ -17,13 +17,12 @@ if($hasAuthor) :
 	$query	= '
 		SELECT
 			T1.*
-		FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' T1
+		FROM '. $db->quoteName('#__'.$cfg['project'].'_clients_staff') .' T1
 		WHERE T1.user_id = '.$user->id
 	;
 	$db->setQuery($query);
 	$obj = $db->loadObject();
 	if(!empty($obj->name)) : // verifica se existe
-		$name = baseHelper::nameFormat((!empty($obj->nickname) ? $obj->nickname : $obj->name));
 
 		// Imagem Principal -> Primeira imagem (index = 0)
 		JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
@@ -35,7 +34,7 @@ if($hasAuthor) :
 		$author = '
 			<div class="mb-3 b-bottom b-primary-lighter clearfix">
 				'.$img.'
-				<h5 class="font-condensed">'.$name.'</h5>
+				<h5 class="font-condensed">'.baseHelper::nameFormat($obj->name).'</h5>
 			</div>
 		';
 	endif;

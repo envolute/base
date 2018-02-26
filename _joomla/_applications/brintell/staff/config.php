@@ -170,7 +170,7 @@ $cfg[$APPTAG.'AccessLevel']['external']	= '14';
 	// date & price convertions
 	$cfg['dateConvert']			= true;
 	$cfg['load_UI']				= $cfg['dateConvert'];
-	$cfg['priceDecimal']		= false;
+	$cfg['priceDecimal']		= true;
 	$cfg['htmlEditor']			= false;
 	$cfg['htmlEditorFull']		= false;
 

@@ -4,10 +4,6 @@ defined('_JEXEC') or die;
 // QUERY FOR LIST
 $where = '';
 
-$query = 'SELECT id FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE user_id = '.$user->id;
-$db->setQuery($query);
-$myID = $db->loadResult();
-
 // filter params
 
 	// STATE -> select
@@ -38,7 +34,7 @@ $myID = $db->loadResult();
 	// Mostra apenas as tasks do próprio usuário
 	} else {
 
-		$fAssign = $myID;
+		$fAssign = $user->id;
 		$assigned = ' AND ('.$db->quoteName('T1.created_by').' = '.$user->id.' OR FIND_IN_SET ('.$fAssign.', '.$db->quoteName('T1.assign_to').'))';
 
 	}

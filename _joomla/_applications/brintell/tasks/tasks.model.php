@@ -249,7 +249,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 								$newAssign	= $request['assign_to'];
 							}
 							if(!empty($newAssign)) {
-								$query = 'SELECT name, nickname, email FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('id') .' IN ('.$newAssign.')';
+								$query = 'SELECT name, nickname, email FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('user_id') .' IN ('.$newAssign.')';
 								$db->setQuery($query);
 								$users = $db->loadObjectList();
 
@@ -553,7 +553,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 						// NOTIFY USERS ATTRIBUTED
 						if(!empty($request['assign_to'])) {
-							$query = 'SELECT name, nickname, email FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('id') .' IN ('.$request['assign_to'].')';
+							$query = 'SELECT name, nickname, email FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('user_id') .' IN ('.$request['assign_to'].')';
 							$db->setQuery($query);
 							$users = $db->loadObjectList();
 

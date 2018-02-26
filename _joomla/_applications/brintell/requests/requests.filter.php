@@ -52,12 +52,11 @@ require($PATH_APP_FILE.'.filter.query.php');
 	// CREATED BY -> select
 	$flt_creator = '';
 	if($hasAdmin || $pID > 0) :
-		$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('type') .' = 2 AND '. $db->quoteName('access') .' = 1 AND '. $db->quoteName('state') .' = 1 ORDER BY name';
+		$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_clients_staff') .' WHERE '. $db->quoteName('access') .' = 1 AND '. $db->quoteName('state') .' = 1 ORDER BY name';
 		$db->setQuery($query);
 		$created = $db->loadObjectList();
 		foreach ($created as $obj) {
-			$name = !empty($obj->nickname) ? $obj->nickname : $obj->name;
-			$flt_creator .= '<option value="'.$obj->id.'"'.($obj->id == $fCreated ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($name).'</option>';
+			$flt_creator .= '<option value="'.$obj->user_id.'"'.($obj->user_id == $fCreated ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
 		}
 		$flt_creator = '
 			<div class="col-sm-6 col-md-4">

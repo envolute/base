@@ -31,6 +31,7 @@ CREATE TABLE `cms_brintell_staff` (
   `weblink_text` varchar(255) NOT NULL,
   `weblink_url` text NOT NULL,
   `occupation` varchar(50) NOT NULL,
+  `price_hour` decimal(10,2) NOT NULL,
   `cpf` varchar(14) NOT NULL,
   `cnpj` varchar(19) NOT NULL,
   `about_me` text NOT NULL,

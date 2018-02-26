@@ -21,19 +21,16 @@ $query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHE
 $db->setQuery($query);
 $staff = $db->loadObjectList();
 // current user
-$myID		= 0;
-$staffList	= $selected = '';
+$staffList	= '';
 foreach ($staff as $obj) {
 	$name = !empty($obj->nickname) ? $obj->nickname : $obj->name;
 	$staff = ($obj->type == 1) ? '*' : '';
 	if($obj->user_id == $user->id) {
-		$myID = $obj->id;
 		$me = ' ('.JText::_('TEXT_TO_ME').')';
-		if($hasAuthor) $selected = ' selected';
 	} else {
 		$me = '';
 	}
-	$staffList .= '<option value="'.$obj->id.'"'.$selected.'>'.$staff.baseHelper::nameFormat($name).$me.'</option>';
+	$staffList .= '<option value="'.$obj->user_id.'">'.$staff.baseHelper::nameFormat($name).$me.'</option>';
 }
 
 // FORM
@@ -142,22 +139,18 @@ foreach ($staff as $obj) {
 				<div id="<?php echo $APPTAG?>-files-group" class="row"></div>
 			</div>
 			<div class="col-lg-4 b-left b-left-dashed">
-				<?php if($cfg['canEdit']) :?>
-					<div class="form-group">
-						<label class="label-sm"><?php echo JText::_('FIELD_LABEL_ASSIGN_TO'); ?></label>
-						<div class="input-group">
-							<select name="assign_to[]" id="<?php echo $APPTAG?>-assign_to" class="form-control" multiple>
-								<?php echo $staffList?>
-							</select>
-							<span class="input-group-btn">
-								<button type="button" class="base-icon-sitemap btn btn-success hasTooltip" title="<?php echo JText::_('TEXT_ACTIVITY_BOARD')?>" data-toggle="modal" data-target="#modal-<?php echo $APPTAG?>activityBoard" data-backdrop="static" data-keyboard="false"></button>
-							</span>
-						</div>
+				<div class="form-group">
+					<label class="label-sm"><?php echo JText::_('FIELD_LABEL_ASSIGN_TO'); ?></label>
+					<div class="input-group">
+						<select name="assign_to[]" id="<?php echo $APPTAG?>-assign_to" class="form-control" multiple>
+							<?php echo $staffList?>
+						</select>
+						<input type="hidden" name="cassign_to" id="<?php echo $APPTAG?>-cassign_to" />
+						<span class="input-group-btn">
+							<button type="button" class="base-icon-sitemap btn btn-success hasTooltip" title="<?php echo JText::_('TEXT_ACTIVITY_BOARD')?>" data-toggle="modal" data-target="#modal-<?php echo $APPTAG?>activityBoard" data-backdrop="static" data-keyboard="false"></button>
+						</span>
 					</div>
-				<?php elseif($hasAuthor) :?>
-					<input type="hidden" name="assign_to[]" id="<?php echo $APPTAG?>-assign_to" value="<?php echo $myID?>" />
-				<?php endif;?>
-				<input type="hidden" name="cassign_to" id="<?php echo $APPTAG?>-cassign_to" />
+				</div>
 				<div class="form-group">
 					<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_DEADLINE_DESC'); ?>">
 						<?php echo JText::_('FIELD_LABEL_DEADLINE'); ?>
@@ -170,6 +163,19 @@ foreach ($staff as $obj) {
 							<option value="<?php echo JText::_('TEXT_PM'); ?>"><?php echo JText::_('TEXT_PM'); ?></option>
 						</select>
 					</div>
+				</div>
+				<div class="form-group">
+					<label class="label-sm"><?php echo JText::_('FIELD_LABEL_VISIBILITY'); ?></label>
+					<span class="btn-group btn-group-justified" data-toggle="buttons">
+						<label class="btn btn-default btn-active-success base-icon-lock-open hasTooltip" title="<?php echo JText::_('TEXT_PROJECT_DESC'); ?>">
+							<input type="radio" name="visibility" id="<?php echo $APPTAG?>-visibility-0" value="0" />
+							<?php echo JText::_('TEXT_PROJECT'); ?>
+						</label>
+						<label class="btn btn-default btn-active-danger base-icon-lock hasTooltip" title="<?php echo JText::_('TEXT_PRIVATE_DESC'); ?>">
+							<input type="radio" name="visibility" id="<?php echo $APPTAG?>-visibility-1" value="1" />
+							<?php echo JText::_('TEXT_PRIVATE'); ?>
+						</label>
+					</span>
 				</div>
 				<div class="form-group">
 					<label class="label-sm"><?php echo JText::_('FIELD_LABEL_STATUS'); ?></label>
@@ -208,8 +214,8 @@ foreach ($staff as $obj) {
 						<span class="badge badge-primary base-icon-menu"> <?php echo JText::_('TEXT_TODO_LIST'); ?></span>
 						<div class="alert alert-info text-sm p-2"><?php echo JText::_('MSG_TODO_LIST_AFTER_SAVE'); ?></div>
 					</div>
-					<div id="<?php echo $APPTAG?>-btn-toDo" hidden>
-						<hr />
+					<div id="<?php echo $APPTAG?>-btn-toDo" class="pt-2" hidden>
+						<hr class="mt-0" />
 						<button type="button" class="btn btn-primary btn-block text-left base-icon-list btn-icon" onclick="<?php echo $APPTAG?>_viewToDo()" data-toggle="modal" data-target="#modal-list-<?php echo $APPTAG?>Todo" data-backdrop="static" data-keyboard="false"> <?php echo JText::_('TEXT_TODO_LIST')?></button>
 					</div>
 				</div>
@@ -218,22 +224,7 @@ foreach ($staff as $obj) {
 	</div>
 	<div class="tab-pane fade" id="<?php echo $APPTAG?>TabExtra" role="tabpanel" aria-labelledby="<?php echo $APPTAG?>Tab-extra">
 		<div class="row">
-			<div class="col-lg-4">
-				<div class="form-group">
-					<label class="label-sm"><?php echo JText::_('FIELD_LABEL_VISIBILITY'); ?></label>
-					<span class="btn-group btn-group-justified" data-toggle="buttons">
-						<label class="btn btn-default btn-active-success base-icon-lock-open hasTooltip" title="<?php echo JText::_('TEXT_PROJECT_DESC'); ?>">
-							<input type="radio" name="visibility" id="<?php echo $APPTAG?>-visibility-0" value="0" />
-							<?php echo JText::_('TEXT_PROJECT'); ?>
-						</label>
-						<label class="btn btn-default btn-active-danger base-icon-lock hasTooltip" title="<?php echo JText::_('TEXT_PRIVATE_DESC'); ?>">
-							<input type="radio" name="visibility" id="<?php echo $APPTAG?>-visibility-1" value="1" />
-							<?php echo JText::_('TEXT_PRIVATE'); ?>
-						</label>
-					</span>
-				</div>
-			</div>
-			<div class="col-lg-4">
+			<div class="col-lg-3">
 				<div class="form-group">
 					<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_ESTIMATE_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_ESTIMATE'); ?> (<?php echo JText::_('FIELD_LABEL_ESTIMATE_UNIT'); ?>)</label>
 					<select type="text" name="estimate" id="<?php echo $APPTAG?>-estimate" class="form-control">
@@ -246,7 +237,7 @@ foreach ($staff as $obj) {
 					</select>
 				</div>
 			</div>
-			<div class="col-lg-4">
+			<div class="col-lg-3">
 				<div class="form-group">
 					<label class="label-sm"><?php echo JText::_('FIELD_LABEL_EXECUTED'); ?></label>
 					<div class="input-group">

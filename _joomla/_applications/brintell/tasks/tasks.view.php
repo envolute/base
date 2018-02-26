@@ -6,8 +6,8 @@
 defined('_JEXEC') or die;
 $ajaxRequest = false;
 // access's definitions
-${'tasksAuthorGroups'}	= array(13, 14);	// developer + external
-${'tasksAdminGroups'}	= array(12);		// analyst + manager
+$tasksAuthorGroups	= array(13, 14);	// developer + external
+$tasksAdminGroups	= array(12);		// analyst + manager
 require('config.php');
 
 // IMPORTANTE:
@@ -18,6 +18,8 @@ require('config.php');
 $MAINAPP	= $APPNAME;
 $MAINTAG	= $APPTAG;
 $cfgViewer	= $cfg['groupId']['viewer'];
+$cfgAuthor	= $cfg['groupId']['author'];
+$cfgEditor	= $cfg['groupId']['editor'];
 $cfgAdmin	= $cfg['groupId']['admin'];
 
 // IMPORTANTE: Carrega o arquivo 'helper' do template
@@ -157,7 +159,7 @@ if($vID != 0) :
 					ON '.$db->quoteName('T2.id') .' = T1.role_id
 					LEFT JOIN '. $db->quoteName('#__session') .' T3
 					ON '.$db->quoteName('T3.userid') .' = T1.user_id AND T3.client_id = 0
-				WHERE T1.id IN ('.$view->assign_to.')
+				WHERE T1.user_id IN ('.$view->assign_to.')
 				ORDER BY '. $db->quoteName('T1.name') .' ASC
 			';
 			try {

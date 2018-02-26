@@ -4,10 +4,6 @@ defined('_JEXEC') or die;
 // QUERY FOR LIST
 $where = '';
 
-$query = 'SELECT id FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE user_id = '.$user->id;
-$db->setQuery($query);
-$myID = $db->loadResult();
-
 // filter params
 
 	// STATE -> select
@@ -29,7 +25,7 @@ $myID = $db->loadResult();
 	// Visão geral das requests pelo dev
 	// Mostra apenas as requests do próprio usuário
 	else :
-		$fCreated = $myID;
+		$fCreated = $user->id;
 		$createdBy = ' AND FIND_IN_SET ('.$fCreated.', '.$db->quoteName('T1.created_by').')';
 	endif;
 	$where .= $createdBy;

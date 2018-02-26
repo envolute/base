@@ -63,6 +63,7 @@ jQuery(function() {
 	var chat_user			= jQuery('#<?php echo $APPTAG?>-chat_user');
 	// extra info
 	var occupation			= jQuery('#<?php echo $APPTAG?>-occupation');
+	var price_hour			= jQuery('#<?php echo $APPTAG?>-price_hour');
 	var cpf					= jQuery('#<?php echo $APPTAG?>-cpf');
 	var cnpj				= jQuery('#<?php echo $APPTAG?>-cnpj');
 	var about_me			= jQuery('#<?php echo $APPTAG?>-about_me');
@@ -168,6 +169,7 @@ jQuery(function() {
 			weblink_text.val('');
 			weblink_url.val('');
 			occupation.val('');
+			price_hour.val('');
 			cpf.val('');
 			cnpj.val('');
 			about_me.val('');
@@ -495,6 +497,7 @@ jQuery(function() {
 							}
 						}
 						occupation.val(item.occupation);
+						price_hour.val(item.price_hour);
 						cpf.val(item.cpf);
 						cnpj.val(item.cnpj);
 						about_me.val(item.about_me);

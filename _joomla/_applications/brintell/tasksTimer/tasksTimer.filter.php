@@ -7,8 +7,8 @@ $where = '';
 // filter params
 
 	// STATE -> select
-	$active	= $app->input->get('active', ($cfg['canEdit'] ? 2 : 1), 'int');
-	$where .= ($active == 2) ? $db->quoteName('T1.state').' != '.$active : $db->quoteName('T1.state').' = '.$active;
+	// O state não será utilizado nesse App
+	$where .= $db->quoteName('T1.state').' = 1';
 	// CLIENT
 	$clientID	= $app->input->get('fClient', 0, 'int');
 	if($clientID != 0) $where .= ' AND '.$db->quoteName('T5.id').' = '.$clientID;
@@ -19,30 +19,28 @@ $where = '';
 	$taskID	= $app->input->get('fTask', 0, 'int');
 	if($taskID != 0) $where .= ' AND '.$db->quoteName('T1.task_id').' = '.$taskID;
 	// ASSIGN TO
-	// Visão geral das tasks pelo Admin (todas as tasks)
-	// Visão geral das tasks pelo Developer (apenas as dele)
-	// Ou visão de projeto por todos (todas do projeto)
-	$assigned = '';
+	$fAssign = $app->input->get('fAssign', 0, 'int');
+	// Se for um admin ver todos
+	// Senão vê apenas as dele
 	if($hasAdmin) {
-		$fAssign = $app->input->get('fAssign', array(), 'array');
-		for($i = 0; $i < count($fAssign); $i++) {
-			$assigned .= ($i == 0) ? ' AND (' : ' OR ';
-			$assigned .= 'FIND_IN_SET ('.$fAssign[$i].', T1.user_id)';
-			$assigned .= ($i == (count($fAssign) - 1)) ? ')' : '';
-		}
-	// Visão geral das tasks pelo dev
-	// Mostra apenas as tasks do próprio usuário
+		if($fAssign != 0) $where .= ' AND '.$db->quoteName('T1.user_id').' = '.$fAssign;
 	} else {
-		$fAssign = $user->id;
-		$assigned = ' AND '.$db->quoteName('T1.user_id').' = '.$user->id;
+		$where .= ' AND '.$db->quoteName('T1.user_id').' = '.$user->id;
 	}
-	$where .= $assigned;
+
 	// DATE
 	$dateMin	= $app->input->get('dateMin', '', 'string');
 	$dateMax	= $app->input->get('dateMax', '', 'string');
 	$dtmin = !empty($dateMin) ? $dateMin : '0000-00-00';
 	$dtmax = !empty($dateMax) ? $dateMax : '9999-12-31';
-	if(!empty($dateMin) || !empty($dateMax)) $where .= ' AND '.$db->quoteName('T1.date').' BETWEEN '.$db->quote($dtmin).' AND '.$db->quote($dtmax);
+	if(!empty($dateMin) || !empty($dateMax)) {
+		$where .= ' AND '.$db->quoteName('T1.date').' BETWEEN '.$db->quote($dtmin).' AND '.$db->quote($dtmax);
+		// Consulta por período fica sem paginação => mostra todos os resultados
+		$_SESSION[$APPTAG.'plim'] = 1;
+	} else {
+		// força a paginação para evitar o carregamento de todas as parcelas em aberto
+		if($_SESSION[$APPTAG.'plim'] == 1) $_SESSION[$APPTAG.'plim'] = 50;
+	}
 
 	// Search 'Text fields'
 	$search	= $app->input->get('fSearch', '', 'string');
@@ -99,7 +97,7 @@ $where = '';
 			$flt_client .= '<option value="'.$obj->id.'"'.($obj->id == $fClient ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
 		}
 		$flt_client = '
-			<div class="col-sm-6 col-md-3">
+			<div class="col-sm-6 col-md-4 col-xl-3">
 				<div class="form-group">
 					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_CLIENT').'</label>
 					<select name="fClient" id="fClient" class="form-control form-control-sm set-filter">
@@ -122,7 +120,7 @@ $where = '';
 	// se não for um admin, mostra apenas as horas do usuário
 	$flt_task = '';
 	$taskFilter .= ($projectID > 0) ? 'project_id = '.$projectID.' AND ' : '';
-	$taskFilter .= (!$hasAdmin) ? 'FIND_IN_SET ('.$fAssign[$i].', assign_to) AND ' : '';
+	$taskFilter .= (!$hasAdmin) ? 'FIND_IN_SET ('.$fAssign.', assign_to) AND ' : '';
 	$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_tasks') .' WHERE '.$taskFilter.'state = 1 ORDER BY created_date DESC';
 	$db->setQuery($query);
 	$tasks = $db->loadObjectList();
@@ -141,10 +139,11 @@ $where = '';
 			$flt_assign .= '<option value="'.$obj->user_id.'"'.($obj->user_id == $fAssign ? ' selected = "selected"' : '').'>'.$staff.baseHelper::nameFormat($name).'</option>';
 		}
 		$flt_assign = '
-			<div class="col-sm-6 col-md-3">
+			<div class="col-sm-6 col-md-4 col-xl-3">
 				<div class="form-group">
 					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_ASSIGN_TO').'</label>
-					<select name="fAssign[]" id="fAssign" class="form-control form-control-sm set-filter" multiple>
+					<select name="fAssign" id="fAssign" class="form-control form-control-sm set-filter">
+						<option value="0">- '.JText::_('TEXT_ALL').' -</option>
 						'.$flt_assign.'
 					</select>
 				</div>
@@ -159,6 +158,7 @@ $where = '';
 	// Estado inicial dos elementos
 	$btnClearFilter		= ''; // botão de resetar
 	$textResults		= ''; // Texto informativo
+	$btnGetFile			= ''; // Botão para baixar o timesheet do usuário
 	// Filtro ativo
 	if($hasFilter || $cfg['ajaxFilter']) :
 		$btnClearFilter = '
@@ -166,7 +166,12 @@ $where = '';
 				'.JText::_('TEXT_CLEAR').' '.JText::_('TEXT_FILTER').'
 			</a>
 		';
-		$textResults = '<span class="base-icon-down-big text-muted d-none d-sm-inline"> '.JText::_('TEXT_SEARCH_RESULTS').'</span>';
+		if(!empty($dateMin) && !empty($dateMax) && $fAssign != 0) {
+			$btnGetFile = '<button type="button" class="btn btn-sm btn-success base-icon-download btn-icon" onclick="alert(\'TODO: Será baixada a planilha com o timesheet no formato definido e nomeada com o nome do usuário. Ex: ivo_junior.xls\')">'.JText::_('TEXT_DOWNLOAD_SPREADSHEET').'</button>';
+			$textResults = $btnGetFile;
+		} else {
+			$textResults = '<span class="base-icon-down-big text-muted d-none d-sm-inline"> '.JText::_('TEXT_SEARCH_RESULTS').'</span>';
+		}
 	endif;
 
 // VIEW
@@ -176,8 +181,19 @@ $htmlFilter = '
 			<input type="hidden" name="'.$APPTAG.'_filter" value="1" />
 
 			<div class="row">
-				'.$flt_client.'
-				<div class="col-sm-6 col-md-3">
+				<div class="col-sm-6 col-md-4 col-xl-3">
+					<div class="form-group">
+						<label class="label-xs text-muted">'.JText::_('TEXT_PERIOD').'</label>
+						<span class="input-group input-group-sm">
+							<span class="input-group-addon strong">'.JText::_('TEXT_FROM').'</span>
+							<input type="text" name="dateMin" value="'.$dateMin.'" class="form-control field-date" data-width="100%" data-convert="true" />
+							<span class="input-group-addon">'.JText::_('TEXT_TO').'</span>
+							<input type="text" name="dateMax" value="'.$dateMax.'" class="form-control field-date" data-width="100%" data-convert="true" />
+						</span>
+					</div>
+				</div>
+				'.$flt_assign.'
+				<div class="col-sm-6 col-md-4 col-xl-3">
 					<div class="form-group">
 						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_PROJECT').'</label>
 						<select name="fProj" id="fProj" class="form-control form-control-sm set-filter">
@@ -186,30 +202,14 @@ $htmlFilter = '
 						</select>
 					</div>
 				</div>
-				<div class="col-sm-6 col-md-3">
+				'.$flt_client.'
+				<div class="col-md-8 col-xl-6">
 					<div class="form-group">
 						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_TASK').'</label>
 						<select name="fTask" id="fTask" class="form-control form-control-sm set-filter">
 							<option value="0">- '.JText::_('TEXT_ALL').' -</option>
 							'.$flt_task.'
 						</select>
-					</div>
-				</div>
-				'.$flt_assign.'
-				<div class="col-sm-4 col-md-2">
-					<div class="form-group">
-						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_ITEM_STATE').'</label>
-						<select name="active" id="active" class="form-control form-control-sm set-filter">
-							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
-							<option value="1"'.($active == 1 ? ' selected' : '').'>'.JText::_('TEXT_ACTIVES').'</option>
-							<option value="0"'.($active == 0 ? ' selected' : '').'>'.JText::_('TEXT_INACTIVES').'</option>
-						</select>
-					</div>
-				</div>
-				<div class="col-sm-8 col-md-6 col-lg-4">
-					<div class="form-group">
-						<label class="label-xs text-muted text-truncate">'.implode(', ', $sLabel).'</label>
-						<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />
 					</div>
 				</div>
 			</div>

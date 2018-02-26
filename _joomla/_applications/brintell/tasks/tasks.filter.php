@@ -58,7 +58,7 @@ require($PATH_APP_FILE.'.filter.query.php');
 		foreach ($assigned as $obj) {
 			$name = !empty($obj->nickname) ? $obj->nickname : $obj->name;
 			$staff = ($obj->type == 1) ? '*' : '';
-			$flt_assign .= '<option value="'.$obj->id.'"'.($obj->id == $fAssign ? ' selected = "selected"' : '').'>'.$staff.baseHelper::nameFormat($name).'</option>';
+			$flt_assign .= '<option value="'.$obj->user_id.'"'.($obj->user_id == $fAssign ? ' selected = "selected"' : '').'>'.$staff.baseHelper::nameFormat($name).'</option>';
 		}
 		$flt_assign = '
 			<div class="col-sm-6 col-md-3">

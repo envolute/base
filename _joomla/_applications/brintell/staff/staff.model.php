@@ -139,7 +139,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$weblink_url					= str_replace(';', '.', $weblink_url); // formata
 		$request['weblink_url']			= implode(';', $weblink_url);
 		$request['occupation']			= $input->get('occupation', '', 'string');
-		$request['cpf']					= $input->get('cpf', '', 'string');
+		$request['price_hour']			= $input->get('price_hour'); // não usar 'float' devido ao setLocale(pt-BR) que altera '.' por ','
+	    $request['cpf']					= $input->get('cpf', '', 'string');
 		$request['cnpj']				= $input->get('cnpj', '', 'string');
 		$request['about_me']			= $input->get('about_me', '', 'raw');
 		$request['bank_name']			= $input->get('bank_name', '', 'string');
@@ -266,6 +267,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'weblink_text'		=> $item->weblink_text,
 						'weblink_url'		=> $item->weblink_url,
 						'occupation'		=> $item->occupation,
+						'price_hour'		=> $item->price_hour,
 						'cpf'				=> $item->cpf,
 						'cnpj'				=> $item->cnpj,
 						'about_me'		=> $item->about_me,
@@ -311,6 +313,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$db->quoteName('weblink_text')		.'='. $db->quote($request['weblink_text']) .','.
 						$db->quoteName('weblink_url')		.'='. $db->quote($request['weblink_url']) .','.
 						$db->quoteName('occupation')		.'='. $db->quote($request['occupation']) .','.
+						$db->quoteName('price_hour')		.'='. $db->quote($request['price_hour']) .','.
 						$db->quoteName('cpf')				.'='. $db->quote($request['cpf']) .','.
 						$db->quoteName('cnpj')				.'='. $db->quote($request['cnpj']) .','.
 						$db->quoteName('about_me')		.'='. $db->quote($request['about_me']) .','.
@@ -668,6 +671,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('weblink_text') .','.
 							$db->quoteName('weblink_url') .','.
 							$db->quoteName('occupation') .','.
+							$db->quoteName('price_hour') .','.
 							$db->quoteName('cpf') .','.
 							$db->quoteName('cnpj') .','.
 							$db->quoteName('about_me') .','.
@@ -708,6 +712,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quote($request['weblink_text']) .','.
 							$db->quote($request['weblink_url']) .','.
 							$db->quote($request['occupation']) .','.
+							$db->quote($request['price_hour']) .','.
 							$db->quote($request['cpf']) .','.
 							$db->quote($request['cnpj']) .','.
 							$db->quote($request['about_me']) .','.

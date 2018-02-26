@@ -118,8 +118,9 @@ jQuery(document).ready(function() {
 			checkOption(type, 0);
 			requests.selectUpdate(''); // select
 			<?php if($cfg['canEdit']) :?>
-				assign_to.selectUpdate(''); // select
-				cassign_to.selectUpdate(''); // select
+				console.log('<?php echo $hasAuthor ? $user->id: 0?>');
+				assign_to.selectUpdate('<?php echo $hasAuthor ? $user->id : 0?>'); // select
+				cassign_to.selectUpdate('0'); // select
 			<?php endif;?>
 			subject.val('');
 			description.val('');

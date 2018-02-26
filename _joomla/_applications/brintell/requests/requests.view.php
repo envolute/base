@@ -6,8 +6,8 @@
 defined('_JEXEC') or die;
 $ajaxRequest = false;
 // access's definitions
-${'requestsEditorGroups'}	= array(16);		// client
-${'requestsAdminGroups'}	= array(12, 15);	// analyst + client manager + manager
+$requestsEditorGroups	= array(16);		// client
+$requestsAdminGroups	= array(12, 15);	// analyst + client manager + manager
 require('config.php');
 
 // IMPORTANTE:
@@ -17,6 +17,10 @@ require('config.php');
 // atribuir à variáveis personalizadas. Caso seja necessário, declare essas variáveis abaixo...
 $MAINAPP	= $APPNAME;
 $MAINTAG	= $APPTAG;
+$cfgViewer	= $cfg['groupId']['viewer'];
+$cfgAuthor	= $cfg['groupId']['author'];
+$cfgEditor	= $cfg['groupId']['editor'];
+$cfgAdmin	= $cfg['groupId']['admin'];
 
 // IMPORTANTE: Carrega o arquivo 'helper' do template
 JLoader::register('baseHelper', JPATH_CORE.DS.'helpers/base.php');
@@ -238,12 +242,20 @@ if($vID != 0) :
 						// Carrega o app diretamente ná página,
 						// pois como está sendo chamada no template 'component', não carrega os módulos
 						// REQUESTS => FORM
-						$requestsAppTag					= $MAINTAG;
-						${$requestsAppTag.'ShowApp'}	= false;
-						${$requestsAppTag.'ShowList'}	= false;
-						${$requestsAppTag.'ListFull'}	= true;
+						$requestsAppTag						= $MAINTAG;
+						${$requestsAppTag.'ViewerGroups'}	= $cfgViewer;
+						${$requestsAppTag.'AuthorGroups'}	= $cfgAuthor;
+						${$requestsAppTag.'EditorGroups'}	= $cfgEditor;
+						${$requestsAppTag.'AdminGroups'}	= $cfgAdmin;
+						${$requestsAppTag.'ShowApp'}		= false;
+						${$requestsAppTag.'ShowList'}		= false;
+						${$requestsAppTag.'ListFull'}		= true;
 						require(JPATH_APPS.DS.$MAINAPP.'/'.$MAINAPP.'.php');
 						// TAGS => FORM
+						$requestsTagsViewerGroups		= $cfgViewer;
+						$requestsTagsAuthorGroups		= $cfgAuthor;
+						$requestsTagsEditorGroups		= $cfgEditor;
+						$requestsTagsAdminGroups		= $cfgAdmin;
 						$requestsTagsShowApp			= false;
 						$requestsTagsShowList			= false;
 						$requestsTagsListFull			= false;
