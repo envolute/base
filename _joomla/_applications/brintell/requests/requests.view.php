@@ -37,6 +37,7 @@ require(JPATH_CORE.DS.'apps/_init.app.php');
 
 // Get request data
 $vID = $app->input->get('vID', 0, 'int'); // VIEW 'ID'
+$tpl = $app->input->get('tmpl', '', 'string'); // JOOMLA TEMPLATE
 
 // Carrega o arquivo de tradução
 // OBS: para arquivos externos com o carregamento do framework '_init.joomla.php' (geralmente em 'ajax')

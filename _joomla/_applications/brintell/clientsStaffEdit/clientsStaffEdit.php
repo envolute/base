@@ -37,7 +37,7 @@ $uID = $user->id;
 ?>
 
 <script>
-jQuery(document).ready(function() {
+jQuery(function() {
 
 	<?php // Default 'JS' Vars
 	require(JPATH_CORE.DS.'apps/snippets/initVars.js.php');

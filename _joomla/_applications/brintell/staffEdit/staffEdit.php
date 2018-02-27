@@ -42,7 +42,7 @@ $uID = $user->id;
 ?>
 
 <script>
-jQuery(document).ready(function() {
+jQuery(function() {
 
 	<?php // Default 'JS' Vars
 	require(JPATH_CORE.DS.'apps/snippets/initVars.js.php');
@@ -421,9 +421,32 @@ jQuery(document).ready(function() {
 
 		<? endif; ?>
 
+		<?php
+		// FORM ACTION DEFINITION
+		// Se for para editar, verifica se existe usuário é um associado
+		// Senão, carrega o formulário em branco...
+		$rID = 0;
+		$showForm = true;
+		$query = 'SELECT '. $db->quoteName('id') .' FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('user_id') .' = '. $uID;
+		$db->setQuery($query);
+		$rID = $db->loadResult();
+		if($rID) :
+			echo 'setHidden("#'.$APPTAG.'-form-ajax", false, "#'.$APPTAG.'-form-loader");'; // Mostra o formulário
+			echo $APPTAG.'_loadEditFields('.$rID.', true, true);';
+		else :
+			if($hasAdmin) :
+				echo '<div class="alert alert-warning text-sm mx-2">'.JText::_('MSG_NOT_STAFF_PROFILE').'</div>';
+			else :
+				$app->enqueueMessage(JText::_('MSG_NOT_PERMISSION'), 'warning');
+				$app->redirect(JURI::root(true));
+				exit();
+			endif;
+		endif;
+		?>
+
 }); // CLOSE JQUERY->READY
 
-jQuery(window).on('load', function() {
+jQuery(function() {
 
 	// JQUERY VALIDATION
 	window.<?php echo $APPTAG?>_validator = mainForm_<?php echo $APPTAG?>.validate({
@@ -471,29 +494,6 @@ jQuery(window).on('load', function() {
 	// JQUERY VALIDATION DEFAULT FOR INPUT FILES
 	// Validação básica para campos de envio de arquivo
 	require(JPATH_CORE.DS.'apps/snippets/form/validationFile.def.js.php');
-	?>
-
-	<?php
-	// FORM ACTION DEFINITION
-	// Se for para editar, verifica se existe usuário é um associado
-	// Senão, carrega o formulário em branco...
-	$rID = 0;
-	$showForm = true;
-	$query = 'SELECT '. $db->quoteName('id') .' FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('user_id') .' = '. $uID;
-	$db->setQuery($query);
-	$rID = $db->loadResult();
-	if($rID) :
-		echo 'setHidden("#'.$APPTAG.'-form-ajax", false, "#'.$APPTAG.'-form-loader");'; // Mostra o formulário
-		echo $APPTAG.'_loadEditFields('.$rID.', true, true);';
-	else :
-		if($hasAdmin) :
-			echo '<div class="alert alert-warning text-sm mx-2">'.JText::_('MSG_NOT_STAFF_PROFILE').'</div>';
-		else :
-			$app->enqueueMessage(JText::_('MSG_NOT_PERMISSION'), 'warning');
-			$app->redirect(JURI::root(true));
-			exit();
-		endif;
-	endif;
 	?>
 
 });

@@ -46,6 +46,12 @@ $hasCManager	= array_intersect($groups, $cfg['groupId']['clientManager']);
 // $lang->load('base_staff', JPATH_BASE, $lang->getTag(), true);
 // $lang->load('base_clientsStaff', JPATH_BASE, $lang->getTag(), true);
 
+$defaultColor	= 'primary';
+$projectColor	= 'info';
+$requestColor	= 'live';
+$taskColor		= 'danger';
+$timeColor		= 'success';
+
 // BRINTELL DASHBOARD
 if($hasBrintell) {
 
@@ -66,11 +72,11 @@ if($hasBrintell) {
 			$projects_actives = $db->loadResult();
 			echo '
 				<div class="col-sm-6 col-md pb-4">
-					<div class="pos-relative rounded b-top-2 b-primary bg-white set-shadow">
+					<div class="pos-relative rounded b-top-2 b-'.$projectColor.' bg-white set-shadow">
 						<div class="h1 m-0 p-3 text-right">
-							<span class="base-icon-cogs text-primary float-left"></span>
+							<span class="base-icon-cogs text-'.$projectColor.' float-left"></span>
 							'.$projects_actives.'
-							<div class="text-sm text-muted">'.JText::_('TEXT_PROJECTS_ACTIVES').'</div>
+							<div class="text-sm text-'.$projectColor.'">'.JText::_('TEXT_PROJECTS_ACTIVES').'</div>
 						</div>
 					</div>
 				</div>
@@ -86,11 +92,11 @@ if($hasBrintell) {
 			$requests_actives = $db->loadResult();
 			echo '
 				<div class="col-sm-6 col-md pb-4">
-					<div class="pos-relative rounded b-top-2 b-live bg-white set-shadow">
+					<div class="pos-relative rounded b-top-2 b-'.$requestColor.' bg-white set-shadow">
 						<div class="h1 m-0 p-3 text-right">
-							<span class="base-icon-bell text-live float-left"></span>
+							<span class="base-icon-bell text-'.$requestColor.' float-left"></span>
 							'.$requests_actives.'
-							<div class="text-sm text-muted">'.JText::_('TEXT_REQUESTS_ACTIVES').'</div>
+							<div class="text-sm text-'.$requestColor.'">'.JText::_('TEXT_REQUESTS_ACTIVES').'</div>
 						</div>
 					</div>
 				</div>
@@ -103,11 +109,11 @@ if($hasBrintell) {
 		$tasks_actives = $db->loadResult();
 		echo '
 			<div class="col-sm-6 col-md pb-4">
-				<div class="pos-relative rounded b-top-2 b-danger bg-white set-shadow">
+				<div class="pos-relative rounded b-top-2 b-'.$taskColor.' bg-white set-shadow">
 					<div class="h1 m-0 p-3 text-right">
-						<span class="base-icon-tasks text-danger float-left"></span>
+						<span class="base-icon-tasks text-'.$taskColor.' float-left"></span>
 						'.$tasks_actives.'
-						<div class="text-sm text-muted">'.JText::_('TEXT_TASKS_ACTIVES').'</div>
+						<div class="text-sm text-'.$taskColor.'">'.JText::_('TEXT_TASKS_ACTIVES').'</div>
 					</div>
 				</div>
 			</div>
@@ -124,11 +130,11 @@ if($hasBrintell) {
 		$time_worked = $db->loadResult();
 		echo '
 			<div class="col-sm-6 col-md pb-4">
-				<div class="pos-relative rounded b-top-2 b-success bg-white set-shadow">
+				<div class="pos-relative rounded b-top-2 b-'.$timeColor.' bg-white set-shadow">
 					<div class="h1 m-0 p-3 text-right">
-						<span class="base-icon-clock text-success float-left"></span>
+						<span class="base-icon-clock text-'.$timeColor.' float-left"></span>
 						'.$time_worked.'
-						<div class="text-sm text-muted">'.JText::_('TEXT_TIME_WORKED').'</div>
+						<div class="text-sm text-'.$timeColor.'">'.JText::_('TEXT_TIME_WORKED').'</div>
 					</div>
 				</div>
 			</div>
@@ -180,8 +186,8 @@ if($hasBrintell) {
 	}
 	if(!empty($team) && !$pID) {
 		$team = '
-			<div class="rounded b-top-2 b-primary set-shadow">
-				<h6 class="page-header p-2 m-0 text-primary base-icon-users"> '.JText::_('TEXT_TEAM').'</h6>
+			<div class="rounded b-top-2 b-'.$defaultColor.' set-shadow">
+				<h6 class="page-header p-2 m-0 text-'.$defaultColor.' base-icon-users"> '.JText::_('TEXT_TEAM').'</h6>
 				<div class="px-2 pt-2">'.$team.'</div>
 			</div>
 		';
@@ -206,7 +212,7 @@ if($hasBrintell) {
 	$requestsMonth = '
 		<div class="h2 pb-3 b-bottom b-bottom-dashed">
 			<span class="text-success">'.$metricsMonth->amount.'</span> <span class="text-muted">/ '.$metricsMonth->total.'</span>
-			<div class="text-sm text-muted">'.JText::_('TEXT_REQUESTS_FINISHED').'</div>
+			<div class="text-sm text-'.$requestColor.'">'.JText::_('TEXT_SOLVED').'</div>
 		</div>
 	';
 
@@ -240,7 +246,7 @@ if($hasBrintell) {
 		<div class="h2 pb-3 b-bottom b-bottom-dashed d-flex justify-content-between align-items-center">
 			<div>
 				<span class="text-success">'.$metricsMonth->amount.'</span> <span class="text-muted">/ '.$metricsMonth->total.'</span>
-				<div class="text-sm text-muted">'.JText::_('TEXT_TASKS_FINISHED').'</div>
+				<div class="text-sm text-'.$taskColor.'">'.JText::_('TEXT_FINISHED').'</div>
 			</div>
 			<div class="h4 m-0 text-right">
 				<div class="text-success mb-1 base-icon-clock"> '.$timeMonthly.'</div>
@@ -278,7 +284,7 @@ if($hasBrintell) {
 				$project = (!$pID) ? ' '.JText::_('TEXT_IN').' '.baseHelper::nameFormat($item->project) : '';
 				$requestsList .= '
 					<li>
-						<a href="'.JURI::root().'apps/requests/view?vID='.$item->id.'">#'.$item->id.' - '.$item->subject.'</a>
+						<a class="text-'.$requestColor.'" href="'.JURI::root().'apps/requests/view?vID='.$item->id.'">#'.$item->id.' - '.$item->subject.'</a>
 						<div class="small text-muted">
 							'.baseHelper::dateFormat($item->created_date, 'd.m').' - '.baseHelper::nameFormat($item->author).$project.'
 						</div>
@@ -295,7 +301,7 @@ if($hasBrintell) {
 				<div class="p-2 bg-live base-icon-bell"> '.JText::_('TEXT_REQUESTS').'</div>
 				<div class="p-2">
 					'.$requestsMonth.'
-					<h6 class="page-header small text-live">'.JText::_('TEXT_RECENTS').'</h6>
+					<h6 class="page-header small base-icon-history"> '.JText::_('TEXT_RECENTS').'</h6>
 					'.$requestsList.'
 				</div>
 			</div>
@@ -326,7 +332,7 @@ if($hasBrintell) {
 			$project = (!$pID) ? ' - '.baseHelper::nameFormat($item->project) : '';
 			$tasksList .= '
 				<li>
-					<a href="'.JURI::root().'apps/tasks/view?vID='.$item->id.'">#'.$item->id.' - '.$item->subject.'</a>
+					<a class="text-'.$taskColor.'" href="'.JURI::root().'apps/tasks/view?vID='.$item->id.'">#'.$item->id.' - '.$item->subject.'</a>
 					<div class="small text-muted">'.baseHelper::dateFormat($item->created_date, 'd.m').$project.'</div>
 				</li>
 			';
@@ -344,7 +350,7 @@ if($hasBrintell) {
 	echo '
 		<div class="row">
 			<div class="col-md">
-				<div class="rounded b-top-2 b-info mb-4 bg-white set-shadow">
+				<div class="rounded b-top-2 b-'.$projectColor.' mb-4 bg-white set-shadow">
 					<h6 class="page-header p-2 m-0 pos-relative">
 						'.JText::_('TEXT_MONTHLY').'
 						<span class="pos-absolute pos-top-0 pos-right-0">
@@ -356,10 +362,10 @@ if($hasBrintell) {
 					<div class="row no-gutters">
 						'.$requestsView.'
 						<div class="col'.(!$hasDeveloper ? ' b-left' : '').'">
-							<div class="p-2 bg-danger base-icon-tasks"> '.JText::_('TEXT_TASKS').'</div>
+							<div class="p-2 bg-'.$taskColor.' base-icon-tasks"> '.JText::_('TEXT_TASKS').'</div>
 							<div class="p-2">
 								'.$tasksMonth.'
-								<h6 class="page-header small text-danger">'.JText::_('TEXT_RECENTS').'</h6>
+								<h6 class="page-header small base-icon-history"> '.JText::_('TEXT_RECENTS').'</h6>
 								'.$tasksList.'
 							</div>
 						</div>
@@ -455,8 +461,8 @@ if($hasBrintell) {
 						<h6 class="page-header p-2 m-0 text-live base-icon-attention"> '.JText::_('TEXT_ALERTS').'</h6>
 						<div class="p-2">Coming soon!</div>
 					</div>
-					<div class="rounded b-top-2 b-primary bg-white mb-4 set-shadow">
-						<h6 class="page-header p-2 m-0 text-primary base-icon-birthday"> '.JText::_('TEXT_MONTH_BIRTHDAY').'</h6>
+					<div class="rounded b-top-2 b-'.$defaultColor.' bg-white mb-4 set-shadow">
+						<h6 class="page-header p-2 m-0 text-'.$defaultColor.' base-icon-birthday"> '.JText::_('TEXT_MONTH_BIRTHDAY').'</h6>
 						<div class="p-2">'.$birthdays.'</div>
 					</div>
 				</div>
