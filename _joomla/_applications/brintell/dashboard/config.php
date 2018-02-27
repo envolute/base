@@ -30,7 +30,6 @@ endif;
 	$cfg['groupId']['developer'][]			= 13; // Client Developer
 	$cfg['groupId']['external'][]			= 14; // External
 	$cfg['groupId']['clientManager'][]		= 15; // Client Manager
-	$cfg['groupId']['client'][]				= 15; // Client Manager
 	$cfg['groupId']['client'][]				= 16; // Client Developer
 
 ?>

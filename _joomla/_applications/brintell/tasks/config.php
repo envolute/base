@@ -62,7 +62,7 @@ endif;
 	$cfg['groupId']['editor']	= isset($_SESSION[$APPTAG.'EditorGroups']) ? $_SESSION[$APPTAG.'EditorGroups'] : $editorDef;
 	$cfg['groupId']['admin']	= isset($_SESSION[$APPTAG.'AdminGroups']) ? $_SESSION[$APPTAG.'AdminGroups'] : $adminDef;
 	// ----------------------------------------------------
-	$cfg['groupId']['author'][]		= 13;	// Brintell Developer
+	$cfg['groupId']['developer'][]	= 13;	// Developer
 	$cfg['groupId']['external'][]	= 14;	// External
 
 // crud's name

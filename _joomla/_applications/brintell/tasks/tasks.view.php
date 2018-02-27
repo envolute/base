@@ -37,6 +37,7 @@ require(JPATH_CORE.DS.'apps/_init.app.php');
 
 // Get request data
 $vID = $app->input->get('vID', 0, 'int'); // VIEW 'ID'
+$tpl = $app->input->get('tmpl', '', 'string'); // JOOMLA TEMPLATE
 
 // Carrega o arquivo de tradução
 // OBS: para arquivos externos com o carregamento do framework '_init.joomla.php' (geralmente em 'ajax')
@@ -229,11 +230,20 @@ if($vID != 0) :
 		$doc = JFactory::getDocument();
 		$doc->addScriptDeclaration('jQuery(window).on("load", function(){ jQuery("#'.$MAINTAG.'-form-loader").hide() });');
 
+		if($tpl == 'component') {
+			echo '<div id="'.$MAINTAG.'-'.$APPNAME.'-pageitem" class="pos-relative py-3">';
+		} else {
+			echo '
+				<div id="'.$MAINTAG.'-'.$APPNAME.'-pageitem" class="pos-relative">
+					<div class="pb-2">
+						<a href="'.JURI::root().'apps/'.$APPNAME.'" class="base-icon-left-big"> '.JText::_('TEXT_BACK_TO_LIST').'</a>
+					</div>
+			';
+		}
 		echo '
-			<div id="'.$MAINTAG.'-form-loader" class="text-center">
-				<img src="'.JURI::root().'templates/base/images/core/loader-active.gif">
-			</div>
-			<div id="'.$MAINTAG.'-task-pageitem" class="py-3">
+				<div id="'.$MAINTAG.'-form-loader" class="pos-absolute pos-top-0 w-100 text-center">
+					<img src="'.JURI::root().'templates/base/images/core/loader-active.gif">
+				</div>
 				<div id="'.$MAINTAG.'-task-pageitem-header" class="mb-3 b-bottom-2 b-primary">
 					<div class="pb-1 mb-2 b-bottom">'.$type.$priority.$visible.$requests.'</div>
 					<h2 class="font-condensed text-primary">

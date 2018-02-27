@@ -195,10 +195,22 @@ if($vID != 0) :
 		$doc->addScriptDeclaration('jQuery(window).on("load", function(){ jQuery("#'.$MAINTAG.'-form-loader").hide() });');
 
 		echo '
-			<div id="'.$MAINTAG.'-form-loader" class="text-center">
-				<img src="'.JURI::root().'templates/base/images/core/loader-active.gif">
-			</div>
-			<div id="'.$MAINTAG.'-request-pageitem" class="py-3">
+
+		';
+		if($tpl == 'component') {
+			echo '<div id="'.$MAINTAG.'-'.$APPNAME.'-pageitem" class="pos-relative py-3">';
+		} else {
+			echo '
+				<div id="'.$MAINTAG.'-'.$APPNAME.'-pageitem" class="pos-relative">
+					<div class="pb-2">
+						<a href="'.JURI::root().'apps/'.$APPNAME.'" class="base-icon-left-big"> '.JText::_('TEXT_BACK_TO_LIST').'</a>
+					</div>
+			';
+		}
+		echo '
+				<div id="'.$MAINTAG.'-form-loader" class="pos-absolute pos-top-0 w-100 text-center">
+					<img src="'.JURI::root().'templates/base/images/core/loader-active.gif">
+				</div>
 				<div id="'.$MAINTAG.'-request-pageitem-header" class="mb-3 b-bottom-2 b-primary">
 					<div class="pb-1 mb-2 b-bottom">'.$type.$priority.'</div>
 					<h2 class="font-condensed text-primary">

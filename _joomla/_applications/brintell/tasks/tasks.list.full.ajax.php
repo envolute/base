@@ -51,6 +51,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	// verifica o acesso
 	require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxAccess.php');
+	$hasDeveloper	= array_intersect($groups, $cfg['groupId']['developer']); // se está na lista de administradores permitidos
 	$hasExternal	= array_intersect($groups, $cfg['groupId']['external']); // se está na lista de administradores permitidos
 
 	// database connect
@@ -181,6 +182,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				';
 			endif;
 
+			$locked = ($item->visibility == 1) ? '<span class="base-icon-lock cursor-help hasTooltip" title="'.JText::_('TEXT_PRIVATE').'"></span> ' : '';
+
 			$regInfo	= 'Task ID: <span class=&quot;text-live&quot;>#'.$item->id.'</span>';
 			if(!empty($item->requests)) :
 				$r = str_replace(',', ', #', $item->requests);
@@ -219,7 +222,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							<a href="#" id="'.$APPTAG.'-item-'.$item->id.'-status" class="base-icon-'.$iconStatus.' text-'.$itemStatus.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$item->status).'" data-id="'.$item->id.'" data-status="'.$item->status.'" onclick="'.$APPTAG.'_setStatusModal(this)"></a>
 						</div>
 						<a href="#'.$APPTAG.'-item-view" class="set-base-modal py-1 px-2" onclick="'.$APPTAG.'_setItemView('.$item->id.')">
-							'.baseHelper::nameFormat($item->subject).'
+							'.$locked.baseHelper::nameFormat($item->subject).'
 							<div class="pos-absolute pos-top-0 pos-right-0 mx-1">
 								'.$priority.'
 							</div>

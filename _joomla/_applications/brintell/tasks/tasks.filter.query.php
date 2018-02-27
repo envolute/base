@@ -14,11 +14,20 @@ $where = '';
 	$fProj	= ($pID > 0) ? $pID : $app->input->get('fProj', 0, 'int');
 	if($fProj != 0) $where .= ' AND '.$db->quoteName('T1.project_id').' = '.$fProj;
 	// ASSIGN TO
-	// Visão geral das tasks pelo Admin (todas as tasks)
-	// Visão geral das tasks pelo Developer (apenas as dele)
-	// Ou visão de projeto por todos (todas do projeto)
 	$assigned = '';
-	if(!$hasExternal && $pID > 0) {
+	// Mostra apenas as tasks do próprio usuário se:
+	// 1 - For um 'External'
+	// 2 - Um 'Developer' acessando sem definir um projeto
+	// Obs: acessando um projeto, o dev pode ver todas as tasks...
+	if($hasExternal || ($hasDeveloper && $pID == 0)) {
+
+		$fAssign = $user->id;
+		$assigned = ' AND ('.$db->quoteName('T1.created_by').' = '.$user->id.' OR FIND_IN_SET ('.$fAssign.', '.$db->quoteName('T1.assign_to').'))';
+
+	// Visão geral das tasks pelo Admin (todas as tasks)
+	// Visão geral das tasks 'em um projeto' pelo Developer (apenas as dele)
+	// Ou visão de projeto por todos (todas do projeto)
+	} else {
 
 		// Set visibility
 		// OR (visibility = project) OR (created_by = current user)
@@ -29,13 +38,6 @@ $where = '';
 			$assigned .= ' OR FIND_IN_SET ('.$fAssign[$i].', T1.assign_to)';
 		}
 		$assigned .= ')';
-
-	// Visão geral das tasks pelo dev
-	// Mostra apenas as tasks do próprio usuário
-	} else {
-
-		$fAssign = $user->id;
-		$assigned = ' AND ('.$db->quoteName('T1.created_by').' = '.$user->id.' OR FIND_IN_SET ('.$fAssign.', '.$db->quoteName('T1.assign_to').'))';
 
 	}
 	$where .= $assigned;
