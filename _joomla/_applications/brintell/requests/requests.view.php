@@ -108,13 +108,13 @@ if($vID != 0) :
 
 		switch ($view->priority) {
 			case 1:
-				$priority = ' <span class="badge badge-warning base-icon-attention"> '.JText::_('TEXT_PRIORITY_DESC_1').'</span>';
+				$priority = ' <span class="badge badge-primary base-icon-attention"> '.JText::_('TEXT_PRIORITY_DESC_1').'</span>';
 				break;
 			case 2:
 				$priority = ' <span class="badge badge-danger base-icon-attention"> '.JText::_('TEXT_PRIORITY_DESC_2').'</span>';
 				break;
 			default :
-				$priority = ' <span class="badge badge-primary">'.JText::_('TEXT_PRIORITY_DESC_0').'</span>';
+				$priority = ' <span class="badge badge-info base-icon-lightbulb"> '.JText::_('TEXT_PRIORITY_DESC_0').'</span>';
 		}
 
 		$desc = !empty($view->description) ? '<div class="font-condensed mb-4">'.nl2br($view->description).'</div>' : '';
@@ -183,7 +183,7 @@ if($vID != 0) :
 			$btnActions = '
 				<div class="float-right">
 					<a href="#" class="btn btn-lg btn-link py-0 px-2" onclick="'.$MAINTAG.'_setState('.$view->id.', null, false, \'base-icon-toggle-on\', \'base-icon-toggle-on\', \'text-success\', \'text-muted\')" id="'.$MAINTAG.'-state-'.$view->id.'">
-						<span class="'.($view->state == 1 ? 'base-icon-toggle-on text-success' : 'base-icon-toggle-on text-muted').' hasTooltip" title="'.JText::_(($view->state == 1 ? 'MSG_ARCHIVE_ITEM' : 'MSG_ACTIVATE_ITEM')).'"></span>
+						<span class="'.($view->state == 1 ? 'base-icon-toggle-on text-success' : 'base-icon-toggle-on text-muted').' hasTooltip" title="'.JText::_(($view->state == 1 ? 'MSG_CLOSED_ITEM' : 'MSG_ACTIVATE_ITEM')).'"></span>
 					</a>
 					<a href="#" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$MAINTAG.'_loadEditFields('.$view->id.', false, false)"><span class="base-icon-pencil text-live"></span></a>
 					<a href="#" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$MAINTAG.'_del('.$view->id.', false)"><span class="base-icon-trash text-danger"></span></a>

@@ -25,6 +25,15 @@ require($PATH_APP_FILE.'.filter.query.php');
 
 // FILTER'S DINAMIC FIELDS
 
+	// CLIENTS -> select
+	$flt_client = '';
+	$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_clients') .' WHERE '. $db->quoteName('state') .' = 1 ORDER BY name';
+	$db->setQuery($query);
+	$clients = $db->loadObjectList();
+	foreach ($clients as $obj) {
+		$flt_client .= '<option value="'.$obj->id.'"'.($obj->id == $fClient ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
+	}
+
 	// PROJECTS -> select
 	$flt_project = '';
 	if($pID == 0) :
@@ -90,6 +99,15 @@ $htmlFilter = '
 			<div class="row">
 				<div class="col-xl-10">
 					<div class="row">
+						<div class="col-sm-6 col-md-4">
+							<div class="form-group">
+								<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_CLIENT').'</label>
+								<select name="fClient" id="fClient" class="form-control form-control-sm set-filter">
+									<option value="0">- '.JText::_('TEXT_ALL').' -</option>
+									'.$flt_client.'
+								</select>
+							</div>
+						</div>
 						'.$flt_project.$flt_assign.'
 						<div class="col-sm-6 col-md-2">
 							<div class="form-group">
@@ -129,6 +147,7 @@ $htmlFilter = '
 								</span>
 							</div>
 						</div>
+						<!--
 						<div class="col-sm-6 col-md-4">
 							<div class="form-group">
 								<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_TAGS').'</label>
@@ -137,6 +156,7 @@ $htmlFilter = '
 								</select>
 							</div>
 						</div>
+						-->
 					</div>
 				</div>
 				<div class="col-xl-2 b-left b-left-dashed">
@@ -147,7 +167,7 @@ $htmlFilter = '
 								<span class="btn-group btn-group-justified" data-toggle="buttons">
 									<label class="btn btn-sm btn-warning btn-active-danger'.($active == 0 ? ' active' : '').' base-icon-box">
 										<input type="checkbox" name="active" id="active" class="set-filter" value="0"'.($active == 0 ? ' checked' : '').' />
-										'.JText::_('TEXT_ARCHIVE').'
+										'.JText::_('TEXT_CLOSED').'
 									</label>
 								</span>
 							</div>

@@ -5,7 +5,7 @@ defined('_JEXEC') or die;
 $query = '
 	SELECT T1.*
 	FROM '. $db->quoteName('#__'.$cfg['project'].'_tasks') .' T1
-	WHERE T1.status < 3 AND T1.state = 1 ORDER BY T1.id DESC
+	WHERE T1.state = 1 ORDER BY T1.id DESC
 ';
 $db->setQuery($query);
 $tasks = $db->loadObjectList();

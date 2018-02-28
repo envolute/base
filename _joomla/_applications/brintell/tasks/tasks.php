@@ -124,14 +124,14 @@ jQuery(function() {
 			<?php endif;?>
 			subject.val('');
 			description.val('');
-			checkOption(priority, 0);
+			checkOption(priority, 1);
 			deadline.val('');
 			timePeriod.selectUpdate('<?php echo JText::_('TEXT_AM'); ?>'); // select
 			estimate.val('');
 			executed.val(0);
 			tags.selectUpdate(''); // select
 			checkOption(visibility, 0);
-			checkOption(status, 1);
+			checkOption(status, 0);
 			cstatus.val('');
 
 			// TO DO LIST

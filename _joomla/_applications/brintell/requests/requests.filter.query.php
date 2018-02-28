@@ -31,7 +31,7 @@ $where = '';
 	$where .= $createdBy;
 	// TYPE
 	$fType	= $app->input->get('fType', 9, 'int');
-	if($fType != 9) $where .= ' AND '.$db->quoteName('T1.priority').' = '.$fType;
+	if($fType != 9) $where .= ' AND '.$db->quoteName('T1.type').' = '.$fType;
 	// PRIORITY
 	$fPrior	= $app->input->get('fPrior', 9, 'int');
 	if($fPrior != 9) $where .= ' AND '.$db->quoteName('T1.priority').' = '.$fPrior;

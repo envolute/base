@@ -96,16 +96,16 @@ foreach ($staff as $obj) {
 						<div class="form-group">
 							<label class="label-sm"><?php echo JText::_('FIELD_LABEL_PRIORITY'); ?></label>
 							<span class="btn-group btn-group-justified" data-toggle="buttons">
-								<label class="btn btn-default btn-active-success">
-									<input type="radio" name="priority" id="<?php echo $APPTAG?>-priority-0" value="0" />
+								<label class="btn btn-default btn-active-info">
+									<input type="radio" name="priority" id="<?php echo $APPTAG?>-priority-0" value="0" class="auto-tab" data-target="#<?php echo $APPTAG?>-deadline-group" data-target-display="false" data-tab-disable="true" />
 									<?php echo JText::_('TEXT_PRIORITY_0'); ?>
 								</label>
-								<label class="btn btn-default btn-active-warning">
-									<input type="radio" name="priority" id="<?php echo $APPTAG?>-priority-1" value="1" />
+								<label class="btn btn-default btn-active-success">
+									<input type="radio" name="priority" id="<?php echo $APPTAG?>-priority-1" value="1" class="auto-tab" data-target="#<?php echo $APPTAG?>-deadline-group" data-target-display="true" data-tab-disable="true" />
 									<?php echo JText::_('TEXT_PRIORITY_1'); ?>
 								</label>
 								<label class="btn btn-default btn-active-danger">
-									<input type="radio" name="priority" id="<?php echo $APPTAG?>-priority-2" value="2" />
+									<input type="radio" name="priority" id="<?php echo $APPTAG?>-priority-2" value="2" class="auto-tab" data-target="#<?php echo $APPTAG?>-deadline-group" data-target-display="true" data-tab-disable="true" />
 									<?php echo JText::_('TEXT_PRIORITY_2'); ?>
 								</label>
 							</span>
@@ -151,7 +151,7 @@ foreach ($staff as $obj) {
 						</span>
 					</div>
 				</div>
-				<div class="form-group">
+				<div id="<?php echo $APPTAG?>-deadline-group" class="form-group">
 					<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_DEADLINE_DESC'); ?>">
 						<?php echo JText::_('FIELD_LABEL_DEADLINE'); ?>
 						[ <?php echo JText::_('TEXT_TIME_IN_BRAZIL'); ?>: <iframe src="//free.timeanddate.com/clock/i63smlsf/n45/fs13/fcf80/tct/pct/ahl/ftb/ts1" frameborder="0" width="58" height="16" style="margin-bottom:-3px;" allowTransparency="true"></iframe> ]
@@ -183,7 +183,7 @@ foreach ($staff as $obj) {
 						<?php
 						for($i = 0; $i < 4; $i++) {
 							$icon	= JText::_('TEXT_ICON_STATUS_'.$i);
-							$color	= ($i == 2) ? 'warning' : JText::_('TEXT_COLOR_STATUS_'.$i);
+							$color	= ($i == 1) ? 'warning' : JText::_('TEXT_COLOR_STATUS_'.$i);
 							echo '
 								<label class="base-icon-'.$icon.' btn btn-outline-'.$color.' btn-active-'.$color.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$i).'">
 									<input type="radio" name="status" id="'.$APPTAG.'-status-'.$i.'" value="'.$i.'" />

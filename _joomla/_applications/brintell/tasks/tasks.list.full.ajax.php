@@ -106,7 +106,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	$html = '';
 	if($num_rows) : // verifica se existe
-		if(!$active) echo '<hr class="hr-tag b-danger" /><span class="badge badge-danger base-icon-box"> '.JText::_('TEXT_ARCHIVE').'</span>';
+		if(!$active) echo '<hr class="hr-tag b-danger" /><span class="badge badge-danger base-icon-box"> '.JText::_('TEXT_CLOSED').'</span>';
 		$html .= '<div class="row py-2 mb-4">';
 		$status		= 9;
 		$counter	= 0;
@@ -128,36 +128,31 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$urlViewData = $_ROOT.'apps/'.$APPPATH.'/view?vID='.$item->id;
 			$urlViewProject = $_ROOT.'apps/projects/view?pID='.$item->project_id;
 			// $rowState = $item->state == 0 ? 'danger bg-light text-muted' : 'primary bg-white';
-			$itemStatus = '';
-			switch($item->status) {
-				case '1': // Todo
-					$itemStatus = 'danger';
-					$iconStatus = 'clock';
-					break;
-				case '2': // Doing
-					$itemStatus = 'live';
-					$iconStatus = 'off';
-					break;
-				case '3': // completed
-					$itemStatus = 'success';
-					$iconStatus = 'ok';
-					break;
-				default:
-					$itemStatus = 'info';
-					$iconStatus = 'lightbulb';
-			}
 
 			// define as colunas por status
-			if($status !== $item->status) :
+			if($status !== $item->status && !($status == 1 && $item->status == 2)) {
 				if($counter > 0) $html .= '</div>';
-				$html .= '
-					<div id="'.$APPTAG.'-item-status-'.$item->status.'" class="tasks-col col-sm-6 col-lg-3 pb-3">
-						<h6 class="text-center bg-'.$itemStatus.' rounded py-2 set-shadow-right">
-							<span class="base-icon-'.$iconStatus.'"></span> '.JText::_('TEXT_STATUS_'.$item->status).'
+				$html .= '<div id="'.$APPTAG.'-item-status-'.$item->status.'" class="tasks-col col-sm-6 col-md-4 pb-3">';
+				if($item->status == 1 || $item->status == 2) {
+					$html .= '
+						<div class="d-flex rounded overflow-hidden mb-2">
+							<h6 class="text-center bg-'.JText::_('TEXT_COLOR_STATUS_1').' py-2 m-0 set-shadow-right" style="flex-grow:1">
+								<span class="base-icon-'.JText::_('TEXT_ICON_STATUS_1').'"></span> '.JText::_('TEXT_STATUS_1').'
+							</h6>
+							<h6 class="text-center bg-'.JText::_('TEXT_COLOR_STATUS_2').' py-2 m-0 b-left b-light set-shadow-right" style="flex-grow:1">
+								<span class="base-icon-'.JText::_('TEXT_ICON_STATUS_2').'"></span> '.JText::_('TEXT_STATUS_2').'
+							</h6>
+						</div>
+					';
+				} else {
+					$html .= '
+						<h6 class="text-center bg-'.JText::_('TEXT_COLOR_STATUS_'.$item->status).' rounded py-2 mb-2 set-shadow-right">
+							<span class="base-icon-'.JText::_('TEXT_ICON_STATUS_'.$item->status).'"></span> '.JText::_('TEXT_STATUS_'.$item->status).'
 						</h6>
-				';
+					';
+				}
 				$status = $item->status;
-			endif;
+			}
 
 			$deadline = '';
 			if($item->deadline != '0000-00-00 00:00:00') {
@@ -167,15 +162,16 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$deadline = '<br />'.JText::_('FIELD_LABEL_DEADLINE').'<br />'.$dlDate.$dlTime;
 			}
 
-			$priority = !empty($deadline) ? ' <small class="base-icon-attention text-primary cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_0').$deadline.'"></small>' : '';
-			if($item->priority == 1) $priority = ' <small class="base-icon-attention text-live cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_1').$deadline.'"></small>';
+			$priority = '';
+			if($item->priority == 0) $priority = ' <small class="base-icon-lightbulb text-info cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_0').$deadline.'"></small>';
+			else if($item->priority == 1 && !empty($deadline)) $priority = ' <small class="base-icon-attention text-live cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_1').$deadline.'"></small>';
 			else if($item->priority == 2) $priority = ' <small class="base-icon-attention text-danger cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_2').$deadline.'"></small>';
 
 			$btnActions = '';
 			if($hasAdmin || ($item->created_by == $user->id)) :
 				$btnActions = '
 					<a href="#" class="btn btn-xs btn-link" onclick="'.$APPTAG.'_setState('.$item->id.', null, false, \'base-icon-toggle-on\', \'base-icon-toggle-on\', \'text-success\', \'text-muted\')" id="'.$APPTAG.'-state-'.$item->id.'">
-						<span class="'.($item->state == 1 ? 'base-icon-toggle-on text-success' : 'base-icon-toggle-on text-muted').' hasTooltip" title="'.JText::_(($item->state == 1 ? 'MSG_ARCHIVE_ITEM' : 'MSG_ACTIVATE_ITEM')).'"></span>
+						<span class="'.($item->state == 1 ? 'base-icon-toggle-on text-success' : 'base-icon-toggle-on text-muted').' hasTooltip" title="'.JText::_(($item->state == 1 ? 'MSG_CLOSED_ITEM' : 'MSG_ACTIVATE_ITEM')).'"></span>
 					</a>
 					<a href="#" class="btn btn-xs btn-link hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil text-live"></span></a>
 					<a href="#" class="btn btn-xs btn-link hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash text-danger"></span></a>
@@ -216,10 +212,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 			// Resultados
 			$html .= '
-				<div id="'.$APPTAG.'-item-'.$item->id.'" class="pos-relative rounded b-top-2 b-'.$itemStatus.' bg-white mb-3 set-shadow">
+				<div id="'.$APPTAG.'-item-'.$item->id.'" class="pos-relative rounded b-top-2 b-'.JText::_('TEXT_COLOR_STATUS_'.$item->status).' bg-white mb-3 set-shadow">
 					<div class="d-flex d-justify-content align-items-center lh-1-2">
 						<div class="align-self-stretch py-3 px-2 bg-gray-200">
-							<a href="#" id="'.$APPTAG.'-item-'.$item->id.'-status" class="base-icon-'.$iconStatus.' text-'.$itemStatus.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$item->status).'" data-id="'.$item->id.'" data-status="'.$item->status.'" onclick="'.$APPTAG.'_setStatusModal(this)"></a>
+							<a href="#" id="'.$APPTAG.'-item-'.$item->id.'-status" class="base-icon-'.JText::_('TEXT_ICON_STATUS_'.$item->status).' text-'.JText::_('TEXT_COLOR_STATUS_'.$item->status).' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$item->status).'" data-id="'.$item->id.'" data-status="'.$item->status.'" onclick="'.$APPTAG.'_setStatusModal(this)"></a>
 						</div>
 						<a href="#'.$APPTAG.'-item-view" class="set-base-modal text-sm py-1 px-2" onclick="'.$APPTAG.'_setItemView('.$item->id.')">
 							'.$locked.baseHelper::nameFormat($item->subject).'

@@ -120,7 +120,7 @@ jQuery(function() {
 			checkOption(type, 0);
 			subject.val('');
 			description.val('');
-			checkOption(priority, 0);
+			checkOption(priority, 1);
 			deadline.val('');
 			timePeriod.selectUpdate('<?php echo JText::_('TEXT_AM'); ?>'); // select
 			executed.val(0);
