@@ -130,29 +130,16 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			// $rowState = $item->state == 0 ? 'danger bg-light text-muted' : 'primary bg-white';
 
 			// define as colunas por status
-			if($status !== $item->status && !($status == 1 && $item->status == 2)) {
+			if($status !== $item->status) :
 				if($counter > 0) $html .= '</div>';
-				$html .= '<div id="'.$APPTAG.'-item-status-'.$item->status.'" class="tasks-col col-sm-6 col-md-4 pb-3">';
-				if($item->status == 1 || $item->status == 2) {
-					$html .= '
-						<div class="d-flex rounded overflow-hidden mb-2">
-							<h6 class="text-center bg-'.JText::_('TEXT_COLOR_STATUS_1').' py-2 m-0 set-shadow-right" style="flex-grow:1">
-								<span class="base-icon-'.JText::_('TEXT_ICON_STATUS_1').'"></span> '.JText::_('TEXT_STATUS_1').'
-							</h6>
-							<h6 class="text-center bg-'.JText::_('TEXT_COLOR_STATUS_2').' py-2 m-0 b-left b-light set-shadow-right" style="flex-grow:1">
-								<span class="base-icon-'.JText::_('TEXT_ICON_STATUS_2').'"></span> '.JText::_('TEXT_STATUS_2').'
-							</h6>
-						</div>
-					';
-				} else {
-					$html .= '
+				$html .= '
+					<div id="'.$APPTAG.'-item-status-'.$item->status.'" class="requests-col col-sm-6 col-lg-3 pb-3">
 						<h6 class="text-center bg-'.JText::_('TEXT_COLOR_STATUS_'.$item->status).' rounded py-2 mb-2 set-shadow-right">
 							<span class="base-icon-'.JText::_('TEXT_ICON_STATUS_'.$item->status).'"></span> '.JText::_('TEXT_STATUS_'.$item->status).'
 						</h6>
-					';
-				}
+				';
 				$status = $item->status;
-			}
+			endif;
 
 			$deadline = '';
 			if($item->deadline != '0000-00-00 00:00:00') {

@@ -32,8 +32,6 @@ require($PATH_APP_FILE.'.filter.query.php');
 		$db->setQuery($query);
 		$clients = $db->loadObjectList();
 		foreach ($clients as $obj) {
-			$name = !empty($obj->nickname) ? $obj->nickname : ;
-			$staff = ($obj->type == 1) ? '*' : '';
 			$flt_client .= '<option value="'.$obj->id.'"'.($obj->id == $fClient ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
 		}
 		$flt_client = '
