@@ -13,7 +13,7 @@ $clients = $db->loadObjectList();
 		<div class="row">
 			<div class="col-lg-8">
 				<div class="form-group field-required">
-					<label><?php echo JText::_('FIELD_LABEL_CLIENT'); ?></label>
+					<label class="label-sm"><?php echo JText::_('FIELD_LABEL_CLIENT'); ?></label>
 					<select name="client_id" id="<?php echo $APPTAG?>-client_id" class="form-control field-id auto-tab" data-target="#<?php echo $APPTAG?>-name">
 						<option value="0">- <?php echo JText::_('TEXT_SELECT'); ?> -</option>
 						<?php
@@ -26,13 +26,13 @@ $clients = $db->loadObjectList();
 			</div>
 			<div class="col-lg-8">
 				<div class="form-group field-required">
-					<label><?php echo JText::_('FIELD_LABEL_NAME'); ?></label>
+					<label class="label-sm"><?php echo JText::_('FIELD_LABEL_NAME'); ?></label>
 					<input type="text" name="name" id="<?php echo $APPTAG?>-name" class="form-control upper" />
 				</div>
 			</div>
 			<div class="col-lg-4">
 				<div class="form-group field-required">
-					<label><?php echo JText::_('FIELD_LABEL_GENDER'); ?></label>
+					<label class="label-sm"><?php echo JText::_('FIELD_LABEL_GENDER'); ?></label>
 					<span class="btn-group btn-group-justified" data-toggle="buttons">
 						<label class="btn btn-default btn-active-success">
 							<input type="radio" name="gender" id="<?php echo $APPTAG?>-male" value="1" />
@@ -47,14 +47,14 @@ $clients = $db->loadObjectList();
 			</div>
 			<div class="col-lg-8">
 				<div class="form-group field-required">
-					<label>E-mail</label>
+					<label class="label-sm">E-mail</label>
 					<input type="email" name="email" id="<?php echo $APPTAG?>-email" class="form-control field-email" />
 					<input type="hidden" name="cmail" id="<?php echo $APPTAG?>-cmail" />
 				</div>
 			</div>
 			<div class="col-sm-4">
 				<div class="form-group">
-					<label><?php echo JText::_('FIELD_LABEL_ROLE'); ?></label>
+					<label class="label-sm"><?php echo JText::_('FIELD_LABEL_ROLE'); ?></label>
 					<input type="text" name="role" id="<?php echo $APPTAG?>-role" class="form-control upper" />
 				</div>
 			</div>
@@ -92,7 +92,7 @@ $clients = $db->loadObjectList();
 					<div class="row">
 						<div class="col-lg-6">
 							<div class="form-group field-required">
-								<label class="iconTip hasPopover" title="<?php echo JText::_('TEXT_USER_ACCESS_LEVEL')?>" data-content="<?php echo JText::_('MSG_USER_ACCESS_LEVEL')?>"><?php echo JText::_('FIELD_LABEL_USERGROUP'); ?></label>
+								<label class="label-sm iconTip hasPopover" title="<?php echo JText::_('TEXT_USER_ACCESS_LEVEL')?>" data-content="<?php echo JText::_('MSG_USER_ACCESS_LEVEL')?>"><?php echo JText::_('FIELD_LABEL_USERGROUP'); ?></label>
 								<span class="btn-group btn-group-justified" data-toggle="buttons">
 									<label class="btn btn-default btn-active-success">
 										<input type="radio" name="usergroup" id="<?php echo $APPTAG?>-usergroup_16" value="16" />
@@ -108,7 +108,7 @@ $clients = $db->loadObjectList();
 						</div>
 						<div class="col-sm-6 col-lg new-user" hidden>
 							<div class="form-group field-required">
-								<label><?php echo JText::_('FIELD_LABEL_USERNAME'); ?></label>
+								<label class="label-sm"><?php echo JText::_('FIELD_LABEL_USERNAME'); ?></label>
 								<div class="input-group">
 									<input type="text" name="username" id="<?php echo $APPTAG?>-username" class="form-control field-username lower" />
 									<span class="input-group-addon hasPopover" data-content="<?php echo JText::_('MSG_USERNAME_INFO'); ?>" data-placement="top">
@@ -135,13 +135,13 @@ $clients = $db->loadObjectList();
 						</div>
 						<div class="col-lg-6">
 							<div class="form-group">
-								<label class="iconTip hasTooltip" title="<?php echo JText::_('MSG_REPASSWORD'); ?>"><?php echo JText::_('FIELD_LABEL_REPASSWORD'); ?></label>
+								<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('MSG_REPASSWORD'); ?>"><?php echo JText::_('FIELD_LABEL_REPASSWORD'); ?></label>
 								<input type="password" name="repassword" id="<?php echo $APPTAG?>-repassword" class="form-control" />
 							</div>
 						</div>
 						<div class="col-12 new-user" hidden>
 							<div class="form-group">
-								<label><?php echo JText::_('FIELD_LABEL_REGISTRATION_EMAIL_CONFIRM'); ?></label>
+								<label class="label-sm"><?php echo JText::_('FIELD_LABEL_REGISTRATION_EMAIL_CONFIRM'); ?></label>
 								<div class="input-group">
 									<span class="input-group-addon">
 										<input type="checkbox" name="emailConfirm" id="<?php echo $APPTAG?>-emailConfirm" value="1" class="auto-tab" data-target="<?php echo $APPTAG?>-emailInfo" data-target-disabled="false" />
@@ -157,7 +157,7 @@ $clients = $db->loadObjectList();
 	</div>
 	<div class="col-sm-3">
 		<div class="form-group">
-			<label><?php echo JText::_('FIELD_LABEL_PHOTO'); ?></label>
+			<label class="label-sm"><?php echo JText::_('FIELD_LABEL_PHOTO'); ?></label>
 			<div class="image-file">
 				<a href="#" class="image-action">
 					<div class="image-file-label">

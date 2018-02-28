@@ -11,11 +11,11 @@ $clients = $db->loadObjectList();
 <div class="row">
 	<div class="col-lg-8">
 		<div class="form-group field-required">
-			<label><?php echo JText::_('FIELD_LABEL_NAME'); ?></label>
+			<label class="label-sm"><?php echo JText::_('FIELD_LABEL_NAME'); ?></label>
 			<input type="text" name="name" id="<?php echo $APPTAG?>-name" class="form-control upper" />
 		</div>
 		<div class="form-group field-required">
-			<label><?php echo JText::_('FIELD_LABEL_CLIENT'); ?></label>
+			<label class="label-sm"><?php echo JText::_('FIELD_LABEL_CLIENT'); ?></label>
 			<div class="input-group">
 				<select name="client_id" id="<?php echo $APPTAG?>-client_id" class="form-control field-id">
 					<option value="0">- <?php echo JText::_('TEXT_SELECT'); ?> -</option>
@@ -32,13 +32,13 @@ $clients = $db->loadObjectList();
 			</div>
 		</div>
 		<div class="form-group">
-			<label><?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?></label>
+			<label class="label-sm"><?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?></label>
 			<textarea rows="5" name="description" id="<?php echo $APPTAG?>-description" class="form-control"></textarea>
 		</div>
 	</div>
 	<div class="col-lg-4">
 		<div class="form-group">
-			<label><?php echo JText::_('FIELD_LABEL_LOGO'); ?></label>
+			<label class="label-sm"><?php echo JText::_('FIELD_LABEL_LOGO'); ?></label>
 			<div class="image-file">
 				<a href="#" class="image-action">
 					<div class="image-file-label">
@@ -52,7 +52,7 @@ $clients = $db->loadObjectList();
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_START_DATE'); ?>"><?php echo JText::_('TEXT_SINCE'); ?></label>
+			<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_START_DATE'); ?>"><?php echo JText::_('TEXT_SINCE'); ?></label>
 			<input type="text" name="start_date" id="<?php echo $APPTAG?>-start_date" class="form-control field-date" data-convert="true" />
 		</div>
 	</div>

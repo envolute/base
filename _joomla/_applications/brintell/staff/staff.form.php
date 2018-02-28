@@ -481,19 +481,19 @@ $users = $db->loadObjectList();
 		<div class="row">
 			<div class="col-sm-6 col-lg-4">
 				<div class="form-group">
-					<label class="field-required"><?php echo JText::_('FIELD_LABEL_BANK'); ?></label>
+					<label class="label-sm field-required"><?php echo JText::_('FIELD_LABEL_BANK'); ?></label>
 					<input type="text" name="bank_name" id="<?php echo $APPTAG?>-bank_name" class="form-control upper" />
 				</div>
 			</div>
 			<div class="col-sm-6 col-lg-2">
 				<div class="form-group">
-					<label class="field-required"><?php echo JText::_('FIELD_LABEL_AGENCY'); ?></label>
+					<label class="label-sm field-required"><?php echo JText::_('FIELD_LABEL_AGENCY'); ?></label>
 					<input type="text" name="agency" id="<?php echo $APPTAG?>-agency" class="form-control" />
 				</div>
 			</div>
 			<div class="col-sm-6 col-lg-2">
 				<div class="form-group">
-					<label class="field-required"><?php echo JText::_('FIELD_LABEL_OPERATION'); ?></label>
+					<label class="label-sm field-required"><?php echo JText::_('FIELD_LABEL_OPERATION'); ?></label>
 					<input type="text" name="operation" id="<?php echo $APPTAG?>-operation" class="form-control" />
 				</div>
 			</div>

@@ -178,7 +178,7 @@ if($vID != 0) :
 		$about_me = '';
 		if(!empty($view->about_me)) :
 			$about_me .= '
-				<div class="'.$APPTAG.'-profile-about font-condensed text-primary px-3 py-2 mb-3 bg-white rounded set-shadow">'.$view->about_me.'</div>
+				<div class="'.$APPTAG.'-profile-about font-condensed text-primary px-3 py-2 mb-3 bg-white rounded set-shadow">'.nl2br($view->about_me).'</div>
 			';
 		endif;
 

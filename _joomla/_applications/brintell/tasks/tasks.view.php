@@ -143,7 +143,7 @@ if($vID != 0) :
 		$estimate = ($view->estimate > 0) ? $view->estimate.JText::_('TEXT_ESTIMATED_UNIT').' ' : '';
 		$estimate .= $deadline;
 		$estimate = !empty($estimate) ? ' - '.JText::_('TEXT_ESTIMATED').' '.$estimate : '';
-		$desc = !empty($view->description) ? '<div class="font-condensed mb-4">'.$view->description.'</div>' : '';
+		$desc = !empty($view->description) ? '<div class="font-condensed mb-4">'.nl2br($view->description).'</div>' : '';
 		$urlViewProject = JURI::root().'apps/projects/view?pID='.$view->project_id;
 
 		// CLIENT STAFF

@@ -48,7 +48,7 @@ jQuery(function() {
 
 		// ON FOCUS
 		// campo que recebe o focus no carregamento
-		var firstField		= comment;
+		var firstField		= '';
 
 		// ON MODAL OPEN -> Ações quando o modal do form é aberto
 		popup.on('shown.bs.modal', function () {

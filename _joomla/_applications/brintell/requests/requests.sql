@@ -6,7 +6,7 @@ CREATE TABLE `cms_brintell_requests` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `project_id` int(11) NOT NULL,
   `type` tinyint(4) NOT NULL,
-  `subject` varchar(50) NOT NULL,
+  `subject` varchar(255) NOT NULL,
   `description` TEXT NOT NULL,
   `priority` tinyint(4) NOT NULL,
   `deadline` DATETIME NOT NULL,

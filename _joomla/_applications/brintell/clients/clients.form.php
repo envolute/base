@@ -23,20 +23,20 @@ $groups = $db->loadObjectList();
 				<div class="row">
 					<div class="col-lg-6">
 						<div class="form-group field-required">
-							<label><?php echo JText::_('FIELD_LABEL_NAME'); ?></label>
+							<label class="label-sm"><?php echo JText::_('FIELD_LABEL_NAME'); ?></label>
 							<input type="text" name="name" id="<?php echo $APPTAG?>-name" class="form-control upper" />
 						</div>
 					</div>
 					<div class="col-lg-6">
 						<div class="form-group">
-							<label>E-mail</label>
+							<label class="label-sm">E-mail</label>
 							<input type="email" name="email" id="<?php echo $APPTAG?>-email" class="form-control field-email" />
 							<input type="hidden" name="cmail" id="<?php echo $APPTAG?>-cmail" />
 						</div>
 					</div>
 					<div class="col-lg-6">
 						<div class="form-group">
-							<label><?php echo JText::_('FIELD_LABEL_GROUP'); ?></label>
+							<label class="label-sm"><?php echo JText::_('FIELD_LABEL_GROUP'); ?></label>
 							<div class="input-group">
 								<select name="group_id" id="<?php echo $APPTAG?>-group_id" class="form-control field-id">
 									<option value="0">- <?php echo JText::_('TEXT_SELECT'); ?> -</option>
@@ -55,7 +55,7 @@ $groups = $db->loadObjectList();
 					</div>
 					<div class="col-lg-6">
 						<div class="form-group">
-							<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_PORTFOLIO_DESC')?>"><?php echo JText::_('FIELD_LABEL_PORTFOLIO'); ?></label>
+							<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_PORTFOLIO_DESC')?>"><?php echo JText::_('FIELD_LABEL_PORTFOLIO'); ?></label>
 							<span class="btn-group btn-group-justified" data-toggle="buttons">
 								<label class="btn btn-default btn-active-danger">
 									<input type="radio" name="portfolio" id="<?php echo $APPTAG?>-portfolio-0" value="0" />
@@ -73,19 +73,19 @@ $groups = $db->loadObjectList();
 				<div class="row">
 					<div class="col-12">
 						<div class="form-group">
-							<label><?php echo JText::_('FIELD_LABEL_COMPANY_NAME'); ?></label>
+							<label class="label-sm"><?php echo JText::_('FIELD_LABEL_COMPANY_NAME'); ?></label>
 							<input type="text" name="company_name" id="<?php echo $APPTAG?>-company_name" class="form-control upper" />
 						</div>
 					</div>
 					<div class="col-sm-6 col-lg-4">
 						<div class="form-group">
-							<label>CNPJ</label>
+							<label class="label-sm">CNPJ</label>
 							<input type="text" name="cnpj" id="<?php echo $APPTAG?>-cnpj" class="form-control field-cnpj" />
 						</div>
 					</div>
 					<div class="col-sm-6 col-lg-4">
 						<div class="form-group">
-							<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_DOC_DESC')?>"><?php echo JText::_('FIELD_LABEL_DOC'); ?></label>
+							<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_DOC_DESC')?>"><?php echo JText::_('FIELD_LABEL_DOC'); ?></label>
 							<div class="btn-file">
 								<span class="btn-group w-100">
 									<button type="button" class="col base-icon-search btn btn-default btn-active-success file-action text-truncate hasTooltip" title="<?php echo JText::_('TEXT_FILE_SELECT'); ?>"> <span><?php echo JText::_('TEXT_FILE_SELECT'); ?></span></button>
@@ -96,7 +96,7 @@ $groups = $db->loadObjectList();
 					</div>
 					<div class="col-sm-6 col-lg-4">
 						<div class="form-group">
-							<label class="iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_DUE_DATE_DESC')?>"><?php echo JText::_('FIELD_LABEL_DUE_DATE'); ?></label>
+							<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_DUE_DATE_DESC')?>"><?php echo JText::_('FIELD_LABEL_DUE_DATE'); ?></label>
 							<select name="due_date" id="<?php echo $APPTAG?>-due_date" class="form-control">
 								<option value="0"><?php echo JText::_('TEXT_SELECT'); ?></option>
 								<?php
@@ -110,13 +110,13 @@ $groups = $db->loadObjectList();
 					</div>
 					<div class="col-lg-8">
 						<div class="form-group">
-							<label><?php echo JText::_('FIELD_LABEL_WEBSITE'); ?></label>
+							<label class="label-sm"><?php echo JText::_('FIELD_LABEL_WEBSITE'); ?></label>
 							<input type="text" name="website" id="<?php echo $APPTAG?>-website" class="form-control field-url" />
 						</div>
 					</div>
 					<div class="col-lg-4">
 						<div class="form-group">
-							<label><?php echo JText::_('FIELD_LABEL_START_DATE'); ?></label>
+							<label class="label-sm"><?php echo JText::_('FIELD_LABEL_START_DATE'); ?></label>
 							<input type="text" name="start_date" id="<?php echo $APPTAG?>-start_date" class="form-control field-date" data-convert="true" />
 						</div>
 					</div>
@@ -124,7 +124,7 @@ $groups = $db->loadObjectList();
 			</div>
 			<div class="col-sm-3">
 				<div class="form-group">
-					<label><?php echo JText::_('FIELD_LABEL_LOGO'); ?></label>
+					<label class="label-sm"><?php echo JText::_('FIELD_LABEL_LOGO'); ?></label>
 					<div class="image-file">
 						<a href="#" class="image-action">
 							<div class="image-file-label">

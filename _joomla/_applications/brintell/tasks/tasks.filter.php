@@ -35,7 +35,7 @@ require($PATH_APP_FILE.'.filter.query.php');
 			$flt_project .= '<option value="'.$obj->id.'"'.($obj->id == $fProj ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
 		}
 		$flt_project = '
-			<div class="col-sm-6 col-md-3">
+			<div class="col-sm-6 col-md-4">
 				<div class="form-group">
 					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_PROJECT').'</label>
 					<select name="fProj" id="fProj" class="form-control form-control-sm set-filter">
@@ -61,7 +61,7 @@ require($PATH_APP_FILE.'.filter.query.php');
 			$flt_assign .= '<option value="'.$obj->user_id.'"'.($obj->user_id == $fAssign ? ' selected = "selected"' : '').'>'.$staff.baseHelper::nameFormat($name).'</option>';
 		}
 		$flt_assign = '
-			<div class="col-sm-6 col-md-3">
+			<div class="col-sm-6 col-md-4">
 				<div class="form-group">
 					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_ASSIGN_TO').'</label>
 					<select name="fAssign[]" id="fAssign" class="form-control form-control-sm set-filter" multiple>
@@ -88,7 +88,7 @@ $htmlFilter = '
 		<fieldset class="fieldset-embed fieldset-sm pt-2 pb-0">
 			<input type="hidden" name="'.$APPTAG.'_filter" value="1" />
 			<div class="row">
-				<div class="col-lg-10">
+				<div class="col-xl-10">
 					<div class="row">
 						'.$flt_project.$flt_assign.'
 						<div class="col-sm-6 col-md-2">
@@ -112,22 +112,13 @@ $htmlFilter = '
 								</select>
 							</div>
 						</div>
-						<div class="col-sm-6 col-md-2">
-							<label class="label-xs text-muted">&#160;</label>
-							<span class="btn-group btn-group-justified" data-toggle="buttons">
-								<label class="btn btn-sm btn-default btn-active-danger'.($active == 0 ? ' active' : '').' base-icon-box">
-									<input type="checkbox" name="active" id="active" class="set-filter" value="0"'.($active == 0 ? ' checked' : '').' />
-									'.JText::_('TEXT_ARCHIVE').'
-								</label>
-							</span>
-						</div>
-						<div class="col-sm-6 col-md-4 col-xl-3">
+						<div class="col-sm-6 col-md-4">
 							<div class="form-group">
 								<label class="label-xs text-muted text-truncate">'.implode(', ', $sLabel).'</label>
 								<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />
 							</div>
 						</div>
-						<div class="col-sm-6 col-md-4 col-xl-3">
+						<div class="col-sm-6 col-md-4">
 							<div class="form-group">
 								<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_DEADLINE').'</label>
 								<span class="input-group input-group-sm">
@@ -148,13 +139,30 @@ $htmlFilter = '
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-2 text-right">
-					<div class="form-group">
-						<label class="label-xs text-muted">&#160;</label>
-						<button '.$btnAction.' id="'.$APPTAG.'-submit-filter" class="btn btn-sm btn-primary base-icon-search btn-icon">
-							'.JText::_('TEXT_SEARCH').'
-						</button>
-						<a href="'.JURI::current().'" class="btn btn-sm btn-danger base-icon-cancel-circled hasTooltip" title="'.JText::_('TEXT_RESET').'"></a>
+				<div class="col-xl-2 b-left b-left-dashed">
+					<div class="row justify-content-between">
+						<div class="col-sm-5 col-md-4 col-lg-3 col-xl-12">
+							<div class="form-group">
+								<label class="label-xs text-muted">&#160;</label>
+								<span class="btn-group btn-group-justified" data-toggle="buttons">
+									<label class="btn btn-sm btn-warning btn-active-danger'.($active == 0 ? ' active' : '').' base-icon-box">
+										<input type="checkbox" name="active" id="active" class="set-filter" value="0"'.($active == 0 ? ' checked' : '').' />
+										'.JText::_('TEXT_ARCHIVE').'
+									</label>
+								</span>
+							</div>
+						</div>
+						<div class="col-sm-5 col-md-4 col-lg-3 col-xl-12">
+							<div class="form-group">
+								<label class="label-xs text-muted">&#160;</label>
+								<div class="d-flex justify-content-between">
+									<button '.$btnAction.' id="'.$APPTAG.'-submit-filter" class="btn btn-sm btn-primary base-icon-search btn-icon">
+										'.JText::_('TEXT_SEARCH').'
+									</button>
+									<a href="'.JURI::current().'" class="btn btn-sm btn-danger base-icon-cancel-circled hasTooltip" title="'.JText::_('TEXT_RESET').'"></a>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

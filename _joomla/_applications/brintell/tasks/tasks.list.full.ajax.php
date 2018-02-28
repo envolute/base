@@ -151,7 +151,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			if($status !== $item->status) :
 				if($counter > 0) $html .= '</div>';
 				$html .= '
-					<div id="'.$APPTAG.'-item-status-'.$item->status.'" class="tasks-col col-md-3 pb-3">
+					<div id="'.$APPTAG.'-item-status-'.$item->status.'" class="tasks-col col-sm-6 col-lg-3 pb-3">
 						<h6 class="text-center bg-'.$itemStatus.' rounded py-2 set-shadow-right">
 							<span class="base-icon-'.$iconStatus.'"></span> '.JText::_('TEXT_STATUS_'.$item->status).'
 						</h6>
@@ -221,7 +221,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						<div class="align-self-stretch py-3 px-2 bg-gray-200">
 							<a href="#" id="'.$APPTAG.'-item-'.$item->id.'-status" class="base-icon-'.$iconStatus.' text-'.$itemStatus.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$item->status).'" data-id="'.$item->id.'" data-status="'.$item->status.'" onclick="'.$APPTAG.'_setStatusModal(this)"></a>
 						</div>
-						<a href="#'.$APPTAG.'-item-view" class="set-base-modal py-1 px-2" onclick="'.$APPTAG.'_setItemView('.$item->id.')">
+						<a href="#'.$APPTAG.'-item-view" class="set-base-modal text-sm py-1 px-2" onclick="'.$APPTAG.'_setItemView('.$item->id.')">
 							'.$locked.baseHelper::nameFormat($item->subject).'
 							<div class="pos-absolute pos-top-0 pos-right-0 mx-1">
 								'.$priority.'

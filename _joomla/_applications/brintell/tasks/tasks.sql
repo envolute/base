@@ -8,7 +8,7 @@ CREATE TABLE `cms_brintell_tasks` (
   `type` tinyint(4) NOT NULL,
   `requests` varchar(255) NOT NULL,
   `assign_to` varchar(255) NOT NULL,
-  `subject` varchar(50) NOT NULL,
+  `subject` varchar(255) NOT NULL,
   `description` TEXT NOT NULL,
   `priority` tinyint(4) NOT NULL,
   `deadline` DATETIME NOT NULL,

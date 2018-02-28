@@ -117,7 +117,7 @@ if($vID != 0) :
 				$priority = ' <span class="badge badge-primary">'.JText::_('TEXT_PRIORITY_DESC_0').'</span>';
 		}
 
-		$desc = !empty($view->description) ? '<div class="font-condensed mb-4">'.$view->description.'</div>' : '';
+		$desc = !empty($view->description) ? '<div class="font-condensed mb-4">'.nl2br($view->description).'</div>' : '';
 		$urlViewProject = JURI::root().'apps/projects/view?pID='.$view->project_id;
 
 		// CREATED BY

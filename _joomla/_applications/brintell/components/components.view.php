@@ -110,7 +110,7 @@ if($vID != 0) :
 		$docs = !empty($view->url) ? '<hr /><a href="'.$view->url.'" target="_blank" class="btn btn-primary"><span class="base-icon-docs btn-icon"></span> '.JText::_('TEXT_DOCUMENTATION').'</a>' : '';
 
 		// description
-		$description = !empty($view->description) ? '<div id="'.$MAINTAG.'-desc">'.$view->description.'</div>' : '';
+		$description = !empty($view->description) ? '<div id="'.$MAINTAG.'-desc">'.nl2br($view->description).'</div>' : '';
 
 		echo '
 			<h1 class="mt-0">
