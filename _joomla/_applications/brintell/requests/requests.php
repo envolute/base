@@ -19,11 +19,19 @@ $groups = $user->groups;
 // init general css/js files
 require(JPATH_CORE.DS.'apps/_init.app.php');
 
-// verifica o acesso
-$hasAuthor	= array_intersect($groups, $cfg['groupId']['author']); // se está na lista de administradores permitidos
 
 // DATABASE CONNECT
 $db = JFactory::getDbo();
+
+// verifica se é um cliente
+$clientID = 0;
+$hasClient	= array_intersect($groups, $cfg['groupId']['client']); // se está na lista de administradores permitidos
+// GET CLIENT ID
+if($hasClient) {
+	$query = 'SELECT client_id FROM '. $db->quoteName('#__'.$cfg['project'].'_clients_staff') .' WHERE user_id = '.$user->id;
+	$db->setQuery($query);
+	$clientID = $db->loadresult();
+}
 
 ?>
 
@@ -48,7 +56,7 @@ jQuery(function() {
 	var timePeriod			= jQuery('#<?php echo $APPTAG?>-timePeriod');
 	var executed			= jQuery('#<?php echo $APPTAG?>-executed');
 	var tags				= jQuery('#<?php echo $APPTAG?>-tags');
-	<?php if($hasAuthor) :?>
+	<?php if($hasClient) :?>
 		var setClose		= jQuery('#<?php echo $APPTAG?>-setClose');
 		var status			= jQuery('#<?php echo $APPTAG?>-status');
 	<?php else :?>
@@ -125,7 +133,7 @@ jQuery(function() {
 			timePeriod.selectUpdate('<?php echo JText::_('TEXT_AM'); ?>'); // select
 			executed.val(0);
 			tags.selectUpdate(''); // select
-			<?php if($hasAuthor) :?>
+			<?php if($hasClient) :?>
 				setHidden(setClose, true);
 				checkOption(setClose, 0);
 				status.val(0);
@@ -316,9 +324,9 @@ jQuery(function() {
 						timePeriod.selectUpdate(item.timePeriod); // select
 						executed.val(item.executed);
 						tags.selectUpdate(item.tags); // select
-						<?php if($hasAuthor) :?>
-							setHidden(setClose, true);
-							checkOption(setClose, (item.status == 3 ? 1 : 0));
+						<?php if($hasClient) :?>
+							setHidden(setClose, false);
+							checkOption(setClose, (item.state ? 0 : 1));
 							status.val(item.status);
 						<?php else :?>
 							checkOption(status, item.status);

@@ -50,7 +50,9 @@ require($PATH_APP_FILE.'.filter.query.php');
 	// PROJECTS -> select
 	$flt_project = '';
 	if($pID == 0) :
-		$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_projects') .' WHERE '. $db->quoteName('state') .' = 1 ORDER BY name';
+		// Se for um cliente, só visualiza os projetos dele
+		$filterClient = ($hasClient && $clientID) ? 'client_id = '.$clientID.' AND ' : '';
+		$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_projects') .' WHERE '.$filterClient. $db->quoteName('state') .' = 1 ORDER BY name';
 		$db->setQuery($query);
 		$projects = $db->loadObjectList();
 		foreach ($projects as $obj) {
@@ -74,7 +76,9 @@ require($PATH_APP_FILE.'.filter.query.php');
 	// CREATED BY -> select
 	$flt_creator = '';
 	if($hasAdmin || $pID > 0) :
-		$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_clients_staff') .' WHERE '. $db->quoteName('access') .' = 1 AND '. $db->quoteName('state') .' = 1 ORDER BY name';
+		// Se for um cliente, só visualiza os usuários dele
+		$filterClient = ($hasClient && $clientID) ? 'client_id = '.$clientID.' AND ' : '';
+		$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_clients_staff') .' WHERE '.$filterClient. $db->quoteName('access') .' = 1 AND '. $db->quoteName('state') .' = 1 ORDER BY name';
 		$db->setQuery($query);
 		$created = $db->loadObjectList();
 		foreach ($created as $obj) {

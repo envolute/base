@@ -91,6 +91,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		// default
 		$request['relationId']   		= $input->get('relationId', 0, 'int');
 		$request['state']				= $input->get('state', 1, 'int');
+	  	$setClose						= $input->get('setClose', 2, 'int'); // 2, caso não seja enviado
+		if($setClose == 1) $request['state'] = 0;
+		else if($setClose == 0) $request['state'] = 1;
 		// app
 		$request['project_id']			= $input->get('project_id', 0, 'int');
 		$request['type']				= $input->get('type', 0, 'int');
@@ -104,8 +107,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['tags']				= implode(',', $tags); // FIND_IN_SET
 		$request['status']				= $input->get('status', 0, 'int');
 		$request['cstatus']				= $input->get('cstatus', 0, 'int');
-	  	$request['setClose']			= $input->get('setClose', 0, 'int');
-		if($request['setClose'] == 1) $request['status'] = 3;
 		// fechamento
 		$closing_date = '0000-00-00 00:00:00';
 		if($request['status'] == 3) :

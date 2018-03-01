@@ -10,8 +10,12 @@ $where = '';
 	$active	= $app->input->get('active', 1, 'int');
 	$where .= $db->quoteName('T1.state').' = '.$active;
 	// CLIENT
-	$fClient = $app->input->get('fClient', 0, 'int');
-	if($fClient != 0) $where .= ' AND '.$db->quoteName('T2.client_id').' = '.$fClient;
+	if($hasClient && $clientID) {
+		$where .= ' AND '.$db->quoteName('T2.client_id').' = '.$clientID;
+	} else {
+		$fClient = $app->input->get('fClient', 0, 'int');
+		if($fClient != 0) $where .= ' AND '.$db->quoteName('T2.client_id').' = '.$fClient;
+	}
 	// PROJECT
 	$pID	= $app->input->get('pID', 0, 'int');
 	$fProj	= ($pID > 0) ? $pID : $app->input->get('fProj', 0, 'int');

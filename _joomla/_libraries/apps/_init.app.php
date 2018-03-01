@@ -14,13 +14,10 @@ if($cfg['isPublic']) {
 }
 if(isset($cfg['groupId'])) {
 	//$viewer = array_merge($cfg['groupId']['viewer'], $cfg['groupId']['admin']);
-	if($cfg['isPublic'] != 1 && $cfg['groupId']['viewer'][0] != 0) {
-		$hasGroup = array_intersect($groups, $cfg['groupId']['viewer']); // se está na lista de grupos permitidos
-	} else if(isset($user) && !$user->guest) {
-		if($cfg['isPublic'] != 2 && $cfg['groupId']['author'][0] != 0) $hasAuthor = array_intersect($groups, $cfg['groupId']['author']); // se está na lista de autores permitidos
-		if($cfg['isPublic'] != 3 && $cfg['groupId']['editor'][0] != 0) $hasEditor = array_intersect($groups, $cfg['groupId']['editor']); // se está na lista de editores permitidos
-		if($cfg['isPublic'] != 4 && $cfg['groupId']['admin'][0] != 0) $hasAdmin = array_intersect($groups, $cfg['groupId']['admin']); // se está na lista de administradores permitidos
-	}
+	if($cfg['isPublic'] != 1 && count($cfg['groupId']['viewer'])) $hasGroup = array_intersect($groups, $cfg['groupId']['viewer']); // se está na lista de grupos permitidos
+	if($cfg['isPublic'] != 2 && count($cfg['groupId']['author'])) $hasAuthor = array_intersect($groups, $cfg['groupId']['author']); // se está na lista de autores permitidos
+	if($cfg['isPublic'] != 3 && count($cfg['groupId']['editor'])) $hasEditor = array_intersect($groups, $cfg['groupId']['editor']); // se está na lista de editores permitidos
+	if($cfg['isPublic'] != 4 && count($cfg['groupId']['admin'])) $hasAdmin = array_intersect($groups, $cfg['groupId']['admin']); // se está na lista de administradores permitidos
 }
 if(!$cfg['isPublic']) :
 	if(isset($user) && $user->guest) :

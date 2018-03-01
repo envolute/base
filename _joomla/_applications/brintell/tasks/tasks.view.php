@@ -85,11 +85,19 @@ if($vID != 0) :
 			$listFiles = '';
 			for($i = 0; $i < count($files[$view->id]); $i++) {
 				if(!empty($files[$view->id][$i]->filename)) :
-					$listFiles .= '
-						<a class="d-inline-block mr-3" href="'.JURI::root(true).'/apps/get-file?fn='.base64_encode($files[$view->id][$i]->filename).'&mt='.base64_encode($files[$view->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
-							<span class="base-icon-attach hasTooltip" title="'.((int)($files[$view->id][$i]->filesize / 1024)).'kb"> '.$files[$view->id][$i]->filename.'</span>
-						</a>
-					';
+					if(strpos($files[$view->id][$i]->mimetype, 'image') !== false) {
+						$listFiles .= '
+							<a class="set-modal d-inline-block mr-3" href="'.JURI::root().'images/apps/'.$APPPATH.'/'.$files[$view->id][$i]->filename.'">
+								<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$files[$view->id][$i]->filename, 60, 45).'" class="rounded mb-2 set-shadow-right img-thumbnail" style="width:60px; height:45px;" />
+							</a>
+						';
+					} else {
+						$listFiles .= '
+							<a class="d-inline-block mr-3" href="'.JURI::root(true).'/apps/get-file?fn='.base64_encode($files[$view->id][$i]->filename).'&mt='.base64_encode($files[$view->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
+								<span class="base-icon-attach hasTooltip" title="'.((int)($files[$view->id][$i]->filesize / 1024)).'kb"> '.$files[$view->id][$i]->filename.'</span>
+							</a>
+						';
+					}
 				endif;
 			}
 		endif;
@@ -143,7 +151,14 @@ if($vID != 0) :
 		$estimate = ($view->estimate > 0) ? $view->estimate.JText::_('TEXT_ESTIMATED_UNIT').' ' : '';
 		$estimate .= $deadline;
 		$estimate = !empty($estimate) ? ' - '.JText::_('TEXT_ESTIMATED').' '.$estimate : '';
-		$desc = !empty($view->description) ? '<div class="font-condensed mb-4">'.nl2br($view->description).'</div>' : '';
+
+		$desc = '';
+		if(!empty($view->description)) {
+			$desc = nl2br($view->description); // mostra com as quebras de linha
+			$desc = preg_replace('~[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]~','<a href="\\0" target="_blank">\\0</a>', $desc);
+			$desc = '<div class="font-condensed mb-4">'.$desc.'</div>';
+		}
+
 		$urlViewProject = JURI::root().'apps/projects/view?pID='.$view->project_id;
 
 		// CLIENT STAFF
@@ -216,7 +231,8 @@ if($vID != 0) :
 		if($hasAdmin || ($view->created_by == $user->id)) :
 			$btnActions = '
 				<div class="float-right">
-					<a href="#modal-tasksTimer" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_INSERT_TIME').'" onclick="tasksTimer_setParent('.$view->id.')" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-original-title="'.JText::_('TEXT_ADD').'"><span class="base-icon-clock text-primary text-live"></span></a>
+					<a href="#" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_COPY_LINK_TO_SHARE').'" onclick="copyToClipboard(\''.JURI::root().'apps/'.$APPPATH.'/view?vID='.$view->id.'\')"><span class="base-icon-link"></span></a>
+					<a href="#modal-tasksTimer" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_INSERT_TIME').'" onclick="tasksTimer_setParent('.$view->id.')" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-original-title="'.JText::_('TEXT_ADD').'"><span class="base-icon-clock text-live"></span></a>
 					<a href="#" class="btn btn-lg btn-link py-0 px-2" onclick="'.$MAINTAG.'_setState('.$view->id.', null, false, \'base-icon-toggle-on\', \'base-icon-toggle-on\', \'text-success\', \'text-muted\')" id="'.$MAINTAG.'-state-'.$view->id.'">
 						<span class="'.($view->state == 1 ? 'base-icon-toggle-on text-success' : 'base-icon-toggle-on text-muted').' hasTooltip" title="'.JText::_(($view->state == 1 ? 'MSG_CLOSED_ITEM' : 'MSG_ACTIVATE_ITEM')).'"></span>
 					</a>

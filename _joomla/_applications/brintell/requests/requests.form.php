@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') or die;
 
-// CLIENTS
+// PROJECTS
 $query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_projects') .' WHERE state = 1 ORDER BY name';
 $db->setQuery($query);
 $projects = $db->loadObjectList();
@@ -13,7 +13,7 @@ $tags = $db->loadObjectList();
 
 // CREATED BY
 $author = '';
-if($hasAuthor) :
+if($hasClient) :
 	$query	= '
 		SELECT
 			T1.*
@@ -136,7 +136,7 @@ endif;
 				</select>
 			</div>
 		</div>
-		<?php if($hasAuthor) :?>
+		<?php if($hasClient) :?>
 			<input type="hidden" name="status" id="<?php echo $APPTAG?>-status" />
 			<div class="form-group mb-1" hidden>
 				<span class="btn-group" data-toggle="buttons">

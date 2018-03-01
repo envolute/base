@@ -62,8 +62,8 @@ endif;
 	$cfg['groupId']['editor']	= isset($_SESSION[$APPTAG.'EditorGroups']) ? $_SESSION[$APPTAG.'EditorGroups'] : $editorDef;
 	$cfg['groupId']['admin']	= isset($_SESSION[$APPTAG.'AdminGroups']) ? $_SESSION[$APPTAG.'AdminGroups'] : $adminDef;
 	// ----------------------------------------------------
-	$cfg['groupId']['author'][]	= 15;	// Client
-	$cfg['groupId']['author'][]	= 16;	// Client Manager
+	$cfg['groupId']['client'][]	= 15;	// Client
+	$cfg['groupId']['client'][]	= 16;	// Client Manager
 
 // crud's name
 	$cfg['APPNAME']				= $APPNAME;
