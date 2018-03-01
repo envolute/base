@@ -9,8 +9,8 @@ defined('_JEXEC') or die;
 	$query = '
 		SELECT SQL_CALC_FOUND_ROWS
 			T1.*,
-			'. $db->quoteName('T1.task_id') .',
 			'. $db->quoteName('T2.subject') .' task,
+			'. $db->quoteName('T2.state') .' isOpened,
 			'. $db->quoteName('T3.name') .',
 			'. $db->quoteName('T3.nickname') .',
 			'. $db->quoteName('T3.price_hour') .',
@@ -129,10 +129,10 @@ if($num_rows) { // verifica se existe
 				<td class="check-row d-print-none"><input type="checkbox" name="'.$APPTAG.'_ids[]" class="'.$APPTAG.'-chk" value="'.$item->id.'" /></td>
 				<td class="d-none d-lg-table-cell d-print-none">'.$item->id.'</td>
 			';
+			$btnEdit = ($item->isOpened || $hasAdmin) ? '<a href="#" class="btn btn-xs btn-warning hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil"></span></a>' : '';
 			$adminView['list']['actions'] = '
 				<td class="text-center d-print-none">
-					<a href="#" class="btn btn-xs btn-warning hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil"></span></a>
-					'.$btnDelete.'
+					'.$btnEdit.' '.$btnDelete.'
 				</td>
 			';
 		endif;
@@ -142,9 +142,26 @@ if($num_rows) { // verifica se existe
 		if(!empty($info)) $info = '<div class="small text-muted">'.$info.'</div>';
 		$name = !empty($item->nickname) ? $item->nickname : $item->name;
 
-		$time		= substr($item->total_time, 0, 5);	// tempo total do registro
-		$times[]	= $time;							// Guarda o tempo para o somatório no fim da listagem
-		$sumHours	+= $item->hours;					// Tempo em formato numérico
+		$setTip = $tipMsg = '';
+		if($item->start_hour != '00:00:00' && $item->end_hour == '00:00:00' && $item->time == '00:00:00') {
+			$timeInfo = '
+				<div class="text-danger lh-1"><span class="text-sm base-icon-arrows-cw"></span> '.JText::_('TEXT_RUNNING').'</div>
+				<div class="small text-live ml-1"><span class="base-icon-level-down cursor-help hasTooltip" title="'.JText::_('TEXT_STARTED_HOUR').'"> '.substr($item->start_hour, 0, 5).' '.JText::_('TEXT_HOURS_ABBR').'</span></div>
+			';
+		} else {
+			$time		= substr($item->total_time, 0, 5);	// tempo total do registro
+			$times[]	= $time;							// Guarda o tempo para o somatório no fim da listagem
+			$sumHours	+= $item->hours;					// Tempo em formato numérico
+			if($item->start_hour != '00:00:00') {
+				$tipMsg = JText::_('TEXT_PERIOD').'<br />'.substr($item->start_hour, 0, 5).' - '.substr($item->end_hour, 0, 5);
+			} else {
+				$tipMsg = JText::_('FIELD_LABEL_TOTAL_TIME');
+			}
+			$timeInfo = '
+				<div class="text-live lh-1 cursor-help hasTooltip" title="'.$tipMsg.'"><span class="text-sm base-icon-clock"></span> '.$time.'</div>
+				<div class="small text-primary ml-1"><span class="base-icon-level-down cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_TIME_COUNT').'"> '.$item->hours.'</span></div>
+			';
+		}
 
 		$rowState = $item->state == 0 ? 'table-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
@@ -160,10 +177,7 @@ if($num_rows) { // verifica se existe
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
 				<td>'.baseHelper::nameFormat($name).'</td>
-				<td>
-					<div class="text-live lh-1"><span class="text-sm base-icon-clock"></span> '.$time.'</div>
-					<div class="small text-primary ml-1"><span class="base-icon-level-down cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_TIME_COUNT').'"> '.$item->hours.'</span></div>
-				</td>
+				<td>'.$timeInfo.'</td>
 				<td>'.baseHelper::dateFormat($item->date, 'd/m/Y').'</td>
 				<td>#'.$item->task_id.' - '.baseHelper::nameFormat($item->task).$info.'</td>
 				<td class="d-none d-lg-table-cell">

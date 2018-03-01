@@ -118,7 +118,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 		// SAVE CONDITION
 		// Condição para inserção e atualização dos registros
-		$save_condition = ($request['task_id'] > 0 && $request['user_id'] > 0 && (($request['start_hour'] != '00:00:00' && $request['end_hour'] != '00:00:00') || $request['time'] != '00:00:00'));
+		$save_condition = ($request['task_id'] > 0 && $request['user_id'] > 0 && ($request['start_hour'] != '00:00:00' || $request['time'] != '00:00:00'));
 
 		if($id || (!empty($ids) && $ids != 0)) :  //UPDATE OR DELETE
 
@@ -157,6 +157,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				// GET DATA
 				if($task == 'get') :
 
+					// Get 'subject' from Task
+					$query = 'SELECT `subject` FROM '. $db->quoteName('#__'.$cfg['project'].'_tasks') .' WHERE '. $db->quoteName('id') .' = '.$item->task_id;
+					$db->setQuery($query);
+					$taskInfo = $db->loadResult();
+
 					$data[] = array(
 						// Default Fields
 						'id'				=> $item->id,
@@ -165,6 +170,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'next'				=> $next,
 						// App Fields
 						'task_id'	    	=> $item->task_id,
+						'task_info'			=> $taskInfo,
 	      				'user_id'	    	=> $item->user_id,
 	      				'date'        		=> $item->date,
 	      				'start_hour'  		=> $item->start_hour,

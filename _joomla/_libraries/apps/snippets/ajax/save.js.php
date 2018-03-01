@@ -39,10 +39,14 @@ window.<?php echo $APPTAG?>_save = function(trigger) {
 								<?php echo $APPTAG?>_formReset();
 								if(trigger == 'close') popup.modal('hide');
 								formReload = false;
-							} else if(trigger === '<?php echo $cfg['saveTrigger']?>') {
-								<?php echo !empty($cfg['saveTrigger']) ? $cfg['saveTrigger'].'(resID);' : ''?>;
+							} else {
+								trigger(resID);
 							}
 						}
+						<?php
+						// CONFIG SAVE ACTION => Ação definida no 'config'. Sempre executa após salvar...
+						echo !empty($cfg['saveTrigger']) ? $cfg['saveTrigger'].'(resID);' : '';
+						?>
 						if(formReload) <?php echo $APPTAG?>_loadEditFields(resID, true, false); // recarrega os dados do form
 
 						// Update Parent field

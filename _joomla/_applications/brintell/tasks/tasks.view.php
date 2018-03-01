@@ -229,14 +229,21 @@ if($vID != 0) :
 
 		$btnActions = '<div class="float-right">';
 		$btnActions .= '	<a href="#" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_COPY_LINK_TO_SHARE').'" onclick="copyToClipboard(\''.JURI::root().'apps/'.$APPPATH.'/view?vID='.$view->id.'\', \''.JText::_('MSG_COPY_LINK_TO_SHARE').'\')"><span class="base-icon-link"></span></a>';
-		if($hasAdmin || ($view->created_by == $user->id)) :
+		$appActions = '';
+		if($cfg['canEdit'] || ($view->created_by == $user->id)) :
+			if($view->state) {
+				$appActions = '
+					<a href="#modal-tasksTimer" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_INSERT_TIME').'" onclick="tasksTimer_setParent('.$view->id.')" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-original-title="'.JText::_('TEXT_ADD').'"><span class="base-icon-clock text-live"></span></a>
+					<a href="#" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$MAINTAG.'_loadEditFields('.$view->id.', false, false)"><span class="base-icon-pencil text-live"></span></a>
+					<a href="#" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$MAINTAG.'_del('.$view->id.', false)"><span class="base-icon-trash text-danger"></span></a>
+					<span class="mx-2 b-left"></span>
+				';
+			}
 			$btnActions .= '
-				<a href="#modal-tasksTimer" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_INSERT_TIME').'" onclick="tasksTimer_setParent('.$view->id.')" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-original-title="'.JText::_('TEXT_ADD').'"><span class="base-icon-clock text-live"></span></a>
+				'.$appActions.'
 				<a href="#" class="btn btn-lg btn-link py-0 px-2" onclick="'.$MAINTAG.'_setState('.$view->id.', null, false, \'base-icon-toggle-on\', \'base-icon-toggle-on\', \'text-success\', \'text-muted\')" id="'.$MAINTAG.'-state-'.$view->id.'">
 					<span class="'.($view->state == 1 ? 'base-icon-toggle-on text-success' : 'base-icon-toggle-on text-muted').' hasTooltip" title="'.JText::_(($view->state == 1 ? 'MSG_CLOSED_ITEM' : 'MSG_ACTIVATE_ITEM')).'"></span>
 				</a>
-				<a href="#" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$MAINTAG.'_loadEditFields('.$view->id.', false, false)"><span class="base-icon-pencil text-live"></span></a>
-				<a href="#" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$MAINTAG.'_del('.$view->id.', false)"><span class="base-icon-trash text-danger"></span></a>
 			';
 		endif;
 		$btnActions .= '</div>';
@@ -307,21 +314,25 @@ if($vID != 0) :
 						// APP ACTIONS
 						// Carrega o app diretamente ná página,
 						// pois como está sendo chamada no template 'component', não carrega os módulos
-						// TASKSTIMER (timesheet) => FORM
-						// get the same group access of main APP
-						$tasksTimerViewerGroups		= $cfgViewer;
-						$tasksTimerAuthorGroups		= $cfgAuthor;
-						$tasksTimerEditorGroups		= $cfgEditor;
-						$tasksTimerAdminGroups		= $cfgAdmin;
-						$tasksTimerShowApp			= false;
-						$tasksTimerShowList			= false;
-						$tasksTimerListFull			= false;
-						$tasksTimerRelTag			= 'tasks';
-						$tasksTimerRelListNameId	= 'task_id';
-						$tasksTimerRelListId		= $view->id;
-						$tasksTimerOnlyChildList	= true;
-						$tasksTimerHideParentField	= true;
-						require(JPATH_APPS.DS.$MAINAPP.'Timer/'.$MAINAPP.'Timer.php');
+						if($tpl == 'component') {
+							// TASKSTIMER (timesheet) => FORM
+							// A validação '$tpl' é porque o timesheet é carregado em todas as páginas
+							// Exceto quado é carregado no template 'component'
+							// get the same group access of main APP
+							$tasksTimerViewerGroups		= $cfgViewer;
+							$tasksTimerAuthorGroups		= $cfgAuthor;
+							$tasksTimerEditorGroups		= $cfgEditor;
+							$tasksTimerAdminGroups		= $cfgAdmin;
+							$tasksTimerShowApp			= false;
+							$tasksTimerShowList			= false;
+							$tasksTimerListFull			= false;
+							$tasksTimerRelTag			= 'tasks';
+							$tasksTimerRelListNameId	= 'task_id';
+							$tasksTimerRelListId		= $view->id;
+							$tasksTimerOnlyChildList	= true;
+							$tasksTimerHideParentField	= true;
+							require(JPATH_APPS.DS.$MAINAPP.'Timer/'.$MAINAPP.'Timer.php');
+						}
 						// TASKS => FORM
 						$tasksAppTag					= $MAINTAG;
 						// get the same group access of main APP

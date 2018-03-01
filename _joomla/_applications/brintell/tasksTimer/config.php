@@ -71,7 +71,7 @@ endif;
 
 // Save Function
 // fuction called after save action
-	$cfg['saveTrigger']			= '';
+	$cfg['saveTrigger']			= $APPTAG.'_checkTimer';
 
 // view
 

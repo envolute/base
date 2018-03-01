@@ -98,10 +98,14 @@ jQuery(function() {
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
 			ctask_id.val(''); // select
-				// enable 'task'
-				jQuery('#<?php echo $APPTAG?>-task-group').find('select').prop('disabled', false).trigger("chosen:updated");
-				// desabilita caso o form seja aberto a partir de uma tarefa
-				jQuery('#<?php echo $APPTAG?>-task-add').prop('disabled', <?php echo !empty($_SESSION[$RTAG.'RelListNameId']) ? 'true' : 'false'; ?>).trigger("chosen:updated");
+
+				// Hide task if the form is opener from a task
+				<?php $hideTask = (isset($_SESSION[$RTAG.'RelListNameId']) && $_SESSION[$RTAG.'RelListNameId']) ? true : false ;?>
+				setHidden(jQuery('#<?php echo $APPTAG?>-task-group'), <?php echo $hideTask?>);
+				// Hide and clear text in 'Task Info'
+				setHidden(jQuery('#<?php echo $APPTAG?>-task-info'), true);
+				jQuery('#<?php echo $APPTAG?>-task-info').find('div').empty();
+
 			user_id.selectUpdate('<?php echo $user->id?>'); // select
 			date.val('<?php echo date('d/m/Y')?>');
 			start_hour.selectUpdate('00:00:00'); // select
@@ -239,10 +243,15 @@ jQuery(function() {
 						// App Fields
 						task_id.selectUpdate(item.task_id); // selects
 						ctask_id.val(item.task_id);
-							// disable 'task' in edition
-							jQuery('#<?php echo $APPTAG?>-task-group').find('select').add('#<?php echo $APPTAG?>-task-add').prop('disabled', true).trigger("chosen:updated");
+
+							// hide 'task' in edition
+							setHidden(jQuery('#<?php echo $APPTAG?>-task-group'), true, jQuery('#<?php echo $APPTAG?>-task-info'));
+							// seta value in 'Task Info'
+							jQuery('#<?php echo $APPTAG?>-task-info').find('div').text('#'+item.task_id+' - '+item.task_info);
+
 						user_id.selectUpdate(item.user_id); // selects
 						date.val(dateFormat(item.date)); // DATE -> conversão de data
+
 						start_hour.selectUpdate(item.start_hour); // select
 						end_hour.selectUpdate(item.end_hour); // select
 						time.selectUpdate(item.time); // select

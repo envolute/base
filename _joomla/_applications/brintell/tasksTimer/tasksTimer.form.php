@@ -39,6 +39,7 @@ $users = $db->loadObjectList();
 		</span>
 	</div>
 </div>
+<div id="<?php echo $APPTAG?>-task-info" class="pb-2 mb-2 b-bottom"><div class="text-live"></div></div>
 <div class="row no-gutters">
 	<div class="col-sm-5 col-lg-3">
 		<div class="form-group">

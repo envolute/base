@@ -66,12 +66,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			T1.*,
 			'. $db->quoteName('T2.id') .' staff_id,
 			'. $db->quoteName('T2.user_id') .' staff_user_id,
-			'. $db->quoteName('T2.name') .',
-			'. $db->quoteName('T2.nickname') .',
+			'. $db->quoteName('T2.name') .' staff_name,
+			'. $db->quoteName('T2.nickname') .' staff_nickname,
 			'. $db->quoteName('T2.gender') .',
 			'. $db->quoteName('T3.id') .' client_id,
 			'. $db->quoteName('T3.user_id') .' client_user_id,
-			'. $db->quoteName('T3.name') .' client,
+			'. $db->quoteName('T3.name') .' client_name,
 			'. $db->quoteName('T3.gender') .',
 			'. $db->quoteName('T4.session_id') .' online
 	';
@@ -153,7 +153,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 				// Imagem do usuário
 				$imgPath = $_ROOT.'images/apps/icons/user_'.$item->gender.'.png';
-				if(!$item->client) {
+				if(!$item->client_name) {
 					$img = uploader::getFile('#__brintell_staff_files', '', $item->staff_id, 0, JPATH_BASE.DS.'images/apps/staff/');
 					if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/staff/'.$img['filename'], 41, 41);
 					$urlProfile = $_ROOT.'apps/staff/view?vID='.$item->staff_user_id;
@@ -171,7 +171,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$lStatus = JText::_('TEXT_USER_STATUS_1');
 				$iStatus = ' <small class="base-icon-circle text-success cursor-help hasTooltip" title="'.$lStatus.'" style="bottom:-5px;"></small>';
 			endif;
-			$name = baseHelper::nameFormat((!empty($item->nickname) ? $item->nickname : $item->name));
+			if(!empty($item->staff_name)) {
+				$name = baseHelper::nameFormat((!empty($item->nickname) ? $item->staff_nickname : $item->staff_name)).' <span class="badge badge-primary">'.JText::_('TEXT_STAFF').'</span>';
+			} else {
+				$name = baseHelper::nameFormat($item->client_name).' <span class="badge badge-warning">'.JText::_('TEXT_CLIENT').'</span>';
+			}
 
 			$attachs = !empty($listFiles) ? '<div class="font-condensed text-sm pt-1">'.$listFiles.'</div>' : '';
 
@@ -186,7 +190,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						<div class="btn-group btn-group-justified">'.$btnEdit.$btnDelete.'</div>
 					</div>
 					<div style="flex-grow:1;" class="font-condensed text-sm mb-2 lh-1-3">
-						<div class="page-header text-muted b-bottom-dashed">'.$name.$iStatus.' <span class="float-right">'.baseHelper::dateFormat($item->created_date, 'd.m.y H:i').'</span></div>
+						<div class="page-header text-muted b-bottom-dashed pb-1 clearfix">'.$name.$iStatus.' <span class="float-right">'.baseHelper::dateFormat($item->created_date, 'd.m.y H:i').'</span></div>
 						<div>'.$item->comment.'</div>
 						'.$attachs.'
 					</div>
