@@ -100,6 +100,17 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$img = '<img src="'.$imgPath.'" class="img-fluid b-bottom b-primary" style="width:300px;" />';
 			endif;
 
+			$btnActions = '';
+			if($cfg['canEdit']) {
+				$btnActions = '
+					<a href="#" class="btn btn-xs btn-link hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'">
+						<span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').'"></span>
+					</a>
+					<a href="#" class="btn btn-xs btn-link hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil text-live"></span></a>
+					<a href="#" class="btn btn-xs btn-link hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash text-danger"></span></a>
+				';
+			}
+
 			$rowState = $item->state == 0 ? 'danger bg-light text-muted' : 'primary bg-white';
 			$urlViewData = $_ROOT.'apps/'.$APPPATH.'/view?vID='.$item->id;
 			// Resultados
@@ -111,13 +122,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							<h6 class="pt-2 px-2 m-0 text-truncate">'.baseHelper::nameFormat($item->name).'</h6>
 						</a>
 						<span class="d-flex justify-content-between text-muted px-1">
-							<span class="small pl-1 hasTooltip">'.baseHelper::nameFormat($item->groupName).'</span>
+							<span class="small pl-1 pb-1 hasTooltip">'.baseHelper::nameFormat($item->groupName).'</span>
 							<span class="btn-group">
-								<a href="#" class="btn btn-xs btn-link hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'">
-									<span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').'"></span>
-								</a>
-								<a href="#" class="btn btn-xs btn-link hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil text-live"></span></a>
-								<a href="#" class="btn btn-xs btn-link hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash text-danger"></span></a>
+								'.$btnActions.'
 							</span>
 						</span>
 					</div>

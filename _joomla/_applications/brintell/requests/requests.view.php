@@ -87,7 +87,7 @@ if($vID != 0) :
 				if(!empty($files[$view->id][$i]->filename)) :
 					if(strpos($files[$view->id][$i]->mimetype, 'image') !== false) {
 						$listFiles .= '
-							<a class="set-modal d-inline-block mr-3" href="'.JURI::root().'images/apps/'.$APPPATH.'/'.$files[$view->id][$i]->filename.'">
+							<a href="'.JURI::root().'images/apps/'.$APPPATH.'/'.$files[$view->id][$i]->filename.'" class="set-modal d-inline-block mr-3" rel="'.$APPTAG.'-view">
 								<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$files[$view->id][$i]->filename, 60, 45).'" class="rounded mb-2 set-shadow-right img-thumbnail" style="width:60px; height:45px;" />
 							</a>
 						';
@@ -192,27 +192,29 @@ if($vID != 0) :
 			$tags = '<span class="d-inline-block pl-3 ml-3 b-left">'.$tags.'</span>';
 		endif;
 
-		$btnActions = '';
-		if($hasAdmin || ($view->created_by == $user->id)) :
-			$btnActions = '
-				<div class="float-right">
-					<a href="#" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_COPY_LINK_TO_SHARE').'" onclick="copyToClipboard(\''.JURI::root().'apps/'.$APPPATH.'/view?vID='.$view->id.'\')"><span class="base-icon-link"></span></a>
-					<a href="#" class="btn btn-lg btn-link py-0 px-2" onclick="'.$MAINTAG.'_setState('.$view->id.', null, false, \'base-icon-toggle-on\', \'base-icon-toggle-on\', \'text-success\', \'text-muted\')" id="'.$MAINTAG.'-state-'.$view->id.'">
-						<span class="'.($view->state == 1 ? 'base-icon-toggle-on text-success' : 'base-icon-toggle-on text-muted').' hasTooltip" title="'.JText::_(($view->state == 1 ? 'MSG_CLOSED_ITEM' : 'MSG_ACTIVATE_ITEM')).'"></span>
-					</a>
-					<a href="#" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$MAINTAG.'_loadEditFields('.$view->id.', false, false)"><span class="base-icon-pencil text-live"></span></a>
-					<a href="#" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$MAINTAG.'_del('.$view->id.', false)"><span class="base-icon-trash text-danger"></span></a>
-				</div>
+		$btnActions = '<div class="float-right">';
+		$btnActions .= '<a href="#" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_COPY_LINK_TO_SHARE').'" onclick="copyToClipboard(\''.JURI::root().'apps/'.$APPPATH.'/view?vID='.$view->id.'\', \''.JText::_('MSG_COPY_LINK_TO_SHARE').'\')"><span class="base-icon-link"></span></a>';
+		if($cfg['canEdit'] || ($view->created_by == $user->id)) :
+			$btnActions .= '
+				<a href="#" class="btn btn-lg btn-link py-0 px-2" onclick="'.$MAINTAG.'_setState('.$view->id.', null, false, \'base-icon-toggle-on\', \'base-icon-toggle-on\', \'text-success\', \'text-muted\')" id="'.$MAINTAG.'-state-'.$view->id.'">
+					<span class="'.($view->state == 1 ? 'base-icon-toggle-on text-success' : 'base-icon-toggle-on text-muted').' hasTooltip" title="'.JText::_(($view->state == 1 ? 'MSG_CLOSED_ITEM' : 'MSG_ACTIVATE_ITEM')).'"></span>
+				</a>
+				<a href="#" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$MAINTAG.'_loadEditFields('.$view->id.', false, false)"><span class="base-icon-pencil text-live"></span></a>
+				<a href="#" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$MAINTAG.'_del('.$view->id.', false)"><span class="base-icon-trash text-danger"></span></a>
 			';
 		endif;
+		$btnActions .= '</div>';
+
+		if($hasClient) {
+			$toggleStatus = '<span id="'.$MAINTAG.'-item-'.$view->id.'-status" class="base-icon-'.$iconStatus.' text-'.$itemStatus.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$view->status).'"></span>';
+		} else {
+			$toggleStatus = '<a href="#" id="'.$MAINTAG.'-item-'.$view->id.'-status" class="base-icon-'.$iconStatus.' text-'.$itemStatus.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$view->status).'" data-id="'.$view->id.'" data-status="'.$view->status.'" onclick="'.$MAINTAG.'_setStatusModal(this)"></a>';
+		}
 
 		// Hide loader
 		$doc = JFactory::getDocument();
 		$doc->addScriptDeclaration('jQuery(window).on("load", function(){ jQuery("#'.$MAINTAG.'-form-loader").hide() });');
 
-		echo '
-
-		';
 		if($tpl == 'component') {
 			echo '<div id="'.$MAINTAG.'-'.$APPNAME.'-pageitem" class="pos-relative py-3">';
 		} else {
@@ -230,7 +232,7 @@ if($vID != 0) :
 				<div id="'.$MAINTAG.'-request-pageitem-header" class="mb-3 b-bottom-2 b-primary">
 					<div class="pb-1 mb-2 b-bottom">'.$type.$priority.'</div>
 					<h2 class="font-condensed text-primary">
-						<span class="badge bg-gray-200"><a href="#" id="'.$MAINTAG.'-item-'.$view->id.'-status" class="base-icon-'.$iconStatus.' text-'.$itemStatus.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$view->status).'" data-id="'.$view->id.'" data-status="'.$view->status.'" onclick="'.$MAINTAG.'_setStatusModal(this)"></a></span>
+						<span class="badge bg-gray-200">'.$toggleStatus.'</span>
 						'.$view->subject.'
 					</h2>
 					<div class="clearfix">

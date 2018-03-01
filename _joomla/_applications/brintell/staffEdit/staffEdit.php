@@ -444,10 +444,6 @@ jQuery(function() {
 		endif;
 		?>
 
-}); // CLOSE JQUERY->READY
-
-jQuery(function() {
-
 	// JQUERY VALIDATION
 	window.<?php echo $APPTAG?>_validator = mainForm_<?php echo $APPTAG?>.validate({
 		rules: {

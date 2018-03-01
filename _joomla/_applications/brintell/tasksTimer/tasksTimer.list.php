@@ -140,7 +140,7 @@ if($num_rows) { // verifica se existe
 		$info = !empty($item->project) ? '<span class="text-live cursor-help hasTooltip" title="'.JText::_('TEXT_PROJECT').'">'.baseHelper::nameFormat($item->project).'</span>' : '';
 		$info .= !empty($item->client) ? ' [ <span class="cursor-help hasTooltip" title="'.JText::_('TEXT_CLIENT').'">'.baseHelper::nameFormat($item->client).'</span> ]' : '';
 		if(!empty($info)) $info = '<div class="small text-muted">'.$info.'</div>';
-		$user = !empty($item->nickname) ? $item->nickname : $item->name;
+		$name = !empty($item->nickname) ? $item->nickname : $item->name;
 
 		$time		= substr($item->total_time, 0, 5);	// tempo total do registro
 		$times[]	= $time;							// Guarda o tempo para o somatório no fim da listagem
@@ -159,7 +159,7 @@ if($num_rows) { // verifica se existe
 		$html .= '
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
-				<td>'.baseHelper::nameFormat($user).'</td>
+				<td>'.baseHelper::nameFormat($name).'</td>
 				<td>
 					<div class="text-live lh-1"><span class="text-sm base-icon-clock"></span> '.$time.'</div>
 					<div class="small text-primary ml-1"><span class="base-icon-level-down cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_TIME_COUNT').'"> '.$item->hours.'</span></div>

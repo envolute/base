@@ -60,7 +60,8 @@ require($PATH_APP_FILE.'.filter.query.php');
 
 	// ASSIGN TO -> select
 	$flt_assign = '';
-	if(!$hasExternal) :
+	// Mostra a opção de filtro por usuário se for um 'admin' ou se estiver em um projeto
+	if($hasAdmin || $pID > 0) :
 		$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('type') .' IN (0, 1) AND '. $db->quoteName('access') .' = 1 AND '. $db->quoteName('state') .' = 1 ORDER BY name';
 		$db->setQuery($query);
 		$assigned = $db->loadObjectList();

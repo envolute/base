@@ -174,13 +174,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			endif;
 			$regInfo = '<div class="small text-muted">'.$regInfo.'</div>';
 
-			$btnActions = '';
-			if($hasAdmin || ($item->created_by == $user->id)) :
-				$btnActions = '
-					<a href="#" class="btn btn-xs btn-link hasTooltip" title="'.JText::_('TEXT_COPY_LINK_TO_SHARE').'" onclick="copyToClipboard(\''.$_ROOT.'apps/'.$APPPATH.'/view?vID='.$item->id.'\')"><span class="base-icon-link"></span></a>
+			$btnActions = '<a href="#" class="btn btn-xs btn-link hasTooltip" title="'.JText::_('TEXT_COPY_LINK_TO_SHARE').'" onclick="copyToClipboard(\''.$_ROOT.'apps/'.$APPPATH.'/view?vID='.$item->id.'\', \''.JText::_('MSG_COPY_LINK_TO_SHARE').'\')"><span class="base-icon-link"></span></a>';
+			if($cfg['canEdit'] || ($item->created_by == $user->id)) :
+				$btnActions .= '
 					<div class="dropdown">
 						<button class="btn btn-xs btn-link base-icon-cog" type="button" id="'.$APPTAG.'BtnActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-						<div class="dropdown-menu dropdown-menu-right text-sm p-0" aria-labelledby="'.$APPTAG.'BtnActions">
+						<div class="dropdown-menu dropdown-menu-right text-sm p-0 set-shadow" aria-labelledby="'.$APPTAG.'BtnActions">
 							<a href="#" class="dropdown-item px-3 py-2 b-bottom text-sm text-live" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil"></span> '.JText::_('TEXT_EDIT').'</a>
 							<a href="#" class="dropdown-item px-3 py-2 b-bottom text-sm text-danger" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash"></span> '.JText::_('TEXT_DELETE').'</a>
 							<span class="dropdown-item px-3 py-2 b-bottom text-sm">
@@ -207,7 +206,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$createdBy = '<span class="btn btn-xs btn-link base-icon-user cursor-help hasTooltip" title="'.baseHelper::nameFormat($client).'"></span>';
 			endif;
 
-			$toggleStatus = '';
 			if($hasClient) {
 				$toggleStatus = '<span id="'.$APPTAG.'-item-'.$item->id.'-status" class="base-icon-'.$iconStatus.' text-'.$colorStatus.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$item->status).'" data-id="'.$item->id.'" data-status="'.$item->status.'"></span>';
 			} else {

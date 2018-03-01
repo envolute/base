@@ -4,6 +4,7 @@
  * EM: 18/02/2016
 */
 defined('_JEXEC') or die;
+$ajaxRequest = false;
 require('config.php');
 
 // ACESSO
@@ -58,6 +59,7 @@ if($hasBrintell) {
 	// METRICS
 	echo '<div class="row">';
 
+		$filterProject_1 = $filterProject_2 = $filterProject_3 = '';
 		if($pID) {
 
 			$filterProject_1 = '`project_id` = '.$pID.' AND ';

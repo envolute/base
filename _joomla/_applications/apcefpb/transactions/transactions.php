@@ -817,10 +817,7 @@ jQuery(function() {
 			formFilter.find('#<?php echo $APPTAG?>-seq').val(val);
 		};
 
-}); // CLOSE JQUERY->READY
-
-jQuery(window).on('load', function() {
-
+	// JQUERY VALIDATION
 	// custom validation for phone number
 	jQuery.validator.addMethod("validaCardLimit", function(value, element, param) {
 		var v = value.replace(/\./g, '').replace(/\,/g, '.');
@@ -828,7 +825,6 @@ jQuery(window).on('load', function() {
 		return this.optional(element) || parseFloat(v) <= parseFloat(p);
 	}, '');
 
-	// Jquery Validation
 	window.<?php echo $APPTAG?>_validator = mainForm_<?php echo $APPTAG?>.validate({
 		rules: {
 			price: {

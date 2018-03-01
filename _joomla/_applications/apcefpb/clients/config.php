@@ -51,15 +51,15 @@ $_SESSION[$APPTAG.'cardLimit'] = '300,00'; // default
 // Restrict Access
 
 	// Acesso default, quando não for definido no componente ou módulo
-	$viewerDef	= array(0); // 'default' apenas visualiza o componente. IMPORTANTE: não deve ser vazio. Então => '0'
-	$authorDef	= array(0); // 'default' cria, mas só edita ou deleta o seu. IMPORTANTE: não deve ser vazio. Então => '0'
-	$editorDef	= array(0); // 'default' cria e edita, mas só deleta o seu. IMPORTANTE: não deve ser vazio. Então => '0'
+	$viewerDef	= array(); // 'default' apenas visualiza o componente. IMPORTANTE: não deve ser vazio. Então => '0'
+	$authorDef	= array(); // 'default' cria, mas só edita ou deleta o seu. IMPORTANTE: não deve ser vazio. Então => '0'
+	$editorDef	= array(); // 'default' cria e edita, mas só deleta o seu. IMPORTANTE: não deve ser vazio. Então => '0'
 	$adminDef	= array(6,7,8); // 'default' Gerente, Administrador, Desenvolvedor
 	// Registra os parâmetros na session para os arquivos 'ajax'
 	if(!$ajaxRequest) {
 		$_SESSION[$APPTAG.'ViewerGroups'] = (isset(${$APPTAG.'ViewerGroups'}) && count(${$APPTAG.'ViewerGroups'})) ? array_unique(array_merge($viewerDef,${$APPTAG.'ViewerGroups'})) : $viewerDef;
-		$_SESSION[$APPTAG.'AuthorGroups'] = (isset(${$APPTAG.'AuthorGroups'}) && count(${$APPTAG.'AuthorGroups'})) ? array_unique(array_merge($adminDef,${$APPTAG.'AuthorGroups'})) : $authorDef;
-		$_SESSION[$APPTAG.'EditorGroups'] = (isset(${$APPTAG.'EditorGroups'}) && count(${$APPTAG.'EditorGroups'})) ? array_unique(array_merge($adminDef,${$APPTAG.'EditorGroups'})) : $editorDef;
+		$_SESSION[$APPTAG.'AuthorGroups'] = (isset(${$APPTAG.'AuthorGroups'}) && count(${$APPTAG.'AuthorGroups'})) ? array_unique(array_merge($authorDef,${$APPTAG.'AuthorGroups'})) : $authorDef;
+		$_SESSION[$APPTAG.'EditorGroups'] = (isset(${$APPTAG.'EditorGroups'}) && count(${$APPTAG.'EditorGroups'})) ? array_unique(array_merge($editorDef,${$APPTAG.'EditorGroups'})) : $editorDef;
 		$_SESSION[$APPTAG.'AdminGroups'] = (isset(${$APPTAG.'AdminGroups'}) && count(${$APPTAG.'AdminGroups'})) ? array_unique(array_merge($adminDef,${$APPTAG.'AdminGroups'})) : $adminDef;
 	}
 	// ----------------------------------------------------

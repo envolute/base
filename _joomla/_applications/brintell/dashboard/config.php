@@ -6,8 +6,20 @@ require(JPATH_BASE.'/libraries/envolute/_system.vars.php');
 // App Configuration's Vars
 $cfg = array();
 $cfg['project']	= 'brintell';
+$cfg['parent']	= '';
 // App Define
 $APPNAME		= 'dashboard';
+$APPPATH		= !empty($cfg['parent']) ? $cfg['parent'] : $APPNAME;
+$MAIN_TB		= '';
+$APPTAG			= isset(${$APPNAME.'AppTag'}) ? ${$APPNAME.'AppTag'} : $APPNAME;
+$newInstance	= ($APPTAG != $APPNAME) ? true : false;
+
+// URL's {http://...}
+$URL_APP        = $_APPS.$APPNAME;
+$URL_APP_FILE   = $URL_APP.DS.$APPNAME;
+// PATH's {public_html/SITE/...}
+$PATH_APP       = JPATH_APPS.DS.$APPNAME;               // Caminho do APP {../docs}
+$PATH_APP_FILE  = JPATH_APPS.DS.$APPNAME.DS.$APPNAME;   // Caminho do arquivo default do app {../docs/docs...}
 
 // carrega o arquivo de tradução
 $lang = JFactory::getLanguage();

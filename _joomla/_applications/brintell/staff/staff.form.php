@@ -186,7 +186,13 @@ $users = $db->loadObjectList();
 				<div id="accessFields" class="collapse">
 					<hr class="mt-0 new-user-data" hidden />
 					<div class="row">
-						<div class="col-lg-6 new-user-data" hidden>
+						<?php
+							// IMPORTANTE:
+							// O campo abaixo fica 'hidden' para evitar erros na hora de cadastrar
+							// Teoricamente, todos os usuários serão cadastrados pela App
+							// => PARA HABILITAR NOVAMENTE O CAMPO, APENAS ADICIONE A CLASS 'new-user-data' NA DIV ABAIXO
+						?>
+						<div class="col-lg-6" hidden>
 							<div class="form-group">
 								<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_USER_ACCESS_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_USER_ACCESS'); ?></label>
 								<div class="input-group">
@@ -211,7 +217,7 @@ $users = $db->loadObjectList();
 								<input type="hidden" name="cusergroup" id="<?php echo $APPTAG?>-cusergroup" />
 							</div>
 						</div>
-						<div class="col-sm-6 col-lg new-user-data" hidden>
+						<div class="col-sm-6 col-lg-3 new-user-data" hidden>
 							<div class="form-group <?php echo $APPTAG?>-user-create-data field-required">
 								<label class="label-sm"><?php echo JText::_('FIELD_LABEL_USERNAME'); ?></label>
 								<div class="input-group">

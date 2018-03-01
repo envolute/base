@@ -121,7 +121,7 @@ $clients = $db->loadObjectList();
 					<div class="row">
 						<div class="col-lg-6">
 							<div class="form-group">
-								<label class="d-block">
+								<label class="label-sm d-block">
 									<?php echo JText::_('FIELD_LABEL_PASSWORD'); ?>
 									<small class="text-live font-condensed float-right pt-1"><?php echo JText::_('TEXT_OPTIONAL'); ?></small>
 								</label>

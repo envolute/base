@@ -19,10 +19,6 @@ $groups = $user->groups;
 // init general css/js files
 require(JPATH_CORE.DS.'apps/_init.app.php');
 
-// verifica o acesso
-$hasAuthor		= array_intersect($groups, $cfg['groupId']['author']); // se está na lista de administradores permitidos
-$hasExternal	= array_intersect($groups, $cfg['groupId']['external']); // se está na lista de administradores permitidos
-
 // DATABASE CONNECT
 $db = JFactory::getDbo();
 
@@ -118,7 +114,6 @@ jQuery(function() {
 			checkOption(type, 0);
 			requests.selectUpdate(''); // select
 			<?php if($cfg['canEdit']) :?>
-				console.log('<?php echo $hasAuthor ? $user->id: 0?>');
 				assign_to.selectUpdate('<?php echo $hasAuthor ? $user->id : 0?>'); // select
 				cassign_to.selectUpdate('0'); // select
 			<?php endif;?>
@@ -403,10 +398,7 @@ jQuery(function() {
 			return false;
 		};
 
-}); // CLOSE JQUERY->READY
-
-jQuery(window).on('load', function() {
-	// Jquery Validation
+	// JQUERY VALIDATION
 	window.<?php echo $APPTAG?>_validator = mainForm_<?php echo $APPTAG?>.validate({
 		//don't remove this
 		invalidHandler: function(event, validator) {
@@ -442,7 +434,7 @@ jQuery(window).on('load', function() {
 	<?php if($cfg['showApp']) :?>
 		<div class="list-toolbar<?php echo ($cfg['staticToolbar'] ? '' : ' floating')?> hidden-print">
 			<?php
-			if($cfg['showAddBtn'] && ($hasAdmin || $hasAuthor)) echo $addBtn;
+			if($cfg['showAddBtn'] && $cfg['canAdd']) echo $addBtn;
 			if($cfg['showList']) :
 				if($cfg['listFull']) :
 					if($cfg['canEdit']) : ?>

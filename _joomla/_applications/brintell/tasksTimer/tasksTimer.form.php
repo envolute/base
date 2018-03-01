@@ -2,10 +2,11 @@
 defined('_JEXEC') or die;
 
 // Tasks
+$taskFilter = (!$hasAdmin) ? 'FIND_IN_SET ('.$user->id.', T1.assign_to) OR T1.created_by = '.$user->id.' AND ' : '';
 $query = '
 	SELECT T1.*
 	FROM '. $db->quoteName('#__'.$cfg['project'].'_tasks') .' T1
-	WHERE T1.state = 1 ORDER BY T1.id DESC
+	WHERE '.$taskFilter.'T1.state = 1 ORDER BY T1.id DESC
 ';
 $db->setQuery($query);
 $tasks = $db->loadObjectList();

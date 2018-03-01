@@ -40,7 +40,7 @@ if($hasClient && $vID == 0) {
 	$app->redirect(JURI::root(true).'/apps/clients/staff/view');
 	exit();
 } else {
-	$vID = $user->id;
+	$vID = ($vID > 0) ? $vID : $user->id;
 }
 
 // Carrega o arquivo de tradução

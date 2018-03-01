@@ -51,8 +51,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	// verifica o acesso
 	require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxAccess.php');
-	$hasDeveloper	= array_intersect($groups, $cfg['groupId']['developer']); // se está na lista de administradores permitidos
-	$hasExternal	= array_intersect($groups, $cfg['groupId']['external']); // se está na lista de administradores permitidos
 
 	// database connect
 	$db		= JFactory::getDbo();
@@ -167,13 +165,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			endif;
 			$regInfo = '<div class="small text-muted">'.$regInfo.'</div>';
 
-			$btnActions = '';
-			if($hasAdmin || ($item->created_by == $user->id)) :
-				$btnActions = '
-					<a href="#" class="btn btn-xs btn-link hasTooltip" title="'.JText::_('TEXT_COPY_LINK_TO_SHARE').'" onclick="copyToClipboard(\''.$_ROOT.'apps/'.$APPPATH.'/view?vID='.$item->id.'\')"><span class="base-icon-link"></span></a>
+			$btnActions = '<a href="#" class="btn btn-xs btn-link hasTooltip" title="'.JText::_('TEXT_COPY_LINK_TO_SHARE').'" onclick="copyToClipboard(\''.$_ROOT.'apps/'.$APPPATH.'/view?vID='.$item->id.'\', \''.JText::_('MSG_COPY_LINK_TO_SHARE').'\')"><span class="base-icon-link"></span></a>';
+			if($cfg['canEdit'] || ($item->created_by == $user->id)) :
+				$btnActions .= '
 					<div class="dropdown">
 						<button class="btn btn-xs btn-link base-icon-cog" type="button" id="'.$APPTAG.'BtnActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-						<div class="dropdown-menu dropdown-menu-right text-sm p-0" aria-labelledby="'.$APPTAG.'BtnActions">
+						<div class="dropdown-menu dropdown-menu-right text-sm p-0 set-shadow" aria-labelledby="'.$APPTAG.'BtnActions">
 							<a href="#modal-tasksTimer" class="dropdown-item px-3 py-2 b-bottom text-sm text-primary" onclick="tasksTimer_setParent('.$item->id.')" data-toggle="modal" data-backdrop="static" data-keyboard="false"><span class="base-icon-clock"></span> '.JText::_('TEXT_INSERT_TIME').'</a>
 							<a href="#" class="dropdown-item px-3 py-2 b-bottom text-sm text-live" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil"></span> '.JText::_('TEXT_EDIT').'</a>
 							<a href="#" class="dropdown-item px-3 py-2 b-bottom text-sm text-danger" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash"></span> '.JText::_('TEXT_DELETE').'</a>
@@ -209,12 +206,18 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$assigned = '<span class="btn btn-xs btn-link base-icon-user cursor-help hasTooltip" title="'.$uName.'"></span>';
 			endif;
 
+			if(!$cfg['canEdit'] && !($item->created_by == $user->id)) {
+				$toggleStatus = '<span id="'.$APPTAG.'-item-'.$item->id.'-status" class="base-icon-'.$iconStatus.' text-'.$colorStatus.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$item->status).'" data-id="'.$item->id.'" data-status="'.$item->status.'"></span>';
+			} else {
+				$toggleStatus = '<a href="#" id="'.$APPTAG.'-item-'.$item->id.'-status" class="base-icon-'.$iconStatus.' text-'.$colorStatus.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$item->status).'" data-id="'.$item->id.'" data-status="'.$item->status.'" onclick="'.$APPTAG.'_setStatusModal(this)"></a>';
+			}
+
 			// Resultados
 			$html .= '
 				<div id="'.$APPTAG.'-item-'.$item->id.'" class="pos-relative rounded b-top-2 b-'.$colorStatus.' bg-white mb-3 set-shadow">
 					<div class="d-flex d-justify-content align-items-center lh-1-2">
 						<div class="align-self-stretch py-3 px-2 bg-gray-200">
-							<a href="#" id="'.$APPTAG.'-item-'.$item->id.'-status" class="base-icon-'.$iconStatus.' text-'.$colorStatus.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$item->status).'" data-id="'.$item->id.'" data-status="'.$item->status.'" onclick="'.$APPTAG.'_setStatusModal(this)"></a>
+							'.$toggleStatus.'
 						</div>
 						<a href="#'.$APPTAG.'-item-view" class="set-base-modal text-sm text-'.$colorStatus.' py-1 px-2" onclick="'.$APPTAG.'_setItemView('.$item->id.')">
 							'.$locked.baseHelper::nameFormat($item->subject).'

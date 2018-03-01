@@ -119,7 +119,7 @@ $where = '';
 	// tasks -> select
 	// se não for um admin, mostra apenas as horas do usuário
 	$flt_task = '';
-	$taskFilter .= ($projectID > 0) ? 'project_id = '.$projectID.' AND ' : '';
+	$taskFilter = ($projectID > 0) ? 'project_id = '.$projectID.' AND ' : '';
 	$taskFilter .= (!$hasAdmin) ? 'FIND_IN_SET ('.$fAssign.', assign_to) AND ' : '';
 	$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_tasks') .' WHERE '.$taskFilter.'state = 1 ORDER BY created_date DESC';
 	$db->setQuery($query);

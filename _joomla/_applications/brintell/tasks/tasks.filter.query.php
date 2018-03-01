@@ -18,11 +18,9 @@ $where = '';
 	if($fProj != 0) $where .= ' AND '.$db->quoteName('T1.project_id').' = '.$fProj;
 	// ASSIGN TO
 	$assigned = '';
-	// Mostra apenas as tasks do próprio usuário se:
-	// 1 - For um 'External'
-	// 2 - Um 'Developer' acessando sem definir um projeto
+	// Mostra apenas as tasks do próprio usuário se não estiver como 'admin'
 	// Obs: acessando um projeto, o dev pode ver todas as tasks...
-	if($hasExternal || ($hasDeveloper && $pID == 0)) {
+	if(!$hasAdmin && $pID == 0) {
 
 		$fAssign = $user->id;
 		$assigned = ' AND ('.$db->quoteName('T1.created_by').' = '.$user->id.' OR FIND_IN_SET ('.$fAssign.', '.$db->quoteName('T1.assign_to').'))';
@@ -34,13 +32,14 @@ $where = '';
 
 		// Set visibility
 		// OR (visibility = project) OR (created_by = current user)
-		$assigned .= ' AND ('.$db->quoteName('T1.visibility').' = 0 OR '.$db->quoteName('T1.created_by').' = '.$user->id;
+		$assigned .= ' AND ('.$db->quoteName('T1.visibility').' = 0 OR '.$db->quoteName('T1.created_by').' = '.$user->id.')';
 		// OR assigned to me
 		$fAssign = $app->input->get('fAssign', array(), 'array');
 		for($i = 0; $i < count($fAssign); $i++) {
-			$assigned .= ' OR FIND_IN_SET ('.$fAssign[$i].', T1.assign_to)';
+			$assigned .= ($i == 0) ? ' AND (' : ' OR ';
+			$assigned .= 'FIND_IN_SET ('.$fAssign[$i].', T1.assign_to)';
+			$assigned .= ($i == (count($fAssign) - 1)) ? ')' : '';
 		}
-		$assigned .= ')';
 
 	}
 	$where .= $assigned;
