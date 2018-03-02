@@ -108,8 +108,8 @@ jQuery(function() {
 
 			user_id.selectUpdate('<?php echo $user->id?>'); // select
 			date.val('<?php echo date('d/m/Y')?>');
-			start_hour.selectUpdate('00:00:00'); // select
-			end_hour.selectUpdate('00:00:00'); // select
+			start_hour.val('<?php echo date('H:i')?>'); // select
+			end_hour.val(''); // select
 			time.selectUpdate('00:00:00'); // select
 			total_time.val('');
 			hours.val('');
@@ -252,8 +252,13 @@ jQuery(function() {
 						user_id.selectUpdate(item.user_id); // selects
 						date.val(dateFormat(item.date)); // DATE -> conversão de data
 
-						start_hour.selectUpdate(item.start_hour); // select
-						end_hour.selectUpdate(item.end_hour); // select
+						start_hour.val(item.start_hour); // select
+						// END HOUR
+						// Se apenas a hora de início for informada, a hora final será preenchida com a hora atual
+						// afim de facilitar o preenchimento na hora de fechar o timesheet
+						var endHour = (item.start_hour != '00:00:00' && item.end_hour == '00:00:00' && item.time == '00:00:00') ? '<?php echo date('H:i')?>' : item.end_hour;
+						endHour = (endHour != '00:00:00') ? endHour : '';
+						end_hour.val(endHour); // select
 						time.selectUpdate(item.time); // select
 						total_time.val(item.total_time);
 						hours.val(item.hours);

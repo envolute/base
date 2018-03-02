@@ -282,6 +282,12 @@ jQuery(function() {
 			setFormDefinitions();
 		});
 
+		// CUSTOM -> Confirm alter state (close task)
+		window.<?php echo $APPTAG?>_confirmState = function(itemID, msgType) {
+			var msg = msgType ? '<?php echo JText::_('MSG_CLOSE_ITEM_CONFIRM')?>' : '<?php echo JText::_('MSG_OPEN_ITEM_CONFIRM')?>';
+			if(confirm(msg)) <?php echo $APPTAG?>_setState(itemID, null, false, 'base-icon-toggle-on', 'base-icon-toggle-on', 'text-success', 'text-muted');
+		};
+
 	// AJAX CONTROLLERS
 	// métodos controladores das ações referente ao banco de dados e envio de arquivos
 

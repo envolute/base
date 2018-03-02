@@ -241,7 +241,7 @@ if($vID != 0) :
 			}
 			$btnActions .= '
 				'.$appActions.'
-				<a href="#" class="btn btn-lg btn-link py-0 px-2" onclick="'.$MAINTAG.'_setState('.$view->id.', null, false, \'base-icon-toggle-on\', \'base-icon-toggle-on\', \'text-success\', \'text-muted\')" id="'.$MAINTAG.'-state-'.$view->id.'">
+				<a href="#" class="btn btn-lg btn-link py-0 px-2" onclick="'.$MAINTAG.'_confirmState('.$view->id.', '.$view->state.')" id="'.$MAINTAG.'-state-'.$view->id.'">
 					<span class="'.($view->state == 1 ? 'base-icon-toggle-on text-success' : 'base-icon-toggle-on text-muted').' hasTooltip" title="'.JText::_(($view->state == 1 ? 'MSG_CLOSED_ITEM' : 'MSG_ACTIVATE_ITEM')).'"></span>
 				</a>
 			';

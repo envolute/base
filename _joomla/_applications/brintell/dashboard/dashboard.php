@@ -130,7 +130,7 @@ if($hasBrintell) {
 		';
 		$db->setQuery($query);
 		$time_worked = $db->loadResult();
-		$time_worked = !empty($time_worked) ? $time_worked : 0;
+		$time_worked = !empty($time_worked) ? round($time_worked, 0) : 0;
 		echo '
 			<div class="col-sm-6 col-md pb-4">
 				<div class="pos-relative rounded b-top-2 b-'.$timeColor.' bg-white set-shadow">

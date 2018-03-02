@@ -189,7 +189,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							</span>
 						</div>
 					</div>
-					<a href="#" class="px-2 ml-1 b-left" onclick="'.$APPTAG.'_setState('.$item->id.', null, false, \'base-icon-toggle-on\', \'base-icon-toggle-on\', \'text-success\', \'text-muted\')" id="'.$APPTAG.'-state-'.$item->id.'">
+					<a href="#" class="px-2 ml-1 b-left" onclick="'.$APPTAG.'_confirmState('.$item->id.', '.$item->state.')" id="'.$APPTAG.'-state-'.$item->id.'">
 						<span class="'.($item->state == 1 ? 'base-icon-toggle-on text-success' : 'base-icon-toggle-on text-muted').' hasTooltip" title="'.JText::_(($item->state == 1 ? 'MSG_CLOSED_ITEM' : 'MSG_ACTIVATE_ITEM')).'"></span>
 					</a>
 				';

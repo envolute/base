@@ -13,7 +13,10 @@ jQuery(function() {
 		}
 		document.execCommand("copy");
 		$temp.remove();
-		if(isSet(message)) $.baseNotify({ msg: message });
+		if(isSet(message)) $.baseNotify({
+			msg: message,
+			alertTime: 3000
+		});
 	};
 
 });

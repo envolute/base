@@ -114,6 +114,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	      $total_time = $time['time'];
 	      $hours = $time['hours'];
 	    endif;
+		// round hour value
+		$hours = round($hours, 2);
 	  	$request['note']         = $input->get('note', '', 'string');
 
 		// SAVE CONDITION
@@ -391,93 +393,116 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				// validation
 				if($save_condition) :
 
-					// Prepare the insert query
-					$query  = '
-						INSERT INTO '. $db->quoteName($cfg['mainTable']) .'('.
-							$db->quoteName('task_id') .','.
-				            $db->quoteName('user_id') .','.
-		    				$db->quoteName('date') .','.
-		    				$db->quoteName('start_hour') .','.
-		    				$db->quoteName('end_hour') .','.
-		    				$db->quoteName('time') .','.
-		    				$db->quoteName('total_time') .','.
-		    				$db->quoteName('hours') .','.
-		    				$db->quoteName('note') .','.
-		    				$db->quoteName('state') .','.
-		    				$db->quoteName('created_by')
-						.') VALUES ('.
-							$request['task_id'] .','.
-							$request['user_id'] .','.
-							$db->quote($request['date']) .','.
-							$db->quote($request['start_hour']) .','.
-							$db->quote($request['end_hour']) .','.
-							$db->quote($request['time']) .','.
-							$db->quote($total_time) .','.
-							$hours .','.
-							$db->quote($request['note']) .','.
-							$request['state'] .','.
-							$user->id
-						.')
+					// CHECK IF EXIST A TIMER COUNT IN ACTIVITY
+					$query	= '
+						SELECT COUNT(*) FROM '.$db->quoteName($cfg['mainTable']) .'
+						WHERE
+							'. $db->quoteName('user_id') .' = '. $request['user_id'] .' AND
+							'. $db->quoteName('start_hour') .' != "00:00:00" AND
+							'. $db->quoteName('end_hour') .' = "00:00:00" AND
+							'. $db->quoteName('time') .' = "00:00:00"
 					';
+					$db->setQuery($query);
+					$timer = $db->loadResult();
 
-					try {
+					// save if haven't timer count active
+					if(!$timer) {
+						// Prepare the insert query
+						$query  = '
+							INSERT INTO '. $db->quoteName($cfg['mainTable']) .'('.
+								$db->quoteName('task_id') .','.
+					            $db->quoteName('user_id') .','.
+			    				$db->quoteName('date') .','.
+			    				$db->quoteName('start_hour') .','.
+			    				$db->quoteName('end_hour') .','.
+			    				$db->quoteName('time') .','.
+			    				$db->quoteName('total_time') .','.
+			    				$db->quoteName('hours') .','.
+			    				$db->quoteName('note') .','.
+			    				$db->quoteName('state') .','.
+			    				$db->quoteName('created_by')
+							.') VALUES ('.
+								$request['task_id'] .','.
+								$request['user_id'] .','.
+								$db->quote($request['date']) .','.
+								$db->quote($request['start_hour']) .','.
+								$db->quote($request['end_hour']) .','.
+								$db->quote($request['time']) .','.
+								$db->quote($total_time) .','.
+								$hours .','.
+								$db->quote($request['note']) .','.
+								$request['state'] .','.
+								$user->id
+							.')
+						';
 
-						$db->setQuery($query);
-						$db->execute();
-						$id = $db->insertid();
-						// Upload
-						if($cfg['hasUpload'] && $id)
-						$fileMsg = uploader::uploadFile($id, $cfg['fileTable'], $_FILES[$cfg['fileField']], $fileGrp, $fileGtp, $fileCls, $fileLbl, $cfg);
+						try {
 
-						// CREATE RELATIONSHIP
-						if(!empty($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelNameId']) && !empty($_SESSION[$RTAG.'AppNameId']) && !empty($request['relationId'])) :
-							$query  = '
-								INSERT INTO '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .'('.
-								$db->quoteName($_SESSION[$RTAG.'AppNameId']) .','.
-								$db->quoteName($_SESSION[$RTAG.'RelNameId'])
-								.') VALUES ('.
-								$id .','.
-								$request['relationId']
-							.')';
 							$db->setQuery($query);
 							$db->execute();
-						endif;
+							$id = $db->insertid();
+							// Upload
+							if($cfg['hasUpload'] && $id)
+							$fileMsg = uploader::uploadFile($id, $cfg['fileTable'], $_FILES[$cfg['fileField']], $fileGrp, $fileGtp, $fileCls, $fileLbl, $cfg);
 
-						// UPDATE FIELD
-						$element = $elemVal = $elemLabel = '';
-						if(!empty($_SESSION[$RTAG.'FieldUpdated']) && !empty($_SESSION[$RTAG.'TableField'])) :
-							$element = $_SESSION[$RTAG.'FieldUpdated'];
-							$elemVal = $id;
-							$query = 'SELECT '. (preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $_SESSION[$RTAG.'TableField']) ? $db->quoteName($_SESSION[$RTAG.'TableField']) : $_SESSION[$RTAG.'TableField']) .' FROM '. $db->quoteName($cfg['mainTable']).' WHERE '. $db->quoteName('id') .' = '.$id.' AND state = 1';
-							$db->setQuery($query);
-							$elemLabel = $db->loadResult();
-						endif;
+							// CREATE RELATIONSHIP
+							if(!empty($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelNameId']) && !empty($_SESSION[$RTAG.'AppNameId']) && !empty($request['relationId'])) :
+								$query  = '
+									INSERT INTO '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .'('.
+									$db->quoteName($_SESSION[$RTAG.'AppNameId']) .','.
+									$db->quoteName($_SESSION[$RTAG.'RelNameId'])
+									.') VALUES ('.
+									$id .','.
+									$request['relationId']
+								.')';
+								$db->setQuery($query);
+								$db->execute();
+							endif;
 
-						$data[] = array(
-							'status'			=> 1,
-							'msg'				=> JText::_('MSG_SAVED'),
-							'regID'				=> $id,
-							'uploadError'		=> $fileMsg,
-							'parentField'		=> $element,
-							'parentFieldVal'	=> $elemVal,
-							'parentFieldLabel'	=> baseHelper::nameFormat($elemLabel)
-						);
+							// UPDATE FIELD
+							$element = $elemVal = $elemLabel = '';
+							if(!empty($_SESSION[$RTAG.'FieldUpdated']) && !empty($_SESSION[$RTAG.'TableField'])) :
+								$element = $_SESSION[$RTAG.'FieldUpdated'];
+								$elemVal = $id;
+								$query = 'SELECT '. (preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $_SESSION[$RTAG.'TableField']) ? $db->quoteName($_SESSION[$RTAG.'TableField']) : $_SESSION[$RTAG.'TableField']) .' FROM '. $db->quoteName($cfg['mainTable']).' WHERE '. $db->quoteName('id') .' = '.$id.' AND state = 1';
+								$db->setQuery($query);
+								$elemLabel = $db->loadResult();
+							endif;
 
-					} catch (RuntimeException $e) {
+							$data[] = array(
+								'status'			=> 1,
+								'msg'				=> JText::_('MSG_SAVED'),
+								'regID'				=> $id,
+								'uploadError'		=> $fileMsg,
+								'parentField'		=> $element,
+								'parentFieldVal'	=> $elemVal,
+								'parentFieldLabel'	=> baseHelper::nameFormat($elemLabel)
+							);
 
-						// Error treatment
-						switch($e->getCode()) {
-							case '1062':
-							$sqlErr = JText::_('MSG_SQL_DUPLICATE_KEY');
-							break;
-							default:
-							$sqlErr = 'Erro: '.$e->getCode().'. '.$e->getMessage();
+						} catch (RuntimeException $e) {
+
+							// Error treatment
+							switch($e->getCode()) {
+								case '1062':
+								$sqlErr = JText::_('MSG_SQL_DUPLICATE_KEY');
+								break;
+								default:
+								$sqlErr = 'Erro: '.$e->getCode().'. '.$e->getMessage();
+							}
+
+							$data[] = array(
+								'status'			=> 0,
+								'msg'				=> $sqlErr,
+								'uploadError'		=> $fileMsg
+							);
+
 						}
 
+					} else {
+
 						$data[] = array(
-							'status'			=> 0,
-							'msg'				=> $sqlErr,
-							'uploadError'		=> $fileMsg
+							'status'				=> 0,
+							'msg'					=> JText::_('MSG_TIME_COUNT_ACTIVE')
 						);
 
 					}

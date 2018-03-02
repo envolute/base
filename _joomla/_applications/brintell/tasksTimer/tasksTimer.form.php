@@ -29,7 +29,7 @@ $users = $db->loadObjectList();
 			<option value="0">- <?php echo JText::_('TEXT_SELECT'); ?> -</option>
 			<?php
 				foreach ($tasks as $obj) {
-					echo '<option value="'.$obj->id.'">#'.$obj->id.' - '.baseHelper::nameFormat($obj->subject).'</option>';
+					echo '<option value="'.$obj->id.'">'.$obj->id.' - '.baseHelper::nameFormat($obj->subject).'</option>';
 				}
 			?>
 		</select>
@@ -44,20 +44,7 @@ $users = $db->loadObjectList();
 	<div class="col-sm-5 col-lg-3">
 		<div class="form-group">
 			<label class="label-sm"><?php echo JText::_('FIELD_LABEL_START_HOUR'); ?></label>
-			<select name="start_hour" id="<?php echo $APPTAG?>-start_hour" class="form-control">
-				<option value="00:00:00">- <?php echo JText::_('TEXT_SELECT'); ?> -</option>
-				<?php
-				for($i = 0; $i < 24; $i++) {
-					$t = ($i < 10) ? '0'.$i : $i;
-					$z = ($i == 0) ? '1' : '0';
-					echo '<option value="'.$t.':00:0'.$z.'">'.$t.':00</option>';
-					for($j = 1; $j <= 3; $j++) {
-						$m = $j * 15;
-						echo '<option value="'.$t.':'.$m.':00">'.$t.':'.$m.'</option>';
-					}
-				}
-				?>
-			</select>
+			<input type="text" name="start_hour" id="<?php echo $APPTAG?>-start_hour" class="form-control field-time" data-second="false" />
 		</div>
 	</div>
 	<div class="col-2 col-lg-1">
@@ -69,20 +56,7 @@ $users = $db->loadObjectList();
 	<div class="col-sm-5 col-lg-3">
 		<div class="form-group">
 			<label class="label-sm"><?php echo JText::_('FIELD_LABEL_END_HOUR'); ?></label>
-			<select name="end_hour" id="<?php echo $APPTAG?>-end_hour" class="form-control">
-				<option value="00:00:00">- <?php echo JText::_('TEXT_SELECT'); ?> -</option>
-				<?php
-				for($i = 0; $i < 24; $i++) {
-					$t = ($i < 10) ? '0'.$i : $i;
-					$z = ($i == 0) ? '1' : '0';
-					echo '<option value="'.$t.':00:0'.$z.'">'.$t.':00</option>';
-					for($j = 1; $j <= 3; $j++) {
-						$m = $j * 15;
-						echo '<option value="'.$t.':'.$m.':00">'.$t.':'.$m.'</option>';
-					}
-				}
-				?>
-			</select>
+			<input type="text" name="end_hour" id="<?php echo $APPTAG?>-end_hour" class="form-control field-time" data-second="false" />
 		</div>
 	</div>
 	<div class="col-2">

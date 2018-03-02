@@ -44,7 +44,11 @@ jQuery(function() {
 							var display = jQuery('#<?php echo $APPTAG?>-display-counter');
 							setTimer(start_time, display);
 							// notify about activity
-							$.baseNotify({ msg: '<?php echo JText::_('MSG_ACTIVITY_COUNTER_PREFIX')?> <strong>ID: #'+item.task_id+'</strong> <?php echo JText::_('MSG_ACTIVITY_COUNTER_SUFFIX')?>', type: "info" });
+							$.baseNotify({
+								msg: '<?php echo JText::_('MSG_ACTIVITY_COUNTER_PREFIX')?> <strong>ID: #'+item.task_id+'</strong> <?php echo JText::_('MSG_ACTIVITY_COUNTER_SUFFIX')?>',
+								type: "info",
+								alertTime: 5000
+							});
 						} else {
 							<?php echo $APPTAG?>TimerID = 0;
 							jQuery('#<?php echo $APPTAG?>-display-counter').text('00:00:00');
