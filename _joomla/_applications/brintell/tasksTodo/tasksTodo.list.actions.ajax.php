@@ -133,9 +133,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				}
 			endif;
 
-			$attachs = !empty($listFiles) ? '<div class="font-condensed text-sm pt-1">'.$listFiles.'</div>' : '';
-			$desc = !empty($item->description) ? '<div class="font-condensed text-sm"><hr class="my-2" />'.$item->description.'</div>' : '';
-
 			$btnState = '';
 			$txtState = ($item->state == 1) ? ' class="text-success"' : ' class="text-danger" style="text-decoration: line-through;"';
 			if($canEdit) :
@@ -145,35 +142,69 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					</a>
 				';
 			endif;
-			$btnEdit = $canEdit ? '<a href="#" class="mr-1" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil text-live hasTooltip" title="'.JText::_('TEXT_EDIT').'"></span></a> ' : '';
-			$btnDelete = $canDelete ? '<a href="#" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash text-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'"></span></a>' : '';
-
-			$collapse = '';
-			$btnCollapse = '<span class="text-sm float-right">'.$btnEdit.$btnDelete.'</span>';
-			if(!empty($attachs) || !empty($desc)) :
-				$collapse = '
-					<div id="'.$APPTAG.'-taskTodo-item-'.$item->id.'" class="collapse">
-						'.$desc.$attachs.'
-						<div class="pt-2 text-sm">'.$btnEdit.$btnDelete.'</div>
+			$btnEdit = $canEdit ? '<a href="#" class="dropdown-item p-2 b-bottom small text-live" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil text-live"></span> '.JText::_('TEXT_EDIT').'</a> ' : '';
+			$btnDelete = $canDelete ? '<a href="#" class="dropdown-item p-2 b-bottom small text-danger" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash text-danger"></span> '.JText::_('TEXT_DELETE').'</a>' : '';
+			$btnActions = '';
+			if(!empty($btnEdit) || !empty($btnDelete)) {
+				$btnActions .= '
+					<div class="dropdown d-inline-block">
+						<a href="#" class="small base-icon-cog" id="'.$APPTAG.'BtnActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+						<div class="dropdown-menu p-0 set-shadow" aria-labelledby="'.$APPTAG.'BtnActions">
+							'.$btnEdit.$btnDelete.'
+						</div>
 					</div>
 				';
-				$btnCollapse = '
-					<button class="btn btn-xs btn-link float-right toggle-state" data-toggle="collapse" data-target="#'.$APPTAG.'-taskTodo-item-'.$item->id.'" aria-expanded="" aria-controls="taskTodoItem">
-						<span class="base-icon-sort"></span>
-					</button>
+			}
+
+			$desc = '';
+			if(!empty($item->description)) {
+				$desc = '
+					<div class="font-condensed text-sm mt-1 pt-2 pb-1 b-top b-top-dashed">
+						<div class="font-condensed text-sm pb-2">'.$item->description.'</div>
+					</div>
 				';
+			}
+
+			$listFiles = !empty($listFiles) ? '<div class="font-condensed text-sm mt-1 pt-1 b-top b-top-dashed">'.$listFiles.'</div>' : '';
+
+			$collapse = $btnCollapse = '';
+			if(!empty($desc)) {
+				$collapse = '<div id="'.$APPTAG.'-taskTodo-item-'.$item->id.'" class="collapse">'.$desc.'</div>';
+				$btnCollapse = '<a href="#'.$APPTAG.'-taskTodo-item-'.$item->id.'" class="float-right toggle-state toggle-icon base-icon-info-circled hasTooltip" title="'.JText::_('TEXT_CLICK_TO_VIEW_INFO').'" data-icon-default="base-icon-right-dir" data-icon-active="base-icon-down-dir text-live" data-toggle="collapse" aria-expanded="false" aria-controls="taskTodoItem"><span class="base-icon-right-dir ml-1"></span></a>';
+			}
+
+			$info = $btnActions;
+			if($item->deadline != '0000-00-00') {
+				if(!empty($info)) $info .= '<small class="mr-2 b-left"></small>';
+				$info .= '<small class="base-icon-attention text-danger cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_DEADLINE').'"> '.baseHelper::dateFormat($item->deadline).'</small>';
+			}
+			// Assigned
+			if(!empty($item->assign_to)) :
+				if(!empty($info)) $info .= '<small class="mx-2 b-left"></small>';
+				$query = 'SELECT name, nickname FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('user_id') .' IN ('.$item->assign_to.') ORDER BY name';
+				$db->setQuery($query);
+				$staff = $db->loadObjectList();
+				$uName = '';
+				$i = 0;
+				foreach ($staff as $obj) {
+					if($i > 0) $uName .= ', ';
+					$uName .= baseHelper::nameFormat(!empty($obj->nickname) ? $obj->nickname : $obj->name);
+					$i++;
+				}
+				if(!empty($uName)) $info .= '<small class="text-muted">'.JText::_("TEXT_ASSIGN_TO").': <span class="text-live">'.$uName.'</span></small>';
 			endif;
+			if(!empty($info)) $info = '<div class="pt-1 mt-1 b-top b-top-dashed b-primary-lighter lh-1-1">'.$info.'</div>';
 
 			$html .= '
 				<div class="bg-white p-2 mb-1 rounded b-top-2 b-danger set-shadow">
-					<div class="d-flex">
+					<div class="d-flex align-items-center">
 						<div style="flex:0 0 20px;">'.$btnState.'</div>
 						<div style="flex-grow:1;" class="font-condensed lh-1-3">
 							'.$btnCollapse.'
-							 <span'.$txtState.'>'.$item->title.'</span>
+							<span'.$txtState.'>'.$item->title.'</span>
 						</div>
 					</div>
-					'.$collapse.'
+					'.$collapse.$listFiles.$info.'
 				</div>
 			';
 		}

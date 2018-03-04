@@ -393,7 +393,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				elseif($task == 'state') :
 
 					$stateVal = ($state == 2 ? 'IF(state = 1, 0, 1)' : $state);
-					$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '. $db->quoteName('state') .' = '.$stateVal.' WHERE '. $db->quoteName('id') .' IN ('.$ids.')';
+					$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '. $db->quoteName('state') .' = '.$stateVal.', '. $db->quoteName('alter_date') .' = NOW() WHERE '. $db->quoteName('id') .' IN ('.$ids.')';
 
 					try {
 
@@ -621,7 +621,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$url = $_ROOT.'/apps/requests/view?vID='.$id;
 						    $subject = JText::sprintf('MSG_EMAIL_NOTIFY_SUBJECT', $sitename, $id);
 							$eBody = JText::sprintf('MSG_EMAIL_NOTIFY_BODY', baseHelper::nameFormat($name), baseHelper::nameFormat($user->name), $id, $request['subject'], $url);
-							$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_EMAIL_NOTIFY_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle, $domain);
+							$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_EMAIL_NOTIFY_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle, $_ROOT);
 							// envia o email
 							baseHelper::sendMail($mailFrom, $obj->email, $subject, $mailHtml);
 						}

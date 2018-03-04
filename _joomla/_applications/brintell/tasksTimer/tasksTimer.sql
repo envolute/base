@@ -7,6 +7,7 @@ CREATE TABLE `cms_brintell_tasks_timer` (
   `task_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `date` date NOT NULL,
+  `timeType` tinyint(4) NOT NULL,
   `start_hour` time NOT NULL,
   `end_hour` time NOT NULL,
   `time` time NOT NULL,

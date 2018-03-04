@@ -40,60 +40,74 @@ $users = $db->loadObjectList();
 	</div>
 </div>
 <div id="<?php echo $APPTAG?>-task-info" class="pb-2 mb-2 b-bottom"><div class="text-live"></div></div>
-<div class="row no-gutters">
-	<div class="col-sm-5 col-lg-3">
-		<div class="form-group">
-			<label class="label-sm"><?php echo JText::_('FIELD_LABEL_START_HOUR'); ?></label>
-			<input type="text" name="start_hour" id="<?php echo $APPTAG?>-start_hour" class="form-control field-time" data-second="false" />
+<div class="form-group">
+	<span class="btn-group btn-group-sm btn-group-justified" data-toggle="buttons">
+		<label class="btn btn-default btn-active-success">
+			<input type="radio" name="timeType" id="<?php echo $APPTAG?>-timeType-0" value="0" onchange="<?php echo $APPTAG?>_setTime(0)" />
+			<?php echo JText::_('TEXT_CURRENT_TIME'); ?>
+		</label>
+		<label class="btn btn-default btn-active-success">
+			<input type="radio" name="timeType" id="<?php echo $APPTAG?>-timeType-1" value="1" onchange="<?php echo $APPTAG?>_setTime(1)" />
+			<?php echo JText::_('TEXT_MANUAL_TIME'); ?>
+		</label>
+	</span>
+</div>
+<div class="<?php echo $APPTAG?>-toggle-manual-time collapse">
+	<div class="row no-gutters">
+		<div class="col-sm-5 col-lg-3">
+			<div class="form-group">
+				<label class="label-sm"><?php echo JText::_('FIELD_LABEL_START_HOUR'); ?></label>
+				<input type="text" name="start_hour" id="<?php echo $APPTAG?>-start_hour" class="form-control field-time" data-second="false" />
+			</div>
 		</div>
-	</div>
-	<div class="col-2 col-lg-1">
-		<div class="form-group strong text-center">
-			<label class="d-block">&#160;</label>
-			<span class="base-icon-right-big"></span>
+		<div class="col-2 col-lg-1">
+			<div class="form-group strong text-center">
+				<label class="d-block">&#160;</label>
+				<span class="base-icon-right-big"></span>
+			</div>
 		</div>
-	</div>
-	<div class="col-sm-5 col-lg-3">
-		<div class="form-group">
-			<label class="label-sm"><?php echo JText::_('FIELD_LABEL_END_HOUR'); ?></label>
-			<input type="text" name="end_hour" id="<?php echo $APPTAG?>-end_hour" class="form-control field-time" data-second="false" />
+		<div class="col-sm-5 col-lg-3">
+			<div class="form-group">
+				<label class="label-sm"><?php echo JText::_('FIELD_LABEL_END_HOUR'); ?></label>
+				<input type="text" name="end_hour" id="<?php echo $APPTAG?>-end_hour" class="form-control field-time" data-second="false" />
+			</div>
 		</div>
-	</div>
-	<div class="col-2">
-		<div class="form-group strong text-center">
-			<label class="d-block">&#160;</label>
-			<?php echo JText::_('TEXT_OR'); ?>
+		<div class="col-2">
+			<div class="form-group strong text-center">
+				<label class="d-block">&#160;</label>
+				<?php echo JText::_('TEXT_OR'); ?>
+			</div>
 		</div>
-	</div>
-	<div class="col-sm-3">
-		<div class="form-group">
-			<label class="label-sm"><?php echo JText::_('FIELD_LABEL_TOTAL_TIME'); ?></label>
-			<select name="time" id="<?php echo $APPTAG?>-time" class="form-control">
-				<option value="00:00:00">- <?php echo JText::_('TEXT_SELECT'); ?> -</option>
-				<?php
-				for($i = 0; $i < 24; $i++) {
-					$t = ($i < 10) ? '0'.$i : $i;
-					if($i > 0) echo '<option value="'.$t.':00:00">'.$t.':00</option>';
-					for($j = 1; $j <= 3; $j++) {
-						$m = $j * 15;
-						echo '<option value="'.$t.':'.$m.':00">'.$t.':'.$m.'</option>';
+		<div class="col-sm-3">
+			<div class="form-group">
+				<label class="label-sm"><?php echo JText::_('FIELD_LABEL_TOTAL_TIME'); ?></label>
+				<select name="time" id="<?php echo $APPTAG?>-time" class="form-control">
+					<option value="00:00:00">- <?php echo JText::_('TEXT_SELECT'); ?> -</option>
+					<?php
+					for($i = 0; $i < 24; $i++) {
+						$t = ($i < 10) ? '0'.$i : $i;
+						if($i > 0) echo '<option value="'.$t.':00:00">'.$t.':00</option>';
+						for($j = 1; $j <= 3; $j++) {
+							$m = $j * 15;
+							echo '<option value="'.$t.':'.$m.':00">'.$t.':'.$m.'</option>';
+						}
 					}
-				}
-				?>
-			</select>
-			<input type="hidden" name="total_time" id="<?php echo $APPTAG?>-total_time" />
+					?>
+				</select>
+				<input type="hidden" name="total_time" id="<?php echo $APPTAG?>-total_time" />
+			</div>
 		</div>
 	</div>
 </div>
 <hr class="mt-0" />
 <div class="row">
-	<div class="col-lg-4">
+	<div class="col-lg-4 <?php echo $APPTAG?>-toggle-manual-time collapse">
 		<div class="form-group">
 			<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('MSG_TASKTIME_DATE')?>"><?php echo JText::_('FIELD_LABEL_DATE'); ?></label>
 			<input type="text" name="date" id="<?php echo $APPTAG?>-date" class="form-control field-date" data-convert="true" />
 		</div>
 	</div>
-	<div class="col-lg-8">
+	<div class="col-lg">
 		<div class="form-group field-required">
 			<label class="label-sm"><?php echo JText::_('FIELD_LABEL_TO_ASSIGN'); ?></label>
 			<div class="input-group">
@@ -113,9 +127,7 @@ $users = $db->loadObjectList();
 			</div>
 		</div>
 	</div>
-	<div class="col-lg">
-		<div class="form-group mb-0">
-			<input type="text" name="note" id="<?php echo $APPTAG?>-note" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_NOTE'); ?>" />
-		</div>
-	</div>
+</div>
+<div class="form-group mb-0">
+	<input type="text" name="note" id="<?php echo $APPTAG?>-note" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_NOTE'); ?>" />
 </div>

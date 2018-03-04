@@ -194,6 +194,10 @@ $users = $db->loadObjectList();
 		</div>
 	</div>
 	<div class="col-lg-3">
+		<div id="<?php echo $APPTAG?>-codeView" class="form-group" hidden>
+			<label class="field-required"><?php echo JText::_('FIELD_LABEL_CODE'); ?></label>
+			<input type="text" name="codeView" class="form-control upper text-danger" disabled />
+		</div>
 		<div class="form-group">
 			<label><?php echo JText::_('FIELD_LABEL_PHOTO'); ?></label>
 			<div class="image-file">

@@ -98,18 +98,38 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		if($request['user_id'] == 0) $request['user_id'] = $user->id;
 	  	$request['date']         		= $input->get('date', '', 'string');
 	  	if(empty($request['date'])) $request['date'] = date('Y-m-d');
+		$request['timeType']   			= $input->get('timeType', 0, 'int');
 	  	$request['start_hour']   		= $input->get('start_hour', '', 'string');
-	  	$request['end_hour']     		= $input->get('end_hour', '', 'string');
+		if(!empty($request['start_hour'])) $request['start_hour'] = $request['start_hour'].':00';
+		else $request['start_hour'] = '00:00:00';
+		$request['end_hour']     		= $input->get('end_hour', '', 'string');
+		if(!empty($request['end_hour'])) $request['end_hour'] = $request['end_hour'].':00';
+		else $request['end_hour'] = '00:00:00';
 	  	$request['time']         		= $input->get('time', '', 'string');
+		if(empty($request['time'])) $request['time'] = '00:00:00';
+
+		if($request['time'] != '00:00:00') {
+			$request['start_hour'] = $request['end_hour'] = '';
+		} else {
+			// Set Time
+			// => Current Time
+			$cTime = date('H:i:s');
+			if($request['timeType'] == 0) {
+				// Insert
+				if($id == 0) $request['start_hour'] = $cTime;
+				// Update
+				else if($request['end_hour'] == '00:00:00') $request['end_hour'] = $cTime;
+			}
+		}
 	  	// get total time
 	    $time = array();
 	    $total_time = $time['time'] = '00:00:00';
 	    $hours = $time['hours'] = 0;
-	    if(!empty($request['time']) && $request['time'] != '00:00:00') :
+	    if($request['time'] != '00:00:00') :
 	      $time = baseHelper::timeDiff('00:00:00', $request['time']);
 	      $total_time = $time['time'];
 	      $hours = $time['hours'];
-	    elseif(!empty($request['end_hour']) && $request['end_hour'] != '00:00:00') :
+	    elseif($request['end_hour'] != '00:00:00') :
 	      $time = baseHelper::timeDiff($request['start_hour'], $request['end_hour']);
 	      $total_time = $time['time'];
 	      $hours = $time['hours'];
@@ -175,6 +195,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'task_info'			=> $taskInfo,
 	      				'user_id'	    	=> $item->user_id,
 	      				'date'        		=> $item->date,
+						'timetype'  		=> $item->timetype,
 	      				'start_hour'  		=> $item->start_hour,
 	      				'end_hour'    		=> $item->end_hour,
 	      				'time'        		=> $item->time,
@@ -184,67 +205,124 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					);
 
 				// UPDATE
-				elseif($task == 'save' && $save_condition && $id) :
+				elseif($task == 'save' && $id) :
 
-					$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
-					$query .=
-						// $db->quoteName('task_id') 		.'='. $request['task_id'] .','.
-			            // $db->quoteName('user_id') 		.'='. $request['user_id'] .','.
-	  					$db->quoteName('date')			.'='. $db->quote($request['date']) .','.
-	  					$db->quoteName('start_hour') 	.'='. $db->quote($request['start_hour']) .','.
-	  					$db->quoteName('end_hour') 		.'='. $db->quote($request['end_hour']) .','.
-	  					$db->quoteName('time') 			.'='. $db->quote($request['time']) .','.
-	  					$db->quoteName('total_time') 	.'='. $db->quote($total_time) .','.
-	  					$db->quoteName('hours') 		.'='. $hours .','.
-						$db->quoteName('state')			.'='. $request['state'] .','.
-						$db->quoteName('alter_date')	.'= NOW(),'.
-						$db->quoteName('alter_by')		.'='. $user->id
-					;
-					$query .= ' WHERE '. $db->quoteName('id') .'='. $id;
+					if($save_condition) {
 
-					try {
-
-						$db->setQuery($query);
-						$db->execute();
-
-						// Upload
-						if($cfg['hasUpload'])
-						$fileMsg = uploader::uploadFile($id, $cfg['fileTable'], $_FILES[$cfg['fileField']], $fileGrp, $fileGtp, $fileCls, $fileLbl, $cfg);
-
-						// UPDATE FIELD
-						$element = $elemVal = $elemLabel = '';
-						if(!empty($_SESSION[$RTAG.'FieldUpdated']) && !empty($_SESSION[$RTAG.'TableField'])) :
-							$element = $_SESSION[$RTAG.'FieldUpdated'];
-							$elemVal = $id;
-							$query = 'SELECT '. (preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $_SESSION[$RTAG.'TableField']) ? $db->quoteName($_SESSION[$RTAG.'TableField']) : $_SESSION[$RTAG.'TableField']) .' FROM '. $db->quoteName($cfg['mainTable']).' WHERE '. $db->quoteName('id') .' = '.$id.' AND state = 1';
+						$timer = 0;
+						// Verifica se apenas o tempo inicial é informado (contador ativo)
+						if($request['start_hour'] != '00:00:00' && $request['end_hour'] == '00:00:00' && $request['time'] == '00:00:00') {
+							// Se for, verifica se já existe algum contador ativo para o mesmo usuário
+							$query	= '
+								SELECT COUNT(*) FROM '.$db->quoteName($cfg['mainTable']) .'
+								WHERE
+									'. $db->quoteName('user_id') .' = '. $request['user_id'] .' AND
+									'. $db->quoteName('start_hour') .' != "00:00:00" AND
+									'. $db->quoteName('end_hour') .' = "00:00:00" AND
+									'. $db->quoteName('time') .' = "00:00:00"
+							';
 							$db->setQuery($query);
-							$elemLabel = $db->loadResult();
-						endif;
-
-						$data[] = array(
-							'status'			=> 2,
-							'msg'				=> JText::_('MSG_SAVED'),
-							'uploadError'		=> $fileMsg,
-							'parentField'		=> $element,
-							'parentFieldVal'	=> $elemVal,
-							'parentFieldLabel'	=> baseHelper::nameFormat($elemLabel)
-						);
-
-					} catch (RuntimeException $e) {
-
-						// Error treatment
-						switch($e->getCode()) {
-							case '1062':
-							$sqlErr = JText::_('MSG_SQL_DUPLICATE_KEY');
-							break;
-							default:
-							$sqlErr = 'Erro: '.$e->getCode().'. '.$e->getMessage();
+							$timer = $db->loadResult();
+							// Se houver, verifica se o contador é do mesmo registro (atualização do registro ativo)
+							if($timer) {
+								$query	= '
+									SELECT COUNT(*) FROM '.$db->quoteName($cfg['mainTable']) .'
+									WHERE
+										'. $db->quoteName('user_id') .' = '. $request['user_id'] .' AND
+										'. $db->quoteName('start_hour') .' != "00:00:00" AND
+										'. $db->quoteName('end_hour') .' = "00:00:00" AND
+										'. $db->quoteName('time') .' = "00:00:00" AND
+										'. $db->quoteName('id') .' = '.$id.'
+								';
+								$db->setQuery($query);
+								$ok = $db->loadResult();
+								// Se o contador ativo for do mesmo registro, libera a atualização
+								if($ok) $timer = 0;
+							}
 						}
 
+						// save if haven't timer count active or complete time
+						if(!$timer) {
+
+							$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
+							$query .=
+								// $db->quoteName('task_id') 		.'='. $request['task_id'] .','.
+					            // $db->quoteName('user_id') 		.'='. $request['user_id'] .','.
+			  					$db->quoteName('date')			.'='. $db->quote($request['date']) .','.
+								$db->quoteName('timeType') 		.'='. $request['timeType'] .','.
+			  					$db->quoteName('start_hour') 	.'='. $db->quote($request['start_hour']) .','.
+			  					$db->quoteName('end_hour') 		.'='. $db->quote($request['end_hour']) .','.
+			  					$db->quoteName('time') 			.'='. $db->quote($request['time']) .','.
+			  					$db->quoteName('total_time') 	.'='. $db->quote($total_time) .','.
+			  					$db->quoteName('hours') 		.'='. $hours .','.
+								$db->quoteName('state')			.'='. $request['state'] .','.
+								$db->quoteName('alter_date')	.'= NOW(),'.
+								$db->quoteName('alter_by')		.'='. $user->id
+							;
+							$query .= ' WHERE '. $db->quoteName('id') .'='. $id;
+
+							try {
+
+								$db->setQuery($query);
+								$db->execute();
+
+								// Upload
+								if($cfg['hasUpload'])
+								$fileMsg = uploader::uploadFile($id, $cfg['fileTable'], $_FILES[$cfg['fileField']], $fileGrp, $fileGtp, $fileCls, $fileLbl, $cfg);
+
+								// UPDATE FIELD
+								$element = $elemVal = $elemLabel = '';
+								if(!empty($_SESSION[$RTAG.'FieldUpdated']) && !empty($_SESSION[$RTAG.'TableField'])) :
+									$element = $_SESSION[$RTAG.'FieldUpdated'];
+									$elemVal = $id;
+									$query = 'SELECT '. (preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $_SESSION[$RTAG.'TableField']) ? $db->quoteName($_SESSION[$RTAG.'TableField']) : $_SESSION[$RTAG.'TableField']) .' FROM '. $db->quoteName($cfg['mainTable']).' WHERE '. $db->quoteName('id') .' = '.$id.' AND state = 1';
+									$db->setQuery($query);
+									$elemLabel = $db->loadResult();
+								endif;
+
+								$data[] = array(
+									'status'			=> 2,
+									'msg'				=> JText::_('MSG_SAVED'),
+									'uploadError'		=> $fileMsg,
+									'parentField'		=> $element,
+									'parentFieldVal'	=> $elemVal,
+									'parentFieldLabel'	=> baseHelper::nameFormat($elemLabel)
+								);
+
+							} catch (RuntimeException $e) {
+
+								// Error treatment
+								switch($e->getCode()) {
+									case '1062':
+									$sqlErr = JText::_('MSG_SQL_DUPLICATE_KEY');
+									break;
+									default:
+									$sqlErr = 'Erro: '.$e->getCode().'. '.$e->getMessage();
+								}
+
+								$data[] = array(
+									'status'			=> 0,
+									'msg'				=> $sqlErr,
+									'uploadError'		=> $fileMsg
+								);
+
+							}
+
+						} else {
+
+							$data[] = array(
+								'status'				=> 0,
+								'msg'					=> JText::_('MSG_TIME_COUNT_ACTIVE')
+							);
+
+						}
+
+					} else {
+
 						$data[] = array(
-							'status'			=> 0,
-							'msg'				=> $sqlErr,
-							'uploadError'		=> $fileMsg
+							'status'				=> 0,
+							'msg'					=> JText::_('MSG_ERROR'),
+							'uploadError'			=> $fileMsg
 						);
 
 					}
@@ -314,7 +392,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				elseif($task == 'state') :
 
 					$stateVal = ($state == 2 ? 'IF(state = 1, 0, 1)' : $state);
-					$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '. $db->quoteName('state') .' = '.$stateVal.' WHERE '. $db->quoteName('id') .' IN ('.$ids.')';
+					$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '. $db->quoteName('state') .' = '.$stateVal.', '. $db->quoteName('alter_date') .' = NOW() WHERE '. $db->quoteName('id') .' IN ('.$ids.')';
 
 					try {
 
@@ -405,14 +483,19 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$db->setQuery($query);
 					$timer = $db->loadResult();
 
-					// save if haven't timer count active
-					if(!$timer) {
+					// verifica se será registrado o tempo completo
+					// início & fim <ou> tempo total
+					$timeClosed = (($request['start_hour'] != '00:00:00' && $request['end_hour'] != '00:00:00') || $request['time'] != '00:00:00');
+
+					// save if haven't timer count active or complete time
+					if(!$timer || $timeClosed) {
 						// Prepare the insert query
 						$query  = '
 							INSERT INTO '. $db->quoteName($cfg['mainTable']) .'('.
 								$db->quoteName('task_id') .','.
 					            $db->quoteName('user_id') .','.
 			    				$db->quoteName('date') .','.
+								$db->quoteName('timeType') .','.
 			    				$db->quoteName('start_hour') .','.
 			    				$db->quoteName('end_hour') .','.
 			    				$db->quoteName('time') .','.
@@ -425,6 +508,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 								$request['task_id'] .','.
 								$request['user_id'] .','.
 								$db->quote($request['date']) .','.
+								$request['timeType'] .','.
 								$db->quote($request['start_hour']) .','.
 								$db->quote($request['end_hour']) .','.
 								$db->quote($request['time']) .','.

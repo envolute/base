@@ -34,7 +34,10 @@ jQuery(function() {
 
 	// APP FIELDS
 	var task_id				= jQuery('#<?php echo $APPTAG?>-task_id');
+	var assign_to			= jQuery('#<?php echo $APPTAG?>-assign_to');
+	var cassign_to			= jQuery('#<?php echo $APPTAG?>-cassign_to');
 	var title				= jQuery('#<?php echo $APPTAG?>-title');
+	var deadline			= jQuery('#<?php echo $APPTAG?>-deadline');
 	var description			= jQuery('#<?php echo $APPTAG?>-description');
 	var orderer				= jQuery('#<?php echo $APPTAG?>-orderer');
 	var corderer			= jQuery('#<?php echo $APPTAG?>-corderer');
@@ -52,7 +55,7 @@ jQuery(function() {
 
 		// ON FOCUS
 		// campo que recebe o focus no carregamento
-		var firstField		= title;
+		var firstField		= 'title';
 
 		// ON MODAL OPEN -> Ações quando o modal do form é aberto
 		popup.on('shown.bs.modal', function () {
@@ -93,7 +96,10 @@ jQuery(function() {
 			// App Fields
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
+			assign_to.selectUpdate('0'); // select
+			cassign_to.selectUpdate('0'); // select
 			title.val('');
+			deadline.val('');
 			description.val('');
 			orderer.val('');
 			corderer.val('');
@@ -218,7 +224,10 @@ jQuery(function() {
 
 						// App Fields
 						task_id.val(item.task_id);
+						assign_to.selectUpdate(item.assign_to); // select
+						cassign_to.selectUpdate(item.assign_to); // select
 						title.val(item.title);
+						deadline.val(dateFormat(item.deadline)); // DATE -> conversão de data
 						description.val(item.description);
 						orderer.val(item.orderer);
 						corderer.val(item.orderer);
@@ -363,7 +372,7 @@ jQuery(function() {
 
 	<?php if($cfg['canAdd'] || $cfg['canEdit']) : ?>
 		<div class="modal fade" id="modal-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-<?php echo $APPTAG?>Label">
-			<div class="modal-dialog" role="document">
+			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
 					<form name="form-<?php echo $APPTAG?>" id="form-<?php echo $APPTAG?>" method="post" enctype="multipart/form-data">
 						<?php if($cfg['showFormHeader']) require(JPATH_CORE.DS.'apps/layout/form/modal.header.php'); ?>

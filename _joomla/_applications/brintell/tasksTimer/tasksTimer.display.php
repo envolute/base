@@ -46,7 +46,7 @@ jQuery(function() {
 							// notify about activity
 							$.baseNotify({
 								msg: '<?php echo JText::_('MSG_ACTIVITY_COUNTER_PREFIX')?> <strong>ID: #'+item.task_id+'</strong> <?php echo JText::_('MSG_ACTIVITY_COUNTER_SUFFIX')?>',
-								type: "info",
+								type: 'info',
 								alertTime: 5000
 							});
 						} else {
@@ -74,7 +74,7 @@ jQuery(function() {
 					// RegularLabsModals.init();
 				}
 			});
-		}, 2000);
+		}, 1000);
 		return false;
 	};
 
@@ -100,9 +100,19 @@ jQuery(function() {
 });
 
 </script>
+<?php
+// Verifica se está na view de uma task (na página, não na modal)
+$isView = (strpos(JURI::current(), 'apps/tasks/view' ) !== false) ? true : false;
+$vID = '';
+if($isView) {
+	$app = JFactory::getApplication('site');
+	// Get task 'id'
+	$vID = $app->input->get('vID', 0, 'int');
+}
 
+?>
 <div class="d-inline-flex p-2 rounded bg-dark-opacity-75 text-white">
-	<button id="<?php echo $APPTAG?>-btn-play" class="btn btn-xs btn-link base-icon-play" onclick="<?php echo $APPTAG?>_setParent();" data-toggle="modal" data-target="#modal-<?php echo $APPTAG?>" data-backdrop="static" data-keyboard="false"></button>
+	<button id="<?php echo $APPTAG?>-btn-play" class="btn btn-xs btn-link base-icon-play" onclick="<?php echo $APPTAG?>_setParent(<?php echo $vID?>);" data-toggle="modal" data-target="#modal-<?php echo $APPTAG?>" data-backdrop="static" data-keyboard="false"></button>
 	<button id="<?php echo $APPTAG?>-btn-stop" class="btn btn-xs btn-link base-icon-pause" onclick="<?php echo $APPTAG?>_loadEditFields(<?php echo $APPTAG?>TimerID, false, false)" hidden></button>
 	<span id="<?php echo $APPTAG?>-display-counter"><span class="text-gray-400">00:00:00</span></span>
 	<span id="<?php echo $APPTAG?>-display-info" class="ml-2 pl-2 b-left b-gray-800"><?php echo $startInfo?></span>

@@ -5,7 +5,9 @@
 CREATE TABLE `cms_brintell_tasks_todo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `task_id` int(11) NOT NULL,
+  `assign_to` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
+  `deadline` DATETIME NOT NULL,
   `description` text NOT NULL,
   `orderer` tinyint(4) NOT NULL,
   `state` tinyint(4) NOT NULL,

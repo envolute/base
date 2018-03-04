@@ -10,7 +10,7 @@ $where = '';
 	$active	= $app->input->get('active', ($cfg['canEdit'] ? 2 : 1), 'int');
 	$where .= ($active == 2) ? $db->quoteName('T1.state').' != '.$active : $db->quoteName('T1.state').' = '.$active;
 	// CLIENT -> select
-	$fClient	= $app->input->get('cID', 0, 'int');
+	$fClient	= $app->input->get('fClient', 0, 'int');
 	if($fClient != 0) $where .= ' AND '.$db->quoteName('T1.client_id').' = '.$fClient;
 	// GROUP -> select
 	$fGroup	= $app->input->get('fGroup', 0, 'int');

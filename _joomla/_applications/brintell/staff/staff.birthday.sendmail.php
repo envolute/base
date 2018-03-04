@@ -82,7 +82,7 @@ if($num_rows) : // verifica se existe
 		$name = !empty($item->nickname) ? $item->nickname : $item->name;
 
 		$eBody		= JText::sprintf('MSG_EMAIL_BIRTHDAY_BODY', baseHelper::nameFormat($name), $mailFrom);
-		$mailHtml	= baseHelper::mailTemplateDefault($eBody, $title, '', $mailLogo, $boxStyle, $headStyle, $bodyStyle, $domain);
+		$mailHtml	= baseHelper::mailTemplateDefault($eBody, $title, '', $mailLogo, $boxStyle, $headStyle, $bodyStyle, JURI::root());
 		$sendMail	= baseHelper::sendMail($mailFrom, $item->email, $subject, $mailHtml);
 
 		if($sendMail) :

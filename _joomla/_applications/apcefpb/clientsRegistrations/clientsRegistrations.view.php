@@ -46,12 +46,15 @@ if(isset($user->id) && $user->id) :
 
 	// GET DATA
 	$query = '
-		SELECT T1.*,
+		T1.*,
 		IF(T1.agency <> "" AND T1.account <> "" AND T1.operation <> "", 1, 0) account_info,
-		'. $db->quoteName('T2.title') .' type
+		'. $db->quoteName('T2.username') .',
+		'. $db->quoteName('T3.title') .' type
 		FROM '.$db->quoteName($cfg['mainTable']).' T1
-			LEFT OUTER JOIN '. $db->quoteName('#__usergroups') .' T2
-			ON T2.id = T1.usergroup
+			LEFT OUTER JOIN '. $db->quoteName('#__users') .' T2
+			ON T2.id = T1.user_id
+			LEFT OUTER JOIN '. $db->quoteName('#__usergroups') .' T3
+			ON T3.id = T1.usergroup
 		WHERE '.$db->quoteName('T1.user_id') .' = '. $uID
 	;
 	try {
@@ -122,8 +125,16 @@ if(isset($user->id) && $user->id) :
 					<div style="max-width: 300px">'.$img.'</div>
 				</div>
 				<div class="col-sm-8 col-md-6">
-					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_NAME').':</label>
-					<p> '.baseHelper::nameFormat($view->name).'</p>
+					<div class="row">
+						<div class="col-sm-8">
+							<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_NAME').':</label>
+							<p> '.baseHelper::nameFormat($view->name).'</p>
+						</div>
+						<div class="col-sm-4">
+							<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_CODE').':</label>
+							<p class="text-danger">'.$view->username.'</p>
+						</div>
+					</div>
 					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_EMAIL').':</label>
 					<p>'.$view->email.'</p>
 					<div class="row">
@@ -220,7 +231,7 @@ if(isset($user->id) && $user->id) :
 			$cx_role = empty($view->cx_role) ? $undefined : $view->cx_role;
 			$html .= '
 							<div class="col-6 col-md-4">
-								<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_CODE').':</label>
+								<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_CX_CODE').':</label>
 								<p>'.$cx_code.'</p>
 							</div>
 							<div class="col-6 col-sm-4">

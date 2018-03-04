@@ -36,6 +36,7 @@ jQuery(function() {
 	var ctask_id		= jQuery('#<?php echo $APPTAG?>-ctask_id');
 	var user_id			= jQuery('#<?php echo $APPTAG?>-user_id');
 	var date			= jQuery('#<?php echo $APPTAG?>-date');
+	var timeType		= mainForm.find('input[name=timeType]:radio');
 	var start_hour		= jQuery('#<?php echo $APPTAG?>-start_hour');
 	var end_hour		= jQuery('#<?php echo $APPTAG?>-end_hour');
 	var time			= jQuery('#<?php echo $APPTAG?>-time');
@@ -99,16 +100,14 @@ jQuery(function() {
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
 			ctask_id.val(''); // select
 
-				// Hide task if the form is opener from a task
-				<?php $hideTask = (isset($_SESSION[$RTAG.'RelListNameId']) && $_SESSION[$RTAG.'RelListNameId']) ? true : false ;?>
-				setHidden(jQuery('#<?php echo $APPTAG?>-task-group'), <?php echo $hideTask?>);
 				// Hide and clear text in 'Task Info'
 				setHidden(jQuery('#<?php echo $APPTAG?>-task-info'), true);
 				jQuery('#<?php echo $APPTAG?>-task-info').find('div').empty();
 
 			user_id.selectUpdate('<?php echo $user->id?>'); // select
 			date.val('<?php echo date('d/m/Y')?>');
-			start_hour.val('<?php echo date('H:i')?>'); // select
+			checkOption(timeType, 0);
+			start_hour.val(''); // select
 			end_hour.val(''); // select
 			time.selectUpdate('00:00:00'); // select
 			total_time.val('');
@@ -208,6 +207,53 @@ jQuery(function() {
 		  ?>
 		});
 
+		// CUSTOM -> Reset Registration Fields
+		window.<?php echo $APPTAG?>_setTime = function(val) {
+			var id = displayId.val();
+			// Manual time
+			if(val) {
+				// new register
+				if(isEmpty(id) || id == 0) {
+					// set current time at 'start_hour'
+					var d = new Date();
+					var H = d.getHours();
+					H = (H < 10) ? '0'+H : H;
+					var i = d.getMinutes();
+					i = (i < 10) ? '0'+i : i;
+					start_hour.val(H+':'+i);
+				// edit register
+				} else {
+					// END HOUR
+					// Se apenas a hora de início for informada, a hora final será preenchida com a hora atual
+					// afim de facilitar o preenchimento na hora de fechar o timesheet
+					// set current time at 'end_hour'
+					var d = new Date();
+					var H = d.getHours();
+					H = (H < 10) ? '0'+H : H;
+					var i = d.getMinutes();
+					i = (i < 10) ? '0'+i : i;
+					// Verifica se só foi registrada a hora de início. Se foi, atribui a hora de encerramento com a hora atual
+					var endHour = ((!isEmpty(start_hour.val()) && start_hour.val() != '00:00') && (end_hour.val() == '00:00' || isEmpty(end_hour.val())) && time.val() == '00:00:00') ? H+':'+i : end_hour.val();
+					endHour = (endHour != '00:00') ? endHour : '';
+					end_hour.val(endHour); // select
+				}
+				// show time fields
+				jQuery('.<?php echo $APPTAG?>-toggle-manual-time').collapse('show');
+			// Current Time
+			} else {
+				// new register
+				if(isEmpty(id) || id == 0) {
+					start_hour.val('');
+				// edit register
+				} else {
+					var endHour = end_hour.val();
+					end_hour.val((endHour != '00:00' ? endHour : '')); // select
+				}
+				// show time fields
+				jQuery('.<?php echo $APPTAG?>-toggle-manual-time').collapse('hide');
+			}
+		};
+
 	// AJAX CONTROLLERS
 	// métodos controladores das ações referente ao banco de dados e envio de arquivos
 
@@ -251,14 +297,14 @@ jQuery(function() {
 
 						user_id.selectUpdate(item.user_id); // selects
 						date.val(dateFormat(item.date)); // DATE -> conversão de data
-
-						start_hour.val(item.start_hour); // select
-						// END HOUR
-						// Se apenas a hora de início for informada, a hora final será preenchida com a hora atual
-						// afim de facilitar o preenchimento na hora de fechar o timesheet
-						var endHour = (item.start_hour != '00:00:00' && item.end_hour == '00:00:00' && item.time == '00:00:00') ? '<?php echo date('H:i')?>' : item.end_hour;
-						endHour = (endHour != '00:00:00') ? endHour : '';
-						end_hour.val(endHour); // select
+						// Se o registro estiver finalizado, mostra os campos...
+						var tType = (item.timeType == 1 || item.end_hour != '00:00:00' || item.time != '00:00:00') ? 1 : 0;
+						checkOption(timeType, tType);
+						// Se tiver o registro do tempo total, limpa o campo de hora inicial
+						var tTotal = (!isEmpty(item.time) && item.time != '00:00:00') ? '' : item.start_hour;
+						tTotal = (tTotal != '00:00:00') ? tTotal : '';
+						start_hour.val(tTotal); // select
+						end_hour.val((item.end_hour != '00:00:00' ? item.end_hour : '')); // select
 						time.selectUpdate(item.time); // select
 						total_time.val(item.total_time);
 						hours.val(item.hours);

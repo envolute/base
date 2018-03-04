@@ -93,10 +93,20 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['state']				= $input->get('state', 1, 'int');
 		// app
 		$request['task_id']				= $input->get('task_id', 0, 'int');
+	  	$assign_to						= $input->get('assign_to', array(), 'array');
+		$request['assign_to']			= implode(',', $assign_to); // FIND_IN_SET
+		$request['cassign_to']			= $input->get('cassign_to', '', 'string');
 	  	$request['title']				= $input->get('title', '', 'string');
+	  	$request['deadline']			= $input->get('deadline', '', 'string');
 	  	$request['description']			= $input->get('description', '', 'raw');
 		$request['orderer']				= $input->get('orderer', 0, 'int');
 		$request['corderer']			= $input->get('corderer', 0, 'int');
+
+		// CUSTOM -> default vars for registration e-mail
+		$config			= JFactory::getConfig();
+		$sitename		= $config->get('sitename');
+		$domain			= baseHelper::getDomain();
+		$mailFrom		= $config->get('mailfrom');
 
 	    // CUSTOM -> Set Order
 	    // function setOrder($ID, $pID, $ord, $cord, $cfg) {
@@ -271,7 +281,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'next'				=> $next,
 						// App Fields
 						'task_id'			=> $item->task_id,
+						'assign_to'			=> explode(',', $item->assign_to),
 						'title'				=> $item->title,
+						'deadline'			=> $item->deadline,
 						'description'		=> $item->description,
 						'orderer'			=> $item->orderer,
 						'files'				=> $listFiles
@@ -283,7 +295,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
 					$query .=
 						$db->quoteName('task_id')			.'='. $request['task_id'] .','.
+						$db->quoteName('assign_to')			.'='. $db->quote($request['assign_to']) .','.
 						$db->quoteName('title')				.'='. $db->quote($request['title']) .','.
+						$db->quoteName('deadline')			.'='. $db->quote($request['deadline']) .','.
 						$db->quoteName('description')		.'='. $db->quote($request['description']) .','.
 						$db->quoteName('orderer')			.'='. $request['orderer'] .','.
 						$db->quoteName('state')				.'='. $request['state'] .','.
@@ -313,6 +327,41 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 						// SET ORDER
 						// setOrder($id, $request['task_id'], $request['orderer'], $request['corderer'], $cfg);
+
+						// NOTIFY USERS ATTRIBUTED
+						if(!empty($request['assign_to'])) {
+
+							if(!empty($request['cassign_to'])) {
+								$assign		= explode(',', $request['assign_to']);
+								$cassign	= explode(',', $request['cassign_to']);
+								$diff		= array_diff($assign, $cassign);
+								$newAssign	= implode(',', $diff);
+							} else {
+								$newAssign	= $request['assign_to'];
+							}
+							if(!empty($newAssign)) {
+								$query = 'SELECT name, nickname, email FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('user_id') .' IN ('.$newAssign.')';
+								$db->setQuery($query);
+								$users = $db->loadObjectList();
+
+								// Email Template
+								$boxStyle	= array('bg' => '#fafafa', 'color' => '#555', 'border' => 'border: 4px solid #eee');
+								$headStyle	= array('bg' => '#fff', 'color' => '#5EAB87', 'border' => '1px solid #eee');
+								$bodyStyle	= array('bg' => '');
+								$mailLogo	= 'logo-news.png';
+
+								foreach ($users as $obj) {
+									// se a senha for gerada pelo sistema, envia a senha. Senão, não envia...
+									$name = !empty($obj->nickname) ? $obj->nickname : $obj->name;
+									$url = $_ROOT.'/apps/tasks/view?vID='.$request['task_id'];
+								    $subject = JText::sprintf('MSG_EMAIL_NOTIFY_SUBJECT', $sitename, $request['task_id']);
+									$eBody = JText::sprintf('MSG_EMAIL_NOTIFY_BODY', baseHelper::nameFormat($name), $request['title'], $request['task_id'], $url);
+									$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_EMAIL_NOTIFY_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle, $_ROOT);
+									// envia o email
+									baseHelper::sendMail($mailFrom, $obj->email, $subject, $mailHtml);
+								}
+							}
+						}
 
 			            $data[] = array(
 							'status'			=> 2,
@@ -417,7 +466,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				elseif($task == 'state') :
 
 					$stateVal = ($state == 2 ? 'IF(state = 1, 0, 1)' : $state);
-					$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '. $db->quoteName('state') .' = '.$stateVal.' WHERE '. $db->quoteName('id') .' IN ('.$ids.')';
+					$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '. $db->quoteName('state') .' = '.$stateVal.', '. $db->quoteName('alter_date') .' = NOW() WHERE '. $db->quoteName('id') .' IN ('.$ids.')';
 
 					try {
 
@@ -500,14 +549,18 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					$query  = '
 						INSERT INTO '. $db->quoteName($cfg['mainTable']) .'('.
 							$db->quoteName('task_id') .','.
+							$db->quoteName('assign_to') .','.
 							$db->quoteName('title') .','.
+							$db->quoteName('deadline') .','.
 							$db->quoteName('description') .','.
 							$db->quoteName('orderer') .','.
 							$db->quoteName('state') .','.
 							$db->quoteName('created_by')
 						.') VALUES ('.
 							$request['task_id'] .','.
+							$db->quote($request['assign_to']) .','.
 							$db->quote($request['title']) .','.
+							$db->quote($request['deadline']) .','.
 							$db->quote($request['description']) .','.
 							$request['orderer'] .','.
 							$request['state'] .','.
@@ -550,6 +603,30 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 						// SET ORDER
 						// setOrder($id, $request['task_id'], $request['orderer'], $request['corderer'], $cfg);
+
+						// NOTIFY USERS ATTRIBUTED
+						if(!empty($request['assign_to'])) {
+							$query = 'SELECT name, nickname, email FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('user_id') .' IN ('.$request['assign_to'].')';
+							$db->setQuery($query);
+							$users = $db->loadObjectList();
+
+							// Email Template
+							$boxStyle	= array('bg' => '#fafafa', 'color' => '#555', 'border' => 'border: 4px solid #eee');
+							$headStyle	= array('bg' => '#fff', 'color' => '#5EAB87', 'border' => '1px solid #eee');
+							$bodyStyle	= array('bg' => '');
+							$mailLogo	= 'logo-news.png';
+
+							foreach ($users as $obj) {
+								// se a senha for gerada pelo sistema, envia a senha. Senão, não envia...
+								$name = !empty($obj->nickname) ? $obj->nickname : $obj->name;
+								$url = $_ROOT.'/apps/tasks/view?vID='.$request['task_id'];
+							    $subject = JText::sprintf('MSG_EMAIL_NOTIFY_SUBJECT', $sitename, $request['task_id']);
+								$eBody = JText::sprintf('MSG_EMAIL_NOTIFY_BODY', baseHelper::nameFormat($name), $request['title'], $request['task_id'], $url);
+								$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_EMAIL_NOTIFY_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle, $_ROOT);
+								// envia o email
+								baseHelper::sendMail($mailFrom, $obj->email, $subject, $mailHtml);
+							}
+						}
 
 						$data[] = array(
 							'status'			=> 1,

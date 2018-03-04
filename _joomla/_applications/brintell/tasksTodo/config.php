@@ -146,7 +146,7 @@ endif;
 	$cfg['formBtnAction']		= true;
 
 	// date & price convertions
-	$cfg['dateConvert']			= false;
+	$cfg['dateConvert']			= true;
 	$cfg['load_UI']				= $cfg['dateConvert'];
 	$cfg['priceDecimal']		= false;
 	$cfg['htmlEditor']			= true;

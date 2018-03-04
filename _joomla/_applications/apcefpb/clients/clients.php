@@ -38,6 +38,7 @@ jQuery(function() {
 	var usergroup 			= jQuery('#<?php echo $APPTAG?>-usergroup');
 	var username 			= jQuery('#<?php echo $APPTAG?>-username');
 	var cusername 			= jQuery('#<?php echo $APPTAG?>-cusername');
+	var codeView 			= jQuery('#<?php echo $APPTAG?>-codeView'); // apenas para visualizar o Cód (username)
 	var name 				= jQuery('#<?php echo $APPTAG?>-name');
 	var email				= jQuery('#<?php echo $APPTAG?>-email');
 	var cmail				= jQuery('#<?php echo $APPTAG?>-cmail');
@@ -155,6 +156,7 @@ jQuery(function() {
 			usergroup.selectUpdate(<?php echo $_SESSION[$APPTAG.'newUsertype']?>);
 			username.val('');
 			cusername.val('');
+			setHidden(codeView, true);
 			name.val('');
 			email.val('');
 			cmail.val('');
@@ -417,6 +419,8 @@ jQuery(function() {
 						usergroup.selectUpdate(item.usergroup);
 						username.val(item.username);
 						cusername.val(item.username);
+						setHidden(codeView, false);
+						codeView.find('input').val(item.username);
 						name.val(item.name);
 						email.val(item.email);
 						cmail.val(item.email);

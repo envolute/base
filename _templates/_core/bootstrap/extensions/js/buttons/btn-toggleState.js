@@ -12,7 +12,7 @@ jQuery(function() {
 	// outro botão é clicado. Assim, ativa o botão clicado e desativa o 'collapse-all' (botão alvo)
 
 	window.btnToggleState = function(button, buttonOff) {
-		var btn = setElement(button, '.btn.toggle-state');
+		var btn = setElement(button, '.toggle-state');
 		btn.each(function() {
 			var obj = jQuery(this);
 			obj.off('click').on('click',function(e) {

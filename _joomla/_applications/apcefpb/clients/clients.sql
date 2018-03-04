@@ -270,7 +270,25 @@ ORDER BY `id`
 -- Tinha vários endereços duplicados, foram excluidos os mais antigos
 
 5 - Migrar telefones
-???
+	5.1 - Criar view dos dados
+	CREATE OR REPLACE VIEW `vw_migracao_clients_phones` AS
+	SELECT
+		T2.id,
+	    T2.name,
+	    GROUP_CONCAT(T3.phone_number) phone_number,
+	    GROUP_CONCAT(T3.description) whatsapp,
+	    GROUP_CONCAT(T3.description) description
+	FROM migracao_rel_clients_phones T1
+		JOIN cms_apcefpb_clients T2
+		ON T1.client_id = T2.id
+		JOIN migracao_phones T3
+		ON T1.phone_id = T3.id
+	GROUP BY T2.id
+
+	5.2 - Atualizar a tabela de clients com base na view
+	UPDATE cms_apcefpb_clients AS T1, vw_migracao_clients_phones AS T2
+	SET T1.phone = REPLACE(T2.phone_number, ',', ';'), T1.whatsapp = REPLACE(T2.whatsapp, ',', ';'), T1.phone_desc = REPLACE(T2.description, ',', ';')
+	WHERE T2.id = T1.id
 
 6 - Atualizar a tabela "cms_apcefpb_clients_code" com o valor da tabela antiga
 
