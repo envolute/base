@@ -10,7 +10,7 @@ defined('_JEXEC') or die;
 		<div class="form-group m-0">
 			<div class="btn-group btn-group-justified" data-toggle="buttons">
 				<?php
-				for($i = 0; $i < 4; $i++) {
+				for($i = 0; $i < 5; $i++) {
 					$icon	= JText::_('TEXT_ICON_STATUS_'.$i);
 					$color	= ($i == 1) ? 'warning' : JText::_('TEXT_COLOR_STATUS_'.$i);
 					echo '

@@ -6,6 +6,7 @@
 defined('_JEXEC') or die;
 $ajaxRequest = false;
 // access's definitions
+$tasksViewerGroups	= array(15, 16);	// Client
 $tasksAuthorGroups	= array(13, 14);	// developer + external
 $tasksAdminGroups	= array(12);		// analyst + manager
 require('config.php');
@@ -122,13 +123,10 @@ if($vID != 0) :
 				$priority = ' <span class="badge badge-danger base-icon-attention"> '.JText::_('TEXT_PRIORITY_DESC_2').'</span>';
 				break;
 			default :
-				$priority = ' <span class="badge badge-info base-icon-lightbulb"> '.JText::_('TEXT_PRIORITY_DESC_0').'</span>';
+				$priority = ' <span class="badge badge-info base-icon-attention"> '.JText::_('TEXT_PRIORITY_DESC_0').'</span>';
 		}
-		if($view->visibility == 0) :
-			$visible = ' <span class="badge badge-primary base-icon-lock-open-alt cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_VISIBILITY').'"> '.JText::_('TEXT_PROJECT').'</span>';
-		else :
-			$visible = ' <span class="badge badge-danger base-icon-lock cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_VISIBILITY').'"> '.JText::_('TEXT_PRIVATE').'</span>';
-		endif;
+		// visibility
+		$visible = ' <span class="badge badge-primary'.(!$view->visibility ? ' base-icon-lock-open-alt' : '').' cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_VISIBILITY').'"> '.JText::_('TEXT_VISIBILITY_'.$view->visibility).'</span>';
 
 		$requests = '';
 		if(!empty($view->requests)) :
@@ -291,7 +289,7 @@ if($vID != 0) :
 						'.$desc.$attachs
 		;
 						// COMMENTS
-						$tasksCommentsIsPublic		= 2;
+						$tasksCommentsIsPublic		= 2; // Author
 						$tasksCommentsListFull		= false;
 						$tasksCommentsRelTag		= 'tasks';
 						$tasksCommentsRelListNameId	= 'task_id';
@@ -312,50 +310,54 @@ if($vID != 0) :
 					<div class="col-md-4">
 		';
 						// APP ACTIONS
-						// Carrega o app diretamente ná página,
-						// pois como está sendo chamada no template 'component', não carrega os módulos
-						if($tpl == 'component') {
-							// TASKSTIMER (timesheet) => FORM
-							// A validação '$tpl' é porque o timesheet é carregado em todas as páginas
-							// Exceto quado é carregado no template 'component'
+						if(!$hasViewer) {
+							// Carrega o app diretamente ná página,
+							// pois como está sendo chamada no template 'component', não carrega os módulos
+							// 'Viewers' não acessam o 'timesheet'
+							if($tpl == 'component') {
+								// TASKSTIMER (timesheet) => FORM
+								// A validação '$tpl' é porque o timesheet é carregado em todas as páginas
+								// Exceto quado é carregado no template 'component'
+								// get the same group access of main APP
+								$tasksTimerViewerGroups		= $cfgViewer;
+								$tasksTimerAuthorGroups		= $cfgAuthor;
+								$tasksTimerEditorGroups		= $cfgEditor;
+								$tasksTimerAdminGroups		= $cfgAdmin;
+								$tasksTimerShowApp			= false;
+								$tasksTimerShowList			= false;
+								$tasksTimerListFull			= false;
+								$tasksTimerRelTag			= 'tasks';
+								$tasksTimerRelListNameId	= 'task_id';
+								$tasksTimerRelListId		= $view->id;
+								$tasksTimerOnlyChildList	= true;
+								$tasksTimerHideParentField	= true;
+								require(JPATH_APPS.DS.$MAINAPP.'Timer/'.$MAINAPP.'Timer.php');
+							}
+							// TASKS => FORM
+							$tasksAppTag					= $MAINTAG;
 							// get the same group access of main APP
-							$tasksTimerViewerGroups		= $cfgViewer;
-							$tasksTimerAuthorGroups		= $cfgAuthor;
-							$tasksTimerEditorGroups		= $cfgEditor;
-							$tasksTimerAdminGroups		= $cfgAdmin;
-							$tasksTimerShowApp			= false;
-							$tasksTimerShowList			= false;
-							$tasksTimerListFull			= false;
-							$tasksTimerRelTag			= 'tasks';
-							$tasksTimerRelListNameId	= 'task_id';
-							$tasksTimerRelListId		= $view->id;
-							$tasksTimerOnlyChildList	= true;
-							$tasksTimerHideParentField	= true;
-							require(JPATH_APPS.DS.$MAINAPP.'Timer/'.$MAINAPP.'Timer.php');
+							${$tasksAppTag.'ViewerGroups'}	= $cfgViewer;
+							${$tasksAppTag.'AuthorGroups'}	= $cfgAuthor;
+							${$tasksAppTag.'EditorGroups'}	= $cfgEditor;
+							${$tasksAppTag.'AdminGroups'}	= $cfgAdmin;
+							${$tasksAppTag.'ShowApp'}		= false;
+							${$tasksAppTag.'ShowList'}		= false;
+							${$tasksAppTag.'ListFull'}		= true;
+							require(JPATH_APPS.DS.$MAINAPP.'/'.$MAINAPP.'.php');
+							// TAGS => FORM
+							// get the same group access of main APP
+							$tasksTagsViewerGroups		= $cfgViewer;
+							$tasksTagsAuthorGroups		= $cfgAuthor;
+							$tasksTagsEditorGroups		= $cfgEditor;
+							$tasksTagsAdminGroups		= $cfgAdmin;
+							$tasksTagsShowApp			= false;
+							$tasksTagsShowList			= false;
+							$tasksTagsListFull			= false;
+							$tasksTagsRelTag			= 'tasks';
+							$tasksTagsFieldUpdated		= '#tasks-tags';
+							require(JPATH_APPS.DS.$MAINAPP.'Tags/'.$MAINAPP.'Tags.php');
 						}
-						// TASKS => FORM
-						$tasksAppTag					= $MAINTAG;
-						// get the same group access of main APP
-						${$tasksAppTag.'ViewerGroups'}	= $cfgViewer;
-						${$tasksAppTag.'AuthorGroups'}	= $cfgAuthor;
-						${$tasksAppTag.'EditorGroups'}	= $cfgEditor;
-						${$tasksAppTag.'AdminGroups'}	= $cfgAdmin;
-						${$tasksAppTag.'ShowApp'}		= false;
-						${$tasksAppTag.'ShowList'}		= false;
-						${$tasksAppTag.'ListFull'}		= true;
-						require(JPATH_APPS.DS.$MAINAPP.'/'.$MAINAPP.'.php');
-						// TAGS => FORM
-						// get the same group access of main APP
-						$tasksTagsViewerGroups		= $cfgViewer;
-						$tasksTagsAuthorGroups		= $cfgAuthor;
-						$tasksTagsEditorGroups		= $cfgEditor;
-						$tasksTagsAdminGroups		= $cfgAdmin;
-						$tasksTagsShowApp			= false;
-						$tasksTagsShowList			= false;
-						$tasksTagsListFull			= false;
-						$tasksTagsRelTag			= 'tasks';
-						$tasksTagsFieldUpdated		= '#tasks-tags';
-						require(JPATH_APPS.DS.$MAINAPP.'Tags/'.$MAINAPP.'Tags.php');
+
 						// TO DO LIST => (instância do FORM)
 						$tasksTodoIsPublic			= 3; // 'Editor' + 'Admin'
 						$tasksTodoShowApp			= false;
@@ -364,7 +366,6 @@ if($vID != 0) :
 						$tasksTodoListFull			= false;
 						$tasksTodoRelListNameId		= 'task_id';
 						require(JPATH_APPS.DS.$MAINAPP.'Todo/'.$MAINAPP.'Todo.php');
-
 						// TO DO LIST => (instância da VIEW)
 						$tasksTodoAppTag					= 'todoView';
 						${$tasksTodoAppTag.'IsPublic'}		= 3; // 'Editor' + 'Admin'

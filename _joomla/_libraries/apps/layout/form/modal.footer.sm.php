@@ -12,5 +12,5 @@ $save_close = '
 			<a class="dropdown-item" href="#" name="btn-<?php echo $APPTAG?>-save-close" id="btn-<?php echo $APPTAG?>-save-close" onclick="<?php echo $APPTAG?>_save('close')"> <?php echo JText::_('TEXT_SAVECLOSE'); ?></a>
 		</div>
 	</div>
-	<button name="btn-<?php echo $APPTAG?>-cancel" id="btn-<?php echo $APPTAG?>-cancel" class="base-icon-cancel btn btn-sm btn-default mr-auto" data-dismiss="modal"> <?php echo JText::_('TEXT_CLOSE'); ?></button>
+	<button name="btn-<?php echo $APPTAG?>-cancel" id="btn-<?php echo $APPTAG?>-cancel" class="base-icon-cancel btn btn-default" data-dismiss="modal"> <?php echo JText::_('TEXT_CLOSE'); ?></button>
 </div>

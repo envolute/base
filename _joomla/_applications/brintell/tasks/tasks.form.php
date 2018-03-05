@@ -48,7 +48,7 @@ foreach ($staff as $obj) {
 		<div class="row">
 			<div class="col-lg-8">
 				<div class="row">
-					<div class="col-lg-6">
+					<div class="col-lg-8">
 						<div class="form-group field-required">
 							<label class="label-sm"><?php echo JText::_('FIELD_LABEL_PROJECT'); ?></label>
 							<select name="project_id" id="<?php echo $APPTAG?>-project_id" class="form-control field-id">
@@ -61,64 +61,60 @@ foreach ($staff as $obj) {
 							</select>
 						</div>
 					</div>
-					<div class="col-lg-6">
-						<div class="form-group">
-							<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_REQUESTS_IDS_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_REQUESTS_IDS'); ?></label>
-							<select name="requests" id="<?php echo $APPTAG?>-requests" class="form-control" multiple>
-								<?php
-									foreach ($requests as $obj) {
-										echo '<option value="'.$obj->id.'">#'.$obj->id.' - '.baseHelper::nameFormat($obj->subject).'</option>';
-									}
-								?>
-							</select>
-						</div>
-					</div>
-					<div class="col-lg-6">
+					<div class="col-lg-4">
 						<div class="form-group field-required">
 							<label class="label-sm"><?php echo JText::_('FIELD_LABEL_TYPE'); ?></label>
 							<span class="btn-group btn-group-justified" data-toggle="buttons">
 								<label class="btn btn-default btn-active-success">
-									<input type="radio" name="type" id="<?php echo $APPTAG?>-type-0" value="0" onchange="<?php echo $APPTAG?>_setType(this.value)" />
+									<input type="radio" name="type" id="<?php echo $APPTAG?>-type-0" value="0" />
 									<?php echo JText::_('TEXT_TYPE_0'); ?>
 								</label>
-								<label class="btn btn-default btn-active-success">
-									<input type="radio" name="type" id="<?php echo $APPTAG?>-type-1" value="1" onchange="<?php echo $APPTAG?>_setType(this.value)" />
+								<label class="btn btn-default btn-active-danger">
+									<input type="radio" name="type" id="<?php echo $APPTAG?>-type-1" value="1" />
 									<?php echo JText::_('TEXT_TYPE_1'); ?>
-								</label>
-								<label class="btn btn-default btn-active-success">
-									<input type="radio" name="type" id="<?php echo $APPTAG?>-type-2" value="2" onchange="<?php echo $APPTAG?>_setType(this.value)" />
-									<?php echo JText::_('TEXT_TYPE_2'); ?>
 								</label>
 							</span>
 						</div>
 					</div>
-					<div class="col-lg-6">
+					<div class="col-lg-8">
+						<div class="form-group field-required">
+							<label class="label-sm"><?php echo JText::_('FIELD_LABEL_TAGS'); ?></label>
+							<div class="input-group">
+								<select name="tags[]" id="<?php echo $APPTAG?>-tags" class="form-control" multiple>
+									<?php
+										foreach ($tags as $obj) {
+											echo '<option value="'.$obj->name.'">'.baseHelper::nameFormat($obj->name).'</option>';
+										}
+									?>
+								</select>
+								<span class="input-group-btn">
+									<button type="button" class="base-icon-plus btn btn-success hasTooltip" title="<?php echo JText::_('TEXT_ADD')?>" data-toggle="modal" data-target="#modal-<?php echo $APPTAG?>Tags" data-backdrop="static" data-keyboard="false"></button>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4">
 						<div class="form-group">
 							<label class="label-sm"><?php echo JText::_('FIELD_LABEL_PRIORITY'); ?></label>
 							<span class="btn-group btn-group-justified" data-toggle="buttons">
-								<label class="btn btn-default btn-active-info">
-									<input type="radio" name="priority" id="<?php echo $APPTAG?>-priority-0" value="0" class="auto-tab" data-target="#<?php echo $APPTAG?>-deadline-group" data-target-display="false" data-tab-disable="true" />
-									<?php echo JText::_('TEXT_PRIORITY_0'); ?>
+								<label class="btn btn-default btn-active-success hasTooltip" title="<?php echo JText::_('TEXT_PRIORITY_0'); ?>">
+									<input type="radio" name="priority" id="<?php echo $APPTAG?>-priority-0" value="0" />
+									<small class="base-icon-attention icon-default"></small>
 								</label>
-								<label class="btn btn-default btn-active-success">
-									<input type="radio" name="priority" id="<?php echo $APPTAG?>-priority-1" value="1" class="auto-tab" data-target="#<?php echo $APPTAG?>-deadline-group" data-target-display="true" data-tab-disable="true" />
-									<?php echo JText::_('TEXT_PRIORITY_1'); ?>
+								<label class="btn btn-default btn-active-warning hasTooltip" title="<?php echo JText::_('TEXT_PRIORITY_1'); ?>">
+									<input type="radio" name="priority" id="<?php echo $APPTAG?>-priority-1" value="1" />
+									<small class="base-icon-attention icon-default"></small><small class="base-icon-attention icon-default"></small>
 								</label>
-								<label class="btn btn-default btn-active-danger">
-									<input type="radio" name="priority" id="<?php echo $APPTAG?>-priority-2" value="2" class="auto-tab" data-target="#<?php echo $APPTAG?>-deadline-group" data-target-display="true" data-tab-disable="true" />
-									<?php echo JText::_('TEXT_PRIORITY_2'); ?>
+								<label class="btn btn-default btn-active-danger hasTooltip" title="<?php echo JText::_('TEXT_PRIORITY_2'); ?>">
+									<input type="radio" name="priority" id="<?php echo $APPTAG?>-priority-2" value="2" />
+									<small class="base-icon-attention icon-default"></small><small class="base-icon-attention icon-default"></small><small class="base-icon-attention icon-default"></small>
 								</label>
 							</span>
 						</div>
 					</div>
-					<div class="col-12">
-						<div class="alert alert-info <?php echo $APPTAG?>-groupType-1" hidden>Mostra os campos para Componentes</div>
-						<div class="alert alert-warning <?php echo $APPTAG?>-groupType-2" hidden>Mostra os campos para Protótipos</div>
-					</div>
 				</div>
 				<div class="form-group field-required">
-					<label id="<?php echo $APPTAG?>-subject-label" class="label-sm"><?php echo JText::_('FIELD_LABEL_SUBJECT'); ?></label>
-					<label id="<?php echo $APPTAG?>-component-label" class="label-sm" hidden><?php echo JText::_('FIELD_LABEL_COMPONENT_NAME'); ?></label>
+					<label class="label-sm"><?php echo JText::_('FIELD_LABEL_SUBJECT'); ?></label>
 					<input type="text" name="subject" id="<?php echo $APPTAG?>-subject" class="form-control" />
 				</div>
 				<div class="form-group">
@@ -128,7 +124,7 @@ foreach ($staff as $obj) {
 				<div class="form-group">
 					<hr class="hr-tag" />
 					<span class="badge badge-primary base-icon-attach"> <?php echo JText::_('TEXT_ATTACHMENTS'); ?></span>
-					<button type="button" class="base-icon-plus btn btn-success float-right hasTooltip" title="<?php echo JText::_('TEXT_ADD'); ?>" onclick="<?php echo $APPTAG?>_setNewFile('#<?php echo $APPTAG?>-files-group', 'file', 'col-sm-6 col-lg-4')"></button>
+					<button type="button" class="base-icon-plus btn btn-success float-right hasTooltip" title="<?php echo JText::_('TEXT_ADD'); ?>" onclick="<?php echo $APPTAG?>_setNewFile('#<?php echo $APPTAG?>-files-group', 'file', '')"></button>
 					<div class="btn-file">
 						<span class="btn-group">
 							<button type="button" class="base-icon-search btn btn-default btn-active-success file-action text-truncate hasTooltip" title="<?php echo JText::_('TEXT_FILE_SELECT'); ?>"> <span><?php echo JText::_('TEXT_FILE_SELECT'); ?></span></button>
@@ -136,20 +132,18 @@ foreach ($staff as $obj) {
 						<input type="file" name="file[0]" id="<?php echo $APPTAG?>-file0" class="form-control" hidden />
 					</div>
 				</div>
-				<div id="<?php echo $APPTAG?>-files-group" class="row"></div>
+				<div id="<?php echo $APPTAG?>-files-group"></div>
 			</div>
 			<div class="col-lg-4 b-left b-left-dashed">
 				<div class="form-group">
-					<label class="label-sm"><?php echo JText::_('FIELD_LABEL_ASSIGN_TO'); ?></label>
-					<div class="input-group">
-						<select name="assign_to[]" id="<?php echo $APPTAG?>-assign_to" class="form-control" multiple>
-							<?php echo $staffList?>
-						</select>
-						<input type="hidden" name="cassign_to" id="<?php echo $APPTAG?>-cassign_to" />
-						<span class="input-group-btn">
-							<button type="button" class="base-icon-sitemap btn btn-success hasTooltip" title="<?php echo JText::_('TEXT_ACTIVITY_BOARD')?>" data-toggle="modal" data-target="#modal-<?php echo $APPTAG?>activityBoard" data-backdrop="static" data-keyboard="false"></button>
-						</span>
-					</div>
+					<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_REQUESTS_IDS_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_REQUESTS_IDS'); ?></label>
+					<select name="requests" id="<?php echo $APPTAG?>-requests" class="form-control" multiple>
+						<?php
+							foreach ($requests as $obj) {
+								echo '<option value="'.$obj->id.'">#'.$obj->id.' - '.baseHelper::nameFormat($obj->subject).'</option>';
+							}
+						?>
+					</select>
 				</div>
 				<div id="<?php echo $APPTAG?>-deadline-group" class="form-group">
 					<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_DEADLINE_DESC'); ?>">
@@ -165,15 +159,31 @@ foreach ($staff as $obj) {
 					</div>
 				</div>
 				<div class="form-group">
+					<label class="label-sm"><?php echo JText::_('FIELD_LABEL_ASSIGN_TO'); ?></label>
+					<div class="input-group">
+						<select name="assign_to[]" id="<?php echo $APPTAG?>-assign_to" class="form-control" multiple>
+							<?php echo $staffList?>
+						</select>
+						<input type="hidden" name="cassign_to" id="<?php echo $APPTAG?>-cassign_to" />
+						<span class="input-group-btn">
+							<button type="button" class="base-icon-sitemap btn btn-success hasTooltip" title="<?php echo JText::_('TEXT_ACTIVITY_BOARD')?>" data-toggle="modal" data-target="#modal-<?php echo $APPTAG?>activityBoard" data-backdrop="static" data-keyboard="false"></button>
+						</span>
+					</div>
+				</div>
+				<div class="form-group">
 					<label class="label-sm"><?php echo JText::_('FIELD_LABEL_VISIBILITY'); ?></label>
 					<span class="btn-group btn-group-justified" data-toggle="buttons">
-						<label class="btn btn-default btn-active-success base-icon-lock-open hasTooltip" title="<?php echo JText::_('TEXT_PROJECT_DESC'); ?>">
+						<label class="btn btn-default btn-active-danger base-icon-lock hasTooltip" title="<?php echo JText::_('TEXT_VISIBILITY_0_DESC'); ?>">
 							<input type="radio" name="visibility" id="<?php echo $APPTAG?>-visibility-0" value="0" />
-							<?php echo JText::_('TEXT_PROJECT'); ?>
+							<?php echo JText::_('TEXT_VISIBILITY_0'); ?>
 						</label>
-						<label class="btn btn-default btn-active-danger base-icon-lock hasTooltip" title="<?php echo JText::_('TEXT_PRIVATE_DESC'); ?>">
+						<label class="btn btn-default btn-active-success hasTooltip" title="<?php echo JText::_('TEXT_VISIBILITY_1_DESC'); ?>">
 							<input type="radio" name="visibility" id="<?php echo $APPTAG?>-visibility-1" value="1" />
-							<?php echo JText::_('TEXT_PRIVATE'); ?>
+							<?php echo JText::_('TEXT_VISIBILITY_1'); ?>
+						</label>
+						<label class="btn btn-default btn-active-success hasTooltip" title="<?php echo JText::_('TEXT_VISIBILITY_2_DESC'); ?>">
+							<input type="radio" name="visibility" id="<?php echo $APPTAG?>-visibility-2" value="2" />
+							<?php echo JText::_('TEXT_VISIBILITY_2'); ?>
 						</label>
 					</span>
 				</div>
@@ -181,7 +191,7 @@ foreach ($staff as $obj) {
 					<label class="label-sm"><?php echo JText::_('FIELD_LABEL_STATUS'); ?></label>
 					<span class="btn-group btn-group-justified" data-toggle="buttons">
 						<?php
-						for($i = 0; $i < 4; $i++) {
+						for($i = 0; $i < 5; $i++) {
 							$icon	= JText::_('TEXT_ICON_STATUS_'.$i);
 							$color	= ($i == 1) ? 'warning' : JText::_('TEXT_COLOR_STATUS_'.$i);
 							echo '
@@ -192,21 +202,6 @@ foreach ($staff as $obj) {
 						}
 						?>
 					</span>
-				</div>
-				<div class="form-group">
-					<label class="label-sm"><?php echo JText::_('FIELD_LABEL_TAGS'); ?></label>
-					<div class="input-group">
-						<select name="tags[]" id="<?php echo $APPTAG?>-tags" class="form-control" multiple>
-							<?php
-								foreach ($tags as $obj) {
-									echo '<option value="'.$obj->name.'">'.baseHelper::nameFormat($obj->name).'</option>';
-								}
-							?>
-						</select>
-						<span class="input-group-btn">
-							<button type="button" class="base-icon-plus btn btn-success hasTooltip" title="<?php echo JText::_('TEXT_ADD')?>" data-toggle="modal" data-target="#modal-<?php echo $APPTAG?>Tags" data-backdrop="static" data-keyboard="false"></button>
-						</span>
-					</div>
 				</div>
 				<div class="form-group">
 					<div id="<?php echo $APPTAG?>-alert-toDo">

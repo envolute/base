@@ -48,3 +48,14 @@ CREATE TABLE `cms_brintell_clients_staff_files` (
   UNIQUE KEY `filename` (`filename`),
   KEY `id_parent` (`id_parent`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- View com todos os usuários do sistema 'staff' & 'clientsStaff'
+--
+
+CREATE OR REPLACE VIEW `vw_brintell_teams` AS
+(SELECT `id` staff_id, '0' clientsStaff_id, `type`, 'staff' app, 'staff' app_table, `role_id`, '1' client_id, `user_id`, `usergroup`, `name`, `nickname`, `email`, `gender`, `occupation`, `access`, `state` FROM `cms_brintell_staff` WHERE `state` = 1)
+UNION
+(SELECT '0', `id`, '2', 'clientsStaff' app, 'clients_staff' app_table, '0', `client_id`, `user_id`, `usergroup`, `name`, '', `email`, `gender`, `role`, `access`, `state` FROM `cms_brintell_clients_staff` WHERE `state` = 1)

@@ -10,8 +10,23 @@ $where = '';
 	$active	= $app->input->get('active', 1, 'int');
 	$where .= $db->quoteName('T1.state').' = '.$active;
 	// CLIENT
-	$fClient = $app->input->get('fClient', 0, 'int');
-	if($fClient != 0) $where .= ' AND '.$db->quoteName('T2.client_id').' = '.$fClient;
+	// Check if is a client
+	$client_id = 0;
+	if($hasViewer) {
+		// CLIENTS STAFF
+		$query = 'SELECT client_id FROM '. $db->quoteName('#__'.$cfg['project'].'_clients_staff') .' WHERE '. $db->quoteName('user_id') .' = '.$user->id.' AND '. $db->quoteName('access') .' = 1 AND '. $db->quoteName('state') .' = 1 ORDER BY name';
+		$db->setQuery($query);
+		$client_id = $db->loadResult();
+	}
+	// Se for um cliente, visualiza apenas das tasks do cliente
+	if($client_id) {
+		$where .= ' AND '.$db->quoteName('T2.client_id').' = '.$client_id;
+		$cProj .= $db->quoteName('client_id').' = '.$client_id.' AND '; // filtro na listagem de projetos
+	} else {
+		$fClient = $app->input->get('fClient', 0, 'int');
+		if($fClient != 0) $where .= ' AND '.$db->quoteName('T2.client_id').' = '.$fClient;
+		$cProj = '';
+	}
 	// PROJECT
 	$pID	= $app->input->get('pID', 0, 'int');
 	$fProj	= ($pID > 0) ? $pID : $app->input->get('fProj', 0, 'int');
@@ -20,7 +35,8 @@ $where = '';
 	$assigned = '';
 	// Mostra apenas as tasks do próprio usuário se não estiver como 'admin'
 	// Obs: acessando um projeto, o dev pode ver todas as tasks...
-	if(!$hasAdmin && $pID == 0) {
+	// O cliente visualiza todos os seus...
+	if(!$hasAdmin && $pID == 0 && !$client_id) {
 
 		$fAssign = $user->id;
 		$assigned = ' AND ('.$db->quoteName('T1.created_by').' = '.$user->id.' OR FIND_IN_SET ('.$fAssign.', '.$db->quoteName('T1.assign_to').'))';
@@ -31,8 +47,8 @@ $where = '';
 	} else {
 
 		// Set visibility
-		// OR (visibility = project) OR (created_by = current user)
-		$assigned .= ' AND ('.$db->quoteName('T1.visibility').' = 0 OR '.$db->quoteName('T1.created_by').' = '.$user->id.')';
+		// OR (visibility = project/client) OR (created_by = current user)
+		$assigned .= ' AND ('.$db->quoteName('T1.visibility').' > 0 OR '.$db->quoteName('T1.created_by').' = '.$user->id.')';
 		// OR assigned to me
 		$fAssign = $app->input->get('fAssign', array(), 'array');
 		for($i = 0; $i < count($fAssign); $i++) {
@@ -44,8 +60,8 @@ $where = '';
 	}
 	$where .= $assigned;
 	// TYPE
-	$fType	= $app->input->get('fType', 9, 'int');
-	if($fType != 9) $where .= ' AND '.$db->quoteName('T1.priority').' = '.$fType;
+	$fType	= $app->input->get('fType', 2, 'int');
+	if($fType != 2) $where .= ' AND '.$db->quoteName('T1.type').' = '.$fType;
 	// PRIORITY
 	$fPrior	= $app->input->get('fPrior', 9, 'int');
 	if($fPrior != 9) $where .= ' AND '.$db->quoteName('T1.priority').' = '.$fPrior;
@@ -59,8 +75,13 @@ $where = '';
 	}
 	$where .= $tags;
 	// VISIBILITY
-	$fView	= $app->input->get('fView', 2, 'int');
-	if($fView != 2) $where .= ' AND '.$db->quoteName('T1.visibility').' = '.$fView;
+	if($client_id) {
+		// O cliente visualiza apenas as tarefas com a visibilidade 'client'
+		$where .= ' AND '.$db->quoteName('T1.visibility').' = 2';
+	} else {
+		$fView	= $app->input->get('fView', 9, 'int');
+		if($fView != 9) $where .= ' AND '.$db->quoteName('T1.visibility').' = '.$fView;
+	}
 	// DEADLINE DATE
 	$dateMin	= $app->input->get('dateMin', '', 'string');
 	$dateMax	= $app->input->get('dateMax', '', 'string');

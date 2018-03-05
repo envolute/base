@@ -92,44 +92,12 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$request['relationId']   		= $input->get('relationId', 0, 'int');
 		$request['state']				= $input->get('state', 1, 'int');
 		// app
-		$request['project_id']			= $input->get('project_id', 0, 'int');
-		$request['type']				= $input->get('type', 0, 'int');
-		$request['requests']			= $input->get('requests', '', 'string');
-		$requests						= $input->get('requests', array(), 'array');
-		$request['requests']			= implode(',', $requests); // FIND_IN_SET
-	  	$assign_to						= $input->get('assign_to', array(), 'array');
-		$request['assign_to']			= implode(',', $assign_to); // FIND_IN_SET
-		$request['cassign_to']			= $input->get('cassign_to', '', 'string');
-	  	$request['subject']				= $input->get('subject', '', 'string');
-	  	$request['description']			= $input->get('description', '', 'string');
-		$request['priority']			= $input->get('priority', 0, 'int');
-	  	$request['deadline']			= $input->get('deadline', '', 'string');
-	  	$request['timePeriod']			= $input->get('timePeriod', '', 'string');
-	  	$request['estimate']			= $input->get('estimate', 0, 'int');
-	  	$request['executed']			= $input->get('executed', 0, 'int');
-		$tags							= $input->get('tags', array(), 'array');
-		$request['tags']				= implode(',', $tags); // FIND_IN_SET
-	  	$request['visibility']			= $input->get('visibility', 1, 'int');
-	  	$request['status']				= $input->get('status', 0, 'int');
-	  	$request['cstatus']				= $input->get('cstatus', 0, 'int');
-			// fechamento
-			$closing_date = '0000-00-00 00:00:00';
-			if($request['status'] == 3) :
-				$request['executed'] = 100;
-			elseif($request['status'] == 4) :
-				$request['executed'] = 100;
-				$closing_date = date('Y-m-d H:i:s');
-			endif;
-
-	    // CUSTOM -> default vars for registration e-mail
-	    $config			= JFactory::getConfig();
-	    $sitename		= $config->get('sitename');
-	    $domain			= baseHelper::getDomain();
-	    $mailFrom		= $config->get('mailfrom');
+		$request['name']				= $input->get('name', '', 'string');
+	  	$request['icon']				= $input->get('icon', '', 'string');
 
 		// SAVE CONDITION
 		// Condição para inserção e atualização dos registros
-		$save_condition = ($request['project_id'] > 0 && !empty($request['subject']));
+		$save_condition = (!empty($request['name']));
 
 		if($id || (!empty($ids) && $ids != 0)) :  //UPDATE OR DELETE
 
@@ -175,21 +143,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'prev'				=> $prev,
 						'next'				=> $next,
 						// App Fields
-						'project_id'		=> $item->project_id,
-						'type'				=> $item->type,
-						'requests'			=> explode(',', $item->requests),
-						'assign_to'			=> explode(',', $item->assign_to),
-						'subject'			=> $item->subject,
-						'description'		=> $item->description,
-						'priority'			=> $item->priority,
-						'deadline'			=> $item->deadline,
-						'timePeriod'		=> $item->timePeriod,
-						'estimate'			=> $item->estimate,
-						'executed'			=> $item->executed,
-						'tags'				=> explode(',', $item->tags),
-						'visibility'		=> $item->visibility,
-						'status'			=> $item->status,
-						'files'				=> $listFiles
+						'name'				=> $item->name,
+						'icon'				=> $item->icon
 					);
 
 				// UPDATE
@@ -199,21 +154,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 						$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
 						$query .=
-							$db->quoteName('project_id')		.'='. $request['project_id'] .','.
-							$db->quoteName('type')				.'='. $request['type'] .','.
-							$db->quoteName('requests')			.'='. $db->quote($request['requests']) .','.
-							$db->quoteName('assign_to')			.'='. $db->quote($request['assign_to']) .','.
-							$db->quoteName('subject')			.'='. $db->quote($request['subject']) .','.
-							$db->quoteName('description')		.'='. $db->quote($request['description']) .','.
-							$db->quoteName('priority')			.'='. $request['priority'] .','.
-							$db->quoteName('deadline')			.'='. $db->quote($request['deadline']) .','.
-							$db->quoteName('timePeriod')		.'='. $db->quote($request['timePeriod']) .','.
-							$db->quoteName('estimate')			.'='. $request['estimate'] .','.
-							$db->quoteName('executed')			.'='. $request['executed'] .','.
-							$db->quoteName('tags')				.'='. $db->quote($request['tags']) .','.
-							$db->quoteName('visibility')		.'='. $request['visibility'] .','.
-							$db->quoteName('status')			.'='. $request['status'] .','.
-		  					$db->quoteName('closing_date')		.'='. $db->quote($closing_date) .','.
+							$db->quoteName('name')				.'='. $db->quote($request['name']) .','.
+							$db->quoteName('icon')				.'='. $db->quote($request['icon']) .','.
 							$db->quoteName('state')				.'='. $request['state'] .','.
 							$db->quoteName('alter_date')		.'= NOW(),'.
 							$db->quoteName('alter_by')			.'='. $user->id
@@ -239,42 +181,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 								$elemLabel = $db->loadResult();
 							endif;
 
-							// NOTIFY USERS ATTRIBUTED
-							if(!empty($request['assign_to'])) {
-
-								if(!empty($request['cassign_to'])) {
-									$assign		= explode(',', $request['assign_to']);
-									$cassign	= explode(',', $request['cassign_to']);
-									$diff		= array_diff($assign, $cassign);
-									$newAssign	= implode(',', $diff);
-								} else {
-									$newAssign	= $request['assign_to'];
-								}
-								if(!empty($newAssign)) {
-									$query = 'SELECT name, nickname, email FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('user_id') .' IN ('.$newAssign.')';
-									$db->setQuery($query);
-									$users = $db->loadObjectList();
-
-									// Email Template
-									$boxStyle	= array('bg' => '#fafafa', 'color' => '#555', 'border' => 'border: 4px solid #eee');
-									$headStyle	= array('bg' => '#fff', 'color' => '#5EAB87', 'border' => '1px solid #eee');
-									$bodyStyle	= array('bg' => '');
-									$mailLogo	= 'logo-news.png';
-
-									foreach ($users as $obj) {
-										// se a senha for gerada pelo sistema, envia a senha. Senão, não envia...
-										$name = !empty($obj->nickname) ? $obj->nickname : $obj->name;
-										$url = $_ROOT.'/apps/'.$APPNAME.'/view?vID='.$id;
-									    $subject = JText::sprintf('MSG_EMAIL_NOTIFY_SUBJECT', $sitename, $id);
-										$eBody = JText::sprintf('MSG_EMAIL_NOTIFY_BODY', baseHelper::nameFormat($name), $id, $request['subject'], $url);
-										$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_EMAIL_NOTIFY_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle, $_ROOT);
-										// envia o email
-										baseHelper::sendMail($mailFrom, $obj->email, $subject, $mailHtml);
-									}
-								}
-							}
-
-				            $data[] = array(
+							$data[] = array(
 								'status'			=> 2,
 								'msg'				=> JText::_('MSG_SAVED'),
 								'uploadError'		=> $fileMsg,
@@ -317,8 +224,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 					$query = 'DELETE FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('id') .' IN ('.$ids.')';
 
-					$setIds = explode(',', $ids);
-
 					try {
 
 						$db->setQuery($query);
@@ -350,6 +255,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$elemVal = $ids;
 						endif;
 
+						$setIds = explode(',', $ids);
 						if(count($setIds) > 1) :
 							$_SESSION[$APPTAG.'baseAlert']['message'] = JText::_('MSG_ITEMS_DELETED_SUCCESS');
 							$_SESSION[$APPTAG.'baseAlert']['context'] = 'success';
@@ -445,40 +351,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'uploadError'			=> $fileMsg
 					);
 
-				// STATUS
-				elseif($task == 'status') :
-
-					$date = '';
-					$exec = '';
-					if($state < 3) : // backlog, todo, doing
-						if($state < 2) $exec = ', '.$db->quoteName('executed').' = 0';
-						$date = $db->quote('0000-00-00 00:00:00');
-					else : // done
-						$exec = ', '.$db->quoteName('executed').' = 100';
-						$date = $db->quote(date('Y-m-d H:i:s'));
-					endif;
-					$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '. $db->quoteName('status') .' = '.$state.', '.$db->quoteName('closing_date').' = '.$date.$exec.' WHERE '. $db->quoteName('id') .' = '.$id;
-
-					try {
-						$db->setQuery($query);
-						$db->execute();
-
-						$data[] = array(
-							'status'		=> 1,
-							'newStatus'		=> $state,
-							'id'			=> $id,
-							'msg'			=> ''
-						);
-
-					} catch (RuntimeException $e) {
-
-						$data[] = array(
-							'status'=> 0,
-							'msg'	=> $e->getMessage()
-						);
-
-					}
-
 				endif; // end task
 
 			endif; // num rows
@@ -494,37 +366,13 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					// Prepare the insert query
 					$query  = '
 						INSERT INTO '. $db->quoteName($cfg['mainTable']) .'('.
-							$db->quoteName('project_id') .','.
-							$db->quoteName('type') .','.
-							$db->quoteName('requests') .','.
-							$db->quoteName('assign_to') .','.
-							$db->quoteName('subject') .','.
-							$db->quoteName('description') .','.
-							$db->quoteName('priority') .','.
-							$db->quoteName('deadline') .','.
-							$db->quoteName('timePeriod') .','.
-							$db->quoteName('estimate') .','.
-							$db->quoteName('executed') .','.
-							$db->quoteName('tags') .','.
-							$db->quoteName('visibility') .','.
-							$db->quoteName('status') .','.
+							$db->quoteName('name') .','.
+							$db->quoteName('icon') .','.
 							$db->quoteName('state') .','.
 							$db->quoteName('created_by')
 						.') VALUES ('.
-							$request['project_id'] .','.
-							$request['type'] .','.
-							$db->quote($request['requests']) .','.
-							$db->quote($request['assign_to']) .','.
-							$db->quote($request['subject']) .','.
-							$db->quote($request['description']) .','.
-							$request['priority'] .','.
-							$db->quote($request['deadline']) .','.
-							$db->quote($request['timePeriod']) .','.
-							$request['estimate'] .','.
-							$request['executed'] .','.
-							$db->quote($request['tags']) .','.
-							$request['visibility'] .','.
-							$request['status'] .','.
+							$db->quote($request['name']) .','.
+							$db->quote($request['icon']) .','.
 							$request['state'] .','.
 							$user->id
 						.')
@@ -562,30 +410,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->setQuery($query);
 							$elemLabel = $db->loadResult();
 						endif;
-
-						// NOTIFY USERS ATTRIBUTED
-						if(!empty($request['assign_to'])) {
-							$query = 'SELECT name, nickname, email FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('user_id') .' IN ('.$request['assign_to'].')';
-							$db->setQuery($query);
-							$users = $db->loadObjectList();
-
-							// Email Template
-							$boxStyle	= array('bg' => '#fafafa', 'color' => '#555', 'border' => 'border: 4px solid #eee');
-							$headStyle	= array('bg' => '#fff', 'color' => '#5EAB87', 'border' => '1px solid #eee');
-							$bodyStyle	= array('bg' => '');
-							$mailLogo	= 'logo-news.png';
-
-							foreach ($users as $obj) {
-								// se a senha for gerada pelo sistema, envia a senha. Senão, não envia...
-								$name = !empty($obj->nickname) ? $obj->nickname : $obj->name;
-								$url = $_ROOT.'/apps/'.$APPNAME.'/view?vID='.$id;
-							    $subject = JText::sprintf('MSG_EMAIL_NOTIFY_SUBJECT', $sitename, $id);
-								$eBody = JText::sprintf('MSG_EMAIL_NOTIFY_BODY', baseHelper::nameFormat($name), $id, $request['subject'], $url);
-								$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_EMAIL_NOTIFY_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle, $_ROOT);
-								// envia o email
-								baseHelper::sendMail($mailFrom, $obj->email, $subject, $mailHtml);
-							}
-						}
 
 						$data[] = array(
 							'status'			=> 1,

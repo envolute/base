@@ -11,9 +11,9 @@ $cfg['project']	= 'brintell';
 // Informe o $APPNAME da outra. Senão, deixe em branco...
 $cfg['parent']	= '';
 // App Define
-$APPNAME		= 'tasks';
+$APPNAME		= 'tasksTypes';
 $APPPATH		= !empty($cfg['parent']) ? $cfg['parent'] : $APPNAME;
-$MAIN_TB		= '#__'.$cfg['project'].'_tasks';
+$MAIN_TB		= '#__'.$cfg['project'].'_tasks_types';
 $APPTAG			= isset(${$APPNAME.'AppTag'}) ? ${$APPNAME.'AppTag'} : $APPNAME;
 $newInstance	= ($APPTAG != $APPNAME) ? true : false;
 
@@ -48,7 +48,7 @@ endif;
 	$viewerDef	= array(); // 'default' apenas visualiza o componente. IMPORTANTE: não deve ser vazio. Então => '0'
 	$authorDef	= array(); // 'default' cria, mas só edita ou deleta o seu. IMPORTANTE: não deve ser vazio. Então => '0'
 	$editorDef	= array(); // 'default' cria e edita, mas só deleta o seu. IMPORTANTE: não deve ser vazio. Então => '0'
-	$adminDef	= array(8, 11); // 'default' Desenvolvedor, Brintell Manager
+	$adminDef	= array(6,7,8); // 'default' Gerente, Administrador, Desenvolvedor
 	// Registra os parâmetros na session para os arquivos 'ajax'
 	if(!$ajaxRequest) {
 		$_SESSION[$APPTAG.'ViewerGroups'] = (isset(${$APPTAG.'ViewerGroups'}) && count(${$APPTAG.'ViewerGroups'})) ? array_unique(array_merge($viewerDef,${$APPTAG.'ViewerGroups'})) : $viewerDef;
@@ -61,11 +61,6 @@ endif;
 	$cfg['groupId']['author']	= isset($_SESSION[$APPTAG.'AuthorGroups']) ? $_SESSION[$APPTAG.'AuthorGroups'] : $authorDef;
 	$cfg['groupId']['editor']	= isset($_SESSION[$APPTAG.'EditorGroups']) ? $_SESSION[$APPTAG.'EditorGroups'] : $editorDef;
 	$cfg['groupId']['admin']	= isset($_SESSION[$APPTAG.'AdminGroups']) ? $_SESSION[$APPTAG.'AdminGroups'] : $adminDef;
-	// ----------------------------------------------------
-	$cfg['groupId']['developer'][]	= 13;	// Developer
-	$cfg['groupId']['external'][]	= 14;	// External
-	$cfg['groupId']['client'][]		= 15;	// Client Manager
-	$cfg['groupId']['client'][]		= 16;	// Client Developer
 
 // crud's name
 	$cfg['APPNAME']				= $APPNAME;
@@ -77,7 +72,7 @@ endif;
 // Save Function
 // fuction called after save action
 	$cfg['addTrigger']			= ''; // only insert
-	$cfg['saveTrigger']			= 'tasksTimer_updateTaskList';
+	$cfg['saveTrigger']			= '';
 
 // view
 
@@ -108,7 +103,7 @@ endif;
 		$cfg['listModal']			= false;
 		if(isset(${$APPTAG.'ListModal'})) $cfg['listModal'] = ${$APPTAG.'ListModal'} ? true : false;
 		// list type
-		$cfg['listFull']			= false;
+		$cfg['listFull']			= true;
 		if(isset(${$APPTAG.'ListFull'})) $cfg['listFull'] = ${$APPTAG.'ListFull'} ? true : false;
 		// list Ajax File
 		$cfg['listAjax']			= 'list.ajax.php';
@@ -149,20 +144,20 @@ endif;
 	// Form button action
 	// false => save (keep)
 	// true => save and close (remove 'save & keep')
-	$cfg['formBtnAction']		= true;
+	$cfg['formBtnAction']		= false;
 
 	// date & price convertions
-	$cfg['dateConvert']			= true;
+	$cfg['dateConvert']			= false;
 	$cfg['load_UI']				= $cfg['dateConvert'];
 	$cfg['priceDecimal']		= false;
 	$cfg['htmlEditor']			= false;
 	$cfg['htmlEditorFull']		= false;
 
 	// crud's upload config
-	$cfg['hasUpload']			= true;
+	$cfg['hasUpload']			= false;
 	$cfg['hasUpload'] = isset(${$APPTAG.'hasUpload'}) ? ${$APPTAG.'hasUpload'} : $cfg['hasUpload'];
 	// habilita a adição dinamica de novos campos do tipo 'file'
-	$cfg['dinamicFiles']		= true;
+	$cfg['dinamicFiles']		= false;
 	// valor inicial do index do arquivo... considerando '0' o campo estático
 	// caso exitam outros campos estáticos, o index será igual ao número de itens estáticos
 	// Ex: 4 itens estáticos => $cfg['indexFileInit'] = 4;

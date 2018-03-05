@@ -32,7 +32,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	$groups = $user->groups;
 
 	// verifica o acesso
-	$hasGroup = array_intersect($groups, $cfg['groupId']['viewer']); // se está na lista de grupos permitidos
+	$hasViewer = array_intersect($groups, $cfg['groupId']['viewer']); // se está na lista de grupos permitidos
 	$hasAdmin = array_intersect($groups, $cfg['groupId']['admin']); // se está na lista de administradores permitidos
 
 	// database connect

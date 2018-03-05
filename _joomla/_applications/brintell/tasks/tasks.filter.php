@@ -25,19 +25,32 @@ require($PATH_APP_FILE.'.filter.query.php');
 
 // FILTER'S DINAMIC FIELDS
 
-	// CLIENTS -> select
-	$flt_client = '';
-	$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_clients') .' WHERE '. $db->quoteName('state') .' = 1 ORDER BY name';
-	$db->setQuery($query);
-	$clients = $db->loadObjectList();
-	foreach ($clients as $obj) {
-		$flt_client .= '<option value="'.$obj->id.'"'.($obj->id == $fClient ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
+	if(!$client_id) {
+		// CLIENTS -> select
+		$flt_client = '';
+		$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_clients') .' WHERE '. $db->quoteName('state') .' = 1 ORDER BY name';
+		$db->setQuery($query);
+		$clients = $db->loadObjectList();
+		foreach ($clients as $obj) {
+			$flt_client .= '<option value="'.$obj->id.'"'.($obj->id == $fClient ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
+		}
+		$flt_client = '
+			<div class="col-sm-6 col-md-4">
+				<div class="form-group">
+					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_CLIENT').'</label>
+					<select name="fClient" id="fClient" class="form-control form-control-sm set-filter">
+						<option value="0">- '.JText::_('TEXT_ALL').' -</option>
+						'.$flt_client.'
+					</select>
+				</div>
+			</div>
+		';
 	}
 
 	// PROJECTS -> select
 	$flt_project = '';
 	if($pID == 0) :
-		$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_projects') .' WHERE '. $db->quoteName('state') .' = 1 ORDER BY name';
+		$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_projects') .' WHERE '. $cProj . $db->quoteName('state') .' = 1 ORDER BY name';
 		$db->setQuery($query);
 		$projects = $db->loadObjectList();
 		foreach ($projects as $obj) {
@@ -91,6 +104,22 @@ require($PATH_APP_FILE.'.filter.query.php');
 		$flt_tag .= '<option value="'.$obj->name.'"'.($obj->id == $fTags ? ' selected = "selected"' : '').'>'.$obj->name.'</option>';
 	}
 
+	$visibility = '';
+	if(!$client_id) {
+		$visibility = '
+			<div class="col-sm-6 col-md-2">
+				<div class="form-group">
+					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_VISIBILITY').'</label>
+					<select name="fView" id="fView" class="form-control form-control-sm set-filter">
+						<option value="9">- '.JText::_('TEXT_ALL_F').' -</option>
+						<option value="0"'.($fView == 0 ? ' selected' : '').'>'.JText::_('TEXT_VISIBILITY_0').'</option>
+						<option value="1"'.($fView == 1 ? ' selected' : '').'>'.JText::_('TEXT_VISIBILITY_1').'</option>
+						<option value="2"'.($fView == 2 ? ' selected' : '').'>'.JText::_('TEXT_VISIBILITY_2').'</option>
+					</select>
+				</div>
+			</div>
+		';
+	}
 
 // VIEW
 $htmlFilter = '
@@ -100,16 +129,7 @@ $htmlFilter = '
 			<div class="row">
 				<div class="col-xl-10">
 					<div class="row">
-						<div class="col-sm-6 col-md-4">
-							<div class="form-group">
-								<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_CLIENT').'</label>
-								<select name="fClient" id="fClient" class="form-control form-control-sm set-filter">
-									<option value="0">- '.JText::_('TEXT_ALL').' -</option>
-									'.$flt_client.'
-								</select>
-							</div>
-						</div>
-						'.$flt_project.$flt_assign.'
+						'.$flt_client.$flt_project.$flt_assign.'
 						<div class="col-sm-6 col-md-2">
 							<div class="form-group">
 								<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_PRIORITY').'</label>
@@ -121,16 +141,7 @@ $htmlFilter = '
 								</select>
 							</div>
 						</div>
-						<div class="col-sm-6 col-md-2">
-							<div class="form-group">
-								<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_VISIBILITY').'</label>
-								<select name="fView" id="fView" class="form-control form-control-sm set-filter">
-									<option value="2">- '.JText::_('TEXT_ALL_F').' -</option>
-									<option value="1"'.($fView == 1 ? ' selected' : '').'>'.JText::_('TEXT_PRIVATE').'</option>
-									<option value="0"'.($fView == 0 ? ' selected' : '').'>'.JText::_('TEXT_PROJECT').'</option>
-								</select>
-							</div>
-						</div>
+						'.$visibility.'
 						<div class="col-sm-6 col-md-4">
 							<div class="form-group">
 								<label class="label-xs text-muted text-truncate">'.implode(', ', $sLabel).'</label>
@@ -148,7 +159,6 @@ $htmlFilter = '
 								</span>
 							</div>
 						</div>
-						<!--
 						<div class="col-sm-6 col-md-4">
 							<div class="form-group">
 								<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_TAGS').'</label>
@@ -157,7 +167,16 @@ $htmlFilter = '
 								</select>
 							</div>
 						</div>
-						-->
+						<div class="col-sm-6 col-md-2">
+							<div class="form-group">
+								<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_TYPE').'</label>
+								<select name="fType" id="fType" class="form-control form-control-sm set-filter">
+									<option value="2">- '.JText::_('TEXT_ALL').' -</option>
+									<option value="0"'.($fType == 0 ? ' selected' : '').'>'.JText::_('TEXT_TYPE_0').'</option>
+									<option value="1"'.($fType == 1 ? ' selected' : '').'>'.JText::_('TEXT_TYPE_1').'</option>
+								</select>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="col-xl-2 b-left b-left-dashed">

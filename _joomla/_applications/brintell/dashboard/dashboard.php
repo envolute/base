@@ -106,7 +106,7 @@ if($hasBrintell) {
 		}
 
 		// QTD. DE TAREFAS ABERTOS
-		$query = 'SELECT COUNT(*) FROM '. $db->quoteName('#__'.$cfg['project'].'_tasks') .' WHERE '.$filterProject_1.'`state` = 1 AND `visibility` = 0';
+		$query = 'SELECT COUNT(*) FROM '. $db->quoteName('#__'.$cfg['project'].'_tasks') .' WHERE '.$filterProject_1.'`state` = 1 AND `visibility` > 0';
 		$db->setQuery($query);
 		$tasks_actives = $db->loadResult();
 		echo '
@@ -126,7 +126,7 @@ if($hasBrintell) {
 			SELECT SUM(T1.hours)
 			FROM '. $db->quoteName('#__'.$cfg['project'].'_tasks_timer') . ' T1
 				JOIN '. $db->quoteName('#__'.$cfg['project'].'_tasks') . ' T2
-				ON '.$filterProject_3.'T2.id = T1.task_id AND T2.visibility = 0
+				ON '.$filterProject_3.'T2.id = T1.task_id AND T2.visibility > 0
 		';
 		$db->setQuery($query);
 		$time_worked = $db->loadResult();
@@ -226,10 +226,10 @@ if($hasBrintell) {
 			(
 				SELECT COUNT(*)
 				FROM '. $db->quoteName('#__'.$cfg['project'].'_tasks') .'
-				WHERE '.$filterProject_1.'MONTH(`created_date`) = 2 AND YEAR(`created_date`) = 2018 AND `state` = 0 AND `visibility` = 0
+				WHERE '.$filterProject_1.'MONTH(`created_date`) = 2 AND YEAR(`created_date`) = 2018 AND `state` = 0 AND `visibility` > 0
 			) amount
 		FROM '. $db->quoteName('#__'.$cfg['project'].'_tasks') .'
-		WHERE '.$filterProject_1.'MONTH(`created_date`) = 2 AND YEAR(`created_date`) = 2018 AND `visibility` = 0
+		WHERE '.$filterProject_1.'MONTH(`created_date`) = 2 AND YEAR(`created_date`) = 2018 AND `visibility` > 0
 	';
 	$db->setQuery($query);
 	$metricsMonth = $db->loadObject();
@@ -239,7 +239,7 @@ if($hasBrintell) {
 		SELECT SUM(T1.hours)
 		FROM '. $db->quoteName('#__'.$cfg['project'].'_tasks_timer') . ' T1
 			JOIN '. $db->quoteName('#__'.$cfg['project'].'_tasks') . ' T2
-			ON T2.id = T1.task_id AND T2.visibility = 0
+			ON T2.id = T1.task_id AND T2.visibility > 0
 		 WHERE '.$filterProject_3.'MONTH(`date`) = 2 AND YEAR(`date`) = 2018
 	';
 	$db->setQuery($query);
@@ -319,7 +319,7 @@ if($hasBrintell) {
 		FROM '. $db->quoteName('#__'.$cfg['project'].'_tasks') .' T1
 			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_projects') .' T2
 			ON '.$db->quoteName('T2.id') .' = T1.project_id
-		WHERE '. $filterProject_2 .'T1.state = 1 AND T1.visibility = 0
+		WHERE '. $filterProject_2 .'T1.state = 1 AND T1.visibility > 0
 		ORDER BY '. $db->quoteName('T1.created_date') .' DESC
 		LIMIT '.(!$pID ? 4 : 15).'
 	';

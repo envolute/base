@@ -2,10 +2,10 @@
 
 // ACCESS
 // Grupos de acesso declarados
-$hasGroup = $hasAuthor = $hasEditor = $hasAdmin = false;
+$hasViewer = $hasAuthor = $hasEditor = $hasAdmin = false;
 if($cfg['isPublic']) {
 	if($cfg['isPublic'] == 1) {
-		$hasGroup = true;			// visualizador
+		$hasViewer = true;			// visualizador
 	} else if(isset($user) && !$user->guest) {
 		if($cfg['isPublic'] == 2) $hasAuthor = true;	// autor
 		else if($cfg['isPublic'] == 3) $hasEditor = true;	// editor
@@ -14,7 +14,7 @@ if($cfg['isPublic']) {
 }
 if(isset($cfg['groupId'])) {
 	//$viewer = array_merge($cfg['groupId']['viewer'], $cfg['groupId']['admin']);
-	if($cfg['isPublic'] != 1 && count($cfg['groupId']['viewer'])) $hasGroup = array_intersect($groups, $cfg['groupId']['viewer']); // se está na lista de grupos permitidos
+	if($cfg['isPublic'] != 1 && count($cfg['groupId']['viewer'])) $hasViewer = array_intersect($groups, $cfg['groupId']['viewer']); // se está na lista de grupos permitidos
 	if($cfg['isPublic'] != 2 && count($cfg['groupId']['author'])) $hasAuthor = array_intersect($groups, $cfg['groupId']['author']); // se está na lista de autores permitidos
 	if($cfg['isPublic'] != 3 && count($cfg['groupId']['editor'])) $hasEditor = array_intersect($groups, $cfg['groupId']['editor']); // se está na lista de editores permitidos
 	if($cfg['isPublic'] != 4 && count($cfg['groupId']['admin'])) $hasAdmin = array_intersect($groups, $cfg['groupId']['admin']); // se está na lista de administradores permitidos
@@ -23,7 +23,7 @@ if(!$cfg['isPublic']) :
 	if(isset($user) && $user->guest) :
 		$app->redirect(JURI::root(true).'/login?return='.urlencode(base64_encode(JURI::current())));
 		exit();
-	elseif(!$hasGroup && !$hasAuthor && !$hasEditor && !$hasAdmin) :
+	elseif(!$hasViewer && !$hasAuthor && !$hasEditor && !$hasAdmin) :
 		$app->enqueueMessage(JText::_('MSG_NOT_PERMISSION'), 'warning');
 		$app->redirect(JURI::root(true));
 		exit();
