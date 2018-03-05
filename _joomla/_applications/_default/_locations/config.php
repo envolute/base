@@ -71,6 +71,7 @@ endif;
 
 // Save Function
 // fuction called after save action
+	$cfg['addTrigger']			= ''; // only insert
 	$cfg['saveTrigger']			= '';
 
 // form definitions

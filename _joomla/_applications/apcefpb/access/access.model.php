@@ -193,75 +193,87 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					);
 
 				// UPDATE
-				elseif($task == 'save' && $save_condition && $id) :
+				elseif($task == 'save' && $id) :
 
-					$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
-					$query .=
-						$db->quoteName('client_id')			.'='. $request['client_id'] .','.
-						$db->quoteName('client_desc')		.'='. $db->quote($request['client_desc']) .','.
-						$db->quoteName('presence')			.'='. $request['presence'] .','.
-						$db->quoteName('cExam')				.'='. $request['cExam'] .','.
-						$db->quoteName('cForbidden')		.'='. $request['cForbidden'] .','.
-						$db->quoteName('cReason')			.'='. $db->quote($request['cReason']) .','.
-						$db->quoteName('dependent')			.'='. $db->quote($request['dependent']) .','.
-						$db->quoteName('exam')				.'='. $db->quote($request['exam']) .','.
-						$db->quoteName('forbidden')			.'='. $db->quote($request['forbidden']) .','.
-						$db->quoteName('reason')			.'='. $db->quote($request['reason']) .','.
-						$db->quoteName('guestName')			.'='. $db->quote($request['guestName']) .','.
-						$db->quoteName('guestAge')			.'='. $db->quote($request['guestAge']) .','.
-						$db->quoteName('guestNote')			.'='. $db->quote($request['guestNote']) .','.
-						$db->quoteName('guestTax')			.'='. $db->quote($request['guestTax']) .','.
-						$db->quoteName('tax_price')			.'='. $db->quote($request['tax_price']) .','.
-						$db->quoteName('accessDate')		.'='. $db->quote($request['accessDate']) .','.
-						$db->quoteName('state')				.'='. $request['state'] .','.
-						$db->quoteName('alter_date')		.'= NOW(),'.
-						$db->quoteName('alter_by')			.'='. $user->id
-					;
-					$query .= ' WHERE '. $db->quoteName('id') .'='. $id;
+					if($save_condition) {
 
-					try {
+						$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
+						$query .=
+							$db->quoteName('client_id')			.'='. $request['client_id'] .','.
+							$db->quoteName('client_desc')		.'='. $db->quote($request['client_desc']) .','.
+							$db->quoteName('presence')			.'='. $request['presence'] .','.
+							$db->quoteName('cExam')				.'='. $request['cExam'] .','.
+							$db->quoteName('cForbidden')		.'='. $request['cForbidden'] .','.
+							$db->quoteName('cReason')			.'='. $db->quote($request['cReason']) .','.
+							$db->quoteName('dependent')			.'='. $db->quote($request['dependent']) .','.
+							$db->quoteName('exam')				.'='. $db->quote($request['exam']) .','.
+							$db->quoteName('forbidden')			.'='. $db->quote($request['forbidden']) .','.
+							$db->quoteName('reason')			.'='. $db->quote($request['reason']) .','.
+							$db->quoteName('guestName')			.'='. $db->quote($request['guestName']) .','.
+							$db->quoteName('guestAge')			.'='. $db->quote($request['guestAge']) .','.
+							$db->quoteName('guestNote')			.'='. $db->quote($request['guestNote']) .','.
+							$db->quoteName('guestTax')			.'='. $db->quote($request['guestTax']) .','.
+							$db->quoteName('tax_price')			.'='. $db->quote($request['tax_price']) .','.
+							$db->quoteName('accessDate')		.'='. $db->quote($request['accessDate']) .','.
+							$db->quoteName('state')				.'='. $request['state'] .','.
+							$db->quoteName('alter_date')		.'= NOW(),'.
+							$db->quoteName('alter_by')			.'='. $user->id
+						;
+						$query .= ' WHERE '. $db->quoteName('id') .'='. $id;
 
-						$db->setQuery($query);
-						$db->execute();
+						try {
 
-						// Upload
-						if($cfg['hasUpload'])
-						$fileMsg = uploader::uploadFile($id, $cfg['fileTable'], $_FILES[$cfg['fileField']], $fileGrp, $fileGtp, $fileCls, $fileLbl, $cfg);
-
-						// UPDATE FIELD
-						$element = $elemVal = $elemLabel = '';
-						if(!empty($_SESSION[$RTAG.'FieldUpdated']) && !empty($_SESSION[$RTAG.'TableField'])) :
-							$element = $_SESSION[$RTAG.'FieldUpdated'];
-							$elemVal = $id;
-							$query = 'SELECT '. (preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $_SESSION[$RTAG.'TableField']) ? $db->quoteName($_SESSION[$RTAG.'TableField']) : $_SESSION[$RTAG.'TableField']) .' FROM '. $db->quoteName($cfg['mainTable']).' WHERE '. $db->quoteName('id') .' = '.$id.' AND state = 1';
 							$db->setQuery($query);
-							$elemLabel = $db->loadResult();
-						endif;
+							$db->execute();
 
-						$data[] = array(
-							'status'			=> 2,
-							'msg'				=> JText::_('MSG_SAVED'),
-							'uploadError'		=> $fileMsg,
-							'parentField'		=> $element,
-							'parentFieldVal'	=> $elemVal,
-							'parentFieldLabel'	=> baseHelper::nameFormat($elemLabel)
-						);
+							// Upload
+							if($cfg['hasUpload'])
+							$fileMsg = uploader::uploadFile($id, $cfg['fileTable'], $_FILES[$cfg['fileField']], $fileGrp, $fileGtp, $fileCls, $fileLbl, $cfg);
 
-					} catch (RuntimeException $e) {
+							// UPDATE FIELD
+							$element = $elemVal = $elemLabel = '';
+							if(!empty($_SESSION[$RTAG.'FieldUpdated']) && !empty($_SESSION[$RTAG.'TableField'])) :
+								$element = $_SESSION[$RTAG.'FieldUpdated'];
+								$elemVal = $id;
+								$query = 'SELECT '. (preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $_SESSION[$RTAG.'TableField']) ? $db->quoteName($_SESSION[$RTAG.'TableField']) : $_SESSION[$RTAG.'TableField']) .' FROM '. $db->quoteName($cfg['mainTable']).' WHERE '. $db->quoteName('id') .' = '.$id.' AND state = 1';
+								$db->setQuery($query);
+								$elemLabel = $db->loadResult();
+							endif;
 
-						// Error treatment
-						switch($e->getCode()) {
-							case '1062':
-							$sqlErr = JText::_('MSG_SQL_DUPLICATE_KEY');
-							break;
-							default:
-							$sqlErr = 'Erro: '.$e->getCode().'. '.$e->getMessage();
+							$data[] = array(
+								'status'			=> 2,
+								'msg'				=> JText::_('MSG_SAVED'),
+								'uploadError'		=> $fileMsg,
+								'parentField'		=> $element,
+								'parentFieldVal'	=> $elemVal,
+								'parentFieldLabel'	=> baseHelper::nameFormat($elemLabel)
+							);
+
+						} catch (RuntimeException $e) {
+
+							// Error treatment
+							switch($e->getCode()) {
+								case '1062':
+								$sqlErr = JText::_('MSG_SQL_DUPLICATE_KEY');
+								break;
+								default:
+								$sqlErr = 'Erro: '.$e->getCode().'. '.$e->getMessage();
+							}
+
+							$data[] = array(
+								'status'			=> 0,
+								'msg'				=> $sqlErr,
+								'uploadError'		=> $fileMsg
+							);
+
 						}
 
+					} else {
+
 						$data[] = array(
-							'status'			=> 0,
-							'msg'				=> $sqlErr,
-							'uploadError'		=> $fileMsg
+							'status'				=> 0,
+							'msg'					=> JText::_('MSG_ERROR'),
+							'uploadError'			=> $fileMsg
 						);
 
 					}

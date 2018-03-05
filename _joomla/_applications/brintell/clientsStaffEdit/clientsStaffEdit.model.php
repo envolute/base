@@ -181,64 +181,76 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					);
 
 				// UPDATE
-				elseif($task == 'save' && $save_condition && $id) :
+				elseif($task == 'save' && $id) :
 
-					$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
-					$query .=
-						$db->quoteName('name')				.'='. $db->quote($request['name']) .','.
-						$db->quoteName('email')				.'='. $db->quote($request['email']) .','.
-						$db->quoteName('role')				.'='. $db->quote($request['role']) .','.
-						$db->quoteName('alter_date')		.'= NOW(),'.
-						$db->quoteName('alter_by')			.'='. $user->id
-					;
-					$query .= ' WHERE '. $db->quoteName('id') .'='. $id;
+					if($save_condition) {
 
-					try {
+						$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
+						$query .=
+							$db->quoteName('name')				.'='. $db->quote($request['name']) .','.
+							$db->quoteName('email')				.'='. $db->quote($request['email']) .','.
+							$db->quoteName('role')				.'='. $db->quote($request['role']) .','.
+							$db->quoteName('alter_date')		.'= NOW(),'.
+							$db->quoteName('alter_by')			.'='. $user->id
+						;
+						$query .= ' WHERE '. $db->quoteName('id') .'='. $id;
 
-						$db->setQuery($query);
-						$db->execute();
+						try {
 
-						// Upload
-						if($cfg['hasUpload'])
-						$fileMsg = uploader::uploadFile($id, $cfg['fileTable'], $_FILES[$cfg['fileField']], $fileGrp, $fileGtp, $fileCls, $fileLbl, $cfg);
-
-						// CUSTOM -> user edit
-						if($isUser && $userInfoId) :
-							// verifica se ha atualização de senha
-							$newPass  = '';
-							if(!empty($request['password']) && ($request['password'] == $request['repassword'])) :
-								$newPass  = ', password = '. $db->quote(JUserHelper::hashPassword($request['password']));
-							endif;
-							// Atualiza os dados do usuário
-							$query = 'UPDATE '. $db->quoteName('#__users') .' SET name = '. $db->quote($request['name']) .', email = '. $db->quote($request['email']). $newPass .', block = 0 WHERE id = '.$userInfoId;
 							$db->setQuery($query);
 							$db->execute();
-						endif;
 
-						$data[] = array(
-							'status'			=> 2,
-							'msg'				=> JText::_('MSG_SAVED'),
-							'uploadError'		=> $fileMsg,
-							'parentField'		=> $element,
-							'parentFieldVal'	=> $elemVal,
-							'parentFieldLabel'	=> baseHelper::nameFormat($elemLabel)
-						);
+							// Upload
+							if($cfg['hasUpload'])
+							$fileMsg = uploader::uploadFile($id, $cfg['fileTable'], $_FILES[$cfg['fileField']], $fileGrp, $fileGtp, $fileCls, $fileLbl, $cfg);
 
-					} catch (RuntimeException $e) {
+							// CUSTOM -> user edit
+							if($isUser && $userInfoId) :
+								// verifica se ha atualização de senha
+								$newPass  = '';
+								if(!empty($request['password']) && ($request['password'] == $request['repassword'])) :
+									$newPass  = ', password = '. $db->quote(JUserHelper::hashPassword($request['password']));
+								endif;
+								// Atualiza os dados do usuário
+								$query = 'UPDATE '. $db->quoteName('#__users') .' SET name = '. $db->quote($request['name']) .', email = '. $db->quote($request['email']). $newPass .', block = 0 WHERE id = '.$userInfoId;
+								$db->setQuery($query);
+								$db->execute();
+							endif;
 
-						// Error treatment
-						switch($e->getCode()) {
-							case '1062':
-							$sqlErr = JText::_('MSG_SQL_DUPLICATE_KEY');
-							break;
-							default:
-							$sqlErr = 'Erro: '.$e->getCode().'. '.$e->getMessage();
+							$data[] = array(
+								'status'			=> 2,
+								'msg'				=> JText::_('MSG_SAVED'),
+								'uploadError'		=> $fileMsg,
+								'parentField'		=> $element,
+								'parentFieldVal'	=> $elemVal,
+								'parentFieldLabel'	=> baseHelper::nameFormat($elemLabel)
+							);
+
+						} catch (RuntimeException $e) {
+
+							// Error treatment
+							switch($e->getCode()) {
+								case '1062':
+								$sqlErr = JText::_('MSG_SQL_DUPLICATE_KEY');
+								break;
+								default:
+								$sqlErr = 'Erro: '.$e->getCode().'. '.$e->getMessage();
+							}
+
+							$data[] = array(
+								'status'			=> 0,
+								'msg'				=> $sqlErr,
+								'uploadError'		=> $fileMsg
+							);
+
 						}
 
+					} else {
+
 						$data[] = array(
-							'status'			=> 0,
-							'msg'				=> $sqlErr,
-							'uploadError'		=> $fileMsg
+							'status'				=> 0,
+							'msg'					=> JText::_('MSG_ERROR'),
+							'uploadError'			=> $fileMsg
 						);
 
 					}

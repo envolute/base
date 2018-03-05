@@ -79,6 +79,7 @@ $_SESSION[$APPTAG.'cardLimit'] = '300,00'; // default
 
 // Save Function
 // fuction called after save action
+	$cfg['addTrigger']			= ''; // only insert
 	$cfg['saveTrigger']			= '';
 
 // form's

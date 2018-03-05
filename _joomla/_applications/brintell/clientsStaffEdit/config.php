@@ -75,7 +75,8 @@ endif;
 
 // Save Function
 // fuction called after save action
-	$cfg['saveTrigger']			= $APPPATH.'_sidebarReload';
+	$cfg['addTrigger']			= ''; // only insert
+	$cfg['saveTrigger']			= '';
 
 // data definitions
 

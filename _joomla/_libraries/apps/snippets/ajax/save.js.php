@@ -39,11 +39,11 @@ window.<?php echo $APPTAG?>_save = function(trigger) {
 								<?php echo $APPTAG?>_formReset();
 								if(trigger == 'close') popup.modal('hide');
 								formReload = false;
-							} else {
-								trigger(resID);
 							}
 						}
 						<?php
+						// CONFIG ADD ACTION => Ação definida no 'config'. Excuta apenas no insert...
+						echo !empty($cfg['addTrigger']) ? 'if(res.status == 1) '.$cfg['addTrigger'].'(resID);' : '';
 						// CONFIG SAVE ACTION => Ação definida no 'config'. Sempre executa após salvar...
 						echo !empty($cfg['saveTrigger']) ? $cfg['saveTrigger'].'(resID);' : '';
 						?>

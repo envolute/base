@@ -255,74 +255,86 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					);
 
 				// UPDATE
-				elseif($task == 'save' && $save_condition && $id) :
+				elseif($task == 'save' && $id) :
 
-					$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
-					$query .=
-						$db->quoteName('project_id')		.'='. $request['project_id'] .','.
-						$db->quoteName('type')				.'='. $request['type'] .','.
-						$db->quoteName('subject')			.'='. $db->quote($request['subject']) .','.
-						$db->quoteName('description')		.'='. $db->quote($request['description']) .','.
-						$db->quoteName('priority')			.'='. $request['priority'] .','.
-						$db->quoteName('deadline')			.'='. $db->quote($request['deadline']) .','.
-						$db->quoteName('timePeriod')		.'='. $db->quote($request['timePeriod']) .','.
-						$db->quoteName('executed')			.'='. $request['executed'] .','.
-						$db->quoteName('tags')				.'='. $db->quote($request['tags']) .','.
-						$db->quoteName('status')			.'='. $request['status'] .','.
-						$db->quoteName('status_desc')		.'='. $db->quote($request['status_desc']) .','.
-	  					$db->quoteName('closing_date')		.'='. $db->quote($closing_date) .','.
-						$db->quoteName('state')				.'='. $request['state'] .','.
-						$db->quoteName('alter_date')		.'= NOW(),'.
-						$db->quoteName('alter_by')			.'='. $user->id
-					;
-					$query .= ' WHERE '. $db->quoteName('id') .'='. $id;
+					if($save_condition) {
 
-					try {
+						$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
+						$query .=
+							$db->quoteName('project_id')		.'='. $request['project_id'] .','.
+							$db->quoteName('type')				.'='. $request['type'] .','.
+							$db->quoteName('subject')			.'='. $db->quote($request['subject']) .','.
+							$db->quoteName('description')		.'='. $db->quote($request['description']) .','.
+							$db->quoteName('priority')			.'='. $request['priority'] .','.
+							$db->quoteName('deadline')			.'='. $db->quote($request['deadline']) .','.
+							$db->quoteName('timePeriod')		.'='. $db->quote($request['timePeriod']) .','.
+							$db->quoteName('executed')			.'='. $request['executed'] .','.
+							$db->quoteName('tags')				.'='. $db->quote($request['tags']) .','.
+							$db->quoteName('status')			.'='. $request['status'] .','.
+							$db->quoteName('status_desc')		.'='. $db->quote($request['status_desc']) .','.
+		  					$db->quoteName('closing_date')		.'='. $db->quote($closing_date) .','.
+							$db->quoteName('state')				.'='. $request['state'] .','.
+							$db->quoteName('alter_date')		.'= NOW(),'.
+							$db->quoteName('alter_by')			.'='. $user->id
+						;
+						$query .= ' WHERE '. $db->quoteName('id') .'='. $id;
 
-						$db->setQuery($query);
-						$db->execute();
+						try {
 
-						// Upload
-						if($cfg['hasUpload'])
-						$fileMsg = uploader::uploadFile($id, $cfg['fileTable'], $_FILES[$cfg['fileField']], $fileGrp, $fileGtp, $fileCls, $fileLbl, $cfg);
-
-						// UPDATE FIELD
-						$element = $elemVal = $elemLabel = '';
-						if(!empty($_SESSION[$RTAG.'FieldUpdated']) && !empty($_SESSION[$RTAG.'TableField'])) :
-							$element = $_SESSION[$RTAG.'FieldUpdated'];
-							$elemVal = $id;
-							$query = 'SELECT '. (preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $_SESSION[$RTAG.'TableField']) ? $db->quoteName($_SESSION[$RTAG.'TableField']) : $_SESSION[$RTAG.'TableField']) .' FROM '. $db->quoteName($cfg['mainTable']).' WHERE '. $db->quoteName('id') .' = '.$id.' AND state = 1';
 							$db->setQuery($query);
-							$elemLabel = $db->loadResult();
-						endif;
+							$db->execute();
 
-			            // CUSTOM -> Copy To-Do List
-			            if($request['template'] > 0) copyTodoList($request['template'], $id, $user->id);
+							// Upload
+							if($cfg['hasUpload'])
+							$fileMsg = uploader::uploadFile($id, $cfg['fileTable'], $_FILES[$cfg['fileField']], $fileGrp, $fileGtp, $fileCls, $fileLbl, $cfg);
 
-						$data[] = array(
-							'status'			=> 2,
-							'msg'				=> JText::_('MSG_SAVED'),
-							'uploadError'		=> $fileMsg,
-							'parentField'		=> $element,
-							'parentFieldVal'	=> $elemVal,
-							'parentFieldLabel'	=> baseHelper::nameFormat($elemLabel)
-						);
+							// UPDATE FIELD
+							$element = $elemVal = $elemLabel = '';
+							if(!empty($_SESSION[$RTAG.'FieldUpdated']) && !empty($_SESSION[$RTAG.'TableField'])) :
+								$element = $_SESSION[$RTAG.'FieldUpdated'];
+								$elemVal = $id;
+								$query = 'SELECT '. (preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $_SESSION[$RTAG.'TableField']) ? $db->quoteName($_SESSION[$RTAG.'TableField']) : $_SESSION[$RTAG.'TableField']) .' FROM '. $db->quoteName($cfg['mainTable']).' WHERE '. $db->quoteName('id') .' = '.$id.' AND state = 1';
+								$db->setQuery($query);
+								$elemLabel = $db->loadResult();
+							endif;
 
-					} catch (RuntimeException $e) {
+				            // CUSTOM -> Copy To-Do List
+				            if($request['template'] > 0) copyTodoList($request['template'], $id, $user->id);
 
-						// Error treatment
-						switch($e->getCode()) {
-							case '1062':
-							$sqlErr = JText::_('MSG_SQL_DUPLICATE_KEY');
-							break;
-							default:
-							$sqlErr = 'Erro: '.$e->getCode().'. '.$e->getMessage();
+							$data[] = array(
+								'status'			=> 2,
+								'msg'				=> JText::_('MSG_SAVED'),
+								'uploadError'		=> $fileMsg,
+								'parentField'		=> $element,
+								'parentFieldVal'	=> $elemVal,
+								'parentFieldLabel'	=> baseHelper::nameFormat($elemLabel)
+							);
+
+						} catch (RuntimeException $e) {
+
+							// Error treatment
+							switch($e->getCode()) {
+								case '1062':
+								$sqlErr = JText::_('MSG_SQL_DUPLICATE_KEY');
+								break;
+								default:
+								$sqlErr = 'Erro: '.$e->getCode().'. '.$e->getMessage();
+							}
+
+							$data[] = array(
+								'status'			=> 0,
+								'msg'				=> $sqlErr,
+								'uploadError'		=> $fileMsg
+							);
+
 						}
 
+					} else {
+
 						$data[] = array(
-							'status'			=> 0,
-							'msg'				=> $sqlErr,
-							'uploadError'		=> $fileMsg
+							'status'				=> 0,
+							'msg'					=> JText::_('MSG_ERROR'),
+							'uploadError'			=> $fileMsg
 						);
 
 					}

@@ -68,7 +68,7 @@ $users = $db->loadObjectList();
 		</div>
 		<div class="col-sm-5 col-lg-3">
 			<div class="form-group">
-				<label class="label-sm"><?php echo JText::_('FIELD_LABEL_END_HOUR'); ?></label>
+				<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_END_HOUR_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_END_HOUR'); ?></label>
 				<input type="text" name="end_hour" id="<?php echo $APPTAG?>-end_hour" class="form-control field-time" data-second="false" />
 			</div>
 		</div>

@@ -368,8 +368,7 @@ jQuery(function() {
 				},
 				complete: function() {
 					// IMPORTANTE: Atualiza o select
-					if(isSet(id) && id > 0 && id == oID) dependent_id.val(id);
-					usergroup.selectUpdate(); // atualiza o select
+					dependent_id.selectUpdate(oID);
 					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
 				}
 			});

@@ -601,6 +601,47 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 				endif; // end validation
 
+			// CUSTOM: get tasks list to 'tasksTimer'
+			elseif($task == 'tList' && $state != 2) :
+
+				$taskFilter = (!$state) ? 'FIND_IN_SET ('.$user->id.', T1.assign_to) OR T1.created_by = '.$user->id.' AND ' : '';
+				$query = '
+					SELECT T1.*
+					FROM '. $db->quoteName('#__'.$cfg['project'].'_tasks') .' T1
+					WHERE '.$taskFilter.'T1.state = 1 ORDER BY T1.id DESC
+				';
+
+				try {
+					$db->setQuery($query);
+					$db->execute();
+					$num_itens = $db->getNumRows();
+					$list = $db->loadObjectList();
+
+					if($num_itens) :
+						foreach($list as $item) {
+							$data[] = array(
+								// Default Fields
+								'status'		=> 1,
+								// App Fields
+								'id'			=> $item->id,
+								'subject'		=> $item->subject
+							);
+						}
+					else :
+						$data[] = array(
+							'status'			=> 0
+						);
+					endif;
+
+				} catch (RuntimeException $e) {
+
+					$data[] = array(
+						'status'				=> 0,
+						'msg'					=> $e->getMessage()
+					);
+
+				}
+
 			endif; // end 'task'
 
 		endif; // end 'id'

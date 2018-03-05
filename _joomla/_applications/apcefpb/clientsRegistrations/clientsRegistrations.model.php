@@ -243,93 +243,105 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					);
 
 				// UPDATE
-				elseif($task == 'save' && $save_condition && $id) :
+				elseif($task == 'save' && $id) :
 
-					$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
-					// Campos não Editáveis
-					// Alguns campo são editáveis apenas se não estiverem preenchidos
-					// Caso já estejam preenchidos, seus valores não devem ser alterados
-					$query .= noEditable('name', $request['name'], true);
-					$query .= noEditable('cpf', $request['cpf'], true);
-					$query .= noEditable('rg', $request['rg'], true);
-					$query .= noEditable('rg_orgao', $request['rg_orgao'], true);
-					$query .= noEditable('gender', $request['gender'], false);
-					$query .= noEditable('birthday', $request['birthday'], true);
-					$query .= noEditable('cx_code', $request['cx_code'], true);
-					$query .= noEditable('cx_date', $request['cx_date'], true);
-					$query .= noEditable('enable_debit', $request['enable_debit'], true);
-					$query .= noEditable('agency', $request['agency'], true);
-					$query .= noEditable('account', $request['account'], true);
-					$query .= noEditable('operation', $request['operation'], true);
-					$query .=
-						$db->quoteName('email')				.'='. $db->quote($request['email']) .','.
-						$db->quoteName('marital_status') 	.'='. $request['marital_status'] .','.
-						$db->quoteName('partner')			.'='. $db->quote($request['partner']) .','.
-						$db->quoteName('children')			.'='. $request['children'] .','.
-						$db->quoteName('cx_email')			.'='. $db->quote($cx_email) .','.
-						$db->quoteName('cx_role')			.'='. $db->quote($request['cx_role']) .','.
-						$db->quoteName('cx_situated')		.'='. $db->quote($request['cx_situated']) .','.
-						$db->quoteName('zip_code')			.'='. $db->quote($request['zip_code']) .','.
-						$db->quoteName('address')			.'='. $db->quote($request['address']) .','.
-						$db->quoteName('address_number')	.'='. $db->quote($request['address_number']) .','.
-						$db->quoteName('address_info')		.'='. $db->quote($request['address_info']) .','.
-						$db->quoteName('address_district')	.'='. $db->quote($request['address_district']) .','.
-						$db->quoteName('address_city')		.'='. $db->quote($request['address_city']) .','.
-						$db->quoteName('address_state')		.'='. $db->quote($request['address_state']) .','.
-						$db->quoteName('address_country')	.'='. $db->quote($request['address_country']) .','.
-						$db->quoteName('phone')				.'='. $db->quote($request['phone']) .','.
-						$db->quoteName('whatsapp')			.'='. $db->quote($request['whatsapp']) .','.
-						$db->quoteName('phone_desc')		.'='. $db->quote($request['phone_desc']) .','.
-						$db->quoteName('state')				.'='. $request['state'] .','.
-						$db->quoteName('alter_date')		.'= NOW(),'.
-						$db->quoteName('alter_by')			.'='. $user->id
-					;
-					$query .= ' WHERE '. $db->quoteName('id') .'='. $id;
+					if($save_condition) {
 
-					try {
+						$query  = 'UPDATE '.$db->quoteName($cfg['mainTable']).' SET ';
+						// Campos não Editáveis
+						// Alguns campo são editáveis apenas se não estiverem preenchidos
+						// Caso já estejam preenchidos, seus valores não devem ser alterados
+						$query .= noEditable('name', $request['name'], true);
+						$query .= noEditable('cpf', $request['cpf'], true);
+						$query .= noEditable('rg', $request['rg'], true);
+						$query .= noEditable('rg_orgao', $request['rg_orgao'], true);
+						$query .= noEditable('gender', $request['gender'], false);
+						$query .= noEditable('birthday', $request['birthday'], true);
+						$query .= noEditable('cx_code', $request['cx_code'], true);
+						$query .= noEditable('cx_date', $request['cx_date'], true);
+						$query .= noEditable('enable_debit', $request['enable_debit'], true);
+						$query .= noEditable('agency', $request['agency'], true);
+						$query .= noEditable('account', $request['account'], true);
+						$query .= noEditable('operation', $request['operation'], true);
+						$query .=
+							$db->quoteName('email')				.'='. $db->quote($request['email']) .','.
+							$db->quoteName('marital_status') 	.'='. $request['marital_status'] .','.
+							$db->quoteName('partner')			.'='. $db->quote($request['partner']) .','.
+							$db->quoteName('children')			.'='. $request['children'] .','.
+							$db->quoteName('cx_email')			.'='. $db->quote($cx_email) .','.
+							$db->quoteName('cx_role')			.'='. $db->quote($request['cx_role']) .','.
+							$db->quoteName('cx_situated')		.'='. $db->quote($request['cx_situated']) .','.
+							$db->quoteName('zip_code')			.'='. $db->quote($request['zip_code']) .','.
+							$db->quoteName('address')			.'='. $db->quote($request['address']) .','.
+							$db->quoteName('address_number')	.'='. $db->quote($request['address_number']) .','.
+							$db->quoteName('address_info')		.'='. $db->quote($request['address_info']) .','.
+							$db->quoteName('address_district')	.'='. $db->quote($request['address_district']) .','.
+							$db->quoteName('address_city')		.'='. $db->quote($request['address_city']) .','.
+							$db->quoteName('address_state')		.'='. $db->quote($request['address_state']) .','.
+							$db->quoteName('address_country')	.'='. $db->quote($request['address_country']) .','.
+							$db->quoteName('phone')				.'='. $db->quote($request['phone']) .','.
+							$db->quoteName('whatsapp')			.'='. $db->quote($request['whatsapp']) .','.
+							$db->quoteName('phone_desc')		.'='. $db->quote($request['phone_desc']) .','.
+							$db->quoteName('state')				.'='. $request['state'] .','.
+							$db->quoteName('alter_date')		.'= NOW(),'.
+							$db->quoteName('alter_by')			.'='. $user->id
+						;
+						$query .= ' WHERE '. $db->quoteName('id') .'='. $id;
 
-						$db->setQuery($query);
-						$db->execute();
+						try {
 
-						// Upload
-						if($cfg['hasUpload'])
-						$fileMsg = uploader::uploadFile($id, $cfg['fileTable'], $_FILES[$cfg['fileField']], $fileGrp, $fileGtp, $fileCls, $fileLbl, $cfg);
-
-						// CUSTOM -> alter password
-						// verifica se ha atualização de senha
-						if(!empty($request['password']) && ($request['password'] == $request['repassword'])) :
-							// Atualiza os dados so usuário
-							$query = 'UPDATE '. $db->quoteName('#__users') .' SET '. $db->quoteName('password') .' = '. $db->quote(JUserHelper::hashPassword($request['password'])) .' WHERE id = '.$userInfoId;
 							$db->setQuery($query);
 							$db->execute();
-						endif;
 
-						// Salva na sessão a informação de 'edição' dos dados
-						// Assim é possível saber que os dados foram atualizados
-						// caso haja o redirecionamento para outra página...
-						$_SESSION[$APPTAG.'EditSuccess'] = true;
+							// Upload
+							if($cfg['hasUpload'])
+							$fileMsg = uploader::uploadFile($id, $cfg['fileTable'], $_FILES[$cfg['fileField']], $fileGrp, $fileGtp, $fileCls, $fileLbl, $cfg);
 
-						$data[] = array(
-							'status'			=> 2,
-							'msg'				=> JText::_('MSG_SAVED'),
-							'uploadError'		=> $fileMsg
-						);
+							// CUSTOM -> alter password
+							// verifica se ha atualização de senha
+							if(!empty($request['password']) && ($request['password'] == $request['repassword'])) :
+								// Atualiza os dados so usuário
+								$query = 'UPDATE '. $db->quoteName('#__users') .' SET '. $db->quoteName('password') .' = '. $db->quote(JUserHelper::hashPassword($request['password'])) .' WHERE id = '.$userInfoId;
+								$db->setQuery($query);
+								$db->execute();
+							endif;
 
-					} catch (RuntimeException $e) {
+							// Salva na sessão a informação de 'edição' dos dados
+							// Assim é possível saber que os dados foram atualizados
+							// caso haja o redirecionamento para outra página...
+							$_SESSION[$APPTAG.'EditSuccess'] = true;
 
-						// Error treatment
-						switch($e->getCode()) {
-							case '1062':
-							$sqlErr = JText::_('MSG_SQL_DUPLICATE_KEY');
-							break;
-							default:
-							$sqlErr = 'Erro: '.$e->getCode().'. '.$e->getMessage();
+							$data[] = array(
+								'status'			=> 2,
+								'msg'				=> JText::_('MSG_SAVED'),
+								'uploadError'		=> $fileMsg
+							);
+
+						} catch (RuntimeException $e) {
+
+							// Error treatment
+							switch($e->getCode()) {
+								case '1062':
+								$sqlErr = JText::_('MSG_SQL_DUPLICATE_KEY');
+								break;
+								default:
+								$sqlErr = 'Erro: '.$e->getCode().'. '.$e->getMessage();
+							}
+
+							$data[] = array(
+								'status'			=> 0,
+								'msg'				=> $sqlErr,
+								'uploadError'		=> $fileMsg
+							);
+
 						}
 
+					} else {
+
 						$data[] = array(
-							'status'			=> 0,
-							'msg'				=> $sqlErr,
-							'uploadError'		=> $fileMsg
+							'status'				=> 0,
+							'msg'					=> JText::_('MSG_ERROR'),
+							'uploadError'			=> $fileMsg
 						);
 
 					}

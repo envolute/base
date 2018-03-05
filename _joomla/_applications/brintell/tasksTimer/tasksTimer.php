@@ -349,6 +349,44 @@ jQuery(function() {
 
 		<? endif; ?>
 
+		// CUSTOM
+		// Set dependents List
+		// seta a lista de dependentes de acordo com o associado selecionado
+		window.<?php echo $APPTAG?>_updateTaskList = function() {
+			var oID = 0;
+			<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
+			jQuery.ajax({
+				url: "<?php echo $URL_APP_FILE ?>.model.php?task=tList&st="+<?php echo ($hasAdmin ? 1 : 0) ?>,
+				dataType: 'json',
+				type: 'POST',
+				cache: false,
+				success: function(data){
+					jQuery.map( data, function( res, i ) {
+						if(res.status == 1) {
+							// remove all options
+							if(i == 0) {
+								task_id.find('option').remove();
+								task_id.append('<option value="0">- <?php echo JText::_('TEXT_SELECT'); ?> -</option>');
+							}
+							if(res.status == 1) task_id.append('<option value="'+res.id+'">'+res.id+' - '+res.subject+'</option>');
+						} else {
+							$.baseNotify({ msg: res.msg, type: "danger"});
+						}
+					});
+				},
+				error: function(xhr, status, error) {
+					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
+					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
+					?>
+				},
+				complete: function() {
+					task_id.selectUpdate(); // atualiza o select
+					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
+				}
+			});
+			return false;
+		};
+
 	// JQUERY VALIDATION
 	window.<?php echo $APPTAG?>_validator = mainForm_<?php echo $APPTAG?>.validate({
 		//don't remove this

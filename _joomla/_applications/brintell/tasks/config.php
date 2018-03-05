@@ -74,7 +74,8 @@ endif;
 
 // Save Function
 // fuction called after save action
-	$cfg['saveTrigger']			= '';
+	$cfg['addTrigger']			= ''; // only insert
+	$cfg['saveTrigger']			= 'tasksTimer_updateTaskList';
 
 // view
 

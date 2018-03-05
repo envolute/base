@@ -76,6 +76,7 @@ $_SESSION[$APPTAG.'newUsertype'] = 11; // default 'Associado->efetivo'
 
 // Save Function
 // fuction called after save action
+	$cfg['addTrigger']			= ''; // only insert
 	$cfg['saveTrigger']			= '';
 
 // form's

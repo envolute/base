@@ -207,15 +207,30 @@ class baseHelper {
 	// $timer['seconds'] => '68048' (o tempo em segundos)
 	// $timer['minutes'] => '428' (o tempo em minutos)
 	// $timer['hours'] => '1.5' => 01:30:00 (expresão númérica do tempo, utilizada para o cálculo)
+	// IMPORTANTE:
+	// Se a hora de encerramento '$end' for menor que a hora de início '$start'
+	// o sistema interpreta o início em um dia e o final no dia seguinte
+	// Ex:
+	// $start	= 22:00:00 => segunda
+	// $end		= 02:00:00 => terça
 	public static function timeDiff($start, $end) {
-		$sec = strtotime($end) - strtotime($start); // seconds
+		$s = strtotime($start);
+		$e = strtotime($end);
+		$sDay = strtotime('00:00:00'); // start of day
+		$eDay = strtotime('23:59:59'); // end of day
+		$oSec = strtotime('00:00:01') - $sDay; // ajuste de 1 segundo
+		if($s < $e) {
+			$sec = $e - $s;
+		} else {
+			$sec = ($eDay - $s) + ($e - $sDay) + $oSec;
+		}
 		$min = $sec / 60; // minutes
 		$hs = $min / 60; // 1,5 hs
 		$dt = array(
 			'time' => date('H:i:s', mktime(0, 0, $sec)),
 			'seconds' => $sec,
 			'minutes' => $min,
-			'hours' => $hs
+			'hours' => round($hs, 2)
 		);
 		return $dt;
 	}
