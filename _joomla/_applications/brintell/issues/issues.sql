@@ -1,23 +1,20 @@
 --
--- Estrutura da tabela `cms_brintell_tasks`
+-- Estrutura da tabela `cms_brintell_issues`
 --
 
-CREATE TABLE `cms_brintell_tasks` (
+CREATE TABLE `cms_brintell_issues` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `project_id` int(11) NOT NULL,
   `type` tinyint(4) NOT NULL,
-  `issues` varchar(255) NOT NULL,
-  `assign_to` varchar(255) NOT NULL,
   `subject` varchar(255) NOT NULL,
   `description` TEXT NOT NULL,
   `priority` tinyint(4) NOT NULL,
   `deadline` DATETIME NOT NULL,
   `timePeriod` char(2) NOT NULL,
-  `estimate` tinyint(4) NOT NULL,
   `executed` tinyint(4) NOT NULL,
   `tags` varchar(255) NOT NULL,
-  `visibility` tinyint(4) NOT NULL,
   `status` tinyint(4) NOT NULL,
+  `status_desc` varchar(255) NOT NULL,
   `closing_date` DATETIME NOT NULL,
   `state` tinyint(4) NOT NULL,
   `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -26,18 +23,16 @@ CREATE TABLE `cms_brintell_tasks` (
   `alter_by` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `project_id` (`project_id`),
-  KEY `type` (`type`),
-  KEY `assign_to` (`assign_to`),
-  KEY `issues` (`issues`)
+  KEY `type` (`type`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `cms_brintell_tasks_files`
+-- Estrutura da tabela `cms_brintell_issues_files`
 --
 
-CREATE TABLE `cms_brintell_tasks_files` (
+CREATE TABLE `cms_brintell_issues_files` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_parent` int(11) NOT NULL,
   `index` int(11) NOT NULL,

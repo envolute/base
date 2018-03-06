@@ -111,7 +111,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$noReg = false;
 		endif;
 	endif;
-	$query	.= ' ORDER BY '. $db->quoteName('T1.orderer') .' ASC, '. $db->quoteName('T1.deadline') .' ASC, '. $db->quoteName('T1.created_date') .' ASC';
+	$query	.= ' ORDER BY '. $db->quoteName('T1.orderer') .' ASC, '. $db->quoteName('T1.created_date') .' ASC';
 	try {
 		$db->setQuery($query);
 		$db->execute();
@@ -160,6 +160,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$iStatus = ' <small class="base-icon-circle text-success cursor-help hasTooltip" title="'.$lStatus.'" style="bottom:-5px;"></small>';
 			endif;
 			$name = baseHelper::nameFormat((!empty($item->nickname) ? $item->nickname : $item->name));
+			if($item->type == 2) $name = ' <span class="badge badge-warning">'.JText::_('TEXT_CLIENT').'</span>';
 
 			$attachs = !empty($listFiles) ? '<div class="font-condensed text-sm pt-1">'.$listFiles.'</div>' : '';
 
@@ -170,11 +171,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$html .= '
 				<li class="d-flex">
 					<div class="mr-3" style="flex:0 0 42px;">
-						<a href="'.$_ROOT.'apps/staff/view?vID='.$item->user_id.'">'.$img.'</a>
+						<a href="'.$urlProfile.'">'.$img.'</a>
 						<div class="btn-group btn-group-justified">'.$btnEdit.$btnDelete.'</div>
 					</div>
 					<div style="flex-grow:1;" class="font-condensed text-sm mb-2 lh-1-3">
-						<div class="page-header text-muted b-bottom-dashed">'.$name.$iStatus.' <span class="float-right">'.baseHelper::dateFormat($item->created_date, 'd.m.y H:i').'</span></div>
+						<div class="page-header text-muted b-bottom-dashed pb-1 clearfix">'.$name.$iStatus.' <span class="float-right">'.baseHelper::dateFormat($item->created_date, 'd.m.y H:i').'</span></div>
 						<div>'.$item->comment.'</div>
 						'.$attachs.'
 					</div>

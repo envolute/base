@@ -65,7 +65,7 @@ endif;
 
 // DEFINE VIEW
 $a[0] = $a[1] = $a[2] = '';
-// REQUESTS: Manager, Analyst & Client Manager
+// ISSUES: Manager, Analyst & Client Manager
 if($vID == 0 && ($hasAdmin || $hasAnalyst || $hasClient)) :
 	$a[0] = ' active';
 // TASKS: Brintell Staff, Bloqueado para Clients
@@ -73,7 +73,7 @@ elseif(!$hasClient) :
 	$a[1] = ' active';
 	if($vID == 2) $a[2] = ' active';
 endif;
-$l[0] = JText::_('TEXT_REQUESTS');
+$l[0] = JText::_('TEXT_ISSUES');
 $l[1] = JText::_('TEXT_TASKS');
 $l[2] = JText::_('TEXT_TIMESHEET');
 $icon[0] = 'megaphone';
@@ -100,16 +100,16 @@ echo '</ul>';
 
 if(!empty($a[0])) :
 
-	// REQUESTS
+	// ISSUES
 	// Manager, Analyst & Client Manager
-	$requestsListFull		= false;
-	$requestsListAjax		= "list.full.ajax.php";
-	$requestsAjaxFilter		= 1;
-	$requestsRelTag			= 'projects';
-	$requestsRelListNameId	= 'project_id';
-	$requestsRelListId		= $pID;
-	$requestsOnlyChildList	= true;
-	require(JPATH_APPS.DS.'requests/requests.php');
+	$issuesListFull			= false;
+	$issuesListAjax			= "list.full.ajax.php";
+	$issuesAjaxFilter		= 1;
+	$issuesRelTag			= 'projects';
+	$issuesRelListNameId	= 'project_id';
+	$issuesRelListId		= $pID;
+	$issuesOnlyChildList	= true;
+	require(JPATH_APPS.DS.'issues/issues.php');
 
 elseif(!empty($a[1])) :
 

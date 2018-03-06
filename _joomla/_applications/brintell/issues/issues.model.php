@@ -91,41 +91,106 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		// default
 		$request['relationId']   		= $input->get('relationId', 0, 'int');
 		$request['state']				= $input->get('state', 1, 'int');
+	  	$setClose						= $input->get('setClose', 2, 'int'); // 2, caso não seja enviado
+		if($setClose == 1) $request['state'] = 0;
+		else if($setClose == 0) $request['state'] = 1;
 		// app
 		$request['project_id']			= $input->get('project_id', 0, 'int');
 		$request['type']				= $input->get('type', 0, 'int');
-		$request['issues']				= $input->get('issues', '', 'string');
-		$issues							= $input->get('issues', array(), 'array');
-		$request['issues']				= implode(',', $issues); // FIND_IN_SET
-	  	$assign_to						= $input->get('assign_to', array(), 'array');
-		$request['assign_to']			= implode(',', $assign_to); // FIND_IN_SET
-		$request['cassign_to']			= $input->get('cassign_to', '', 'string');
 	  	$request['subject']				= $input->get('subject', '', 'string');
 	  	$request['description']			= $input->get('description', '', 'string');
 		$request['priority']			= $input->get('priority', 0, 'int');
 	  	$request['deadline']			= $input->get('deadline', '', 'string');
 	  	$request['timePeriod']			= $input->get('timePeriod', '', 'string');
-	  	$request['estimate']			= $input->get('estimate', 0, 'int');
 	  	$request['executed']			= $input->get('executed', 0, 'int');
 		$tags							= $input->get('tags', array(), 'array');
 		$request['tags']				= implode(',', $tags); // FIND_IN_SET
-	  	$request['visibility']			= $input->get('visibility', 1, 'int');
-	  	$request['status']				= $input->get('status', 0, 'int');
-	  	$request['cstatus']				= $input->get('cstatus', 0, 'int');
-			// fechamento
-			$closing_date = '0000-00-00 00:00:00';
-			if($request['status'] == 3) :
-				$request['executed'] = 100;
-			elseif($request['status'] == 4) :
-				$request['executed'] = 100;
-				$closing_date = date('Y-m-d H:i:s');
-			endif;
+		$request['status']				= $input->get('status', 0, 'int');
+		$request['cstatus']				= $input->get('cstatus', 0, 'int');
+		// fechamento
+		$closing_date = '0000-00-00 00:00:00';
+		if($request['status'] == 3) :
+			$request['executed'] = 100;
+		elseif($request['status'] == 4) :
+			$request['executed'] = 100;
+			$closing_date = date('Y-m-d H:i:s');
+		endif;
 
-	    // CUSTOM -> default vars for registration e-mail
-	    $config			= JFactory::getConfig();
-	    $sitename		= $config->get('sitename');
-	    $domain			= baseHelper::getDomain();
-	    $mailFrom		= $config->get('mailfrom');
+		// CUSTOM -> default vars for registration e-mail
+		$config			= JFactory::getConfig();
+		$sitename		= $config->get('sitename');
+		$domain			= baseHelper::getDomain();
+		$mailFrom		= $config->get('mailfrom');
+
+	    // CUSTOM -> Copy To-Do List
+	    function copyTodoList($requestID, $taskID, $userID) {
+			if(!empty($requestID) && $requestID != 0) :
+				// database connect
+				$db = JFactory::getDbo();
+				$query = '
+					INSERT INTO '. $db->quoteName($cfg['mainTable'].'_todo') .' (
+						task_id,
+						subject,
+						description,
+						state,
+						created_by
+					)
+					SELECT
+						'.$taskID.',
+						subject,
+						description,
+						'. $db->quote('1') .',
+						'. $db->quote($userID) .'
+					FROM
+						'. $db->quoteName('#__'.$cfg['project'].'_issues_todo') .'
+					WHERE issue_id = '.$requestID.'
+				';
+				$db->setQuery($query);
+				$db->execute();
+				return true;
+			else :
+				return false;
+			endif;
+	    }
+	    // CUSTOM -> Copy Task from Request
+	    function createTaskFromRequest($requestID, $requestType, $pID, $userID, $cfg) {
+			if(!empty($requestID) && $requestID != 0) :
+				// database connect
+				$db = JFactory::getDbo();
+				$query = '
+					INSERT INTO '. $db->quoteName($cfg['mainTable']) .' (
+						project_id,
+						type,
+						issues,
+						subject,
+						description,
+						priority,
+						deadline,
+						timePeriod,
+						created_by
+					)
+					SELECT
+						'.$pID.',
+						'.$requestID.',
+						'.$requestType.',
+						subject,
+						description,
+						priority,
+						deadline,
+						timePeriod,
+						'.$userID.'
+					FROM '. $db->quoteName('#__'.$cfg['project'].'_issues_todo') .'
+					WHERE id = '.$requestID
+				;
+				$db->setQuery($query);
+				$db->execute();
+				$taskID = $db->insertid();
+				copyTodoList($requestID, $taskID, $userID);
+				return true;
+			else :
+				return false;
+			endif;
+	    }
 
 		// SAVE CONDITION
 		// Condição para inserção e atualização dos registros
@@ -177,18 +242,15 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						// App Fields
 						'project_id'		=> $item->project_id,
 						'type'				=> $item->type,
-						'issues'			=> explode(',', $item->issues),
-						'assign_to'			=> explode(',', $item->assign_to),
 						'subject'			=> $item->subject,
 						'description'		=> $item->description,
 						'priority'			=> $item->priority,
 						'deadline'			=> $item->deadline,
 						'timePeriod'		=> $item->timePeriod,
-						'estimate'			=> $item->estimate,
 						'executed'			=> $item->executed,
 						'tags'				=> explode(',', $item->tags),
-						'visibility'		=> $item->visibility,
 						'status'			=> $item->status,
+						'status_desc'		=> $item->status_desc,
 						'files'				=> $listFiles
 					);
 
@@ -201,18 +263,15 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						$query .=
 							$db->quoteName('project_id')		.'='. $request['project_id'] .','.
 							$db->quoteName('type')				.'='. $request['type'] .','.
-							$db->quoteName('issues')			.'='. $db->quote($request['issues']) .','.
-							$db->quoteName('assign_to')			.'='. $db->quote($request['assign_to']) .','.
 							$db->quoteName('subject')			.'='. $db->quote($request['subject']) .','.
 							$db->quoteName('description')		.'='. $db->quote($request['description']) .','.
 							$db->quoteName('priority')			.'='. $request['priority'] .','.
 							$db->quoteName('deadline')			.'='. $db->quote($request['deadline']) .','.
 							$db->quoteName('timePeriod')		.'='. $db->quote($request['timePeriod']) .','.
-							$db->quoteName('estimate')			.'='. $request['estimate'] .','.
 							$db->quoteName('executed')			.'='. $request['executed'] .','.
 							$db->quoteName('tags')				.'='. $db->quote($request['tags']) .','.
-							$db->quoteName('visibility')		.'='. $request['visibility'] .','.
 							$db->quoteName('status')			.'='. $request['status'] .','.
+							$db->quoteName('status_desc')		.'='. $db->quote($request['status_desc']) .','.
 		  					$db->quoteName('closing_date')		.'='. $db->quote($closing_date) .','.
 							$db->quoteName('state')				.'='. $request['state'] .','.
 							$db->quoteName('alter_date')		.'= NOW(),'.
@@ -239,42 +298,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 								$elemLabel = $db->loadResult();
 							endif;
 
-							// NOTIFY USERS ATTRIBUTED
-							if(!empty($request['assign_to'])) {
+				            // CUSTOM -> Copy To-Do List
+				            if($request['template'] > 0) copyTodoList($request['template'], $id, $user->id);
 
-								if(!empty($request['cassign_to'])) {
-									$assign		= explode(',', $request['assign_to']);
-									$cassign	= explode(',', $request['cassign_to']);
-									$diff		= array_diff($assign, $cassign);
-									$newAssign	= implode(',', $diff);
-								} else {
-									$newAssign	= $request['assign_to'];
-								}
-								if(!empty($newAssign)) {
-									$query = 'SELECT name, nickname, email FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('user_id') .' IN ('.$newAssign.')';
-									$db->setQuery($query);
-									$users = $db->loadObjectList();
-
-									// Email Template
-									$boxStyle	= array('bg' => '#fafafa', 'color' => '#555', 'border' => 'border: 4px solid #eee');
-									$headStyle	= array('bg' => '#fff', 'color' => '#5EAB87', 'border' => '1px solid #eee');
-									$bodyStyle	= array('bg' => '');
-									$mailLogo	= 'logo-news.png';
-
-									foreach ($users as $obj) {
-										// se a senha for gerada pelo sistema, envia a senha. Senão, não envia...
-										$name = !empty($obj->nickname) ? $obj->nickname : $obj->name;
-										$url = $_ROOT.'/apps/'.$APPNAME.'/view?vID='.$id;
-									    $subject = JText::sprintf('MSG_EMAIL_NOTIFY_SUBJECT', $sitename, $id);
-										$eBody = JText::sprintf('MSG_EMAIL_NOTIFY_BODY', baseHelper::nameFormat($name), $id, $request['subject'], $url);
-										$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_EMAIL_NOTIFY_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle, $_ROOT);
-										// envia o email
-										baseHelper::sendMail($mailFrom, $obj->email, $subject, $mailHtml);
-									}
-								}
-							}
-
-				            $data[] = array(
+							$data[] = array(
 								'status'			=> 2,
 								'msg'				=> JText::_('MSG_SAVED'),
 								'uploadError'		=> $fileMsg,
@@ -445,6 +472,36 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'uploadError'			=> $fileMsg
 					);
 
+				// TEMPLATES SERVICE
+				elseif($task == 'createTask') :
+
+					try {
+
+						$setIds = explode(',', $ids);
+						// CREATE TASK FROM REQUEST
+						for($i = 0; $i < count($setIds); $i++) {
+							// SELECT PROJECT
+							$query = 'SELECT project_id FROM '. $db->quoteName($cfg['mainTable']) .' WHERE '. $db->quoteName('id') .' = '.$setIds[$i];
+							$db->setQuery($query);
+							$pID = $db->loadResult();
+							// CREATE TASK
+							createTaskFromRequest($setIds[$i], $state, $pID, $user->id, $cfg);
+						}
+
+						$data[] = array(
+							'status' => 1,
+							'msg'	=> ''
+						);
+
+					} catch (RuntimeException $e) {
+
+						$data[] = array(
+							'status'=> 0,
+							'msg'	=> $e->getMessage()
+						);
+
+					}
+
 				// STATUS
 				elseif($task == 'status') :
 
@@ -473,7 +530,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					} catch (RuntimeException $e) {
 
 						$data[] = array(
-							'status'=> 0,
+							'status'=> $query,
 							'msg'	=> $e->getMessage()
 						);
 
@@ -496,35 +553,29 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						INSERT INTO '. $db->quoteName($cfg['mainTable']) .'('.
 							$db->quoteName('project_id') .','.
 							$db->quoteName('type') .','.
-							$db->quoteName('issues') .','.
-							$db->quoteName('assign_to') .','.
 							$db->quoteName('subject') .','.
 							$db->quoteName('description') .','.
 							$db->quoteName('priority') .','.
 							$db->quoteName('deadline') .','.
 							$db->quoteName('timePeriod') .','.
-							$db->quoteName('estimate') .','.
 							$db->quoteName('executed') .','.
 							$db->quoteName('tags') .','.
-							$db->quoteName('visibility') .','.
 							$db->quoteName('status') .','.
+							$db->quoteName('status_desc') .','.
 							$db->quoteName('state') .','.
 							$db->quoteName('created_by')
 						.') VALUES ('.
 							$request['project_id'] .','.
 							$request['type'] .','.
-							$db->quote($request['issues']) .','.
-							$db->quote($request['assign_to']) .','.
 							$db->quote($request['subject']) .','.
 							$db->quote($request['description']) .','.
 							$request['priority'] .','.
 							$db->quote($request['deadline']) .','.
 							$db->quote($request['timePeriod']) .','.
-							$request['estimate'] .','.
 							$request['executed'] .','.
 							$db->quote($request['tags']) .','.
-							$request['visibility'] .','.
 							$request['status'] .','.
+							$db->quote($request['status_desc']) .','.
 							$request['state'] .','.
 							$user->id
 						.')
@@ -563,28 +614,28 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$elemLabel = $db->loadResult();
 						endif;
 
-						// NOTIFY USERS ATTRIBUTED
-						if(!empty($request['assign_to'])) {
-							$query = 'SELECT name, nickname, email FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('user_id') .' IN ('.$request['assign_to'].')';
-							$db->setQuery($query);
-							$users = $db->loadObjectList();
+						// NOTIFY ANALYSTS
 
-							// Email Template
-							$boxStyle	= array('bg' => '#fafafa', 'color' => '#555', 'border' => 'border: 4px solid #eee');
-							$headStyle	= array('bg' => '#fff', 'color' => '#5EAB87', 'border' => '1px solid #eee');
-							$bodyStyle	= array('bg' => '');
-							$mailLogo	= 'logo-news.png';
+						// Get brintell analysts data
+						$query = 'SELECT name, nickname, email FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('usergroup') .' IN (11, 12) AND ' . $db->quoteName('access') .' = 1 AND ' . $db->quoteName('state') .' = 1';
+						$db->setQuery($query);
+						$users = $db->loadObjectList();
 
-							foreach ($users as $obj) {
-								// se a senha for gerada pelo sistema, envia a senha. Senão, não envia...
-								$name = !empty($obj->nickname) ? $obj->nickname : $obj->name;
-								$url = $_ROOT.'/apps/'.$APPNAME.'/view?vID='.$id;
-							    $subject = JText::sprintf('MSG_EMAIL_NOTIFY_SUBJECT', $sitename, $id);
-								$eBody = JText::sprintf('MSG_EMAIL_NOTIFY_BODY', baseHelper::nameFormat($name), $id, $request['subject'], $url);
-								$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_EMAIL_NOTIFY_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle, $_ROOT);
-								// envia o email
-								baseHelper::sendMail($mailFrom, $obj->email, $subject, $mailHtml);
-							}
+						// Email Template
+						$boxStyle	= array('bg' => '#fafafa', 'color' => '#555', 'border' => 'border: 4px solid #eee');
+						$headStyle	= array('bg' => '#fff', 'color' => '#5EAB87', 'border' => '1px solid #eee');
+						$bodyStyle	= array('bg' => '');
+						$mailLogo	= 'logo-news.png';
+
+						foreach ($users as $obj) {
+							// se a senha for gerada pelo sistema, envia a senha. Senão, não envia...
+							$name = !empty($obj->nickname) ? $obj->nickname : $obj->name;
+							$url = $_ROOT.'/apps/issues/view?vID='.$id;
+						    $subject = JText::sprintf('MSG_EMAIL_NOTIFY_SUBJECT', $sitename, $id);
+							$eBody = JText::sprintf('MSG_EMAIL_NOTIFY_BODY', baseHelper::nameFormat($name), baseHelper::nameFormat($user->name), $id, $request['subject'], $url);
+							$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_EMAIL_NOTIFY_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle, $_ROOT);
+							// envia o email
+							baseHelper::sendMail($mailFrom, $obj->email, $subject, $mailHtml);
 						}
 
 						$data[] = array(

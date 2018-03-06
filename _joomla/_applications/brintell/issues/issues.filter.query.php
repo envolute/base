@@ -10,58 +10,35 @@ $where = '';
 	$active	= $app->input->get('active', 1, 'int');
 	$where .= $db->quoteName('T1.state').' = '.$active;
 	// CLIENT
-	// Check if is a client
-	$client_id = 0;
-	if($hasViewer) {
-		// CLIENTS STAFF
-		$query = 'SELECT client_id FROM '. $db->quoteName('#__'.$cfg['project'].'_clients_staff') .' WHERE '. $db->quoteName('user_id') .' = '.$user->id.' AND '. $db->quoteName('access') .' = 1 AND '. $db->quoteName('state') .' = 1 ORDER BY name';
-		$db->setQuery($query);
-		$client_id = $db->loadResult();
-	}
-	// Se for um cliente, visualiza apenas das tasks do cliente
-	if($client_id) {
-		$where .= ' AND '.$db->quoteName('T2.client_id').' = '.$client_id;
-		$cProj .= $db->quoteName('client_id').' = '.$client_id.' AND '; // filtro na listagem de projetos
+	if($hasClient && $clientID) {
+		$where .= ' AND '.$db->quoteName('T2.client_id').' = '.$clientID;
 	} else {
 		$fClient = $app->input->get('fClient', 0, 'int');
 		if($fClient != 0) $where .= ' AND '.$db->quoteName('T2.client_id').' = '.$fClient;
-		$cProj = '';
 	}
 	// PROJECT
 	$pID	= $app->input->get('pID', 0, 'int');
 	$fProj	= ($pID > 0) ? $pID : $app->input->get('fProj', 0, 'int');
 	if($fProj != 0) $where .= ' AND '.$db->quoteName('T1.project_id').' = '.$fProj;
-	// ASSIGN TO
-	$assigned = '';
-	// Mostra apenas as tasks do próprio usuário se não estiver como 'admin'
-	// Obs: acessando um projeto, o dev pode ver todas as tasks...
-	// O cliente visualiza todos os seus...
-	if(!$hasAdmin && $pID == 0 && !$client_id) {
-
-		$fAssign = $user->id;
-		$assigned = ' AND ('.$db->quoteName('T1.created_by').' = '.$user->id.' OR FIND_IN_SET ('.$fAssign.', '.$db->quoteName('T1.assign_to').'))';
-
-	// Visão geral das tasks pelo Admin (todas as tasks)
-	// Visão geral das tasks 'em um projeto' pelo Developer (apenas as dele)
-	// Ou visão de projeto por todos (todas do projeto)
-	} else {
-
-		// Set visibility
-		// OR (visibility = project/client) OR (created_by = current user)
-		$assigned .= ' AND ('.$db->quoteName('T1.visibility').' > 0 OR '.$db->quoteName('T1.created_by').' = '.$user->id.')';
-		// OR assigned to me
-		$fAssign = $app->input->get('fAssign', array(), 'array');
-		for($i = 0; $i < count($fAssign); $i++) {
-			$assigned .= ($i == 0) ? ' AND (' : ' OR ';
-			$assigned .= 'FIND_IN_SET ('.$fAssign[$i].', T1.assign_to)';
-			$assigned .= ($i == (count($fAssign) - 1)) ? ')' : '';
+	// CREATED BY
+	$createdBy = '';
+	if($hasAdmin || $pID > 0) :
+		$fCreated = $app->input->get('fCreated', array(), 'array');
+		for($i = 0; $i < count($fCreated); $i++) {
+			$createdBy .= ($i == 0) ? ' AND (' : ' OR ';
+			$createdBy .= 'FIND_IN_SET ('.$fCreated[$i].', T1.created_by)';
+			$createdBy .= ($i == (count($fCreated) - 1)) ? ')' : '';
 		}
-
-	}
-	$where .= $assigned;
+	// Visão geral das issues pelo dev
+	// Mostra apenas as issues do próprio usuário
+	else :
+		$fCreated = $user->id;
+		$createdBy = ' AND FIND_IN_SET ('.$fCreated.', '.$db->quoteName('T1.created_by').')';
+	endif;
+	$where .= $createdBy;
 	// TYPE
-	$fType	= $app->input->get('fType', 2, 'int');
-	if($fType != 2) $where .= ' AND '.$db->quoteName('T1.type').' = '.$fType;
+	$fType	= $app->input->get('fType', 9, 'int');
+	if($fType != 9) $where .= ' AND '.$db->quoteName('T1.type').' = '.$fType;
 	// PRIORITY
 	$fPrior	= $app->input->get('fPrior', 9, 'int');
 	if($fPrior != 9) $where .= ' AND '.$db->quoteName('T1.priority').' = '.$fPrior;
@@ -74,14 +51,6 @@ $where = '';
 		$tags .= ($i == (count($fTags) - 1)) ? ')' : '';
 	}
 	$where .= $tags;
-	// VISIBILITY
-	if($client_id) {
-		// O cliente visualiza apenas as tarefas com a visibilidade 'client'
-		$where .= ' AND '.$db->quoteName('T1.visibility').' = 2';
-	} else {
-		$fView	= $app->input->get('fView', 9, 'int');
-		if($fView != 9) $where .= ' AND '.$db->quoteName('T1.visibility').' = '.$fView;
-	}
 	// DEADLINE DATE
 	$dateMin	= $app->input->get('dateMin', '', 'string');
 	$dateMax	= $app->input->get('dateMax', '', 'string');
@@ -94,7 +63,6 @@ $where = '';
 	$sQuery = ''; // query de busca
 	$sLabel = array(); // label do campo de busca
 	$searchFields = array(
-		'T1.issues'			=> 'FIELD_LABEL_ISSUES_IDS',
 		'T1.subject'		=> 'FIELD_LABEL_SUBJECT',
 		'T1.description'	=> 'FIELD_LABEL_DESCRIPTION'
 	);
@@ -112,6 +80,7 @@ $where = '';
 	$ordf	= $app->input->get($APPTAG.'oF', '', 'string'); // campo a ser ordenado
 	$ordt	= $app->input->get($APPTAG.'oT', '', 'string'); // tipo de ordem: 0 = 'ASC' default, 1 = 'DESC'
 
+	unset($_SESSION[$APPTAG.'oF']);
 	$orderDef = 'T1.priority DESC, T1.created_date DESC'; // não utilizar vírgula no inicio ou fim
 	if(!isset($_SESSION[$APPTAG.'oF'])) : // DEFAULT ORDER
 		$_SESSION[$APPTAG.'oF'] = 'T1.status';

@@ -22,12 +22,6 @@ require(JPATH_CORE.DS.'apps/_init.app.php');
 // DATABASE CONNECT
 $db = JFactory::getDbo();
 
-//joomla get request data
-$input      = $app->input;
-
-// Default Params
-$pID		= $input->get('pID', 0, 'int');
-
 ?>
 
 <script>
@@ -37,35 +31,16 @@ jQuery(function() {
 	require(JPATH_CORE.DS.'apps/snippets/initVars.js.php');
 	?>
 
-	// STATUS CONTAINERS
-	var statusPopup	= jQuery('#modal-status-<?php echo $APPTAG?>');
-	var formStatus	= jQuery('#form-status-<?php echo $APPTAG?>');
-
 	// APP FIELDS
-	var project_id			= jQuery('#<?php echo $APPTAG?>-project_id');
-	var type				= mainForm.find('input[name=type]:radio'); // radio group
-	var issues				= jQuery('#<?php echo $APPTAG?>-issues');
-	var assign_to			= jQuery('#<?php echo $APPTAG?>-assign_to');
-	var cassign_to			= jQuery('#<?php echo $APPTAG?>-cassign_to');
-	var subject				= jQuery('#<?php echo $APPTAG?>-subject');
+	var issue_id				= jQuery('#<?php echo $APPTAG?>-issue_id');
+	var title				= jQuery('#<?php echo $APPTAG?>-title');
 	var description			= jQuery('#<?php echo $APPTAG?>-description');
-	var priority			= mainForm.find('input[name=priority]:radio'); // radio group
-	var deadline			= jQuery('#<?php echo $APPTAG?>-deadline');
-	var timePeriod			= jQuery('#<?php echo $APPTAG?>-timePeriod');
-	var estimate			= jQuery('#<?php echo $APPTAG?>-estimate');
-	var executed			= jQuery('#<?php echo $APPTAG?>-executed');
-	var tags				= jQuery('#<?php echo $APPTAG?>-tags');
-	var visibility			= mainForm.find('input[name=visibility]:radio'); // radio group
-	var status				= mainForm.find('input[name=status]:radio'); // radio group
-	var cstatus				= jQuery('#<?php echo $APPTAG?>-cstatus');
-
-	// ALTER STATUS
-	var statusId			= jQuery('#<?php echo $APPTAG?>-statusId');
-	var new_status			= formStatus.find('input[name=new_status]:radio');
+	var orderer				= jQuery('#<?php echo $APPTAG?>-orderer');
+	var corderer			= jQuery('#<?php echo $APPTAG?>-corderer');
 
 	// PARENT FIELD -> Select
 	// informe, se houver, o campo que representa a chave estrangeira principal
-	var parentFieldId		= project_id; // 'null', caso não exista...
+	var parentFieldId		= issue_id; // 'null', caso não exista...
 	var parentFieldGroup	= elementExist(parentFieldId) ? parentFieldId.closest('[class*="col-"]') : null;
 
 	// GROUP RELATION'S BUTTONS -> grupo de botões de relacionamentos no form
@@ -76,7 +51,7 @@ jQuery(function() {
 
 		// ON FOCUS
 		// campo que recebe o focus no carregamento
-		var firstField		= '';
+		var firstField		= title;
 
 		// ON MODAL OPEN -> Ações quando o modal do form é aberto
 		popup.on('shown.bs.modal', function () {
@@ -117,26 +92,10 @@ jQuery(function() {
 			// App Fields
 			// IMPORTANTE:
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
-			checkOption(type, 0);
-			issues.selectUpdate(''); // select
-			<?php if($cfg['canEdit']) :?>
-				assign_to.selectUpdate('<?php echo $hasAuthor ? $user->id : 0?>'); // select
-				cassign_to.selectUpdate('0'); // select
-			<?php endif;?>
-			subject.val('');
+			title.val('');
 			description.val('');
-			checkOption(priority, 1);
-			deadline.val('');
-			timePeriod.selectUpdate('<?php echo JText::_('TEXT_AM'); ?>'); // select
-			estimate.val('');
-			executed.val(0);
-			tags.selectUpdate(''); // select
-			checkOption(visibility, 1);
-			checkOption(status, 0);
-			cstatus.val('');
-
-			// TO DO LIST
-			setHidden(jQuery('#<?php echo $APPTAG?>-alert-toDo'), false, jQuery('#<?php echo $APPTAG?>-btn-toDo'));
+			orderer.val('');
+			corderer.val('');
 
 			<?php // Closure Actions
 			require(JPATH_CORE.DS.'apps/snippets/form/formReset.end.js.php');
@@ -186,26 +145,6 @@ jQuery(function() {
 			?>
 		};
 
-		// CUSTOM -> view ToDo list
-		window.<?php echo $APPTAG?>_viewToDo = function() {
-			<?php echo $APPTAG?>Todo_listReload(false, false, false, false, false, formId.val());
-		};
-
-		// CUSTOM -> Set Item View
-		// Mostra a view em um modal
-		var <?php echo $APPTAG?>ItemView = jQuery("#<?php echo $APPTAG?>-item-view");
-		var <?php echo $APPTAG?>ItemViewContent = jQuery("#<?php echo $APPTAG?>-view-content");
-
-		window.<?php echo $APPTAG?>_setItemView = function(itemID) {
-			var urlView = "<?php echo JURI::root(true)?>/apps/<?php echo $APPPATH?>/view?vID="+itemID+"&tmpl=component";
-			<?php echo $APPTAG?>ItemViewContent.attr('src', urlView);
-		}
-		// ON MODAL CLOSE -> Ações quando o modal da listagem é fechado
-		<?php echo $APPTAG?>ItemView.on('hidden.bs.modal', function () {
-			<?php echo $APPTAG?>ItemViewContent.attr('src', '');
-			<?php echo $APPTAG?>_listReload(false, false, false);
-		});
-
 	// LIST CONTROLLERS
 	// ações & métodos controladores da listagem
 
@@ -244,29 +183,6 @@ jQuery(function() {
 		  ?>
 		});
 
-		// CUSTOM -> mostra o form para alterar o status
-		window.<?php echo $APPTAG?>_setStatusModal = function(e) {
-			var obj = jQuery(e);
-			var id = obj.data('id');
-			var val = obj.data('status');
-			statusPopup.modal();
-			statusId.val(id);
-			checkOption(new_status, val); // radio
-			setFormDefinitions();
-		};
-		// On Modal Close -> Ações quando o modal é fechado
-		statusPopup.on('hidden.bs.modal', function () {
-			statusId.val('');
-			checkOption(new_status, 0); // radio
-			setFormDefinitions();
-		});
-
-		// CUSTOM -> Confirm alter state (close task)
-		window.<?php echo $APPTAG?>_confirmState = function(itemID, msgType) {
-			var msg = msgType ? '<?php echo JText::_('MSG_CLOSE_ITEM_CONFIRM')?>' : '<?php echo JText::_('MSG_OPEN_ITEM_CONFIRM')?>';
-			if(confirm(msg)) <?php echo $APPTAG?>_setState(itemID, null, false, 'base-icon-toggle-on', 'base-icon-toggle-on', 'text-success', 'text-muted');
-		};
-
 	// AJAX CONTROLLERS
 	// métodos controladores das ações referente ao banco de dados e envio de arquivos
 
@@ -300,25 +216,11 @@ jQuery(function() {
 						?>
 
 						// App Fields
-						project_id.selectUpdate(item.project_id); // select
-						checkOption(type, item.type);
-						issues.selectUpdate(item.issues); // select
-						assign_to.selectUpdate(item.assign_to); // select
-						cassign_to.selectUpdate(item.assign_to); // select
-						subject.val(item.subject);
+						issue_id.val(item.issue_id);
+						title.val(item.title);
 						description.val(item.description);
-						checkOption(priority, item.priority);
-						deadline.val(dateFormat(item.deadline)); // DATE -> conversão de data
-						timePeriod.selectUpdate(item.timePeriod); // select
-						estimate.selectUpdate(item.estimate);
-						executed.val(item.executed);
-						tags.selectUpdate(item.tags); // select
-						checkOption(visibility, item.visibility);
-						checkOption(status, item.status);
-						cstatus.val(item.status);
-
-						// TO DO LIST
-						setHidden(jQuery('#<?php echo $APPTAG?>-alert-toDo'), true, jQuery('#<?php echo $APPTAG?>-btn-toDo'));
+						orderer.val(item.orderer);
+						corderer.val(item.orderer);
 
 						<?php // Closure Actions
 						require(JPATH_CORE.DS.'apps/snippets/form/loadEdit.end.js.php');
@@ -358,47 +260,6 @@ jQuery(function() {
 			?>
 
 		<? endif; ?>
-
-		// CUSTOM -> Set Status
-		// seta o valor do campo 'status' do registro
-		window.<?php echo $APPTAG?>_setStatus = function(status) {
-			var cod = '&id='+statusId.val();
-			var st = '&st='+status;
-			<?php echo $APPTAG?>_formExecute(true, false, true); // inicia o loader
-			jQuery.ajax({
-				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=status"+cod+st,
-				dataType: 'json',
-				type: 'POST',
-				cache: false,
-				success: function(data) {
-					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
-					jQuery.map( data, function( res ) {
-						if(res.status == 1) {
-							if(res.newStatus == 0) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_0')?>').removeClass().addClass('base-icon-lightbulb text-info hasTooltip');
-							else if(res.newStatus == 1) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_1')?>').removeClass().addClass('base-icon-clock text-danger hasTooltip');
-							else if(res.newStatus == 2) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_2')?>').removeClass().addClass('base-icon-off text-live hasTooltip');
-							else if(res.newStatus == 3) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_3')?>').removeClass().addClass('base-icon-ok text-success hasTooltip');
-							jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').data('status', res.newStatus);
-							setTips();
-						}
-					});
-				},
-				error: function(xhr, status, error) {
-					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
-					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
-					?>
-					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
-				},
-				complete: function() {
-					statusPopup.modal('hide');
-					<?php echo $APPTAG?>_listReload(false, false, false);
-				}
-			});
-			return false;
-		};
-
-		// CUSTOM -> set parent by parameter
-		<?php if($pID) echo $APPTAG.'rID = '.$pID; ?>
 
 	// JQUERY VALIDATION
 	window.<?php echo $APPTAG?>_validator = mainForm_<?php echo $APPTAG?>.validate({
@@ -483,7 +344,7 @@ jQuery(function() {
 		$addBtn = $cfg['showAddBtn'] ? '<div class="modal-list-toolbar">'.$addBtn.'</div>' : '';
 	?>
 			<div class="modal fade" id="modal-list-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-list-<?php echo $APPTAG?>Label">
-				<div class="modal-dialog modal-sm" role="document">
+				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<?php require(JPATH_CORE.DS.'apps/layout/list/modal.header.php'); ?>
 						<div class="modal-body">
@@ -501,7 +362,7 @@ jQuery(function() {
 
 	<?php if($cfg['canAdd'] || $cfg['canEdit']) : ?>
 		<div class="modal fade" id="modal-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-<?php echo $APPTAG?>Label">
-			<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<form name="form-<?php echo $APPTAG?>" id="form-<?php echo $APPTAG?>" method="post" enctype="multipart/form-data">
 						<?php if($cfg['showFormHeader']) require(JPATH_CORE.DS.'apps/layout/form/modal.header.php'); ?>
@@ -521,21 +382,4 @@ jQuery(function() {
 			</div>
 		</div>
 	<?php endif; ?>
-
-	<div class="modal fade" id="<?php echo $APPTAG?>-item-view" tabindex="-1" role="dialog" aria-labelledby="task-view-<?php echo $APPTAG?>Label">
-		<div class="modal-dialog mw-100 m-0" role="document">
-			<div class="modal-content">
-				<button type="button" class="close pos-absolute pos-right-gutter mt-2" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<iframe width="100%" id="<?php echo $APPTAG?>-view-content" class="set-height" data-offset="4"></iframe>
-			</div>
-		</div>
-	</div>
-
-	<div class="modal fade" id="modal-status-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-status-<?php echo $APPTAG?>Label">
-		<div class="modal-dialog modal-sm" role="document">
-			<div class="modal-content">
-				<?php require($PATH_APP_FILE.'.form.status.php'); ?>
-			</div>
-		</div>
-	</div>
 </div>

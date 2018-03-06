@@ -1,4 +1,4 @@
-<?php
+issues<?php
 /* SISTEMA PARA CADASTRO DE TELEFONES
  * AUTOR: IVO JUNIOR
  * EM: 18/02/2016
@@ -42,7 +42,7 @@ $hasCManager	= array_intersect($groups, $cfg['groupId']['clientManager']);
 
 // Carrega o arquivo de tradução das Apps
 // $lang->load('base_projects', JPATH_BASE, $lang->getTag(), true);
-// $lang->load('base_requests', JPATH_BASE, $lang->getTag(), true);
+// $lang->load('base_issues', JPATH_BASE, $lang->getTag(), true);
 // $lang->load('base_tasks', JPATH_BASE, $lang->getTag(), true);
 // $lang->load('base_staff', JPATH_BASE, $lang->getTag(), true);
 // $lang->load('base_clientsStaff', JPATH_BASE, $lang->getTag(), true);
@@ -89,16 +89,16 @@ if($hasBrintell) {
 
 		if(!$hasDeveloper) {
 			// QTD. DE SOLICITAÇÕES ABERTAS
-			$query = 'SELECT COUNT(*) FROM '. $db->quoteName('#__'.$cfg['project'].'_requests') .' WHERE state = 1';
+			$query = 'SELECT COUNT(*) FROM '. $db->quoteName('#__'.$cfg['project'].'_issues') .' WHERE state = 1';
 			$db->setQuery($query);
-			$requests_actives = $db->loadResult();
+			$issues_actives = $db->loadResult();
 			echo '
 				<div class="col-sm-6 col-md pb-4">
 					<div class="pos-relative rounded b-top-2 b-'.$requestColor.' bg-white set-shadow">
 						<div class="h1 m-0 p-3 text-right">
 							<span class="base-icon-bell text-'.$requestColor.' float-left"></span>
-							'.$requests_actives.'
-							<div class="text-sm text-'.$requestColor.'">'.JText::_('TEXT_REQUESTS_ACTIVES').'</div>
+							'.$issues_actives.'
+							<div class="text-sm text-'.$requestColor.'">'.JText::_('TEXT_ISSUES_ACTIVES').'</div>
 						</div>
 					</div>
 				</div>
@@ -204,15 +204,15 @@ if($hasBrintell) {
 			COUNT(*) total,
 			(
 				SELECT COUNT(*)
-				FROM '. $db->quoteName('#__'.$cfg['project'].'_requests') .'
+				FROM '. $db->quoteName('#__'.$cfg['project'].'_issues') .'
 				WHERE '.$filterProject_1.'MONTH(`created_date`) = 2 AND YEAR(`created_date`) = 2018 AND `state` = 0
 			) amount
-		FROM '. $db->quoteName('#__'.$cfg['project'].'_requests') .'
+		FROM '. $db->quoteName('#__'.$cfg['project'].'_issues') .'
 		WHERE '.$filterProject_1.'MONTH(`created_date`) = 2 AND YEAR(`created_date`) = 2018
 	';
 	$db->setQuery($query);
 	$metricsMonth = $db->loadObject();
-	$requestsMonth = '
+	$issuesMonth = '
 		<div class="h2 pb-3 b-bottom b-bottom-dashed">
 			<span class="text-success">'.$metricsMonth->amount.'</span> <span class="text-muted">/ '.$metricsMonth->total.'</span>
 			<div class="text-sm text-'.$requestColor.'">'.JText::_('TEXT_SOLVED').'</div>
@@ -258,7 +258,7 @@ if($hasBrintell) {
 		</div>
 	';
 
-	$requestsView = '';
+	$issuesView = '';
 	if(!$hasDeveloper) {
 		// Recent Requests
 		$query	= '
@@ -266,7 +266,7 @@ if($hasBrintell) {
 				T1.*,
 				'. $db->quoteName('T2.name') .' project,
 				'. $db->quoteName('T3.name') .' author
-			FROM '. $db->quoteName('#__'.$cfg['project'].'_requests') .' T1
+			FROM '. $db->quoteName('#__'.$cfg['project'].'_issues') .' T1
 				LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_projects') .' T2
 				ON '.$db->quoteName('T2.id') .' = T1.project_id
 				LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients_staff') .' T3
@@ -280,32 +280,32 @@ if($hasBrintell) {
 		$num_rows = $db->getNumRows();
 		$res = $db->loadObjectList();
 
-		$requestsList = '';
+		$issuesList = '';
 		if($num_rows) { // verifica se existe
-			$requestsList .= '<ul class="set-list list-sm bordered">';
+			$issuesList .= '<ul class="set-list list-sm bordered">';
 			foreach($res as $item) {
 				$project = (!$pID) ? ' '.JText::_('TEXT_IN').' '.baseHelper::nameFormat($item->project) : '';
-				$requestsList .= '
+				$issuesList .= '
 					<li>
-						<a class="text-'.$requestColor.'" href="'.JURI::root().'apps/requests/view?vID='.$item->id.'">#'.$item->id.' - '.$item->subject.'</a>
+						<a class="text-'.$requestColor.'" href="'.JURI::root().'apps/issues/view?vID='.$item->id.'">#'.$item->id.' - '.$item->subject.'</a>
 						<div class="small text-muted">
 							'.baseHelper::dateFormat($item->created_date, 'd.m').' - '.baseHelper::nameFormat($item->author).$project.'
 						</div>
 					</li>
 				';
 			}
-			$requestsList .= '</ul>';
+			$issuesList .= '</ul>';
 		} else {
-			$requestsList .= '<div class="alert alert-warning text-sm p-2 m-0">'.JText::_('TEXT_NO_REQUESTS_THIS_MONTH').'</div>';
+			$issuesList .= '<div class="alert alert-warning text-sm p-2 m-0">'.JText::_('TEXT_NO_ISSUES_THIS_MONTH').'</div>';
 		}
 
-		$requestsView = '
+		$issuesView = '
 			<div class="col">
-				<div class="p-2 bg-live base-icon-bell"> '.JText::_('TEXT_REQUESTS').'</div>
+				<div class="p-2 bg-live base-icon-bell"> '.JText::_('TEXT_ISSUES').'</div>
 				<div class="p-2">
-					'.$requestsMonth.'
+					'.$issuesMonth.'
 					<h6 class="page-header small base-icon-history"> '.JText::_('TEXT_RECENTS').'</h6>
-					'.$requestsList.'
+					'.$issuesList.'
 				</div>
 			</div>
 		';
@@ -363,7 +363,7 @@ if($hasBrintell) {
 						</span>
 					</h6>
 					<div class="row no-gutters">
-						'.$requestsView.'
+						'.$issuesView.'
 						<div class="col'.(!$hasDeveloper ? ' b-left' : '').'">
 							<div class="p-2 bg-'.$taskColor.' base-icon-tasks"> '.JText::_('TEXT_TASKS').'</div>
 							<div class="p-2">

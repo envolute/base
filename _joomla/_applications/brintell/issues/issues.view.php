@@ -6,9 +6,8 @@
 defined('_JEXEC') or die;
 $ajaxRequest = false;
 // access's definitions
-$tasksViewerGroups	= array(15, 16);	// Client
-$tasksAuthorGroups	= array(13, 14);	// developer + external
-$tasksAdminGroups	= array(12);		// analyst + manager
+$issuesEditorGroups	= array(16);		// client
+$issuesAdminGroups	= array(12, 15);	// analyst + client manager + manager
 require('config.php');
 
 // IMPORTANTE:
@@ -123,32 +122,8 @@ if($vID != 0) :
 				$priority = ' <span class="badge badge-danger base-icon-attention"> '.JText::_('TEXT_PRIORITY_DESC_2').'</span>';
 				break;
 			default :
-				$priority = ' <span class="badge badge-info base-icon-attention"> '.JText::_('TEXT_PRIORITY_DESC_0').'</span>';
+				$priority = ' <span class="badge badge-info base-icon-lightbulb"> '.JText::_('TEXT_PRIORITY_DESC_0').'</span>';
 		}
-		// visibility
-		$visible = ' <span class="badge badge-primary'.(!$view->visibility ? ' base-icon-lock-open-alt' : '').' cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_VISIBILITY').'"> '.JText::_('TEXT_VISIBILITY_'.$view->visibility).'</span>';
-
-		$issues = '';
-		if(!empty($view->issues)) :
-			$r = explode(',', $view->issues);
-			for($i = 0; $i < count($r); $i++) {
-				if($i > 0) $issues .= ', ';
-				if($hasAdmin) $issues .= '<a href="'.JURI::root().'apps/issues/view?vID='.$r[$i].'">#'.$r[$i].'</a>';
-				else $issues .= '<span class="text-live">#'.$r[$i].'</span>';
-			}
-			$issues = '<div class="float-right text-muted">Req ID: '.$issues.'</div>';
-		endif;
-
-		$deadline = '';
-		if($view->deadline != '0000-00-00 00:00:00') {
-			$dt = explode(' ', $view->deadline);
-			$dlDate = baseHelper::dateFormat($dt[0], 'd/m/y');
-			$dlTime = ($dt[1] != '00:00:00') ? ' '.substr($dt[1], 0, 5).$view->timePeriod : '';
-			$deadline = JText::_('TEXT_UNTIL').' '.$dlDate.$dlTime;
-		}
-		$estimate = ($view->estimate > 0) ? $view->estimate.JText::_('TEXT_ESTIMATED_UNIT').' ' : '';
-		$estimate .= $deadline;
-		$estimate = !empty($estimate) ? ' - '.JText::_('TEXT_ESTIMATED').' '.$estimate : '';
 
 		$desc = '';
 		if(!empty($view->description)) {
@@ -159,62 +134,55 @@ if($vID != 0) :
 
 		$urlViewProject = JURI::root().'apps/projects/view?pID='.$view->project_id;
 
-		// CLIENT STAFF
-		// MOSTRA A LISTA DE USUÁRIOS DA TAREFA
-		$assigned = '';
-		if(!empty($view->assign_to)) :
+		// CREATED BY
+		$createdBy = '';
+		if(!empty($view->created_by)) :
 			$query	= '
 				SELECT
 					T1.*,
-					'. $db->quoteName('T2.name') .' role,
-					'. $db->quoteName('T3.session_id') .' online
-				FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' T1
-					LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_staff_roles') .' T2
-					ON '.$db->quoteName('T2.id') .' = T1.role_id
-					LEFT JOIN '. $db->quoteName('#__session') .' T3
-					ON '.$db->quoteName('T3.userid') .' = T1.user_id AND T3.client_id = 0
-				WHERE T1.user_id IN ('.$view->assign_to.')
-				ORDER BY '. $db->quoteName('T1.name') .' ASC
-			';
-			try {
-				$db->setQuery($query);
-				$db->execute();
-				$num_rows = $db->getNumRows();
-				$res = $db->loadObjectList();
-			} catch (RuntimeException $e) {
-				echo $e->getMessage();
-				return;
-			}
+					'. $db->quoteName('T2.session_id') .' online
+				FROM '. $db->quoteName('vw_'.$cfg['project'].'_teams') .' T1
+					LEFT JOIN '. $db->quoteName('#__session') .' T2
+					ON '.$db->quoteName('T2.userid') .' = T1.user_id AND T2.client_id = 0
+				WHERE T1.user_id = '.$view->created_by
+			;
+			$db->setQuery($query);
+			$obj = $db->loadObject();
+			if(!empty($obj->name)) : // verifica se existe
+				if($obj->online) :
+					$lStatus = JText::_('TEXT_USER_STATUS_1');
+					$iStatus = '<small class="base-icon-circle text-success pos-absolute pos-right-0 pos-bottom-0"></small>';
+				else :
+					$lStatus = JText::_('TEXT_USER_STATUS_0');
+					$iStatus = '';
+				endif;
+				$name = baseHelper::nameFormat($obj->name);
+				$role = baseHelper::nameFormat($obj->role);
+				if(!empty($role)) $role = '<br />'.$role;
+				$info = $name.$role.'<br />'.$lStatus;
 
-			if($num_rows) : // verifica se existe
-				foreach($res as $obj) {
-
-					if($obj->online) :
-						$lStatus = JText::_('TEXT_USER_STATUS_1');
-						$iStatus = '<small class="base-icon-circle text-success pos-absolute pos-right-0 pos-bottom-0"></small>';
-					else :
-						$lStatus = JText::_('TEXT_USER_STATUS_0');
-						$iStatus = '';
-					endif;
-					$name = baseHelper::nameFormat((!empty($obj->nickname) ? $obj->nickname : $obj->name));
-					$role = baseHelper::nameFormat((!empty($obj->role) ? $obj->role : $obj->occupation));
-					if(!empty($role)) $role = '<br />'.$role;
-					$info = baseHelper::nameFormat($name).$role.'<br />'.$lStatus;
-
-					// Imagem Principal -> Primeira imagem (index = 0)
-					$img = uploader::getFile('#__brintell_staff_files', '', $obj->id, 0, JPATH_BASE.DS.'images/apps/staff/');
-					if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/staff/'.$img['filename'], 24, 24);
-					else $imgPath = JURI::root().'images/apps/icons/user_'.$obj->gender.'.png';
-					$img = '<img src="'.$imgPath.'" class="img-fluid rounded mb-2" style="width:24px; height:24px;" />';
-
-					$assigned .= '
-						<a href="apps/staff/view?vID='.$obj->user_id.'" class="d-inline-block pos-relative hasTooltip" title="'.$info.'">
-							'.$img.$iStatus.'
-						</a>
-					';
-				}
+				// Imagem Principal -> Primeira imagem (index = 0)
+				$member_id = $obj->staff_id ? $obj->staff_id : $obj->clientsStaff_id;
+				$img = uploader::getFile('#__brintell_'.$obj->app_table.'_files', '', $member_id, 0, JPATH_BASE.DS.'images/apps/'.$obj->app.'/');
+				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$obj->app.'/'.$img['filename'], 24, 24);
+				else $imgPath = $_ROOT.'images/apps/icons/user_'.$obj->gender.'.png';
+				$img = '<img src="'.$imgPath.'" class="img-fluid rounded mb-2" style="width:24px; height:24px;" />';
+				$urlProfile = 'apps/'.($obj->type == 2 ? 'clients/staff' : '/staff').'/view?vID='.$obj->user_id;
+				$createdBy .= '
+					<a href="'.$urlProfile.'" class="d-inline-block pos-relative hasTooltip" title="'.$info.'">
+						'.$img.$iStatus.'
+					</a>
+				';
 			endif;
 		endif;
+
+		$deadline = '';
+		if($view->deadline != '0000-00-00 00:00:00') {
+			$dt = explode(' ', $view->deadline);
+			$dlDate = baseHelper::dateFormat($dt[0], 'd/m/y');
+			$dlTime = ($dt[1] != '00:00:00') ? ' '.substr($dt[1], 0, 5).$view->timePeriod : '';
+			$deadline = '- '.JText::_('FIELD_LABEL_DEADLINE').' '.$dlDate.$dlTime;
+		}
 
 		$tags = '';
 		if(!empty($view->tags)) :
@@ -226,12 +194,11 @@ if($vID != 0) :
 		endif;
 
 		$btnActions = '<div class="float-right">';
-		$btnActions .= '	<a href="#" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_COPY_LINK_TO_SHARE').'" onclick="copyToClipboard(\''.JURI::root().'apps/'.$APPPATH.'/view?vID='.$view->id.'\', \''.JText::_('MSG_COPY_LINK_TO_SHARE').'\')"><span class="base-icon-link"></span></a>';
+		$btnActions .= '<a href="#" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_COPY_LINK_TO_SHARE').'" onclick="copyToClipboard(\''.JURI::root().'apps/'.$APPPATH.'/view?vID='.$view->id.'\', \''.JText::_('MSG_COPY_LINK_TO_SHARE').'\')"><span class="base-icon-link"></span></a>';
 		$appActions = '';
 		if($cfg['canEdit'] || ($view->created_by == $user->id)) :
 			if($view->state) {
 				$appActions = '
-					<a href="#modal-tasksTimer" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_INSERT_TIME').'" onclick="tasksTimer_setParent('.$view->id.')" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-original-title="'.JText::_('TEXT_ADD').'"><span class="base-icon-clock text-live"></span></a>
 					<a href="#" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$MAINTAG.'_loadEditFields('.$view->id.', false, false)"><span class="base-icon-pencil text-live"></span></a>
 					<a href="#" class="btn btn-lg btn-link py-0 px-2 hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$MAINTAG.'_del('.$view->id.', false)"><span class="base-icon-trash text-danger"></span></a>
 					<span class="mx-2 b-left"></span>
@@ -246,7 +213,7 @@ if($vID != 0) :
 		endif;
 		$btnActions .= '</div>';
 
-		if(!$cfg['canEdit'] && !($item->created_by == $user->id)) {
+		if($hasClient) {
 			$toggleStatus = '<span id="'.$MAINTAG.'-item-'.$view->id.'-status" class="base-icon-'.$iconStatus.' text-'.$itemStatus.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$view->status).'"></span>';
 		} else {
 			$toggleStatus = '<a href="#" id="'.$MAINTAG.'-item-'.$view->id.'-status" class="base-icon-'.$iconStatus.' text-'.$itemStatus.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$view->status).'" data-id="'.$view->id.'" data-status="'.$view->status.'" onclick="'.$MAINTAG.'_setStatusModal(this)"></a>';
@@ -270,18 +237,18 @@ if($vID != 0) :
 				<div id="'.$MAINTAG.'-form-loader" class="pos-absolute pos-top-0 w-100 text-center">
 					<img src="'.JURI::root().'templates/base/images/core/loader-active.gif">
 				</div>
-				<div id="'.$MAINTAG.'-task-pageitem-header" class="mb-3 b-bottom-2 b-primary">
-					<div class="pb-1 mb-2 b-bottom">'.$type.$priority.$visible.$issues.'</div>
+				<div id="'.$MAINTAG.'-request-pageitem-header" class="mb-3 b-bottom-2 b-primary">
+					<div class="pb-1 mb-2 b-bottom">'.$type.$priority.'</div>
 					<h2 class="font-condensed text-primary">
 						<span class="badge bg-gray-200">'.$toggleStatus.'</span>
 						'.$view->subject.'
 					</h2>
 					<div class="clearfix">
 						<div class="font-condensed text-sm text-muted mb-2">
-							<a href="'.$urlViewProject.'" target="_blank">'.baseHelper::nameFormat($view->project).'</a> - '.JText::_('TEXT_SINCE').' '.baseHelper::dateFormat($view->created_date).
-							' <span class="text-live">'.$estimate.'</span>
+							'.JText::_('TEXT_BY').' <a href="'.$urlProfile.'">'.$name.'</a> - <a href="'.$urlViewProject.'" target="_blank">'.baseHelper::nameFormat($view->project).'</a> - '.JText::_('TEXT_SINCE').' '.baseHelper::dateFormat($view->created_date).
+							' <span class="text-live">'.$deadline.'</span>
 						</div>
-						'.$btnActions.$assigned.$tags.'
+						'.$btnActions.$createdBy.$tags.'
 					</div>
 				</div>
 				<div class="row">
@@ -289,14 +256,14 @@ if($vID != 0) :
 						'.$desc.$attachs
 		;
 						// COMMENTS
-						$tasksCommentsIsPublic		= 2; // Author
-						$tasksCommentsAdminGroups	= $cfgAdmin;
-						$tasksCommentsListFull		= false;
-						$tasksCommentsRelTag		= 'tasks';
-						$tasksCommentsRelListNameId	= 'task_id';
-						$tasksCommentsRelListId		= $view->id;
-						$tasksCommentsOnlyChildList	= true;
-						$tasksCommentsShowAddBtn	= false;
+						$issuesCommentsIsPublic			= 2; // Author
+						$issuesCommentsAdminGroups		= array(12); // Analyst
+						$issuesCommentsListFull			= false;
+						$issuesCommentsRelTag			= 'issues';
+						$issuesCommentsRelListNameId	= 'issue_id';
+						$issuesCommentsRelListId		= $view->id;
+						$issuesCommentsOnlyChildList	= true;
+						$issuesCommentsShowAddBtn		= false;
 						echo '
 							<h4 class="font-condensed text-live mb-3">
 								'.JText::_('TEXT_COMMENTS').'
@@ -310,82 +277,59 @@ if($vID != 0) :
 					</div>
 					<div class="col-md-4">
 		';
-						// APP ACTIONS
-						if(!$hasViewer) {
-							// Carrega o app diretamente ná página,
-							// pois como está sendo chamada no template 'component', não carrega os módulos
-							// 'Viewers' não acessam o 'timesheet'
-							if($tpl == 'component') {
-								// TASKSTIMER (timesheet) => FORM
-								// A validação '$tpl' é porque o timesheet é carregado em todas as páginas
-								// Exceto quado é carregado no template 'component'
-								// get the same group access of main APP
-								$tasksTimerViewerGroups		= $cfgViewer;
-								$tasksTimerAuthorGroups		= $cfgAuthor;
-								$tasksTimerEditorGroups		= $cfgEditor;
-								$tasksTimerAdminGroups		= $cfgAdmin;
-								$tasksTimerShowApp			= false;
-								$tasksTimerShowList			= false;
-								$tasksTimerListFull			= false;
-								$tasksTimerRelTag			= 'tasks';
-								$tasksTimerRelListNameId	= 'task_id';
-								$tasksTimerRelListId		= $view->id;
-								$tasksTimerOnlyChildList	= true;
-								$tasksTimerHideParentField	= true;
-								require(JPATH_APPS.DS.$MAINAPP.'Timer/'.$MAINAPP.'Timer.php');
-							}
-							// TASKS => FORM
-							$tasksAppTag					= $MAINTAG;
-							// get the same group access of main APP
-							${$tasksAppTag.'ViewerGroups'}	= $cfgViewer;
-							${$tasksAppTag.'AuthorGroups'}	= $cfgAuthor;
-							${$tasksAppTag.'EditorGroups'}	= $cfgEditor;
-							${$tasksAppTag.'AdminGroups'}	= $cfgAdmin;
-							${$tasksAppTag.'ShowApp'}		= false;
-							${$tasksAppTag.'ShowList'}		= false;
-							${$tasksAppTag.'ListFull'}		= true;
-							require(JPATH_APPS.DS.$MAINAPP.'/'.$MAINAPP.'.php');
-							// TAGS => FORM
-							// get the same group access of main APP
-							$tasksTagsViewerGroups		= $cfgViewer;
-							$tasksTagsAuthorGroups		= $cfgAuthor;
-							$tasksTagsEditorGroups		= $cfgEditor;
-							$tasksTagsAdminGroups		= $cfgAdmin;
-							$tasksTagsShowApp			= false;
-							$tasksTagsShowList			= false;
-							$tasksTagsListFull			= false;
-							$tasksTagsRelTag			= 'tasks';
-							$tasksTagsFieldUpdated		= '#tasks-tags';
-							require(JPATH_APPS.DS.$MAINAPP.'Tags/'.$MAINAPP.'Tags.php');
-						}
 
+						// APP ACTIONS
+						// Carrega o app diretamente ná página,
+						// pois como está sendo chamada no template 'component', não carrega os módulos
+						// ISSUES => FORM
+						$issuesAppTag						= $MAINTAG;
+						${$issuesAppTag.'ViewerGroups'}	= $cfgViewer;
+						${$issuesAppTag.'AuthorGroups'}	= $cfgAuthor;
+						${$issuesAppTag.'EditorGroups'}	= $cfgEditor;
+						${$issuesAppTag.'AdminGroups'}	= $cfgAdmin;
+						${$issuesAppTag.'ShowApp'}		= false;
+						${$issuesAppTag.'ShowList'}		= false;
+						${$issuesAppTag.'ListFull'}		= true;
+						require(JPATH_APPS.DS.$MAINAPP.'/'.$MAINAPP.'.php');
+						// TAGS => FORM
+						// Utiliza as tasksTags
+						$tasksTagsViewerGroups		= $cfgViewer;
+						$tasksTagsAuthorGroups		= $cfgAuthor;
+						$tasksTagsEditorGroups		= $cfgEditor;
+						$tasksTagsAdminGroups		= $cfgAdmin;
+						$tasksTagsShowApp			= false;
+						$tasksTagsShowList			= false;
+						$tasksTagsListFull			= false;
+						$tasksTagsRelTag			= 'issues';
+						$tasksTagsFieldUpdated		= '#issues-tags';
+						$tasksTagsTableField		= 'name';
+						require(JPATH_APPS.DS.'tasksTags/tasksTags.php');
 						// TO DO LIST => (instância do FORM)
-						$tasksTodoIsPublic			= 3; // 'Editor' + 'Admin'
-						$tasksTodoShowApp			= false;
-						$tasksTodoShowList			= true;
-						$tasksTodoListModal			= true;
-						$tasksTodoListFull			= false;
-						$tasksTodoRelListNameId		= 'task_id';
+						$issuesTodoShowApp			= false;
+						$issuesTodoShowList			= true;
+						$issuesTodoListModal		= true;
+						$issuesTodoListFull			= false;
+						$issuesTodoRelListNameId	= 'issue_id';
 						require(JPATH_APPS.DS.$MAINAPP.'Todo/'.$MAINAPP.'Todo.php');
+
 						// TO DO LIST => (instância da VIEW)
-						$tasksTodoAppTag					= 'todoView';
-						${$tasksTodoAppTag.'IsPublic'}		= 3; // 'Editor' + 'Admin'
-						${$tasksTodoAppTag.'ListFull'}		= false;
-						${$tasksTodoAppTag.'ListAjax'}		= "list.actions.ajax.php";
-						${$tasksTodoAppTag.'RelTag'}		= 'tasks';
-						${$tasksTodoAppTag.'RelListNameId'}	= 'task_id';
-						${$tasksTodoAppTag.'RelListId'}		= $view->id;
-						${$tasksTodoAppTag.'OnlyChildList'}	= true;
-						${$tasksTodoAppTag.'ShowAddBtn'}	= false;
+						$issuesTodoAppTag						= 'todoView';
+						${$issuesTodoAppTag.'ListFull'}			= false;
+						${$issuesTodoAppTag.'ListAjax'}			= "list.actions.ajax.php";
+						${$issuesTodoAppTag.'RelTag'}			= 'issues';
+						${$issuesTodoAppTag.'RelListNameId'}	= 'issue_id';
+						${$issuesTodoAppTag.'RelListId'}		= $view->id;
+						${$issuesTodoAppTag.'OnlyChildList'}	= true;
+						${$issuesTodoAppTag.'ShowAddBtn'}		= false;
 						echo '
 							<h4 class="font-condensed text-danger mb-3">
 								'.JText::_('TEXT_TODO_LIST').'
-								<a href="#" class="btn btn-xs btn-success base-icon-plus float-right" onclick="'.$tasksTodoAppTag.'_setParent('.$view->id.')" data-toggle="modal" data-target="#modal-'.$tasksTodoAppTag.'" data-backdrop="static" data-keyboard="false"></a>
-								<a href="#" class="btn btn-xs btn-info base-icon-arrows-cw mx-1 float-right" onclick="'.$tasksTodoAppTag.'_listReload(false, false, false, '.$tasksTodoAppTag.'oCHL, '.$tasksTodoAppTag.'rNID, '.$tasksTodoAppTag.'rID)"></a>
+								<a href="#" class="btn btn-xs btn-success base-icon-plus float-right" onclick="'.$issuesTodoAppTag.'_setParent('.$view->id.')" data-toggle="modal" data-target="#modal-'.$issuesTodoAppTag.'" data-backdrop="static" data-keyboard="false"></a>
+								<a href="#" class="btn btn-xs btn-info base-icon-arrows-cw mx-1 float-right" onclick="'.$issuesTodoAppTag.'_listReload(false, false, false, '.$issuesTodoAppTag.'oCHL, '.$issuesTodoAppTag.'rNID, '.$issuesTodoAppTag.'rID)"></a>
 							</h4>
 						';
-						require(JPATH_APPS.DS.'tasksTodo/tasksTodo.php');
-						echo '<hr class="my-1" /><a href="#" class="btn btn-xs btn-success base-icon-plus" onclick="'.$tasksTodoAppTag.'_setParent('.$view->id.')" data-toggle="modal" data-target="#modal-'.$tasksTodoAppTag.'" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_ADD').'</a>';
+						require(JPATH_APPS.DS.''.$MAINAPP.'Todo/'.$MAINAPP.'Todo.php');
+						echo '<hr class="my-1" /><a href="#" class="btn btn-xs btn-success base-icon-plus" onclick="'.$issuesTodoAppTag.'_setParent('.$view->id.')" data-toggle="modal" data-target="#modal-'.$issuesTodoAppTag.'" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_ADD').'</a>';
 		echo '
 					</div>
 				</div>

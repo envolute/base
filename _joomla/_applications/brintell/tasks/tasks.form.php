@@ -6,10 +6,10 @@ $query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_projects') .' 
 $db->setQuery($query);
 $projects = $db->loadObjectList();
 
-// REQUESTS
-$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_requests') .' WHERE '. $db->quoteName('status') .' < 3 AND '. $db->quoteName('state') .' = 1 ORDER BY id DESC';
+// ISSUES
+$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_issues') .' WHERE '. $db->quoteName('status') .' < 3 AND '. $db->quoteName('state') .' = 1 ORDER BY id DESC';
 $db->setQuery($query);
-$requests = $db->loadObjectList();
+$issues = $db->loadObjectList();
 
 // TAGS
 $query = 'SELECT * FROM '. $db->quoteName($cfg['mainTable'].'_tags') .' WHERE '. $db->quoteName('state') .' = 1 ORDER BY name';
@@ -136,10 +136,10 @@ foreach ($staff as $obj) {
 			</div>
 			<div class="col-lg-4 b-left b-left-dashed">
 				<div class="form-group">
-					<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_REQUESTS_IDS_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_REQUESTS_IDS'); ?></label>
-					<select name="requests" id="<?php echo $APPTAG?>-requests" class="form-control" multiple>
+					<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_ISSUES_IDS_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_ISSUES_IDS'); ?></label>
+					<select name="issues" id="<?php echo $APPTAG?>-issues" class="form-control" multiple>
 						<?php
-							foreach ($requests as $obj) {
+							foreach ($issues as $obj) {
 								echo '<option value="'.$obj->id.'">#'.$obj->id.' - '.baseHelper::nameFormat($obj->subject).'</option>';
 							}
 						?>

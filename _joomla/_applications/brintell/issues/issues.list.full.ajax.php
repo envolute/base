@@ -55,6 +55,16 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	// database connect
 	$db		= JFactory::getDbo();
 
+	// verifica se é um cliente
+	$clientID = 0;
+	$hasClient	= array_intersect($groups, $cfg['groupId']['client']); // se está na lista de administradores permitidos
+	// GET CLIENT ID
+	if($hasClient) {
+		$query = 'SELECT client_id FROM '. $db->quoteName('#__'.$cfg['project'].'_clients_staff') .' WHERE user_id = '.$user->id;
+		$db->setQuery($query);
+		$clientID = $db->loadresult();
+	}
+
 	// LOAD FILTER
 	$fQuery = $PATH_APP_FILE.'.filter.query.php';
 	if($aFLT && file_exists($fQuery)) require($fQuery);
@@ -123,33 +133,21 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$img = '<img src="'.$imgPath.'" class="img-fluid mr-2" style="width:48px; height:48px;" />';
 			endif;
 
-			$urlViewData = $_ROOT.'apps/'.$APPPATH.'/view?vID='.$item->id;
-			$urlViewProject = $_ROOT.'apps/projects/view?pID='.$item->project_id;
-			// $rowState = $item->state == 0 ? 'danger bg-light text-muted' : 'primary bg-white';
+			$urlViewData	= $_ROOT.'apps/'.$APPPATH.'/view?vID='.$item->id;
+			$urlViewProject	= $_ROOT.'apps/projects/view?pID='.$item->project_id;
 
 			$colorStatus	= JText::_('TEXT_COLOR_STATUS_'.$item->status);
 			$iconStatus		= JText::_('TEXT_ICON_STATUS_'.$item->status);
 
 			// define as colunas por status
-			if($status !== $item->status && !($status == 2 && $item->status == 3)) :
+			if($status !== $item->status) :
 				if($counter > 0) $html .= '</div>';
-				if($item->status == 2 || $item->status == 3) { // os 2 na mesma coluna
-					$html .= '
-						<div id="'.$APPTAG.'-item-status-'.$item->status.'" class="'.$APPTAG.'-col col-sm-6 col-lg-3 pb-3">
-							<h6 class="text-center bg-'.$colorStatus.' rounded py-2 mb-2 set-shadow-right">
-								<span class="base-icon-'.JText::_('TEXT_ICON_STATUS_2').'"> '.JText::_('TEXT_STATUS_2').'</span>
-								<span class="mx-3 b-left b-white"></span>
-								<span class="base-icon-'.JText::_('TEXT_ICON_STATUS_3').'"> '.JText::_('TEXT_STATUS_3').'</span>
-							</h6>
-					';
-				} else {
-					$html .= '
-						<div id="'.$APPTAG.'-item-status-'.$item->status.'" class="'.$APPTAG.'-col col-sm-6 col-lg-3 pb-3">
-							<h6 class="text-center bg-'.$colorStatus.' rounded py-2 mb-2 set-shadow-right">
-								<span class="base-icon-'.$iconStatus.'"></span> '.JText::_('TEXT_STATUS_'.$item->status).'
-							</h6>
-					';
-				}
+				$html .= '
+					<div id="'.$APPTAG.'-item-status-'.$item->status.'" class="'.$APPTAG.'-col col-sm-6 col-lg-3 pb-3">
+						<h6 class="text-center bg-'.$colorStatus.' rounded py-2 set-shadow-right">
+							<span class="base-icon-'.$iconStatus.'"></span> '.JText::_('TEXT_STATUS_'.$item->status).'
+						</h6>
+				';
 				$status = $item->status;
 			endif;
 
@@ -161,32 +159,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$deadline = '<br />'.JText::_('FIELD_LABEL_DEADLINE').'<br />'.$dlDate.$dlTime;
 			}
 
-			$bug = $item->type ? '<small class="base-icon-bug text-danger cursor-help hasTooltip" title="BUG"></small> ' : '';
-
-			$priority = $bug;
-			if($item->priority == 0 && !empty($deadline)) $priority .= ' <small class="base-icon-attention text-primary cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_0').$deadline.'"></small>';
-			else if($item->priority == 1) $priority .= ' <small class="base-icon-attention text-live cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_1').$deadline.'"></small>';
-			else if($item->priority == 2) $priority .= ' <small class="base-icon-attention text-danger cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_2').$deadline.'"></small>';
-
-			$tags = '';
-			if(!empty($item->tags)) :
-				$t = explode(',', $item->tags);
-				for($i = 0; $i < count($t); $i++) {
-					$tags .= ' <span class="badge badge-secondary">'.$t[$i].'</span>';
-				}
-			endif;
-
-			switch($item->visibility) {
-				case 0:
-					$visibility = '<span class="base-icon-lock text-danger cursor-help hasTooltip" title="'.JText::_('TEXT_VISIBILITY_0_DESC').'"></span> ';
-					break;
-				case 2:
-					$visibility = '<span class="base-icon-star text-yellow cursor-help hasTooltip" title="'.JText::_('TEXT_VISIBILITY_2_DESC').'"></span> ';
-					break;
-				default:
-					$visibility = '';
-
-			}
+			$priority = '';
+			if($item->priority == 0) $priority = ' <small class="base-icon-lightbulb text-info cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_0').$deadline.'"></small>';
+			else if($item->priority == 1 && !empty($deadline)) $priority = ' <small class="base-icon-attention text-live cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_1').$deadline.'"></small>';
+			else if($item->priority == 2) $priority = ' <small class="base-icon-attention text-danger cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_2').$deadline.'"></small>';
 
 			$regInfo	= '';
 			$regInfo	.= JText::_('TEXT_CREATED_DATE').': <span class="text-live">'.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'</span><br />';
@@ -203,7 +179,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			if($cfg['canEdit'] || ($item->created_by == $user->id)) :
 				if($item->state) {
 					$appActions = '
-						<a href="#modal-tasksTimer" class="dropdown-item px-3 py-2 b-bottom text-sm text-primary" onclick="tasksTimer_setParent('.$item->id.')" data-toggle="modal" data-backdrop="static" data-keyboard="false"><span class="base-icon-clock"></span> '.JText::_('TEXT_INSERT_TIME').'</a>
 						<a href="#" class="dropdown-item px-3 py-2 b-bottom text-sm text-live" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil"></span> '.JText::_('TEXT_EDIT').'</a>
 						<a href="#" class="dropdown-item px-3 py-2 b-bottom text-sm text-danger" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash"></span> '.JText::_('TEXT_DELETE').'</a>
 					';
@@ -228,22 +203,16 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				';
 			endif;
 
-			// Assigned
-			$assigned = '';
-			if(!empty($item->assign_to)) :
-				$query = 'SELECT name, nickname FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('user_id') .' IN ('.$item->assign_to.') ORDER BY name';
+			// Created By
+			$createdBy = '';
+			if(!empty($item->created_by)) :
+				$query = 'SELECT name FROM '. $db->quoteName('#__'.$cfg['project'].'_clients_staff') .' WHERE '. $db->quoteName('user_id') .' = '.$item->created_by;
 				$db->setQuery($query);
-				$staff = $db->loadObjectList();
-				$uName = '';
-				$i = 0;
-				foreach ($staff as $obj) {
-					$uName .= '<div class=&quot;small&quot;>'.baseHelper::nameFormat(!empty($obj->nickname) ? $obj->nickname : $obj->name).'</div>';
-					$i++;
-				}
-				$assigned = '<span class="btn btn-xs btn-link base-icon-user cursor-help hasTooltip" title="'.$uName.'"></span>';
+				$client = $db->loadResult();
+				$createdBy = '<span class="btn btn-xs btn-link base-icon-user cursor-help hasTooltip" title="'.baseHelper::nameFormat($client).'"></span>';
 			endif;
 
-			if(!$cfg['canEdit'] && !($item->created_by == $user->id)) {
+			if($hasClient) {
 				$toggleStatus = '<span id="'.$APPTAG.'-item-'.$item->id.'-status" class="base-icon-'.$iconStatus.' text-'.$colorStatus.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$item->status).'" data-id="'.$item->id.'" data-status="'.$item->status.'"></span>';
 			} else {
 				$toggleStatus = '<a href="#" id="'.$APPTAG.'-item-'.$item->id.'-status" class="base-icon-'.$iconStatus.' text-'.$colorStatus.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$item->status).'" data-id="'.$item->id.'" data-status="'.$item->status.'" onclick="'.$APPTAG.'_setStatusModal(this)"></a>';
@@ -252,27 +221,23 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			// Resultados
 			$html .= '
 				<div id="'.$APPTAG.'-item-'.$item->id.'" class="pos-relative rounded b-top-2 b-'.$colorStatus.' bg-white mb-3 set-shadow">
-					<span class="d-flex justify-content-between align-items-center text-muted px-1 b-bottom">
-						<small><span class="base-icon-tag text-gray-400 cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_TAGS').'"></span> '.(str_replace(',', ', ', $item->tags)).'</small>
-						<span>&#160;'.$priority.'</span>
-					</span>
 					<div class="d-flex d-justify-content align-items-center lh-1-2">
 						<div class="align-self-stretch py-3 px-2 bg-gray-200">
 							'.$toggleStatus.'
 						</div>
 						<a href="#'.$APPTAG.'-item-view" class="set-base-modal text-sm text-'.$colorStatus.' py-1 px-2" onclick="'.$APPTAG.'_setItemView('.$item->id.')">
 							'.baseHelper::nameFormat($item->subject).'
+							<div class="pos-absolute pos-top-0 pos-right-0 mx-1">
+								'.$priority.'
+							</div>
 						</a>
 					</div>
-					<span class="d-flex justify-content-between align-items-center text-muted pl-1 b-top">
-						<span class="small lh-1">
-							'.$visibility.'
-							<a href="'.$urlViewProject.'" class="ml-1 hasTooltip" title="'.JText::_('FIELD_LABEL_PROJECT').'">
-								'.baseHelper::nameFormat($item->project).'
-							</a>
-						</span>
+					<span class="d-flex justify-content-between align-items-center text-muted pl-2 b-top">
+						<a href="'.$urlViewProject.'" class="small lh-1 hasTooltip" title="'.JText::_('FIELD_LABEL_PROJECT').'">
+							'.baseHelper::nameFormat($item->project).'
+						</a>
 						<span class="btn-group">
-							'.$assigned.$btnActions.'
+							'.$createdBy.$btnActions.'
 						</span>
 					</span>
 				</div>
