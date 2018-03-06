@@ -1,15 +1,6 @@
 <?php
 defined('_JEXEC') or die;
 
-// GET CLIENT ID
-$client_id = 0;
-if(!$hasAdmin) {
-	$query = 'SELECT client_id FROM '. $db->quoteName('vw_'.$cfg['project'].'_teams') .' WHERE user_id = '.$user->id.' AND state = 1';
-	$db->setQuery($query);
-	$client_id = $db->loadResult();
-}
-$cProj = $client_id ? 'client_id = '.$client_id.' AND ' : '';
-
 // PROJECTS
 $query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_projects') .' WHERE '.$cProj.'state = 1 ORDER BY name';
 $db->setQuery($query);
@@ -20,36 +11,10 @@ $query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_tasks_tags') .
 $db->setQuery($query);
 $tags = $db->loadObjectList();
 
-// CREATED BY
-$author = '';
-if($hasClient) :
-	$query	= 'SELECT * FROM '. $db->quoteName('vw_'.$cfg['project'].'_teams') .' WHERE user_id = '.$user->id;
-	$db->setQuery($query);
-	$obj = $db->loadObject();
-	if(!empty($obj->name)) : // verifica se existe
-
-		JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
-		// Imagem Principal -> Primeira imagem (index = 0)
-		$member_id = $obj->staff_id ? $obj->staff_id : $obj->clientsStaff_id;
-		$img = uploader::getFile('#__brintell_'.$obj->app_table.'_files', '', $member_id, 0, JPATH_BASE.DS.'images/apps/'.$obj->app.'/');
-		if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$obj->app.'/'.$img['filename'], 45, 45);
-		else $imgPath = JURI::root().'images/apps/icons/user_'.$obj->gender.'.png';
-		$img = '<img src="'.$imgPath.'" class="img-fluid float-left mr-3 rounded mb-2" style="width:45px; height:45px;" />';
-
-		$author = '
-			<div class="mb-3 b-bottom b-primary-lighter clearfix">
-				'.$img.'
-				<h5 class="font-condensed">'.baseHelper::nameFormat($obj->name).'</h5>
-			</div>
-		';
-	endif;
-endif;
-
 // FORM
 ?>
 <div class="row">
 	<div class="col-lg-8">
-		<?php echo $author?>
 		<div class="row">
 			<div class="col-lg-6">
 				<div class="form-group field-required">
@@ -65,16 +30,16 @@ endif;
 				</div>
 			</div>
 			<div class="col-lg-6">
-				<div class="form-group">
-					<label class="label-sm"><?php echo JText::_('FIELD_LABEL_STATUS'); ?></label>
+				<div class="form-group field-required">
+					<label class="label-sm"><?php echo JText::_('FIELD_LABEL_TYPE'); ?></label>
 					<span class="btn-group btn-group-justified" data-toggle="buttons">
 						<?php
 						for($i = 0; $i < 4; $i++) {
-							$icon	= JText::_('TEXT_ICON_STATUS_'.$i);
-							$color	= ($i == 2) ? 'warning' : JText::_('TEXT_COLOR_STATUS_'.$i);
+							$icon	= JText::_('TEXT_ICON_TYPE_'.$i);
+							$color	= ($i == 2) ? 'warning' : JText::_('TEXT_COLOR_TYPE_'.$i);
 							echo '
-								<label class="base-icon-'.$icon.' btn btn-outline-'.$color.' btn-active-'.$color.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$i).'">
-									<input type="radio" name="status" id="'.$APPTAG.'-status-'.$i.'" value="'.$i.'" />
+								<label class="base-icon-'.$icon.' btn btn-outline-'.$color.' btn-active-'.$color.' hasTooltip" title="'.JText::_('TEXT_TYPE_'.$i).'">
+									<input type="radio" name="type" id="'.$APPTAG.'-type-'.$i.'" value="'.$i.'" />
 								</label>
 							';
 						}
@@ -94,7 +59,7 @@ endif;
 		<div class="form-group">
 			<hr class="hr-tag" />
 			<span class="badge badge-primary base-icon-attach"> <?php echo JText::_('TEXT_ATTACHMENTS'); ?></span>
-			<button type="button" class="base-icon-plus btn btn-success float-right hasTooltip" title="<?php echo JText::_('TEXT_ADD'); ?>" onclick="<?php echo $APPTAG?>_setNewFile('#<?php echo $APPTAG?>-files-group', 'file', 'col-sm-6 col-lg-4')"></button>
+			<button type="button" class="base-icon-plus btn btn-success float-right hasTooltip" title="<?php echo JText::_('TEXT_ADD'); ?>" onclick="<?php echo $APPTAG?>_setNewFile('#<?php echo $APPTAG?>-files-group', 'file', '')"></button>
 			<div class="btn-file">
 				<span class="btn-group">
 					<button type="button" class="base-icon-search btn btn-default btn-active-success file-action text-truncate hasTooltip" title="<?php echo JText::_('TEXT_FILE_SELECT'); ?>"> <span><?php echo JText::_('TEXT_FILE_SELECT'); ?></span></button>
@@ -102,22 +67,22 @@ endif;
 				<input type="file" name="file[0]" id="<?php echo $APPTAG?>-file0" class="form-control" hidden />
 			</div>
 		</div>
-		<div id="<?php echo $APPTAG?>-files-group" class="row"></div>
+		<div id="<?php echo $APPTAG?>-files-group"></div>
 	</div>
 	<div class="col-lg-4 b-left b-left-dashed">
 		<div class="form-group">
 			<label class="label-sm"><?php echo JText::_('FIELD_LABEL_PRIORITY'); ?></label>
 			<span class="btn-group btn-group-justified" data-toggle="buttons">
-				<label class="btn btn-default btn-active-info">
-					<input type="radio" name="priority" id="<?php echo $APPTAG?>-priority-0" value="0" class="auto-tab" data-target="#<?php echo $APPTAG?>-deadline-group" data-target-display="false" data-tab-disable="true" />
+				<label class="btn btn-default btn-active-success">
+					<input type="radio" name="priority" id="<?php echo $APPTAG?>-priority-0" value="0" />
 					<?php echo JText::_('TEXT_PRIORITY_0'); ?>
 				</label>
-				<label class="btn btn-default btn-active-success">
-					<input type="radio" name="priority" id="<?php echo $APPTAG?>-priority-1" value="1" class="auto-tab" data-target="#<?php echo $APPTAG?>-deadline-group" data-target-display="true" data-tab-disable="true" />
+				<label class="btn btn-default btn-active-warning">
+					<input type="radio" name="priority" id="<?php echo $APPTAG?>-priority-1" value="1" />
 					<?php echo JText::_('TEXT_PRIORITY_1'); ?>
 				</label>
 				<label class="btn btn-default btn-active-danger">
-					<input type="radio" name="priority" id="<?php echo $APPTAG?>-priority-2" value="2" class="auto-tab" data-target="#<?php echo $APPTAG?>-deadline-group" data-target-display="true" data-tab-disable="true" />
+					<input type="radio" name="priority" id="<?php echo $APPTAG?>-priority-2" value="2" />
 					<?php echo JText::_('TEXT_PRIORITY_2'); ?>
 				</label>
 			</span>
@@ -145,9 +110,11 @@ endif;
 						}
 					?>
 				</select>
-				<span class="input-group-btn">
-					<button type="button" class="base-icon-plus btn btn-success hasTooltip" title="<?php echo JText::_('TEXT_ADD')?>" data-toggle="modal" data-target="#modal-<?php echo $APPTAG?>Tags" data-backdrop="static" data-keyboard="false"></button>
-				</span>
+				<?php if($hasAdmin) :?>
+					<span class="input-group-btn">
+						<button type="button" class="base-icon-plus btn btn-success hasTooltip" title="<?php echo JText::_('TEXT_ADD')?>" data-toggle="modal" data-target="#modal-<?php echo $APPTAG?>Tags" data-backdrop="static" data-keyboard="false"></button>
+					</span>
+				<?php endif;?>
 			</div>
 		</div>
 		<div class="form-group">

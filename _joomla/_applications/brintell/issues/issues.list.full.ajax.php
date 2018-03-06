@@ -56,14 +56,25 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	$db		= JFactory::getDbo();
 
 	// verifica se é um cliente
-	$clientID = 0;
 	$hasClient	= array_intersect($groups, $cfg['groupId']['client']); // se está na lista de administradores permitidos
-	// GET CLIENT ID
+	// Get Client ID
+	$client_id = 0;
 	if($hasClient) {
-		$query = 'SELECT client_id FROM '. $db->quoteName('#__'.$cfg['project'].'_clients_staff') .' WHERE user_id = '.$user->id;
+		$query = 'SELECT client_id FROM '. $db->quoteName('vw_'.$cfg['project'].'_teams') .' WHERE user_id = '.$user->id.' AND state = 1';
 		$db->setQuery($query);
-		$clientID = $db->loadresult();
+		$client_id = $db->loadResult();
+		// Get Users Ids of Client
+		if($client_id == 1) {
+			$query = 'SELECT GROUP_CONCAT(id) FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE state = 1';
+		} else {
+			$query = 'SELECT GROUP_CONCAT(id) FROM '. $db->quoteName('#__'.$cfg['project'].'_clients_staff') .' WHERE client_id = '.$client_id.' AND state = 1';
+		}
+		$db->setQuery($query);
+		$client_users = $db->loadResult();
+
 	}
+	// filtro de projetos e usuários do cliente
+	$cProj = $client_id ? 'client_id = '.$client_id.' AND ' : '';
 
 	// LOAD FILTER
 	$fQuery = $PATH_APP_FILE.'.filter.query.php';
@@ -116,7 +127,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	if($num_rows) : // verifica se existe
 		if(!$active) echo '<hr class="hr-tag b-danger" /><span class="badge badge-danger base-icon-box"> '.JText::_('TEXT_CLOSED').'</span>';
 		$html .= '<div class="row py-2 mb-4">';
-		$status		= 9;
+		$type		= 9;
 		$counter	= 0;
 		foreach($res as $item) {
 
@@ -136,19 +147,19 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$urlViewData	= $_ROOT.'apps/'.$APPPATH.'/view?vID='.$item->id;
 			$urlViewProject	= $_ROOT.'apps/projects/view?pID='.$item->project_id;
 
-			$colorStatus	= JText::_('TEXT_COLOR_STATUS_'.$item->status);
-			$iconStatus		= JText::_('TEXT_ICON_STATUS_'.$item->status);
+			$colorType	= JText::_('TEXT_COLOR_TYPE_'.$item->type);
+			$iconType		= JText::_('TEXT_ICON_TYPE_'.$item->type);
 
-			// define as colunas por status
-			if($status !== $item->status) :
+			// define as colunas por type
+			if($type !== $item->type) :
 				if($counter > 0) $html .= '</div>';
 				$html .= '
-					<div id="'.$APPTAG.'-item-status-'.$item->status.'" class="'.$APPTAG.'-col col-sm-6 col-lg-3 pb-3">
-						<h6 class="text-center bg-'.$colorStatus.' rounded py-2 set-shadow-right">
-							<span class="base-icon-'.$iconStatus.'"></span> '.JText::_('TEXT_STATUS_'.$item->status).'
+					<div id="'.$APPTAG.'-item-type-'.$item->type.'" class="'.$APPTAG.'-col col-sm-6 col-lg-3 pb-3">
+						<h6 class="text-center bg-'.$colorType.' rounded py-2 set-shadow-right">
+							<span class="base-icon-'.$iconType.'"></span> '.JText::_('TEXT_TYPE_'.$item->type).'
 						</h6>
 				';
-				$status = $item->status;
+				$type = $item->type;
 			endif;
 
 			$deadline = '';
@@ -213,19 +224,19 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			endif;
 
 			if($hasClient) {
-				$toggleStatus = '<span id="'.$APPTAG.'-item-'.$item->id.'-status" class="base-icon-'.$iconStatus.' text-'.$colorStatus.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$item->status).'" data-id="'.$item->id.'" data-status="'.$item->status.'"></span>';
+				$toggleType = '<span id="'.$APPTAG.'-item-'.$item->id.'-type" class="base-icon-'.$iconType.' text-'.$colorType.' hasTooltip" title="'.JText::_('TEXT_TYPE_'.$item->type).'" data-id="'.$item->id.'" data-type="'.$item->type.'"></span>';
 			} else {
-				$toggleStatus = '<a href="#" id="'.$APPTAG.'-item-'.$item->id.'-status" class="base-icon-'.$iconStatus.' text-'.$colorStatus.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$item->status).'" data-id="'.$item->id.'" data-status="'.$item->status.'" onclick="'.$APPTAG.'_setStatusModal(this)"></a>';
+				$toggleType = '<a href="#" id="'.$APPTAG.'-item-'.$item->id.'-type" class="base-icon-'.$iconType.' text-'.$colorType.' hasTooltip" title="'.JText::_('TEXT_TYPE_'.$item->type).'" data-id="'.$item->id.'" data-type="'.$item->type.'" onclick="'.$APPTAG.'_setTypeModal(this)"></a>';
 			}
 
 			// Resultados
 			$html .= '
-				<div id="'.$APPTAG.'-item-'.$item->id.'" class="pos-relative rounded b-top-2 b-'.$colorStatus.' bg-white mb-3 set-shadow">
+				<div id="'.$APPTAG.'-item-'.$item->id.'" class="pos-relative rounded b-top-2 b-'.$colorType.' bg-white mb-3 set-shadow">
 					<div class="d-flex d-justify-content align-items-center lh-1-2">
 						<div class="align-self-stretch py-3 px-2 bg-gray-200">
-							'.$toggleStatus.'
+							'.$toggleType.'
 						</div>
-						<a href="#'.$APPTAG.'-item-view" class="set-base-modal text-sm text-'.$colorStatus.' py-1 px-2" onclick="'.$APPTAG.'_setItemView('.$item->id.')">
+						<a href="#'.$APPTAG.'-item-view" class="set-base-modal text-sm text-'.$colorType.' py-1 px-2" onclick="'.$APPTAG.'_setItemView('.$item->id.')">
 							'.baseHelper::nameFormat($item->subject).'
 							<div class="pos-absolute pos-top-0 pos-right-0 mx-1">
 								'.$priority.'

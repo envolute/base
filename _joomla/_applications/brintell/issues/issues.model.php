@@ -91,30 +91,17 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		// default
 		$request['relationId']   		= $input->get('relationId', 0, 'int');
 		$request['state']				= $input->get('state', 1, 'int');
-	  	$setClose						= $input->get('setClose', 2, 'int'); // 2, caso não seja enviado
-		if($setClose == 1) $request['state'] = 0;
-		else if($setClose == 0) $request['state'] = 1;
 		// app
 		$request['project_id']			= $input->get('project_id', 0, 'int');
 		$request['type']				= $input->get('type', 0, 'int');
+		$request['ctype']				= $input->get('ctype', 0, 'int');
 	  	$request['subject']				= $input->get('subject', '', 'string');
 	  	$request['description']			= $input->get('description', '', 'string');
 		$request['priority']			= $input->get('priority', 0, 'int');
 	  	$request['deadline']			= $input->get('deadline', '', 'string');
 	  	$request['timePeriod']			= $input->get('timePeriod', '', 'string');
-	  	$request['executed']			= $input->get('executed', 0, 'int');
 		$tags							= $input->get('tags', array(), 'array');
 		$request['tags']				= implode(',', $tags); // FIND_IN_SET
-		$request['status']				= $input->get('status', 0, 'int');
-		$request['cstatus']				= $input->get('cstatus', 0, 'int');
-		// fechamento
-		$closing_date = '0000-00-00 00:00:00';
-		if($request['status'] == 3) :
-			$request['executed'] = 100;
-		elseif($request['status'] == 4) :
-			$request['executed'] = 100;
-			$closing_date = date('Y-m-d H:i:s');
-		endif;
 
 		// CUSTOM -> default vars for registration e-mail
 		$config			= JFactory::getConfig();
@@ -247,10 +234,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'priority'			=> $item->priority,
 						'deadline'			=> $item->deadline,
 						'timePeriod'		=> $item->timePeriod,
-						'executed'			=> $item->executed,
 						'tags'				=> explode(',', $item->tags),
-						'status'			=> $item->status,
-						'status_desc'		=> $item->status_desc,
 						'files'				=> $listFiles
 					);
 
@@ -268,11 +252,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('priority')			.'='. $request['priority'] .','.
 							$db->quoteName('deadline')			.'='. $db->quote($request['deadline']) .','.
 							$db->quoteName('timePeriod')		.'='. $db->quote($request['timePeriod']) .','.
-							$db->quoteName('executed')			.'='. $request['executed'] .','.
 							$db->quoteName('tags')				.'='. $db->quote($request['tags']) .','.
-							$db->quoteName('status')			.'='. $request['status'] .','.
-							$db->quoteName('status_desc')		.'='. $db->quote($request['status_desc']) .','.
-		  					$db->quoteName('closing_date')		.'='. $db->quote($closing_date) .','.
 							$db->quoteName('state')				.'='. $request['state'] .','.
 							$db->quoteName('alter_date')		.'= NOW(),'.
 							$db->quoteName('alter_by')			.'='. $user->id
@@ -503,18 +483,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					}
 
 				// STATUS
-				elseif($task == 'status') :
+				elseif($task == 'type') :
 
-					$date = '';
-					$exec = '';
-					if($state < 3) : // backlog, todo, doing
-						if($state < 2) $exec = ', '.$db->quoteName('executed').' = 0';
-						$date = $db->quote('0000-00-00 00:00:00');
-					else : // done
-						$exec = ', '.$db->quoteName('executed').' = 100';
-						$date = $db->quote(date('Y-m-d H:i:s'));
-					endif;
-					$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '. $db->quoteName('status') .' = '.$state.', '.$db->quoteName('closing_date').' = '.$date.$exec.' WHERE '. $db->quoteName('id') .' = '.$id;
+					$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '. $db->quoteName('type') .' = '.$state.' WHERE '. $db->quoteName('id') .' = '.$id;
 
 					try {
 						$db->setQuery($query);
@@ -522,7 +493,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 						$data[] = array(
 							'status'		=> 1,
-							'newStatus'		=> $state,
+							'newType'		=> $state,
 							'id'			=> $id,
 							'msg'			=> ''
 						);
@@ -558,10 +529,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('priority') .','.
 							$db->quoteName('deadline') .','.
 							$db->quoteName('timePeriod') .','.
-							$db->quoteName('executed') .','.
 							$db->quoteName('tags') .','.
-							$db->quoteName('status') .','.
-							$db->quoteName('status_desc') .','.
 							$db->quoteName('state') .','.
 							$db->quoteName('created_by')
 						.') VALUES ('.
@@ -572,10 +540,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$request['priority'] .','.
 							$db->quote($request['deadline']) .','.
 							$db->quote($request['timePeriod']) .','.
-							$request['executed'] .','.
 							$db->quote($request['tags']) .','.
-							$request['status'] .','.
-							$db->quote($request['status_desc']) .','.
 							$request['state'] .','.
 							$user->id
 						.')

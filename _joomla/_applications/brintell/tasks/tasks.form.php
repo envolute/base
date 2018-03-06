@@ -7,7 +7,7 @@ $db->setQuery($query);
 $projects = $db->loadObjectList();
 
 // ISSUES
-$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_issues') .' WHERE '. $db->quoteName('status') .' < 3 AND '. $db->quoteName('state') .' = 1 ORDER BY id DESC';
+$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_issues') .' WHERE '. $db->quoteName('state') .' = 1 ORDER BY id DESC';
 $db->setQuery($query);
 $issues = $db->loadObjectList();
 
@@ -87,9 +87,11 @@ foreach ($staff as $obj) {
 										}
 									?>
 								</select>
-								<span class="input-group-btn">
-									<button type="button" class="base-icon-plus btn btn-success hasTooltip" title="<?php echo JText::_('TEXT_ADD')?>" data-toggle="modal" data-target="#modal-<?php echo $APPTAG?>Tags" data-backdrop="static" data-keyboard="false"></button>
-								</span>
+								<?php if($hasAdmin) :?>
+									<span class="input-group-btn">
+										<button type="button" class="base-icon-plus btn btn-success hasTooltip" title="<?php echo JText::_('TEXT_ADD')?>" data-toggle="modal" data-target="#modal-<?php echo $APPTAG?>Tags" data-backdrop="static" data-keyboard="false"></button>
+									</span>
+								<?php endif;?>
 							</div>
 						</div>
 					</div>
@@ -145,7 +147,7 @@ foreach ($staff as $obj) {
 						?>
 					</select>
 				</div>
-				<div id="<?php echo $APPTAG?>-deadline-group" class="form-group">
+				<div class="form-group">
 					<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_DEADLINE_DESC'); ?>">
 						<?php echo JText::_('FIELD_LABEL_DEADLINE'); ?>
 						[ <?php echo JText::_('TEXT_TIME_IN_BRAZIL'); ?>: <iframe src="//free.timeanddate.com/clock/i63smlsf/n45/fs13/fcf80/tct/pct/ahl/ftb/ts1" frameborder="0" width="58" height="16" style="margin-bottom:-3px;" allowTransparency="true"></iframe> ]

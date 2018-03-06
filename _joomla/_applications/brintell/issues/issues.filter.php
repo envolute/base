@@ -27,7 +27,7 @@ require($PATH_APP_FILE.'.filter.query.php');
 
 	// CLIENTS -> select
 	$flt_client = '';
-	if(!$hasClient) :
+	if(!$client_id) :
 		$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_clients') .' WHERE '. $db->quoteName('state') .' = 1 ORDER BY name';
 		$db->setQuery($query);
 		$clients = $db->loadObjectList();
@@ -51,8 +51,7 @@ require($PATH_APP_FILE.'.filter.query.php');
 	$flt_project = '';
 	if($pID == 0) :
 		// Se for um cliente, só visualiza os projetos dele
-		$filterClient = ($hasClient && $clientID) ? 'client_id = '.$clientID.' AND ' : '';
-		$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_projects') .' WHERE '.$filterClient. $db->quoteName('state') .' = 1 ORDER BY name';
+		$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_projects') .' WHERE '. $cProj . $db->quoteName('state') .' = 1 ORDER BY name';
 		$db->setQuery($query);
 		$projects = $db->loadObjectList();
 		foreach ($projects as $obj) {
@@ -75,26 +74,13 @@ require($PATH_APP_FILE.'.filter.query.php');
 
 	// CREATED BY -> select
 	$flt_creator = '';
-	if($hasAdmin || $pID > 0) :
-		// Se for um cliente, só visualiza os usuários dele
-		$filterClient = ($hasClient && $clientID) ? 'client_id = '.$clientID.' AND ' : '';
-		$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_clients_staff') .' WHERE '.$filterClient. $db->quoteName('access') .' = 1 AND '. $db->quoteName('state') .' = 1 ORDER BY name';
-		$db->setQuery($query);
-		$created = $db->loadObjectList();
-		foreach ($created as $obj) {
-			$flt_creator .= '<option value="'.$obj->user_id.'"'.($obj->user_id == $fCreated ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
-		}
-		$flt_creator = '
-			<div class="col-sm-6 col-md-4">
-				<div class="form-group">
-					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_AUTHOR').'</label>
-					<select name="fCreated[]" id="fCreated" class="form-control form-control-sm set-filter" multiple>
-						'.$flt_creator.'
-					</select>
-				</div>
-			</div>
-		';
-	endif;
+	// Se for um cliente, só visualiza os usuários dele
+	$query = 'SELECT * FROM '. $db->quoteName('vw_'.$cfg['project'].'_teams') .' WHERE '. $cProj . $db->quoteName('access') .' = 1 AND '. $db->quoteName('state') .' = 1 ORDER BY name';
+	$db->setQuery($query);
+	$created = $db->loadObjectList();
+	foreach ($created as $obj) {
+		$flt_creator .= '<option value="'.$obj->user_id.'"'.($obj->user_id == $fCreated ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
+	}
 
 	// TAGS -> select
 	$flt_tag = '';
@@ -114,7 +100,15 @@ $htmlFilter = '
 			<div class="row">
 				<div class="col-xl-10">
 					<div class="row">
-						'.$flt_project.$flt_creator.'
+						'.$flt_client.$flt_project.'
+						<div class="col-sm-6 col-md-4">
+							<div class="form-group">
+								<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_AUTHOR').'</label>
+								<select name="fCreated[]" id="fCreated" class="form-control form-control-sm set-filter" multiple>
+									'.$flt_creator.'
+								</select>
+							</div>
+						</div>
 						<div class="col-sm-6 col-md-4">
 							<div class="form-group">
 								<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_DEADLINE').'</label>
@@ -137,6 +131,18 @@ $htmlFilter = '
 								<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_TAGS').'</label>
 								<select name="fTags[]" id="fTags" class="form-control form-control-sm set-filter" multiple>
 									'.$flt_tag.'
+								</select>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-2">
+							<div class="form-group">
+								<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_TYPE').'</label>
+								<select name="fType" id="fType" class="form-control form-control-sm set-filter">
+									<option value="9">- '.JText::_('TEXT_ALL').' -</option>
+									<option value="0"'.($fType == 0 ? ' selected' : '').'>'.JText::_('TEXT_TYPE_0').'</option>
+									<option value="1"'.($fType == 1 ? ' selected' : '').'>'.JText::_('TEXT_TYPE_1').'</option>
+									<option value="2"'.($fType == 2 ? ' selected' : '').'>'.JText::_('TEXT_TYPE_2').'</option>
+									<option value="3"'.($fType == 3 ? ' selected' : '').'>'.JText::_('TEXT_TYPE_3').'</option>
 								</select>
 							</div>
 						</div>

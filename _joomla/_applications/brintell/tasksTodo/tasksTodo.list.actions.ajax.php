@@ -99,7 +99,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$noReg = false;
 		endif;
 	endif;
-	$query	.= ' ORDER BY '. $db->quoteName('T1.orderer') .' ASC, '. $db->quoteName('T1.created_date') .' ASC';
+	$query	.= ' ORDER BY '. $db->quoteName('T1.orderer') .' ASC, '. $db->quoteName('T1.deadline') .' ASC, '. $db->quoteName('T1.created_date') .' ASC';
 	try {
 		$db->setQuery($query);
 		$db->execute();
@@ -169,8 +169,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 			$collapse = $btnCollapse = '';
 			if(!empty($desc)) {
-				$collapse = '<div id="'.$APPTAG.'-taskTodo-item-'.$item->id.'" class="collapse">'.$desc.'</div>';
-				$btnCollapse = '<a href="#'.$APPTAG.'-taskTodo-item-'.$item->id.'" class="float-right toggle-state toggle-icon base-icon-info-circled hasTooltip" title="'.JText::_('TEXT_CLICK_TO_VIEW_INFO').'" data-icon-default="base-icon-right-dir" data-icon-active="base-icon-down-dir text-live" data-toggle="collapse" aria-expanded="false" aria-controls="taskTodoItem"><span class="base-icon-right-dir ml-1"></span></a>';
+				$collapse = '<div id="'.$APPTAG.'-todo-item-'.$item->id.'" class="collapse">'.$desc.'</div>';
+				$btnCollapse = '<a href="#'.$APPTAG.'-todo-item-'.$item->id.'" class="float-right toggle-state toggle-icon base-icon-info-circled hasTooltip" title="'.JText::_('TEXT_CLICK_TO_VIEW_INFO').'" data-icon-default="base-icon-right-dir" data-icon-active="base-icon-down-dir text-live" data-toggle="collapse" aria-expanded="false" aria-controls="todoItem"><span class="base-icon-right-dir ml-1"></span></a>';
 			}
 
 			$info = $btnActions;

@@ -5,9 +5,6 @@
 */
 defined('_JEXEC') or die;
 $ajaxRequest = false;
-// access's definitions
-$issuesEditorGroups	= array(16);		// client
-$issuesAdminGroups	= array(12, 15);	// analyst + client manager + manager
 require('config.php');
 
 // IMPORTANTE:
@@ -109,8 +106,8 @@ if($vID != 0) :
 			';
 		endif;
 
-		$itemStatus = ($view->status == 1) ? 'warning' : JText::_('TEXT_COLOR_STATUS_'.$view->status);
-		$iconStatus = JText::_('TEXT_ICON_STATUS_'.$view->status);
+		$itemType = ($view->type == 1) ? 'warning' : JText::_('TEXT_COLOR_TYPE_'.$view->type);
+		$iconType = JText::_('TEXT_ICON_TYPE_'.$view->type);
 
 		$type = ' <span class="badge badge-primary cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_TYPE').'">'.JText::_('TEXT_TYPE_'.$view->type).'</span>';
 
@@ -150,16 +147,16 @@ if($vID != 0) :
 			$obj = $db->loadObject();
 			if(!empty($obj->name)) : // verifica se existe
 				if($obj->online) :
-					$lStatus = JText::_('TEXT_USER_STATUS_1');
-					$iStatus = '<small class="base-icon-circle text-success pos-absolute pos-right-0 pos-bottom-0"></small>';
+					$lType = JText::_('TEXT_USER_TYPE_1');
+					$iType = '<small class="base-icon-circle text-success pos-absolute pos-right-0 pos-bottom-0"></small>';
 				else :
-					$lStatus = JText::_('TEXT_USER_STATUS_0');
-					$iStatus = '';
+					$lType = JText::_('TEXT_USER_TYPE_0');
+					$iType = '';
 				endif;
-				$name = baseHelper::nameFormat($obj->name);
+				$name = baseHelper::nameFormat((!empty($obj->nickname) ? $obj->nickname : $obj->name));
 				$role = baseHelper::nameFormat($obj->role);
 				if(!empty($role)) $role = '<br />'.$role;
-				$info = $name.$role.'<br />'.$lStatus;
+				$info = $name.$role.'<br />'.$lType;
 
 				// Imagem Principal -> Primeira imagem (index = 0)
 				$member_id = $obj->staff_id ? $obj->staff_id : $obj->clientsStaff_id;
@@ -170,7 +167,7 @@ if($vID != 0) :
 				$urlProfile = 'apps/'.($obj->type == 2 ? 'clients/staff' : '/staff').'/view?vID='.$obj->user_id;
 				$createdBy .= '
 					<a href="'.$urlProfile.'" class="d-inline-block pos-relative hasTooltip" title="'.$info.'">
-						'.$img.$iStatus.'
+						'.$img.$iType.'
 					</a>
 				';
 			endif;
@@ -214,9 +211,9 @@ if($vID != 0) :
 		$btnActions .= '</div>';
 
 		if($hasClient) {
-			$toggleStatus = '<span id="'.$MAINTAG.'-item-'.$view->id.'-status" class="base-icon-'.$iconStatus.' text-'.$itemStatus.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$view->status).'"></span>';
+			$toggleType = '<span id="'.$MAINTAG.'-item-'.$view->id.'-type" class="base-icon-'.$iconType.' text-'.$itemType.' hasTooltip" title="'.JText::_('TEXT_TYPE_'.$view->type).'"></span>';
 		} else {
-			$toggleStatus = '<a href="#" id="'.$MAINTAG.'-item-'.$view->id.'-status" class="base-icon-'.$iconStatus.' text-'.$itemStatus.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$view->status).'" data-id="'.$view->id.'" data-status="'.$view->status.'" onclick="'.$MAINTAG.'_setStatusModal(this)"></a>';
+			$toggleType = '<a href="#" id="'.$MAINTAG.'-item-'.$view->id.'-type" class="base-icon-'.$iconType.' text-'.$itemType.' hasTooltip" title="'.JText::_('TEXT_TYPE_'.$view->type).'" data-id="'.$view->id.'" data-type="'.$view->type.'" onclick="'.$MAINTAG.'_setTypeModal(this)"></a>';
 		}
 
 		// Hide loader
@@ -240,7 +237,7 @@ if($vID != 0) :
 				<div id="'.$MAINTAG.'-request-pageitem-header" class="mb-3 b-bottom-2 b-primary">
 					<div class="pb-1 mb-2 b-bottom">'.$type.$priority.'</div>
 					<h2 class="font-condensed text-primary">
-						<span class="badge bg-gray-200">'.$toggleStatus.'</span>
+						<span class="badge bg-gray-200">'.$toggleType.'</span>
 						'.$view->subject.'
 					</h2>
 					<div class="clearfix">
@@ -282,7 +279,8 @@ if($vID != 0) :
 						// Carrega o app diretamente ná página,
 						// pois como está sendo chamada no template 'component', não carrega os módulos
 						// ISSUES => FORM
-						$issuesAppTag						= $MAINTAG;
+						$issuesAppTag					= $MAINTAG;
+						// get the same group access of main APP
 						${$issuesAppTag.'ViewerGroups'}	= $cfgViewer;
 						${$issuesAppTag.'AuthorGroups'}	= $cfgAuthor;
 						${$issuesAppTag.'EditorGroups'}	= $cfgEditor;
@@ -305,6 +303,7 @@ if($vID != 0) :
 						$tasksTagsTableField		= 'name';
 						require(JPATH_APPS.DS.'tasksTags/tasksTags.php');
 						// TO DO LIST => (instância do FORM)
+						$issuesTodoIsPublic			= 3; // 'Editor' + 'Admin'
 						$issuesTodoShowApp			= false;
 						$issuesTodoShowList			= true;
 						$issuesTodoListModal		= true;
@@ -314,6 +313,7 @@ if($vID != 0) :
 
 						// TO DO LIST => (instância da VIEW)
 						$issuesTodoAppTag						= 'todoView';
+						${$issuesTodoAppTag.'IsPublic'}			= 3; // 'Editor' + 'Admin'
 						${$issuesTodoAppTag.'ListFull'}			= false;
 						${$issuesTodoAppTag.'ListAjax'}			= "list.actions.ajax.php";
 						${$issuesTodoAppTag.'RelTag'}			= 'issues';

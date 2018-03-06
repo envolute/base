@@ -111,7 +111,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$noReg = false;
 		endif;
 	endif;
-	$query	.= ' ORDER BY '. $db->quoteName('T1.orderer') .' ASC, '. $db->quoteName('T1.created_date') .' ASC';
+	$query	.= ' ORDER BY '. $db->quoteName('T1.created_date') .' ASC';
 	try {
 		$db->setQuery($query);
 		$db->execute();

@@ -49,7 +49,7 @@ $hasCManager	= array_intersect($groups, $cfg['groupId']['clientManager']);
 
 $defaultColor	= 'primary';
 $projectColor	= 'info';
-$requestColor	= 'live';
+$issueColor		= 'live';
 $taskColor		= 'danger';
 $timeColor		= 'success';
 
@@ -94,11 +94,11 @@ if($hasBrintell) {
 			$issues_actives = $db->loadResult();
 			echo '
 				<div class="col-sm-6 col-md pb-4">
-					<div class="pos-relative rounded b-top-2 b-'.$requestColor.' bg-white set-shadow">
+					<div class="pos-relative rounded b-top-2 b-'.$issueColor.' bg-white set-shadow">
 						<div class="h1 m-0 p-3 text-right">
-							<span class="base-icon-bell text-'.$requestColor.' float-left"></span>
+							<span class="base-icon-bell text-'.$issueColor.' float-left"></span>
 							'.$issues_actives.'
-							<div class="text-sm text-'.$requestColor.'">'.JText::_('TEXT_ISSUES_ACTIVES').'</div>
+							<div class="text-sm text-'.$issueColor.'">'.JText::_('TEXT_ISSUES_ACTIVES').'</div>
 						</div>
 					</div>
 				</div>
@@ -215,7 +215,7 @@ if($hasBrintell) {
 	$issuesMonth = '
 		<div class="h2 pb-3 b-bottom b-bottom-dashed">
 			<span class="text-success">'.$metricsMonth->amount.'</span> <span class="text-muted">/ '.$metricsMonth->total.'</span>
-			<div class="text-sm text-'.$requestColor.'">'.JText::_('TEXT_SOLVED').'</div>
+			<div class="text-sm text-'.$issueColor.'">'.JText::_('TEXT_SOLVED').'</div>
 		</div>
 	';
 
@@ -287,7 +287,7 @@ if($hasBrintell) {
 				$project = (!$pID) ? ' '.JText::_('TEXT_IN').' '.baseHelper::nameFormat($item->project) : '';
 				$issuesList .= '
 					<li>
-						<a class="text-'.$requestColor.'" href="'.JURI::root().'apps/issues/view?vID='.$item->id.'">#'.$item->id.' - '.$item->subject.'</a>
+						<a class="text-'.$issueColor.'" href="'.JURI::root().'apps/issues/view?vID='.$item->id.'">#'.$item->id.' - '.$item->subject.'</a>
 						<div class="small text-muted">
 							'.baseHelper::dateFormat($item->created_date, 'd.m').' - '.baseHelper::nameFormat($item->author).$project.'
 						</div>

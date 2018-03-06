@@ -151,15 +151,13 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$btnCollapse = '<span class="text-sm float-right">'.$btnEdit.$btnDelete.'</span>';
 			if(!empty($attachs) || !empty($desc)) :
 				$collapse = '
-					<div id="'.$APPTAG.'-requestTodo-item-'.$item->id.'" class="collapse">
+					<div id="'.$APPTAG.'-todo-item-'.$item->id.'" class="collapse">
 						'.$desc.$attachs.'
 						<div class="pt-2 text-sm">'.$btnEdit.$btnDelete.'</div>
 					</div>
 				';
 				$btnCollapse = '
-					<button class="btn btn-xs btn-link float-right toggle-state" data-toggle="collapse" data-target="#'.$APPTAG.'-requestTodo-item-'.$item->id.'" aria-expanded="" aria-controls="requestTodoItem">
-						<span class="base-icon-sort"></span>
-					</button>
+					<a href="#'.$APPTAG.'-todo-item-'.$item->id.'" class="text-lg px-1 lh-1-2 float-right toggle-state toggle-icon base-icon-right-dir hasTooltip" title="'.JText::_('TEXT_CLICK_TO_VIEW_INFO').'" data-icon-default="base-icon-right-dir" data-icon-active="base-icon-down-dir text-live" data-toggle="collapse" aria-expanded="false" aria-controls="todoItem"></a>
 				';
 			endif;
 

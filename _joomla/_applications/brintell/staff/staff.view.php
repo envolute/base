@@ -63,13 +63,16 @@ if($vID != 0) :
 		SELECT
 			T1.*,
 			'. $db->quoteName('T2.name') .' role,
-			'. $db->quoteName('T3.username') .'
+			'. $db->quoteName('T3.username') .',
+			'. $db->quoteName('T4.title') .' usergroup
 		FROM
 			'.$db->quoteName($cfg['mainTable']).' T1
 			LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_roles') .' T2
 			ON T2.id = T1.role_id
 			LEFT JOIN '. $db->quoteName('#__users') .' T3
 			ON T3.id = T1.user_id
+			LEFT JOIN '. $db->quoteName('#__usergroups') .' T4
+			ON T4.id = T1.usergroup
 		WHERE '.$db->quoteName('T1.user_id') .' = '. $vID
 	;
 	try {
@@ -114,9 +117,17 @@ if($vID != 0) :
 		$info1 = '';
 		if(!empty($view->email)) :
 			$info1 .= '
-				<div class="col-sm-8">
+				<div class="col-sm-4">
 					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_EMAIL').':</label>
 					<p>'.$view->email.'</p>
+				</div>
+			';
+		endif;
+		if(!empty($view->role)) :
+			$info1 .= '
+				<div class="col-md-4">
+					<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_ROLE').':</label>
+					<p>'.baseHelper::nameFormat($view->role, null, JText::_('TEXT_UNDEFINED')).'</p>
 				</div>
 			';
 		endif;
@@ -214,11 +225,9 @@ if($vID != 0) :
 		if((!empty($phones) || !empty($chats)) && !$hasClient) :
 			$cDiv = (!empty($phones) && !empty($chats)) ? '<hr class="b-top-dashed my-2" />' : '';
 			$contact .= '
-				<div class="pb-2 mb-2 b-bottom b-bottom-dashed">
-					<hr class="hr-tag b-top-dashed b-primary">
-					<span class="badge badge-primary"> '.JText::_('TEXT_CONTACT_DATA').'</span>
-					'.$phones.$cDiv.$chats.'
-				</div>
+				<hr class="hr-tag b-top-dashed b-primary">
+				<span class="badge badge-primary"> '.JText::_('TEXT_CONTACT_DATA').'</span>
+				'.$phones.$cDiv.$chats.'
 			';
 		endif;
 
@@ -227,7 +236,7 @@ if($vID != 0) :
 		if(!empty($view->weblink_url)) :
 			$wTxt = explode(';', $view->weblink_text);
 			$wUrl = explode(';', $view->weblink_url);
-			$links = (count($wUrl) > 0) ? '<ul class="set-list bordered">' : '';
+			$links = (count($wUrl) > 0) ? '<ul class="set-list bordered b-top b-top-dashed pt-1">' : '';
 			for($i = 0; $i < count($wUrl); $i++) {
 				$text = !empty($wTxt[$i]) ? $wTxt[$i] : $wUrl[$i];
 				$links .= '<li> <a href="'.$wUrl[$i].'" class="base-icon-link" target="_blank"> '.baseHelper::nameFormat($text).'</a></li>';
@@ -248,12 +257,14 @@ if($vID != 0) :
 		$address = '';
 		if(!empty($view->address)) :
 			$address .= '
-				<hr class="hr-tag b-top-dashed">
-				<span class="badge badge-primary"> '.JText::_('FIELD_LABEL_ADDRESS').'</span>
-				<p>
-						'.baseHelper::nameFormat($view->address).$addressNumber.$addressInfo.'<br />
-						'.$addressZip.$addressDistrict.$addressCity.$addressState.$addressCountry.'
-				</p>
+				<div class="col-lg">
+					<hr class="hr-tag b-top-dashed">
+					<span class="badge badge-primary"> '.JText::_('FIELD_LABEL_ADDRESS').'</span>
+					<p>
+							'.baseHelper::nameFormat($view->address).$addressNumber.$addressInfo.'<br />
+							'.$addressZip.$addressDistrict.$addressCity.$addressState.$addressCountry.'
+					</p>
+				</div>
 			';
 		endif;
 
@@ -272,7 +283,7 @@ if($vID != 0) :
 		endif;
 
 		// Acesso
-		$access = ($view->access == 1 && !empty($view->user_id)) ? ' <span class="base-icon-plug text-live cursor-help hasTooltip" title="'.JText::_('TEXT_HAS_ACCESS').'"></span>' : '';
+		$access = ($view->access == 1 && !empty($view->user_id)) ? ' <span class="badge badge-info base-icon-plug cursor-help hasTooltip" title="'.JText::_('TEXT_ACCESS_GROUP').'"> '.$view->usergroup.'</span>' : '';
 
 		$nickname = !empty($view->nickname) ? ' <small>('.baseHelper::nameFormat($view->nickname).')</small>' : '';
 		// files info
@@ -291,37 +302,39 @@ if($vID != 0) :
 			$gender = '<span class="'.$gIcon.' cursor-help hasTooltip" title="'.JText::_('TEXT_GENDER_'.$view->gender).'"></span> ';
 		endif;
 
+		$extraInfo = '';
+		if(!empty($contact) || !empty($links) || !empty($bankAccount_info)) {
+			$extraInfo = '
+				<div class="col'.(!empty($address) ? '-sm-4' : '').'">
+					'.$contact.$links.$bankAccount_info.'
+				</div>
+			';
+		}
+
 		echo '
 			<div class="row">
-				<div class="col-lg-9">
-					<div class="row">
-						<div class="col-4 col-sm-2 mb-4 mb-md-0">
-							<div style="max-width: 300px">'.$img.'</div>
-							<div class="text-live text-center pt-2">
-								'.(!empty($view->username) ? '<span class="badge badge-primary cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_USERNAME').'">'.$view->username.'</span>' : '').'
-							</div>
-							<div class="text-sm">
-								'.$files.$edit.'
-							</div>
-						</div>
-						<div class="col-sm">
-							'.$about_me.'
-							<div class="row">
-								<div class="col-md-8">
-									<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_NAME').': '.$access.'</label>
-									<p>'.$gender.baseHelper::nameFormat($view->name).$nickname.'</p>
-								</div>
-								<div class="col-md-4">
-									<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_ROLE').':</label>
-									<p>'.baseHelper::nameFormat($view->role, null, JText::_('TEXT_UNDEFINED')).'</p>
-								</div>
-							</div>
-							'.$info1.$info2.$address.'
-						</div>
+				<div class="col-4 col-sm-2 mb-4 mb-md-0">
+					<div style="max-width: 300px">'.$img.'</div>
+					<div class="text-sm">
+						'.$files.$edit.'
 					</div>
 				</div>
-				<div class="col">
-					'.$contact.$links.$bankAccount_info.'
+				<div class="col-sm">
+					'.$about_me.'
+					<div class="row">
+						<div class="col-md-8">
+							<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_NAME').':</label>
+							<p>'.$gender.baseHelper::nameFormat($view->name).$nickname.'</p>
+						</div>
+						<div class="col-md-4">
+							<label class="label-xs text-muted">'.JText::_('TEXT_USERNAME').':</label>
+							<p>'.(!empty($view->username) ? $view->username.' '.$access : '<span class="text-danger">'.JText::_('TEXT_ACCESS_DANIED').'</span>').'</p>
+						</div>
+					</div>
+					'.$info1.$info2.'
+					<div class="row">
+						'.$address.$extraInfo.'
+					</div>
 				</div>
 			</div>
 		';

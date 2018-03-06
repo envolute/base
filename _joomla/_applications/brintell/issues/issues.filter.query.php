@@ -10,8 +10,8 @@ $where = '';
 	$active	= $app->input->get('active', 1, 'int');
 	$where .= $db->quoteName('T1.state').' = '.$active;
 	// CLIENT
-	if($hasClient && $clientID) {
-		$where .= ' AND '.$db->quoteName('T2.client_id').' = '.$clientID;
+	if($hasClient) {
+		$where .= ' AND '.$db->quoteName('T2.client_id').' = '.$client_id;
 	} else {
 		$fClient = $app->input->get('fClient', 0, 'int');
 		if($fClient != 0) $where .= ' AND '.$db->quoteName('T2.client_id').' = '.$fClient;
@@ -22,18 +22,17 @@ $where = '';
 	if($fProj != 0) $where .= ' AND '.$db->quoteName('T1.project_id').' = '.$fProj;
 	// CREATED BY
 	$createdBy = '';
-	if($hasAdmin || $pID > 0) :
-		$fCreated = $app->input->get('fCreated', array(), 'array');
+	$fCreated = $app->input->get('fCreated', array(), 'array');
+	// Se usuário(s) for(em) selecionado(s)
+	if(!count($fCreated)) :
 		for($i = 0; $i < count($fCreated); $i++) {
 			$createdBy .= ($i == 0) ? ' AND (' : ' OR ';
 			$createdBy .= 'FIND_IN_SET ('.$fCreated[$i].', T1.created_by)';
 			$createdBy .= ($i == (count($fCreated) - 1)) ? ')' : '';
 		}
-	// Visão geral das issues pelo dev
-	// Mostra apenas as issues do próprio usuário
+	// Senão, mostra apenas issues dos usuários do cliente
 	else :
-		$fCreated = $user->id;
-		$createdBy = ' AND FIND_IN_SET ('.$fCreated.', '.$db->quoteName('T1.created_by').')';
+		$createdBy = ' AND FIND_IN_SET ('.$client_users.', '.$db->quoteName('T1.created_by').')';
 	endif;
 	$where .= $createdBy;
 	// TYPE
@@ -83,7 +82,7 @@ $where = '';
 	unset($_SESSION[$APPTAG.'oF']);
 	$orderDef = 'T1.priority DESC, T1.created_date DESC'; // não utilizar vírgula no inicio ou fim
 	if(!isset($_SESSION[$APPTAG.'oF'])) : // DEFAULT ORDER
-		$_SESSION[$APPTAG.'oF'] = 'T1.status';
+		$_SESSION[$APPTAG.'oF'] = 'T1.type';
 		$_SESSION[$APPTAG.'oT'] = 'ASC';
 	endif;
 	if(!empty($ordf)) :

@@ -5,10 +5,6 @@
 */
 defined('_JEXEC') or die;
 $ajaxRequest = false;
-// access's definitions
-$tasksViewerGroups	= array(15, 16);	// Client
-$tasksAuthorGroups	= array(13, 14);	// developer + external
-$tasksAdminGroups	= array(12);		// analyst + manager
 require('config.php');
 
 // IMPORTANTE:
@@ -136,7 +132,7 @@ if($vID != 0) :
 				if($hasAdmin) $issues .= '<a href="'.JURI::root().'apps/issues/view?vID='.$r[$i].'">#'.$r[$i].'</a>';
 				else $issues .= '<span class="text-live">#'.$r[$i].'</span>';
 			}
-			$issues = '<div class="float-right text-muted">Req ID: '.$issues.'</div>';
+			$issues = '<div class="float-right text-muted pr-3">Issue ID: '.$issues.'</div>';
 		endif;
 
 		$deadline = '';

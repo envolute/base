@@ -24,9 +24,10 @@ if(!$cfg['isPublic']) :
 		$app->redirect(JURI::root(true).'/login?return='.urlencode(base64_encode(JURI::current())));
 		exit();
 	elseif(!$hasViewer && !$hasAuthor && !$hasEditor && !$hasAdmin) :
-		$app->enqueueMessage(JText::_('MSG_NOT_PERMISSION'), 'warning');
-		$app->redirect(JURI::root(true));
-		exit();
+		echo $APPTAG;
+		// $app->enqueueMessage(JText::_('MSG_NOT_PERMISSION'), 'warning');
+		// $app->redirect(JURI::root(true));
+		// exit();
 	endif;
 endif;
 
