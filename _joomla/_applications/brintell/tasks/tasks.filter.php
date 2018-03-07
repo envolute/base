@@ -74,14 +74,15 @@ require($PATH_APP_FILE.'.filter.query.php');
 	// ASSIGN TO -> select
 	$flt_assign = '';
 	// Mostra a opção de filtro por usuário se for um 'admin' ou se estiver em um projeto
-	if($hasAdmin || $pID > 0) :
+	if(!$hasClient) :
 		$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('type') .' IN (0, 1) AND '. $db->quoteName('access') .' = 1 AND '. $db->quoteName('state') .' = 1 ORDER BY name';
 		$db->setQuery($query);
 		$assigned = $db->loadObjectList();
 		foreach ($assigned as $obj) {
 			$name = !empty($obj->nickname) ? $obj->nickname : $obj->name;
 			$staff = ($obj->type == 1) ? '*' : '';
-			$flt_assign .= '<option value="'.$obj->user_id.'"'.($obj->user_id == $fAssign ? ' selected = "selected"' : '').'>'.$staff.baseHelper::nameFormat($name).'</option>';
+			$me = ($obj->user_id == $user->id) ? ' ('.JText::_('TEXT_TO_ME').')' : '';
+			$flt_assign .= '<option value="'.$obj->user_id.'"'.($obj->user_id == $fAssign ? ' selected = "selected"' : '').'>'.$staff.baseHelper::nameFormat($name).$me.'</option>';
 		}
 		$flt_assign = '
 			<div class="col-sm-6 col-md-4">
@@ -105,7 +106,7 @@ require($PATH_APP_FILE.'.filter.query.php');
 	}
 
 	$visibility = '';
-	if(!$client_id) {
+	if(!$hasClient) {
 		$visibility = '
 			<div class="col-sm-6 col-md-2">
 				<div class="form-group">
@@ -175,6 +176,17 @@ $htmlFilter = '
 									<option value="0"'.($fType == 0 ? ' selected' : '').'>'.JText::_('TEXT_TYPE_0').'</option>
 									<option value="1"'.($fType == 1 ? ' selected' : '').'>'.JText::_('TEXT_TYPE_1').'</option>
 								</select>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-2">
+							<div class="form-group">
+								<label class="label-xs text-muted">&#160;</label>
+								<span class="btn-group btn-group-justified" data-toggle="buttons">
+									<label class="btn btn-sm btn-default btn-active-danger'.($fExec == 0 ? ' active' : '').' base-icon-arrows-cw hasTooltip" title="'.JText::_('TEXT_WORKING_DESC').'">
+										<input type="checkbox" name="fExec" id="fExec" class="set-filter" value="1"'.($fExec == 1 ? ' checked' : '').' />
+										'.JText::_('TEXT_WORKING').'
+									</label>
+								</span>
 							</div>
 						</div>
 					</div>

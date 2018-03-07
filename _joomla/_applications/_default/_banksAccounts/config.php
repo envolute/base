@@ -97,7 +97,7 @@ endif;
 		$cfg['ajaxFilter']		= false;
 		// show/hidden list
 		$cfg['showList']			= true;
-		if(isset(${$APPTAG.'Showlist'})) $cfg['showList'] = ${$APPTAG.'Showlist'} ? true : false;
+		if(isset(${$APPTAG.'ShowList'})) $cfg['showList'] = ${$APPTAG.'ShowList'} ? true : false;
 		// list modal
 		$cfg['listModal']			= false;
 		if(isset(${$APPTAG.'ListModal'})) $cfg['listModal'] = ${$APPTAG.'ListModal'} ? true : false;

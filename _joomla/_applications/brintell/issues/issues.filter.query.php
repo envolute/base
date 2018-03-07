@@ -11,10 +11,10 @@ $where = '';
 	$where .= $db->quoteName('T1.state').' = '.$active;
 	// CLIENT
 	if($hasClient) {
-		$where .= ' AND '.$db->quoteName('T2.client_id').' = '.$client_id;
+		$where .= ' AND '.$db->quoteName('T1.client_id').' = '.$client_id;
 	} else {
 		$fClient = $app->input->get('fClient', 0, 'int');
-		if($fClient != 0) $where .= ' AND '.$db->quoteName('T2.client_id').' = '.$fClient;
+		if($fClient != 0) $where .= ' AND '.$db->quoteName('T1.client_id').' = '.$fClient;
 	}
 	// PROJECT
 	$pID	= $app->input->get('pID', 0, 'int');
@@ -23,17 +23,13 @@ $where = '';
 	// CREATED BY
 	$createdBy = '';
 	$fCreated = $app->input->get('fCreated', array(), 'array');
-	// Se usuário(s) for(em) selecionado(s)
-	if(!count($fCreated)) :
-		for($i = 0; $i < count($fCreated); $i++) {
-			$createdBy .= ($i == 0) ? ' AND (' : ' OR ';
-			$createdBy .= 'FIND_IN_SET ('.$fCreated[$i].', T1.created_by)';
-			$createdBy .= ($i == (count($fCreated) - 1)) ? ')' : '';
-		}
-	// Senão, mostra apenas issues dos usuários do cliente
-	else :
-		$createdBy = ' AND FIND_IN_SET ('.$client_users.', '.$db->quoteName('T1.created_by').')';
-	endif;
+	if(!empty($fCreated)) {
+		$fCreatedIds = implode(',', $fCreated);
+		$createdBy .= ' AND T1.created_by IN ('.$fCreatedIds.')';
+	// Se for um client, visualiza apenas as issues de sua equipe
+	} else if($hasClient) {
+		$createdBy .= ' AND T1.author_type = 2';
+	}
 	$where .= $createdBy;
 	// TYPE
 	$fType	= $app->input->get('fType', 9, 'int');

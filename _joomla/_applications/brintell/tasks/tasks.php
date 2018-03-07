@@ -22,6 +22,18 @@ require(JPATH_CORE.DS.'apps/_init.app.php');
 // DATABASE CONNECT
 $db = JFactory::getDbo();
 
+// verifica se é um cliente
+$hasClient	= array_intersect($groups, $cfg['groupId']['client']); // se está na lista de administradores permitidos
+// GET CLIENT ID
+$client_id = 0;
+if($hasClient) {
+	// CLIENTS STAFF
+	$query = 'SELECT client_id FROM '. $db->quoteName('#__'.$cfg['project'].'_clients_staff') .' WHERE '. $db->quoteName('user_id') .' = '.$user->id.' AND '. $db->quoteName('access') .' = 1 AND '. $db->quoteName('state') .' = 1 ORDER BY name';
+	$db->setQuery($query);
+	$client_id = $db->loadResult();
+}
+$cProj = $client_id ? 'client_id = '.$client_id.' AND ' : '';
+
 //joomla get request data
 $input      = $app->input;
 
@@ -45,6 +57,7 @@ jQuery(function() {
 	var project_id			= jQuery('#<?php echo $APPTAG?>-project_id');
 	var type				= mainForm.find('input[name=type]:radio'); // radio group
 	var issues				= jQuery('#<?php echo $APPTAG?>-issues');
+	var cissues				= jQuery('#<?php echo $APPTAG?>-cissues');
 	var assign_to			= jQuery('#<?php echo $APPTAG?>-assign_to');
 	var cassign_to			= jQuery('#<?php echo $APPTAG?>-cassign_to');
 	var subject				= jQuery('#<?php echo $APPTAG?>-subject');
@@ -119,6 +132,7 @@ jQuery(function() {
 			// => SE HOUVER UM CAMPO INDICADO NA VARIÁVEL 'parentFieldId', NÃO RESETÁ-LO NA LISTA ABAIXO
 			checkOption(type, 0);
 			issues.selectUpdate(''); // select
+			cissues.val(''); // select
 			<?php if($cfg['canEdit']) :?>
 				assign_to.selectUpdate('<?php echo $hasAuthor ? $user->id : 0?>'); // select
 				cassign_to.selectUpdate('0'); // select
@@ -131,7 +145,7 @@ jQuery(function() {
 			estimate.val('');
 			executed.val(0);
 			tags.selectUpdate(''); // select
-			checkOption(visibility, 1);
+			checkOption(visibility, '');
 			checkOption(status, 0);
 			cstatus.val('');
 
@@ -303,8 +317,9 @@ jQuery(function() {
 						project_id.selectUpdate(item.project_id); // select
 						checkOption(type, item.type);
 						issues.selectUpdate(item.issues); // select
+						cissues.val(item.cissues); // OBS: ESTÁ CORRETO: 'cissues' recebe a string e não o array
 						assign_to.selectUpdate(item.assign_to); // select
-						cassign_to.selectUpdate(item.assign_to); // select
+						cassign_to.selectUpdate(item.cassign_to); // OBS: ESTÁ CORRETO: 'cassign_to' recebe a string e não o array
 						subject.val(item.subject);
 						description.val(item.description);
 						checkOption(priority, item.priority);

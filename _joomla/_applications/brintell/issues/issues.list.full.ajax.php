@@ -59,19 +59,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	$hasClient	= array_intersect($groups, $cfg['groupId']['client']); // se está na lista de administradores permitidos
 	// Get Client ID
 	$client_id = 0;
+	$client_users = '';
 	if($hasClient) {
 		$query = 'SELECT client_id FROM '. $db->quoteName('vw_'.$cfg['project'].'_teams') .' WHERE user_id = '.$user->id.' AND state = 1';
 		$db->setQuery($query);
 		$client_id = $db->loadResult();
-		// Get Users Ids of Client
-		if($client_id == 1) {
-			$query = 'SELECT GROUP_CONCAT(id) FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE state = 1';
-		} else {
-			$query = 'SELECT GROUP_CONCAT(id) FROM '. $db->quoteName('#__'.$cfg['project'].'_clients_staff') .' WHERE client_id = '.$client_id.' AND state = 1';
-		}
-		$db->setQuery($query);
-		$client_users = $db->loadResult();
-
 	}
 	// filtro de projetos e usuários do cliente
 	$cProj = $client_id ? 'client_id = '.$client_id.' AND ' : '';
@@ -83,31 +75,23 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	// GET DATA
 	$noReg	= true;
 	$query	= '
-		SELECT
-			T1.*,
-			'. $db->quoteName('T2.name') .' project
+		SELECT T1.*
 	';
 	if(!empty($rID) && $rID !== 0) :
 		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
 			$query .= ' FROM '.
-				$db->quoteName($cfg['mainTable']) .' T1
-				LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_projects') .' T2
-				ON '.$db->quoteName('T2.id') .' = T1.project_id AND T2.state = 1
-				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T3
-				ON '.$db->quoteName('T3.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
-			WHERE '.$where.' AND '. $db->quoteName('T3.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID.$orderList
+				$db->quoteName('vw_'.$cfg['project'].'_'.$APPNAME) .' T1
+				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T2
+				ON '.$db->quoteName('T2.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
+			WHERE '.$where.' AND '. $db->quoteName('T2.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID.$orderList
 			;
 		else :
-			$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
-				LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_projects') .' T2
-				ON '.$db->quoteName('T2.id') .' = T1.project_id AND T2.state = 1
+			$query .= ' FROM '. $db->quoteName('vw_'.$cfg['project'].'_'.$APPNAME) .' T1
 				WHERE '.$where.' AND '. $db->quoteName($rNID) .' = '. $rID.$orderList
 			;
 		endif;
 	else :
-		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
-			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_projects') .' T2
-			ON '.$db->quoteName('T2.id') .' = T1.project_id AND T2.state = 1
+		$query .= ' FROM '. $db->quoteName('vw_'.$cfg['project'].'_'.$APPNAME) .' T1
 			WHERE '.$where.$orderList
 		;
 		if($oCHL) $noReg = false;
@@ -215,18 +199,21 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			endif;
 
 			// Created By
-			$createdBy = '';
-			if(!empty($item->created_by)) :
-				$query = 'SELECT name FROM '. $db->quoteName('#__'.$cfg['project'].'_clients_staff') .' WHERE '. $db->quoteName('user_id') .' = '.$item->created_by;
-				$db->setQuery($query);
-				$client = $db->loadResult();
-				$createdBy = '<span class="btn btn-xs btn-link base-icon-user cursor-help hasTooltip" title="'.baseHelper::nameFormat($client).'"></span>';
-			endif;
+			$authorName = empty($item->author_nickname) ? $item->author_name : $item->author_nickname;
+			$authorType = $item->author_type < 2 ? '&lt;br /&gt;'.JText::_('TEXT_BRINTELL') : '';
+			$createdBy = '<span class="btn btn-xs btn-link base-icon-user cursor-help hasTooltip" title="'.baseHelper::nameFormat($authorName).$authorType.'"></span>';
 
 			if($hasClient) {
 				$toggleType = '<span id="'.$APPTAG.'-item-'.$item->id.'-type" class="base-icon-'.$iconType.' text-'.$colorType.' hasTooltip" title="'.JText::_('TEXT_TYPE_'.$item->type).'" data-id="'.$item->id.'" data-type="'.$item->type.'"></span>';
 			} else {
 				$toggleType = '<a href="#" id="'.$APPTAG.'-item-'.$item->id.'-type" class="base-icon-'.$iconType.' text-'.$colorType.' hasTooltip" title="'.JText::_('TEXT_TYPE_'.$item->type).'" data-id="'.$item->id.'" data-type="'.$item->type.'" onclick="'.$APPTAG.'_setTypeModal(this)"></a>';
+			}
+
+			$project_state = '';
+			$project_desc = 'FIELD_LABEL_PROJECT';
+			if($item->project_state == 0) {
+				$project_state = ' text-danger';
+				$project_desc = 'TEXT_INACTIVE_PROJECT';
 			}
 
 			// Resultados
@@ -244,8 +231,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						</a>
 					</div>
 					<span class="d-flex justify-content-between align-items-center text-muted pl-2 b-top">
-						<a href="'.$urlViewProject.'" class="small lh-1 hasTooltip" title="'.JText::_('FIELD_LABEL_PROJECT').'">
-							'.baseHelper::nameFormat($item->project).'
+						<a href="'.$urlViewProject.'" class="small lh-1'.$project_state.' hasTooltip" title="'.JText::_($project_desc).'">
+							'.baseHelper::nameFormat($item->project_name).'
 						</a>
 						<span class="btn-group">
 							'.$createdBy.$btnActions.'

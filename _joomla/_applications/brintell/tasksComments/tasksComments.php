@@ -19,6 +19,9 @@ $groups = $user->groups;
 // init general css/js files
 require(JPATH_CORE.DS.'apps/_init.app.php');
 
+// verifica se é um cliente
+$hasClient	= array_intersect($groups, $cfg['groupId']['client']); // se está na lista de administradores permitidos
+
 // DATABASE CONNECT
 $db = JFactory::getDbo();
 

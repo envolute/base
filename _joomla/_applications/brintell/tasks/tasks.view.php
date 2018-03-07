@@ -218,7 +218,7 @@ if($vID != 0) :
 			for($i = 0; $i < count($t); $i++) {
 				$tags .= ' <span class="badge badge-secondary"><small class="base-icon-tag text-primary align-middle"></small> '.$t[$i].'</span>';
 			}
-			$tags = '<span class="d-inline-block pl-3 ml-3 b-left">'.$tags.'</span>';
+			$tags = '<span class="d-inline-block pl-3 ml-2 b-left">'.$tags.'</span>';
 		endif;
 
 		$btnActions = '<div class="float-right">';

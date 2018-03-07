@@ -47,3 +47,36 @@ CREATE TABLE `cms_brintell_issues_files` (
   UNIQUE KEY `filename` (`filename`),
   KEY `id_parent` (`id_parent`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- View Issues
+--
+
+CREATE OR REPLACE VIEW `vw_brintell_issues` AS
+SELECT
+	`T1`.*,
+	`T2`.`name` project_name,
+	`T2`.`state` project_state,
+	`T2`.`client_id`,
+	`T3`.`name` client_name,
+	`T4`.`id` author_id,
+	`T4`.`name` author_name,
+	`T4`.`nickname` author_nickname,
+	`T4`.`type` author_type,
+	`T4`.`app` author_app,
+	`T4`.`app_table` author_table,
+	`T4`.`role` author_role,
+	`T4`.`usergroup` author_group,
+	`T4`.`email` author_email,
+	`T4`.`gender` author_gender,
+	`T4`.`access` author_access,
+	`T4`.`state` author_state,
+	`T5`.`session_id` author_online
+FROM
+	`cms_brintell_issues` T1
+	JOIN `cms_brintell_projects` T2 ON `T2`.`id` = `T1`.`project_id`
+	JOIN `cms_brintell_clients` T3 ON `T3`.`id` = `T2`.`client_id`
+	JOIN `vw_brintell_teams` T4 ON `T4`.`user_id` = `T1`.`created_by`
+	LEFT OUTER JOIN `cms_session` T5 ON `T5`.`userid` = `T1`.`created_by` AND `T5`.`client_id` = 0

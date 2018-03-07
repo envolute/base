@@ -94,10 +94,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		// app
 		$request['project_id']			= $input->get('project_id', 0, 'int');
 		$request['type']				= $input->get('type', 0, 'int');
-		$request['issues']				= $input->get('issues', '', 'string');
 		$issues							= $input->get('issues', array(), 'array');
 		$request['issues']				= implode(',', $issues); // FIND_IN_SET
-	  	$assign_to						= $input->get('assign_to', array(), 'array');
+		$request['cissues']				= $input->get('cissues', '', 'string');
+		$assign_to						= $input->get('assign_to', array(), 'array');
 		$request['assign_to']			= implode(',', $assign_to); // FIND_IN_SET
 		$request['cassign_to']			= $input->get('cassign_to', '', 'string');
 	  	$request['subject']				= $input->get('subject', '', 'string');
@@ -178,7 +178,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'project_id'		=> $item->project_id,
 						'type'				=> $item->type,
 						'issues'			=> explode(',', $item->issues),
+						'cissues'			=> $item->issues,
 						'assign_to'			=> explode(',', $item->assign_to),
+						'cassign_to'		=> $item->assign_to,
 						'subject'			=> $item->subject,
 						'description'		=> $item->description,
 						'priority'			=> $item->priority,
@@ -240,7 +242,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							endif;
 
 							// NOTIFY USERS ATTRIBUTED
-							if(!empty($request['assign_to'])) {
+							if(!empty($request['assign_to']) && $request['assign_to'] != $request['cassign_to']) {
 
 								if(!empty($request['cassign_to'])) {
 									$assign		= explode(',', $request['assign_to']);
@@ -266,10 +268,62 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 										$name = !empty($obj->nickname) ? $obj->nickname : $obj->name;
 										$url = $_ROOT.'/apps/'.$APPNAME.'/view?vID='.$id;
 									    $subject = JText::sprintf('MSG_EMAIL_NOTIFY_SUBJECT', $sitename, $id);
-										$eBody = JText::sprintf('MSG_EMAIL_NOTIFY_BODY', baseHelper::nameFormat($name), $id, $request['subject'], $url);
+										$eBody = JText::sprintf('MSG_EMAIL_NOTIFY_BODY', baseHelper::nameFormat($name), $id, $url, $request['subject'], $url);
 										$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_EMAIL_NOTIFY_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle, $_ROOT);
 										// envia o email
 										baseHelper::sendMail($mailFrom, $obj->email, $subject, $mailHtml);
+									}
+								}
+							}
+
+							// NOTIFY ISSUES AUTHORS
+							// Notifica se:
+							// 1 - Issues forem atribuidas
+							// 2 - Se novas issues forem atribuídas
+							// 3 - Se for cliente e for visível para ele (mais abaixo...)
+							if(!empty($request['issues']) && $request['issues'] != $request['cissues']) {
+
+								if(!empty($request['cissues'])) {
+									$issue		= explode(',', $request['issues']);
+									$cissue		= explode(',', $request['cissues']);
+									$diff		= array_diff($issue, $cissue);
+									$newIssues	= implode(',', $diff);
+								} else {
+									$newIssues	= $request['issues'];
+								}
+								if(!empty($newIssues)) {
+									// Get issues authors
+									$query = '
+										SELECT T1.id, T1.subject, T2.name, T2.nickname, T2.email, T2.type
+										FROM
+											'. $db->quoteName('#__'.$cfg['project'].'_issues') .' T1
+											JOIN '. $db->quoteName('vw_'.$cfg['project'].'_teams') .' T2
+											ON T2.user_id = T1.created_by
+										WHERE '. $db->quoteName('T1.id') .' IN ('.$newIssues.')
+									';
+									$db->setQuery($query);
+									$users = $db->loadObjectList();
+
+									// Email Template
+									$boxStyle	= array('bg' => '#fafafa', 'color' => '#555', 'border' => 'border: 4px solid #eee');
+									$headStyle	= array('bg' => '#fff', 'color' => '#5EAB87', 'border' => '1px solid #eee');
+									$bodyStyle	= array('bg' => '');
+									$mailLogo	= 'logo-news.png';
+
+									foreach ($users as $obj) {
+										// Envia se for um funcionário Brintell ou
+										// Se for um cliente e a visibilidade for 'cliente'
+										if($obj->type < 2 || $request['visibility'] == 2) {
+											// se a senha for gerada pelo sistema, envia a senha. Senão, não envia...
+											$name = !empty($obj->nickname) ? $obj->nickname : $obj->name;
+											$url = $_ROOT.'/apps/'.$APPNAME.'/view?vID='.$id;
+											$urlIssue = $_ROOT.'/apps/issues/view?vID='.$id;
+											$subject = JText::sprintf('MSG_EMAIL_ISSUE_NOTIFY_SUBJECT', $sitename, $id);
+											$eBody = JText::sprintf('MSG_EMAIL_ISSUE_NOTIFY_BODY', baseHelper::nameFormat($name), $id, $url, $request['subject'], $obj->id, $urlIssue, $obj->subject, $url);
+											$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_EMAIL_ISSUE_NOTIFY_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle, $_ROOT);
+											// envia o email
+											baseHelper::sendMail($mailFrom, $obj->email, $subject, $mailHtml);
+										}
 									}
 								}
 							}
@@ -580,10 +634,50 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 								$name = !empty($obj->nickname) ? $obj->nickname : $obj->name;
 								$url = $_ROOT.'/apps/'.$APPNAME.'/view?vID='.$id;
 							    $subject = JText::sprintf('MSG_EMAIL_NOTIFY_SUBJECT', $sitename, $id);
-								$eBody = JText::sprintf('MSG_EMAIL_NOTIFY_BODY', baseHelper::nameFormat($name), $id, $request['subject'], $url);
+								$eBody = JText::sprintf('MSG_EMAIL_NOTIFY_BODY', baseHelper::nameFormat($name), $id, $url, $request['subject'], $url);
 								$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_EMAIL_NOTIFY_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle, $_ROOT);
 								// envia o email
 								baseHelper::sendMail($mailFrom, $obj->email, $subject, $mailHtml);
+							}
+						}
+
+						// NOTIFY ISSUES AUTHORS
+						// Notifica se:
+						// 1 - Issues forem atribuidas
+						// 3 - Se for cliente e for visível para ele (mais abaixo...)
+						if(!empty($request['issues'])) {
+							// Get issues authors
+							$query = '
+								SELECT T1.id, T1.subject, T2.name, T2.nickname, T2.email, T2.type
+								FROM
+									'. $db->quoteName('#__'.$cfg['project'].'_issues') .' T1
+									JOIN '. $db->quoteName('vw_'.$cfg['project'].'_teams') .' T2
+									ON T2.user_id = T1.created_by
+								WHERE '. $db->quoteName('T1.id') .' IN ('.$request['issues'].')
+							';
+							$db->setQuery($query);
+							$users = $db->loadObjectList();
+
+							// Email Template
+							$boxStyle	= array('bg' => '#fafafa', 'color' => '#555', 'border' => 'border: 4px solid #eee');
+							$headStyle	= array('bg' => '#fff', 'color' => '#5EAB87', 'border' => '1px solid #eee');
+							$bodyStyle	= array('bg' => '');
+							$mailLogo	= 'logo-news.png';
+
+							foreach ($users as $obj) {
+								// Envia se for um funcionário Brintell ou
+								// Se for um cliente e a visibilidade for 'cliente'
+								if($obj->type < 2 || $request['visibility'] == 2) {
+									// se a senha for gerada pelo sistema, envia a senha. Senão, não envia...
+									$name = !empty($obj->nickname) ? $obj->nickname : $obj->name;
+									$url = $_ROOT.'/apps/'.$APPNAME.'/view?vID='.$id;
+									$urlIssue = $_ROOT.'/apps/issues/view?vID='.$id;
+									$subject = JText::sprintf('MSG_EMAIL_ISSUE_NOTIFY_SUBJECT', $sitename, $id);
+									$eBody = JText::sprintf('MSG_EMAIL_ISSUE_NOTIFY_BODY', baseHelper::nameFormat($name), $id, $url, $request['subject'], $obj->id, $urlIssue, $obj->subject, $url);
+									$mailHtml	= baseHelper::mailTemplateDefault($eBody, JText::_('MSG_EMAIL_ISSUE_NOTIFY_TITLE'), '', $mailLogo, $boxStyle, $headStyle, $bodyStyle, $_ROOT);
+									// envia o email
+									baseHelper::sendMail($mailFrom, $obj->email, $subject, $mailHtml);
+								}
 							}
 						}
 

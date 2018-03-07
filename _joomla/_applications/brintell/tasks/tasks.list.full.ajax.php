@@ -55,6 +55,19 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	// database connect
 	$db		= JFactory::getDbo();
 
+	// verifica se é um cliente
+	$hasClient	= array_intersect($groups, $cfg['groupId']['client']); // se está na lista de administradores permitidos
+	// Check if is a client
+	$client_id = 0;
+	if($hasClient) {
+		// CLIENTS STAFF
+		$query = 'SELECT client_id FROM '. $db->quoteName('#__'.$cfg['project'].'_clients_staff') .' WHERE '. $db->quoteName('user_id') .' = '.$user->id.' AND '. $db->quoteName('access') .' = 1 AND '. $db->quoteName('state') .' = 1 ORDER BY name';
+		$db->setQuery($query);
+		$client_id = $db->loadResult();
+	}
+	// filtro de projetos e usuários do cliente
+	$cProj = $client_id ? 'client_id = '.$client_id.' AND ' : '';
+
 	// LOAD FILTER
 	$fQuery = $PATH_APP_FILE.'.filter.query.php';
 	if($aFLT && file_exists($fQuery)) require($fQuery);
@@ -62,31 +75,24 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	// GET DATA
 	$noReg	= true;
 	$query	= '
-		SELECT
-			T1.*,
-			'. $db->quoteName('T2.name') .' project
+		SELECT T1.*
 	';
 	if(!empty($rID) && $rID !== 0) :
 		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
 			$query .= ' FROM '.
-				$db->quoteName($cfg['mainTable']) .' T1
-				LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_projects') .' T2
-				ON '.$db->quoteName('T2.id') .' = T1.project_id AND T2.state = 1
-				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T3
-				ON '.$db->quoteName('T3.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
-			WHERE '.$where.' AND '. $db->quoteName('T3.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID.$orderList
+				$db->quoteName('vw_'.$cfg['project'].'_'.$APPNAME) .' T1
+				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T2
+				ON '.$db->quoteName('T2.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
+			WHERE '.$where.' AND '. $db->quoteName('T2.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID.$orderList
 			;
 		else :
-			$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
-				LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_projects') .' T2
-				ON '.$db->quoteName('T2.id') .' = T1.project_id AND T2.state = 1
+			$query .= ' FROM '. $db->quoteName('vw_'.$cfg['project'].'_'.$APPNAME) .' T1
 				WHERE '.$where.' AND '. $db->quoteName($rNID) .' = '. $rID.$orderList
 			;
 		endif;
 	else :
-		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
-			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_projects') .' T2
-			ON '.$db->quoteName('T2.id') .' = T1.project_id AND T2.state = 1
+		$query .= '
+			FROM '. $db->quoteName('vw_'.$cfg['project'].'_'.$APPNAME) .' T1
 			WHERE '.$where.$orderList
 		;
 		if($oCHL) $noReg = false;
@@ -104,7 +110,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	$html = '';
 	if($num_rows) : // verifica se existe
+
+		// Filter Information
 		if(!$active) echo '<hr class="hr-tag b-danger" /><span class="badge badge-danger base-icon-box"> '.JText::_('TEXT_CLOSED').'</span>';
+		else if($fExec) echo '<hr class="hr-tag b-danger" /><span class="badge badge-danger base-icon-arrows-cw"> '.JText::_('TEXT_WORKING').'</span>';
+
 		$html .= '<div class="row py-2 mb-4">';
 		$status		= 9;
 		$counter	= 0;
@@ -161,9 +171,23 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$deadline = '<br />'.JText::_('FIELD_LABEL_DEADLINE').'<br />'.$dlDate.$dlTime;
 			}
 
-			$bug = $item->type ? '<small class="base-icon-bug text-danger cursor-help hasTooltip" title="BUG"></small> ' : '';
+			// CHECK ACTIVITY
+			$timeActive = '';
+			if($item->working) {
+				$query = '
+					SELECT GROUP_CONCAT(IF(nickname = "", name, nickname)) name
+					FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .'
+					WHERE '. $db->quoteName('user_id') .' IN ('. $item->working .')
+					ORDER BY name
+				';
+				$db->setQuery($query);
+				$working = $db->loadResult();
+				$timeActive = !empty($working) ? '<small class="base-icon-arrows-cw text-danger cursor-help hasTooltip" title="'.JText::sprintf('TEXT_RUNNING', str_replace(',', '<br />', baseHelper::nameFormat($working))).'"></small> ' : '';
+			}
 
-			$priority = $bug;
+			$bug = $item->type ? '<small class="base-icon-bug text-danger cursor-help hasTooltip" title="Bug"></small> ' : '';
+
+			$priority = $timeActive.$bug;
 			if($item->priority == 0 && !empty($deadline)) $priority .= ' <small class="base-icon-attention text-primary cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_0').$deadline.'"></small>';
 			else if($item->priority == 1) $priority .= ' <small class="base-icon-attention text-live cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_1').$deadline.'"></small>';
 			else if($item->priority == 2) $priority .= ' <small class="base-icon-attention text-danger cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_2').$deadline.'"></small>';
@@ -268,7 +292,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						<span class="small lh-1">
 							'.$visibility.'
 							<a href="'.$urlViewProject.'" class="ml-1 hasTooltip" title="'.JText::_('FIELD_LABEL_PROJECT').'">
-								'.baseHelper::nameFormat($item->project).'
+								'.baseHelper::nameFormat($item->project_name).'
 							</a>
 						</span>
 						<span class="btn-group">

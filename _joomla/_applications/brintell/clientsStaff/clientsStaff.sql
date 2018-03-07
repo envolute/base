@@ -56,6 +56,6 @@ CREATE TABLE `cms_brintell_clients_staff_files` (
 --
 
 CREATE OR REPLACE VIEW `vw_brintell_teams` AS
-(SELECT `id` staff_id, '0' clientsStaff_id, `type`, 'staff' app, 'staff' app_table, `role_id`, '1' client_id, `user_id`, `usergroup`, `name`, `nickname`, `email`, `gender`, `occupation`, `access`, `state` FROM `cms_brintell_staff` WHERE `state` = 1)
+(SELECT `T1`.`id`, `T1`.`id` staff_id, '0' clientsStaff_id, `type`, 'staff' app, 'staff' app_table, '1' client_id, `user_id`, `usergroup`, `T1`.`name`, `nickname`, `email`, `gender`, IF(`role_id` = 0, `occupation`, `T2`.`name`) role, `access`, `T1`.`state` FROM `cms_brintell_staff` T1 LEFT JOIN `cms_brintell_staff_roles` T2 ON `T2`.`id` = `role_id` WHERE `T1`.`state` = 1)
 UNION
-(SELECT '0', `id`, '2', 'clientsStaff' app, 'clients_staff' app_table, '0', `client_id`, `user_id`, `usergroup`, `name`, '', `email`, `gender`, `role`, `access`, `state` FROM `cms_brintell_clients_staff` WHERE `state` = 1)
+(SELECT `id`, '0', `id`, '2', 'clientsStaff' app, 'clients_staff' app_table, `client_id`, `user_id`, `usergroup`, `name`, '', `email`, `gender`, `role`, `access`, `state` FROM `cms_brintell_clients_staff` WHERE `state` = 1)

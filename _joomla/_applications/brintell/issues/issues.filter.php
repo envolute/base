@@ -79,7 +79,8 @@ require($PATH_APP_FILE.'.filter.query.php');
 	$db->setQuery($query);
 	$created = $db->loadObjectList();
 	foreach ($created as $obj) {
-		$flt_creator .= '<option value="'.$obj->user_id.'"'.($obj->user_id == $fCreated ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
+		$me = ($obj->user_id == $user->id) ? ' ('.JText::_('TEXT_TO_ME').')' : '';
+		$flt_creator .= '<option value="'.$obj->user_id.'"'.($obj->user_id == $fCreated ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).$me.'</option>';
 	}
 
 	// TAGS -> select

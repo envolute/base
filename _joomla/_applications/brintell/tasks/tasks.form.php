@@ -25,11 +25,7 @@ $staffList	= '';
 foreach ($staff as $obj) {
 	$name = !empty($obj->nickname) ? $obj->nickname : $obj->name;
 	$staff = ($obj->type == 1) ? '*' : '';
-	if($obj->user_id == $user->id) {
-		$me = ' ('.JText::_('TEXT_TO_ME').')';
-	} else {
-		$me = '';
-	}
+	$me = ($obj->user_id == $user->id) ? ' ('.JText::_('TEXT_TO_ME').')' : '';
 	$staffList .= '<option value="'.$obj->user_id.'">'.$staff.baseHelper::nameFormat($name).$me.'</option>';
 }
 
@@ -139,13 +135,14 @@ foreach ($staff as $obj) {
 			<div class="col-lg-4 b-left b-left-dashed">
 				<div class="form-group">
 					<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_ISSUES_IDS_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_ISSUES_IDS'); ?></label>
-					<select name="issues" id="<?php echo $APPTAG?>-issues" class="form-control" multiple>
+					<select name="issues[]" id="<?php echo $APPTAG?>-issues" class="form-control" multiple>
 						<?php
 							foreach ($issues as $obj) {
-								echo '<option value="'.$obj->id.'">#'.$obj->id.' - '.baseHelper::nameFormat($obj->subject).'</option>';
+								echo '<option value="'.$obj->id.'">'.$obj->id.' - '.baseHelper::nameFormat($obj->subject).'</option>';
 							}
 						?>
 					</select>
+					<input type="hidden" name="cissues" id="<?php echo $APPTAG?>-cissues" />
 				</div>
 				<div class="form-group">
 					<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_DEADLINE_DESC'); ?>">
@@ -172,7 +169,7 @@ foreach ($staff as $obj) {
 						</span>
 					</div>
 				</div>
-				<div class="form-group">
+				<div class="form-group field-required">
 					<label class="label-sm"><?php echo JText::_('FIELD_LABEL_VISIBILITY'); ?></label>
 					<span class="btn-group btn-group-justified" data-toggle="buttons">
 						<label class="btn btn-default btn-active-danger base-icon-lock hasTooltip" title="<?php echo JText::_('TEXT_VISIBILITY_0_DESC'); ?>">

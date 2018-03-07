@@ -53,13 +53,8 @@ if($vID != 0) :
 
 	// GET DATA
 	$query = '
-		SELECT
-			T1.*,
-			'. $db->quoteName('T2.name') .' project
-		FROM
-			'.$db->quoteName($cfg['mainTable']).' T1
-			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_projects') .' T2
-			ON '.$db->quoteName('T2.id') .' = T1.project_id AND T2.state = 1
+		SELECT T1.*
+		FROM '.$db->quoteName('vw_'.$cfg['project'].'_'.$APPNAME).' T1
 		WHERE '.$db->quoteName('T1.id') .' = '. $vID
 	;
 	try {
@@ -113,13 +108,13 @@ if($vID != 0) :
 
 		switch ($view->priority) {
 			case 1:
-				$priority = ' <span class="badge badge-primary base-icon-attention"> '.JText::_('TEXT_PRIORITY_DESC_1').'</span>';
+				$priority = ' <span class="badge badge-warning base-icon-attention"> '.JText::_('TEXT_PRIORITY_DESC_1').'</span>';
 				break;
 			case 2:
 				$priority = ' <span class="badge badge-danger base-icon-attention"> '.JText::_('TEXT_PRIORITY_DESC_2').'</span>';
 				break;
 			default :
-				$priority = ' <span class="badge badge-info base-icon-lightbulb"> '.JText::_('TEXT_PRIORITY_DESC_0').'</span>';
+				$priority = ' <span class="badge badge-primary base-icon-attention"> '.JText::_('TEXT_PRIORITY_DESC_0').'</span>';
 		}
 
 		$desc = '';
@@ -133,45 +128,30 @@ if($vID != 0) :
 
 		// CREATED BY
 		$createdBy = '';
-		if(!empty($view->created_by)) :
-			$query	= '
-				SELECT
-					T1.*,
-					'. $db->quoteName('T2.session_id') .' online
-				FROM '. $db->quoteName('vw_'.$cfg['project'].'_teams') .' T1
-					LEFT JOIN '. $db->quoteName('#__session') .' T2
-					ON '.$db->quoteName('T2.userid') .' = T1.user_id AND T2.client_id = 0
-				WHERE T1.user_id = '.$view->created_by
-			;
-			$db->setQuery($query);
-			$obj = $db->loadObject();
-			if(!empty($obj->name)) : // verifica se existe
-				if($obj->online) :
-					$lType = JText::_('TEXT_USER_TYPE_1');
-					$iType = '<small class="base-icon-circle text-success pos-absolute pos-right-0 pos-bottom-0"></small>';
-				else :
-					$lType = JText::_('TEXT_USER_TYPE_0');
-					$iType = '';
-				endif;
-				$name = baseHelper::nameFormat((!empty($obj->nickname) ? $obj->nickname : $obj->name));
-				$role = baseHelper::nameFormat($obj->role);
-				if(!empty($role)) $role = '<br />'.$role;
-				$info = $name.$role.'<br />'.$lType;
 
-				// Imagem Principal -> Primeira imagem (index = 0)
-				$member_id = $obj->staff_id ? $obj->staff_id : $obj->clientsStaff_id;
-				$img = uploader::getFile('#__brintell_'.$obj->app_table.'_files', '', $member_id, 0, JPATH_BASE.DS.'images/apps/'.$obj->app.'/');
-				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$obj->app.'/'.$img['filename'], 24, 24);
-				else $imgPath = $_ROOT.'images/apps/icons/user_'.$obj->gender.'.png';
-				$img = '<img src="'.$imgPath.'" class="img-fluid rounded mb-2" style="width:24px; height:24px;" />';
-				$urlProfile = 'apps/'.($obj->type == 2 ? 'clients/staff' : '/staff').'/view?vID='.$obj->user_id;
-				$createdBy .= '
-					<a href="'.$urlProfile.'" class="d-inline-block pos-relative hasTooltip" title="'.$info.'">
-						'.$img.$iType.'
-					</a>
-				';
-			endif;
+		if($view->author_online) :
+			$lType = JText::_('TEXT_USER_STATUS_1');
+			$iType = '<small class="base-icon-circle text-success pos-absolute pos-right-0 pos-bottom-0"></small>';
+		else :
+			$lType = JText::_('TEXT_USER_STATUS_0');
+			$iType = '';
 		endif;
+		$authorName = baseHelper::nameFormat((!empty($view->author_nickname) ? $view->author_nickname : $view->author_name));
+		$role = baseHelper::nameFormat($author->role);
+		if(!empty($role)) $role = '<br />'.$role;
+		$info = $authorName.$role.'<br />'.$lType;
+
+		// Imagem Principal -> Primeira imagem (index = 0)
+		$img = uploader::getFile('#__brintell_'.$view->author_table.'_files', '', $view->author_id, 0, JPATH_BASE.DS.'images/apps/'.$view->author_app.'/');
+		if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$view->author_app.'/'.$img['filename'], 24, 24);
+		else $imgPath = $_ROOT.'images/apps/icons/user_'.$view->author_gender.'.png';
+		$img = '<img src="'.$imgPath.'" class="img-fluid rounded mb-2" style="width:24px; height:24px;" />';
+		$urlProfile = 'apps/'.($view->author_type == 2 ? 'clients/staff' : '/staff').'/view?vID='.$view->created_by;
+		$createdBy .= '
+			<a href="'.$urlProfile.'" class="d-inline-block pos-relative hasTooltip" title="'.$info.'">
+				'.$img.$iType.'
+			</a>
+		';
 
 		$deadline = '';
 		if($view->deadline != '0000-00-00 00:00:00') {
@@ -216,6 +196,13 @@ if($vID != 0) :
 			$toggleType = '<a href="#" id="'.$MAINTAG.'-item-'.$view->id.'-type" class="base-icon-'.$iconType.' text-'.$itemType.' hasTooltip" title="'.JText::_('TEXT_TYPE_'.$view->type).'" data-id="'.$view->id.'" data-type="'.$view->type.'" onclick="'.$MAINTAG.'_setTypeModal(this)"></a>';
 		}
 
+		$project_state = '';
+		$project_desc = 'FIELD_LABEL_PROJECT';
+		if($view->project_state == 0) {
+			$project_state = ' text-danger';
+			$project_desc = 'TEXT_INACTIVE_PROJECT';
+		}
+
 		// Hide loader
 		$doc = JFactory::getDocument();
 		$doc->addScriptDeclaration('jQuery(window).on("load", function(){ jQuery("#'.$MAINTAG.'-form-loader").hide() });');
@@ -242,7 +229,7 @@ if($vID != 0) :
 					</h2>
 					<div class="clearfix">
 						<div class="font-condensed text-sm text-muted mb-2">
-							'.JText::_('TEXT_BY').' <a href="'.$urlProfile.'">'.$name.'</a> - <a href="'.$urlViewProject.'" target="_blank">'.baseHelper::nameFormat($view->project).'</a> - '.JText::_('TEXT_SINCE').' '.baseHelper::dateFormat($view->created_date).
+							'.JText::_('TEXT_BY').' <a href="'.$urlProfile.'">'.$authorName.'</a> - <a href="'.$urlViewProject.'" class="'.$project_state.' cursor-help hasTooltip" title="'.JText::_($project_desc).'" target="_blank">'.baseHelper::nameFormat($view->project_name).'</a> - '.JText::_('TEXT_SINCE').' '.baseHelper::dateFormat($view->created_date).
 							' <span class="text-live">'.$deadline.'</span>
 						</div>
 						'.$btnActions.$createdBy.$tags.'
@@ -274,6 +261,28 @@ if($vID != 0) :
 					</div>
 					<div class="col-md-4">
 		';
+						// TASKS RELACIONADAS
+						$query = 'SELECT id, subject, created_date FROM '. $db->quoteName('#__'.$cfg['project'].'_tasks') .' WHERE FIND_IN_SET ('.$view->id.', issues) ORDER BY created_date';
+						$db->setQuery($query);
+						$db->execute();
+						$hasTasks = $db->getNumRows();
+						$tasks = $db->loadObjectList();
+						if($hasTasks) {
+							echo '
+								<h4 class="font-condensed text-info page-header mb-0">'.JText::_('TEXT_TASKS_LIST').'</h4>
+								<ul class="set-list bordered pb-3s mb-3 b-bottom">
+							';
+							foreach ($tasks as $t) {
+								echo '
+									<li>
+										<div class="small text-muted">'.baseHelper::dateFormat($t->created_date).'</div>
+										<a href="'.JURI::root().'apps/tasks/view?vID='.$t->id.'" target="_blank">#'.$t->id.' - '.$t->subject.'</a>
+									</li>
+								';
+							}
+							echo '</ul>';
+						}
+
 
 						// APP ACTIONS
 						// Carrega o app diretamente ná página,

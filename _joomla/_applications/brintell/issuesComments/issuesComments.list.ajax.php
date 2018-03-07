@@ -52,6 +52,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	// verifica o acesso
 	require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxAccess.php');
 
+	// verifica se é um cliente
+	$hasClient	= array_intersect($groups, $cfg['groupId']['client']); // se está na lista de administradores permitidos
+
 	// database connect
 	$db		= JFactory::getDbo();
 
@@ -65,8 +68,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		SELECT
 			T1.*,
 			'. $db->quoteName('T2.type') .',
-			'. $db->quoteName('T2.staff_id') .',
-			'. $db->quoteName('T2.clientsStaff_id') .',
+			'. $db->quoteName('T2.id') .' author_id,
+			'. $db->quoteName('T2.type') .' author_type,
 			'. $db->quoteName('T2.app') .',
 			'. $db->quoteName('T2.app_table') .',
 			'. $db->quoteName('T2.user_id') .',
@@ -129,7 +132,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 			// define permissões de execução
 			$canEdit	= ($cfg['canEdit'] || $item->created_by == $user->id);
-			$canDelete	= ($cfg['canDelete'] || $item->created_by == $user->id);
+			$canDelete	= (($cfg['canDelete'] || $item->created_by == $user->id) && !$hasClient);
 
 			if($cfg['hasUpload']) :
 				JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
@@ -146,21 +149,21 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				}
 
 				// Imagem do usuário
-				$member_id = $item->staff_id ? $item->staff_id : $item->clientsStaff_id;
-				$img = uploader::getFile('#__brintell_'.$item->app_table.'_files', '', $member_id, 0, JPATH_BASE.DS.'images/apps/'.$item->app.'/');
+				$img = uploader::getFile('#__brintell_'.$item->app_table.'_files', '', $item->id, 0, JPATH_BASE.DS.'images/apps/'.$item->app.'/');
 				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$item->app.'/'.$img['filename'], 41, 41);
 				else $imgPath = $_ROOT.'images/apps/icons/user_'.$item->gender.'.png';
 				$img = '<img src="'.$imgPath.'" class="img-fluid rounded mb-2" style="width:41px; height:41px;" />';
 			endif;
+			$urlProfile = 'apps/'.($item->author_type == 2 ? 'clients/staff' : '/staff').'/view?vID='.$view->author_id;
 
 			$lStatus = '';
 			$iStatus = '';
 			if($item->online) :
 				$lStatus = JText::_('TEXT_USER_STATUS_1');
-				$iStatus = ' <small class="base-icon-circle text-success cursor-help hasTooltip" title="'.$lStatus.'" style="bottom:-5px;"></small>';
+				$iStatus = ' <small class="pos-absolute pos-right-0 pos-bottom-0 base-icon-circle text-success cursor-help hasTooltip" title="'.$lStatus.'"></small>';
 			endif;
 			$name = baseHelper::nameFormat((!empty($item->nickname) ? $item->nickname : $item->name));
-			if($item->type == 2) $name = ' <span class="badge badge-warning">'.JText::_('TEXT_CLIENT').'</span>';
+			if($item->type == 2) $name .= ' <span class="badge badge-warning">'.JText::_('TEXT_CLIENT').'</span>';
 
 			$attachs = !empty($listFiles) ? '<div class="font-condensed text-sm pt-1">'.$listFiles.'</div>' : '';
 
@@ -171,11 +174,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$html .= '
 				<li class="d-flex">
 					<div class="mr-3" style="flex:0 0 42px;">
-						<a href="'.$urlProfile.'">'.$img.'</a>
+						<a href="'.$urlProfile.'" class="d-block pos-relative">'.$img.$iStatus.'</a>
 						<div class="btn-group btn-group-justified">'.$btnEdit.$btnDelete.'</div>
 					</div>
 					<div style="flex-grow:1;" class="font-condensed text-sm mb-2 lh-1-3">
-						<div class="page-header text-muted b-bottom-dashed pb-1 clearfix">'.$name.$iStatus.' <span class="float-right">'.baseHelper::dateFormat($item->created_date, 'd.m.y H:i').'</span></div>
+						<div class="page-header text-muted b-bottom-dashed pb-1 clearfix">'.$name.' <span class="float-right">'.baseHelper::dateFormat($item->created_date, 'd.m.y H:i').'</span></div>
 						<div>'.$item->comment.'</div>
 						'.$attachs.'
 					</div>

@@ -69,26 +69,19 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	if(!empty($rID) && $rID !== 0) :
 		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
 			$query .= ' FROM '.
-				$db->quoteName($cfg['mainTable']) .' T1
-				LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_projects') .' T2
-				ON '.$db->quoteName('T2.id') .' = T1.project_id AND T2.state = 1
-				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T3
-				ON '.$db->quoteName('T3.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
+				$db->quoteName('vw_'.$cfg['project'].'_'.$APPNAME) .' T1
+				JOIN '. $db->quoteName($_SESSION[$RTAG.'RelTable']) .' T2
+				ON '.$db->quoteName('T2.'.$_SESSION[$RTAG.'AppNameId']) .' = T1.id
 			WHERE '.
-				$db->quoteName('T3.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
+				$db->quoteName('T2.'.$_SESSION[$RTAG.'RelNameId']) .' = '. $rID
 			;
 		else :
-			$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
-				LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_projects') .' T2
-				ON '.$db->quoteName('T2.id') .' = T1.project_id AND T2.state = 1
+			$query .= ' FROM '. $db->quoteName('vw_'.$cfg['project'].'_'.$APPNAME) .' T1
 				WHERE '. $db->quoteName($rNID) .' = '. $rID
 			;
 		endif;
 	else :
-		$query .= ' FROM '. $db->quoteName($cfg['mainTable']) .' T1
-			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_projects') .' T2
-			ON '.$db->quoteName('T2.id') .' = T1.project_id AND T2.state = 1
-		';
+		$query .= ' FROM '. $db->quoteName('vw_'.$cfg['project'].'_'.$APPNAME) .' T1';
 		if($oCHL) :
 			$query .= ' WHERE 1=0';
 			$noReg = false;

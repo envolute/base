@@ -10,21 +10,13 @@ $where = '';
 	$active	= $app->input->get('active', 1, 'int');
 	$where .= $db->quoteName('T1.state').' = '.$active;
 	// CLIENT
-	// Check if is a client
-	$client_id = 0;
-	if($hasViewer) {
-		// CLIENTS STAFF
-		$query = 'SELECT client_id FROM '. $db->quoteName('#__'.$cfg['project'].'_clients_staff') .' WHERE '. $db->quoteName('user_id') .' = '.$user->id.' AND '. $db->quoteName('access') .' = 1 AND '. $db->quoteName('state') .' = 1 ORDER BY name';
-		$db->setQuery($query);
-		$client_id = $db->loadResult();
-	}
 	// Se for um cliente, visualiza apenas das tasks do cliente
 	if($client_id) {
-		$where .= ' AND '.$db->quoteName('T2.client_id').' = '.$client_id;
+		$where .= ' AND '.$db->quoteName('T1.client_id').' = '.$client_id;
 		$cProj .= $db->quoteName('client_id').' = '.$client_id.' AND '; // filtro na listagem de projetos
 	} else {
 		$fClient = $app->input->get('fClient', 0, 'int');
-		if($fClient != 0) $where .= ' AND '.$db->quoteName('T2.client_id').' = '.$fClient;
+		if($fClient != 0) $where .= ' AND '.$db->quoteName('T1.client_id').' = '.$fClient;
 		$cProj = '';
 	}
 	// PROJECT
@@ -33,35 +25,25 @@ $where = '';
 	if($fProj != 0) $where .= ' AND '.$db->quoteName('T1.project_id').' = '.$fProj;
 	// ASSIGN TO
 	$assigned = '';
-	// Mostra apenas as tasks do próprio usuário se não estiver como 'admin'
-	// Obs: acessando um projeto, o dev pode ver todas as tasks...
-	// O cliente visualiza todos os seus...
-	if(!$hasAdmin && $pID == 0 && !$client_id) {
-
-		$fAssign = $user->id;
-		$assigned = ' AND ('.$db->quoteName('T1.created_by').' = '.$user->id.' OR FIND_IN_SET ('.$fAssign.', '.$db->quoteName('T1.assign_to').'))';
-
-	// Visão geral das tasks pelo Admin (todas as tasks)
-	// Visão geral das tasks 'em um projeto' pelo Developer (apenas as dele)
-	// Ou visão de projeto por todos (todas do projeto)
-	} else {
-
-		// Set visibility
-		// OR (visibility = project/client) OR (created_by = current user)
-		$assigned .= ' AND ('.$db->quoteName('T1.visibility').' > 0 OR '.$db->quoteName('T1.created_by').' = '.$user->id.')';
-		// OR assigned to me
-		$fAssign = $app->input->get('fAssign', array(), 'array');
-		for($i = 0; $i < count($fAssign); $i++) {
-			$assigned .= ($i == 0) ? ' AND (' : ' OR ';
-			$assigned .= 'FIND_IN_SET ('.$fAssign[$i].', T1.assign_to)';
-			$assigned .= ($i == (count($fAssign) - 1)) ? ')' : '';
-		}
-
+	// Se não for admin, mostra apenas as dele
+	$viewer = (!$hasAdmin && $pID == 0) ? array($user->id) : array();
+	// Set visibility
+	// OR (visibility = project/client) OR (created_by = current user)
+	$assigned .= ' AND ('.$db->quoteName('T1.visibility').' > 0 OR '.$db->quoteName('T1.created_by').' = '.$user->id.')';
+	// OR assigned to me
+	$fAssign = $app->input->get('fAssign', $viewer, 'array');
+	for($i = 0; $i < count($fAssign); $i++) {
+		$assigned .= ($i == 0) ? ' AND (' : ' OR ';
+		$assigned .= 'FIND_IN_SET ('.$fAssign[$i].', T1.assign_to)';
+		$assigned .= ($i == (count($fAssign) - 1)) ? ')' : '';
 	}
 	$where .= $assigned;
 	// TYPE
 	$fType	= $app->input->get('fType', 2, 'int');
 	if($fType != 2) $where .= ' AND '.$db->quoteName('T1.type').' = '.$fType;
+	// WORKING
+	$fExec	= $app->input->get('fExec', 0, 'int');
+	if($fExec == 1) $where .= ' AND '.$db->quoteName('T1.working').' IS NOT NULL';
 	// PRIORITY
 	$fPrior	= $app->input->get('fPrior', 9, 'int');
 	if($fPrior != 9) $where .= ' AND '.$db->quoteName('T1.priority').' = '.$fPrior;

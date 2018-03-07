@@ -7,15 +7,9 @@ defined('_JEXEC') or die;
 	require(JPATH_CORE.DS.'apps/layout/list/pagination.vars.php');
 
 	$query = '
-		SELECT SQL_CALC_FOUND_ROWS
-			T1.*,
-			'. $db->quoteName('T2.name') .' project
-		FROM
-			'. $db->quoteName($cfg['mainTable']) .' T1
-			LEFT OUTER JOIN '. $db->quoteName('#__'.$cfg['project'].'_projects') .' T2
-			ON T2.id = T1.project_id AND T2.state = 1
-		WHERE
-			'.$where.$orderList;
+		SELECT SQL_CALC_FOUND_ROWS T1.*
+		FROM '. $db->quoteName('vw_'.$cfg['project'].'_'.$APPNAME) .' T1
+		WHERE '.$where.$orderList;
 	;
 	try {
 
@@ -99,7 +93,7 @@ if($num_rows) : // verifica se existe
 					'.$adminView['list']['check'].'
 					<a href="#" class="d-block text-lg lh-1-2 py-3 px-3 mr-4">'.baseHelper::nameFormat($item->subject).'</a>
 					<span class="d-block text-muted py-1 px-1 b-top clearfix">
-						'.baseHelper::nameFormat($item->project).'
+						'.baseHelper::nameFormat($item->project_name).'
 						'.$adminView['list']['actions'].'
 					</span>
 				</div>
