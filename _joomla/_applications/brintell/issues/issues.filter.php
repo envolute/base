@@ -92,6 +92,21 @@ require($PATH_APP_FILE.'.filter.query.php');
 		$flt_tag .= '<option value="'.$obj->name.'"'.($obj->id == $fTags ? ' selected = "selected"' : '').'>'.$obj->name.'</option>';
 	}
 
+	// LINK PARA VISUALIZAR ATIVOS/INATIVOS
+	$linkThis = JURI::root().'apps/'.$APPNAME;
+	if(${$APPTAG.'Archive'}) {
+		$linkState = '
+			<a href="'.$linkThis.'" class="btn btn-sm btn-success btn-block base-icon-folder-open">
+				'.JText::_('TEXT_OPENED').' <span class="base-icon-right-big float-right"></span>
+			</a>
+		';
+	} else {
+		$linkState = '
+			<a href="'.$linkThis.'/archive" class="btn btn-sm btn-danger btn-block base-icon-folder">
+				'.JText::_('TEXT_CLOSED').' <span class="base-icon-right-big float-right"></span>
+			</a>
+		';
+	}
 
 // VIEW
 $htmlFilter = '
@@ -165,22 +180,17 @@ $htmlFilter = '
 						<div class="col-sm-5 col-md-4 col-lg-3 col-xl-12">
 							<div class="form-group">
 								<label class="label-xs text-muted">&#160;</label>
-								<span class="btn-group btn-group-justified" data-toggle="buttons">
-									<label class="btn btn-sm btn-warning btn-active-danger'.($active == 0 ? ' active' : '').' base-icon-box">
-										<input type="checkbox" name="active" id="active" class="set-filter" value="0"'.($active == 0 ? ' checked' : '').' />
-										'.JText::_('TEXT_CLOSED').'
-									</label>
-								</span>
+								'.$linkState.'
 							</div>
 						</div>
 						<div class="col-sm-5 col-md-4 col-lg-3 col-xl-12">
 							<div class="form-group">
 								<label class="label-xs text-muted">&#160;</label>
 								<div class="d-flex justify-content-between">
-									<button '.$btnAction.' id="'.$APPTAG.'-submit-filter" class="btn btn-sm btn-primary base-icon-search btn-icon">
+									<button '.$btnAction.' id="'.$APPTAG.'-submit-filter" class="btn btn-sm btn-primary base-icon-search btn-icon flex-grow-1 mr-1">
 										'.JText::_('TEXT_SEARCH').'
 									</button>
-									<a href="'.JURI::current().'" class="btn btn-sm btn-danger base-icon-cancel-circled hasTooltip" title="'.JText::_('TEXT_RESET').'"></a>
+									<a href="'.JURI::current().'" class="btn btn-sm btn-danger base-icon-cancel-circled px-3 hasTooltip" title="'.JText::_('TEXT_RESET').'"></a>
 								</div>
 							</div>
 						</div>

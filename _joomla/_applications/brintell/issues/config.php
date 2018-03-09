@@ -62,8 +62,10 @@ endif;
 	$cfg['groupId']['editor']	= isset($_SESSION[$APPTAG.'EditorGroups']) ? $_SESSION[$APPTAG.'EditorGroups'] : $editorDef;
 	$cfg['groupId']['admin']	= isset($_SESSION[$APPTAG.'AdminGroups']) ? $_SESSION[$APPTAG.'AdminGroups'] : $adminDef;
 	// ----------------------------------------------------
-	$cfg['groupId']['client'][]	= 15;	// Client
-	$cfg['groupId']['client'][]	= 16;	// Client Manager
+	$cfg['groupId']['client'][]		= 15;	// Client
+	$cfg['groupId']['client'][]		= 16;	// Client Manager
+	$cfg['groupId']['appAdmin'][]	= 11;	// Manager
+	$cfg['groupId']['appAdmin'][]	= 12;	// Analist
 
 // crud's name
 	$cfg['APPNAME']				= $APPNAME;
@@ -106,7 +108,7 @@ endif;
 		$cfg['listModal']			= false;
 		if(isset(${$APPTAG.'ListModal'})) $cfg['listModal'] = ${$APPTAG.'ListModal'} ? true : false;
 		// list type
-		$cfg['listFull']			= false;
+		$cfg['listFull']			= true;
 		if(isset(${$APPTAG.'ListFull'})) $cfg['listFull'] = ${$APPTAG.'ListFull'} ? true : false;
 		// list Ajax File
 		$cfg['listAjax']			= 'list.ajax.php';

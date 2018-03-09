@@ -9,7 +9,7 @@ window.<?php echo $APPTAG?>_setState = function(itemID, state, recursive, iconOn
 	if(state === 1) msg = '<?php echo JText::_('MSG_LIST1CONFIRM'); ?>';
 	if(isSet(state)) st = '&st='+state;
 	var icon = (isSet(iconOn) && !isEmpty(iconOn)) ? iconOn : 'base-icon-ok';
-	var icoff = (isSet(iconOn) && !isEmpty(iconOn)) ? iconOn : 'base-icon-cancel';
+	var icoff = (isSet(iconOff) && !isEmpty(iconOff)) ? iconOff : 'base-icon-cancel';
 	var colon = (isSet(colorOn) && !isEmpty(colorOn)) ? colorOn : 'text-success';
 	var coloff = (isSet(colorOff) && !isEmpty(colorOff)) ? colorOff : 'text-danger';
 

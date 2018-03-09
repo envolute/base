@@ -109,7 +109,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	$html = '';
 	if($num_rows) : // verifica se existe
-		if(!$active) echo '<hr class="hr-tag b-danger" /><span class="badge badge-danger base-icon-box"> '.JText::_('TEXT_CLOSED').'</span>';
 		$html .= '<div class="row py-2 mb-4">';
 		$type		= 9;
 		$counter	= 0;
@@ -139,7 +138,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				if($counter > 0) $html .= '</div>';
 				$html .= '
 					<div id="'.$APPTAG.'-item-type-'.$item->type.'" class="'.$APPTAG.'-col col-sm-6 col-lg-3 pb-3">
-						<h6 class="text-center bg-'.$colorType.' rounded py-2 set-shadow-right">
+						<h6 class="text-center bg-'.$colorType.' rounded py-2 set-shadow-right cursor-help hasTooltip" title="'.JText::_('TEXT_TYPE_'.$item->type.'_DESC').'">
 							<span class="base-icon-'.$iconType.'"></span> '.JText::_('TEXT_TYPE_'.$item->type).'
 						</h6>
 				';
@@ -155,9 +154,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			}
 
 			$priority = '';
-			if($item->priority == 0) $priority = ' <small class="base-icon-lightbulb text-info cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_0').$deadline.'"></small>';
-			else if($item->priority == 1 && !empty($deadline)) $priority = ' <small class="base-icon-attention text-live cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_1').$deadline.'"></small>';
-			else if($item->priority == 2) $priority = ' <small class="base-icon-attention text-danger cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_2').$deadline.'"></small>';
+			if($item->priority == 0 && !empty($deadline)) $priority .= ' <small class="base-icon-attention text-primary cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_0').$deadline.'"></small>';
+			else if($item->priority == 1) $priority .= ' <small class="base-icon-attention text-live cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_1').$deadline.'"></small>';
+			else if($item->priority == 2) $priority .= ' <small class="base-icon-attention text-danger cursor-help hasTooltip" title="'.JText::_('TEXT_PRIORITY_DESC_2').$deadline.'"></small>';
 
 			$regInfo	= '';
 			$regInfo	.= JText::_('TEXT_CREATED_DATE').': <span class="text-live">'.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'</span><br />';
@@ -193,7 +192,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						</div>
 					</div>
 					<a href="#" class="px-2 ml-1 b-left" onclick="'.$APPTAG.'_confirmState('.$item->id.', '.$item->state.')" id="'.$APPTAG.'-state-'.$item->id.'">
-						<span class="'.($item->state == 1 ? 'base-icon-toggle-on text-success' : 'base-icon-toggle-on text-muted').' hasTooltip" title="'.JText::_(($item->state == 1 ? 'MSG_CLOSED_ITEM' : 'MSG_ACTIVATE_ITEM')).'"></span>
+						<span class="'.($item->state == 1 ? 'base-icon-toggle-on text-success' : 'base-icon-toggle-on text-danger').' hasTooltip" title="'.JText::_(($item->state == 1 ? 'MSG_CLOSED_ITEM' : 'MSG_ACTIVATE_ITEM')).'"></span>
 					</a>
 				';
 			endif;

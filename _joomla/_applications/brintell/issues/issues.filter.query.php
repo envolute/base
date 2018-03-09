@@ -4,11 +4,13 @@ defined('_JEXEC') or die;
 // QUERY FOR LIST
 $where = '';
 
+${$APPTAG.'Archive'} = isset(${$APPTAG.'Archive'}) ? ${$APPTAG.'Archive'} : 0;
+
 // filter params
 
 	// STATE -> select
 	$active	= $app->input->get('active', 1, 'int');
-	$where .= $db->quoteName('T1.state').' = '.$active;
+	$where .= $db->quoteName('T1.state').' = '.(${$APPTAG.'Archive'} ? 0 : $active);
 	// CLIENT
 	if($hasClient) {
 		$where .= ' AND '.$db->quoteName('T1.client_id').' = '.$client_id;

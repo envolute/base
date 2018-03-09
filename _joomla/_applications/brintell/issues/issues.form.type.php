@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
 					$icon	= JText::_('TEXT_ICON_TYPE_'.$i);
 					$color	= ($i == 2) ? 'warning' : JText::_('TEXT_COLOR_TYPE_'.$i);
 					echo '
-						<label class="base-icon-'.$icon.' btn btn-outline-'.$color.' btn-active-'.$color.' hasTooltip" title="'.JText::_('TEXT_TYPE_'.$i).'" onclick="'.$APPTAG.'_setType('.$i.');">
+						<label class="base-icon-'.$icon.' btn btn-outline-'.$color.' btn-active-'.$color.' hasTooltip" title="'.JText::_('TEXT_TYPE_'.$i.'_DESC').'" onclick="'.$APPTAG.'_setType('.$i.');">
 							<input type="radio" name="new_type" value="'.$i.'" />
 						</label>
 					';

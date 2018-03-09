@@ -70,6 +70,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$listIds    = $input->get($APPTAG.'_ids', array(), 'array');
 		$ids        = (count($listIds) > 0) ? implode($listIds, ',') : $id;
 		$state      = $input->get('st', 2, 'int');
+		$pID		= $input->get('pID', 0, 'int');
 
 		// upload actions
 		$fileMsg 	= '';
@@ -102,6 +103,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	  	$request['timePeriod']			= $input->get('timePeriod', '', 'string');
 		$tags							= $input->get('tags', array(), 'array');
 		$request['tags']				= implode(',', $tags); // FIND_IN_SET
+		$request['author']				= $input->get('author', 0, 'int');
+		if($request['author'] == 0) $request['author'] = $user->id;
 
 		// CUSTOM -> default vars for registration e-mail
 		$config			= JFactory::getConfig();
@@ -235,6 +238,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'deadline'			=> $item->deadline,
 						'timePeriod'		=> $item->timePeriod,
 						'tags'				=> explode(',', $item->tags),
+						'author'			=> $item->created_by,
 						'files'				=> $listFiles
 					);
 
@@ -254,6 +258,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('timePeriod')		.'='. $db->quote($request['timePeriod']) .','.
 							$db->quoteName('tags')				.'='. $db->quote($request['tags']) .','.
 							$db->quoteName('state')				.'='. $request['state'] .','.
+							$db->quoteName('created_by')		.'='. $request['author'] .','.
 							$db->quoteName('alter_date')		.'= NOW(),'.
 							$db->quoteName('alter_by')			.'='. $user->id
 						;
@@ -542,7 +547,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quote($request['timePeriod']) .','.
 							$db->quote($request['tags']) .','.
 							$request['state'] .','.
-							$user->id
+							$request['author']
 						.')
 					';
 
@@ -641,6 +646,53 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					);
 
 				endif; // end validation
+
+			// CUSTOM: get authors list of client
+			elseif($task == 'aList' && $pID != 0) :
+
+				// Get Client of Project
+				$query = 'SELECT client_id FROM '. $db->quoteName('#__'.$cfg['project'].'_projects') .' WHERE '. $db->quoteName('id') .' = '.$pID;
+				$db->setQuery($query);
+				$cID = $db->loadResult();
+				// get client_id of project
+				// get contacts list of project's client
+				$query = '
+					SELECT user_id, name, nickname
+					FROM '. $db->quoteName('vw_'.$cfg['project'].'_teams') .'
+					WHERE '. $db->quoteName('client_id') .' = '.$cID
+				;
+
+				try {
+					$db->setQuery($query);
+					$db->execute();
+					$num_itens = $db->getNumRows();
+					$list = $db->loadObjectList();
+
+					if($num_itens) :
+						foreach($list as $item) {
+							$data[] = array(
+								// Default Fields
+								'status'		=> 1,
+								'client'		=> $cID,
+								// App Fields
+								'id'			=> $item->user_id,
+								'name'			=> baseHelper::nameFormat((!empty($item->nickname) ? $item->nickname : $item->name))
+							);
+						}
+					else :
+						$data[] = array(
+							'status'			=> 2
+						);
+					endif;
+
+				} catch (RuntimeException $e) {
+
+					$data[] = array(
+						'status'				=> 0,
+						'msg'					=> $e->getMessage()
+					);
+
+				}
 
 			endif; // end 'task'
 

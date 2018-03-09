@@ -34,6 +34,9 @@ if($hasClient) {
 }
 $cProj = $client_id ? 'client_id = '.$client_id.' AND ' : '';
 
+${$APPTAG.'Archive'} = isset(${$APPTAG.'Archive'}) ? ${$APPTAG.'Archive'} : false;
+$cfg['openFilter'] = ${$APPTAG.'Archive'};
+
 //joomla get request data
 $input      = $app->input;
 
@@ -217,7 +220,7 @@ jQuery(function() {
 		// ON MODAL CLOSE -> Ações quando o modal da listagem é fechado
 		<?php echo $APPTAG?>ItemView.on('hidden.bs.modal', function () {
 			<?php echo $APPTAG?>ItemViewContent.attr('src', '');
-			<?php echo $APPTAG?>_listReload(false, false, false);
+			<?php echo $APPTAG?>_listReload(<?php echo ${$APPTAG.'Archive'} ? 'true' : 'false'?>, false, false);
 		});
 
 	// LIST CONTROLLERS
@@ -278,7 +281,7 @@ jQuery(function() {
 		// CUSTOM -> Confirm alter state (close task)
 		window.<?php echo $APPTAG?>_confirmState = function(itemID, msgType) {
 			var msg = msgType ? '<?php echo JText::_('MSG_CLOSE_ITEM_CONFIRM')?>' : '<?php echo JText::_('MSG_OPEN_ITEM_CONFIRM')?>';
-			if(confirm(msg)) <?php echo $APPTAG?>_setState(itemID, null, false, 'base-icon-toggle-on', 'base-icon-toggle-on', 'text-success', 'text-muted');
+			if(confirm(msg)) <?php echo $APPTAG?>_setState(itemID, null, false, 'base-icon-toggle-on', 'base-icon-toggle-on', 'text-success', 'text-danger');
 		};
 
 	// AJAX CONTROLLERS
@@ -451,9 +454,9 @@ jQuery(function() {
 	<?php if($cfg['showApp']) :?>
 		<div class="list-toolbar<?php echo ($cfg['staticToolbar'] ? '' : ' floating')?> hidden-print">
 			<?php
-			if($cfg['showAddBtn'] && $cfg['canAdd']) echo $addBtn;
+			if($cfg['showAddBtn'] && $cfg['canAdd'] && !${$APPTAG.'Archive'}) echo $addBtn;
 			if($cfg['showList']) :
-				if($cfg['listFull']) :
+				if($cfg['listFull'] && !${$APPTAG.'Archive'}) :
 					if($cfg['canEdit']) : ?>
 						<button class="btn btn-sm btn-success <?php echo $APPTAG?>-btn-action" disabled onclick="<?php echo $APPTAG?>_setState(0, 1)">
 							<span class="base-icon-ok-circled"></span> <?php echo JText::_('TEXT_ACTIVE'); ?>
@@ -469,7 +472,7 @@ jQuery(function() {
 					<?php endif;?>
 				<?php else :?>
 					<?php if(!$cfg['listModal'] && !$cfg['listFull'] && $cfg['ajaxReload']) :?>
-						<a href="#" class="btn btn-sm btn-info base-icon-arrows-cw" onclick="<?php echo $APPNAME?>_listReload(false, false, false)"></a>
+						<a href="#" class="btn btn-sm btn-info base-icon-arrows-cw" onclick="<?php echo $APPNAME?>_listReload(<?php echo ${$APPTAG.'Archive'} ? 'true' : 'false'?>, false, false)"></a>
 					<?php endif;?>
 				<?php endif;?>
 				<?php if($cfg['listFull'] || $cfg['ajaxFilter']) :?>

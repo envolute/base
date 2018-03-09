@@ -19,7 +19,7 @@ $tags = $db->loadObjectList();
 			<div class="col-lg-6">
 				<div class="form-group field-required">
 					<label class="label-sm"><?php echo JText::_('FIELD_LABEL_PROJECT'); ?></label>
-					<select name="project_id" id="<?php echo $APPTAG?>-project_id" class="form-control field-id">
+					<select name="project_id" id="<?php echo $APPTAG?>-project_id" class="form-control field-id" onchange="<?php echo $APPTAG?>_getAuthor(this.value)">
 						<option value="0">- <?php echo JText::_('TEXT_SELECT'); ?> -</option>
 						<?php
 							foreach ($projects as $obj) {
@@ -38,7 +38,7 @@ $tags = $db->loadObjectList();
 							$icon	= JText::_('TEXT_ICON_TYPE_'.$i);
 							$color	= ($i == 2) ? 'warning' : JText::_('TEXT_COLOR_TYPE_'.$i);
 							echo '
-								<label class="base-icon-'.$icon.' btn btn-outline-'.$color.' btn-active-'.$color.' hasTooltip" title="'.JText::_('TEXT_TYPE_'.$i).'">
+								<label class="base-icon-'.$icon.' btn btn-outline-'.$color.' btn-active-'.$color.' hasTooltip" title="'.JText::_('TEXT_TYPE_'.$i.'_DESC').'">
 									<input type="radio" name="type" id="'.$APPTAG.'-type-'.$i.'" value="'.$i.'" />
 								</label>
 							';
@@ -70,6 +70,16 @@ $tags = $db->loadObjectList();
 		<div id="<?php echo $APPTAG?>-files-group"></div>
 	</div>
 	<div class="col-lg-4 b-left b-left-dashed">
+		<?php if($hasAppAdmin) :?>
+			<div class="form-group">
+				<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_AUTHOR_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_AUTHOR'); ?></label>
+				<select name="author" id="<?php echo $APPTAG?>-author" class="form-control">
+					<option value="0"><?php echo JText::_('TEXT_SELECT')?></option>
+				</select>
+			</div>
+		<?php else :?>
+			<input type="hidden" name="author" id="<?php echo $APPTAG?>-author" value="0" />
+		<?php endif;?>
 		<div class="form-group">
 			<label class="label-sm"><?php echo JText::_('FIELD_LABEL_PRIORITY'); ?></label>
 			<span class="btn-group btn-group-justified" data-toggle="buttons">

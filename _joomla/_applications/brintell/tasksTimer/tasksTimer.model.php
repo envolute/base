@@ -135,7 +135,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	      $hours = $time['hours'];
 	    endif;
 		// round hour value
-		$hours = round($hours, 2);
+		$hours = str_replace(',', '.', round($hours, 2)); // float em pt-BR usa vírgula ao invés de ponto...
 	  	$request['note']         = $input->get('note', '', 'string');
 
 		// SAVE CONDITION
@@ -254,7 +254,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			  					$db->quoteName('end_hour') 		.'='. $db->quote($request['end_hour']) .','.
 			  					$db->quoteName('time') 			.'='. $db->quote($request['time']) .','.
 			  					$db->quoteName('total_time') 	.'='. $db->quote($total_time) .','.
-			  					$db->quoteName('hours') 		.'='. $hours .','.
+			  					$db->quoteName('hours') 		.'='. $db->quote($hours) .','.
 								$db->quoteName('state')			.'='. $request['state'] .','.
 								$db->quoteName('alter_date')	.'= NOW(),'.
 								$db->quoteName('alter_by')		.'='. $user->id

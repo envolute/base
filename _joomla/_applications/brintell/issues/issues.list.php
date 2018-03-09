@@ -23,7 +23,11 @@ defined('_JEXEC') or die;
 		 return;
 	}
 
+$html = '';
 if($num_rows) : // verifica se existe
+
+	// Filter Information
+	if($tasksArchive) $html .= '<hr class="hr-tag b-danger" /><span class="badge badge-danger base-icon-box"> '.JText::_('TEXT_CLOSED').'</span>';
 
 	// pagination
 	$db->setQuery('SELECT FOUND_ROWS();');  //no reloading the query! Just asking for total without limit
@@ -51,34 +55,42 @@ if($num_rows) : // verifica se existe
 				';
 				$adminView['head']['actions'] = '
 					<th class="text-center d-none d-lg-table-cell d-print-none" width="60">'.baseAppHelper::linkOrder(JText::_('TEXT_ACTIVE'), 'T1.state', $APPTAG).'</th>
-					<th class="text-center d-print-none" width="70">'.JText::_('TEXT_ACTIONS').'</th>
 				';
 			endif;
 
 			// VIEW
-			$html = '
-				<form id="form-list-'.$APPTAG.'" method="post" class="pt-3">
-					<div class="row mb-5">
+			$html .= '
+				<form id="form-list-'.$APPTAG.'" method="post">
+					<table class="table table-striped table-hover table-sm">
+						<thead>
+							<tr>
+								'.$adminView['head']['info'].'
+								<th>'.JText::_('FIELD_LABEL_SUBJECT').'</th>
+								<th>'.JText::_('FIELD_LABEL_PROJECT').'</th>
+								<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
+								'.$adminView['head']['actions'].'
+							</tr>
+						</thead>
+						<tbody>
 			';
 		}
 
-		$adminView['list']['check'] = $adminView['list']['actions'] = '';
+		$adminView['list']['info'] = $adminView['list']['actions'] = '';
 		if($canEdit) :
-			$adminView['list']['check'] = '
-				<input type="checkbox" name="'.$APPTAG.'_ids[]" class="'.$APPTAG.'-chk pos-absolute pos-right-0 m-1" value="'.$item->id.'" />
+			$adminView['list']['info'] = '
+				<td class="check-row d-print-none"><input type="checkbox" name="'.$APPTAG.'_ids[]" class="'.$APPTAG.'-chk" value="'.$item->id.'" /></td>
+				<td class="d-none d-lg-table-cell d-print-none">'.$item->id.'</td>
 			';
 			$adminView['list']['actions'] = '
-				<span class="btn-group float-right">
-					<a href="#" class="btn btn-xs btn-link hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'">
-						<span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').'"></span>
+				<td class="text-center d-none d-lg-table-cell d-print-none">
+					<a href="#" class="hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'" onclick="'.$APPTAG.'_confirmState('.$item->id.', '.$item->state.')" id="'.$APPTAG.'-state-'.$item->id.'">
+						<span class="'.($item->state == 1 ? 'base-icon-toggle-on text-success' : 'base-icon-toggle-on text-danger').' hasTooltip" title="'.JText::_(($item->state == 1 ? 'MSG_CLOSED_ITEM' : 'MSG_ACTIVATE_ITEM')).'"></span>
 					</a>
-					<a href="#" class="btn btn-xs btn-link hasTooltip" title="'.JText::_('TEXT_EDIT').'" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil"></span></a>
-					<a href="#" class="btn btn-xs btn-link hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash"></span></a>
-				</span>
+				</td>
 			';
 		endif;
 
-		$rowState = $item->state == 0 ? 'danger bg-light text-muted' : 'primary bg-white';
+		$rowState = $item->state == 0 ? 'text-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
 		if($item->alter_date != '0000-00-00 00:00:00') :
@@ -86,33 +98,45 @@ if($num_rows) : // verifica se existe
 			$regInfo	.= JText::_('TEXT_ALTER_DATE').': '.baseHelper::dateFormat($item->alter_date, 'd/m/Y H:i').'<br />';
 			$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->alter_by)->name);
 		endif;
+
 		// Resultados
 		$html .= '
-			<div id="'.$APPTAG.'-item-'.$item->id.'" class="col-sm-3 col-xl-2">
-				<div class="pos-relative rounded b-top-2 b-'.$rowState.' set-shadow">
-					'.$adminView['list']['check'].'
-					<a href="#" class="d-block text-lg lh-1-2 py-3 px-3 mr-4">'.baseHelper::nameFormat($item->subject).'</a>
-					<span class="d-block text-muted py-1 px-1 b-top clearfix">
-						'.baseHelper::nameFormat($item->project_name).'
-						'.$adminView['list']['actions'].'
-					</span>
-				</div>
-			</div>
+			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
+				'.$adminView['list']['info'].'
+				<td>
+					<a href="#'.$APPTAG.'-item-view" class="set-base-modal" onclick="'.$APPTAG.'_setItemView('.$item->id.')">
+						'.baseHelper::nameFormat($item->subject).'
+					</a>
+					<div><small class="text-muted">'.JText::_('TEXT_TYPE_'.$item->type).'</small></div>
+				</td>
+				<td>
+					'.baseHelper::nameFormat($item->project_name).'
+					<div><small class="text-muted">'.baseHelper::nameFormat($item->client_name).'</small></div>
+				</td>
+				<td class="d-none d-lg-table-cell">
+					'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'
+					<a href="#" class="base-icon-info-circled hasPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top"></a>
+				</td>
+				'.$adminView['list']['actions'].'
+			</tr>
 		';
 	}
 
 else : // num_rows = 0
 
 	$html .= '
-		<div class="col">
-			<div class="alert alert-warning alert-icon m-0">'.JText::_('MSG_LISTNOREG').'</div>
-		</div>
+		<tr>
+			<td colspan="6">
+				<div class="alert alert-warning alert-icon m-0">'.JText::_('MSG_LISTNOREG').'</div>
+			</td>
+		</tr>
 	';
 
 endif;
 
 $html .= '
-		</div>
+			</tbody>
+		</table>
 	</form>
 ';
 

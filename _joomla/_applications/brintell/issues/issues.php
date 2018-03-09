@@ -24,7 +24,9 @@ require(JPATH_CORE.DS.'apps/_init.app.php');
 $db = JFactory::getDbo();
 
 // verifica se é um cliente
-$hasClient	= array_intersect($groups, $cfg['groupId']['client']); // se está na lista de administradores permitidos
+$hasClient		= array_intersect($groups, $cfg['groupId']['client']);
+$hasAppAdmin	= array_intersect($groups, $cfg['groupId']['appAdmin']);
+
 // GET CLIENT ID
 $client_id = 0;
 if($hasClient) {
@@ -33,6 +35,9 @@ if($hasClient) {
 	$client_id = $db->loadResult();
 }
 $cProj = $client_id ? 'client_id = '.$client_id.' AND ' : '';
+
+${$APPTAG.'Archive'} = isset(${$APPTAG.'Archive'}) ? ${$APPTAG.'Archive'} : false;
+$cfg['openFilter'] = ${$APPTAG.'Archive'};
 
 ?>
 
@@ -57,6 +62,7 @@ jQuery(function() {
 	var deadline			= jQuery('#<?php echo $APPTAG?>-deadline');
 	var timePeriod			= jQuery('#<?php echo $APPTAG?>-timePeriod');
 	var tags				= jQuery('#<?php echo $APPTAG?>-tags');
+	var author				= jQuery('#<?php echo $APPTAG?>-author');
 
 	// ALTER STATUS
 	var typeId			= jQuery('#<?php echo $APPTAG?>-typeId');
@@ -126,6 +132,7 @@ jQuery(function() {
 			deadline.val('');
 			timePeriod.selectUpdate('<?php echo JText::_('TEXT_AM'); ?>'); // select
 			tags.selectUpdate(''); // select
+			author.selectUpdate(0); // select
 
 			// TO DO LIST
 			setHidden(jQuery('#<?php echo $APPTAG?>-alert-toDo'), false, jQuery('#<?php echo $APPTAG?>-btn-toDo'));
@@ -195,7 +202,7 @@ jQuery(function() {
 		// ON MODAL CLOSE -> Ações quando o modal da listagem é fechado
 		<?php echo $APPTAG?>ItemView.on('hidden.bs.modal', function () {
 			<?php echo $APPTAG?>ItemViewContent.attr('src', '');
-			<?php echo $APPTAG?>_listReload(false, false, false);
+			<?php echo $APPTAG?>_listReload(<?php echo ${$APPTAG.'Archive'} ? 'true' : 'false'?>, false, false);
 		});
 
 	// LIST CONTROLLERS
@@ -256,7 +263,7 @@ jQuery(function() {
 		// CUSTOM -> Confirm alter state (close task)
 		window.<?php echo $APPTAG?>_confirmState = function(itemID, msgType) {
 			var msg = msgType ? '<?php echo JText::_('MSG_CLOSE_ITEM_CONFIRM')?>' : '<?php echo JText::_('MSG_OPEN_ITEM_CONFIRM')?>';
-			if(confirm(msg)) <?php echo $APPTAG?>_setState(itemID, null, false, 'base-icon-toggle-on', 'base-icon-toggle-on', 'text-success', 'text-muted');
+			if(confirm(msg)) <?php echo $APPTAG?>_setState(itemID, null, false, 'base-icon-toggle-on', 'base-icon-toggle-on', 'text-success', 'text-danger');
 		};
 
 	// AJAX CONTROLLERS
@@ -301,6 +308,7 @@ jQuery(function() {
 						deadline.val(dateFormat(item.deadline)); // DATE -> conversão de data
 						timePeriod.selectUpdate(item.timePeriod); // select
 						tags.selectUpdate(item.tags); // select
+						<?php echo $APPTAG?>_getAuthor(item.project_id, item.author);
 
 						// TODO LIST
 						setHidden(jQuery('#<?php echo $APPTAG?>-alert-toDo'), true, jQuery('#<?php echo $APPTAG?>-btn-toDo'));
@@ -382,6 +390,52 @@ jQuery(function() {
 			return false;
 		};
 
+		// CUSTOM
+		// Set client authors List
+		// seta a lista de autores (usuários do cliente) de acordo com o projeto selecionado
+		window.<?php echo $APPTAG?>_getAuthor = function(pID, uID) {
+			var oID = 0;
+			<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
+			jQuery.ajax({
+				url: "<?php echo $URL_APP_FILE ?>.model.php?task=aList&pID="+pID,
+				dataType: 'json',
+				type: 'POST',
+				cache: false,
+				success: function(data){
+					jQuery.map( data, function( res, i ) {
+						if(res.status != 0) {
+							// remove all options
+							if(i == 0) {
+								author.find('option').remove();
+								// init new options list
+								if(res.status == 1) {
+									author.append('<option value="0">- <?php echo JText::_('TEXT_SELECT'); ?> -</option>');
+								} else {
+									author.append('<option value="0">- <?php echo JText::_('TEXT_CLIENT_NO_HAVE_USERS'); ?> -</option>');
+								}
+							}
+							if(res.status == 1) author.append('<option value="'+res.id+'">'+res.name+'</option>');
+							if(isSet(uID) && uID == res.id) oID = res.id;
+							// IMPORTANTE: Atualiza o select no ajax -> 'complete:' abaixo
+						} else {
+							$.baseNotify({ msg: res.msg, type: "danger"});
+						}
+					});
+				},
+				error: function(xhr, status, error) {
+					<?php // ERROR STATUS -> Executa quando houver um erro na requisição ajax
+					require(JPATH_CORE.DS.'apps/snippets/ajax/ajaxError.js.php');
+					?>
+				},
+				complete: function() {
+					// IMPORTANTE: Atualiza o select
+					author.selectUpdate(oID);
+					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
+				}
+			});
+			return false;
+		};
+
 	// JQUERY VALIDATION
 	window.<?php echo $APPTAG?>_validator = mainForm_<?php echo $APPTAG?>.validate({
 		//don't remove this
@@ -418,9 +472,9 @@ jQuery(function() {
 	<?php if($cfg['showApp']) :?>
 		<div class="list-toolbar<?php echo ($cfg['staticToolbar'] ? '' : ' floating')?> hidden-print">
 			<?php
-			if($cfg['showAddBtn'] && $cfg['canAdd']) echo $addBtn;
+			if($cfg['showAddBtn'] && $cfg['canAdd'] && !${$APPTAG.'Archive'}) echo $addBtn;
 			if($cfg['showList']) :
-				if($cfg['listFull']) :
+				if($cfg['listFull'] && !${$APPTAG.'Archive'}) :
 					if($cfg['canEdit']) : ?>
 						<button class="btn btn-sm btn-success <?php echo $APPTAG?>-btn-action" disabled onclick="<?php echo $APPTAG?>_setState(0, 1)">
 							<span class="base-icon-ok-circled"></span> <?php echo JText::_('TEXT_ACTIVE'); ?>
@@ -436,7 +490,7 @@ jQuery(function() {
 					<?php endif;?>
 				<?php else :?>
 					<?php if(!$cfg['listModal'] && !$cfg['listFull'] && $cfg['ajaxReload']) :?>
-						<a href="#" class="btn btn-sm btn-info base-icon-arrows-cw" onclick="<?php echo $APPNAME?>_listReload(false, false, false)"></a>
+						<a href="#" class="btn btn-sm btn-info base-icon-arrows-cw" onclick="<?php echo $APPNAME?>_listReload(<?php echo ${$APPTAG.'Archive'} ? 'true' : 'false'?>, false, false)"></a>
 					<?php endif;?>
 				<?php endif;?>
 				<?php if($cfg['listFull'] || $cfg['ajaxFilter']) :?>

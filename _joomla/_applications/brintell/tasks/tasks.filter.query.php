@@ -4,11 +4,13 @@ defined('_JEXEC') or die;
 // QUERY FOR LIST
 $where = '';
 
+${$APPTAG.'Archive'} = isset(${$APPTAG.'Archive'}) ? ${$APPTAG.'Archive'} : 0;
+
 // filter params
 
 	// STATE -> select
 	$active	= $app->input->get('active', 1, 'int');
-	$where .= $db->quoteName('T1.state').' = '.$active;
+	$where .= $db->quoteName('T1.state').' = '.(${$APPTAG.'Archive'} ? 0 : $active);
 	// CLIENT
 	// Se for um cliente, visualiza apenas das tasks do cliente
 	if($client_id) {

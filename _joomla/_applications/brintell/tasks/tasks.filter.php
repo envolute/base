@@ -122,6 +122,36 @@ require($PATH_APP_FILE.'.filter.query.php');
 		';
 	}
 
+	// LINK PARA VISUALIZAR ATIVOS/INATIVOS
+	$linkThis = JURI::root().'apps/'.$APPNAME;
+	if(${$APPTAG.'Archive'}) {
+		$linkState = '
+			<a href="'.$linkThis.'" class="btn btn-sm btn-success btn-block base-icon-folder-open">
+				'.JText::_('TEXT_OPENED').' <span class="base-icon-right-big float-right"></span>
+			</a>
+		';
+		$exec = '';
+	} else {
+		$linkState = '
+			<a href="'.$linkThis.'/archive" class="btn btn-sm btn-danger btn-block base-icon-folder">
+				'.JText::_('TEXT_CLOSED').' <span class="base-icon-right-big float-right"></span>
+			</a>
+		';
+		$runTimer = '
+			<div class="col-sm-6 col-md-2">
+				<div class="form-group">
+					<label class="label-xs text-muted">&#160;</label>
+					<span class="btn-group btn-group-justified" data-toggle="buttons">
+						<label class="btn btn-sm btn-default btn-active-danger'.($fExec == 0 ? ' active' : '').' base-icon-arrows-cw hasTooltip" title="'.JText::_('TEXT_WORKING_DESC').'">
+							<input type="checkbox" name="fExec" id="fExec" class="set-filter" value="1"'.($fExec == 1 ? ' checked' : '').' />
+							'.JText::_('TEXT_WORKING').'
+						</label>
+					</span>
+				</div>
+			</div>
+		';
+	}
+
 // VIEW
 $htmlFilter = '
 	<form id="filter-'.$APPTAG.'" class="hidden-print collapse '.((isset($_GET[$APPTAG.'_filter']) || $cfg['openFilter']) ? 'show' : '').'" method="get">
@@ -178,17 +208,7 @@ $htmlFilter = '
 								</select>
 							</div>
 						</div>
-						<div class="col-sm-6 col-md-2">
-							<div class="form-group">
-								<label class="label-xs text-muted">&#160;</label>
-								<span class="btn-group btn-group-justified" data-toggle="buttons">
-									<label class="btn btn-sm btn-default btn-active-danger'.($fExec == 0 ? ' active' : '').' base-icon-arrows-cw hasTooltip" title="'.JText::_('TEXT_WORKING_DESC').'">
-										<input type="checkbox" name="fExec" id="fExec" class="set-filter" value="1"'.($fExec == 1 ? ' checked' : '').' />
-										'.JText::_('TEXT_WORKING').'
-									</label>
-								</span>
-							</div>
-						</div>
+						'.$runTimer.'
 					</div>
 				</div>
 				<div class="col-xl-2 b-left b-left-dashed">
@@ -196,22 +216,17 @@ $htmlFilter = '
 						<div class="col-sm-5 col-md-4 col-lg-3 col-xl-12">
 							<div class="form-group">
 								<label class="label-xs text-muted">&#160;</label>
-								<span class="btn-group btn-group-justified" data-toggle="buttons">
-									<label class="btn btn-sm btn-warning btn-active-danger'.($active == 0 ? ' active' : '').' base-icon-box">
-										<input type="checkbox" name="active" id="active" class="set-filter" value="0"'.($active == 0 ? ' checked' : '').' />
-										'.JText::_('TEXT_CLOSED').'
-									</label>
-								</span>
+								'.$linkState.'
 							</div>
 						</div>
 						<div class="col-sm-5 col-md-4 col-lg-3 col-xl-12">
 							<div class="form-group">
 								<label class="label-xs text-muted">&#160;</label>
 								<div class="d-flex justify-content-between">
-									<button '.$btnAction.' id="'.$APPTAG.'-submit-filter" class="btn btn-sm btn-primary base-icon-search btn-icon">
+									<button '.$btnAction.' id="'.$APPTAG.'-submit-filter" class="btn btn-sm btn-primary base-icon-search btn-icon flex-grow-1 mr-1">
 										'.JText::_('TEXT_SEARCH').'
 									</button>
-									<a href="'.JURI::current().'" class="btn btn-sm btn-danger base-icon-cancel-circled hasTooltip" title="'.JText::_('TEXT_RESET').'"></a>
+									<a href="'.JURI::current().'" class="btn btn-sm btn-danger base-icon-cancel-circled px-3 hasTooltip" title="'.JText::_('TEXT_RESET').'"></a>
 								</div>
 							</div>
 						</div>

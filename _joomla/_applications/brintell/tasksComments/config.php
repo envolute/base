@@ -106,7 +106,7 @@ endif;
 		$cfg['listModal']			= false;
 		if(isset(${$APPTAG.'ListModal'})) $cfg['listModal'] = ${$APPTAG.'ListModal'} ? true : false;
 		// list type
-		$cfg['listFull']			= false;
+		$cfg['listFull']			= true;
 		if(isset(${$APPTAG.'ListFull'})) $cfg['listFull'] = ${$APPTAG.'ListFull'} ? true : false;
 		// list Ajax File
 		$cfg['listAjax']			= 'list.ajax.php';

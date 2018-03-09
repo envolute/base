@@ -112,8 +112,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	if($num_rows) : // verifica se existe
 
 		// Filter Information
-		if(!$active) echo '<hr class="hr-tag b-danger" /><span class="badge badge-danger base-icon-box"> '.JText::_('TEXT_CLOSED').'</span>';
-		else if($fExec) echo '<hr class="hr-tag b-danger" /><span class="badge badge-danger base-icon-arrows-cw"> '.JText::_('TEXT_WORKING').'</span>';
+		if($fExec) echo '<hr class="hr-tag b-danger" /><span class="badge badge-danger base-icon-arrows-cw"> '.JText::_('TEXT_WORKING').'</span>';
 
 		$html .= '<div class="row py-2 mb-4">';
 		$status		= 9;
@@ -247,7 +246,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						</div>
 					</div>
 					<a href="#" class="px-2 ml-1 b-left" onclick="'.$APPTAG.'_confirmState('.$item->id.', '.$item->state.')" id="'.$APPTAG.'-state-'.$item->id.'">
-						<span class="'.($item->state == 1 ? 'base-icon-toggle-on text-success' : 'base-icon-toggle-on text-muted').' hasTooltip" title="'.JText::_(($item->state == 1 ? 'MSG_CLOSED_ITEM' : 'MSG_ACTIVATE_ITEM')).'"></span>
+						<span class="'.($item->state == 1 ? 'base-icon-toggle-on text-success' : 'base-icon-toggle-on text-danger').' hasTooltip" title="'.JText::_(($item->state == 1 ? 'MSG_CLOSED_ITEM' : 'MSG_ACTIVATE_ITEM')).'"></span>
 					</a>
 				';
 			endif;
@@ -273,6 +272,13 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$toggleStatus = '<a href="#" id="'.$APPTAG.'-item-'.$item->id.'-status" class="base-icon-'.$iconStatus.' text-'.$colorStatus.' hasTooltip" title="'.JText::_('TEXT_STATUS_'.$item->status).'" data-id="'.$item->id.'" data-status="'.$item->status.'" onclick="'.$APPTAG.'_setStatusModal(this)"></a>';
 			}
 
+			$project_state = '';
+			$project_desc = 'FIELD_LABEL_PROJECT';
+			if($item->project_state == 0) {
+				$project_state = ' text-danger';
+				$project_desc = 'TEXT_INACTIVE_PROJECT';
+			}
+
 			// Resultados
 			$html .= '
 				<div id="'.$APPTAG.'-item-'.$item->id.'" class="pos-relative rounded b-top-2 b-'.$colorStatus.' bg-white mb-3 set-shadow">
@@ -291,7 +297,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 					<span class="d-flex justify-content-between align-items-center text-muted pl-1 b-top">
 						<span class="small lh-1">
 							'.$visibility.'
-							<a href="'.$urlViewProject.'" class="ml-1 hasTooltip" title="'.JText::_('FIELD_LABEL_PROJECT').'">
+							<a href="'.$urlViewProject.'" class="ml-1'.$project_state.' hasTooltip" title="'.JText::_($project_desc).'">
 								'.baseHelper::nameFormat($item->project_name).'
 							</a>
 						</span>
