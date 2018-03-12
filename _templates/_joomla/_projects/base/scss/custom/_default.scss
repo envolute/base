@@ -77,9 +77,24 @@
 
 		}
 
+	// TEMPLATE CONTENT
+
+		#tmpl-content {
+			padding-top: 75px; // Altura total do '#header'
+		}
+
 	// HEADER
 
-		#header { }
+		#header {
+			position: fixed;
+			top: 0;
+			width: 100%;
+			z-index: $zindex-header;
+		}
+		#tmpl-sidebar:not(.closed) + #tmpl-content #header {
+			width: calc(100% - #{$base-sidebar-width});
+		}
+		html.isAdmin #header { top: $admin-navbar-height; }
 
 			#logo-header {
 				text-align: center;
@@ -101,6 +116,20 @@
 
 		#full-content {
 			padding: 18px 0;
+		}
+		.canban #full-content { padding-bottom: 0; }
+
+		// APP 'CANBAN' STYLE
+		.canban #component .base-app { margin: 0; }
+		.canban #component .baseContent > .page-header { margin-bottom: 0; }
+		.canban #component .base-app .base-app-list > form > .row  {
+			flex-wrap: nowrap!important;
+			padding: .5rem 0;
+			overflow: auto;
+		}
+		.canban #component .base-app .canban-col  {
+			min-width: 250px;
+			max-width: 34%;
 		}
 
 	// SECTION BOTTOM

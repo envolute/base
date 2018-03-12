@@ -47,7 +47,7 @@ require($PATH_APP_FILE.'.filter.php');
 $adminView = array();
 if($hasAdmin) :
 	$adminView['head']['info'] = '
-		<th width="30" class="hidden-print"><input type="checkbox" id="'.$APPTAG.'_checkAll" /></th>
+		<th width="30" class="hidden-print"><input type="checkbox" class="input-checkAll" onchange="'.$APPTAG.'_setBtnStatus()" /></th>
 		<th width="50" class="hidden-print">'.baseAppHelper::linkOrder('#', 'T1.id', $APPTAG).'</th>
 	';
 	$adminView['head']['actions'] = '
@@ -109,7 +109,7 @@ if($num_rows) : // verifica se existe
 		$itemActions = '';
 		if($hasAdmin) :
 			$itemActions .= '
-				<span class="check-row"><input type="checkbox" name="'.$APPTAG.'_ids[]" class="'.$APPTAG.'-chk" value="'.$item->id.'" /></span>
+				<span class="check-row"><input type="checkbox" name="'.$APPTAG.'_ids[]" class="checkAll-child" value="'.$item->id.'" onchange="'.$APPTAG.'_setBtnStatus()" /></span>
 				<a href="#" class="btn btn-xs btn-default" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'">
 					<span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').' hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'"></span>
 				</a>

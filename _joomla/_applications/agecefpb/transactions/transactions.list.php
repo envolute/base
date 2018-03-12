@@ -61,7 +61,7 @@ if($num_rows) : // verifica se existe
 			$adminView['head']['info'] = $adminView['head']['actions'] = '';
 			if($canEdit) :
 				$adminView['head']['info'] = '
-					<th width="30" class="d-print-none"><input type="checkbox" id="'.$APPTAG.'_checkAll" /></th>
+					<th width="30" class="d-print-none"><input type="checkbox" class="input-checkAll" onchange="'.$APPTAG.'_setBtnStatus()" /></th>
 				';
 				$adminView['head']['actions'] = '
 					<th class="text-center d-none d-lg-table-cell d-print-none" width="60">'.JText::_('TEXT_ACTIVE').'</th>
@@ -109,7 +109,7 @@ if($num_rows) : // verifica se existe
 		if($canEdit) :
 			$adminView['list']['info'] = '
 				<td class="check-row d-print-none">
-					<input type="checkbox" name="'.$APPTAG.'_ids[]" class="'.$APPTAG.'-chk" value="'.$item->id.'" />
+					<input type="checkbox" name="'.$APPTAG.'_ids[]" class="checkAll-child" value="'.$item->id.'" onchange="'.$APPTAG.'_setBtnStatus()" />
 				</td>
 			';
 			$regInfo	= 'ID: <span class=&quot;text-live&quot;>#'.$item->id.'</span>';

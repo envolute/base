@@ -39,9 +39,9 @@ var listPopup		= jQuery('#modal-list-<?php echo $APPTAG?>');
 	var formLimit	= jQuery('#form-limit-<?php echo $APPTAG?>');
 	var formOrder	= jQuery('#form-order-<?php echo $APPTAG?>');
 	// relacionamento
-	window.<?php echo $APPTAG?>oCHL	= <?php echo !empty(${$APPTAG.'OnlyChildList'}) ? ${$APPTAG.'OnlyChildList'} : 0?>;
-	window.<?php echo $APPTAG?>rNID	= '<?php echo ${$APPTAG.'RelListNameId'}?>';
-	window.<?php echo $APPTAG?>rID	= <?php echo !empty(${$APPTAG.'RelListId'}) ? ${$APPTAG.'RelListId'} : 0?>;
+	window.<?php echo $APPTAG?>oCHL	= <?php echo isset(${$APPTAG.'OnlyChildList'}) && !empty(${$APPTAG.'OnlyChildList'}) ? ${$APPTAG.'OnlyChildList'} : 0?>;
+	window.<?php echo $APPTAG?>rNID	= '<?php echo isset(${$APPTAG.'RelListNameId'}) ? ${$APPTAG.'RelListNameId'} : ''?>';
+	window.<?php echo $APPTAG?>rID	= <?php echo isset(${$APPTAG.'RelListId'}) && !empty(${$APPTAG.'RelListId'}) ? ${$APPTAG.'RelListId'} : 0?>;
 
 // DEFAULT FIELDS
 var formId	 		= jQuery('#<?php echo $APPTAG?>-id');

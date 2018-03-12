@@ -58,7 +58,7 @@ if($num_rows) : // verifica se existe
 			$adminView['head']['info'] = $adminView['head']['actions'] = '';
 			if($canEdit) :
 				$adminView['head']['info'] = '
-					<th width="30" class="d-print-none"><input type="checkbox" id="'.$APPTAG.'_checkAll" /></th>
+					<th width="30" class="d-print-none"><input type="checkbox" class="input-checkAll" onchange="'.$APPTAG.'_setBtnStatus()" /></th>
 				';
 				$adminView['head']['actions'] = '
 					<th class="text-center d-none d-lg-table-cell d-print-none" width="60">'.baseAppHelper::linkOrder(JText::_('TEXT_ACTIVE'), 'T1.state', $APPTAG).'</th>
@@ -123,7 +123,7 @@ if($num_rows) : // verifica se existe
 		$btnDelete = $canDelete ? '<a href="#" class="btn btn-xs btn-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash"></span></a>' : '';
 		if($canEdit) :
 			$adminView['list']['info'] = '
-				<td class="check-row d-print-none"><input type="checkbox" name="'.$APPTAG.'_ids[]" class="'.$APPTAG.'-chk" value="'.$item->id.'" /></td>
+				<td class="check-row d-print-none"><input type="checkbox" name="'.$APPTAG.'_ids[]" class="checkAll-child" value="'.$item->id.'" onchange="'.$APPTAG.'_setBtnStatus()" /></td>
 			';
 			$regInfo	= 'ID: <span class=&quot;text-live&quot;>#'.$item->id.'</span>';
 			$regInfo	.= '<hr class=&quot;my-1&quot; />';

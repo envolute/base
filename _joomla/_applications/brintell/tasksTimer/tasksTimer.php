@@ -179,10 +179,6 @@ jQuery(function() {
 			?>
 		});
 
-		<?php // CHECK ALL -> Seleciona todas as linhas (checkboxes) da listagem
-		require(JPATH_CORE.DS.'apps/snippets/list/checkAll.js.php');
-		?>
-
 		<?php // BTN STATUS -> habilita/desabilita botões se houver, ou não, checkboxes marcados na Listagem
 		require(JPATH_CORE.DS.'apps/snippets/list/btnStatus.js.php');
 		?>

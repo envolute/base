@@ -502,16 +502,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				// STATUS
 				elseif($task == 'status') :
 
-					$date = '';
-					$exec = '';
-					if($state < 3) : // backlog, todo, doing
-						if($state < 2) $exec = ', '.$db->quoteName('executed').' = 0';
-						$date = $db->quote('0000-00-00 00:00:00');
-					else : // done
-						$exec = ', '.$db->quoteName('executed').' = 100';
-						$date = $db->quote(date('Y-m-d H:i:s'));
-					endif;
-					$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '. $db->quoteName('status') .' = '.$state.', '.$db->quoteName('closing_date').' = '.$date.$exec.' WHERE '. $db->quoteName('id') .' = '.$id;
+					$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '. $db->quoteName('status') .' = '.$state.' WHERE '. $db->quoteName('id') .' IN ('.$ids.')';
 
 					try {
 						$db->setQuery($query);

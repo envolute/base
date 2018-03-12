@@ -149,12 +149,16 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				}
 
 				// Imagem do usuário
-				$img = uploader::getFile('#__brintell_'.$item->app_table.'_files', '', $item->id, 0, JPATH_BASE.DS.'images/apps/'.$item->app.'/');
-				if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$item->app.'/'.$img['filename'], 41, 41);
-				else $imgPath = $_ROOT.'images/apps/icons/user_'.$item->gender.'.png';
-				$img = '<img src="'.$imgPath.'" class="img-fluid rounded mb-2" style="width:41px; height:41px;" />';
+				$img = '';
+				$urlProfile = '#';
+				if(!empty($item->app_table) && !empty($item->author_id)) {
+					$img = uploader::getFile('#__brintell_'.$item->app_table.'_files', '', $item->author_id, 0, JPATH_BASE.DS.'images/apps/'.$item->app.'/');
+					if(!empty($img)) $imgPath = baseHelper::thumbnail('images/apps/'.$item->app.'/'.$img['filename'], 41, 41);
+					else $imgPath = $_ROOT.'images/apps/icons/user_'.($item->gender ? $item->gender : 1).'.png';
+					$img = '<img src="'.$imgPath.'" class="img-fluid rounded mb-2" style="width:41px; height:41px;" />';
+					$urlProfile = 'apps/'.($item->author_type == 2 ? 'clients/staff' : '/staff').'/view?vID='.$item->author_id;
+				}
 			endif;
-			$urlProfile = 'apps/'.($item->author_type == 2 ? 'clients/staff' : '/staff').'/view?vID='.$view->author_id;
 
 			$lStatus = '';
 			$iStatus = '';
@@ -178,7 +182,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						<div class="btn-group btn-group-justified">'.$btnEdit.$btnDelete.'</div>
 					</div>
 					<div style="flex-grow:1;" class="font-condensed text-sm mb-2 lh-1-3">
-						<div class="page-header text-muted b-bottom-dashed">'.$name.$iStatus.' <span class="float-right">'.baseHelper::dateFormat($item->created_date, 'd.m.y H:i').'</span></div>
+						<div class="page-header text-muted b-bottom-dashed clearfix">'.$name.$iStatus.' <span class="float-right">'.baseHelper::dateFormat($item->created_date, 'd.m.y H:i').'</span></div>
 						<div>'.$item->comment.'</div>
 						'.$attachs.'
 					</div>

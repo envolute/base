@@ -114,7 +114,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		// Filter Information
 		if($fExec) echo '<hr class="hr-tag b-danger" /><span class="badge badge-danger base-icon-arrows-cw"> '.JText::_('TEXT_WORKING').'</span>';
 
-		$html .= '<div class="row py-2 mb-4">';
+		$html .= '
+			<form id="form-list-'.$APPTAG.'" method="post">
+				<div class="row set-height" data-offset-elements="#cmstools, #header, .baseContent > .page-header" data-offset="20">
+		';
 		$status		= 9;
 		$counter	= 0;
 		foreach($res as $item) {
@@ -140,25 +143,17 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$iconStatus		= JText::_('TEXT_ICON_STATUS_'.$item->status);
 
 			// define as colunas por status
-			if($status !== $item->status && !($status == 2 && $item->status == 3)) :
+			if($status !== $item->status) :
 				if($counter > 0) $html .= '</div>';
-				if($item->status == 2 || $item->status == 3) { // os 2 na mesma coluna
-					$html .= '
-						<div id="'.$APPTAG.'-item-status-'.$item->status.'" class="'.$APPTAG.'-col col-sm-6 col-lg-3 pb-3">
-							<h6 class="text-center bg-'.$colorStatus.' rounded py-2 mb-2 set-shadow-right">
-								<span class="base-icon-'.JText::_('TEXT_ICON_STATUS_2').'"> '.JText::_('TEXT_STATUS_2').'</span>
-								<span class="mx-3 b-left b-white"></span>
-								<span class="base-icon-'.JText::_('TEXT_ICON_STATUS_3').'"> '.JText::_('TEXT_STATUS_3').'</span>
-							</h6>
-					';
-				} else {
-					$html .= '
-						<div id="'.$APPTAG.'-item-status-'.$item->status.'" class="'.$APPTAG.'-col col-sm-6 col-lg-3 pb-3">
-							<h6 class="text-center bg-'.$colorStatus.' rounded py-2 mb-2 set-shadow-right">
-								<span class="base-icon-'.$iconStatus.'"></span> '.JText::_('TEXT_STATUS_'.$item->status).'
-							</h6>
-					';
-				}
+				$html .= '
+					<div id="'.$APPTAG.'-item-status-'.$item->status.'" class="canban-col col-sm-6 col-lg pb-3">
+						<h6 class="pos-relative text-center bg-'.$colorStatus.' rounded py-2 mb-2 set-shadow-right">
+							<span class="pos-absolute pos-left-0 pos-bottom-0 lh-1">
+								<input type="checkbox" class="input-checkAll m-1" data-container="#'.$APPTAG.'-item-status-'.$item->status.'" onchange="'.$APPTAG.'_setBtnStatus()" />
+							</span>
+							<span class="base-icon-'.$iconStatus.'"></span> '.JText::_('TEXT_STATUS_'.$item->status).'
+						</h6>
+				';
 				$status = $item->status;
 			endif;
 
@@ -282,9 +277,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			// Resultados
 			$html .= '
 				<div id="'.$APPTAG.'-item-'.$item->id.'" class="pos-relative rounded b-top-2 b-'.$colorStatus.' bg-white mb-3 set-shadow">
-					<span class="d-flex justify-content-between align-items-center text-muted px-1 b-bottom">
+					<span class="d-flex align-items-center text-muted px-1 b-bottom">
+						<input type="checkbox" name="'.$APPTAG.'_ids[]" class="checkAll-child mr-2" value="'.$item->id.'" onchange="'.$APPTAG.'_setBtnStatus()" />
 						<small><span class="base-icon-tag text-gray-400 cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_TAGS').'"></span> '.(str_replace(',', ', ', $item->tags)).'</small>
-						<span>&#160;'.$priority.'</span>
+						<span class="ml-auto">&#160;'.$priority.'</span>
 					</span>
 					<div class="d-flex d-justify-content align-items-center lh-1-2">
 						<div class="align-self-stretch py-3 px-2 bg-gray-200">
@@ -310,7 +306,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 			$counter++;
 		}
-		$html .= '</div>';
+		$html .= '
+				</div>
+			</form>
+		';
 	else :
 		if($noReg) $html = '<div class="base-icon-info-circled alert alert-info m-0"> '.JText::_('MSG_LISTNOREG').'</div>';
 	endif;

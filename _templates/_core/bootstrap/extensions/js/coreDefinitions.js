@@ -20,6 +20,7 @@ jQuery(function() {
 		btnToggleState();
 		// Forms
 		setChosenDefault();
+		checkAll();
 		// Layout
 		loadOnView();
 		// Navs

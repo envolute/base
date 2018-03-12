@@ -109,7 +109,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 	$html = '';
 	if($num_rows) : // verifica se existe
-		$html .= '<div class="row py-2 mb-4">';
+		$html .= '
+			<form id="form-list-'.$APPTAG.'" method="post">
+				<div class="row set-height" data-offset-elements="#cmstools, #header, .baseContent > .page-header" data-offset="20">
+		';
 		$type		= 9;
 		$counter	= 0;
 		foreach($res as $item) {
@@ -137,7 +140,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			if($type !== $item->type) :
 				if($counter > 0) $html .= '</div>';
 				$html .= '
-					<div id="'.$APPTAG.'-item-type-'.$item->type.'" class="'.$APPTAG.'-col col-sm-6 col-lg-3 pb-3">
+					<div id="'.$APPTAG.'-item-type-'.$item->type.'" class="canban-col col-sm-6 col-lg-3 pb-3">
 						<h6 class="text-center bg-'.$colorType.' rounded py-2 set-shadow-right cursor-help hasTooltip" title="'.JText::_('TEXT_TYPE_'.$item->type.'_DESC').'">
 							<span class="base-icon-'.$iconType.'"></span> '.JText::_('TEXT_TYPE_'.$item->type).'
 						</h6>
@@ -242,7 +245,10 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 			$counter++;
 		}
-		$html .= '</div>';
+		$html .= '
+				</div>
+			</form>
+		';
 	else :
 		if($noReg) $html = '<div class="base-icon-info-circled alert alert-info m-0"> '.JText::_('MSG_LISTNOREG').'</div>';
 	endif;

@@ -44,7 +44,7 @@ $adminView = array();
 $adminView['head']['info'] = $adminView['head']['actions'] = '';
 if($hasAdmin) :
 	$adminView['head']['info'] = '
-		<th width="30" class="d-print-none"><input type="checkbox" id="'.$APPTAG.'_checkAll" /></th>
+		<th width="30" class="d-print-none"><input type="checkbox" class="input-checkAll" onchange="'.$APPTAG.'_setBtnStatus()" /></th>
 		<th width="50" class="d-none d-lg-table-cell d-print-none">'.baseAppHelper::linkOrder('#', 'T1.id', $APPTAG).'</th>
 	';
 	$adminView['head']['actions'] = '
@@ -104,7 +104,7 @@ if($num_rows) : // verifica se existe
 		$adminView['list']['info'] = $adminView['list']['actions'] = '';
 		if($hasAdmin) :
 			$adminView['list']['info'] = '
-				<td class="check-row d-print-none"><input type="checkbox" name="'.$APPTAG.'_ids[]" class="'.$APPTAG.'-chk" value="'.$item->id.'" /></td>
+				<td class="check-row d-print-none"><input type="checkbox" name="'.$APPTAG.'_ids[]" class="checkAll-child" value="'.$item->id.'" onchange="'.$APPTAG.'_setBtnStatus()" /></td>
 				<td class="d-none d-lg-table-cell d-print-none">'.$item->id.'</td>
 			';
 			$adminView['list']['actions'] = '

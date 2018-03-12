@@ -1,3 +1,0 @@
--- IMPORTANTE:
--- Esse App utiliza a mesma estrutura de "clientsStaff".
--- Dessa forma, os dois sistemas utilizam a mesma tabela `cms_brintell_rel_clients_staff`

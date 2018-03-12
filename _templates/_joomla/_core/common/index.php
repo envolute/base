@@ -85,136 +85,140 @@ require_once('_init.tpl.php');
 
 				</div>
 
-			<?php
-			endif;
+			<?php endif; ?>
 
-			// TEMPLATE CONTENT CONTAINER
-			if($hasSidebar) echo '<div id="tmpl-content">';
+			<!-- Template Content -->
+			<div id="tmpl-content">
 
-			// HEADER
-			loadPosition($this, $params, 'header', 8);
+				<?php
 
-			// SECTION TOP
-			loadSection($this, $params, 'top');
+				// HEADER
+				loadPosition($this, $params, 'header', 8);
 
-			?>
+				// SECTION TOP
+				loadSection($this, $params, 'top');
 
-			<!-- Full Content -->
-			<div id="full-content">
-				<div class="<?php echo $params['full_content_container']?>">
-					<div class="row">
+				?>
 
-						<div class="col-12">
-							<jdoc:include type="message" />
-						</div>
+				<!-- Full Content -->
+				<div id="full-content">
+					<div class="<?php echo $params['full_content_container']?>">
+						<div class="row">
 
-						<?php if($this->countModules('full-content-top') > 0): ?>
-							<!-- Full Content Top -->
-							<div id="full-content-top" class="col-12 <?php echo $params['full_content_top']?>">
-								<jdoc:include type="modules" name="full-content-top" style="base" />
+							<div class="col-12">
+								<jdoc:include type="message" />
 							</div>
-						<?php endif; ?>
 
-						<?php if($this->countModules('left') > 0): ?>
-							<!-- Left -->
-							<div id="left" class="<?php echo $params['left']?>">
-								<jdoc:include type="modules" name="left" style="base" />
-							</div>
-						<?php endif; ?>
-
-						<!-- Content -->
-						<div id="content" class="col">
-
-							<?php if($this->countModules('content-top') > 0): ?>
-								<!-- Content Top -->
-								<div id="content-top" class="<?php echo $params['content_top']?>">
-									<jdoc:include type="modules" name="content-top" style="base" />
+							<?php if($this->countModules('full-content-top') > 0): ?>
+								<!-- Full Content Top -->
+								<div id="full-content-top" class="col-12 <?php echo $params['full_content_top']?>">
+									<jdoc:include type="modules" name="full-content-top" style="base" />
 								</div>
 							<?php endif; ?>
 
-							<div class="row">
+							<?php if($this->countModules('left') > 0): ?>
+								<!-- Left -->
+								<div id="left" class="<?php echo $params['left']?>">
+									<jdoc:include type="modules" name="left" style="base" />
+								</div>
+							<?php endif; ?>
 
-								<?php if($this->countModules('content-left') > 0) :?>
-									<!-- Content Left -->
-									<div id="content-left" class="<?php echo $params['content_left']?>">
-										<jdoc:include type="modules" name="content-left" style="base" />
+							<!-- Content -->
+							<div id="content" class="col">
+
+								<?php if($this->countModules('content-top') > 0): ?>
+									<!-- Content Top -->
+									<div id="content-top" class="<?php echo $params['content_top']?>">
+										<jdoc:include type="modules" name="content-top" style="base" />
 									</div>
 								<?php endif; ?>
 
-								<!-- Component -->
-								<div id="component" class="col">
+								<div class="row">
 
-									<?php if($this->countModules('component-top') > 0): ?>
-										<!-- Component Top -->
-										<div id="component-top" class="<?php echo $params['component_top']?>">
-											<jdoc:include type="modules" name="component-top" style="base" />
+									<?php if($this->countModules('content-left') > 0) :?>
+										<!-- Content Left -->
+										<div id="content-left" class="<?php echo $params['content_left']?>">
+											<jdoc:include type="modules" name="content-left" style="base" />
 										</div>
 									<?php endif; ?>
 
-									<div id="component-body">
-										<jdoc:include type="component" />
+									<!-- Component -->
+									<div id="component" class="col">
+
+										<?php if($this->countModules('component-top') > 0): ?>
+											<!-- Component Top -->
+											<div id="component-top" class="<?php echo $params['component_top']?>">
+												<jdoc:include type="modules" name="component-top" style="base" />
+											</div>
+										<?php endif; ?>
+
+										<div id="component-body">
+											<jdoc:include type="component" />
+										</div>
+
+										<?php if($this->countModules('component-bottom') > 0): ?>
+											<!-- Component Bottom -->
+											<div id="component-bottom" class="<?php echo $params['component_bottom']?>">
+												<jdoc:include type="modules" name="component-bottom" style="base" />
+											</div>
+										<?php endif; ?>
+
 									</div>
 
-									<?php if($this->countModules('component-bottom') > 0): ?>
-										<!-- Component Bottom -->
-										<div id="component-bottom" class="<?php echo $params['component_bottom']?>">
-											<jdoc:include type="modules" name="component-bottom" style="base" />
+									<?php if($this->countModules('content-right') > 0): ?>
+										<!-- Content Right -->
+										<div id="content-right" class="<?php echo $params['content_right']?>">
+											<jdoc:include type="modules" name="content-right" style="base" />
 										</div>
 									<?php endif; ?>
 
 								</div>
 
-								<?php if($this->countModules('content-right') > 0): ?>
-									<!-- Content Right -->
-									<div id="content-right" class="<?php echo $params['content_right']?>">
-										<jdoc:include type="modules" name="content-right" style="base" />
+								<?php if($this->countModules('content-bottom') > 0): ?>
+									<!-- Content Bottom -->
+									<div id="content-bottom" class="<?php echo $params['content_bottom']?>">
+										<jdoc:include type="modules" name="content-bottom" style="base" />
 									</div>
 								<?php endif; ?>
 
 							</div>
 
-							<?php if($this->countModules('content-bottom') > 0): ?>
-								<!-- Content Bottom -->
-								<div id="content-bottom" class="<?php echo $params['content_bottom']?>">
-									<jdoc:include type="modules" name="content-bottom" style="base" />
+							<?php if($this->countModules('right') > 0): ?>
+								<!-- Right -->
+								<div id="right" class="<?php echo $params['right']?>">
+									<jdoc:include type="modules" name="right" style="base" />
+								</div>
+							<?php endif; ?>
+
+							<?php if($this->countModules('full-content-bottom') > 0): ?>
+								<!-- Full Content Footer -->
+								<div id="full-content-bottom" class="col-12 <?php echo $params['full_content_bottom']?>">
+									<jdoc:include type="modules" name="full-content-bottom" style="base" />
 								</div>
 							<?php endif; ?>
 
 						</div>
-
-						<?php if($this->countModules('right') > 0): ?>
-							<!-- Right -->
-							<div id="right" class="<?php echo $params['right']?>">
-								<jdoc:include type="modules" name="right" style="base" />
-							</div>
-						<?php endif; ?>
-
-						<?php if($this->countModules('full-content-bottom') > 0): ?>
-							<!-- Full Content Footer -->
-							<div id="full-content-bottom" class="col-12 <?php echo $params['full_content_bottom']?>">
-								<jdoc:include type="modules" name="full-content-bottom" style="base" />
-							</div>
-						<?php endif; ?>
-
 					</div>
 				</div>
+				<!--/ Full Content -->
+
+				<?php
+
+				// SECTION BOTTOM
+				loadSection($this, $params, 'bottom');
+
+				// SCROLL TO TOP
+				echo '<a id="scroll-to-top" href="#screen" class="go-to"></a>';
+
+				// FOOTER
+				loadPosition($this, $params, 'footer', 8);
+
+				?>
+
 			</div>
-			<!--/ Full Content -->
+			<!--/ template content -->
 
 			<?php
-
-			// SECTION BOTTOM
-			loadSection($this, $params, 'bottom');
-
-			// SCROLL TO TOP
-			echo '<a id="scroll-to-top" href="#screen" class="go-to"></a>';
-
-			// FOOTER
-			loadPosition($this, $params, 'footer', 8);
-
-			// CLOSE TEMPLATE CONTENT CONTAINER
-			if($hasSidebar) echo '</div>';
-
 			// HIDDEN
 			if($this->countModules('hidden') > 0):
 				echo '
@@ -223,7 +227,6 @@ require_once('_init.tpl.php');
 					</div>
 				';
 			endif;
-
 			?>
 
 			<jdoc:include type="modules" name="debug" style="base" />

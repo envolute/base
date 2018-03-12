@@ -54,7 +54,6 @@ $where = '';
 
 	$ordf	= $app->input->get($APPTAG.'oF', '', 'string'); // campo a ser ordenado
 	$ordt	= $app->input->get($APPTAG.'oT', '', 'string'); // tipo de ordem: 0 = 'ASC' default, 1 = 'DESC'
-	unset($_SESSION[$APPTAG.'oF']);
 	$orderDef = 'T1.name'; // não utilizar vírgula no inicio ou fim
 	if(!isset($_SESSION[$APPTAG.'oF'])) : // DEFAULT ORDER
 		$_SESSION[$APPTAG.'oF'] = 'T1.docs';

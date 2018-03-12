@@ -53,8 +53,9 @@ jQuery(function() {
 	?>
 
 	// STATUS CONTAINERS
-	var statusPopup	= jQuery('#modal-status-<?php echo $APPTAG?>');
-	var formStatus	= jQuery('#form-status-<?php echo $APPTAG?>');
+	var statusPopup			= jQuery('#modal-status-<?php echo $APPTAG?>');
+	var statusCheckedPopup	= jQuery('#modal-status-checked-<?php echo $APPTAG?>');
+	var formStatus			= jQuery('#form-status-<?php echo $APPTAG?>');
 
 	// APP FIELDS
 	var project_id			= jQuery('#<?php echo $APPTAG?>-project_id');
@@ -78,6 +79,7 @@ jQuery(function() {
 	// ALTER STATUS
 	var statusId			= jQuery('#<?php echo $APPTAG?>-statusId');
 	var new_status			= formStatus.find('input[name=new_status]:radio');
+	var new_checked_status	= formStatus.find('input[name=new_checked_status]:radio');
 
 	// PARENT FIELD -> Select
 	// informe, se houver, o campo que representa a chave estrangeira principal
@@ -233,10 +235,6 @@ jQuery(function() {
 			?>
 		});
 
-		<?php // CHECK ALL -> Seleciona todas as linhas (checkboxes) da listagem
-		require(JPATH_CORE.DS.'apps/snippets/list/checkAll.js.php');
-		?>
-
 		<?php // BTN STATUS -> habilita/desabilita botões se houver, ou não, checkboxes marcados na Listagem
 		require(JPATH_CORE.DS.'apps/snippets/list/btnStatus.js.php');
 		?>
@@ -274,7 +272,7 @@ jQuery(function() {
 		// On Modal Close -> Ações quando o modal é fechado
 		statusPopup.on('hidden.bs.modal', function () {
 			statusId.val('');
-			checkOption(new_status, 0); // radio
+			checkOption(new_status, ''); // radio
 			setFormDefinitions();
 		});
 
@@ -379,23 +377,36 @@ jQuery(function() {
 
 		// CUSTOM -> Set Status
 		// seta o valor do campo 'status' do registro
-		window.<?php echo $APPTAG?>_setStatus = function(status) {
-			var cod = '&id='+statusId.val();
-			var st = '&st='+status;
-			<?php echo $APPTAG?>_formExecute(true, false, true); // inicia o loader
+		window.<?php echo $APPTAG?>_setStatus = function(status, recursive) {
+			var dados = cod = st = e = '';
+			if(isSet(status)) st = '&st='+status;
+			if(!isEmpty(statusId.val())) {
+				cod = '&id='+statusId.val();
+				<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
+			} else {
+				// Como o carregamento da listagem é em ajax,
+				// é necessário localizar o objeto após o carregamento...
+				formList = jQuery('#form-list-<?php echo $APPTAG?>');
+				var reCursive = (isSet(recursive) && recursive) ? true : false;
+				if(!reCursive) <?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
+				dados		= formList.serialize();
+				inputVars	= formList.find('input[type="checkbox"]:checked, input[type="hidden"]').length;
+			}
 			jQuery.ajax({
 				url: "<?php echo $URL_APP_FILE ?>.model.php?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&task=status"+cod+st,
 				dataType: 'json',
 				type: 'POST',
+				data:  dados,
 				cache: false,
 				success: function(data) {
 					<?php echo $APPTAG?>_formExecute(true, false, false); // encerra o loader
 					jQuery.map( data, function( res ) {
 						if(res.status == 1) {
-							if(res.newStatus == 0) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_0')?>').removeClass().addClass('base-icon-lightbulb text-info hasTooltip');
-							else if(res.newStatus == 1) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_1')?>').removeClass().addClass('base-icon-clock text-danger hasTooltip');
-							else if(res.newStatus == 2) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_2')?>').removeClass().addClass('base-icon-off text-live hasTooltip');
-							else if(res.newStatus == 3) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_3')?>').removeClass().addClass('base-icon-ok text-success hasTooltip');
+							if(res.newStatus == 0) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_0')?>').removeClass().addClass('base-icon-<?php echo JText::_('TEXT_ICON_STATUS_0')?> text-<?php echo JText::_('TEXT_COLOR_STATUS_0')?> hasTooltip');
+							else if(res.newStatus == 1) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_1')?>').removeClass().addClass('base-icon-<?php echo JText::_('TEXT_ICON_STATUS_1')?> text-<?php echo JText::_('TEXT_COLOR_STATUS_1')?> hasTooltip');
+							else if(res.newStatus == 2) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_2')?>').removeClass().addClass('base-icon-<?php echo JText::_('TEXT_ICON_STATUS_2')?> text-<?php echo JText::_('TEXT_COLOR_STATUS_2')?> hasTooltip');
+							else if(res.newStatus == 3) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_3')?>').removeClass().addClass('base-icon-<?php echo JText::_('TEXT_ICON_STATUS_3')?> text-<?php echo JText::_('TEXT_COLOR_STATUS_3')?> hasTooltip');
+							else if(res.newStatus == 4) jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').attr('title', '<?php echo JText::_('TEXT_STATUS_4')?>').removeClass().addClass('base-icon-<?php echo JText::_('TEXT_ICON_STATUS_4')?> text-<?php echo JText::_('TEXT_COLOR_STATUS_4')?> hasTooltip');
 							jQuery('#<?php echo $APPTAG?>-item-'+res.id+'-status').data('status', res.newStatus);
 							setTips();
 						}
@@ -456,24 +467,20 @@ jQuery(function() {
 			<?php
 			if($cfg['showAddBtn'] && $cfg['canAdd'] && !${$APPTAG.'Archive'}) echo $addBtn;
 			if($cfg['showList']) :
-				if($cfg['listFull'] && !${$APPTAG.'Archive'}) :
-					if($cfg['canEdit']) : ?>
-						<button class="btn btn-sm btn-success <?php echo $APPTAG?>-btn-action" disabled onclick="<?php echo $APPTAG?>_setState(0, 1)">
-							<span class="base-icon-ok-circled"></span> <?php echo JText::_('TEXT_ACTIVE'); ?>
-						</button>
-						<button class="btn btn-sm btn-warning <?php echo $APPTAG?>-btn-action" disabled onclick="<?php echo $APPTAG?>_setState(0, 0)">
-							<span class="base-icon-cancel"></span> <?php echo JText::_('TEXT_INACTIVE'); ?>
-						</button>
-					<?php endif;?>
-					<?php if($cfg['canDelete']) :?>
-						<button class="btn btn-sm btn-danger <?php echo $APPTAG?>-btn-action d-none d-sm-inline-block" disabled onclick="<?php echo $APPTAG?>_del(0)">
-							<span class="base-icon-trash"></span> <?php echo JText::_('TEXT_DELETE'); ?>
-						</button>
-					<?php endif;?>
-				<?php else :?>
+				if(!${$APPTAG.'Archive'}) :?>
 					<?php if(!$cfg['listModal'] && !$cfg['listFull'] && $cfg['ajaxReload']) :?>
 						<a href="#" class="btn btn-sm btn-info base-icon-arrows-cw" onclick="<?php echo $APPNAME?>_listReload(<?php echo ${$APPTAG.'Archive'} ? 'true' : 'false'?>, false, false)"></a>
 					<?php endif;?>
+					<?php if($cfg['canEdit']) : ?>
+						<button class="btn btn-sm btn-info <?php echo $APPTAG?>-btn-action" disabled onclick="<?php echo $APPTAG?>_setStatusModal(this)" data-id="" data-status="">
+							<span class="base-icon-exchange"></span> <?php echo JText::_('TEXT_STATUS'); ?>
+						</button>
+						<button class="btn btn-sm btn-danger <?php echo $APPTAG?>-btn-action" disabled onclick="<?php echo $APPTAG?>_setState(0, 0)">
+							<span class="base-icon-cancel"></span> <?php echo JText::_('TEXT_CLOSE'); ?>
+						</button>
+					<?php endif;?>
+				<?php else :?>
+
 				<?php endif;?>
 				<?php if($cfg['listFull'] || $cfg['ajaxFilter']) :?>
 					<button class="btn btn-sm btn-default toggle-state <?php echo ((isset($_GET[$APPTAG.'_filter']) || $cfg['openFilter']) ? 'active' : '')?>" data-toggle="collapse" data-target="<?php echo '#filter-'.$APPTAG?>" aria-expanded="<?php echo ((isset($_GET[$APPTAG.'_filter']) || $cfg['openFilter']) ? 'true' : '')?>" aria-controls="<?php echo 'filter'.$APPTAG?>">
