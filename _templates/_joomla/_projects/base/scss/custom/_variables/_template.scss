@@ -5,7 +5,7 @@
 	$base-font-size-root:				14px; // Tamanho 'raíz' da fonte, atribuida ao elemento '<html>'
 	$base-break-up:						'.media-md'; // ponto de quebra do layout para o modo 'desktop'
 	$base-break-down:					'html:not(.media-md)'; // ponto de quebra do layout para o modo 'mobile'
-	$base-enable-rounded:				false;
+	$base-enable-rounded:				true;
 
 // COLORS
 
@@ -321,6 +321,8 @@
 	$base-field-image-border:			2px;
 
 	// Label
+	$base-label-margin:					.2rem !default;
+	$base-label-font-size:				.9rem !default;
 	$base-label-xs-margin:				0 !default;
 	$base-label-xs-font-size:			.8rem !default;
 	$base-label-sm-margin:				.2rem !default;

@@ -1,7 +1,7 @@
 <input type="hidden" name="id" id="<?php echo $APPTAG?>-id" />
 <input type="hidden" name="relationId" id="<?php echo $APPTAG?>-relationId" value="<?php echo $_SESSION[$RTAG.'RelId']?>" />
 <?php
-if($cfg['canEdit']) :
+if($cfg['canAdd']) :
 	$hideToolbar = (isset($cfg['showFormToolbar']) && !$cfg['showFormToolbar']) ? ' hidden' : '';
 ?>
 	<div class="row form-toolbar mb-3"<?php echo $hideToolbar?>>

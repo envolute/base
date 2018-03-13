@@ -109,17 +109,17 @@ if($vID != 0) :
 		$itemStatus = ($view->status == 1) ? 'warning' : JText::_('TEXT_COLOR_STATUS_'.$view->status);
 		$iconStatus = JText::_('TEXT_ICON_STATUS_'.$view->status);
 
-		$type = ' <span class="badge badge-primary cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_TYPE').'">'.JText::_('TEXT_TYPE_'.$view->type).'</span>';
+		$type = ' <span class="badge badge-'.($view->type ? 'danger' : 'primary').' cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_TYPE').'">'.JText::_('TEXT_TYPE_'.$view->type).'</span>';
 
 		switch ($view->priority) {
 			case 1:
-				$priority = ' <span class="badge badge-primary base-icon-attention"> '.JText::_('TEXT_PRIORITY_DESC_1').'</span>';
+				$priority = ' <span class="badge badge-warning base-icon-attention"> '.JText::_('TEXT_PRIORITY_DESC_1').'</span>';
 				break;
 			case 2:
 				$priority = ' <span class="badge badge-danger base-icon-attention"> '.JText::_('TEXT_PRIORITY_DESC_2').'</span>';
 				break;
 			default :
-				$priority = ' <span class="badge badge-info base-icon-attention"> '.JText::_('TEXT_PRIORITY_DESC_0').'</span>';
+				$priority = ' <span class="badge badge-primary base-icon-attention"> '.JText::_('TEXT_PRIORITY_DESC_0').'</span>';
 		}
 		// visibility
 		$visible = ' <span class="badge badge-primary'.(!$view->visibility ? ' base-icon-lock-open-alt' : '').' cursor-help hasTooltip" title="'.JText::_('FIELD_LABEL_VISIBILITY').'"> '.JText::_('TEXT_VISIBILITY_'.$view->visibility).'</span>';

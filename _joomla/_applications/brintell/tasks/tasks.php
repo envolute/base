@@ -144,7 +144,7 @@ jQuery(function() {
 			<?php endif;?>
 			subject.val('');
 			description.val('');
-			checkOption(priority, 1);
+			checkOption(priority, 0);
 			deadline.val('');
 			timePeriod.selectUpdate('<?php echo JText::_('TEXT_AM'); ?>'); // select
 			estimate.val('');

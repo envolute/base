@@ -107,27 +107,32 @@ $users = $db->loadObjectList();
 			<input type="text" name="date" id="<?php echo $APPTAG?>-date" class="form-control field-date" data-convert="true" />
 		</div>
 	</div>
-	<div class="col-lg">
-		<div class="form-group field-required">
-			<label class="label-sm"><?php echo JText::_('FIELD_LABEL_TO_ASSIGN'); ?></label>
-			<div class="input-group">
-				<span class="input-group-addon">
-					<span class="base-icon-user"></span>
-				</span>
-				<select name="user_id" id="<?php echo $APPTAG?>-user_id" class="form-control">
-					<option value="0">- <?php echo JText::_('FIELD_LABEL_SELECT_USER'); ?> -</option>
-					<?php
-						foreach ($users as $obj) {
-							$name = !empty($obj->nickname) ? $obj->nickname : $obj->name;
-							$staff = ($obj->type == 1) ? '*' : '';
-							echo '<option value="'.$obj->user_id.'">'.$staff.baseHelper::nameFormat($name).'</option>';
-						}
-					?>
-				</select>
+	<?php if($hasAdmin) :?>
+		<div class="col-lg">
+			<div class="form-group field-required">
+				<label class="label-sm"><?php echo JText::_('FIELD_LABEL_TO_ASSIGN'); ?></label>
+				<div class="input-group">
+					<span class="input-group-addon">
+						<span class="base-icon-user"></span>
+					</span>
+					<select name="user_id" id="<?php echo $APPTAG?>-user_id" class="form-control">
+						<option value="0">- <?php echo JText::_('FIELD_LABEL_SELECT_USER'); ?> -</option>
+						<?php
+							foreach ($users as $obj) {
+								$name = !empty($obj->nickname) ? $obj->nickname : $obj->name;
+								$staff = ($obj->type == 1) ? '*' : '';
+								echo '<option value="'.$obj->user_id.'">'.$staff.baseHelper::nameFormat($name).'</option>';
+							}
+						?>
+					</select>
+				</div>
 			</div>
 		</div>
+	<?php endif;?>
+	<div class="col-lg<?php if($hasAdmin) echo '-12';?>">
+		<div class="form-group mb-0">
+			<?php echo !$hasAdmin ? '<label class="label-sm">&#160;</label>' : ''?>
+			<input type="text" name="note" id="<?php echo $APPTAG?>-note" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_NOTE'); ?>" />
+		</div>
 	</div>
-</div>
-<div class="form-group mb-0">
-	<input type="text" name="note" id="<?php echo $APPTAG?>-note" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_NOTE'); ?>" />
 </div>

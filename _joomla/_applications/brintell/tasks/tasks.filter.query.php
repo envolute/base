@@ -28,7 +28,7 @@ ${$APPTAG.'Archive'} = isset(${$APPTAG.'Archive'}) ? ${$APPTAG.'Archive'} : 0;
 	// ASSIGN TO
 	$assigned = '';
 	// Se não for admin, mostra apenas as dele
-	$viewer = (!$hasAdmin && $pID == 0) ? array($user->id) : array();
+	$viewer = (!$hasAdmin && $pID == 0 && !isset($_GET[$APPTAG.'_filter'])) ? array($user->id) : array();
 	// Set visibility
 	// OR (visibility = project/client) OR (created_by = current user)
 	$assigned .= ' AND ('.$db->quoteName('T1.visibility').' > 0 OR '.$db->quoteName('T1.created_by').' = '.$user->id.')';

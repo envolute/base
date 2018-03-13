@@ -96,7 +96,7 @@ if($num_rows) { // verifica se existe
 							<tr>
 								'.$adminView['head']['info'].'
 								<th>'.JText::_('FIELD_LABEL_USER').'</th>
-								<th width="80">'.JText::_('FIELD_LABEL_TIME').'</th>
+								<th width="90">'.JText::_('FIELD_LABEL_TIME').'</th>
 								<th width="120">'.baseAppHelper::linkOrder(JText::_('FIELD_LABEL_DATE'), 'T1.date', $APPTAG).'</th>
 								<th>'.JText::_('FIELD_LABEL_TASK').'</th>
 								<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
@@ -224,7 +224,7 @@ if($num_rows) { // verifica se existe
 				<th colspan="3" class="text-uppercase py-3 font-weight-normal">'.JText::_('TEXT_TOTAL').'</th>
 				<th class="py-3 font-weight-normal">
 					<div class="text-live"><span class="base-icon-clock"></span> '.sumTime($times).'</div>
-					<div class="small text-primary ml-1"><span class="base-icon-level-down cursor-help hasTooltip" title="'.JText::_('TEXT_TOTAL_TIME_COUNT').'"> '.$sumHours.'</span></div>
+					<div class="small text-primary ml-1"><span class="base-icon-level-down cursor-help hasTooltip" title="'.JText::_('TEXT_TOTAL_TIME_COUNT').'"> '.str_replace(',', '.', $sumHours).'</span></div>
 				</th>
 				<th class="py-3 font-weight-normal">'.$period.'</th>
 				<th colspan="3" class="py-3 text-right font-weight-normal">'.$workValue.$btnGetFile.'</th>

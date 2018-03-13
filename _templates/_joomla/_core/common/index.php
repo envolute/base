@@ -71,7 +71,7 @@ require_once('_init.tpl.php');
 
 					<?php if($this->countModules('sidebar-content') > 0): ?>
 						<!-- Side Bar Content -->
-						<div id="tmpl-sidebar-content" class="base-scrollbar set-height" data-offset-elements="#cmstools, #tmpl-sidebar-header, #tmpl-sidebar-footer">
+						<div id="tmpl-sidebar-content" class="base-scrollbar set-height" data-offset-elements="#cmstools, #tmpl-sidebar-header, #tmpl-sidebar-collapse, #tmpl-sidebar-footer">
 							<jdoc:include type="modules" name="sidebar-content" style="base" />
 						</div>
 					<?php endif; ?>

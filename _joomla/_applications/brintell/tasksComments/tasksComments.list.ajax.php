@@ -178,11 +178,11 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$html .= '
 				<li class="d-flex">
 					<div class="mr-3" style="flex:0 0 42px;">
-						<a href="'.$_ROOT.'apps/staff/view?vID='.$item->user_id.'">'.$img.'</a>
+						<a href="'.$urlProfile.'" class="d-block pos-relative clearfix">'.$img.$iStatus.'</a>
 						<div class="btn-group btn-group-justified">'.$btnEdit.$btnDelete.'</div>
 					</div>
 					<div style="flex-grow:1;" class="font-condensed text-sm mb-2 lh-1-3">
-						<div class="page-header text-muted b-bottom-dashed clearfix">'.$name.$iStatus.' <span class="float-right">'.baseHelper::dateFormat($item->created_date, 'd.m.y H:i').'</span></div>
+						<div class="page-header text-muted b-bottom-dashed clearfix">'.$name.' <span class="float-right">'.baseHelper::dateFormat($item->created_date, 'd.m.y H:i').'</span></div>
 						<div>'.$item->comment.'</div>
 						'.$attachs.'
 					</div>

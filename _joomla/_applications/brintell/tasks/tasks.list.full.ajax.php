@@ -116,7 +116,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 		$html .= '
 			<form id="form-list-'.$APPTAG.'" method="post">
-				<div class="row set-height" data-offset-elements="#cmstools, #header, .baseContent > .page-header" data-offset="20">
+				<div class="row set-height" data-offset-elements="#cmstools, #header, .baseContent > .page-header, #filter-'.$APPTAG.' > fieldset" data-offset="20">
 		';
 		$status		= 9;
 		$counter	= 0;

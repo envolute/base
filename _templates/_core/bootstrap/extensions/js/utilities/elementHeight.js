@@ -7,7 +7,7 @@ jQuery(function() {
   // Obs: Informando os Id's dos elementos através do parâmetro 'offsetElems', o 'offset' será calculado
 	window.setElementHeight = function(elem, offset, offsetElems) {
 		var e = setElement(elem, '.set-height');
-		var h = jQuery(window).height();
+		var h = jQuery(window).outerHeight();
 		if(elementExist(e)) {
 			var a = Array();
 			var obj, off = 0, offElems;
@@ -28,7 +28,7 @@ jQuery(function() {
 						var eH = 0;
 						if(elementExist(el)) {
 							el.each(function() {
-								eH += jQuery(this).outerHeight(true);
+								if(jQuery(this).is(':visible')) eH += jQuery(this).outerHeight(true);
 							});
 						}
 						off = off + eH;

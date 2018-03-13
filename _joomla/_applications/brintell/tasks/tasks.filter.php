@@ -82,7 +82,7 @@ require($PATH_APP_FILE.'.filter.query.php');
 			$name = !empty($obj->nickname) ? $obj->nickname : $obj->name;
 			$staff = ($obj->type == 1) ? '*' : '';
 			$me = ($obj->user_id == $user->id) ? ' ('.JText::_('TEXT_TO_ME').')' : '';
-			$flt_assign .= '<option value="'.$obj->user_id.'"'.($obj->user_id == $fAssign ? ' selected = "selected"' : '').'>'.$staff.baseHelper::nameFormat($name).$me.'</option>';
+			$flt_assign .= '<option value="'.$obj->user_id.'"'.(in_array($obj->user_id, $fAssign) ? ' selected = "selected"' : '').'>'.$staff.baseHelper::nameFormat($name).$me.'</option>';
 		}
 		$flt_assign = '
 			<div class="col-sm-6 col-md-4">
@@ -102,7 +102,7 @@ require($PATH_APP_FILE.'.filter.query.php');
 	$db->setQuery($query);
 	$tags = $db->loadObjectList();
 	foreach ($tags as $obj) {
-		$flt_tag .= '<option value="'.$obj->name.'"'.($obj->id == $fTags ? ' selected = "selected"' : '').'>'.$obj->name.'</option>';
+		$flt_tag .= '<option value="'.$obj->name.'"'.(in_array($obj->id, $fTags) ? ' selected = "selected"' : '').'>'.$obj->name.'</option>';
 	}
 
 	$visibility = '';
@@ -155,7 +155,7 @@ require($PATH_APP_FILE.'.filter.query.php');
 // VIEW
 $htmlFilter = '
 	<form id="filter-'.$APPTAG.'" class="hidden-print collapse '.((isset($_GET[$APPTAG.'_filter']) || $cfg['openFilter']) ? 'show' : '').'" method="get">
-		<fieldset class="fieldset-embed fieldset-sm pt-2 pb-0">
+		<fieldset class="fieldset-embed fieldset-sm pt-2 pb-0 mb-0">
 			<input type="hidden" name="'.$APPTAG.'_filter" value="1" />
 			<div class="row">
 				<div class="col-xl-10">

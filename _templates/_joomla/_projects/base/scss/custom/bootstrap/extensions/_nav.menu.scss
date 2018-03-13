@@ -133,6 +133,18 @@
 				color: $base-link-hover-color;
 				background-color: $base-gray-100!important;
 			}
+			// Item ativo
+			.mainmenu.nav.menu .nav-child li.active > a,
+			.mainmenu.nav.menu .nav-child li > a.active // em caso de scroll 'go-to'
+			{
+				color: $white;
+				background-color: $base-color-primary;
+			}
+
+			// sub-level > 1
+			.mainmenu.nav.menu:not(.nav-stacked) .nav-child > li > .nav-child {
+			    margin-top: -3.65em !important;
+			}
 
 // USERMENU
 

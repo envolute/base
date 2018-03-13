@@ -394,7 +394,7 @@ $users = $db->loadObjectList();
 					<div class="col-sm-6 col-lg-4">
 						<div class="form-group">
 							<label class="label-sm"><?php echo JText::_('FIELD_LABEL_BIRTHDAY'); ?></label>
-							<input type="text" name="birthday" id="<?php echo $APPTAG?>-birthday" class="form-control field-date birthday" data-convert="true" />
+							<input type="text" name="birthday" id="<?php echo $APPTAG?>-birthday" class="form-control field-date birthday" data-mindate="-100y" data-maxdate="0d" data-year-range="-100:c" data-convert="true" />
 						</div>
 					</div>
 					<div class="col-sm-6 col-lg-4">

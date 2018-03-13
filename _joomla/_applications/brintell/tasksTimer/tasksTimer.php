@@ -205,10 +205,11 @@ jQuery(function() {
 
 		// CUSTOM -> Reset Registration Fields
 		window.<?php echo $APPTAG?>_setTime = function(val) {
-			var id = displayId.val();
+			var id = formId_<?php echo $APPTAG?>.val();
 			// Manual time
 			if(val) {
 				// new register
+				console.log(id);
 				if(isEmpty(id) || id == 0) {
 					// set current time at 'start_hour'
 					var d = new Date();
@@ -217,6 +218,7 @@ jQuery(function() {
 					var i = d.getMinutes();
 					i = (i < 10) ? '0'+i : i;
 					start_hour.val(H+':'+i);
+					console.log(start_hour.val());
 				// edit register
 				} else {
 					// END HOUR
