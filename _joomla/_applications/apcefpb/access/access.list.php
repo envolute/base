@@ -1,4 +1,4 @@
-if($canEdit) :<?php
+<?php
 defined('_JEXEC') or die;
 
 // LIST
@@ -15,7 +15,7 @@ defined('_JEXEC') or die;
 			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
 			ON T2.id = T1.client_id
 		WHERE
-			'.$where.$orderList;
+			'.$where.$orderList
 	;
 	try {
 
@@ -222,7 +222,8 @@ if($num_rows) : // verifica se existe
 			}
 			$guests_total += $totalGuests; // soma o total geral de convidados
 			$tax_amount += $total_amount; // soma o valor total acumulado de taxas
-			$gCollapse = empty($gList) ? '' : ' <small>[ <a href="#'.$APPTAG.'-guestsView'.$item->id.'" data-toggle="collapse" href="#guestsView" role="button" aria-expanded="false" aria-controls="guestsView">'.JText::_('TEXT_SEE_ALL').'</a> ]</small>';
+			$printTax = ($total_tax > 0) ? '<a href="#" class="btn btn-xs btn-outline-primary hasTooltip" title="'.JText::_('TEXT_PRINT').'" onclick="'.$APPTAG.'_printPayment('.$item->id.', true)"><span class="base-icon-print"></span></a>' : '';
+			$gCollapse = empty($gList) ? '' : ' <small>[ <a href="#'.$APPTAG.'-guestsView'.$item->id.'" data-toggle="collapse" href="#guestsView" role="button" aria-expanded="false" aria-controls="guestsView">'.JText::_('TEXT_SEE_ALL').'</a> ]</small> '.$printTax;
 			$guests .= '<strong>'.$totalGuests.'</strong>'.$gCollapse;
 			if(!empty($gList)) :
 				$guests .= '

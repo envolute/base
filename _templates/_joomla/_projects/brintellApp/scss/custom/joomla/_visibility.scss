@@ -1,0 +1,7 @@
+// VISIBILITY
+
+	// User state
+	.public .hidden-public,
+	.logged .hidden-logged {
+		display: none!important;
+	}

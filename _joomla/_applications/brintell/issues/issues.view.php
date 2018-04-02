@@ -121,7 +121,7 @@ if($vID != 0) :
 		if(!empty($view->description)) {
 			$desc = nl2br($view->description); // mostra com as quebras de linha
 			$desc = preg_replace('~[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]~','<a href="\\0" target="_blank">\\0</a>', $desc);
-			$desc = '<div class="font-condensed mb-4">'.$desc.'</div>';
+			$desc = '<div class="font-condensed mb-4 break-word">'.$desc.'</div>';
 		}
 
 		$urlViewProject = JURI::root().'apps/projects/view?pID='.$view->project_id;
@@ -237,27 +237,33 @@ if($vID != 0) :
 				</div>
 				<div class="row">
 					<div class="col-md-8 b-right">
-						'.$desc.$attachs
-		;
-						// COMMENTS
-						$issuesCommentsIsPublic			= 2; // Author
-						$issuesCommentsAdminGroups		= array(12); // Analyst
-						$issuesCommentsListFull			= false;
-						$issuesCommentsRelTag			= 'issues';
-						$issuesCommentsRelListNameId	= 'issue_id';
-						$issuesCommentsRelListId		= $view->id;
-						$issuesCommentsOnlyChildList	= true;
-						$issuesCommentsShowAddBtn		= false;
-						echo '
-							<h4 class="font-condensed text-live mb-3">
-								'.JText::_('TEXT_COMMENTS').'
-								<a href="#" class="btn btn-xs btn-success base-icon-plus float-right" onclick="'.$MAINAPP.'Comments_setParent('.$view->id.')" data-toggle="modal" data-target="#modal-'.$MAINAPP.'Comments" data-backdrop="static" data-keyboard="false"></a>
-								<a href="#" class="btn btn-xs btn-info base-icon-arrows-cw mx-1 float-right" onclick="'.$MAINAPP.'Comments_listReload(false, false, false, '.$MAINAPP.'CommentsoCHL, '.$MAINAPP.'CommentsrNID, '.$MAINAPP.'CommentsrID)"></a>
-							</h4>
-						';
-						require(JPATH_APPS.DS.''.$MAINAPP.'Comments/'.$MAINAPP.'Comments.php');
-						echo '<hr class="my-1" /><a href="#" class="btn btn-xs btn-success base-icon-plus" onclick="'.$MAINAPP.'Comments_setParent('.$view->id.')" data-toggle="modal" data-target="#modal-'.$MAINAPP.'Comments" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_ADD').'</a>';
+						<div class="row">
+							<div class="col-xl-6">
+								'.$desc.$attachs.'
+							</div>
+							<div class="col-xl-6 b-left">
+		';
+								// COMMENTS
+								$issuesCommentsIsPublic			= 2; // Author
+								$issuesCommentsAdminGroups		= array(12); // Analyst
+								$issuesCommentsListFull			= false;
+								$issuesCommentsRelTag			= 'issues';
+								$issuesCommentsRelListNameId	= 'issue_id';
+								$issuesCommentsRelListId		= $view->id;
+								$issuesCommentsOnlyChildList	= true;
+								$issuesCommentsShowAddBtn		= false;
+								echo '
+									<h4 class="font-condensed text-live mb-3">
+										'.JText::_('TEXT_COMMENTS').'
+										<a href="#" class="btn btn-xs btn-success base-icon-plus float-right" onclick="'.$MAINAPP.'Comments_setParent('.$view->id.')" data-toggle="modal" data-target="#modal-'.$MAINAPP.'Comments" data-backdrop="static" data-keyboard="false"></a>
+										<a href="#" class="btn btn-xs btn-info base-icon-arrows-cw mx-1 float-right" onclick="'.$MAINAPP.'Comments_listReload(false, false, false, '.$MAINAPP.'CommentsoCHL, '.$MAINAPP.'CommentsrNID, '.$MAINAPP.'CommentsrID)"></a>
+									</h4>
+								';
+								require(JPATH_APPS.DS.''.$MAINAPP.'Comments/'.$MAINAPP.'Comments.php');
+								echo '<hr class="my-1" /><a href="#" class="btn btn-xs btn-success base-icon-plus" onclick="'.$MAINAPP.'Comments_setParent('.$view->id.')" data-toggle="modal" data-target="#modal-'.$MAINAPP.'Comments" data-backdrop="static" data-keyboard="false"> '.JText::_('TEXT_ADD').'</a>';
 		echo '
+							</div>
+						</div>
 					</div>
 					<div class="col-md-4">
 		';

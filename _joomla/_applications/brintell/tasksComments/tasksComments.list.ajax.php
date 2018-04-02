@@ -140,11 +140,19 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$listFiles = '';
 				for($i = 0; $i < count($files[$item->id]); $i++) {
 					if(!empty($files[$item->id][$i]->filename)) :
-						$listFiles .= '
-							<a class="d-inline-block mr-3" href="'.$_ROOT.'apps/get-file?fn='.base64_encode($files[$item->id][$i]->filename).'&mt='.base64_encode($files[$item->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
-								<span class="base-icon-attach hasTooltip" title="'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"> '.$files[$item->id][$i]->filename.'</span>
-							</a>
-						';
+						if(strpos($files[$item->id][$i]->mimetype, 'image') !== false) {
+							$listFiles .= '
+								<a href="'.$_ROOT.'images/apps/'.$APPPATH.'/'.$files[$item->id][$i]->filename.'" class="set-modal modal_link cboxElement d-inline-block mr-2" rel="'.$APPTAG.'-view" data-modal-class-name="no_title">
+									<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$files[$item->id][$i]->filename, 45, 35).'" class="rounded mb-2 set-shadow-right img-thumbnail" style="width:45px; height:35px;" />
+								</a>
+							';
+						} else {
+							$listFiles .= '
+								<a class="d-inline-block mr-2" href="'.$_ROOT.'apps/get-file?fn='.base64_encode($files[$item->id][$i]->filename).'&mt='.base64_encode($files[$item->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
+									<span class="base-icon-attach hasTooltip" title="'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"> '.$files[$item->id][$i]->filename.'</span>
+								</a>
+							';
+						}
 					endif;
 				}
 
@@ -169,22 +177,30 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			$name = baseHelper::nameFormat((!empty($item->nickname) ? $item->nickname : $item->name));
 			if($item->type == 2) $name .= ' <span class="badge badge-warning">'.JText::_('TEXT_CLIENT').'</span>';
 
+			$comment = '';
+			if(!empty($item->comment)) {
+				$comment = htmlspecialchars($item->comment);
+				$comment = preg_replace('~[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]~','<a href="\\0" target="_blank">\\0</a>', $comment);
+				$comment = '<div class="break-word text-pre-wrap mb-3">'.$comment.'</div>';
+			}
+
 			$attachs = !empty($listFiles) ? '<div class="font-condensed text-sm pt-1">'.$listFiles.'</div>' : '';
 
 			// $btnState = $canEdit ? '<a href="#" class="btn btn-xs btn-link" onclick="'.$APPTAG.'_setState('.$item->id.')" id="'.$APPTAG.'-state-'.$item->id.'"><span class="'.($item->state == 1 ? 'base-icon-ok text-success' : 'base-icon-cancel text-danger').' hasTooltip" title="'.JText::_('MSG_ACTIVE_INACTIVE_ITEM').'"></span></a> ' : '';
 			$btnEdit = $canEdit ? '<a href="#" class="btn btn-xs btn-default" onclick="'.$APPTAG.'_loadEditFields('.$item->id.', false, false)"><span class="base-icon-pencil text-live hasTooltip" title="'.JText::_('TEXT_EDIT').'"></span></a> ' : '';
 			$btnDelete = $canDelete ? '<a href="#" class="btn btn-xs btn-default" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash text-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'"></span></a>' : '';
 
+			$imgWidth = 42;
+			$marRight = 15; // margem da imagem
 			$html .= '
 				<li class="d-flex">
-					<div class="mr-3" style="flex:0 0 42px;">
+					<div style="flex:0 0 '.$imgWidth.'px; margin-right: '.$marRight.'px;">
 						<a href="'.$urlProfile.'" class="d-block pos-relative clearfix">'.$img.$iStatus.'</a>
 						<div class="btn-group btn-group-justified">'.$btnEdit.$btnDelete.'</div>
 					</div>
-					<div style="flex-grow:1;" class="font-condensed text-sm mb-2 lh-1-3">
+					<div style="flex-grow: 1; width: calc(100% - '.($imgWidth + $marRight).'px);" class="font-condensed text-sm mb-2 lh-1-3">
 						<div class="page-header text-muted b-bottom-dashed clearfix">'.$name.' <span class="float-right">'.baseHelper::dateFormat($item->created_date, 'd.m.y H:i').'</span></div>
-						<div>'.$item->comment.'</div>
-						'.$attachs.'
+						'.$comment.$attachs.'
 					</div>
 				</li>
 			';

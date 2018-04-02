@@ -20,7 +20,7 @@ defined('_JEXEC') or die;
 			LEFT OUTER JOIN '. $db->quoteName('#__usergroups') .' T3
 			ON T3.id = T1.usergroup
 		WHERE
-			'.$where.$orderList;
+			'.$where.$orderList
 	;
 	try {
 

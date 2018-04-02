@@ -48,9 +48,9 @@ jQuery(function() {
 	var locker				= jQuery('#<?php echo $APPTAG?>-locker');
 	var forbidden			= jQuery('#<?php echo $APPTAG?>-forbidden');
 	var reason				= jQuery('#<?php echo $APPTAG?>-reason');
-	var guestName			= jQuery('#<?php echo $APPTAG?>-guestName');
-	var guestAge			= jQuery('#<?php echo $APPTAG?>-guestAge');
-	var guestNote			= jQuery('#<?php echo $APPTAG?>-guestNote');
+	var guestName			= mainForm.find('input[name="guestName[]"]');
+	var guestAge			= mainForm.find('input[name="guestAge[]"]');
+	var guestNote			= mainForm.find('input[name="guestNote[]"]');
 	var tax_price			= jQuery('#<?php echo $APPTAG?>-tax_price');
 	var guestTax			= jQuery('#<?php echo $APPTAG?>-guestTax');
 	var accessDate			= jQuery('#<?php echo $APPTAG?>-accessDate');
@@ -304,15 +304,20 @@ jQuery(function() {
 
 		// CUSTOM: Print Payment
 		window.<?php echo $APPTAG?>_printPayment = function(itemID, execute) {
+			var hasGuest = mainForm_access.find('input[name="guestName[]"]').length;
+			var tax = 0;
+			mainForm_access.find('input[name="guestTax[]"]').each(function() {
+				if(jQuery(this).val() == 1) tax = 1;
+			});
 			var exec = isSet(execute) ? execute : false;
 			var pID = (isSet(itemID) && itemID > 0) ? itemID : false;
-			if(pID && (guestName.length || exec)) {
-				if(confirm('<?php echo JText::_('MSG_PRINT_PAYMENT_GUIDE')?>')) {
+			setTimeout(function() {
+				if(pID && ((hasGuest && tax) || exec)) {
 					var urlPrint = '<?php echo JURI::root()?>apps/access/<?php echo $APPTAG?>-payment?uID='+pID+'&tmpl=component';
 					jQuery('#<?php echo $APPTAG?>-payment-iframe').attr("src", urlPrint);
 					jQuery("#modal-payment-<?php echo $APPTAG?>").modal();
 				}
-			}
+			}, 100);
 		}
 		window.<?php echo $APPTAG?>_setPrintPayment = function(){
 			document.getElementById("<?php echo $APPTAG?>-payment-iframe").contentWindow.print();

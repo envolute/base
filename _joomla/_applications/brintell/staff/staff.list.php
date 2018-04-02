@@ -22,7 +22,7 @@ defined('_JEXEC') or die;
 			LEFT OUTER JOIN '. $db->quoteName('#__users') .' T4
 			ON T4.id = T1.user_id
 		WHERE
-			'.$where.$orderList;
+			'.$where.$orderList
 	;
 	try {
 

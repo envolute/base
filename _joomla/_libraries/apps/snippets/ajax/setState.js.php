@@ -26,8 +26,10 @@ window.<?php echo $APPTAG?>_setState = function(itemID, state, recursive, iconOn
 			<?php echo $APPTAG?>_formExecute(true, false, false); // inicia o loader
 		}
 
-		dados		= formList.serialize();
-		inputVars	= formList.find('input[type="checkbox"]:checked, input[type="hidden"]').length;
+		// Para listagens em ajax, é necessário localizar o objeto após o carregamento...
+		var formList	= jQuery('#form-list-<?php echo $APPTAG?>');
+		dados			= formList.serialize();
+		inputVars		= formList.find('input[type="checkbox"]:checked, input[type="hidden"]').length;
 
 	}
 

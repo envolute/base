@@ -91,10 +91,7 @@
 		.mainmenu.nav.menu:not(.nav-stacked) > li > a,
 		.mainmenu.nav.menu:not(.nav-stacked) > li > a:link,
 		.mainmenu.nav.menu:not(.nav-stacked) > li > a:visited {
-			padding: 1rem 1.5rem;
-		    border-width: 3px 0;
-		    border-style: solid;
-		    border-color: transparent;
+
 		}
 		// Efeito hover
 		.mainmenu.nav.menu li:not(.active) > a:hover,
@@ -122,67 +119,23 @@
 
 			// link
 			.mainmenu.nav.menu .nav-child li > a {
-				padding: 1rem 1.5rem;
+
 			}
 
 			// Efeito hover
 			.mainmenu.nav.menu .nav-child li:not(.active) > a:hover,
 			.mainmenu.nav.menu .nav-child li:not(.active) > a:focus,
 			.mainmenu.nav.menu .nav-child li.parent:not(.active):hover > a {
-				padding: 1rem 1.5rem;
-				color: $base-link-hover-color;
-				background-color: $base-gray-100!important;
+
 			}
 			// Item ativo
 			.mainmenu.nav.menu .nav-child li.active > a,
 			.mainmenu.nav.menu .nav-child li > a.active // em caso de scroll 'go-to'
 			{
-				color: $white;
-				background-color: $base-color-primary;
+
 			}
 
 			// sub-level > 1
 			.mainmenu.nav.menu:not(.nav-stacked) .nav-child > li > .nav-child {
-			    margin-top: -3.65em !important;
+
 			}
-
-// USERMENU
-
-	// Formato do item -> definido no link <a>
-	.usermenu.nav.menu:not(.nav-stacked) > li > a,
-	.usermenu.nav.menu:not(.nav-stacked) > li > a:link,
-	.usermenu.nav.menu:not(.nav-stacked) > li > a:visited {
-		padding: .25rem .6rem;
-	}
-	.usermenu.nav.menu:not(.nav-stacked) > li > a:not(.btn-danger) {
-		color: $base-gray-500;
-	}
-	// Efeito hover
-	.usermenu.nav.menu li:not(.active) > a:hover,
-	.usermenu.nav.menu li:not(.active) > a:focus,
-	.usermenu.nav.menu li.parent:not(.active):hover > a {
-		color: $base-link-hover-color;
-		background-color: $white;
-	}
-	// Efeito hover
-	.usermenu.nav.menu li:not(.active) > a.btn-danger:hover,
-	.usermenu.nav.menu li:not(.active) > a.btn-danger:focus,
-	.usermenu.nav.menu li.parent:not(.active):hover > a.btn-danger {
-		color: $base-color-danger;
-	}
-	// Item ativo
-	.usermenu.nav.menu:not(.nav-stacked) li.active > a:not(.btn-danger),
-	.usermenu.nav.menu:not(.nav-stacked) li > a:not(.btn-danger).active // em caso de scroll 'go-to'
-	{
-		color: $base-link-color;
-		background-color: $white;
-	}
-
-	// SUB MENU
-
-		.usermenu.nav.menu:not(.nav-stacked) .nav-child {
-			min-width: 9rem!important;
-			padding-right: 1.4rem;
-			background-color: $white!important;
-			box-shadow: -1px 1px 2px rgba(0,0,0,0.2), 1px 1px 2px rgba(0,0,0,0.2), 3px 5px 6px rgba(0,0,0,0.1);
-		}

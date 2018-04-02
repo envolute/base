@@ -30,7 +30,7 @@ require($PATH_APP_FILE.'.filter.php');
 			JOIN '. $db->quoteName('#__users') .' T3
 			ON T3.id = T1.created_by
 		WHERE
-			'.$where.$orderList;
+			'.$where.$orderList
 	;
 	try {
 

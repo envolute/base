@@ -24,7 +24,7 @@ require($PATH_APP_FILE.'.filter.php');
 			'. $db->quoteName('T1.alter_by') .',
 			'. $db->quoteName('T1.state') .'
 		FROM '. $db->quoteName($cfg['mainTable']) .' T1
-		WHERE '.$where.$orderList;
+		WHERE '.$where.$orderList
 	;
 	try {
 

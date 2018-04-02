@@ -26,7 +26,7 @@ require($PATH_APP_FILE.'.filter.php');
 			LEFT JOIN '. $db->quoteName('#__users') .' T3
 			ON T3.id = T1.user_id
 		WHERE
-			'.$where.$orderList;
+			'.$where.$orderList
 	;
 	try {
 

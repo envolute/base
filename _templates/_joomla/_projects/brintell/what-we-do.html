@@ -1,0 +1,139 @@
+<script type="text/javascript">
+jQuery(function() {
+	jQuery(window).scroll(function () {
+		// dark background
+		var fadeBack = (jQuery('#what-we-do').offset().top - jQuery(window).scrollTop()) / 400;
+		jQuery('#back-background, #data-particles').css('opacity', fadeBack);
+		// menu background
+		var fadeMenu = ((jQuery('#brintell-slogan').offset().top - (jQuery(window).scrollTop() + 100)) * -1) / 100;
+		jQuery('#menu-background, img.logo-def').css('opacity', fadeMenu);
+	});
+});
+</script>
+
+<div id="brintell-home">
+
+	<div id="back-background"></div>
+
+	<div id="menu-background"></div>
+
+	<div id="data-particles">
+		<div id="stars"></div>
+		<div id="stars2"></div>
+		<div id="stars3"></div>
+	</div>
+
+	<div id="brintell-city"></div>
+
+	<div id="brintell-slogan">
+	    <div class="container">
+			<h1 class="display-3 font-serif">
+				What We Do
+				<div class="text-muted text-md lh-1-3">
+					Brintell does a large range of services related to data, from its very acquisition to the generation of unprecedented insights related to your business. In this section, we explain in detail some of our most common activities.
+				</div>
+			</h1>
+		</div>
+	</div>
+
+	<div id="content-container" class="container">
+		<div class="row">
+			<div class="col-12">
+				<div id="what-we-do" class="bg-white p-5 mb-5 set-shadow-lg">
+					<div class="row no-gutters justify-content-between">
+						<div class="col-md-6 pr-5">
+							<div class="row no-gutters m-5">
+								<div class="col-3">
+									<img src="images/template/ilustra-1.png" alt="Easy Data" class="img-fluid" />
+								</div>
+								<div class="col-2">
+									<h1 class="display-4 text-center">1</h1>
+								</div>
+								<div class="col-7">
+									<h4 class="mb-4">Where do data come from?</h4>
+									<a class="btn btn-outline-primary">Easy Data</a>
+								</div>
+							</div>
+							<div class="row no-gutters m-5">
+								<div class="col-3">
+									<img src="images/template/ilustra-2.png" alt="Intelli suit" class="img-fluid" />
+								</div>
+								<div class="col-2">
+									<h1 class="display-4 text-center">2</h1>
+								</div>
+								<div class="col-7">
+									<h4 class="mb-4">How do I interact with data?</h4>
+									<a class="btn btn-outline-primary">Intelli suit</a>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 pl-5">
+							<div class="row no-gutters m-5">
+								<div class="col-3"><img src="images/template/ilustra-3.png" alt="Data doctor" class="img-fluid" /></div>
+								<div class="col-2">
+									<h1 class="display-4 text-center">3</h1>
+								</div>
+								<div class="col-7">
+									<h4 class="mb-4">How can data help me take decisions?</h4>
+									<a class="btn btn-outline-primary">Data doctor</a>
+								</div>
+							</div>
+							<div class="row no-gutters m-5">
+								<div class="col-3"><img src="images/template/ilustra-4.png" alt="Brintell Squad" class="img-fluid" /></div>
+								<div class="col-2">
+									<h1 class="display-4 text-center">4</h1>
+								</div>
+								<div class="col-7">
+									<h4 class="mb-4">What if I need specific services?</h4>
+									<a class="btn btn-outline-primary">Brintell Squad</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div id="about-us">
+		<section>
+			<svg preserveAspectRatio="none" viewBox="0 0 100 10" xmlns="http://www.w3.org/2000/svg">
+				<polygon points="100 0 100 10 0 10" fill="#222"></polygon>
+			</svg>
+			<div class="container">
+				<div id="get-in-touch" class="row">
+					<div class="col-12">
+						<div class="form-container p-5 bg-white set-shadow-lg">
+							<div class="row">
+								<div class="col-md-6 p-3 p-lg-5">
+									<form>
+										<div class="form-group">
+											<input type="text" name="name" id="name" class="form-control" />
+											<label>Name:*</label>
+										</div>
+										<div class="form-group">
+											<input type="email" name="email" id="email" class="form-control" />
+											<label>Email:*</label>
+										</div>
+										<div class="form-group">
+											<input type="phone" name="phone" id="phone" class="form-control" />
+											<label>Phone:*</label>
+										</div>
+										<div class="form-actions pt-5 text-right">
+											<button class="btn btn-outline-primary">Let’s talk!</button>
+										</div>
+									</form>
+								</div>
+								<div class="col-md-6">
+									<h1 class="display-3 font-serif pt-5 mb-4">We’re ready when you are</h1>
+									<p>Founded on February 2016, Brintell maintains operations in Brazil and in the US, having its headquarter in Dover, DE.</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+</div>

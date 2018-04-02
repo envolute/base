@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
 		WHERE
-			'.$where.$orderList;
+			'.$where.$orderList
 	;
 	try {
 

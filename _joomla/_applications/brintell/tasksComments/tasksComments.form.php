@@ -6,7 +6,7 @@ defined('_JEXEC') or die;
 <input type="hidden" name="task_id" id="<?php echo $APPTAG?>-task_id" />
 <div class="form-group field-required">
 	<label class="label-sm"><?php echo JText::_('FIELD_LABEL_COMMENT'); ?></label>
-	<textarea name="comment" id="<?php echo $APPTAG?>-comment" class="field-html"></textarea>
+	<textarea name="comment" id="<?php echo $APPTAG?>-comment" rows="20" class="form-control"></textarea>
 </div>
 <div class="form-group">
 	<label class="base-icon-attach label-sm"> <?php echo JText::_('FIELD_LABEL_ATTACHMENTS'); ?></label>

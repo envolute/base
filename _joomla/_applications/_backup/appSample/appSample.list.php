@@ -25,7 +25,7 @@ require($PATH_APP_FILE.'.filter.php');
 			LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_types') .' T2
 			ON T2.id = T1.type_id
 		WHERE
-			'.$where.$orderList;
+			'.$where.$orderList
 	;
 	try {
 

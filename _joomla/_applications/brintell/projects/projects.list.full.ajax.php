@@ -70,7 +70,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
 			ON T2.id = T1.client_id AND T2.state = 1
 		WHERE
-			'.$where.$orderList;
+			'.$where.$orderList
 	;
 	$query	= '
 		SELECT

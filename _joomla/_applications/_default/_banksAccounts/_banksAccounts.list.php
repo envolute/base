@@ -24,7 +24,7 @@ defined('_JEXEC') or die;
 			LEFT OUTER JOIN '. $db->quoteName('#__'.$cfg['project'].'_banks') .' T2
 			ON T2.id = T1.bank_id AND T2.state = 1
 		WHERE
-			'.$where.$orderList;
+			'.$where.$orderList
 	;
 	try {
 

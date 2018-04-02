@@ -1,0 +1,400 @@
+// @CORE VARIABLES
+
+// Options
+
+	$base-font-size-root:				14px; // Tamanho 'raíz' da fonte, atribuida ao elemento '<html>'
+	$base-break-up:						'.media-md'; // ponto de quebra do layout para o modo 'desktop'
+	$base-break-down:					'html:not(.media-md)'; // ponto de quebra do layout para o modo 'mobile'
+	$base-enable-rounded:				true;
+
+// COLORS
+
+	//-> gray
+	$base-color-white:					#fff;
+	$gray-base:							#444444 !default;
+	$base-gray-100:						mix($gray-base, white, 6%)!default;
+	$base-gray-200:						mix($gray-base, white, 10%)!default;
+	$base-gray-300:						mix($gray-base, white, 20%)!default;
+	$base-gray-400:						mix($gray-base, white, 30%)!default;
+	$base-gray-500:						mix($gray-base, white, 45%)!default;
+	$base-gray-600:						mix($gray-base, white, 55%)!default;
+	$base-gray-700:						mix($gray-base, white, 65%)!default;
+	$base-gray-800:						mix($gray-base, white, 75%)!default;
+	$base-gray-900:						mix($gray-base, white, 85%)!default;
+	$base-color-black:					#000;
+	// colors
+	$base-blue:							#007BFF !default;
+	$base-indigo:						#6610F2 !default;
+	$base-purple:						#6F42C1 !default;
+	$base-pink:							#E83E8C !default;
+	$base-red:							#EF3E36 !default;
+	$base-orange:						#FD7E14 !default;
+	$base-yellow:						#FFC107 !default;
+	$base-green:						#10C95E !default;
+	$base-teal:							#20C997 !default;
+	$base-cyan:							#17A2B8 !default;
+	// theme
+	$base-color-primary:				#5EAB87; // 568c72;
+	$base-color-primary-dark:			mix(black, $base-color-primary, 15%);
+	$base-color-primary-darker:			mix(black, $base-color-primary, 50%);
+	$base-color-primary-darkest:		mix(black, $base-color-primary, 70%);
+	$base-color-primary-light:			mix(white, $base-color-primary, 15%);
+	$base-color-primary-lighter:		mix(white, $base-color-primary, 50%);
+	$base-color-primary-lightest:		mix(white, $base-color-primary, 70%);
+	$base-color-secondary:				#DAE3DF;
+	$base-color-success:				$base-green;
+	$base-color-info:					$base-cyan;
+	$base-color-warning:				$base-yellow;
+	$base-color-danger:					$base-red;
+	$base-color-light:					#FAFAFA !default;
+	$base-color-dark:					$gray-base !default;
+	$base-color-live:					$base-orange;
+	$base-color-muted:					$base-gray-600;
+	// bg 'gray' default
+	$base-bg-muted:						$base-gray-100;
+	// bg opacity
+	$bg-dark-opacity:					black;
+	$bg-light-opacity:					white;
+	// border default
+	$base-border-color:					$base-gray-300;
+	$base-border-color-light:			$base-gray-200;
+	$base-border-color-dark:			$base-gray-500;
+	$base-border-color-live:			mix(black, $base-color-live, 15%) !default;
+
+// BOOTSTRAP DEFINITIONS
+
+	$base-body-bg:						#f8f8f8;
+	$base-text-color:         			#555;
+	$base-link-color:         			$base-color-primary;
+	$base-link-hover-color:				#00D036; // lighten($base-link-color, 15%); copy of 'link-hover-color' bootstrap
+	$base-btn-default-color:			$base-color-primary;
+	$base-btn-default-bg:				#fff;
+	$base-btn-default-border:			$base-border-color;
+	$base-input-padding-x:				.75rem;
+	$base-input-padding-y:				.5rem;
+
+	// text & link colors definitions for bg-color classes
+		// theme colors
+		$bg-primary-text-color: $base-color-white;
+			$bg-primary-link-color: mix($bg-primary-text-color, $base-color-primary, 80%);
+		$bg-secondary-text-color: $base-color-dark;
+			$bg-secondary-link-color: mix($bg-secondary-text-color, $base-color-secondary, 80%);
+		$bg-success-text-color: $base-color-white;
+			$bg-success-link-color: mix($bg-success-text-color, $base-color-success, 80%);
+		$bg-info-text-color: $base-color-white;
+			$bg-info-link-color: mix($bg-info-text-color, $base-color-info, 80%);
+		$bg-warning-text-color: $base-color-white;
+			$bg-warning-link-color: mix($bg-warning-text-color, $base-color-warning, 80%);
+		$bg-danger-text-color: $base-color-white;
+			$bg-danger-link-color: mix($bg-danger-text-color, $base-color-danger, 80%);
+		$bg-light-text-color: $base-text-color;
+			$bg-light-link-color: $base-link-color;
+		$bg-dark-text-color: $base-color-light;
+			$bg-dark-link-color: mix($bg-dark-text-color, $base-color-dark, 80%);
+		$bg-live-text-color: $base-color-white;
+			$bg-live-link-color: mix($bg-live-text-color, $base-color-live, 80%);
+		// primary variations
+		$bg-primary-light-text-color: $base-color-white;
+			$bg-primary-light-link-color: mix($bg-primary-light-text-color, $base-color-primary-light, 80%);
+		$bg-primary-lighter-text-color: $base-color-primary-darker;
+			$bg-primary-lighter-link-color: mix($bg-primary-lighter-text-color, $base-color-primary-lighter, 80%);
+		$bg-primary-lightest-text-color: $base-color-primary-darker;
+			$bg-primary-lightest-link-color: mix($bg-primary-lightest-text-color, $base-color-primary-lightest, 80%);
+		$bg-primary-dark-text-color: $base-color-white;
+			$bg-primary-dark-link-color: mix($bg-primary-dark-text-color, $base-color-primary-dark, 80%);
+		$bg-primary-darker-text-color: $base-color-white;
+			$bg-primary-darker-link-color: mix($bg-primary-darker-text-color, $base-color-primary-darker, 80%);
+		$bg-primary-darkest-text-color: $base-color-white;
+			$bg-primary-darkest-link-color: mix($bg-primary-darkest-text-color, $base-color-primary-darkest, 80%);
+		// gray options
+		$bg-white-text-color: $base-text-color;
+			$bg-white-link-color: $base-link-color;
+		$bg-gray-100-text-color: $base-text-color;
+			$bg-gray-100-link-color: $base-link-color;
+		$bg-gray-200-text-color: $base-text-color;
+			$bg-gray-200-link-color: $base-link-color;
+		$bg-gray-300-text-color: $base-text-color;
+			$bg-gray-300-link-color: $base-link-color;
+		$bg-gray-400-text-color: $base-gray-900;
+			$bg-gray-400-link-color: mix($bg-gray-400-text-color, $base-gray-400, 80%);
+		$bg-gray-500-text-color: $base-color-white;
+			$bg-gray-500-link-color: mix($bg-gray-500-text-color, $base-gray-500, 80%);
+		$bg-gray-600-text-color: $base-color-white;
+			$bg-gray-600-link-color: mix($bg-gray-600-text-color, $base-gray-600, 80%);
+		$bg-gray-700-text-color: $base-color-white;
+			$bg-gray-700-link-color: mix($bg-gray-700-text-color, $base-gray-700, 80%);
+		$bg-gray-800-text-color: $base-gray-200;
+			$bg-gray-800-link-color: mix($bg-gray-800-text-color, $base-gray-800, 80%);
+		$bg-gray-900-text-color: $base-gray-200;
+			$bg-gray-900-link-color: mix($bg-gray-900-text-color, $base-gray-900, 80%);
+		$bg-black-text-color: $base-gray-200;
+			$bg-black-link-color: mix($bg-black-text-color, $base-color-black, 80%);
+		// colors options
+		$bg-blue-text-color: $base-color-white;
+			$bg-blue-link-color: mix($bg-blue-text-color, $base-blue, 80%);
+		$bg-indigo-text-color: $base-color-white;
+			$bg-indigo-link-color: mix($bg-indigo-text-color, $base-indigo, 80%);
+		$bg-purple-text-color: $base-color-white;
+			$bg-purple-link-color: mix($bg-purple-text-color, $base-purple, 80%);
+		$bg-pink-text-color: $base-color-white;
+			$bg-pink-link-color: mix($bg-pink-text-color, $base-pink, 80%);
+		$bg-red-text-color: $base-color-white;
+			$bg-red-link-color: mix($bg-red-text-color, $base-red, 80%);
+		$bg-orange-text-color: $base-color-white;
+			$bg-orange-link-color: mix($bg-orange-text-color, $base-orange, 80%);
+		$bg-yellow-text-color: $base-color-white;
+			$bg-yellow-link-color: mix($bg-yellow-text-color, $base-yellow, 80%);
+		$bg-green-text-color: $base-color-white;
+			$bg-green-link-color: mix($bg-green-text-color, $base-green, 80%);
+		$bg-teal-text-color: $base-color-white;
+			$bg-teal-link-color: mix($bg-teal-text-color, $base-teal, 80%);
+		$bg-cyan-text-color: $base-color-white;
+			$bg-cyan-link-color: mix($bg-cyan-text-color, $base-cyan, 80%);
+
+	// space
+	$base-space:						15px; // IMPORTANT: define bootstrap '$grid-gutter-width-base' variable
+	$base-space-xs:						5px;
+	$base-space-sm:						10px;
+	$base-space-lg:						20px;
+	$base-space-xl:						($base-space * 2);
+
+	// border radius
+	$base-radius-default:     			.2rem !default;
+	$base-radius-default-sm:  			.2rem !default;
+	$base-radius-default-lg:  			.4rem !default;
+
+// TYPOGRAPHY
+
+	// fonts
+	$base-fonts-enabled:				true; // load local fonts
+	$base-fonts-local:					false; // false -> google fonts, true -> fonts locais
+	$base-fonts:						'Roboto|Roboto+Condensed|Droid+Serif:400,400italic';
+	// font-primary
+	$base-font-primary:					'Roboto' !default;
+	$base-font-primary-local-path:		'../fonts/roboto';
+	$base-font-primary-weight:			'400' !default;
+	$base-font-primary-style:			'normal' !default;
+	// font-condensed
+	$base-font-condensed:				'Roboto Condensed' !default;
+	$base-font-condensed-local-path:	'../fonts/robotocondensed';
+	$base-font-condensed-weight:		'400' !default;
+	$base-font-condensed-style:			'normal' !default;
+	// font-serif
+	$base-font-serif:					'Droid Serif' !default;
+	$base-font-serif-local-path:		'../fonts/droidserif';
+	$base-font-serif-weight:			'400' !default;
+	$base-font-serif-style:				'normal' !default;
+	// font-featured
+	$base-font-featured: 				'Droid Serif' !default;
+	$base-font-featured-local-path:		'../fonts/droidserif-italic';
+	$base-font-featured-weight:			'400' !default;
+	$base-font-featured-style:			'italic' !default;
+
+	// hr tag
+	$hr-tag-margin:						1.3em 0;
+	$hr-tag-position:					-1.95rem;
+
+	// text
+	$text-shadow:						1px 1px 0 rgba(0, 0, 0, 0.2);
+	$text-shadow-strong:				1px 1px 1px rgba(0, 0, 0, 0.6);
+	$text-embed:						1px 1px 0 rgba(255, 255, 255, 1);
+	$text-embed-inverse:				-1px -1px 0 rgba(0, 0, 0, 0.6);
+
+	// page header
+	$page-header-margin-bottom:			.5em;
+	$page-header-padding-bottom-1:		.3em;
+	$page-header-padding-bottom-2:		.5em;
+	$page-header-border-bottom:			1px solid $base-border-color;
+	$page-header-box-shadow:			none !default;
+	$page-header-h4:					1.3rem;
+	$page-header-h5:					1.15rem;
+
+	// text sizes
+	$base-text-xs:						.8rem;
+	$base-text-sm:						.9rem;
+	$base-text-md:						$base-font-size-root; // Geralmente de 13 à 16px
+	$base-text-lg:						1.3rem;
+	$base-text-xl:						1.7rem;
+
+  // list
+
+    // vertical
+    $set-list-line-height:				1.15em;
+    $set-list-padding-y:				.5rem;
+    $set-list-padding-x:				0;
+    $set-list-padding-sm-y:				.3rem;
+    $set-list-padding-sm-x:				0;
+    $set-list-padding-lg-y:				1rem;
+    $set-list-padding-lg-x:				0;
+    $set-list-padding-xl-y:				1.5rem;
+    $set-list-padding-xl-x:				0;
+    $set-list-child-left:				1.2rem;
+	// border
+	$set-list-border:					1px dotted $base-border-color;
+	$set-list-inline-border:			1px dotted $base-border-color;
+    // inline
+    $set-list-inline-line-height:		1.15em;
+    $set-list-inline-padding-y:			0;
+    $set-list-inline-padding-x:			.5rem;
+    $set-list-inline-padding-sm-y:		0;
+    $set-list-inline-padding-sm-x:		.3rem;
+    $set-list-inline-padding-lg-y:		0;
+    $set-list-inline-padding-lg-x:		1rem;
+    $set-list-inline-padding-xl-y:		0;
+    $set-list-inline-padding-xl-x:		1.5rem;
+    $set-list-inline-child-left:		1.2rem;
+    // striped
+    $list-striped-padding:				$set-list-padding-y;
+    $list-striped-padding-sm:			$set-list-padding-sm-y;
+    $list-striped-padding-lg:			$set-list-padding-lg-y;
+    $list-striped-padding-xl:			$set-list-padding-xl-y;
+
+// IMAGES
+
+	$figure-text-over-padding:			.3em .5em !default;
+	$figure-text-over-size:				.9em;
+	$figure-text-over-line-height:		1.15em;
+	$figure-text-over-color:			$base-color-white;
+	$figure-text-over-bg:				rgba(0, 0, 0, .8);
+
+// TABLE
+
+ 	$base-table-line-height:			1.25 !default;
+
+// BUTTONS
+
+	// btn default
+	$base-btn-default-bg:				$base-bg-muted !default;
+	$base-btn-default-border:			$base-border-color !default;
+	$base-btn-default-hover-bg:			darken($base-bg-muted, 7.5%) !default;
+	$base-btn-default-hover-border:		darken($base-border-color, 10%) !default;
+	$base-btn-default-outline:			$base-gray-300 !default;
+	$base-btn-default-outline-variant:	$base-text-color !default;
+
+	// floating action
+	$base-btn-fab-size:					2.8rem !default;
+	$base-btn-fab-size-xs:				1.8rem !default;
+	$base-btn-fab-size-sm:				2.35rem !default;
+	$base-btn-fab-size-lg:				3.5rem !default;
+
+	// btn link bordered
+	$btn-link-bordered:					1px solid !default;
+	$btn-link-bordered-lg:				2px !default;
+
+	// btn raised
+	$base-btn-raised:					1px 1px 2px rgba(0,0,0,0.3), 2px 2px 8px rgba(0,0,0,0.2) !default;
+	$base-btn-raised-hover:				3px 3px 6px rgba(0,0,0,0.3), 3px 3px 12px rgba(0,0,0,0.3) !default;
+	$base-btn-raised-lg:				1px 1px 4px rgba(0,0,0,0.2), 4px 4px 8px rgba(0,0,0,0.2), 5px 5px 10px rgba(0,0,0,0.2) !default;
+
+// FORMS
+
+	// fieldset
+	$fieldset-padding-top:				2.5em;
+	$fieldset-padding:					1.5em;
+	$fieldset-padding-sm:				1em;
+	$fieldset-border:					1px solid $base-border-color;
+	// -> bordered
+	$fieldset-bordered-form-actions-bg:	$base-gray-100;
+	// -> embed
+	$fieldset-embed-bg:					$base-color-white;
+	$fieldset-embed-border:				1px solid $base-gray-200;
+	$fieldset-embed-shadow:				inset 1px 1px 5px rgba(0,0,0,0.06);
+	$fieldset-embed-outline:			none;
+	$fieldset-embed-legend-bg:			$base-body-bg;
+	$fieldset-embed-legend-padding:		0 1rem 0.3rem;
+	$fieldset-embed-legend-font-size:	.86rem;
+	$fieldset-embed-legend-color:		$base-color-primary;
+	$fieldset-embed-legend-radius:		0 0 $base-radius-default $base-radius-default;
+	$fieldset-embed-legend-shadow:		inset 0px 0px 2px rgba(0,0,0,0.06);
+	$fieldset-embed-striped-color:		$base-body-bg; // optional bootstrap striped color
+
+	// Field Icon
+	$base-field-icon-padding-left:		2em !default;
+	$base-field-icon-position:			0.4em !default;
+	$base-field-sm-icon-position:		0.35em !default; // field-sm
+	$base-field-lg-icon-position:		0.6em 0.8em !default; // field-lg
+	// date
+	$base-field-date-icon:				url("../images/core/form-icon-date.png");
+	// search
+	$base-field-search-icon:			url("../images/core/form-icon-search.png");
+	// image
+	$base-field-image-border:			2px;
+
+	// Label
+	$base-label-margin:					.2rem !default;
+	$base-label-font-size:				.9rem !default;
+	$base-label-xs-margin:				0 !default;
+	$base-label-xs-font-size:			.8rem !default;
+	$base-label-sm-margin:				.2rem !default;
+	$base-label-sm-font-size:			.86rem !default;
+
+// NAVS
+
+	// nav menu
+	$nav-menu-main-item-color:			$base-link-color;
+	$nav-menu-main-item-hover-color:	$base-link-hover-color;
+	$nav-menu-main-item-hover-bg:		$base-gray-100;
+	$nav-menu-main-item-padding-y:		$base-input-padding-y !default;
+	$nav-menu-main-item-padding-x:		$base-input-padding-x !default;
+	$nav-menu-indicator-padding:		0 .9rem 0 .5em !default; // child-reveal
+	$nav-menu-child-indicator-mr-1:		8px !default; // child-reveal
+	$nav-menu-child-minWidth:			14rem;
+	$nav-menu-child-padding:			0;
+	$nav-menu-child-margin:				0;
+	$nav-menu-child-border:				none;
+	$nav-menu-child-bg:					$base-gray-200;
+	$nav-menu-child-shadow:				2px 3px 3px rgba(0, 0, 0, 0.2);
+	$nav-menu-child-item-padding:		.35em $nav-menu-main-item-padding-x !default;
+	$nav-menu-child-item-hover-bg:		$base-gray-300;
+	$nav-menu-child-top:				-2.19em !default; // Seta o alinhamento do submenu
+	// Stacked -> Menu vertical
+	$nav-stacked-main-item-padding:		$nav-menu-child-item-padding !default;
+	$nav-stacked-indicator-padding:		0px .7em !default; // child-reveal
+	$nav-stacked-child-padding:			.1rem 0 .1rem .8rem !default;
+	$nav-stacked-child-margin:			0;
+	$nav-stacked-child-border:			1px solid $base-border-color;
+	$nav-stacked-child-bg:				transparent;
+	$nav-stacked-child-item-padding:	$nav-stacked-main-item-padding !default;
+
+	// nav-dark
+	$base-nav-dark-color:				$base-gray-300 !default;
+	$base-nav-dark-bg:					$base-gray-800 !default;
+	$base-nav-dark-link-color:			$base-gray-100 !default;
+	$base-nav-dark-link-color-active:	$base-gray-100 !default;
+	$base-nav-dark-link-color-hover:	white !default;
+	$base-nav-dark-link-bg-active:		rgba(0, 0, 0, 0.4) !default;
+	$base-nav-dark-link-bg-hover:		rgba(0, 0, 0, 0.2) !default;
+
+// PORTLET
+
+	$portlet-border-color: $base-border-color !default;
+	$portlet-bg: transparent !default;
+	$portlet-shadow: 0 0 4px rgba(0,0,0,0.1);
+	$portlet-header-border: 2px solid !default;
+	$portlet-header-font-weight: bold !default;
+
+// ÍCONS
+
+	$baseicon-field-required:			'\e87a'; //base-icon-right-dir
+	$baseicon-iconTip:					'\e9d3'; //base-icon-help-circled
+	$baseicon-menu-child:				'\e87a'; //base-icon-right-dir
+	$baseicon-menu-child-reverse:		'\e879'; //base-icon-left-dir
+	$baseicon-menu-child-opened:		'\e877'; //base-icon-down-dir
+	// btn-icon
+	$checkbox-icon-active:				'\e9c3'; // base-icon-ok
+	$checkbox-icon-inactive:			'\e9c7'; // base-icon-cancel
+
+// UTILITIES
+
+	// box shadow
+	$base-shadow: 						0 0 6px 1px rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.1);
+	$base-shadow-sm:					0 0 5px 0px rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.1);
+	$base-shadow-lg:					0 0 15px 2px rgba(0,0,0,0.2), 0 0 1px rgba(0,0,0,0.2);
+	$base-shadow-xl:					0 0 20px 2px rgba(0,0,0,0.2), 0 0 1px 1px rgba(0,0,0,0.2);
+	$base-shadow-to-left:				-1px 1px 3px rgba(0,0,0,0.1);
+	$base-shadow-to-right:				1px 1px 3px rgba(0,0,0,0.1);
+
+	// loader
+	$loader-bg:							transparent;
+	$loader-full-bg:					#fff;
+	$loader-indicator-top:				42px;

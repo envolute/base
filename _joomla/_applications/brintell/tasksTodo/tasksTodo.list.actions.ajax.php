@@ -124,11 +124,19 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$listFiles = '';
 				for($i = 0; $i < count($files[$item->id]); $i++) {
 					if(!empty($files[$item->id][$i]->filename)) :
-						$listFiles .= '
-							<a class="d-inline-block mr-3" href="'.$_ROOT.'apps/get-file?fn='.base64_encode($files[$item->id][$i]->filename).'&mt='.base64_encode($files[$item->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
-								<span class="base-icon-attach hasTooltip" title="'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"> '.$files[$item->id][$i]->filename.'</span>
-							</a>
-						';
+						if(strpos($files[$item->id][$i]->mimetype, 'image') !== false) {
+							$listFiles .= '
+								<a class="set-modal modal_link cboxElement d-inline-block mr-3" href="'.$_ROOT.'images/apps/'.$APPPATH.'/'.$files[$item->id][$i]->filename.'">
+									<span class="base-icon-file-image hasTooltip" title="'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"> '.$files[$item->id][$i]->filename.'</span>
+								</a>
+							';
+						} else {
+							$listFiles .= '
+								<a class="d-inline-block mr-3" href="'.$_ROOT.'apps/get-file?fn='.base64_encode($files[$item->id][$i]->filename).'&mt='.base64_encode($files[$item->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
+									<span class="base-icon-attach hasTooltip" title="'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"> '.$files[$item->id][$i]->filename.'</span>
+								</a>
+							';
+						}
 					endif;
 				}
 			endif;
@@ -158,11 +166,9 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 			$desc = '';
 			if(!empty($item->description)) {
-				$desc = '
-					<div class="font-condensed text-sm mt-1 pt-2 pb-1 b-top b-top-dashed">
-						<div class="font-condensed text-sm pb-2">'.$item->description.'</div>
-					</div>
-				';
+				$desc = htmlspecialchars($item->description);
+				$desc = preg_replace('~[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]~','<a href="\\0" target="_blank">\\0</a>', $desc);
+				$desc = '<div class="break-word text-pre-wrap font-condensed text-sm mt-1 py-2 b-top b-top-dashed">'.$desc.'</div>';
 			}
 
 			$listFiles = !empty($listFiles) ? '<div class="font-condensed text-sm mt-1 pt-1 b-top b-top-dashed">'.$listFiles.'</div>' : '';

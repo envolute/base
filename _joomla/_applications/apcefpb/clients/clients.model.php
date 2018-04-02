@@ -203,7 +203,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	    // user registration action
 	  	$request['access']				= $input->get('access', 0, 'int');
 			// USERNAME
-			$request['username']		= $input->get('username', '', 'string'); //baseHelper::alphaNum($request['cpf']);
+			$request['username']		= $input->get('username', '', 'string');
 			$code = getClientCode($cfg, $request['username']);
 			$length = (strlen($code) > 6) ? 11 : 6;
 			$username = baseHelper::lengthFixed($code, $length);
@@ -279,7 +279,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				if($task == 'get') :
 
 					$itemUID    = ($isUser) ? $userInfoId : 0;
-					$itemUser   = ($isUser) ? $userInfoUser : baseHelper::alphaNum($item->cpf);
+					$itemUser   = ($isUser) ? $userInfoUser : $userInfoUser;
 					$itemName   = ($isUser) ? $userInfoName : $item->name;
 					$itemEmail  = ($isUser) ? $userInfoEmail : $item->email;
 					$itemBlock  = ($isUser) ? $userInfoBlock : 1; // inverso do 'access'

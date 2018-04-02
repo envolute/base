@@ -12,7 +12,7 @@ require($PATH_APP_FILE.'.filter.php');
 	$query = '
 		SELECT SQL_CALC_FOUND_ROWS *
 		FROM '. $db->quoteName($cfg['mainTable']) .' T1
-		WHERE '.$where.$orderList;
+		WHERE '.$where.$orderList
 	;
 	try {
 

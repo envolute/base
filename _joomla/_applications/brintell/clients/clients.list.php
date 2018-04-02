@@ -15,7 +15,7 @@ defined('_JEXEC') or die;
 			LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
 			ON T2.id = T1.group_id AND T2.state = 1
 		WHERE
-			'.$where.$orderList;
+			'.$where.$orderList
 	;
 	try {
 

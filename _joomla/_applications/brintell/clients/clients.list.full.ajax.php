@@ -70,7 +70,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_groups') .' T2
 			ON T2.id = T1.group_id AND T2.state = 1
 		WHERE
-			'.$where.$orderList;
+			'.$where.$orderList
 	;
 	try {
 		$db->setQuery($query);

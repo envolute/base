@@ -21,7 +21,7 @@ jQuery(function() {
       var disable = isSet(isDisable) ? isDisable : false;
       disable = isSet(obj.data('editorDisabled')) ? obj.data('editorDisabled') : disable;
 
-      var basicOptions = ['btnGrp-semantic',['formatting'],'btnGrp-justify','btnGrp-lists',['horizontalRule'],['link'],['removeformat'],['fullscreen']];
+      var basicOptions = [['viewHTML'],'btnGrp-semantic',['formatting'],'btnGrp-justify','btnGrp-lists',['horizontalRule'],['link'],['removeformat'],['fullscreen']];
       var fullOptions = [['viewHTML'],'btnGrp-semantic','superscript',['formatting'],['foreColor'],'btnGrp-justify','btnGrp-lists',['horizontalRule'],['link'],'image',['noembed'],['removeformat'],['fullscreen']]
       if(full) {
         var options = fullOptions;

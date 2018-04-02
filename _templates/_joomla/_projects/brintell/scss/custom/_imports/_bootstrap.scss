@@ -1,0 +1,43 @@
+/*!
+ * Bootstrap v4.0.0-alpha.6 (https://getbootstrap.com)
+ * Copyright 2011-2017 The Bootstrap Authors
+ * Copyright 2011-2017 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ */
+
+@import "../../../../../../_core/bootstrap/scss/functions";
+// @import "../../../../../../_core/bootstrap/scss/variables";
+// Chama o arquivo de variáveis customizado do projeto. Renomeado para "_bootstrap.scss"
+@import "../_variables/bootstrap";
+@import "../../../../../../_core/bootstrap/scss/mixins";
+@import "../../../../../../_core/bootstrap/scss/print";
+@import "../../../../../../_core/bootstrap/scss/reboot";
+@import "../../../../../../_core/bootstrap/scss/type";
+@import "../../../../../../_core/bootstrap/scss/images";
+@import "../../../../../../_core/bootstrap/scss/code";
+@import "../../../../../../_core/bootstrap/scss/grid";
+@import "../../../../../../_core/bootstrap/scss/tables";
+@import "../../../../../../_core/bootstrap/scss/forms";
+@import "../../../../../../_core/bootstrap/scss/buttons";
+@import "../../../../../../_core/bootstrap/scss/transitions";
+@import "../../../../../../_core/bootstrap/scss/dropdown";
+@import "../../../../../../_core/bootstrap/scss/button-group";
+@import "../../../../../../_core/bootstrap/scss/input-group";
+@import "../../../../../../_core/bootstrap/scss/custom-forms";
+@import "../../../../../../_core/bootstrap/scss/nav";
+@import "../../../../../../_core/bootstrap/scss/navbar";
+@import "../../../../../../_core/bootstrap/scss/card";
+@import "../../../../../../_core/bootstrap/scss/breadcrumb";
+@import "../../../../../../_core/bootstrap/scss/pagination";
+@import "../../../../../../_core/bootstrap/scss/badge";
+@import "../../../../../../_core/bootstrap/scss/jumbotron";
+@import "../../../../../../_core/bootstrap/scss/alert";
+@import "../../../../../../_core/bootstrap/scss/progress";
+@import "../../../../../../_core/bootstrap/scss/media";
+@import "../../../../../../_core/bootstrap/scss/list-group";
+@import "../../../../../../_core/bootstrap/scss/close";
+@import "../../../../../../_core/bootstrap/scss/modal";
+@import "../../../../../../_core/bootstrap/scss/tooltip";
+@import "../../../../../../_core/bootstrap/scss/popover";
+@import "../../../../../../_core/bootstrap/scss/carousel";
+@import "../../../../../../_core/bootstrap/scss/utilities";

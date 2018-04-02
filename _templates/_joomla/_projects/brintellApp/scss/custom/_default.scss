@@ -1,0 +1,186 @@
+// @CUSTOM
+// customização de estilo do site
+// Esse arquivo deve conter todas as classes para customização do template para esse projeto.
+
+// WINDOW
+
+	// SCROLLBAR -> barra de rolagem
+	*::-webkit-scrollbar {
+		width:11px;
+		height:11px;
+		background-color: transparent;
+	}
+	*::-webkit-scrollbar-thumb,
+	*::-webkit-scrollbar-corner {
+		border-style: solid;
+		border-width: 2px;
+		border-color: $body-bg;
+		background-color: $gray-600;
+		border-radius: 10px;
+	}
+	*::-webkit-scrollbar-thumb:hover { background-color: $gray-700; }
+	*::-webkit-scrollbar-track-piece { background-color: transparent; }
+
+// TEMPLATE
+
+	// BG LAYER
+
+		#base-bg-layer { }
+
+	// SCREEN
+
+		#screen {
+			background-color: $base-body-bg;
+		}
+
+	// WRAPPER
+
+		#wrapper {
+			position: relative;
+			margin: auto;
+		}
+
+		// wrapper = container
+		// .media-sm #wrapper { width: 576px; }
+		// .media-md #wrapper { width: 768px; }
+		// .media-lg #wrapper { width: 992px; }
+		// .media-xl #wrapper { width: 1200px; }
+
+	// SIDEBAR
+
+		#tmpl-sidebar {
+			background-color: $gray-base;
+
+			#tmpl-sidebar-collapse {
+				display: block;
+    			padding: 0.08rem .5rem;
+				text-align: right;
+			}
+			#tmpl-sidebar-collapse > a {
+				color: $white;
+			}
+			#tmpl-sidebar-collapse > a:hover,
+			#tmpl-sidebar-collapse > a:focus {
+				color: $base-color-live;
+			}
+
+			#tmpl-sidebar-content {
+				color: $base-gray-500;
+			}
+			#tmpl-sidebar-content a:not(.btn) {
+				color: $base-gray-400;
+			}
+			#tmpl-sidebar-content a:not(.btn):hover,
+			#tmpl-sidebar-content a:not(.btn):focus {
+				color: $base-gray-200;
+			}
+
+		}
+
+	// TEMPLATE CONTENT
+
+		#tmpl-content {
+			padding-top: 75px; // Altura total do '#header'
+		}
+
+	// HEADER
+
+		#header {
+			position: fixed;
+			top: 0;
+			width: 100%;
+			z-index: $zindex-header;
+		}
+		#tmpl-sidebar:not(.closed) + #tmpl-content #header {
+			width: calc(100% - #{$base-sidebar-width});
+		}
+		html.isAdmin #header { top: $admin-navbar-height; }
+
+			#logo-header {
+				text-align: center;
+			}
+			#header-row-3 {
+				box-shadow: 2px 2px 3px rgba(0,0,0,0.2);
+			}
+				#mod-search-searchword {
+					border-color: $base-gray-200;
+				}
+
+	// SECTION-TOP
+
+		#section-top {
+
+		}
+
+	// FULL-CONTENT -> área total do conteúdo incluindo as laterais
+
+		#full-content {
+			padding: 18px 0;
+		}
+		.canban #full-content { padding-bottom: 0; }
+
+		// APP 'CANBAN' STYLE
+		.canban #component .base-app { margin: 0; }
+		.canban #component .baseContent > .page-header { margin-bottom: 0; }
+		.canban #component .base-app .base-app-list > form > .row  {
+			flex-wrap: nowrap!important;
+			padding: .5rem 0;
+			overflow: auto;
+		}
+		.canban #component .base-app .canban-col  {
+			min-width: 250px;
+			max-width: 34%;
+		}
+
+	// SECTION BOTTOM
+
+		#section-bottom {
+
+		}
+		#{$base-break-down} #section-bottom { text-align: center; }
+
+	// FOOTER
+
+		#footer { }
+		#{$base-break-down}  #footer { text-align: center; }
+
+	// HIDDEN
+
+		// Pesquisa
+		#hidden #mod-search-searchword {
+			padding: .5rem 1rem;
+			font-size: 1.3rem;
+			line-height: 1.8;
+			border-radius: 3px;
+		}
+		#modal-107 .close {
+			color: $base-color-white;
+			text-shadow: none;
+		}
+
+	// SCROLLTOTOP
+
+		#scroll-to-top {
+			display: none;
+			position: fixed;
+			right: $base-space;
+			bottom: $base-space;
+			padding: 8px 16px;
+			color: #fff;
+			font-size: 20px;
+		  @if $base-enable-rounded { border-radius: $border-radius; }
+		  @else { border-radius: 0; }
+			background: #333;
+			opacity: 0.8;
+			overflow: hidden;
+			z-index: $zindex-scroll-to-top;
+		}
+		#scroll-to-top:before {
+			font-family: 'baseicons';
+			content: '\e889'; // base-icon-angle-double-up
+		}
+		.support-on #scroll-to-top {
+			right: 10px;
+			bottom: 50px;
+		}
+		#scroll-to-top:hover { opacity: 0.95; }

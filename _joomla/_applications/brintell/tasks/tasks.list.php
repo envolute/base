@@ -9,7 +9,7 @@ defined('_JEXEC') or die;
 	$query = '
 		SELECT SQL_CALC_FOUND_ROWS T1.*
 		FROM '. $db->quoteName('vw_'.$cfg['project'].'_'.$APPNAME) .' T1
-		WHERE '.$where.$orderList;
+		WHERE '.$where.$orderList
 	;
 	try {
 

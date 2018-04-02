@@ -26,7 +26,7 @@ defined('_JEXEC') or die;
 			LEFT JOIN '. $db->quoteName($cfg['mainTable'].'_invoices') .' T5
 			ON T5.id = T1.invoice_id
 		WHERE
-			'.$where.$orderList;
+			'.$where.$orderList
 	;
 	try {
 

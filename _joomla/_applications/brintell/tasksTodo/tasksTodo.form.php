@@ -52,7 +52,7 @@ foreach ($staff as $obj) {
 	<div class="col-lg-8">
 		<div class="form-group">
 			<label class="label-sm"><?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?></label>
-			<textarea name="description" id="<?php echo $APPTAG?>-description" class="field-html"></textarea>
+			<textarea name="description" id="<?php echo $APPTAG?>-description" class="form-control" rows="20"></textarea>
 		</div>
 	</div>
 	<div class="col-lg-4">

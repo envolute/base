@@ -1,0 +1,80 @@
+// BASE APPLICATION
+// 'base-app' -> formatos predefinidos para o crud padrão do 'Sistema BASE'
+
+	// SIDEBAR SELECT
+	#tmpl-sidebar-content {
+
+		#projects-details-select {
+			display: flex;
+			align-items: center;
+			height: 52px;
+			padding: 0 .5rem;
+			color: #fff;
+			font-size: 1.3rem;
+			background: $base-color-primary;
+
+			.chosen-container > a.chosen-single {
+				padding: 0!important;
+			    color: #fff;
+				border: none;
+			    border-radius: 0;
+			    background: transparent!important;
+			    box-shadow: none!important;
+			}
+			.chosen-container-single .chosen-single div b {
+			    margin-top: .5rem !important;
+			    background: url(../images/select-arrow-white.png) no-repeat!important;
+			}
+			.chosen-container .chosen-drop {
+			    margin-top: 17px;
+			    border: none;
+			    background: $base-color-primary;
+			}
+				.chosen-container .chosen-results {
+					color: #fff;
+				}
+				.chosen-container .chosen-results li.active-result.righlighted {
+					background: rgba(0,0,0,0.4);
+				}
+		}
+
+		// SIDEBAR LIST
+
+		#projects-details-view .projects-selector  {
+		    position: absolute;
+		    right: -2px;
+		    top: 48px;
+		    font-size: 3rem;
+		    color: $base-body-bg;
+		}
+		#projects-sidebar-list-view > a {
+			padding: .62rem .5rem;
+			border-bottom: 1px solid $base-gray-900;
+
+			&:hover,
+			&:focus,
+			&:active,
+			&.active {
+				background-color: rgba(0,0,0,0.2);
+			}
+
+			& > .indicator {
+				position: absolute;
+			    right: -9999px;
+			    font-size: 24px;
+			    color: #f8f8f8;
+			}
+			&.active > .indicator {
+				right: -2px;
+			}
+		}
+
+	}
+
+
+	$baseAppMTop: map-get($spacers, 2) + 0.1;
+	#component .base-app {
+		margin: -#{$baseAppMTop} 0 $base-space-lg;
+
+	}
+	#component .base-app .form-toolbar .col-sm { max-width: 180px; }

@@ -22,7 +22,7 @@ require($PATH_APP_FILE.'.filter.php');
 		FROM
 			'. $db->quoteName($cfg['mainTable']) .' T1
 		WHERE
-			'.$where.$orderList;
+			'.$where.$orderList
 	;
 	try {
 

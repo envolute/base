@@ -43,9 +43,9 @@ window.<?php echo $APPTAG?>_save = function(trigger) {
 						}
 						<?php
 						// CONFIG ADD ACTION => Ação definida no 'config'. Excuta apenas no insert...
-						echo !empty($cfg['addTrigger']) ? 'if(res.status == 1) '.$cfg['addTrigger'].'(resID);' : '';
+						if(!empty($cfg['addTrigger'])) echo 'if(res.status == 1) '.$cfg['addTrigger'].'(resID);';
 						// CONFIG SAVE ACTION => Ação definida no 'config'. Sempre executa após salvar...
-						echo !empty($cfg['saveTrigger']) ? $cfg['saveTrigger'].'(resID);' : '';
+						if(!empty($cfg['saveTrigger'])) echo $cfg['saveTrigger'].'(resID);';
 						?>
 						if(formReload) <?php echo $APPTAG?>_loadEditFields(resID, true, false); // recarrega os dados do form
 

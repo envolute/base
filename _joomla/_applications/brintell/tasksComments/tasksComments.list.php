@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
 			LEFT JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T2
 			ON T2.user_id = T1.created_by
 		WHERE
-			'.$where.$orderList;
+			'.$where.$orderList
 	;
 	try {
 

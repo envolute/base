@@ -10,7 +10,7 @@ defined('_JEXEC') or die;
 </div>
 <div class="form-group">
 	<label class="label-sm"><?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?></label>
-	<textarea name="description" id="<?php echo $APPTAG?>-description" class="field-html"></textarea>
+	<textarea name="description" id="<?php echo $APPTAG?>-description" class="form-control" rows="20"></textarea>
 </div>
 <div class="form-group">
 	<label class="base-icon-attach label-sm"> <?php echo JText::_('FIELD_LABEL_ATTACHMENTS'); ?></label>

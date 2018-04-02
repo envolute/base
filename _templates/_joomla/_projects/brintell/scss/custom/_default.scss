@@ -1,0 +1,501 @@
+// @CUSTOM
+// customização de estilo do site
+// Esse arquivo deve conter todas as classes para customização do template para esse projeto.
+
+// WINDOW
+
+	// SCROLLBAR -> barra de rolagem
+	*::-webkit-scrollbar {
+		width:11px;
+		height:11px;
+		background-color: transparent;
+	}
+	*::-webkit-scrollbar-thumb,
+	*::-webkit-scrollbar-corner {
+		border-style: solid;
+		border-width: 2px;
+		border-color: $body-bg;
+		background-color: $gray-600;
+		border-radius: 10px;
+	}
+	*::-webkit-scrollbar-thumb:hover { background-color: $gray-700; }
+	*::-webkit-scrollbar-track-piece { background-color: transparent; }
+
+// TEMPLATE
+
+	// BG LAYER
+
+		#base-bg-layer { }
+
+	// SCREEN
+
+		#screen {
+			// background-color: $base-body-bg;
+		}
+
+	// WRAPPER
+
+		#wrapper {
+			position: relative;
+			margin: auto;
+		}
+
+		// wrapper = container
+		// .media-sm #wrapper { width: 576px; }
+		// .media-md #wrapper { width: 768px; }
+		// .media-lg #wrapper { width: 992px; }
+		// .media-xl #wrapper { width: 1200px; }
+
+	// SIDEBAR
+
+		#tmpl-sidebar {
+			background-color: $gray-base;
+
+			#tmpl-sidebar-collapse {
+				display: block;
+    			padding: 0.08rem .5rem;
+				text-align: right;
+			}
+			#tmpl-sidebar-collapse > a {
+				color: $white;
+			}
+			#tmpl-sidebar-collapse > a:hover,
+			#tmpl-sidebar-collapse > a:focus {
+				color: $base-color-live;
+			}
+
+			#tmpl-sidebar-content {
+				color: $base-gray-500;
+			}
+			#tmpl-sidebar-content a:not(.btn) {
+				color: $base-gray-400;
+			}
+			#tmpl-sidebar-content a:not(.btn):hover,
+			#tmpl-sidebar-content a:not(.btn):focus {
+				color: $base-gray-200;
+			}
+
+		}
+
+	// TEMPLATE CONTENT
+
+		#tmpl-content {
+
+		}
+
+	// HEADER
+
+		#header {
+			position: fixed;
+			width: 100%;
+    		height: 62px;
+			z-index: $zindex-header;
+		}
+		#tmpl-sidebar:not(.closed) + #tmpl-content #header {
+			width: calc(100% - #{$base-sidebar-width});
+		}
+
+		#logo-header img {
+		    position: absolute;
+		    top: 15px;
+		}
+		#logo-header img.logo-def { opacity: 0; }
+
+	// SECTION-TOP
+
+		#section-top {
+
+		}
+
+			#back-background {
+				position: fixed;
+				top: 0;
+				width: 100%;
+				height: 100vh;
+			    background-color: #222;
+				background: linear-gradient(#111, #333);
+				background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+				z-index: -1;
+			}
+			#menu-background {
+				position: fixed;
+				width: 100%;
+				height: 62px;
+			    background-color: rgba(255,255,255, .98);
+				box-shadow: 0 0 5px rgba(0,0,0,0.2);
+				opacity: 0;
+				z-index: $zindex-bg-menu;
+			}
+
+			// PARTICLES
+			// n is number of stars required
+			@function multiple-box-shadow ($n) {
+				$value: '#{random(2000)}px #{random(2000)}px #{$base-color-primary}';
+				@for $i from 2 through $n {
+					$value: '#{$value} , #{random(2000)}px #{random(2000)}px #{$base-color-primary}';
+				}
+				@return unquote($value)
+			}
+
+
+			$shadows-small:  multiple-box-shadow(700);
+			$shadows-medium: multiple-box-shadow(200);
+			$shadows-big:    multiple-box-shadow(100);
+
+			#data-particles {
+				position: fixed;
+				width: 100%;
+				height: 100vh;
+				overflow: hidden;
+				z-index: -1;
+
+				#stars {
+					width: 1px;
+					height: 1px;
+					background: transparent;
+					box-shadow: $shadows-small;
+					animation: animStar 50s linear infinite;
+
+					&:after {
+						content: " ";
+						position: absolute;
+						top: 2000px;
+						width: 1px;
+						height: 1px;
+						background: transparent;
+						box-shadow: $shadows-small;
+					}
+				}
+				#stars2 {
+					width: 2px;
+					height: 2px;
+					background: transparent;
+					box-shadow: $shadows-medium;
+					animation: animStar 100s linear infinite;
+
+					&:after {
+						content: " ";
+						position: absolute;
+						top: 2000px;
+						width: 2px;
+						height: 2px;
+						background: transparent;
+						box-shadow: $shadows-medium;
+					}
+				}
+				#stars3 {
+					width: 3px;
+					height: 3px;
+					background: transparent;
+					box-shadow: $shadows-big;
+					animation: animStar 150s linear infinite;
+
+					&:after {
+						content: " ";
+						position: absolute;
+						top: 2000px;
+						width: 3px;
+						height: 3px;
+						background: transparent;
+						box-shadow: $shadows-big;
+					}
+				}
+			}
+			@keyframes animStar {
+				from { transform: translateY(0px) }
+				to { transform: translateY(-2000px) }
+			}
+			#brintell-city {
+			    position: fixed;
+			    top: 200px;
+			    width: 100%;
+			    height: calc(100vh - 200px);
+			    background-image: url("../images/cidade.png");
+			    background-repeat: no-repeat;
+			    background-position: center top;
+				background-size: cover;
+				z-index: 0;
+			}
+			#brintell-slogan {
+			    position: absolute;
+			    top: 200px;
+			    width: 100%;
+				color: #FFF;
+
+				h1 {
+				    width: 350px;
+				    float: right;
+					padding-bottom: 1rem;
+				    line-height: 1;
+					background: -webkit-linear-gradient(white, $base-color-primary-dark);
+  				    -webkit-background-clip: text;
+  				    -webkit-text-fill-color: transparent;
+				}
+			}
+			body.what-we-do {
+
+				#brintell-slogan {
+					top: 160px;
+					h1 { width: 400px; }
+				}
+				#content-container {
+				    padding-top: 350px;
+				}
+
+			}
+			#content-container {
+			    position: relative;
+			    padding-top: 95vh;
+
+				#our-clients {
+				    height: 100vh;
+				    position: relative;
+
+					.logos > div {
+					    position: absolute;
+					    opacity: 0;
+					    transition-property: all;
+					    transition-duration: 1s;
+					    transition-timing-function: ease;
+					    transition-delay: .2s;
+					}
+					.logos > div > div {
+					    width: 1px;
+						height: 100vh;
+						max-height: 0;
+					    margin: auto;
+					    border-left: 1px solid $base-color-primary-light;
+						opacity: .4;
+					    transition-property: max-height;
+					    transition-duration: 1s;
+					    transition-timing-function: ease;
+					    transition-delay: .5s;
+					}
+					#client-lausd {
+						top: 50%;
+						left: 0;
+						transition-delay: .08s;
+					}
+					#client-brb {
+						top: 30%;
+						left: 35%;
+						transition-delay: .5s;
+					}
+					#client-fed {
+						top: 40%;
+						left: 47%;
+						transition-delay: .4s;
+					}
+					#client-gl {
+						top: 50%;
+						left: 75%;
+						transition-delay: .3s;
+					}
+					#client-mastec {
+						top: 70%;
+						left: 60%;
+						transition-delay: .1s;
+					}
+					#client-pgcps {
+						top: 65%;
+						left: 15%;
+						transition-delay: .35s;
+					}
+
+					&.showLogos {
+						.logos > div { opacity: 1; }
+						#client-lausd { top: 40%; }
+						#client-lausd > div { max-height: 20vh; }
+						#client-brb { top: 20%; }
+						#client-brb > div { max-height: 25vh; }
+						#client-fed { top: 30%; }
+						#client-fed > div { max-height: 30vh; }
+						#client-gl { top: 40%; }
+						#client-gl > div { max-height: 10vh; }
+						#client-mastec { top: 60%; }
+						#client-mastec > div { max-height: 10vh; }
+						#client-pgcps { top: 55%; }
+						#client-pgcps > div { max-height: 5vh; }
+					}
+
+				}
+
+				#methodology {
+
+					.method-card {
+						max-width: 250px;
+						padding: 1.5rem;
+						margin: 2rem auto;
+						background-color: $white;
+						border-radius: 1rem;
+						box-shadow: 2px 2px 15px 2px rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.1);
+
+						div {
+							min-height: 50px;
+    						line-height: 1.3;
+						}
+					}
+					.method-card:hover {
+						box-shadow: 4px 4px 22px 2px rgba(0,0,0,0.2), inset 0 0 0px 1px rgba($base-color-primary-light, 0.8);
+					}
+
+				}
+			}
+
+			#about-us {
+				padding-top: 8rem;
+
+				section {
+					color: #eee;
+					background-color: #222;
+					background-image: url("../images/triangulos-pontilhados.png");
+					background-repeat: no-repeat;
+					background-position: right top;
+					background-attachment: fixed;
+
+					svg {
+						position: relative;
+					    top: -50px;
+					    height: 50px;
+					    width: 100%;
+					    color: #222;
+						z-index: -1;
+					}
+
+					.about-graphic {
+						position: relative;
+						min-width: 300px;
+						min-height: 300px;
+	    				margin: 2rem;
+
+						> div {
+							position: absolute;
+							text-align: center;
+						    padding-top: 20px;
+							cursor: help;
+							border: 1px solid $base-color-primary;
+						    border-radius: 100%;
+							background-color: rgba(25,25,25,0.6);
+
+							&:hover {
+								background-color: $base-color-primary;
+							}
+						}
+						.what {
+						    width: 300px;
+						    height: 300px;
+						}
+						.how {
+							top: 60px;
+							left: 60px;
+						    width: 180px;
+						    height: 180px;
+						}
+						.why {
+							top: 113px;
+							left: 113px;
+						    width: 75px;
+						    height: 75px;
+						    padding-top: 25px;
+						}
+					}
+				}
+
+				#get-in-touch {
+					padding: 5rem 0 10rem;
+
+					.form-container {
+						box-shadow: 0 0 40px 5px rgba(65, 183, 157, .3), 1px 1px 10px rgba(65, 183, 157, .5);
+
+						form {
+							padding: 4rem 0;
+						}
+						.form-control {
+							border-color: $base-color-primary;
+						    border-width: 0 0 1px;
+						    border-radius: 0;
+							padding: .5rem 0;
+	    					color: $base-color-primary-darker;
+						}
+						button.btn {
+						    border-radius: 20px;
+						}
+					}
+				}
+			}
+
+
+	// FULL-CONTENT -> área total do conteúdo incluindo as laterais
+
+		#full-content { }
+
+	// SECTION BOTTOM
+
+		#section-bottom {
+
+		}
+		#{$base-break-down} #section-bottom { text-align: center; }
+
+	// FOOTER
+
+		#footer {
+			height: 100vh;
+			margin-top: -10px; // para sobrepor 'full-content'
+			color: #ccc;
+			background: #222 url("../images/triangulos-footer.png");
+
+			#footer-row-2 {
+				padding-top: 8rem;
+			}
+
+			a {
+				color: #eee;
+
+				&:hover, &:focus {
+					color: #fff;
+				}
+			}
+
+		}
+		#{$base-break-down}  #footer { text-align: center; }
+
+	// HIDDEN
+
+		// Pesquisa
+		#hidden #mod-search-searchword {
+			padding: .5rem 1rem;
+			font-size: 1.3rem;
+			line-height: 1.8;
+			border-radius: 3px;
+		}
+		#modal-107 .close {
+			color: $base-color-white;
+			text-shadow: none;
+		}
+
+	// SCROLLTOTOP
+
+		#scroll-to-top {
+			display: none;
+			position: fixed;
+			right: $base-space;
+			bottom: $base-space;
+			padding: 8px 16px;
+			color: #fff;
+			font-size: 20px;
+		  @if $base-enable-rounded { border-radius: $border-radius; }
+		  @else { border-radius: 0; }
+			background: #333;
+			opacity: 0.8;
+			overflow: hidden;
+			z-index: $zindex-scroll-to-top;
+		}
+		#scroll-to-top:before {
+			font-family: 'baseicons';
+			content: '\e889'; // base-icon-angle-double-up
+		}
+		.support-on #scroll-to-top {
+			right: 10px;
+			bottom: 50px;
+		}
+		#scroll-to-top:hover { opacity: 0.95; }

@@ -20,7 +20,7 @@ defined('_JEXEC') or die;
 			JOIN '. $db->quoteName('#__'.$cfg['project'].'_clients') .' T3
 			ON T3.id = T1.client_id
 		WHERE
-			'.$where.$orderList;
+			'.$where.$orderList
 	;
 	try {
 

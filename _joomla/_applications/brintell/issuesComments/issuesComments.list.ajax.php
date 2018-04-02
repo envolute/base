@@ -140,11 +140,19 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 				$listFiles = '';
 				for($i = 0; $i < count($files[$item->id]); $i++) {
 					if(!empty($files[$item->id][$i]->filename)) :
-						$listFiles .= '
-							<a class="d-inline-block mr-3" href="'.$_ROOT.'apps/get-file?fn='.base64_encode($files[$item->id][$i]->filename).'&mt='.base64_encode($files[$item->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
-								<span class="base-icon-attach hasTooltip" title="'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"> '.$files[$item->id][$i]->filename.'</span>
-							</a>
-						';
+						if(strpos($files[$item->id][$i]->mimetype, 'image') !== false) {
+							$listFiles .= '
+								<a href="'.$_ROOT.'images/apps/'.$APPPATH.'/'.$files[$item->id][$i]->filename.'" class="set-modal modal_link cboxElement d-inline-block mr-2" rel="'.$APPTAG.'-view" data-modal-class-name="no_title">
+									<img src="'.baseHelper::thumbnail('images/apps/'.$APPPATH.'/'.$files[$item->id][$i]->filename, 45, 35).'" class="rounded mb-2 set-shadow-right img-thumbnail" style="width:45px; height:35px;" />
+								</a>
+							';
+						} else {
+							$listFiles .= '
+								<a class="d-inline-block mr-2" href="'.$_ROOT.'apps/get-file?fn='.base64_encode($files[$item->id][$i]->filename).'&mt='.base64_encode($files[$item->id][$i]->mimetype).'&tag='.base64_encode($APPNAME).'">
+									<span class="base-icon-attach hasTooltip" title="'.((int)($files[$item->id][$i]->filesize / 1024)).'kb"> '.$files[$item->id][$i]->filename.'</span>
+								</a>
+							';
+						}
 					endif;
 				}
 
@@ -168,6 +176,13 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			endif;
 			$name = baseHelper::nameFormat((!empty($item->nickname) ? $item->nickname : $item->name));
 			if($item->type == 2) $name .= ' <span class="badge badge-warning">'.JText::_('TEXT_CLIENT').'</span>';
+
+			$comment = '';
+			if(!empty($item->comment)) {
+				$comment = htmlspecialchars($item->comment);
+				$comment = preg_replace('~[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]~','<a href="\\0" target="_blank">\\0</a>', $comment);
+				$comment = '<div class="break-word text-pre-wrap mb-3">'.$comment.'</div>';
+			}
 
 			$attachs = !empty($listFiles) ? '<div class="font-condensed text-sm pt-1">'.$listFiles.'</div>' : '';
 

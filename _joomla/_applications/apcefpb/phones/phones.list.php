@@ -30,7 +30,7 @@ defined('_JEXEC') or die;
 			LEFT OUTER JOIN '. $db->quoteName('#__base_providers') .' T4
 			ON T4.id = T3.provider_id AND T4.state = 1
 		WHERE
-			'.$where.$orderList;
+			'.$where.$orderList
 	;
 	try {
 
