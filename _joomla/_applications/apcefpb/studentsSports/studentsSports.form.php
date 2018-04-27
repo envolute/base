@@ -12,11 +12,11 @@ $sports = $db->loadObjectList();
 // FORM
 ?>
 <div class="row">
-	<div class="col-sm-9">
+	<div class="col-sm-7">
 		<div class="form-group field-required">
 			<label class="label-sm"> <?php echo JText::_('FIELD_LABEL_STUDENT'); ?></label>
 			<div class="input-group">
-				<select name="student_id" id="<?php echo $APPTAG?>-student_id" class="form-control field-id auto-tab" data-target="<?php echo $APPTAG?>-sport_id">
+				<select name="student_id" id="<?php echo $APPTAG?>-student_id" class="form-control field-id">
 					<option value="0"><?php echo JText::_('TEXT_SELECT'); ?></option>
 					<?php
 						foreach ($students as $obj) {
@@ -30,12 +30,10 @@ $sports = $db->loadObjectList();
 				</span>
 			</div>
 		</div>
-	</div>
-	<div class="col-sm-9">
 		<div class="form-group field-required">
 			<label class="label-sm"> <?php echo JText::_('FIELD_LABEL_SPORT'); ?></label>
 			<div class="input-group">
-				<select name="sport_id" id="<?php echo $APPTAG?>-sport_id" class="form-control field-id auto-tab" data-target="<?php echo $APPTAG?>-registry_date">
+				<select name="sport_id" id="<?php echo $APPTAG?>-sport_id" class="form-control field-id">
 					<option value="0"><?php echo JText::_('TEXT_SELECT'); ?></option>
 					<?php
 						foreach ($sports as $obj) {
@@ -49,42 +47,43 @@ $sports = $db->loadObjectList();
 				</span>
 			</div>
 		</div>
-	</div>
-	<div class="col-sm-3">
-		<div class="form-group">
-			<label class="label-sm"> <?php echo JText::_('FIELD_LABEL_REGISTRY_DATE'); ?></label>
-			<input type="text" name="registry_date" id="<?php echo $APPTAG?>-registry_date" class="form-control field-date" data-convert="true" />
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label class="label-sm"> <?php echo JText::_('FIELD_LABEL_REGISTRY_DATE'); ?></label>
+					<input type="text" name="registry_date" id="<?php echo $APPTAG?>-registry_date" class="form-control field-date" data-convert="true" />
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label class="label-sm hidden-xs hidden-sm">&#160;</label>
+					<div class="btn-group btn-group-justified" data-toggle="buttons">
+						<label class="label-sm btn btn-block btn-warning btn-active-success">
+							<span class="base-icon-cancel btn-icon"></span>
+							<input type="checkbox" name="coupon_free" id="<?php echo $APPTAG?>-coupon_free" value="1" />
+							<?php echo JText::_('FIELD_LABEL_COUPON_FREE'); ?>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_PRICE_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_PRICE'); ?></label>
+					<span class="input-group">
+						<span class="input-group-addon">R$</span>
+						<input type="text" name="price" id="<?php echo $APPTAG?>-price" class="form-control field-price" data-convert="true" />
+					</span>
+				</div>
+			</div>
 		</div>
-	</div>
-	<div class="col-sm-6">
 		<div class="form-group">
 			<label class="label-sm"> <?php echo JText::_('FIELD_LABEL_NOTE'); ?></label>
 			<input type="text" name="note" id="<?php echo $APPTAG?>-note" class="form-control" />
 		</div>
 	</div>
-	<div class="col-sm-3">
-		<div class="form-group">
-			<label class="label-sm hidden-xs hidden-sm">&#160;</label>
-			<div class="btn-group btn-group-justified" data-toggle="buttons">
-				<label class="label-sm btn btn-block btn-warning btn-active-success">
-					<span class="base-icon-cancel btn-icon"></span>
-					<input type="checkbox" name="coupon_free" id="<?php echo $APPTAG?>-coupon_free" value="1" />
-					<?php echo JText::_('FIELD_LABEL_COUPON_FREE'); ?>
-				</label>
-			</div>
-		</div>
-	</div>
-	<div class="col-sm-3">
-		<div class="form-group">
-			<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_PRICE_DESC'); ?>"><?php echo JText::_('FIELD_LABEL_PRICE'); ?></label>
-			<span class="input-group">
-				<span class="input-group-addon">R$</span>
-				<input type="text" name="price" id="<?php echo $APPTAG?>-price" class="form-control field-price" data-convert="true" />
-			</span>
-		</div>
+	<div class="col-sm-5 pl-0">
+		<label>Carteira do Aluno</label>
+		<iframe id="<?php echo $APPTAG?>-form-card-iframe" style="width:325px; height:205px; border:1px dashed #ddd"></iframe>
+		<button type="button" class="base-icon-print btn block btn-warning hidden-print" onclick="<?php echo $APPTAG?>_setPrintCard('<?php echo $APPTAG?>-form-card-iframe')"> IMPRIMIR</button>
 	</div>
 </div>
-<hr class="hr-label" />
-<span class="label label-warning">Carteira do Aluno</span>
-<iframe id="<?php echo $APPTAG?>-form-card-iframe" style="width:325px; height:205px; border:1px dashed #ddd"></iframe>
-<button type="button" class="base-icon-print btn btn-lg btn-warning all-space-lg pull-right hidden-print" style="height:80px" onclick="<?php echo $APPTAG?>_setPrintCard('<?php echo $APPTAG?>-form-card-iframe')"> IMPRIMIR</button>

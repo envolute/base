@@ -81,54 +81,25 @@ CREATE TABLE IF NOT EXISTS `cms_apcefpb_students_files` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 
-
-
--- -------------------------------------------------------------------------
-
-
-MIGRAÇÃO
-
-
-1 - Copiar a tabela "cms_apcefpb_students" da base antiga e copiar para a tabela "migracao_clients" na base nova
-
-2 - Limpar/esvaziar as tabelas "cms_users" e "cms_usermap_user_groups" na base nova
-
-3 - Copiar os dados das tabelas "cms_users" e "cms_usermap_user_groups" da base antiga para a nova
-
-4 - Rodar o comando abaixo (migração dos dados da tabela "clients" antiga para a nova)
+-- migração
 
 INSERT INTO `cms_apcefpb_students` (
 	`id`,
-	`user_id`,
-	`usergroup`,
 	`name`,
+	`card_name`,
 	`email`,
-	`cpf`,
-	`rg`,
-	`rg_orgao`,
-	`gender`,
 	`birthday`,
-	`place_birth`,
-	`marital_status`,
-	`partner`,
-	`children`,
+	`gender`,
 	`mother_name`,
 	`father_name`,
-	`cx_email`,
-	`cx_code`,
-	`cx_role`,
-	`cx_situated`,
-	`cx_date`,
-	`enable_debit`,
-	`card_name`,
-	`card_limit`,
-	`access`,
+	`has_disease`,
+	`disease_desc`,
+	`has_allergy`,
+	`allergy_desc`,
+	`blood_type`,
 	`state`,
 	`created_date`,
 	`created_by`,
-	`agency`,
-	`account`,
-	`operation`,
 	`zip_code`,
 	`address`,
 	`address_number`,
@@ -138,89 +109,56 @@ INSERT INTO `cms_apcefpb_students` (
 	`address_state`
 ) SELECT
 	`T1`.`id`,
-	`T1`.`user_id`,
-	`T1`.`usergroup`,
 	`T1`.`name`,
+	'',
 	`T1`.`email`,
-	`T1`.`cpf`,
-	`T1`.`rg`,
-	`T1`.`rg_orgao`,
-	`T1`.`gender`,
 	`T1`.`birthday`,
-	`T1`.`place_birth`,
-	IF(`T1`.`marital_status` = 'SOLTEIRO', 1, IF(`T1`.`marital_status` = 'CASADO', 2, IF(`T1`.`marital_status` = 'UNIÃO ESTÁVEL', 3, IF(`T1`.`marital_status` = 'DIVORCIADO', 4, IF(`T1`.`marital_status` = 'VIÚVO', 5, 0))))),
-	`T1`.`partner`,
-	`T1`.`children`,
+	`T1`.`gender`,
 	`T1`.`mother_name`,
 	`T1`.`father_name`,
-	`T1`.`cx_email`,
-	`T1`.`cx_matricula`,
-	`T1`.`cx_cargo`,
-	`T1`.`cx_lotacao`,
-	`T1`.`cx_admissao`,
-	1,
-	`T1`.`name_card`,
-	`T1`.`card_limit`,
-	`T1`.`state`,
+	`T1`.`has_disease`,
+	`T1`.`disease_desc`,
+	`T1`.`has_allergy`,
+	`T1`.`allergy_desc`,
+	`T1`.`blood_type`,
 	`T1`.`state`,
 	`T1`.`created_date`,
 	`T1`.`created_by`,
-	`T3`.`agency`,
-	`T3`.`account`,
-	`T3`.`operation`,
-	`T5`.`zip_code`,
-	`T5`.`address`,
-	`T5`.`address_number`,
-	`T5`.`address_info`,
-	`T5`.`address_district`,
-	`T5`.`address_city`,
-	`T5`.`address_state`
-FROM `migracao_clients` T1
-	LEFT JOIN `migracao_rel_clients_banksAccounts` T2
-	ON `T2`.`client_id` = `T1`.`id`
-	LEFT JOIN `migracao_banks_accounts` T3
-	ON `T3`.`id` = `T2`.`bankAccount_id`
-	LEFT JOIN `migracao_rel_clients_addresses` T4
-	ON `T4`.`client_id` = `T1`.`id`
-	LEFT JOIN `migracao_addresses` T5
-	ON `T5`.`id` = `T4`.`address_id`
+	`T3`.`zip_code`,
+	`T3`.`address`,
+	`T3`.`address_number`,
+	`T3`.`address_info`,
+	`T3`.`address_district`,
+	`T3`.`address_city`,
+	`T3`.`address_state`
+FROM `migracao_students` T1
+	LEFT JOIN `migracao_rel_students_addresses` T2
+	ON `T2`.`student_id` = `T1`.`id`
+	LEFT JOIN `migracao_addresses` T3
+	ON `T3`.`id` = `T2`.`address_id`
 ORDER BY `id`
 
--- Obs 1:
--- Corrige o "Marital Status"
--- "SOLTEIRO"		=> 1 (231)
--- "CASADO"		=> 2 (900)
--- "UNIÃO ESTÁVEL"	=> 3 (30)
--- "DIVORCIADO"	=> 4 (55)
--- "VIÚVO"			=> 5 (53)
--- Obs 2:
--- Migra os endereços e as contas bancárias
--- Obs 3:
--- Tinha vários endereços duplicados, foram excluidos os mais antigos
-
-5 - Migrar telefones
-	5.1 - Criar view dos dados
-	CREATE OR REPLACE VIEW `vw_migracao_clients_phones` AS
-	SELECT
-		T2.id,
-	    T2.name,
-	    GROUP_CONCAT(T3.phone_number) phone_number,
-	    GROUP_CONCAT(T3.description) whatsapp,
-	    GROUP_CONCAT(T3.description) description
-	FROM migracao_rel_clients_phones T1
-		JOIN cms_apcefpb_students T2
-		ON T1.client_id = T2.id
-		JOIN migracao_phones T3
-		ON T1.phone_id = T3.id
-	GROUP BY T2.id
-
-	5.2 - Atualizar a tabela de clients com base na view
-	UPDATE cms_apcefpb_students AS T1, vw_migracao_clients_phones AS T2
-	SET T1.phone = REPLACE(T2.phone_number, ',', ';'), T1.whatsapp = REPLACE(T2.whatsapp, ',', ';'), T1.phone_desc = REPLACE(T2.description, ',', ';')
-	WHERE T2.id = T1.id
-
-6 - Atualizar a tabela "cms_apcefpb_students_code" com o valor da tabela antiga
-
-7 - Copiar dados da tabela "migracao_clients_files" para "cms_apcefpb_students_files"
-
-8 - Copiar os arquivos do antigo "images/uploads/clients" para o novo "images/apps/clients"
+INSERT INTO `cms_apcefpb_students_files` (
+	`id`,
+    `id_parent`,
+    `index`,
+    `filename`,
+    `originalName`,
+    `filesize`,
+    `mimetype`,
+    `extension`,
+    `created_by`,
+    `date_created`
+) SELECT
+	`id`,
+	`id_parent`,
+	`index`,
+	`filename`,
+	`originalName`,
+	`filesize`,
+	`mimetype`,
+	`extension`,
+	`created_by`,
+	`date_created`
+FROM `migracao_students_files`
+ORDER BY `id`

@@ -150,7 +150,7 @@ jQuery(function() {
 		// CUSTOM: Print Card
 		window.<?php echo $APPTAG?>_printCard = function(id, isForm){
 			var f = (typeof isForm !== "null" && typeof isForm !== "undefined" && isForm) ? 1 : 0;
-			var urlPrint = '<?php echo JURI::root()?><?php echo $APPTAG?>-print-card?id='+id+'&fr='+f+'&tmpl=component';
+			var urlPrint = '<?php echo JURI::root().'apps/sports/'.$APPTAG?>-card?id='+id+'&fr='+f+'&tmpl=component';
 			if(f) {
 				jQuery('#<?php echo $APPTAG?>-form-card-iframe').attr("src", urlPrint);
 			} else {
@@ -357,7 +357,7 @@ jQuery(function() {
 		if($cfg['listFull'] || $cfg['ajaxFilter']) require($PATH_APP_FILE.'.filter.php');
 		$where = $where;
 		$orderList = $orderList;
-		$listContent = $cfg['listFull'] ? require($PATH_APP_FILE.'.list.php') : '';
+		$listContent = $cfg['listFull'] ? require($PATH_APP_FILE.'.'.(!empty($cfg['listCustom']) ? $cfg['listCustom'] : 'list.php')) : '';
 		if($cfg['showListDesc']) $list .= '<div class="base-list-description">'.JText::_('LIST_DESCRIPTION').'</div>';
 		$list .= '<div id="list-'.$APPTAG.'" class="base-app-list">'.$listContent.'</div>';
 	endif; // end noList
@@ -384,7 +384,7 @@ jQuery(function() {
 
 	<?php if($cfg['canAdd'] || $cfg['canEdit']) : ?>
 		<div class="modal fade" id="modal-<?php echo $APPTAG?>" tabindex="-1" role="dialog" aria-labelledby="modal-<?php echo $APPTAG?>Label">
-			<div class="modal-dialog" role="document">
+			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
 					<form name="form-<?php echo $APPTAG?>" id="form-<?php echo $APPTAG?>" method="post" enctype="multipart/form-data">
 						<?php if($cfg['showFormHeader']) require(JPATH_CORE.DS.'apps/layout/form/modal.header.php'); ?>
@@ -411,7 +411,7 @@ jQuery(function() {
 				<div class="modal-body">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<iframe id="<?php echo $APPTAG?>-card-iframe" style="width:325px; height:205px; border:1px dashed #ddd"></iframe>
-			    <button type="button" class="base-icon-print btn btn-lg btn-warning all-space-lg pull-right hidden-print" style="height:80px" onclick="<?php echo $APPTAG?>_setPrintCard('<?php echo $APPTAG?>-card-iframe')"> IMPRIMIR</button>
+			    <button type="button" class="base-icon-print btn btn-lg btn-warning float-right hidden-print" style="height:80px" onclick="<?php echo $APPTAG?>_setPrintCard('<?php echo $APPTAG?>-card-iframe')"> IMPRIMIR</button>
 				</div>
 			</div>
 		</div>

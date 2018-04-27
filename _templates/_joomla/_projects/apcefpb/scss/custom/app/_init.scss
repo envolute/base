@@ -1,5 +1,8 @@
 // BASE APPLICATION
 // 'base-app' -> formatos predefinidos para o crud padrão do 'Sistema BASE'
 
-	#component .base-app { margin-bottom: $base-space-lg; }
+	$baseAppMTop: map-get($spacers, 2) + 0.1;
+	#component .base-app {
+		margin: -#{$baseAppMTop} 0 $base-space-lg;
+	}
 	#component .base-app .form-toolbar .col-sm { max-width: 180px; }

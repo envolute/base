@@ -67,6 +67,7 @@ jQuery(function() {
 	var subject				= jQuery('#<?php echo $APPTAG?>-subject');
 	var description			= jQuery('#<?php echo $APPTAG?>-description');
 	var priority			= mainForm.find('input[name=priority]:radio'); // radio group
+	var start_date			= jQuery('#<?php echo $APPTAG?>-start_date');
 	var deadline			= jQuery('#<?php echo $APPTAG?>-deadline');
 	var timePeriod			= jQuery('#<?php echo $APPTAG?>-timePeriod');
 	var estimate			= jQuery('#<?php echo $APPTAG?>-estimate');
@@ -145,6 +146,7 @@ jQuery(function() {
 			subject.val('');
 			description.val('');
 			checkOption(priority, 0);
+			start_date.val('');
 			deadline.val('');
 			timePeriod.selectUpdate('<?php echo JText::_('TEXT_AM'); ?>'); // select
 			estimate.val('');
@@ -324,6 +326,7 @@ jQuery(function() {
 						subject.val(item.subject);
 						description.val(item.description);
 						checkOption(priority, item.priority);
+						start_date.val(dateFormat(item.start_date)); // DATE -> conversão de data
 						deadline.val(dateFormat(item.deadline)); // DATE -> conversão de data
 						timePeriod.selectUpdate(item.timePeriod); // select
 						estimate.selectUpdate(item.estimate);
@@ -499,7 +502,7 @@ jQuery(function() {
 		if($cfg['listFull'] || $cfg['ajaxFilter']) require($PATH_APP_FILE.'.filter.php');
 		$where = $where;
 		$orderList = $orderList;
-		$listContent = $cfg['listFull'] ? require($PATH_APP_FILE.'.list.php') : '';
+		$listContent = $cfg['listFull'] ? require($PATH_APP_FILE.'.'.(!empty($cfg['listCustom']) ? $cfg['listCustom'] : 'list.php')) : '';
 		if($cfg['showListDesc']) $list .= '<div class="base-list-description">'.JText::_('LIST_DESCRIPTION').'</div>';
 		$list .= '<div id="list-'.$APPTAG.'" class="base-app-list">'.$listContent.'</div>';
 	endif; // end noList

@@ -40,7 +40,7 @@ defined('_JEXEC') or die;
 		${$this->appTag.'ShowList'} = $this->showList;
 		${$this->appTag.'ListModal'} = $this->listModal;
 		${$this->appTag.'ListFull'} = $this->listFull;
-		${$this->appTag.'ListAjax'} = $this->listAjax;
+		${$this->appTag.'ListCustom'} = $this->listCustom;
 		${$this->appTag.'AjaxReload'} = $this->ajaxReload;
 		${$this->appTag.'AjaxFilter'} = $this->ajaxFilter;
 		${$this->appTag.'OpenFilter'} = $this->openFilter;
@@ -67,7 +67,7 @@ defined('_JEXEC') or die;
 			$code=rtrim($code,'?>');
 			echo eval($code);
 		endif;
-
+		
 		// APP
 		require(JPATH_BASE.'/base-apps/'.$this->app.'/'.$this->app.'.php');
 

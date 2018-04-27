@@ -70,7 +70,7 @@ if(!empty($item->name)) : // verifica se existe
 	$doc = JFactory::getDocument();
 	$doc->addStyleDeclaration('body{ overflow: hidden!important; }');
 	$html = '
-		<div id="'.$APPTAG.'-card" style="font-family:arial!important; color:#000!important; padding:10px 0 0 1px; font-size:11px;">
+		<div id="'.$APPTAG.'-card" class="to-print" style="padding:10px 0 0 1px; font-size:11px;">
 			'.$img.'
 			<div style="padding:75px 0 0; text-align:right; font-weight:bold;">'.(!empty($item->card_name) ? $item->card_name : $item->name).'</div>
 			<div style="text-align:right; line-height: 1.2;">Cód. <strong>'.$item->code.'</strong>'.$venc.'</div>

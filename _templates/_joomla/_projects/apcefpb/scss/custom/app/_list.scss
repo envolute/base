@@ -17,7 +17,7 @@
 	}
 	.media-md #component .base-app .list-toolbar.floating {
 		position: absolute;
-		top: -(map-get($spacers, 1));
+		top: -(map-get($spacers, 2));
 		right: ($grid-gutter-width / 2);
 		margin: 0;
 	}

@@ -329,7 +329,7 @@ jQuery(function() {
 		if($cfg['listFull'] || $cfg['ajaxFilter']) require($PATH_APP_FILE.'.filter.php');
 		$where = $where;
 		$orderList = $orderList;
-		$listContent = $cfg['listFull'] ? require($PATH_APP_FILE.'.list.php') : '';
+		$listContent = $cfg['listFull'] ? require($PATH_APP_FILE.'.'.(!empty($cfg['listCustom']) ? $cfg['listCustom'] : 'list.php')) : '';
 		if($cfg['showListDesc']) $list .= '<div class="base-list-description">'.JText::_('LIST_DESCRIPTION').'</div>';
 		$list .= '<div id="list-'.$APPTAG.'" class="base-app-list">'.$listContent.'</div>';
 	endif; // end noList

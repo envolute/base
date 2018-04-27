@@ -289,16 +289,26 @@ $where = '';
 
 	// clients -> select
 	$flt_client = '';
-	$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_clients') .' ORDER BY name';
+	$query = '
+		SELECT
+			T1.*,
+			T2.username,
+			T2.block
+		FROM
+			'. $db->quoteName('#__'.$cfg['project'].'_clients') .' T1
+			LEFT JOIN '. $db->quoteName('#__users') .' T2
+			ON T2.id = T1.user_id
+		ORDER BY name';
 	$db->setQuery($query);
 	$clients = $db->loadObjectList();
 	foreach ($clients as $obj) {
-		$flt_client .= '<option value="'.$obj->id.'"'.($obj->id == $fClient ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
+		$st = ($obj->state == 0 || $obj->block == 1) ? ' [inativo]' : '';
+		$flt_client .= '<option value="'.$obj->id.'"'.($obj->id == $fClient ? ' selected = "selected"' : '').'>'.$obj->username.' - '.baseHelper::nameFormat($obj->name).$st.'</option>';
 	}
 
 	// providers -> select
 	$flt_provider = '';
-	$query = 'SELECT * FROM '. $db->quoteName('#__base_providers') .' ORDER BY name';
+	$query = 'SELECT * FROM '. $db->quoteName('#__base_providers') .' WHERE agreement = 0 ORDER BY name';
 	$db->setQuery($query);
 	$providers = $db->loadObjectList();
 	foreach ($providers as $obj) {

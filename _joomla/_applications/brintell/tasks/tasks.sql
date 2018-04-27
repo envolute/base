@@ -11,6 +11,7 @@ CREATE TABLE `cms_brintell_tasks` (
   `subject` varchar(255) NOT NULL,
   `description` TEXT NOT NULL,
   `priority` tinyint(4) NOT NULL,
+  `start_date` DATETIME NOT NULL,
   `deadline` DATETIME NOT NULL,
   `timePeriod` char(2) NOT NULL,
   `estimate` tinyint(4) NOT NULL,

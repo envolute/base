@@ -81,7 +81,10 @@
 
 		// HOME
 		.home .allmode-showall {
-			font-size: 0.9rem;
+			text-align: right;
+			font-family: "Roboto Condensed";
+		    font-weight: 400;
+		    font-style: normal;
 		}
 		.home #full-content .allmode-box figure {
 			transition: all .3s ease;

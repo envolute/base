@@ -46,10 +46,11 @@ if(isset($user->id) && $user->id) :
 
 	// GET DATA
 	$query = '
-		T1.*,
-		IF(T1.agency <> "" AND T1.account <> "" AND T1.operation <> "", 1, 0) account_info,
-		'. $db->quoteName('T2.username') .',
-		'. $db->quoteName('T3.title') .' type
+		SELECT
+			T1.*,
+			IF(T1.agency <> "" AND T1.account <> "" AND T1.operation <> "", 1, 0) account_info,
+			'. $db->quoteName('T2.username') .',
+			'. $db->quoteName('T3.title') .' type
 		FROM '.$db->quoteName($cfg['mainTable']).' T1
 			LEFT OUTER JOIN '. $db->quoteName('#__users') .' T2
 			ON T2.id = T1.user_id

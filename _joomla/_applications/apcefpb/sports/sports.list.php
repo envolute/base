@@ -88,7 +88,7 @@ if($num_rows) : // verifica se existe
 
 		$adminView['list']['info'] = $adminView['list']['actions'] = '';
 		$btnDelete = $canDelete ? '<a href="#" class="btn btn-xs btn-danger hasTooltip" title="'.JText::_('TEXT_DELETE').'" onclick="'.$APPTAG.'_del('.$item->id.', false)"><span class="base-icon-trash"></span></a>' : '';
-		if($hasEdit) :
+		if($canEdit) :
 			$adminView['list']['info'] = '
 				<td class="check-row d-print-none"><input type="checkbox" name="'.$APPTAG.'_ids[]" class="checkAll-child" value="'.$item->id.'" onchange="'.$APPTAG.'_setBtnStatus()" /></td>
 				<td class="d-none d-lg-table-cell d-print-none">'.$item->id.'</td>

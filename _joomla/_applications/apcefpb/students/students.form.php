@@ -143,10 +143,6 @@ defined('_JEXEC') or die;
 				<input type="file" name="file[0]" id="<?php echo $APPTAG?>-file0" class="field-image" hidden />
 			</div>
 		</div>
-		<div id="<?php echo $APPTAG?>-group-btnPrint" class="form-group" hidden>
-			<label class="d-block text-center pt-1"><?php echo JText::_('TEXT_CLIENT_CARD'); ?></label>
-			<button type="button" class="btn btn-lg btn-block btn-success base-icon-print btn-icon" onclick="<?php echo $APPTAG?>_printCard()"> <?php echo JText::_('TEXT_PRINT'); ?></button>
-		</div>
 	</div>
 </div>
 <hr class="hr-tag" />
@@ -221,7 +217,7 @@ defined('_JEXEC') or die;
 					</div>
 				</div>
 				<div class="col-sm-7 col-lg-8 pt-2 pt-sm-0">
-					<input type="text" name="phone_desc[]" id="<?php echo $APPTAG?>-phone_desc" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?>" maxlength="50" />
+					<input type="text" name="phone_desc[]" id="<?php echo $APPTAG?>-phone_desc" class="form-control upper" placeholder="<?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?>" maxlength="50" />
 				</div>
 			</div>
 		</div>

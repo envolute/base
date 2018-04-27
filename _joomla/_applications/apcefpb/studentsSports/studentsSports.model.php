@@ -101,7 +101,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 
 		// SAVE CONDITION
 		// Condição para inserção e atualização dos registros
-		$save_condition = (!empty($request['name']));
+		$save_condition = ($request['student_id'] > 0 && $request['sport_id'] > 0);
 
 		if($id || (!empty($ids) && $ids != 0)) :  //UPDATE OR DELETE
 

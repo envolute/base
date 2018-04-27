@@ -142,21 +142,23 @@ if(!empty($file) && file_exists($file)) :
 		';
 	endif;
 
-	echo '
-		<div id="'.$propID.'"'.$class.'>
-			<ul id="mod-base-bxslider-'.$module->id.'" class="bxslider">
-	';
-			// INCLUDE
-			if(strpos($file, 'http') === false) :
-				require(JPATH_BASE.'/'.$file);
-			else :
-				echo '<p class="alert alert-danger">'.Jtext::_('MOD_BASESLIDER_INCLUDE_ALERT').'</p>';
-			endif;
-	echo '
-			</ul>
-			'.$link.'
-		</div>
-	';
+	// INCLUDE
+	$html = '';
+	if(strpos($file, 'http') === false) {
+		require(JPATH_BASE.'/'.$file);
+	} else {
+		echo '<p class="alert alert-danger">'.Jtext::_('MOD_BASESLIDER_INCLUDE_ALERT').'</p>';
+		exit();
+	}
+
+	if(!empty($html)) {
+		echo '
+			<div id="'.$propID.'"'.$class.'>
+				<ul id="mod-base-bxslider-'.$module->id.'" class="bxslider">'.$html.'</ul>
+				'.$link.'
+			</div>
+		';
+	}
 
 endif; // end 'file'
 ?>

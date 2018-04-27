@@ -60,7 +60,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		T1.main,
 		T1.state
 	';
-	if(!empty($rID) && $rID !== 0) :
+	if(!empty($rNID) && (!empty($rID) && $rID !== 0)) :
 		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
 			$query .= ' FROM '.
 				$db->quoteName($cfg['mainTable']) .' T1

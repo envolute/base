@@ -117,5 +117,4 @@ if($num_rows) : // verifica se existe
 
 endif;
 
-echo $html;
 ?>

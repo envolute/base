@@ -39,3 +39,46 @@ CREATE TABLE IF NOT EXISTS `cms_apcefpb_sports_files` (
   UNIQUE KEY `filename` (`filename`),
   KEY `id_parent` (`id_parent`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+-- migração
+
+INSERT INTO `cms_apcefpb_sports` (
+	`id`,
+	`name`,
+	`state`,
+	`created_date`,
+	`created_by`
+) SELECT
+	`id`,
+	`name`,
+	`state`,
+	`created_date`,
+	`created_by`
+FROM `migracao_sports`
+ORDER BY `id`
+
+INSERT INTO `cms_apcefpb_sports_files` (
+	`id`,
+    `id_parent`,
+    `index`,
+    `filename`,
+    `originalName`,
+    `filesize`,
+    `mimetype`,
+    `extension`,
+    `created_by`,
+    `date_created`
+) SELECT
+	`id`,
+	`id_parent`,
+	`index`,
+	`filename`,
+	`originalName`,
+	`filesize`,
+	`mimetype`,
+	`extension`,
+	`created_by`,
+	`date_created`
+FROM `migracao_sports_files`
+ORDER BY `id`

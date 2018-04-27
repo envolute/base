@@ -66,6 +66,12 @@ ${$APPTAG.'Archive'} = isset(${$APPTAG.'Archive'}) ? ${$APPTAG.'Archive'} : 0;
 		$fView	= $app->input->get('fView', 9, 'int');
 		if($fView != 9) $where .= ' AND '.$db->quoteName('T1.visibility').' = '.$fView;
 	}
+	// START DATE
+	$startMin	= $app->input->get('startMin', '', 'string');
+	$startMax	= $app->input->get('startMax', '', 'string');
+	$stmin = !empty($startMin) ? $startMin : '0000-00-00';
+	$stmax = !empty($startMax) ? $startMax : '9999-12-31';
+	if(!empty($startMin) || !empty($startMax)) $where .= ' AND '.$db->quoteName('T1.start_date').' BETWEEN '.$db->quote($stmin).' AND '.$db->quote($stmax);
 	// DEADLINE DATE
 	$dateMin	= $app->input->get('dateMin', '', 'string');
 	$dateMax	= $app->input->get('dateMax', '', 'string');

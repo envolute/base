@@ -7,15 +7,45 @@ $where = '';
 // filter params
 
 	// STATE -> select
-	$active	= $app->input->get('active', ($cfg['canEdit'] ? 2 : 1), 'int');
+	$active	= $app->input->get('active', 2, 'int');
 	$where .= ($active == 2) ? $db->quoteName('T1.state').' != '.$active : $db->quoteName('T1.state').' = '.$active;
+	// STUDENT -> select
+	$fStud	= $app->input->get('fStud', 0, 'int');
+	if($fStud != 0) $where .= ' AND '. $db->quoteName('T1.student_id').' = '.$fStud;
+	// SPORT -> select
+	$fSport	= $app->input->get('fSport', 0, 'int');
+	if($fSport != 0) $where .= ' AND '. $db->quoteName('T1.sport_id').' = '.$fSport;
+	// COUPON FREE -> select
+	$fCoupon	= $app->input->get('fCoupon', 2, 'int');
+	$where .= ($fCoupon == 2) ? '' : ' AND '. $db->quoteName('T1.coupon_free').' = '.$fCoupon;
+	// GENDER -> select
+	$fGender	= $app->input->get('fGender', 0, 'int');
+	$where .= ($fGender == 0) ? '' : ' AND '. $db->quoteName('T2.gender').' = '.$fGender;
+	// HEALTH -> select
+	$fHealth	= $app->input->get('fHealth', 2, 'int');
+	$where .= ($fHealth == 2) ? '' : $db->quoteName('T2.has_disease').' = '.$fHealth;
+	// ALLERGY -> select
+	$fAllergy	= $app->input->get('fAllergy', 2, 'int');
+	$where .= ($fAllergy == 2) ? '' : $db->quoteName('T2.has_allergy').' = '.$fAllergy;
+	// DATE
+	$dateMin	= $app->input->get('dateMin', '', 'string');
+	$dateMax	= $app->input->get('dateMax', '', 'string');
+	$dtmin = !empty($dateMin) ? $dateMin : '0000-00-00';
+	$dtmax = !empty($dateMax) ? $dateMax : '9999-12-31';
+	if(!empty($dateMin) || !empty($dateMax)) $where .= ' AND '.$db->quoteName('T1.registry_date').' BETWEEN '.$db->quote($dtmin).' AND '.$db->quote($dtmax);
 
 	// Search 'Text fields'
 	$search	= $app->input->get('fSearch', '', 'string');
 	$sQuery = ''; // query de busca
 	$sLabel = array(); // label do campo de busca
 	$searchFields = array(
-		'T1.name'				=> 'FIELD_LABEL_NAME'
+		'T2.name'				=> 'FIELD_LABEL_NAME',
+		'T2.mother_name'		=> 'FIELD_LABEL_MOTHER_NAME',
+		'T2.father_name'		=> 'FIELD_LABEL_FATHER_NAME',
+		'T2.email'				=> 'Email',
+		'T2.disease_desc'		=> 'FIELD_LABEL_DISEASE',
+		'T2.allergy_desc'		=> 'FIELD_LABEL_ALLERGY',
+		'T3.name'				=> 'FIELD_LABEL_GROUP' // sport
 	);
 	$i = 0;
 	foreach($searchFields as $key => $value) {
@@ -31,9 +61,10 @@ $where = '';
 	$ordf	= $app->input->get($APPTAG.'oF', '', 'string'); // campo a ser ordenado
 	$ordt	= $app->input->get($APPTAG.'oT', '', 'string'); // tipo de ordem: 0 = 'ASC' default, 1 = 'DESC'
 
-	$orderDef = ''; // não utilizar vírgula no inicio ou fim
+	$orderDef = 'T3.name ASC'; // não utilizar vírgula no inicio ou fim
+	unset($_SESSION[$APPTAG.'oF']);
 	if(!isset($_SESSION[$APPTAG.'oF'])) : // DEFAULT ORDER
-		$_SESSION[$APPTAG.'oF'] = 'T1.name';
+		$_SESSION[$APPTAG.'oF'] = 'T2.name';
 		$_SESSION[$APPTAG.'oT'] = 'ASC';
 	endif;
 	if(!empty($ordf)) :
@@ -55,14 +86,23 @@ $where = '';
 
 // FILTER'S DINAMIC FIELDS
 
-	// types -> select
-	// $flt_type = '';
-	// $query = 'SELECT * FROM '. $db->quoteName($cfg['mainTable'].'_types') .' ORDER BY name';
-	// $db->setQuery($query);
-	// $types = $db->loadObjectList();
-	// foreach ($types as $obj) {
-	// 	$flt_type .= '<option value="'.$obj->id.'"'.($obj->id == $fType ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
-	// }
+	// student -> select
+	$flt_stud = '';
+	$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_students') .' ORDER BY name';
+	$db->setQuery($query);
+	$students = $db->loadObjectList();
+	foreach ($students as $obj) {
+		$flt_stud .= '<option value="'.$obj->id.'"'.($obj->id == $fStud ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
+	}
+
+	// sport -> select
+	$flt_sport = '';
+	$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_sports') .' ORDER BY name';
+	$db->setQuery($query);
+	$sports = $db->loadObjectList();
+	foreach ($sports as $obj) {
+		$flt_sport .= '<option value="'.$obj->id.'"'.($obj->id == $fSport ? ' selected = "selected"' : '').'>'.baseHelper::nameFormat($obj->name).'</option>';
+	}
 
 // VISIBILITY
 // Elementos visíveis apenas quando uma consulta é realizada
@@ -88,6 +128,64 @@ $htmlFilter = '
 			<input type="hidden" name="'.$APPTAG.'_filter" value="1" />
 
 			<div class="row">
+				<div class="col-sm-4 col-md-2">
+					<div class="form-group">
+						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_STUDENT').'</label>
+						<select name="fStud" id="fStud" class="form-control form-control-sm set-filter">
+							<option value="0">- '.JText::_('TEXT_ALL').' -</option>
+							'.$flt_stud.'
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-4 col-md-2">
+					<div class="form-group">
+						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_SPORT').'</label>
+						<select name="fSport" id="fSport" class="form-control form-control-sm set-filter">
+							<option value="0">- '.JText::_('TEXT_ALL').' -</option>
+							'.$flt_sport.'
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-4 col-md-2">
+					<div class="form-group">
+						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_TYPE').'</label>
+						<select name="fCoupon" id="fCoupon" class="form-control form-control-sm set-filter">
+							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
+							<option value="1"'.($fCoupon == 1 ? ' selected' : '').'>'.JText::_('FIELD_LABEL_COUPON_FREE').'</option>
+							<option value="0"'.($fCoupon == 0 ? ' selected' : '').'>'.JText::_('FIELD_LABEL_PAYING').'</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-4 col-md-2">
+					<div class="form-group">
+						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_DISEASE').'</label>
+						<select name="fHealth" id="fHealth" class="form-control form-control-sm set-filter">
+							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
+							<option value="1"'.($fHealth == 1 ? ' selected' : '').'>'.JText::_('TEXT_YES').'</option>
+							<option value="0"'.($fHealth == 0 ? ' selected' : '').'>'.JText::_('TEXT_NO').'</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-4 col-md-2">
+					<div class="form-group">
+						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_ALLERGY').'</label>
+						<select name="fAllergy" id="fAllergy" class="form-control form-control-sm set-filter">
+							<option value="2">- '.JText::_('TEXT_ALL').' -</option>
+							<option value="1"'.($fAllergy == 1 ? ' selected' : '').'>'.JText::_('TEXT_YES').'</option>
+							<option value="0"'.($fAllergy == 0 ? ' selected' : '').'>'.JText::_('TEXT_NO').'</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-4 col-md-2">
+					<div class="form-group">
+						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_GENDER').'</label>
+						<select name="fGender" id="fGender" class="form-control form-control-sm set-filter">
+							<option value="0">- '.JText::_('TEXT_ALL').' -</option>
+							<option value="1"'.($fGender == 1 ? ' selected' : '').'>'.JText::_('TEXT_MALE').'</option>
+							<option value="2"'.($fGender == 2 ? ' selected' : '').'>'.JText::_('TEXT_FEMALE').'</option>
+						</select>
+					</div>
+				</div>
 				<div class="col-sm-4 col-md-2">
 					<div class="form-group">
 						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_ITEM_STATE').'</label>

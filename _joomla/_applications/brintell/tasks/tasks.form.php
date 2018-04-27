@@ -145,6 +145,10 @@ foreach ($staff as $obj) {
 					<input type="hidden" name="cissues" id="<?php echo $APPTAG?>-cissues" />
 				</div>
 				<div class="form-group">
+					<label class="label-sm iconTip hasTooltip"><?php echo JText::_('FIELD_LABEL_START_DATE'); ?></label>
+					<input type="text" name="start_date" id="<?php echo $APPTAG?>-start_date" class="field-date" data-convert="true" />
+				</div>
+				<div class="form-group">
 					<label class="label-sm iconTip hasTooltip" title="<?php echo JText::_('FIELD_LABEL_DEADLINE_DESC'); ?>">
 						<?php echo JText::_('FIELD_LABEL_DEADLINE'); ?>
 						[ <?php echo JText::_('TEXT_TIME_IN_BRAZIL'); ?>: <iframe src="//free.timeanddate.com/clock/i63smlsf/n45/fs13/fcf80/tct/pct/ahl/ftb/ts1" frameborder="0" width="58" height="16" style="margin-bottom:-3px;" allowTransparency="true"></iframe> ]

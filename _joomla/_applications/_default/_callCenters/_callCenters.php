@@ -196,7 +196,7 @@ jQuery(function() {
 			formGroup += '	<div class="col-sm-6 col-lg-7">';
 			formGroup += '		<div class="form-group">';
 			formGroup += '			<div class="input-group">';
-			formGroup += '				<input type="text" name="phone_desc[]" id="<?php echo $APPTAG?>-phone_desc'+<?php echo $APPTAG?>PhoneIndex+'" value="'+d+'" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?>" maxlength="50" />';
+			formGroup += '				<input type="text" name="phone_desc[]" id="<?php echo $APPTAG?>-phone_desc'+<?php echo $APPTAG?>PhoneIndex+'" value="'+d+'" class="form-control upper" placeholder="<?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?>" maxlength="50" />';
 			formGroup += '				<span class="input-group-btn">';
 			formGroup += '					<button type="button" class="btn btn-danger base-icon-cancel" onclick="<?php echo $APPTAG?>_phoneRemove(\'#<?php echo $APPTAG?>-newPhoneGroup'+<?php echo $APPTAG?>PhoneIndex+'\')"></button>';
 			formGroup += '				</span>';
@@ -528,7 +528,7 @@ jQuery(function() {
 		if($cfg['listFull'] || $cfg['ajaxFilter']) require($PATH_APP_FILE.'.filter.php');
 		$where = $where;
 		$orderList = $orderList;
-		$listContent = $cfg['listFull'] ? require($PATH_APP_FILE.'.list.php') : '';
+		$listContent = $cfg['listFull'] ? require($PATH_APP_FILE.'.'.(!empty($cfg['listCustom']) ? $cfg['listCustom'] : 'list.php')) : '';
 		if($cfg['showListDesc']) $list .= '<div class="base-list-description">'.JText::_('LIST_DESCRIPTION').'</div>';
 		$list .= '<div id="list-'.$APPTAG.'" class="base-app-list">'.$listContent.'</div>';
 	endif; // end noList

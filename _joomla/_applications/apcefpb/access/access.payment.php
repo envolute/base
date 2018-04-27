@@ -85,7 +85,7 @@ if(!empty($item->guestName)) : // verifica se existe
 	endif;
 
 	$html = '
-	<div class="text-black" style="font-family: arial!important;color: black!important;">
+	<div class="to-print">
 		<div class="bottom-expand mb-3 clearfix" style="border-bottom: 2px solid">
 			<div class="font-lg font-weight-bold">APCEF/PB</div>
 		</div>

@@ -103,6 +103,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 	  	$request['subject']				= $input->get('subject', '', 'string');
 	  	$request['description']			= $input->get('description', '', 'string');
 		$request['priority']			= $input->get('priority', 0, 'int');
+	  	$request['start_date']			= $input->get('start_date', '', 'string');
 	  	$request['deadline']			= $input->get('deadline', '', 'string');
 	  	$request['timePeriod']			= $input->get('timePeriod', '', 'string');
 	  	$request['estimate']			= $input->get('estimate', 0, 'int');
@@ -184,6 +185,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 						'subject'			=> $item->subject,
 						'description'		=> $item->description,
 						'priority'			=> $item->priority,
+						'start_date'		=> $item->start_date,
 						'deadline'			=> $item->deadline,
 						'timePeriod'		=> $item->timePeriod,
 						'estimate'			=> $item->estimate,
@@ -208,6 +210,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('subject')			.'='. $db->quote($request['subject']) .','.
 							$db->quoteName('description')		.'='. $db->quote($request['description']) .','.
 							$db->quoteName('priority')			.'='. $request['priority'] .','.
+							$db->quoteName('start_date')		.'='. $db->quote($request['start_date']) .','.
 							$db->quoteName('deadline')			.'='. $db->quote($request['deadline']) .','.
 							$db->quoteName('timePeriod')		.'='. $db->quote($request['timePeriod']) .','.
 							$db->quoteName('estimate')			.'='. $request['estimate'] .','.
@@ -546,6 +549,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quoteName('subject') .','.
 							$db->quoteName('description') .','.
 							$db->quoteName('priority') .','.
+							$db->quoteName('start_date') .','.
 							$db->quoteName('deadline') .','.
 							$db->quoteName('timePeriod') .','.
 							$db->quoteName('estimate') .','.
@@ -563,6 +567,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 							$db->quote($request['subject']) .','.
 							$db->quote($request['description']) .','.
 							$request['priority'] .','.
+							$db->quote($request['start_date']) .','.
 							$db->quote($request['deadline']) .','.
 							$db->quote($request['timePeriod']) .','.
 							$request['estimate'] .','.

@@ -18,3 +18,31 @@ CREATE TABLE `cms_apcefpb_students_sports` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `registration` (`student_id`, `sport_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+-- migração
+
+INSERT INTO `cms_apcefpb_students_sports` (
+	`id`,
+	`student_id`,
+	`sport_id`,
+	`registry_date`,
+	`coupon_free`,
+	`price`,
+	`note`,
+	`state`,
+	`created_date`,
+	`created_by`
+) SELECT
+	`id`,
+	`student_id`,
+	`sport_id`,
+	`registry_date`,
+	`coupon_free`,
+	`price`,
+	`note`,
+	`state`,
+	`created_date`,
+	`created_by`
+FROM `migracao_students_sports`
+ORDER BY `id`

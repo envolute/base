@@ -1,0 +1,56 @@
+.dp-upcoming li {
+    padding: .6rem 0;
+}
+.dp-upcoming-calendar {
+	float: left;
+	width: 38px;
+	height: 40px;
+	margin: 0 8px 0 0;
+	padding:0;
+	border-radius: 0 0 3px 3px;
+	background-color: rgba(255,255,255,.9);
+	box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.15), 1px 1px 0px rgba(0,0,0,0.1);
+}
+
+.dp-upcoming-calendar-background {
+	height: 14px;
+	margin: 1px;
+	padding: 0;
+}
+
+.dp-upcoming-text-month {
+	position: relative;
+	margin: -13px 0 0 0;
+	padding: 0px;
+	color: #fff;
+	font-family: arial,sans-serif;
+	font-weight: bold;
+	font-size: 11px;
+	line-height: 1em;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.dp-upcoming-text-day {
+	width: 38px;
+	margin:0px;
+	padding:1px 0 0;
+	font-family:arial,sans-serif;
+	font-weight: bold;
+	font-size: 1.3rem;
+	line-height:1.4;
+	text-align: center;
+}
+
+.dp-container .row {
+	margin-left: 0;
+}
+.dp-upcoming-info .dp-upcoming-date {
+	font-size: 10px;
+	line-height: 8px;
+    margin-bottom: 4px;
+}
+.dp-upcoming-info h6 {
+	margin: 0;
+	line-height: 1rem;
+}

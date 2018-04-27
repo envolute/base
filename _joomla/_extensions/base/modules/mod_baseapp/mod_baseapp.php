@@ -54,7 +54,7 @@ defined('_JEXEC') or die;
 		${$appTag.'ShowList'} = $params->get('showList');
 		${$appTag.'ListModal'} = $params->get('listModal');
 		${$appTag.'ListFull'} = $params->get('listFull');
-		${$appTag.'ListAjax'} = $params->get('listAjax');
+		${$appTag.'ListCustom'} = $params->get('listCustom');
 		${$appTag.'AjaxReload'} = $params->get('ajaxReload');
 		${$appTag.'AjaxFilter'} = $params->get('ajaxFilter');
 		${$appTag.'OpenFilter'} = $params->get('openFilter');

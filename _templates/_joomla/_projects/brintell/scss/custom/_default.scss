@@ -218,25 +218,36 @@
 			}
 			#brintell-slogan {
 			    position: absolute;
-			    top: 200px;
+			    top: 90px;
 			    width: 100%;
 				color: #FFF;
 
 				h1 {
-				    width: 350px;
 				    float: right;
 					padding-bottom: 1rem;
 				    line-height: 1;
-					background: -webkit-linear-gradient(white, $base-color-primary-dark);
-  				    -webkit-background-clip: text;
-  				    -webkit-text-fill-color: transparent;
+
+					// span {
+					//     background: -webkit-linear-gradient(white, $base-color-primary-dark);
+	  				//     -webkit-background-clip: text;
+	  				//     -webkit-text-fill-color: transparent;
+					// }
 				}
+				@include media-breakpoint-up(md) {
+					h1 { width: 350px; }
+				}
+			}
+			@include media-breakpoint-up(md) {
+				#brintell-slogan { top: 150px; }
 			}
 			body.what-we-do {
 
 				#brintell-slogan {
 					top: 160px;
-					h1 { width: 400px; }
+					h1 {
+						width: 400px;
+						max-width: 100%;
+					}
 				}
 				#content-container {
 				    padding-top: 350px;
@@ -245,11 +256,20 @@
 			}
 			#content-container {
 			    position: relative;
-			    padding-top: 95vh;
+				padding-top: 90vh;
+
+				.next-section {
+					height: 10vh;
+				}
 
 				#our-clients {
 				    height: 100vh;
 				    position: relative;
+					overflow: hidden;
+
+					@include media-breakpoint-down(md) {
+						.logos { position: relative; }
+					}
 
 					.logos > div {
 					    position: absolute;
@@ -340,6 +360,47 @@
 					}
 
 				}
+
+				#easy-data,
+				#intelli-suit,
+				#data-doctor,
+				#brintell-squad {
+    				padding: 3rem 0;
+				}
+
+				#intelli-suit {
+
+					span.timeline {
+					    position: absolute;
+					    top: 50%;
+					    right: 0px;
+					    display: flex;
+					    border-right: 1px solid #41b79d;
+					    height: 50%;
+
+						span.base-icon-circle {
+						    position: relative;
+						    right: -7px;
+						    top: -7px;
+						    line-height: 1;
+						}
+
+						&.full {
+							top: 0;
+						    height: 100%;
+							align-items: center;
+						}
+						&.last {
+							top: 0;
+						    height: 50%;
+							align-items: flex-end;
+
+							span.base-icon-circle {
+							    top: 4px;
+							}
+						}
+					}
+				}
 			}
 
 			#about-us {
@@ -355,8 +416,8 @@
 
 					svg {
 						position: relative;
-					    top: -50px;
-					    height: 50px;
+					    top: -100px;
+					    height: 100px;
 					    width: 100%;
 					    color: #222;
 						z-index: -1;
@@ -399,6 +460,10 @@
 						    padding-top: 25px;
 						}
 					}
+
+					@include media-breakpoint-down(md) {
+						.about-graphic { margin: 0; }
+					}
 				}
 
 				#get-in-touch {
@@ -408,7 +473,7 @@
 						box-shadow: 0 0 40px 5px rgba(65, 183, 157, .3), 1px 1px 10px rgba(65, 183, 157, .5);
 
 						form {
-							padding: 4rem 0;
+							padding: 3.5rem 0;
 						}
 						.form-control {
 							border-color: $base-color-primary;
@@ -438,14 +503,17 @@
 
 	// FOOTER
 
+		@include media-breakpoint-down(md) {
+			#footer { height: auto!important; }
+		}
 		#footer {
-			height: 100vh;
+			height: 350px;
 			margin-top: -10px; // para sobrepor 'full-content'
 			color: #ccc;
 			background: #222 url("../images/triangulos-footer.png");
 
 			#footer-row-2 {
-				padding-top: 8rem;
+				padding-top: 6rem;
 			}
 
 			a {

@@ -67,7 +67,7 @@
 					<option value="0">MOD_BASEAPP_LIST_AJAX</option>
 					<option value="">JGLOBAL_USE_GLOBAL</option>
 				</field>
-				<field name="listAjax" type="text" filter="string" default="list.ajax.php" label="MOD_BASEAPP_AJAX_VIEW_LABEL" description="MOD_BASEAPP_AJAX_VIEW_DESC" />
+				<field name="listCustom" type="text" filter="string" label="MOD_BASEAPP_CUSTOM_VIEW_LABEL" description="MOD_BASEAPP_CUSTOM_VIEW_DESC" />
 				<field name="ajaxReload" type="radio" class="btn-group" label="MOD_BASEAPP_AJAX_RELOAD_LABEL" description="MOD_BASEAPP_AJAX_RELOAD_DESC">
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>

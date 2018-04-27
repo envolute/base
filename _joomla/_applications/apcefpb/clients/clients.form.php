@@ -30,7 +30,7 @@ $users = $db->loadObjectList();
 	<div class="col-lg-9 b-right b-right-dashed">
 		<div class="row">
 			<div class="col-sm-8">
-				<div class="form-group field-required">
+				<div class="form-group field-required-disabled">
 					<label><?php echo JText::_('FIELD_LABEL_NAME'); ?></label>
 					<div class="input-group">
 						<input type="text" name="name" id="<?php echo $APPTAG?>-name" class="form-control upper" />
@@ -48,7 +48,7 @@ $users = $db->loadObjectList();
 				</div>
 			</div>
 			<div class="col-md-4">
-				<div class="form-group field-required">
+				<div class="form-group field-required-disabled">
 					<label><?php echo JText::_('TEXT_USER_TYPE'); ?></label>
 					<select name="usergroup" id="<?php echo $APPTAG?>-usergroup" class="form-control field-id" onchange="<?php echo $APPTAG?>_setType(this.value)">
 						<?php
@@ -72,7 +72,7 @@ $users = $db->loadObjectList();
 							</div>
 						</div>
 						<div class="col-sm-6 col-md-4">
-							<div class="form-group field-required">
+							<div class="form-group field-required-disabled">
 								<label><?php echo JText::_('FIELD_LABEL_CX_CODE'); ?></label>
 								<input type="text" name="cx_code" id="<?php echo $APPTAG?>-cx_code" class="form-control upper" />
 							</div>
@@ -99,39 +99,39 @@ $users = $db->loadObjectList();
 				</fieldset>
 			</div>
 			<div class="col-sm-8">
-				<div class="form-group field-required">
+				<div class="form-group field-required-disabled">
 					<label>E-mail</label>
 					<input type="email" name="email" id="<?php echo $APPTAG?>-email" class="form-control field-email" />
 					<input type="hidden" name="cmail" id="<?php echo $APPTAG?>-cmail" />
 				</div>
 			</div>
 			<div class="col-sm-4">
-				<div class="form-group field-required">
+				<div class="form-group field-required-disabled">
 					<label><?php echo JText::_('FIELD_LABEL_BIRTHDAY'); ?></label>
 					<input type="text" name="birthday" id="<?php echo $APPTAG?>-birthday" class="form-control field-date birthday" data-convert="true" />
 				</div>
 			</div>
 			<div class="col-sm-4">
-				<div class="form-group field-required">
+				<div class="form-group field-required-disabled">
 					<label>CPF</label>
 					<input type="text" name="cpf" id="<?php echo $APPTAG?>-cpf" class="form-control field-cpf" />
 					<input type="hidden" name="ccpf" id="<?php echo $APPTAG?>-ccpf" />
 				</div>
 			</div>
 			<div class="col-sm-4">
-				<div class="form-group field-required">
+				<div class="form-group field-required-disabled">
 					<label class="iconTip hasTooltip" title="<?php echo JText::_('TEXT_ONLY_NUMBERS'); ?>">RG</label>
 					<input type="text" name="rg" id="<?php echo $APPTAG?>-rg" class="form-control numeric" />
 				</div>
 			</div>
 			<div class="col-sm-4">
-				<div class="form-group field-required">
+				<div class="form-group field-required-disabled">
 					<label>RG Orgão</label>
 					<input type="text" name="rg_orgao" id="<?php echo $APPTAG?>-rg_orgao" class="form-control upper" />
 				</div>
 			</div>
 			<div class="col-sm-4">
-				<div class="form-group field-required">
+				<div class="form-group field-required-disabled">
 					<label><?php echo JText::_('FIELD_LABEL_GENDER'); ?></label>
 					<span class="btn-group btn-group-justified" data-toggle="buttons">
 						<label class="btn btn-default btn-active-success">
@@ -173,21 +173,21 @@ $users = $db->loadObjectList();
 			</div>
 			<div id="<?php echo $APPTAG?>-group-partner" class="col-12" hidden>
 				<div class="form-group">
-					<label class="field-required"><?php echo JText::_('FIELD_LABEL_PARTNER'); ?></label>
+					<label class=" field-required-disabled"><?php echo JText::_('FIELD_LABEL_PARTNER'); ?></label>
 					<input type="text" name="partner" id="<?php echo $APPTAG?>-partner" class="form-control upper" />
 				</div>
 			</div>
 			<div class="col-md-12">
 				<div class="form-group">
-					<label class="field-required"><?php echo JText::_('FIELD_LABEL_PLACE_BIRTH'); ?></label>
+					<label class=" field-required-disabled"><?php echo JText::_('FIELD_LABEL_PLACE_BIRTH'); ?></label>
 					<input type="text" name="place_birth" id="<?php echo $APPTAG?>-place_birth" class="form-control upper" />
 				</div>
 				<div class="form-group">
-					<label class="field-required"><?php echo JText::_('FIELD_LABEL_MOTHER_NAME'); ?></label>
+					<label class=" field-required-disabled"><?php echo JText::_('FIELD_LABEL_MOTHER_NAME'); ?></label>
 					<input type="text" name="mother_name" id="<?php echo $APPTAG?>-mother_name" class="form-control upper" />
 				</div>
 				<div class="form-group">
-					<label class="field-required"><?php echo JText::_('FIELD_LABEL_FATHER_NAME'); ?></label>
+					<label class=" field-required-disabled"><?php echo JText::_('FIELD_LABEL_FATHER_NAME'); ?></label>
 					<input type="text" name="father_name" id="<?php echo $APPTAG?>-father_name" class="form-control upper" />
 				</div>
 			</div>
@@ -195,7 +195,7 @@ $users = $db->loadObjectList();
 	</div>
 	<div class="col-lg-3">
 		<div id="<?php echo $APPTAG?>-codeView" class="form-group" hidden>
-			<label class="field-required"><?php echo JText::_('FIELD_LABEL_CODE'); ?></label>
+			<label class=" field-required-disabled"><?php echo JText::_('FIELD_LABEL_CODE'); ?></label>
 			<input type="text" name="codeView" class="form-control upper text-danger" disabled />
 		</div>
 		<div class="form-group">
@@ -290,7 +290,7 @@ $users = $db->loadObjectList();
 					</div>
 				</div>
 				<div class="col-sm-7 col-lg-8 pt-2 pt-sm-0">
-					<input type="text" name="phone_desc[]" id="<?php echo $APPTAG?>-phone_desc" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?>" maxlength="50" />
+					<input type="text" name="phone_desc[]" id="<?php echo $APPTAG?>-phone_desc" class="form-control upper" placeholder="<?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?>" maxlength="50" />
 				</div>
 			</div>
 		</div>
@@ -324,14 +324,14 @@ $users = $db->loadObjectList();
 						<div class="base-icon-right-big mt-2"></div>
 					</div>
 					<div class="col-sm-3">
-						<div class="form-group field-required">
-							<label class="field-required"><?php echo JText::_('FIELD_LABEL_AGENCY'); ?></label>
+						<div class="form-group field-required-disabled">
+							<label class=" field-required-disabled"><?php echo JText::_('FIELD_LABEL_AGENCY'); ?></label>
 							<input type="text" name="agency" id="<?php echo $APPTAG?>-agency" class="form-control numeric length-fixed" data-length="4" maxlength="4" />
 						</div>
 					</div>
 					<div class="col-sm-3">
-						<div class="form-group field-required">
-							<label class="field-required"><?php echo JText::_('FIELD_LABEL_OPERATION'); ?></label>
+						<div class="form-group field-required-disabled">
+							<label class=" field-required-disabled"><?php echo JText::_('FIELD_LABEL_OPERATION'); ?></label>
 							<input type="text" name="operation" id="<?php echo $APPTAG?>-operation" class="form-control numeric length-fixed" data-length="3" maxlength="3" />
 						</div>
 					</div>
@@ -348,7 +348,7 @@ $users = $db->loadObjectList();
 	<div class="col-lg-3">
 		<hr class="hr-tag" />
 		<span class="badge badge-primary"><?php echo JText::_('TEXT_CLIENT_CREDIT_CARD'); ?></span>
-		<div class="form-group field-required">
+		<div class="form-group field-required-disabled">
 			<label><?php echo JText::_('FIELD_LABEL_CARD_LIMIT'); ?></label>
 			<div class="input-group" style="max-width:200px;">
 				<span class="input-group-addon">R$</span>

@@ -78,7 +78,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			'. $db->quoteName('T2.gender') .',
 			'. $db->quoteName('T3.session_id') .' online
 	';
-	if(!empty($rID) && $rID !== 0) :
+	if(!empty($rNID) && (!empty($rID) && $rID !== 0)) :
 		if(isset($_SESSION[$RTAG.'RelTable']) && !empty($_SESSION[$RTAG.'RelTable'])) :
 			$query .= ' FROM '.
 				$db->quoteName($cfg['mainTable']) .' T1

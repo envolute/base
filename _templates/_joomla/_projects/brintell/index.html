@@ -16,6 +16,41 @@ jQuery(function() {
 			jQuery('#our-clients').removeClass('showLogos');
 		}
 	});
+
+	// CUSTOM -> Set Status
+	// seta o valor do campo 'status' do registro
+	window.getInTouch = function() {
+		var form	= jQuery('#get-in-touch form');
+		var dados	= form.serialize();
+		// inicia o loader
+		toggleLoader();
+		jQuery.ajax({
+			url: "sendMail.php?task=mail",
+			dataType: 'json',
+			type: 'POST',
+			data:  dados,
+			cache: false,
+			success: function(data) {
+				jQuery.map( data, function( res ) {
+					if(res.status == 1) {
+						// Mensagem de sucesso
+						$.baseNotify({ msg: "Sua mensagem foi enviada com sucesso!", alertTime: 5000 });
+						form.find('input').val('');
+					} else {
+						// Mensagem de erro
+						$.baseNotify({ msg: "Erro no envio!<br />Por favor, tente novamente.", type: "danger"});
+					}
+				});
+			},
+			error: function(xhr, status, error) {
+				$.baseNotify({ msg: "Erro no envio!", type: "danger"});
+			},
+			complete: function() {
+				toggleLoader(); // encerra o loader
+			}
+		});
+		return false;
+	};
 });
 </script>
 
@@ -35,18 +70,21 @@ jQuery(function() {
 
 	<div id="brintell-slogan">
 	    <div class="container">
-			<h1 class="display-3 font-serif">The Data Revolution has begun</h1>
+			<h1 class="display-3 font-serif">
+				The Data Revolution has begun
+				<div class="pt-3 text-md lh-1-3">Today 98% of all stored information is already digital. Data is everything and everything is data. Bearing this in mind, is your company making data-based decisions?</div>
+			</h1>
 		</div>
 	</div>
 
 	<div id="content-container" class="container">
 		<div class="row">
 			<div class="col-12">
-				<div id="what-we-do" class="bg-white p-5 mb-5 set-shadow-lg">
+				<div id="what-we-do" class="bg-white p-3 p-lg-5 mb-5 set-shadow-lg">
 					<h1 class="display-3 font-serif text-center pt-5">What we do</h1>
 					<div class="row no-gutters justify-content-between py-5">
-						<div class="col-md-6 pr-5">
-							<div class="row no-gutters m-5" style="min-height: 185px;">
+						<div class="col-md-6 pr-lg-5">
+							<div class="row no-gutters m-3 m-lg-5" style="min-height: 185px;">
 								<div class="col-3">
 									<img src="images/template/ilustra-1.png" alt="Easy Data" class="img-fluid" />
 								</div>
@@ -62,7 +100,7 @@ jQuery(function() {
 									<a class="btn btn-outline-primary">Easy Data</a>
 								</div>
 							</div>
-							<div class="row no-gutters m-5" style="min-height: 185px;">
+							<div class="row no-gutters m-3 m-lg-5" style="min-height: 185px;">
 								<div class="col-3">
 									<img src="images/template/ilustra-2.png" alt="Intelli suit" class="img-fluid" />
 								</div>
@@ -77,8 +115,8 @@ jQuery(function() {
 								<div class="col-7 ml-auto"><a class="btn btn-outline-primary">Intelli suit</a></div>
 							</div>
 						</div>
-						<div class="col-md-6 pl-5">
-							<div class="row no-gutters m-5" style="min-height: 185px;">
+						<div class="col-md-6 pl-lg-5">
+							<div class="row no-gutters m-3 m-lg-5" style="min-height: 185px;">
 								<div class="col-3"><img src="images/template/ilustra-3.png" alt="Data doctor" class="img-fluid" /></div>
 								<div class="col-2">
 									<h1 class="display-4 text-center">3</h1>
@@ -90,7 +128,7 @@ jQuery(function() {
 							<div class="row no-gutters">
 								<div class="col-7 ml-auto"><a class="btn btn-outline-primary">Data doctor</a></div>
 							</div>
-							<div class="row no-gutters m-5" style="min-height: 185px;">
+							<div class="row no-gutters m-3 m-lg-5" style="min-height: 185px;">
 								<div class="col-3"><img src="images/template/ilustra-4.png" alt="Brintell Squad" class="img-fluid" /></div>
 								<div class="col-2">
 									<h1 class="display-4 text-center">4</h1>
@@ -247,30 +285,31 @@ jQuery(function() {
 
 				<div id="get-in-touch" class="row">
 					<div class="col-12">
-						<div class="form-container p-5 bg-white set-shadow-lg">
+						<div class="form-container p-3 p-lg-5 bg-white set-shadow-lg">
 							<div class="row">
-								<div class="col-md-6 p-3 p-lg-5">
-									<form>
+								<div class="col-md-6 px-3 px-lg-5">
+									<form onsubmit="return false">
+										<p>Do you have a project you'd like to discuss? We're here to help.
+Leave your contact information, and we'll get in touch with you.</p>
 										<div class="form-group">
-											<input type="text" name="name" id="name" class="form-control" />
+											<input type="text" name="name" id="contact-name" class="form-control" />
 											<label>Name:*</label>
 										</div>
 										<div class="form-group">
-											<input type="email" name="email" id="email" class="form-control" />
+											<input type="email" name="email" id="contact-email" class="form-control" />
 											<label>Email:*</label>
 										</div>
 										<div class="form-group">
-											<input type="phone" name="phone" id="phone" class="form-control" />
+											<input type="phone" name="phone" id="contact-phone" class="form-control" />
 											<label>Phone:*</label>
 										</div>
 										<div class="form-actions pt-5 text-right">
-											<button class="btn btn-outline-primary">Let’s talk!</button>
+											<button type="button" class="btn btn-outline-primary" onclick="getInTouch()">Let’s talk!</button>
 										</div>
 									</form>
 								</div>
 								<div class="col-md-6">
 									<h1 class="display-3 font-serif pt-5 mb-4">We’re ready when you are</h1>
-									<p>Founded on February 2016, Brintell maintains operations in Brazil and in the US, having its headquarter in Dover, DE.</p>
 								</div>
 							</div>
 						</div>

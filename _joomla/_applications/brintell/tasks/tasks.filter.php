@@ -175,8 +175,13 @@ $htmlFilter = '
 						'.$visibility.'
 						<div class="col-sm-6 col-md-4">
 							<div class="form-group">
-								<label class="label-xs text-muted text-truncate">'.implode(', ', $sLabel).'</label>
-								<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />
+								<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_START_DATE').'</label>
+								<span class="input-group input-group-sm">
+									<span class="input-group-addon strong">'.JText::_('TEXT_FROM').'</span>
+									<input type="text" name="startMin" value="'.$startMin.'" class="form-control field-date" data-width="100%" data-convert="true" />
+									<span class="input-group-addon">'.JText::_('TEXT_TO').'</span>
+									<input type="text" name="startMax" value="'.$startMax.'" class="form-control field-date" data-width="100%" data-convert="true" />
+								</span>
 							</div>
 						</div>
 						<div class="col-sm-6 col-md-4">
@@ -188,6 +193,12 @@ $htmlFilter = '
 									<span class="input-group-addon">'.JText::_('TEXT_TO').'</span>
 									<input type="text" name="dateMax" value="'.$dateMax.'" class="form-control field-date" data-width="100%" data-convert="true" />
 								</span>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-4">
+							<div class="form-group">
+								<label class="label-xs text-muted text-truncate">'.implode(', ', $sLabel).'</label>
+								<input type="text" name="fSearch" value="'.$search.'" class="form-control form-control-sm" />
 							</div>
 						</div>
 						<div class="col-sm-6 col-md-4">

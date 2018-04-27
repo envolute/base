@@ -87,66 +87,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 			JLoader::register('uploader', JPATH_CORE.DS.'helpers/files/upload.php');
 		endif;
 
-		// CUSTOM -> Client Code
-		// Code Validate - valida o nome de usuário, verifica se existe...
-		function codeValidate($code, $cfg) {
-			if(!empty($code)) :
-				// database connect
-				$db = JFactory::getDbo();
-				// verifica se já existe um usuário com o código
-				$query = 'SELECT COUNT(*) FROM '. $db->quoteName('#__users') .' WHERE `username` = '.$code;
-				$db->setQuery($query);
-				$exist = $db->loadResult();
-				if($exist) return false;
-			endif;
-			return true;
-		}
-		// Get Code - Gera o código a partir do valor definido ou da tabela de incremento
-		function getCode($code, $cfg) {
-			if(!empty($code)) :
-				// verifica se existe
-				// se já existir, incrementa o código até um que ainda não exista...
-				if(!codeValidate($code, $cfg)) $code = codeValidate($code + 1, $cfg);
-				return $code;
-			endif;
-			return false;
-		}
-		// Get Client Code - Pega o novo nome de usuário
-		// O código pode ser passado diretamente (ex: CPF) ou através da tabela de incremento
-		function getClientCode($cfg, $code = '') {
-			if(!empty($code)) :
-				return $code;
-			else :
-				// database connect
-				$db = JFactory::getDbo();
-				// SELECT 'CLIENT CODE'
-				$query = 'SELECT '. $db->quoteName('code').' FROM '. $db->quoteName($cfg['mainTable'].'_code');
-				if($db->setQuery($query)) $code = $db->loadResult();
-				$code = getCode($code, $cfg);
-				return $code;
-			endif;
-		}
-		// Set Code - Gera o nome de usuário a partir de um incremento
-		function setClientCode($clientID, $userID, $code, $cfg) {
-			// database connect
-			$db = JFactory::getDbo();
-			// atualiza o cliente
-			$query = 'UPDATE '. $db->quoteName($cfg['mainTable']) .' SET '. $db->quoteName('user_id').' = '.$db->quote($userID).' WHERE `id` = '.$clientID;
-			$db->setQuery($query);
-   			$db->execute();
-			// atualiza o usuário
-			$query = 'UPDATE '. $db->quoteName('#__users') .' SET '. $db->quoteName('username').' = '.$db->quote($code).' WHERE `id` = '.$userID;
-			$db->setQuery($query);
-   			$db->execute();
-			// incrementa o código
-			$query = 'UPDATE '. $db->quoteName($cfg['mainTable'].'_code') .' SET '. $db->quoteName('code').' = '.($code + 1);
-			if($db->setQuery($query)) :
-	   			$db->execute();
-				return true;
-			endif;
-			return false;
-		}
-
 		// fields 'Form' requests
 		$request						= array();
 		// default
@@ -183,13 +123,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) AND strtolower($_SERVER["HTTP_X_REQU
 		$phone_desc						= str_replace(';', '.', $phone_desc); // formata
 		$request['phone_desc']			= implode(';', $phone_desc);
 		$request['note']				= $input->get('note', '', 'string');
-
-	    // CUSTOM -> default vars for registration e-mail
-	    $config			= JFactory::getConfig();
-	    $sitename		= $config->get('sitename');
-	    $domain			= baseHelper::getDomain();
-	    $subject		= JText::sprintf('MSG_ACTIVATION_EMAIL_SUBJECT', $sitename);
-	    $mailFrom		= $config->get('mailfrom');
 
 		// SAVE CONDITION
 		// Condição para inserção e atualização dos registros

@@ -63,7 +63,6 @@ if($num_rows) : // verifica se existe
 							<tr>
 								'.$adminView['head']['info'].'
 								<th>'.JText::_('FIELD_LABEL_NAME').'</th>
-								<th width="50" class="d-none d-lg-table-cell text-center">&#160;</th>
 								<th width="120" class="d-none d-lg-table-cell">'.JText::_('FIELD_LABEL_BIRTHDAY').'</th>
 								'.$adminView['head']['actions'].'
 							</tr>
@@ -123,7 +122,7 @@ if($num_rows) : // verifica se existe
 			';
 		endif;
 
-		$urlViewData = JURI::root().'apps/students/view?vID='.$item->id;
+		// $urlViewData = JURI::root().'apps/students/view?vID='.$item->id;
 
 		$rowState	= $item->state == 0 ? 'table-danger' : '';
 		// Resultados
@@ -131,7 +130,6 @@ if($num_rows) : // verifica se existe
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
 				<td>'.$img.baseHelper::nameFormat($item->name).'<div class="small text-muted">'.$item->email.'</td>
-				<td class="d-none d-lg-table-cell text-center"><a href="'.$urlViewData.'" target="_blank" class="base-icon-doc-text hasTooltip" title="'.JText::_('TEXT_VIEW_DATA').'"></a>'.$incompleteAlert.'</td>
 				<td class="d-none d-lg-table-cell">'.baseHelper::dateFormat($item->birthday, 'd/m/Y', true, '-').'</td>
 				'.$adminView['list']['actions'].'
 			</tr>
@@ -142,7 +140,7 @@ else : // num_rows = 0
 
 	$html .= '
 		<tr>
-			<td colspan="10">
+			<td colspan="6">
 				<div class="alert alert-warning alert-icon m-0">'.JText::_('MSG_LISTNOREG').'</div>
 			</td>
 		</tr>

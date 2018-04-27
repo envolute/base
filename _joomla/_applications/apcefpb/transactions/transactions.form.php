@@ -2,12 +2,24 @@
 defined('_JEXEC') or die;
 
 // CLIENTS
-$query = 'SELECT * FROM '. $db->quoteName('#__'.$cfg['project'].'_clients') .' WHERE state = 1 ORDER BY name';
+$query = '
+	SELECT
+		T1.*,
+		T2.username,
+		T2.block
+	FROM
+		'. $db->quoteName('#__'.$cfg['project'].'_clients') .' T1
+		LEFT JOIN '. $db->quoteName('#__users') .' T2
+		ON T2.id = T1.user_id
+	WHERE state = 1
+	ORDER BY name
+';
 $db->setQuery($query);
 $clients = $db->loadObjectList();
 
 // PROVIDERS
-$query = 'SELECT * FROM '. $db->quoteName('#__base_providers') .' WHERE state = 1 ORDER BY name';
+// "11/04/2018" - Por solicitação da secretaria não são mostrados os convênios
+$query = 'SELECT * FROM '. $db->quoteName('#__base_providers') .' WHERE agreement = 0 AND state = 1 ORDER BY name';
 $db->setQuery($query);
 $providers = $db->loadObjectList();
 
@@ -87,7 +99,7 @@ $invoices = $db->loadObjectList();
 						<option value="0"><?php echo JText::_('TEXT_SELECT')?></option>
 						<?php
 							foreach ($clients as $obj) {
-								echo '<option value="'.$obj->id.'">'.baseHelper::nameFormat($obj->name).'</option>';
+								echo '<option value="'.$obj->id.'">'.$obj->username.' - '.baseHelper::nameFormat($obj->name).'</option>';
 							}
 						?>
 					</select>

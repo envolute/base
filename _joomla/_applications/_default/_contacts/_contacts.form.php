@@ -409,7 +409,7 @@ $userGrps = $db->loadObjectList();
 										<input type="hidden" name="whatsapp[]" id="<?php echo $APPTAG?>-whatsapp" />
 									</label>
 								</span>
-								<input type="text" name="phone_desc[]" id="<?php echo $APPTAG?>-phone_desc" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?>" maxlength="50" />
+								<input type="text" name="phone_desc[]" id="<?php echo $APPTAG?>-phone_desc" class="form-control upper" placeholder="<?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?>" maxlength="50" />
 							</div>
 						</div>
 					</div>

@@ -17,10 +17,10 @@ defined('_JEXEC') or die;
 // add template CSS
 $app = JFactory::getApplication();
 ?>
-<div class="row featured-news">
+<div class="row no-gutters featured-news">
 
 	<?php if ($toplist) { ?>
-		<div class="col">
+		<div class="col pr-2">
 			<?php
 			// All-mode TOP Items Output
 			foreach ($toplist as $item) {
@@ -29,7 +29,7 @@ $app = JFactory::getApplication();
 					<figure class="img-fluid pos-relative">
 						<?php if ($item->image) echo $item->image; ?>
 						<?php if ($item->title) { ?>
-							<figcaption class="pos-absolute pos-bottom-0 w-100 bg-dark-opacity-75 text-sm lh-1-2 py-2 px-3">
+							<figcaption class="pos-absolute pos-bottom-0 w-100 bg-dark-opacity-75 text-lg lh-1-2 py-2 px-3">
 								<a class="text-white" href="<?php echo $item->link; ?>"><?php echo $item->title; ?></a>
 							</figcaption>
 						<?php } ?>
@@ -40,7 +40,7 @@ $app = JFactory::getApplication();
 	<?php } ?>
 
 	<?php if ($list) { ?>
-		<div class="col-lg-4">
+		<div class="col-lg-4 pl-2">
 
 			<ul class="set-list list-trim clearfix">
 			<?php
@@ -50,7 +50,7 @@ $app = JFactory::getApplication();
 				<li class="p-0 clearfix">
 
 					<?php if ($item->image) { ?>
-					<figure class="img-fluid float-left mr-3"><?php echo $item->image; ?></figure>
+					<figure class="img-fluid float-left mr-3 mb-3"><?php echo $item->image; ?></figure>
 					<?php } ?>
 
 					<?php if ($item->category || $item->author || $item->date || $item->hits || $item->comments_count || $item->rating) { ?>
@@ -86,7 +86,7 @@ $app = JFactory::getApplication();
 					<?php } ?>
 
 					<?php if ($item->title) { ?>
-						<h6 class="text-sm m-0"><a href="<?php echo $item->link; ?>"><?php echo $item->title; ?></a></h6>
+						<h6 class="font-condensed m-0"><a href="<?php echo $item->link; ?>"><?php echo $item->title; ?></a></h6>
 					<?php } ?>
 
 				</li>

@@ -71,7 +71,7 @@ defined('_JEXEC') or die;
 			<div class="col-sm-6 col-lg-7">
 				<div class="form-group">
 					<label class="d-none d-lg-block">&#160;</label>
-					<input type="text" name="phone_desc[]" id="<?php echo $APPTAG?>-phone_desc" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?>" maxlength="50" />
+					<input type="text" name="phone_desc[]" id="<?php echo $APPTAG?>-phone_desc" class="form-control upper" placeholder="<?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?>" maxlength="50" />
 				</div>
 			</div>
 		</div>

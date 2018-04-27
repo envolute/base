@@ -268,7 +268,7 @@ $users = $db->loadObjectList();
 					</div>
 				</div>
 				<div class="col-sm-7 col-lg-8 pt-2 pt-sm-0">
-					<input type="text" name="phone_desc[]" id="<?php echo $APPTAG?>-phone_desc" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?>" maxlength="50" />
+					<input type="text" name="phone_desc[]" id="<?php echo $APPTAG?>-phone_desc" class="form-control upper" placeholder="<?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?>" maxlength="50" />
 				</div>
 			</div>
 		</div>

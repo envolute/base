@@ -13,7 +13,7 @@ $cfg['parent']	= '';
 // App Define
 $APPNAME		= 'studentsSports';
 $APPPATH		= !empty($cfg['parent']) ? $cfg['parent'] : $APPNAME;
-$MAIN_TB		= '#__'.$cfg['project'].'students_sports';
+$MAIN_TB		= '#__'.$cfg['project'].'_students_sports';
 $APPTAG			= isset(${$APPNAME.'AppTag'}) ? ${$APPNAME.'AppTag'} : $APPNAME;
 $newInstance	= ($APPTAG != $APPNAME) ? true : false;
 
@@ -88,7 +88,7 @@ endif;
 		$cfg['showList']		= false;
 		$cfg['listModal']		= false;
 		$cfg['listFull']		= false;
-		$cfg['listAjax']		= false;
+		$cfg['listCustom']		= '';
 		$cfg['staticToolbar']	= false;
 		$cfg['showAddBtn']		= false;
 		$cfg['addText']			= false;
@@ -105,9 +105,9 @@ endif;
 		// list type
 		$cfg['listFull']			= true;
 		if(isset(${$APPTAG.'ListFull'})) $cfg['listFull'] = ${$APPTAG.'ListFull'} ? true : false;
-		// list Ajax File
-		$cfg['listAjax']			= 'list.ajax.php';
-		if(isset(${$APPTAG.'ListAjax'})) $cfg['listAjax'] = ${$APPTAG.'ListAjax'};
+		// custom list
+		$cfg['listCustom']			= '';
+		if(isset(${$APPTAG.'ListCustom'})) $cfg['listCustom'] = ${$APPTAG.'ListCustom'};
 		// show button to list ajax reload
 		$cfg['ajaxReload']			= false;
 		if(isset(${$APPTAG.'AjaxReload'})) $cfg['ajaxReload'] = ${$APPTAG.'AjaxReload'};
@@ -147,9 +147,9 @@ endif;
 	$cfg['formBtnAction']		= false;
 
 	// date & price convertions
-	$cfg['dateConvert']			= false;
+	$cfg['dateConvert']			= true;
 	$cfg['load_UI']				= $cfg['dateConvert'];
-	$cfg['priceDecimal']		= false;
+	$cfg['priceDecimal']		= true;
 	$cfg['htmlEditor']			= false;
 	$cfg['htmlEditorFull']		= false;
 

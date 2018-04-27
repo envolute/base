@@ -9,7 +9,9 @@ defined('_JEXEC') or die;
 	$query = '
 		SELECT SQL_CALC_FOUND_ROWS T1.*
 		FROM '. $db->quoteName('vw_'.$cfg['project'].'_'.$APPNAME) .' T1
-		WHERE '.$where.$orderList
+		WHERE '.$where.'
+		ORDER BY project_name ASC, deadline ASC
+		'
 	;
 	try {
 
@@ -65,8 +67,12 @@ if($num_rows) : // verifica se existe
 						<thead>
 							<tr>
 								'.$adminView['head']['info'].'
-								<th>'.JText::_('FIELD_LABEL_SUBJECT').'</th>
 								<th>'.JText::_('FIELD_LABEL_PROJECT').'</th>
+								<th>'.JText::_('FIELD_LABEL_SUBJECT').'</th>
+								<th>'.JText::_('FIELD_LABEL_ASSIGN_TO').'</th>
+								<th>'.JText::_('FIELD_LABEL_DEADLINE').'</th>
+								<th>'.JText::_('FIELD_LABEL_ESTIMATE').'</th>
+								<th>'.JText::_('FIELD_LABEL_EXECUTED').'</th>
 								<th width="120" class="d-none d-lg-table-cell">'.JText::_('TEXT_CREATED_DATE').'</th>
 								'.$adminView['head']['actions'].'
 							</tr>
@@ -90,6 +96,29 @@ if($num_rows) : // verifica se existe
 			';
 		endif;
 
+		// Assigned
+		$assigned = '';
+		if(!empty($item->assign_to)) :
+			$query = 'SELECT name, nickname FROM '. $db->quoteName('#__'.$cfg['project'].'_staff') .' WHERE '. $db->quoteName('user_id') .' IN ('.$item->assign_to.') ORDER BY name';
+			$db->setQuery($query);
+			$staff = $db->loadObjectList();
+			$uName = array();
+			$i = 0;
+			foreach ($staff as $obj) {
+				$uName[] .= baseHelper::nameFormat(!empty($obj->nickname) ? $obj->nickname : $obj->name);
+				$i++;
+			}
+			$assigned = implode(', ', $uName);
+		endif;
+
+		$deadline = '';
+		if($item->deadline != '0000-00-00 00:00:00') {
+			$dt = explode(' ', $item->deadline);
+			$dlDate = baseHelper::dateFormat($dt[0], 'd/m/y');
+			$dlTime = ($dt[1] != '00:00:00') ? ' '.substr($dt[1], 0, 5).$item->timePeriod : '';
+			$deadline = $dlDate.$dlTime;
+		}
+
 		$rowState = $item->state == 0 ? 'text-danger' : '';
 		$regInfo	= JText::_('TEXT_CREATED_DATE').': '.baseHelper::dateFormat($item->created_date, 'd/m/Y H:i').'<br />';
 		$regInfo	.= JText::_('TEXT_BY').': '.baseHelper::nameFormat(JFactory::getUser($item->created_by)->name);
@@ -104,15 +133,19 @@ if($num_rows) : // verifica se existe
 			<tr id="'.$APPTAG.'-item-'.$item->id.'" class="'.$rowState.'">
 				'.$adminView['list']['info'].'
 				<td>
+					'.baseHelper::nameFormat($item->project_name).'
+					<div><small class="text-muted">'.baseHelper::nameFormat($item->client_name).'</small></div>
+				</td>
+				<td>
 					<a href="#'.$APPTAG.'-item-view" class="set-base-modal" onclick="'.$APPTAG.'_setItemView('.$item->id.')">
 						'.baseHelper::nameFormat($item->subject).'
 					</a>
 					<div><small class="text-muted">'.JText::_('TEXT_TYPE_'.$item->type).'</small></div>
 				</td>
-				<td>
-					'.baseHelper::nameFormat($item->project_name).'
-					<div><small class="text-muted">'.baseHelper::nameFormat($item->client_name).'</small></div>
-				</td>
+				<td>'.$assigned.'</td>
+				<td>'.$deadline.'</td>
+				<td>'.($item->estimate ? $item->estimate.'hs' : '').'</td>
+				<td>'.($item->executed ? $item->executed.'%' : '').'</td>
 				<td class="d-none d-lg-table-cell">
 					'.baseHelper::dateFormat($item->created_date, 'd/m/Y').'
 					<a href="#" class="base-icon-info-circled hasPopover" title="'.JText::_('TEXT_REGISTRATION_INFO').'" data-content="'.$regInfo.'" data-placement="top"></a>
@@ -126,7 +159,7 @@ else : // num_rows = 0
 
 	$html .= '
 		<tr>
-			<td colspan="6">
+			<td colspan="11">
 				<div class="alert alert-warning alert-icon m-0">'.JText::_('MSG_LISTNOREG').'</div>
 			</td>
 		</tr>

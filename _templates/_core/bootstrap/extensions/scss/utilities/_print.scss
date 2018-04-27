@@ -1,4 +1,10 @@
 // IMPRESSÃO
 
-  // quebra de página
-  .page-break { page-break-after: always; }
+	// Print Normalization
+	.to-print {
+		 font-family: arial!important;
+		 color: black!important;
+	}
+
+	// quebra de página
+	.page-break { page-break-after: always; }

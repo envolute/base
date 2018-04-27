@@ -108,7 +108,7 @@ $htmlFilter = '
 				<div class="col-sm-6 col-md-4">
 					<div class="form-group">
 						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_PROVIDER').'</label>
-						<select name="pID" id="pID" class="form-control input-sm set-filter">
+						<select name="pID" id="pID" class="form-control form-control-sm set-filter">
 							<option value="">- '.JText::_('TEXT_ALL').' -</option>
 							'.$flt_provider.'
 						</select>
@@ -117,7 +117,7 @@ $htmlFilter = '
 				<div class="col-sm-6 col-md-4">
 					<div class="form-group">
 						<label class="label-xs text-muted">'.JText::_('FIELD_LABEL_CONTACT').'</label>
-						<select name="cID" id="cID" class="form-control input-sm set-filter">
+						<select name="cID" id="cID" class="form-control form-control-sm set-filter">
 							<option value="">- '.JText::_('TEXT_ALL').' -</option>
 							'.$flt_contact.'
 						</select>

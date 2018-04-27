@@ -36,7 +36,7 @@ window.<?php echo $APPTAG?>_listReload = function(reload, remove, ids, onlyChild
 				dados = formFilter.serialize();
 			}
 			jQuery.ajax({
-				url: "<?php echo $URL_APP_FILE.'.'.$cfg['listAjax'] ?>?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&aFTL=<?php echo $cfg['ajaxFilter']?>&oCHL="+<?php echo $APPTAG?>oCHL+"&rNID="+<?php echo $APPTAG?>rNID+"&rID="+<?php echo $APPTAG?>rID,
+				url: "<?php echo $URL_APP_FILE.'.'.(!empty($cfg['listCustom']) ? $cfg['listCustom'] : 'list.ajax.php') ?>?aTag=<?php echo $APPTAG?>&rTag=<?php echo $RTAG?>&aFTL=<?php echo $cfg['ajaxFilter']?>&oCHL="+<?php echo $APPTAG?>oCHL+"&rNID="+<?php echo $APPTAG?>rNID+"&rID="+<?php echo $APPTAG?>rID,
 				type: 'GET',
 				method: 'get',
 				data:  dados,

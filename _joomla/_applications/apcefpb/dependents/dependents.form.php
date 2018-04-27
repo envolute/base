@@ -37,7 +37,7 @@ $clients = $db->loadObjectList();
 					</div>
 				</div>
 				<div id="<?php echo $APPTAG?>-group-nameCard" class="form-group" hidden>
-					<label class="iconTip hasTooltip" title="<?php echo JText::_('MSG_CARD_NAME'); ?>"><?php echo JText::_('FIELD_LABEL_CARD_NAME'); ?></label><br />
+					<label class="iconTip hasTooltip" title="<?php echo JText::_('MSG_CARD_NAME'); ?>"><?php echo JText::_('FIELD_LABEL_CARD_NAME'); ?></label>
 					<input type="text" name="card_name" id="<?php echo $APPTAG?>-card_name" class="form-control upper" maxlength="30" />
 				</div>
 			</div>
@@ -157,7 +157,7 @@ $clients = $db->loadObjectList();
 					</div>
 				</div>
 				<div class="col-sm-7 col-lg-8 pt-2 pt-sm-0">
-					<input type="text" name="phone_desc[]" id="<?php echo $APPTAG?>-phone_desc" class="form-control" placeholder="<?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?>" maxlength="50" />
+					<input type="text" name="phone_desc[]" id="<?php echo $APPTAG?>-phone_desc" class="form-control upper" placeholder="<?php echo JText::_('FIELD_LABEL_DESCRIPTION'); ?>" maxlength="50" />
 				</div>
 			</div>
 		</div>
