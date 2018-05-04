@@ -1,0 +1,150 @@
+// BORDERS
+// Classe 'border' adiciona bordas a um elemento
+// Abaixo são disponibilizadas classes adicionais para customização
+// das larguras das bordas...
+// Obs: Apenas a remoção das bordas está disponível no formato responsivo.
+// Nesse caso, é possível utilizar bordas e removê-las de acordo com a
+// resolução. As classes responsivas são refletidas apenas na resolução
+// definida, ou seja, "b-top-sm-0" só vai remover na largura 'sm'
+// ---------------------------------------------------------------------------
+// default -> width 1
+.b-all { border-width: 1px!important; }
+.b-y { border-top-width: 1px!important; border-bottom-width: 1px!important; }
+.b-x { border-right-width: 1px!important; border-left-width: 1px!important; }
+.b-top { border-top-width: 1px!important; }
+.b-bottom { border-bottom-width: 1px!important; }
+.b-right { border-right-width: 1px!important; }
+.b-left { border-left-width: 1px!important; }
+// width 2
+.b-all-2 { border-width: 2px!important; }
+.b-top-2 { border-top-width: 2px!important; }
+.b-bottom-2 { border-bottom-width: 2px!important; }
+.b-right-2 { border-right-width: 2px!important; }
+.b-left-2 { border-left-width: 2px!important; }
+// width 3
+.b-all-3 { border-width: 3px!important; }
+.b-top-3 { border-top-width: 3px!important; }
+.b-bottom-3 { border-bottom-width: 3px!important; }
+.b-right-3 { border-right-width: 3px!important; }
+.b-left-3 { border-left-width: 3px!important; }
+// no border -> width 0
+// IMPORTANTE: Deve ficar sempre após os outros tamanhos disponíveis
+.b-0, .b-all-0 { border: 0 !important; }
+.b-top-0    { border-top: 0 !important; }
+.b-right-0  { border-right: 0 !important; }
+.b-bottom-0 { border-bottom: 0 !important; }
+.b-left-0 { border-left: 0 !important; }
+@include media-breakpoint-only(xl) {
+	.b-xs-0, .b-all-xs-0 { border: 0 !important; }
+	.b-top-xs-0    { border-top: 0 !important; }
+	.b-right-xs-0  { border-right: 0 !important; }
+	.b-bottom-xs-0 { border-bottom: 0 !important; }
+	.b-left-xs-0 { border-left: 0 !important; }
+}
+@include media-breakpoint-only(sm) {
+	.b-sm-0, .b-all-sm-0 { border: 0 !important; }
+	.b-top-sm-0    { border-top: 0 !important; }
+	.b-right-sm-0  { border-right: 0 !important; }
+	.b-bottom-sm-0 { border-bottom: 0 !important; }
+	.b-left-sm-0 { border-left: 0 !important; }
+}
+@include media-breakpoint-only(md) {
+	.b-md-0, .b-all-md-0 { border: 0 !important; }
+	.b-top-md-0    { border-top: 0 !important; }
+	.b-right-md-0  { border-right: 0 !important; }
+	.b-bottom-md-0 { border-bottom: 0 !important; }
+	.b-left-md-0 { border-left: 0 !important; }
+}
+@include media-breakpoint-only(lg) {
+	.b-lg-0, .b-all-lg-0 { border: 0 !important; }
+	.b-top-lg-0    { border-top: 0 !important; }
+	.b-right-lg-0  { border-right: 0 !important; }
+	.b-bottom-lg-0 { border-bottom: 0 !important; }
+	.b-left-lg-0 { border-left: 0 !important; }
+}
+@include media-breakpoint-only(xl) {
+	.b-xl-0, .b-all-xl-0 { border: 0 !important; }
+	.b-top-xl-0    { border-top: 0 !important; }
+	.b-right-xl-0  { border-right: 0 !important; }
+	.b-bottom-xl-0 { border-bottom: 0 !important; }
+	.b-left-xl-0 { border-left: 0 !important; }
+}
+
+// Border color default
+[class^="b-all"], [class*=" b-all"] { border-color: $base-border-color; }
+.b-y, [class^="b-top"], [class*=" b-top"] { border-top-color: $base-border-color; }
+.b-y, [class^="b-bottom"], [class*=" b-bottom"] { border-bottom-color: $base-border-color; }
+.b-x, [class^="b-right"], [class*=" b-right"] { border-right-color: $base-border-color; }
+.b-x, [class^="b-left"], [class*=" b-left"] { border-left-color: $base-border-color; }
+	// Importante: Pode acontecer do elemento já ter borda, e a cor ser sobrescrita pela cor padrão
+	// Dessa forma, utilizar essa classe para manter a cor de borda do elemento
+	.b-inherit { border-color: inherit; } // utiliza a cor de texto do container
+
+// STYLE
+
+	// solid "default"
+	[class^="b-all"], [class*=" b-all"] { border-style: solid; }
+	.b-y, [class^="b-top"], [class*=" b-top"] { border-top-style: solid; }
+	.b-y, [class^="b-bottom"], [class*=" b-bottom"] { border-bottom-style: solid; }
+	.b-x, [class^="b-right"], [class*=" b-right"] { border-right-style: solid; }
+	.b-x, [class^="b-left"], [class*=" b-left"] { border-left-style: solid; }
+	// dotted
+	.b-dotted { border-style: dotted!important; }
+	.b-y-dotted, .b-top-dotted { border-top-style: dotted!important; }
+	.b-y-dotted, .b-bottom-dotted { border-bottom-style: dotted!important; }
+	.b-x-dotted, .b-right-dotted { border-right-style: dotted!important; }
+	.b-x-dotted, .b-left-dotted { border-left-style: dotted!important; }
+	// dashed
+	.b-dashed { border-style: dashed!important; }
+	.b-y-dashed, .b-top-dashed { border-top-style: dashed!important; }
+	.b-y-dashed, .b-bottom-dashed { border-bottom-style: dashed!important; }
+	.b-x-dashed, .b-right-dashed { border-right-style: dashed!important; }
+	.b-x-dashed, .b-left-dashed { border-left-style: dashed!important; }
+
+// COLOR
+
+	// default addon's
+	.b-default { border-color: $base-border-color!important; }
+	.b-default-light { border-color: $base-border-color-light!important; }
+	.b-default-dark { border-color: $base-border-color-dark!important; }
+	// theme
+	// -> bootstrap já disponibiliza bordas nas cores do tema
+	.b-primary { border-color: $base-color-primary!important; }
+	.b-primary-dark { border-color: $base-color-primary-dark!important; }
+	.b-primary-darker { border-color: $base-color-primary-darker!important; }
+	.b-primary-darkest { border-color: $base-color-primary-darkest!important; }
+	.b-primary-light { border-color: $base-color-primary-light!important; }
+	.b-primary-lighter { border-color: $base-color-primary-lighter!important; }
+	.b-primary-lightest { border-color: $base-color-primary-lightest!important; }
+	.b-light { border-color: theme-color('light')!important; }
+	.b-dark { border-color: theme-color('dark')!important; }
+	// contextual
+	.b-secondary { border-color: theme-color('secondary')!important; }
+	.b-success { border-color: theme-color('success')!important; }
+	.b-info { border-color: theme-color('info')!important; }
+	.b-warning { border-color: theme-color('warning')!important; }
+	.b-danger { border-color: theme-color('danger')!important; }
+	.b-live { border-color: $base-color-live!important; }
+	// gray
+	.b-white { border-color: $white!important; }
+	.b-gray-100 { border-color: $gray-100!important; }
+	.b-gray-200 { border-color: $gray-200!important; }
+	.b-gray-300 { border-color: $gray-300!important; }
+	.b-gray-400 { border-color: $gray-400!important; }
+	.b-gray-500 { border-color: $gray-500!important; }
+	.b-gray-600 { border-color: $gray-600!important; }
+	.b-gray-700 { border-color: $gray-700!important; }
+	.b-gray-800 { border-color: $gray-800!important; }
+	.b-gray-900 { border-color: $gray-900!important; }
+	.b-black { border-color: $black!important; }
+	// colors
+	.b-blue { border-color: $blue!important; }
+	.b-indigo { border-color: $indigo!important; }
+	.b-purple { border-color: $purple!important; }
+	.b-pink { border-color: $pink!important; }
+	.b-red { border-color: $red!important; }
+	.b-orange { border-color: $orange!important; }
+	.b-yellow { border-color: $yellow!important; }
+	.b-green { border-color: $green!important; }
+	.b-teal { border-color: $teal!important; }
+	.b-cyan { border-color: $cyan!important; }

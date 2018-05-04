@@ -1,0 +1,8 @@
+// BTN ACTIVE STATE
+// Estados opcionais para o botão ativo
+
+  @each $color, $value in $theme-colors {
+    .btn-active-#{$color}.active {
+      @include button-variant($value, $value);
+    }
+  }

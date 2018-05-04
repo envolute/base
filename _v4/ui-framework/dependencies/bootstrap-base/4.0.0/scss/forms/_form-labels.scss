@@ -1,0 +1,22 @@
+// FORM LABELS
+// Opção para labels
+
+	// DEFAULT
+	label {
+		margin-bottom: $base-label-margin;
+		font-size: $base-label-font-size;
+	}
+
+	// SMALL
+	.label-sm {
+		display: block;
+		margin-bottom: $base-label-sm-margin;
+		font-size: $base-label-sm-font-size;
+	}
+
+	// EXTRA SMALL
+	.label-xs {
+		display: block;
+		margin-bottom: $base-label-xs-margin;
+		font-size: $base-label-xs-font-size;
+	}

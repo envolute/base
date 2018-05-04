@@ -1,0 +1,109 @@
+// THEME
+
+html {
+	font-size: $base-font-size-root;
+	// overflow é por causa do módulo vertical-menu que atribui 'overflow-y: auto' à tag <html>
+	// isso causa conflito com a funcionalidade 'modal' do bootstrap
+	overflow: initial!important;
+}
+// mobile
+@media (max-width: 767px) {
+	html.isMM { overflow-x: hidden; }
+}
+
+body { position: relative; }
+
+// height 100%
+#screen, #wrapper {
+	min-height: 100vh;
+}
+
+// LAYOUT WIDTH
+
+	// fullscreen
+	html.media-sm body.fullScreen .container { width: 100% !important; }
+
+// COMMON TO VARIOUS ELEMENTS
+
+	.bs-container,
+	.module,
+	#main-content,
+	#right {
+		position: relative;
+	}
+
+	.row-wrapper {
+		margin-left: $base-space;
+		margin-right: $base-space;
+	}
+
+	// mobile
+	@media (max-width: 767px) {
+		.bs-container {
+			position: static;
+		}
+	}
+
+// BG LAYER
+
+	#base-bg-layer {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: -1;
+	}
+
+// SCREEN
+
+	// Esconde o conteúdo durante o preloader
+	body.preloader #screen { visibility: hidden; }
+
+// WRAPPER -> container do template
+
+	html.isAdmin #wrapper { min-height: calc(100vh - #{$admin-navbar-height}); }
+	html.isMM:not(.media-md) #wrapper { margin-left: 0!important; }
+
+// SIDEBAR -> barra lateral do template
+
+	#tmpl-sidebar {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: #{$base-sidebar-width};
+		height: 100vh;
+		z-index: 1;
+	}
+	html.isAdmin #tmpl-sidebar {
+		top: $admin-navbar-height;
+		height: calc(100vh - #{$admin-navbar-height});
+	}
+	#tmpl-sidebar-content { position: relative; }
+	#tmpl-sidebar-header,
+	#tmpl-sidebar-content,
+	#tmpl-sidebar-footer { width: #{$base-sidebar-width}; }
+
+	// content
+	#tmpl-sidebar:not(.closed) + #tmpl-content {
+		width: calc(100% - #{$base-sidebar-width});
+		margin-left: $base-sidebar-width!important;
+	}
+
+// FOOTER
+
+	.html.media-md:not(.media-lg) #footer {
+		// fix z-index issue from '#scroll-to-top'
+		transform: translate3d(0,0,0);
+	}
+
+// HIDDEN -> área reservada a toda informação que não deva aparecer na página
+
+	#hidden {
+		position: fixed;
+		bottom: -10px;
+		left: -10px;
+		width: 1px;
+		height: 1px;
+		z-index: $zindex-modal;
+	}

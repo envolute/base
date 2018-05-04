@@ -1,0 +1,7 @@
+// FORM ACTIONS
+// Container inferior para botões -> após o formulário
+
+	.form-actions { margin-top: $form-group-margin-bottom; }
+	.form-actions .btn { margin: 1px 0; }
+	.form-actions > .btn + .btn,
+	.form-actions *:not(.btn-group) .btn + .btn { margin-left: 5px; }

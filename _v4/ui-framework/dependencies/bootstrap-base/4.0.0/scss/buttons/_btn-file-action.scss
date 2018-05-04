@@ -1,0 +1,7 @@
+// BTN FILE ACTION
+// Estados 'ativo' do botão
+
+  // active state success
+  .btn-file-action.active {
+    @include button-variant(theme-color("success"), theme-color("success"));
+  }

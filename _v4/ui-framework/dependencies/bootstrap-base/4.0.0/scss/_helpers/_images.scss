@@ -1,0 +1,7 @@
+// @BOOTSTRAP HELPERS
+// Adaptações e correções para casos específicos
+
+// Quando a imagem a tag da imagem <img> não está acessível...
+.img-fluid img {
+	@include img-fluid;
+}

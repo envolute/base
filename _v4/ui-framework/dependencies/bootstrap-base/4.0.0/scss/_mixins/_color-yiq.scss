@@ -1,0 +1,18 @@
+// COLOR YIQ
+// Versão da BASE para o mixin 'color-yiq' do Bootstrap
+// Essa versão permite definir a propriedade à qual a cor será atribuída
+
+// Color contrast
+@mixin base-color-yiq($color, $prop: 'color') {
+  $r: red($color);
+  $g: green($color);
+  $b: blue($color);
+
+  $yiq: (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
+
+  @if ($yiq >= 150) {
+    #{$prop}: #111;
+  } @else {
+    #{$prop}: #fff;
+  }
+}

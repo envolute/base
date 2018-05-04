@@ -1,0 +1,47 @@
+// PORTLETS
+// Dashboard Panel
+
+.portlet {
+	border: 1px solid $portlet-border-color;
+	border-top-width: 0;
+	background-color: $portlet-bg;
+	box-shadow: $portlet-shadow;
+}
+.portlet > header,
+.portlet > footer {
+	display: flex !important;
+	justify-content: space-between !important;
+	align-items: center !important;
+	min-height: (($input-btn-padding-y-sm * 2) + $input-btn-line-height-sm + (1/16));
+	border-top: 1px solid $portlet-border-color;
+}
+.portlet > header,
+.portlet > .portlet-body {
+	border-top: $portlet-header-border;
+}
+.portlet > header > .portlet-title {
+	padding-left: map-get($spacers, 3);
+	margin: 0!important;
+	font-weight: $portlet-header-font-weight;
+	line-height: 1!important;
+}
+.portlet.portlet-sm > header > .portlet-title {
+	padding-left: map-get($spacers, 2);
+}
+.portlet.portlet-sm > header > .btn {
+	padding: $input-btn-padding-y-sm $input-btn-padding-x-sm;
+	font-size: $font-size-sm;
+	line-height: $input-btn-line-height-sm;
+}
+.portlet > .portlet-body {
+	padding: map-get($spacers, 3);
+}
+.portlet.portlet-sm > .portlet-body {
+	padding: map-get($spacers, 2);
+}
+.portlet > header + .portlet-body {
+	border-top: 1px solid $portlet-border-color;
+}
+.portlet > footer {
+	padding: 0 map-get($spacers, 2);
+}

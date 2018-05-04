@@ -1,0 +1,13 @@
+// POSITION OPTIONS
+.pos-relative { position:relative!important; }
+.pos-absolute { position:absolute!important; }
+.pos-static { position:static!important; }
+.pos-fixed { position:fixed!important; }
+// Placement definitions
+.pos-top-0 { top: 0; }
+.pos-bottom-0 { bottom: 0; }
+.pos-left-0 { left: 0; }
+.pos-right-0 { right: 0; }
+// + gutter
+.pos-left-gutter { left: ($grid-gutter-width / 2); }
+.pos-right-gutter { right: ($grid-gutter-width / 2); }

@@ -1,0 +1,19 @@
+// FONT SIZES
+
+	// Contextual
+	.text-xs { font-size: $base-text-xs; }
+	.text-sm { font-size: $base-text-sm; }
+	.text-md { font-size: $base-text-md; }
+	.text-lg { font-size: $base-text-lg; }
+	.text-xl { font-size: $base-text-xl; }
+
+	// Sequencial
+	// Útil para variação no tamanho da fonte utilizando javascript
+	// Ex: script 'FontSizer' para para alteração no tamanho do texto
+	.text-1 { font-size: .7rem !important; }
+	.text-2 { font-size: .8rem !important; }
+	.text-3 { font-size: .9rem !important; }
+	.text-4 { font-size: 1rem !important; }
+	.text-5 { font-size: 1.2rem !important; }
+	.text-6 { font-size: 1.5rem !important; }
+	.text-7 { font-size: 2rem !important; }

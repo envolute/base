@@ -1,0 +1,8 @@
+// @BOOTSTRAP HELPERS
+// Adaptações e correções para casos específicos
+
+// GRID
+
+  // Grid '0' => display none
+  // Útil para o cálculo de colunas
+  .col-0, .col-sm-0, .col-md-0, .col-lg-0, .col-xl-0 { display: none; }

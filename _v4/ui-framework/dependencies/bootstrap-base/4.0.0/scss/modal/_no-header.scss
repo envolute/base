@@ -1,0 +1,17 @@
+// MODAL NO HEADER
+// modal com o 'header' escondido
+
+	// Utilizando a classe '.no-header' reseta e posiciona o 'header'
+	// Não esconde completamente o header para possibilitar a visualização do botão de fechar '.close'
+	.no-header .modal-header {
+		position: absolute!important;
+		right: 0!important;
+		padding: 10px 10px 0 0!important;
+		border: none!important;
+		background: none!important;
+		box-shadow: none!important;
+		z-index: 1;
+	}
+	// Como o header continua visível, oculta qualquer elemento
+	// exceto o botão de fechar '.close'
+	.no-header .modal-header > *:not(.close) { display: none; }

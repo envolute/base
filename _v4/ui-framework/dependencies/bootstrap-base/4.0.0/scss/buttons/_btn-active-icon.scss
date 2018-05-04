@@ -1,0 +1,12 @@
+// 'CHECKBOX/RADIO' ACTIVE ICON
+
+  // Atribui um ícone de 'ok' quando o elemento estiver selecionado
+  .btn-group .btn.active [class*="base-icon"]:not(.icon-default)::before {
+    content: $checkbox-icon-active;
+  }
+  // INVERTIDO
+  // Atribui um ícone de 'cancel' quando o elemento estiver selecionado.
+  // Opção para elementos de 'negação'. Onde o ativo indicar 'não'
+  .btn-group .btn.active [class*="base-icon"]:not(.icon-default).inverted::before {
+    content: $checkbox-icon-inactive;
+  }

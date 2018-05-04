@@ -1,0 +1,21 @@
+// BTN XS
+// A opção '.btn-xs' foi removida na versão 4 do Bootstrap
+// Porém, ela é muito útil para botões dentro de elementos como tabelas ou texto...
+// Assim, ela entrar como um complemento 'addon'...
+// por ser um recurso específico, terá um tamanho fixo
+.btn-xs {
+	min-height: 18px;
+	line-height: 16px;
+	padding: 2px 5px 0;
+	font-size: 11px;
+}
+// corrige o posicionamento do 'caret' do 'dropdown-toggle'
+.btn-xs.dropdown-toggle::after { margin-left: 0; }
+
+// INTEGRATIONS
+
+	// TABLE
+	// Ajustar o botão a altura da linha
+	.table .btn-xs {
+		vertical-align: text-top;
+	}

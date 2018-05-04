@@ -1,0 +1,9 @@
+// BTN FLOATING ACTIONS
+// Botão no formato circular no padrão do framework 'Material Design'
+.btn-fab {
+	border-radius: 100%;
+	padding: 0;
+	width: $base-btn-fab-size;
+	height: $base-btn-fab-size;
+	line-height: ($base-btn-fab-size - 0.1);
+}

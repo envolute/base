@@ -1,0 +1,94 @@
+// CSS LOADERS
+
+// SPINNER
+// html:
+// <div class="loader-spinner"></div>
+.loader-spinner {
+  width:256px;
+  height: 256px;
+  max-height: 100%;
+  max-width: 100%;
+  animation: rotate 0.8s infinite linear;
+  border: 3px solid #000;
+  border-right-color: transparent;
+  border-radius: 50%;
+  box-sizing: content-box;
+}
+@keyframes rotate {
+  0%    { transform: rotate(0deg); }
+  100%  { transform: rotate(360deg); }
+}
+
+// BAR
+// html:
+// <div class="loader-bar"></div>
+.loader-bar {
+	height: 4px;
+	width: 100%;
+	position: relative;
+	overflow: hidden;
+	background-color: #ddd;
+	&:before{
+		display: block;
+		position: absolute;
+		content: "";
+		left: -200px;
+		width: 200px;
+		height: 4px;
+		background-color: #2980b9;
+		animation: loadingBar 2s linear infinite;
+	}
+}
+@keyframes loadingBar {
+    from { left: -200px; width: 30%; }
+    50% { width: 30%; }
+    70% { width: 70%; }
+    80% { left: 50%; }
+    95% { left: 120%; }
+    to { left: 100%; }
+}
+
+// FIXED BAR - GOOGLE MATERIAL
+// html:
+// <div class="load-bar">
+//   <div class="bar"></div>
+//   <div class="bar"></div>
+//   <div class="bar"></div>
+// </div>
+.loader-fixed-bar {
+	position: fixed;
+	top: 0;
+	left:0;
+	width: 100%;
+	height: 6px;
+	background-color: #fdba2c;
+	z-index: 99999;
+
+	.bar {
+		content: "";
+		display: inline;
+		position: absolute;
+		width: 0;
+		height: 100%;
+		left: 50%;
+		text-align: center;
+
+		&:nth-child(1) {
+			background-color: #da4733;
+			animation: loadingColors 3s linear infinite;
+		}
+		&:nth-child(2) {
+			background-color: #3b78e7;
+			animation: loadingColors 3s linear 1s infinite;
+		}
+		&:nth-child(3) {
+			background-color: #fdba2c;
+			animation: loadingColors 3s linear 2s infinite;
+		}
+	}
+}
+@keyframes loadingColors {
+    from {left: 50%; width: 0;z-index:100; }
+    33.3333% {left: 0; width: 100%;z-index: 10; }
+    to {left: 0; width: 100%; }
+}

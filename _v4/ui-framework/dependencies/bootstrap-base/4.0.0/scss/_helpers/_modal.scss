@@ -1,0 +1,17 @@
+// MODAL
+
+	// SEM O HEADER
+	// Quando for possível editar o código da modal
+	// NÃO É NECESSÁRIA A CLASSE " .no-header", basta remover o 'modal-header'
+	// e adicionar o botão de fechar 'button.close' dentro do 'modal-body' (primeiro elemento)
+	.modal .modal-body > button.close {
+		position: absolute;
+		top: -2px;
+		right: 3px;
+		z-index: 1;
+	}
+
+	.modal.show {
+		-webkit-transform: translateZ(0);
+		        transform: translateZ(0);
+	}

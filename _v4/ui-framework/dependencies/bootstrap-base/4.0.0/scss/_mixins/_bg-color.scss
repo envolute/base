@@ -1,0 +1,31 @@
+// BACKGROUND COLOR
+// Defini a cor de fundo e a cor do texto de acordo com o background definido...
+
+@mixin base-bg-color($suffix, $bgColor, $textColor: $base-text-color, $linkColor: $base-text-color, $isCustom: true) {
+	.bg-#{$suffix} {
+		@if ($isCustom) { background-color: $bgColor; }
+		// text color default
+		@if ($textColor) { color: $textColor; }
+	}
+	// link color default
+	@if ($linkColor) {
+		.bg-#{$suffix}.bg-link-color a:not([class*="btn"]):not(.badge):not(.dropdown),
+		.bg-#{$suffix} .bg-link-color a:not([class*="btn"]):not(.badge):not(.dropdown),
+		.bg-#{$suffix} a.bg-link-color:not([class*="btn"]):not(.badge):not(.dropdown) {
+			color: $linkColor;
+			&:hover {
+				// copy of 'link-hover-color' bootstrap
+				color: darken($linkColor, 10%);
+			}
+		}
+	}
+}
+
+@function amount-color-yiq($color) {
+	// bg color
+	$r: red($color);
+	$g: green($color);
+	$b: blue($color);
+	$yiq: (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
+	@return $yiq;
+}

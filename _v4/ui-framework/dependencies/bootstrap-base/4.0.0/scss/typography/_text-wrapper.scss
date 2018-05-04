@@ -1,0 +1,13 @@
+// QUEBRA DE LINHA
+
+// Não quebra a linha
+.text-nowrap { white-space: nowrap; }
+// Não quebra a linha e mantém os espaços em branco
+.text-pre { white-space: pre; }
+// quebra a linha e mantém os espaços em branco
+.text-pre-wrap { white-space: pre-wrap; }
+// Quebra em qualquer ponto
+.word-break { word-break: break-all; }
+// Quebra em caracteres especiais ou em qualquer ponto
+// Para um container 'flex' precisa de uma largura definida
+.break-word { word-wrap: break-word; }
